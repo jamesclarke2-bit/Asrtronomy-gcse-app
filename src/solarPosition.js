@@ -96,4 +96,8 @@ function getSunPosition(date, lat, lon) {
   return { altitude, azimuth, declination: decl };
 }
 
-module.exports = { getSunPosition };
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = { getSunPosition };
+} else if (typeof window !== 'undefined') {
+  window.SolarPosition = { getSunPosition };
+}
