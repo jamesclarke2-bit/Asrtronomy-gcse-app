@@ -1,0 +1,11 @@
+{
+  "name": "asrtronomy-gcse-app",
+  "version": "0.1.0",
+  "private": true,
+  "description": "GCSE astronomy teaching app",
+  "main": "src/solarPosition.js",
+  "scripts": {
+    "test": "node --test test/*.test.js"
+  },
+  "license": "MIT"
+}
