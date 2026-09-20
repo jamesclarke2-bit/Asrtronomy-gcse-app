@@ -13,6 +13,7 @@
   const altitudeValue = document.getElementById('altitude-value');
   const azimuthValue = document.getElementById('azimuth-value');
   const declinationValue = document.getElementById('declination-value');
+  const eqTimeValue = document.getElementById('eqtime-value');
 
   const canvas = document.getElementById('sky');
   const ctx = canvas.getContext('2d');
@@ -310,6 +311,10 @@
     altitudeValue.textContent = `${sun.altitude.toFixed(1)}°${sun.altitude < 0 ? ' (below horizon)' : ''}`;
     azimuthValue.textContent = `${sun.azimuth.toFixed(1)}°`;
     declinationValue.textContent = `${sun.declination.toFixed(2)}°`;
+
+    const eqTimeAbs = Math.abs(sun.equationOfTime).toFixed(1);
+    const eqTimeDirection = sun.equationOfTime >= 0 ? 'ahead of' : 'behind';
+    eqTimeValue.textContent = `Sundial reads ${eqTimeAbs} min ${eqTimeDirection} clock time`;
 
     drawSky(lat, dayIndex, minutesOfDay, sun, labelsToggle.checked);
     drawOrbit(dayIndex);

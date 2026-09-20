@@ -93,7 +93,7 @@ const UNITS = [
         id: 'u2.10',
         title: 'Time',
         depth: 'understand',
-        notes: 'solar time vs. clock time; the Equation of Time',
+        notes: 'solar time vs. clock time; the Equation of Time, caused by orbital eccentricity and axial tilt.',
       },
     ],
   },
