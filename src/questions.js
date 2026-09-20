@@ -32,6 +32,10 @@ function makeQuestions(getSunPosition) {
     return `${h}:${m}`;
   }
 
+  function normalizeText(value) {
+    return String(value).trim().toLowerCase();
+  }
+
   return [
     {
       id: 'q1',
@@ -109,6 +113,45 @@ function makeQuestions(getSunPosition) {
         // +/-1 degree of hour angle = +/-4 minutes (15 degrees of hour angle per hour)
         const correct = userMinutes !== null && Math.abs(userMinutes - noonMinutes) <= 4;
         return { correct, message: `The simulator's solar noon is at ${minutesToClock(noonMinutes)} UTC.` };
+      },
+    },
+    {
+      id: 'q6',
+      type: 'text',
+      units: ['u1.6'],
+      prompt:
+        "Drag the time slider until the sun reaches its highest point for the day (its peak altitude). What is that moment called?",
+      check(value) {
+        const correct = normalizeText(value) === 'culmination';
+        return {
+          correct,
+          message: "That moment — when the sun crosses the meridian and reaches its highest point in the sky — is called culmination.",
+        };
+      },
+    },
+    {
+      id: 'q7',
+      type: 'text',
+      units: ['u1.6'],
+      prompt:
+        'What is the name of the imaginary line running from due north, up through the centre of the sky diagram, to due south?',
+      check(value) {
+        const correct = normalizeText(value) === 'meridian';
+        return { correct, message: 'That line is called the meridian.' };
+      },
+    },
+    {
+      id: 'q8',
+      type: 'choice',
+      units: ['u1.6'],
+      prompt: 'What is the name of the point at the exact centre of the sky diagram, directly overhead?',
+      options: ['Zenith', 'Nadir', 'Meridian', 'Horizon'],
+      check(value) {
+        const correct = value === 'Zenith';
+        return {
+          correct,
+          message: 'The point directly overhead is called the zenith (its opposite, straight down, is the nadir).',
+        };
       },
     },
   ];

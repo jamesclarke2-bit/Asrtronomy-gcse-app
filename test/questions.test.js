@@ -59,3 +59,30 @@ test('q5: UTC time of solar noon on the summer solstice at lon 0 (u2.10)', () =>
   assert.ok(!q5.check('09:00').correct);
   assert.ok(!q5.check('').correct);
 });
+
+test('q6: the sun\'s highest-point moment is culmination (u1.6)', () => {
+  const q6 = findQuestion('q6');
+  assert.deepEqual(q6.units, ['u1.6']);
+  assert.ok(q6.check('culmination').correct);
+  assert.ok(q6.check('Culmination').correct);
+  assert.ok(q6.check('  CULMINATION  ').correct);
+  assert.ok(!q6.check('zenith').correct);
+  assert.ok(!q6.check('').correct);
+});
+
+test('q7: the N-S line through the diagram is the meridian (u1.6)', () => {
+  const q7 = findQuestion('q7');
+  assert.deepEqual(q7.units, ['u1.6']);
+  assert.ok(q7.check('meridian').correct);
+  assert.ok(q7.check('Meridian').correct);
+  assert.ok(!q7.check('horizon').correct);
+});
+
+test('q8: the centre point of the diagram is the zenith (u1.6)', () => {
+  const q8 = findQuestion('q8');
+  assert.deepEqual(q8.units, ['u1.6']);
+  assert.ok(q8.check('Zenith').correct);
+  assert.ok(!q8.check('Nadir').correct);
+  assert.ok(!q8.check('Meridian').correct);
+  assert.ok(!q8.check('Horizon').correct);
+});

@@ -43,6 +43,12 @@ const UNITS = [
         depth: 'understand',
         notes: 'light pollution, atmospheric seeing and transparency',
       },
+      {
+        id: 'u1.6',
+        title: 'Observational terminology',
+        depth: 'know',
+        notes: 'cardinal points, meridian, zenith, culmination',
+      },
     ],
   },
   {

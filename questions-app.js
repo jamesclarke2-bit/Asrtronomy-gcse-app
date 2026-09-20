@@ -69,6 +69,13 @@
       return () => input.value;
     }
 
+    if (question.type === 'text') {
+      const input = document.createElement('input');
+      input.type = 'text';
+      form.appendChild(input);
+      return () => input.value;
+    }
+
     // 'choice'
     question.options.forEach((option) => {
       const label = document.createElement('label');
