@@ -16,6 +16,11 @@
 
   const canvas = document.getElementById('sky');
   const ctx = canvas.getContext('2d');
+  const labelsToggle = document.getElementById('labels-toggle');
+
+  // Cache the day's culmination (max-altitude point), since it only
+  // depends on date and latitude, not the time slider.
+  let culminationCache = { dayIndex: null, lat: null, result: null };
 
   function dayOfYearToUTCDate(year, dayIndex) {
     const d = new Date(Date.UTC(year, 0, 1));
@@ -46,7 +51,29 @@
     return { x: cx + r * Math.sin(rad), y: cy - r * Math.cos(rad) };
   }
 
-  function drawSky(lat, dayIndex, minutesOfDay, current) {
+  // Extend a point away from the diagram's centre — used to push labels
+  // clear of the line/marker they're annotating.
+  function offsetOutward(cx, cy, point, distance) {
+    const dx = point.x - cx;
+    const dy = point.y - cy;
+    const len = Math.hypot(dx, dy) || 1;
+    return { x: point.x + (dx / len) * distance, y: point.y + (dy / len) * distance };
+  }
+
+  function findCulmination(dayIndex, lat) {
+    if (culminationCache.dayIndex === dayIndex && culminationCache.lat === lat) {
+      return culminationCache.result;
+    }
+    let best = null;
+    for (let m = 0; m < 1440; m++) {
+      const sun = SolarPosition.getSunPosition(buildDateTime(dayIndex, m), lat, LONGITUDE);
+      if (!best || sun.altitude > best.altitude) best = sun;
+    }
+    culminationCache = { dayIndex, lat, result: best };
+    return best;
+  }
+
+  function drawSky(lat, dayIndex, minutesOfDay, current, showLabels) {
     const cx = canvas.width / 2;
     const cy = canvas.height / 2;
     const R = Math.min(cx, cy) - 40;
@@ -72,6 +99,36 @@
     ctx.fillText('S', cx, cy + R + 16);
     ctx.fillText('E', cx + R + 16, cy);
     ctx.fillText('W', cx - R - 16, cy);
+
+    if (showLabels) {
+      // Meridian: the N-S line through the zenith
+      ctx.beginPath();
+      ctx.moveTo(cx, cy - R);
+      ctx.lineTo(cx, cy + R);
+      ctx.strokeStyle = '#5b6b82';
+      ctx.lineWidth = 1;
+      ctx.setLineDash([4, 4]);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      ctx.fillStyle = '#5b6b82';
+      ctx.font = '600 12px sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillText('Meridian', cx + 8, cy - R * 0.5);
+
+      // Zenith: the point directly overhead, at the diagram's centre
+      ctx.beginPath();
+      ctx.arc(cx, cy, 3, 0, Math.PI * 2);
+      ctx.fillStyle = '#5b6b82';
+      ctx.fill();
+      ctx.textAlign = 'left';
+      ctx.fillText('Zenith', cx + 8, cy - 8);
+
+      // Horizon: the outer circle, 0 degrees altitude
+      ctx.fillStyle = '#5b6b82';
+      ctx.textAlign = 'left';
+      ctx.fillText('Horizon', cx + R * 0.6, cy + R * 0.75);
+    }
 
     // Sun's path across the selected day, one point every 5 minutes,
     // drawn only while the sun is above the horizon.
@@ -109,6 +166,30 @@
     ctx.strokeStyle = '#333';
     ctx.lineWidth = 1.5;
     ctx.stroke();
+
+    // Culmination: the day's maximum-altitude point, where the sun
+    // crosses the meridian.
+    const culmination = findCulmination(dayIndex, lat);
+    const culminationVisible = culmination.altitude >= 0;
+    const culminationPoint = culminationVisible
+      ? polarPoint(cx, cy, R, culmination.altitude, culmination.azimuth)
+      : polarPoint(cx, cy, R, 0, culmination.azimuth);
+
+    ctx.beginPath();
+    ctx.arc(culminationPoint.x, culminationPoint.y, 6, 0, Math.PI * 2);
+    ctx.fillStyle = culminationVisible ? '#8e44ad' : '#c9b6d6';
+    ctx.fill();
+    ctx.strokeStyle = '#fff';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+
+    if (showLabels) {
+      const labelPoint = offsetOutward(cx, cy, culminationPoint, 14);
+      ctx.fillStyle = '#8e44ad';
+      ctx.font = '600 12px sans-serif';
+      ctx.textAlign = culminationPoint.x >= cx ? 'left' : 'right';
+      ctx.fillText('Culmination', labelPoint.x, labelPoint.y);
+    }
   }
 
   function update() {
@@ -127,7 +208,11 @@
     azimuthValue.textContent = `${sun.azimuth.toFixed(1)}°`;
     declinationValue.textContent = `${sun.declination.toFixed(2)}°`;
 
-    drawSky(lat, dayIndex, minutesOfDay, sun);
+    drawSky(lat, dayIndex, minutesOfDay, sun, labelsToggle.checked);
+  }
+
+  function updateLegendVisibility() {
+    document.getElementById('labels-legend').hidden = !labelsToggle.checked;
   }
 
   function renderCoverage() {
@@ -137,6 +222,11 @@
   }
 
   [dateSlider, timeSlider, latSlider].forEach((el) => el.addEventListener('input', update));
+  labelsToggle.addEventListener('change', () => {
+    updateLegendVisibility();
+    update();
+  });
   update();
+  updateLegendVisibility();
   renderCoverage();
 })();

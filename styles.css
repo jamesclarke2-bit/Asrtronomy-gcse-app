@@ -40,6 +40,17 @@ canvas {
   border: 1px solid #cdd7e1;
 }
 
+.diagram {
+  max-width: 420px;
+}
+
+.legend {
+  font-size: 0.8rem;
+  color: #555;
+  line-height: 1.5;
+  margin: 0.75rem 0 0;
+}
+
 .controls {
   flex: 1;
   min-width: 260px;
@@ -54,6 +65,18 @@ canvas {
   display: block;
   font-weight: 600;
   margin-bottom: 0.35rem;
+}
+
+.checkbox-control label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+}
+
+.checkbox-control input[type="checkbox"] {
+  width: 1.1rem;
+  height: 1.1rem;
 }
 
 .control input[type="range"] {

@@ -15,7 +15,16 @@
     </p>
 
     <div class="layout">
-      <canvas id="sky" width="420" height="420" aria-label="Sky diagram showing the sun's position"></canvas>
+      <div class="diagram">
+        <canvas id="sky" width="420" height="420" aria-label="Sky diagram showing the sun's position"></canvas>
+
+        <p class="legend" id="labels-legend">
+          <strong>Meridian</strong> — the N–S line through the zenith.
+          <strong>Zenith</strong> — the point directly overhead.
+          <strong>Horizon</strong> — 0° altitude, where sky meets ground.
+          <strong>Culmination</strong> (sun's highest point / crosses the meridian) — marked in purple on the arc.
+        </p>
+      </div>
 
       <div class="controls">
         <div class="control">
@@ -31,6 +40,10 @@
         <div class="control">
           <label for="lat-slider">Latitude: <span id="lat-label"></span></label>
           <input type="range" id="lat-slider" min="-90" max="90" step="1" value="52" />
+        </div>
+
+        <div class="control checkbox-control">
+          <label><input type="checkbox" id="labels-toggle" checked /> Show diagram labels</label>
         </div>
 
         <dl class="readout">
