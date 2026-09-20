@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Equation of Time</title>
-  <link rel="stylesheet" href="../styles.css?v=202609202100" />
+  <link rel="stylesheet" href="../styles.css?v=202609202101" />
 </head>
 <body>
   <main>
@@ -37,14 +37,42 @@
       </p>
     </section>
 
+    <section class="eot-causes">
+      <h2>Two effects added together</h2>
+      <p>
+        The equation of time is the sum of two independent effects, both plotted below alongside
+        the total:
+      </p>
+      <ul>
+        <li>
+          <strong>Orbital eccentricity</strong> — Earth's orbit is an ellipse, not a circle, so
+          Earth moves faster when closer to the Sun (near perihelion, early January) and slower
+          when farther away (near aphelion, early July). This makes the apparent Sun run
+          alternately ahead of and behind steady clock time, completing one full cycle per year.
+        </li>
+        <li>
+          <strong>Axial tilt</strong> — even on a perfectly circular orbit, the Sun's motion along
+          the tilted ecliptic doesn't project evenly onto the celestial equator, which is what a
+          clock effectively tracks. It runs fastest near the solstices and slowest near the
+          equinoxes, completing two full cycles per year — so this effect is zero at every
+          solstice and equinox.
+        </li>
+      </ul>
+    </section>
+
     <section class="eot-graph-section">
       <h2>Equation of time across the year</h2>
       <canvas
         id="eot-graph"
         width="700"
         height="320"
-        aria-label="Graph of the equation of time in minutes across the year"
+        aria-label="Graph of the equation of time in minutes across the year, split into its orbital-eccentricity and axial-tilt components"
       ></canvas>
+      <p class="legend">
+        <span class="legend-swatch legend-total"></span> Total (precise calculation)
+        &nbsp; <span class="legend-swatch legend-obliquity"></span> Axial tilt
+        &nbsp; <span class="legend-swatch legend-eccentricity"></span> Orbital eccentricity
+      </p>
 
       <div class="control">
         <label for="date-slider">Date: <span id="date-label"></span></label>
@@ -54,6 +82,24 @@
       <p class="eot-readout" id="eqtime-value"></p>
 
       <p class="coverage" id="coverage"></p>
+    </section>
+
+    <section class="analemma-section">
+      <h2>The analemma</h2>
+      <p>
+        If you photographed the Sun at the same clock time every few days for a year, its position
+        would trace this figure-eight — the <strong>analemma</strong>. The side-to-side spread is
+        the equation of time (both effects combined, converted from minutes to a sideways shift);
+        the up-down spread is the declination already used by the orbit panel on the
+        <a href="../index.html">Sun Path Simulator</a>. The shape is the same whichever clock hour
+        you choose to observe at — only its position in the actual sky would shift, not its shape.
+      </p>
+      <canvas
+        id="analemma-graph"
+        width="360"
+        height="480"
+        aria-label="The analemma: a figure-eight plot of the equation of time against declination across the year"
+      ></canvas>
     </section>
 
     <section class="questions">
@@ -68,10 +114,11 @@
     </section>
   </main>
 
-  <script src="../src/curriculum.js?v=202609202100"></script>
-  <script src="../src/solarPosition.js?v=202609202100"></script>
-  <script src="../src/eotQuestions.js?v=202609202100"></script>
-  <script src="../quiz-ui.js?v=202609202100"></script>
-  <script src="equation-of-time.js?v=202609202100"></script>
+  <script src="../src/curriculum.js?v=202609202101"></script>
+  <script src="../src/solarPosition.js?v=202609202101"></script>
+  <script src="../src/eotComponents.js?v=202609202101"></script>
+  <script src="../src/eotQuestions.js?v=202609202101"></script>
+  <script src="../quiz-ui.js?v=202609202101"></script>
+  <script src="equation-of-time.js?v=202609202101"></script>
 </body>
 </html>

@@ -152,6 +152,14 @@ canvas {
   line-height: 1.6;
 }
 
+.eot-causes {
+  max-width: 700px;
+}
+
+.eot-causes li {
+  margin-bottom: 0.75rem;
+}
+
 .eot-graph-section {
   max-width: 700px;
 }
@@ -160,6 +168,36 @@ canvas {
   font-weight: 600;
   font-size: 1.05rem;
   margin: 0.5rem 0 1rem;
+}
+
+.legend {
+  font-size: 0.85rem;
+  color: #444;
+  margin: 0.5rem 0 0;
+}
+
+.legend-swatch {
+  display: inline-block;
+  width: 14px;
+  height: 3px;
+  margin-right: 0.3rem;
+  vertical-align: middle;
+}
+
+.legend-total {
+  background: #f5a623;
+}
+
+.legend-obliquity {
+  background: #2a6bd6;
+}
+
+.legend-eccentricity {
+  background: #2e8b57;
+}
+
+.analemma-section {
+  max-width: 400px;
 }
 
 .questions,

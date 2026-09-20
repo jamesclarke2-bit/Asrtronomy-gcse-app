@@ -35,3 +35,19 @@ test('eot3: April is closest to zero among the given months', () => {
   assert.ok(!eot3.check('July').correct);
   assert.ok(!eot3.check('November').correct);
 });
+
+test('eot4: accepts any of the four zero-crossing months', () => {
+  const eot4 = findQuestion('eot4');
+  assert.ok(eot4.check('April').correct);
+  assert.ok(eot4.check('june').correct);
+  assert.ok(eot4.check('  September  ').correct);
+  assert.ok(eot4.check('December').correct);
+  assert.ok(!eot4.check('January').correct);
+  assert.ok(!eot4.check('').correct);
+});
+
+test('eot5: orbital eccentricity dominates in March', () => {
+  const eot5 = findQuestion('eot5');
+  assert.ok(eot5.check('Orbital eccentricity').correct);
+  assert.ok(!eot5.check('Axial tilt (obliquity)').correct);
+});
