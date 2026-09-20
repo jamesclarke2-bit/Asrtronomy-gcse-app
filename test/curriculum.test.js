@@ -3,6 +3,7 @@ const assert = require('node:assert/strict');
 const { UNITS, getUnit, getSubtopic } = require('../src/curriculum');
 const { CURRICULUM_UNITS } = require('../src/solarPosition');
 const { QUESTIONS } = require('../src/questions');
+const { QUESTIONS: EOT_QUESTIONS } = require('../src/eotQuestions');
 
 const VALID_DEPTHS = ['know', 'understand', 'be able to'];
 
@@ -42,7 +43,7 @@ test('solarPosition.js only declares curriculum ids that actually exist', () => 
 });
 
 test('every question only tags curriculum ids that actually exist', () => {
-  for (const question of QUESTIONS) {
+  for (const question of [...QUESTIONS, ...EOT_QUESTIONS]) {
     for (const id of question.units) {
       assert.ok(getSubtopic(id), `${question.id} references missing subtopic "${id}"`);
     }

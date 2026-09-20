@@ -125,6 +125,43 @@ canvas {
   padding-top: 0.75rem;
 }
 
+.eot-link {
+  font-size: 0.9rem;
+}
+
+.back-link {
+  margin: 0 0 1rem;
+}
+
+.back-link a {
+  color: #2a6bd6;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.back-link a:hover {
+  text-decoration: underline;
+}
+
+.formula {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  font-style: italic;
+  line-height: 1.6;
+}
+
+.eot-graph-section {
+  max-width: 700px;
+}
+
+.eot-readout {
+  font-weight: 600;
+  font-size: 1.05rem;
+  margin: 0.5rem 0 1rem;
+}
+
 .questions,
 .progress {
   margin-top: 2.5rem;
