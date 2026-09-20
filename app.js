@@ -130,6 +130,13 @@
     drawSky(lat, dayIndex, minutesOfDay, sun);
   }
 
+  function renderCoverage() {
+    const coverageEl = document.getElementById('coverage');
+    const subtopics = SolarPosition.CURRICULUM_UNITS.map(Curriculum.getSubtopic);
+    coverageEl.textContent = 'Covers: ' + subtopics.map((s) => `${s.id} ${s.title}`).join(', ');
+  }
+
   [dateSlider, timeSlider, latSlider].forEach((el) => el.addEventListener('input', update));
   update();
+  renderCoverage();
 })();

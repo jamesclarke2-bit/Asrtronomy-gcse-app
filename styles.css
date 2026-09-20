@@ -85,3 +85,10 @@ canvas {
   font-size: 0.85rem;
   color: #666;
 }
+
+.coverage {
+  font-size: 0.8rem;
+  color: #888;
+  border-top: 1px solid #e0e0e0;
+  padding-top: 0.75rem;
+}

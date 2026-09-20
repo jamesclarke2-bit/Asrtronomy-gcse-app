@@ -96,8 +96,12 @@ function getSunPosition(date, lat, lon) {
   return { altitude, azimuth, declination: decl };
 }
 
+// Curriculum subtopics this simulation teaches towards — see src/curriculum.js.
+// u1.4 coordinate systems (altitude/azimuth), u2.9 seasons, u2.10 time (Equation of Time).
+const CURRICULUM_UNITS = ['u1.4', 'u2.9', 'u2.10'];
+
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { getSunPosition };
+  module.exports = { getSunPosition, CURRICULUM_UNITS };
 } else if (typeof window !== 'undefined') {
-  window.SolarPosition = { getSunPosition };
+  window.SolarPosition = { getSunPosition, CURRICULUM_UNITS };
 }
