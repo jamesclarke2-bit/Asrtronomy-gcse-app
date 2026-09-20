@@ -154,6 +154,23 @@ function makeQuestions(getSunPosition) {
         };
       },
     },
+    {
+      id: 'q9',
+      type: 'number',
+      units: ['u2.9'],
+      prompt: 'On the equinox, at what latitude does the sun reach exactly 90° altitude at solar noon?',
+      unitLabel: '°',
+      check(value) {
+        const noonMinutes = solarNoonMinutes(YEAR, 2, 20, 0);
+        const d = new Date(Date.UTC(YEAR, 2, 20, 0, noonMinutes));
+        const sun = getSunPosition(d, value, 0);
+        const correct = Math.abs(90 - sun.altitude) <= 1;
+        return {
+          correct,
+          message: `At ${value}° the simulator gives an altitude of ${sun.altitude.toFixed(1)}° at solar noon — aim for as close to 90° as possible.`,
+        };
+      },
+    },
   ];
 }
 

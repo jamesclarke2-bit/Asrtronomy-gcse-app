@@ -86,3 +86,11 @@ test('q8: the centre point of the diagram is the zenith (u1.6)', () => {
   assert.ok(!q8.check('Meridian').correct);
   assert.ok(!q8.check('Horizon').correct);
 });
+
+test('q9: latitude for 90deg altitude on the equinox is the equator (u2.9)', () => {
+  const q9 = findQuestion('q9');
+  assert.deepEqual(q9.units, ['u2.9']);
+  assert.ok(q9.check(0).correct);
+  assert.ok(!q9.check(23.44).correct);
+  assert.ok(!q9.check(52).correct);
+});
