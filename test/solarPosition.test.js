@@ -24,3 +24,20 @@ test('altitude at solar noon roughly equals 90 - |latitude - declination|', () =
   const expected = 90 - Math.abs(lat - sun.declination);
   assert.ok(Math.abs(sun.altitude - expected) < 1);
 });
+
+// Reference: the equation of time's two well-known yearly extremes —
+// the sundial runs slowest (most behind the clock) around mid-February
+// and fastest (most ahead) around early November.
+test('equation of time hits its known extremes', () => {
+  const feb = getSunPosition(new Date('2026-02-11T12:00:00Z'), 0, 0);
+  const nov = getSunPosition(new Date('2026-11-03T12:00:00Z'), 0, 0);
+  assert.ok(Math.abs(feb.equationOfTime + 14.2) < 0.5, `Feb equation of time ${feb.equationOfTime} not close to -14.2 min`);
+  assert.ok(Math.abs(nov.equationOfTime - 16.5) < 0.5, `Nov equation of time ${nov.equationOfTime} not close to +16.5 min`);
+});
+
+test('equation of time is near zero close to mid-April and early September', () => {
+  const apr = getSunPosition(new Date('2026-04-15T12:00:00Z'), 0, 0);
+  const sep = getSunPosition(new Date('2026-09-01T12:00:00Z'), 0, 0);
+  assert.ok(Math.abs(apr.equationOfTime) < 1);
+  assert.ok(Math.abs(sep.equationOfTime) < 1);
+});
