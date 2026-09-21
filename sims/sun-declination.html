@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sun Declination and Transit Altitude</title>
+  <link rel="stylesheet" href="../styles.css?v=202609211800" />
+</head>
+<body>
+  <main>
+    <p class="back-link"><a href="../index.html">&larr; Back to Sun Path Simulator</a></p>
+
+    <h1>Sun Declination and Transit Altitude</h1>
+    <p class="subtitle">
+      The Sun's declination shifts with the date as Earth's tilted axis turns — and that changes
+      its altitude at transit (solar noon) for any given latitude. The classic exam question:
+      "what's the Sun's altitude at transit at latitude X on date Y?"
+    </p>
+
+    <div class="layout">
+      <div class="meridian-panel">
+        <h2>Meridian cross-section</h2>
+        <canvas
+          id="sun-meridian"
+          width="380"
+          height="260"
+          aria-label="Side-on cross-section of the sky along the meridian, showing the elevated celestial pole, the celestial equator and the Sun at transit (solar noon), each labelled with its altitude"
+        ></canvas>
+        <dl class="readout meridian-readout">
+          <div class="readout-row">
+            <dt><span class="legend-dot legend-dot-observer"></span><span id="pole-legend-label">NCP</span></dt>
+            <dd id="pole-altitude-value"></dd>
+          </div>
+          <div class="readout-row">
+            <dt><span class="legend-dot legend-dot-observer"></span>Celestial equator</dt>
+            <dd id="equator-altitude-value"></dd>
+          </div>
+          <div class="readout-row">
+            <dt><span class="legend-dot legend-dot-star"></span>Sun (transit)</dt>
+            <dd id="sun-altitude-value"></dd>
+          </div>
+        </dl>
+        <p class="note">Always shows the Sun at transit (solar noon) — there's no time slider on this page.</p>
+      </div>
+
+      <div class="controls">
+        <div class="control-panel star-panel">
+          <h3 class="panel-title">The Sun</h3>
+
+          <div class="control">
+            <label for="date-slider">Date: <span id="date-label"></span></label>
+            <input type="range" id="date-slider" min="0" max="364" step="1" value="171" />
+          </div>
+
+          <p class="eot-readout" id="declination-readout"></p>
+
+          <p class="panel-note">
+            Declination is fixed by the date alone — it's the same everywhere on Earth, and doesn't
+            depend on latitude.
+          </p>
+        </div>
+
+        <div class="control-panel observer-panel">
+          <h3 class="panel-title">The observer</h3>
+
+          <div class="control">
+            <label for="lat-slider">Latitude: <span id="lat-label"></span></label>
+            <input type="range" id="lat-slider" min="-90" max="90" step="1" value="52" />
+          </div>
+
+          <p class="panel-note">This determines what altitude the Sun actually reaches.</p>
+        </div>
+
+        <p class="note">
+          Related tools:
+          <a href="../index.html">Sun Path Simulator</a> ·
+          <a href="coordinates.html">Star Coordinates</a>
+        </p>
+
+        <p class="coverage" id="coverage"></p>
+      </div>
+    </div>
+
+    <section class="questions">
+      <h2>Practice questions</h2>
+      <div id="questions-list"></div>
+    </section>
+
+    <section class="progress">
+      <h2>Your progress</h2>
+      <ul id="progress-list"></ul>
+      <p class="note">Stored in this browser only (localStorage) — no account needed.</p>
+    </section>
+  </main>
+
+  <script src="../src/curriculum.js?v=202609211800"></script>
+  <script src="../src/solarPosition.js?v=202609211800"></script>
+  <script src="../src/coordinates.js?v=202609211800"></script>
+  <script src="../src/sunDeclinationQuestions.js?v=202609211800"></script>
+  <script src="../quiz-ui.js?v=202609211800"></script>
+  <script src="sun-declination.js?v=202609211800"></script>
+</body>
+</html>

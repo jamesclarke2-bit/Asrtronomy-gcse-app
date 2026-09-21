@@ -334,9 +334,13 @@
     meridianCtx.fillText('S', MERIDIAN_CX - MERIDIAN_R - 26, MERIDIAN_CY);
     meridianCtx.textAlign = 'left';
     meridianCtx.fillText('N', MERIDIAN_CX + MERIDIAN_R + 26, MERIDIAN_CY);
+    // Extra vertical clearance (not just the usual 8px) — a star very
+    // close to the zenith (dec close to lat) gets its own label centred
+    // just above that same point, and the two would otherwise overlap
+    // illegibly.
     meridianCtx.textAlign = 'center';
     meridianCtx.textBaseline = 'bottom';
-    meridianCtx.fillText('Zenith', MERIDIAN_CX, MERIDIAN_CY - MERIDIAN_R - 8);
+    meridianCtx.fillText('Zenith', MERIDIAN_CX, MERIDIAN_CY - MERIDIAN_R - 22);
 
     // Observer-dependent features: the elevated celestial pole (NCP for
     // a northern observer, SCP for a southern one) and where the
