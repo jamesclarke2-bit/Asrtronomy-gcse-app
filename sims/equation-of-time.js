@@ -248,9 +248,18 @@
     coverageEl.textContent = 'Covers: ' + subtopics.map((s) => `${s.id} ${s.title}`).join(', ');
   }
 
+  // --- Tap-to-reveal glossary ----------------------------------------
+  // Toggle mechanism lives in the shared glossary.js (Glossary.init) —
+  // this page just supplies its own term dictionary.
+  const GLOSSARY = {
+    analemma: "Analemma: the figure-eight path the Sun traces across the sky over a year when photographed at the same clock time and place each day — caused by the same two effects (orbital eccentricity and axial tilt) that make up the equation of time.",
+    declination: "Declination: the Sun's north-south position on the sky, in degrees from the celestial equator — the same everywhere on Earth on a given date, and the up-down component of the analemma.",
+  };
+
   dateSlider.addEventListener('input', update);
   update();
   renderCoverage();
+  Glossary.init(GLOSSARY);
 
   QuizUI.mount(EotQuestions.QUESTIONS);
 })();

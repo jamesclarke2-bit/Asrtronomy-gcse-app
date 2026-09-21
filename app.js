@@ -339,6 +339,20 @@
     coverageEl.textContent = 'Covers: ' + subtopics.map((s) => `${s.id} ${s.title}`).join(', ');
   }
 
+  // --- Tap-to-reveal glossary ----------------------------------------
+  // Toggle mechanism lives in the shared glossary.js (Glossary.init) —
+  // this page just supplies its own term dictionary.
+  const GLOSSARY = {
+    meridian: 'Meridian: the imaginary north-south line running through the zenith, from the horizon due north to the horizon due south. The sun crosses it once a day, at culmination.',
+    zenith: 'Zenith: the point directly overhead, at 90° altitude.',
+    horizon: 'Horizon: the boundary between sky and ground, at 0° altitude, all the way round.',
+    culmination: "Culmination (transit): the moment the sun crosses the meridian — its highest point in the sky that day.",
+    altitude: 'Altitude: how high the sun is above the horizon, in degrees — 0° on the horizon, 90° directly overhead.',
+    azimuth: 'Azimuth: compass direction along the horizon, in degrees clockwise from north (0° = N, 90° = E, 180° = S, 270° = W).',
+    declination: "Declination: the sun's north-south position on the sky, in degrees from the celestial equator — the same everywhere on Earth on a given date, and the reason its altitude changes with the seasons.",
+    eot: 'Equation of time: the difference between apparent (sundial) and mean (clock) solar time, caused by orbital eccentricity and axial tilt — explored in full on the Equation of Time page.',
+  };
+
   [dateSlider, timeSlider, latSlider].forEach((el) => el.addEventListener('input', update));
   labelsToggle.addEventListener('change', () => {
     updateLegendVisibility();
@@ -347,4 +361,5 @@
   update();
   updateLegendVisibility();
   renderCoverage();
+  Glossary.init(GLOSSARY);
 })();

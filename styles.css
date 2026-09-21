@@ -91,12 +91,13 @@ canvas {
   background: #f5a623;
 }
 
-/* /sims/coordinates.html only (scoped via .coordinates-layout, a second
-   class alongside the shared .layout, so index.html's own .layout/.controls
-   are untouched): keep the control panels usable alongside the diagrams at
-   every viewport size, instead of them scrolling out of reach below two
-   tall diagrams. */
-.coordinates-layout {
+/* Opt-in via .tool-layout, a second class alongside the shared .layout
+   (so a plain .layout page is untouched): keep the control panels usable
+   alongside the diagrams at every viewport size, instead of them
+   scrolling out of reach below one or more tall diagrams. First built
+   for /sims/coordinates.html, now shared by every simulator page with a
+   diagram-plus-controls layout (index.html included). */
+.tool-layout {
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
@@ -113,10 +114,10 @@ canvas {
 
 /* Narrow (portrait) viewports: keep the existing top-to-bottom order, but
    pin the controls to the bottom of the viewport so a slider stays
-   reachable without scrolling past both diagrams first. The full control
-   stack is taller than most phones/tablets in portrait, so it gets a
+   reachable without scrolling past the diagram(s) first. The full control
+   stack can be taller than most phones/tablets in portrait, so it gets a
    capped height and its own scrollbar rather than covering the screen. */
-.coordinates-layout .controls {
+.tool-layout .controls {
   flex: none;
   width: 100%;
   min-width: 0;
@@ -133,20 +134,20 @@ canvas {
 }
 
 /* Wide (landscape) viewports: controls become a persistent left-hand
-   sidebar, with both diagrams stacked in the main area to the right. */
+   sidebar, with the diagram(s) stacked in the main area to the right. */
 @media (min-width: 900px) {
-  .coordinates-layout {
+  .tool-layout {
     flex-direction: row;
     align-items: flex-start;
   }
 
-  .coordinates-layout .diagrams-column {
+  .tool-layout .diagrams-column {
     order: 2;
     flex: 1;
     min-width: 0;
   }
 
-  .coordinates-layout .controls {
+  .tool-layout .controls {
     order: 1;
     flex: none;
     width: 320px;

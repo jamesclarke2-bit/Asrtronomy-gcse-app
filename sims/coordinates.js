@@ -969,9 +969,8 @@
   });
 
   // --- Tap-to-reveal glossary ----------------------------------------
-  // Every toggle is a real <button>, so a tap fires the same 'click'
-  // event a mouse click would — no separate touch handling needed, and
-  // nothing here relies on :hover.
+  // Toggle mechanism lives in the shared glossary.js (Glossary.init) —
+  // this page just supplies its own term dictionary.
   const GLOSSARY = {
     ra: "Right ascension (RA): a star's east-west position on the sky, in hours (0–24h) measured eastward along the celestial equator — like longitude, but for the sky.",
     dec: "Declination (Dec): a star's north-south position on the sky, in degrees from the celestial equator — like latitude, but for the sky.",
@@ -985,31 +984,16 @@
     culmination: 'Culmination (transit): the moment a star crosses the meridian. Upper culmination is its highest point that day; a circumpolar star also has a lower culmination, its lowest point, on the opposite side of the pole.',
   };
 
-  function initGlossary() {
-    document.querySelectorAll('.glossary-toggle').forEach((button) => {
-      const term = button.dataset.term;
-      const definition = document.querySelector(`.glossary-definition[data-term="${term}"]`);
-      if (!definition) return;
-      // Most terms have fixed wording set once here. "pole" is the
-      // exception — its NCP/SCP wording depends on the latitude slider,
-      // so drawMeridian() keeps it current on every update() instead.
-      if (GLOSSARY[term]) {
-        definition.textContent = GLOSSARY[term];
-      }
-      button.addEventListener('click', () => {
-        const isOpen = !definition.hidden;
-        definition.hidden = isOpen;
-        button.setAttribute('aria-expanded', String(!isOpen));
-      });
-    });
-  }
-
   update();
   renderCoverage();
   updatePolarisFinder();
   QuizUI.mount(CoordinatesQuestions.makeQuestions(Coordinates, getLiveState, highlightDiurnalAnswer));
   renderChainedQuestion(chainedContainer, CoordinatesQuestions.pickRandomChainedParams());
-  initGlossary();
+  // "pole" is deliberately absent from GLOSSARY: its NCP/SCP wording
+  // depends on the latitude slider, so drawMeridian() keeps its
+  // definition text current on every update() instead of a fixed string
+  // here. Glossary.init still wires up its click-to-toggle handler.
+  Glossary.init(GLOSSARY);
 
   // Default the clock widget's LST slider to the page's current LST
   // (from the date/time/longitude sliders above), then leave it to the
