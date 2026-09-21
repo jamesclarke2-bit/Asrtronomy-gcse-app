@@ -229,6 +229,125 @@ canvas {
   background: #fff;
 }
 
+/* Colour-coded control panels: "the star" (fixed, observer-independent
+   facts) vs "the observer" (what determines visibility). */
+.control-panel {
+  border-radius: 10px;
+  padding: 1rem 1.1rem;
+  margin-bottom: 1.25rem;
+  border-left: 4px solid;
+}
+
+.control-panel .panel-title {
+  margin: 0 0 0.9rem;
+  font-size: 1.05rem;
+}
+
+.control-panel .control:last-of-type {
+  margin-bottom: 0.5rem;
+}
+
+.star-panel {
+  background: #fff8e6;
+  border-left-color: #e8a33d;
+}
+
+.star-panel .panel-title {
+  color: #8a5b00;
+}
+
+.observer-panel {
+  background: #eaf2fb;
+  border-left-color: #2a6bd6;
+}
+
+.observer-panel .panel-title {
+  color: #173d75;
+}
+
+.panel-note {
+  margin: 0.75rem 0 0;
+  font-size: 0.8rem;
+  color: #555;
+  font-style: italic;
+}
+
+/* Tap-to-reveal glossary: a real <button>, so it works identically on
+   touch and mouse — no :hover-only tooltip anywhere in this pattern. */
+.glossary-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.15rem;
+  height: 1.15rem;
+  padding: 0;
+  border: 1px solid #2a6bd6;
+  border-radius: 50%;
+  background: #eaf2fb;
+  color: #2a6bd6;
+  font-size: 0.7rem;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  vertical-align: middle;
+}
+
+.glossary-toggle:hover,
+.glossary-toggle:focus-visible,
+.glossary-toggle[aria-expanded='true'] {
+  background: #2a6bd6;
+  color: #fff;
+}
+
+/* Variant where the term itself (not a separate '?' badge) is the tap target */
+.glossary-toggle.glossary-term-button {
+  width: auto;
+  height: auto;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  background: none;
+  color: #2a6bd6;
+  font-size: inherit;
+  font-weight: inherit;
+  text-decoration: underline;
+  text-decoration-style: dotted;
+}
+
+.glossary-toggle.glossary-term-button:hover,
+.glossary-toggle.glossary-term-button:focus-visible,
+.glossary-toggle.glossary-term-button[aria-expanded='true'] {
+  background: none;
+  color: #173d75;
+}
+
+.glossary-definition {
+  display: block;
+  margin: 0.4rem 0 0.6rem;
+  padding: 0.5rem 0.7rem;
+  background: #fffbe6;
+  border: 1px solid #f0e2a3;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-style: italic;
+  color: #444;
+}
+
+/* .glossary-definition's own `display: block` has equal specificity to the
+   browser default for [hidden] and would otherwise always win, permanently
+   showing the definition regardless of the hidden attribute the JS toggles. */
+.glossary-definition[hidden] {
+  display: none;
+}
+
+.readout-row {
+  display: contents;
+}
+
+.readout .glossary-definition-row {
+  grid-column: 1 / -1;
+}
+
 .chained-question {
   max-width: 760px;
   margin-top: 2.5rem;

@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Star Coordinates</title>
-  <link rel="stylesheet" href="../styles.css?v=202609211000" />
+  <link rel="stylesheet" href="../styles.css?v=202609211200" />
 </head>
 <body>
   <main>
@@ -19,56 +19,113 @@
     <div class="layout">
       <div class="diagram">
         <canvas id="star-sky" width="420" height="420" aria-label="Sky diagram showing the selected star's position and diurnal path"></canvas>
-        <p class="legend" id="circumpolar-indicator"></p>
+        <p class="legend">
+          Is it
+          <button type="button" class="glossary-toggle glossary-term-button" data-term="circumpolar" aria-label="What does circumpolar mean?" aria-expanded="false">circumpolar?</button>
+          <span id="circumpolar-indicator"></span>
+        </p>
+        <span class="glossary-definition" data-term="circumpolar" hidden></span>
       </div>
 
       <div class="controls">
-        <div class="control">
-          <label for="star-select">Star</label>
-          <select id="star-select"></select>
+        <div class="control-panel star-panel">
+          <h3 class="panel-title">The star</h3>
+
+          <div class="control">
+            <label for="star-select">Star</label>
+            <select id="star-select"></select>
+          </div>
+
+          <div class="control">
+            <label for="ra-slider">
+              Right ascension
+              <button type="button" class="glossary-toggle" data-term="ra" aria-label="What is right ascension?" aria-expanded="false">?</button>
+              : <span id="ra-label"></span>
+            </label>
+            <span class="glossary-definition" data-term="ra" hidden></span>
+            <input type="range" id="ra-slider" min="0" max="23.99" step="0.01" value="2.53" />
+          </div>
+
+          <div class="control">
+            <label for="dec-slider">
+              Declination
+              <button type="button" class="glossary-toggle" data-term="dec" aria-label="What is declination?" aria-expanded="false">?</button>
+              : <span id="dec-label"></span>
+            </label>
+            <span class="glossary-definition" data-term="dec" hidden></span>
+            <input type="range" id="dec-slider" min="-90" max="90" step="0.01" value="89.26" />
+          </div>
+
+          <p class="panel-note">These are true everywhere — they don't depend on where you're observing from.</p>
         </div>
 
-        <div class="control">
-          <label for="ra-slider">Right ascension: <span id="ra-label"></span></label>
-          <input type="range" id="ra-slider" min="0" max="23.99" step="0.01" value="2.53" />
-        </div>
+        <div class="control-panel observer-panel">
+          <h3 class="panel-title">The observer</h3>
 
-        <div class="control">
-          <label for="dec-slider">Declination: <span id="dec-label"></span></label>
-          <input type="range" id="dec-slider" min="-90" max="90" step="0.01" value="89.26" />
-        </div>
+          <div class="control">
+            <label for="lat-slider">Latitude: <span id="lat-label"></span></label>
+            <input type="range" id="lat-slider" min="-90" max="90" step="1" value="52" />
+          </div>
 
-        <div class="control">
-          <label for="lat-slider">Observer latitude: <span id="lat-label"></span></label>
-          <input type="range" id="lat-slider" min="-90" max="90" step="1" value="52" />
-        </div>
+          <div class="control">
+            <label for="lon-slider">Longitude: <span id="lon-label"></span></label>
+            <input type="range" id="lon-slider" min="-180" max="180" step="1" value="0" />
+          </div>
 
-        <div class="control">
-          <label for="lon-slider">Observer longitude: <span id="lon-label"></span></label>
-          <input type="range" id="lon-slider" min="-180" max="180" step="1" value="0" />
-        </div>
+          <div class="control">
+            <label for="date-slider">Date: <span id="date-label"></span></label>
+            <input type="range" id="date-slider" min="0" max="364" step="1" value="171" />
+          </div>
 
-        <div class="control">
-          <label for="date-slider">Date: <span id="date-label"></span></label>
-          <input type="range" id="date-slider" min="0" max="364" step="1" value="171" />
-        </div>
+          <div class="control">
+            <label for="time-slider">Time (UTC): <span id="time-label"></span></label>
+            <input type="range" id="time-slider" min="0" max="1439" step="1" value="1200" />
+          </div>
 
-        <div class="control">
-          <label for="time-slider">Time (UTC): <span id="time-label"></span></label>
-          <input type="range" id="time-slider" min="0" max="1439" step="1" value="1200" />
+          <p class="panel-note">These determine what you can actually see.</p>
         </div>
 
         <dl class="readout">
-          <dt>Local sidereal time</dt>
-          <dd id="lst-value"></dd>
-          <dt>Hour angle</dt>
-          <dd id="ha-value"></dd>
-          <dt>Altitude</dt>
-          <dd id="altitude-value"></dd>
-          <dt>Azimuth</dt>
-          <dd id="azimuth-value"></dd>
-          <dt>Polar distance</dt>
-          <dd id="polar-distance-value"></dd>
+          <div class="readout-row">
+            <dt>
+              Local sidereal time
+              <button type="button" class="glossary-toggle" data-term="lst" aria-label="What is local sidereal time?" aria-expanded="false">?</button>
+            </dt>
+            <dd id="lst-value"></dd>
+            <span class="glossary-definition glossary-definition-row" data-term="lst" hidden></span>
+          </div>
+          <div class="readout-row">
+            <dt>
+              Hour angle
+              <button type="button" class="glossary-toggle" data-term="ha" aria-label="What is hour angle?" aria-expanded="false">?</button>
+            </dt>
+            <dd id="ha-value"></dd>
+            <span class="glossary-definition glossary-definition-row" data-term="ha" hidden></span>
+          </div>
+          <div class="readout-row">
+            <dt>
+              Altitude
+              <button type="button" class="glossary-toggle" data-term="altitude" aria-label="What is altitude?" aria-expanded="false">?</button>
+            </dt>
+            <dd id="altitude-value"></dd>
+            <span class="glossary-definition glossary-definition-row" data-term="altitude" hidden></span>
+          </div>
+          <div class="readout-row">
+            <dt>
+              Azimuth
+              <button type="button" class="glossary-toggle" data-term="azimuth" aria-label="What is azimuth?" aria-expanded="false">?</button>
+            </dt>
+            <dd id="azimuth-value"></dd>
+            <span class="glossary-definition glossary-definition-row" data-term="azimuth" hidden></span>
+          </div>
+          <div class="readout-row">
+            <dt>
+              Polar distance
+              <button type="button" class="glossary-toggle" data-term="polarDistance" aria-label="What is polar distance?" aria-expanded="false">?</button>
+            </dt>
+            <dd id="polar-distance-value"></dd>
+            <span class="glossary-definition glossary-definition-row" data-term="polarDistance" hidden></span>
+          </div>
         </dl>
 
         <p class="note" id="ha-explainer"></p>
@@ -131,10 +188,10 @@
     </section>
   </main>
 
-  <script src="../src/curriculum.js?v=202609211000"></script>
-  <script src="../src/coordinates.js?v=202609211000"></script>
-  <script src="../src/coordinatesQuestions.js?v=202609211000"></script>
-  <script src="../quiz-ui.js?v=202609211000"></script>
-  <script src="coordinates.js?v=202609211000"></script>
+  <script src="../src/curriculum.js?v=202609211200"></script>
+  <script src="../src/coordinates.js?v=202609211200"></script>
+  <script src="../src/coordinatesQuestions.js?v=202609211200"></script>
+  <script src="../quiz-ui.js?v=202609211200"></script>
+  <script src="coordinates.js?v=202609211200"></script>
 </body>
 </html>

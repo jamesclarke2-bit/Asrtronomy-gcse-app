@@ -358,11 +358,11 @@
     const product = Math.tan(decRad) * Math.tan(latRad);
     let circumpolarText;
     if (product > 1) {
-      circumpolarText = 'Always above the horizon — circumpolar.';
+      circumpolarText = 'Yes — always above the horizon.';
     } else if (product < -1) {
-      circumpolarText = 'Never rises above the horizon from here.';
+      circumpolarText = 'No — it never rises from here.';
     } else {
-      circumpolarText = 'Rises and sets normally.';
+      circumpolarText = 'No — it rises and sets normally.';
     }
     circumpolarIndicator.textContent = circumpolarText;
 
@@ -567,9 +567,39 @@
     renderChainedQuestion(chainedContainer, CoordinatesQuestions.pickRandomChainedParams());
   });
 
+  // --- Tap-to-reveal glossary ----------------------------------------
+  // Every toggle is a real <button>, so a tap fires the same 'click'
+  // event a mouse click would — no separate touch handling needed, and
+  // nothing here relies on :hover.
+  const GLOSSARY = {
+    ra: "Right ascension (RA): a star's east-west position on the sky, in hours (0–24h) measured eastward along the celestial equator — like longitude, but for the sky.",
+    dec: "Declination (Dec): a star's north-south position on the sky, in degrees from the celestial equator — like latitude, but for the sky.",
+    altitude: 'Altitude: how high something is above the horizon, in degrees — 0° on the horizon, 90° directly overhead.',
+    azimuth: 'Azimuth: compass direction along the horizon, in degrees clockwise from north (0° = N, 90° = E, 180° = S, 270° = W).',
+    ha: "Hour angle: how far a star is from the meridian — negative means it hasn't transited yet (east), positive means it already has (west).",
+    lst: 'Local sidereal time (LST): the right ascension currently crossing your meridian — a clock that tracks the stars rather than the Sun.',
+    polarDistance: "Polar distance: a star's angular distance from the north celestial pole — 90° minus its declination.",
+    circumpolar: "Circumpolar: never sets below the horizon — it stays above the horizon for the whole of Earth's rotation, so it's visible (weather and daylight allowing) at any hour.",
+  };
+
+  function initGlossary() {
+    document.querySelectorAll('.glossary-toggle').forEach((button) => {
+      const term = button.dataset.term;
+      const definition = document.querySelector(`.glossary-definition[data-term="${term}"]`);
+      if (!definition || !GLOSSARY[term]) return;
+      definition.textContent = GLOSSARY[term];
+      button.addEventListener('click', () => {
+        const isOpen = !definition.hidden;
+        definition.hidden = isOpen;
+        button.setAttribute('aria-expanded', String(!isOpen));
+      });
+    });
+  }
+
   update();
   renderCoverage();
   updatePolarisFinder();
   QuizUI.mount(CoordinatesQuestions.makeQuestions(Coordinates, getLiveState));
   renderChainedQuestion(chainedContainer, CoordinatesQuestions.pickRandomChainedParams());
+  initGlossary();
 })();
