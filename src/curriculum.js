@@ -49,6 +49,55 @@ const UNITS = [
         depth: 'know',
         notes: 'cardinal points, meridian, zenith, culmination',
       },
+      {
+        id: 'u1.7',
+        title: 'Local sidereal time',
+        depth: 'be able to',
+        notes: 'calculating local sidereal time from date, time and longitude',
+      },
+      {
+        id: 'u1.8',
+        title: 'Hour angle',
+        depth: 'be able to',
+        notes:
+          'HA = LST - RA; negative HA = east of the meridian (not yet transited), positive HA = west (already transited)',
+      },
+      {
+        id: 'u1.9',
+        title: 'Polar distance',
+        depth: 'be able to',
+        notes: 'angular distance from the north celestial pole: 90 - declination',
+      },
+      {
+        id: 'u1.10',
+        title: 'Circumpolarity',
+        depth: 'be able to',
+        notes: "whether an object ever sets, from its declination and the observer's latitude",
+      },
+      {
+        id: 'u1.11',
+        title: 'Maximum altitude at upper transit',
+        depth: 'be able to',
+        notes: 'altitude at transit = 90 - |latitude - declination|',
+      },
+      {
+        id: 'u1.12',
+        title: 'Altitude/azimuth from hour angle',
+        depth: 'be able to',
+        notes: 'from declination, hour angle and latitude, using the standard spherical-triangle formulas',
+      },
+      {
+        id: 'u1.13',
+        title: 'Finding latitude via Polaris',
+        depth: 'be able to',
+        notes: "Polaris's altitude approximates the observer's latitude, since it lies close to the north celestial pole",
+      },
+      {
+        id: 'u1.14',
+        title: 'Diurnal motion',
+        depth: 'understand',
+        notes: "the apparent daily rotation of the sky (rise, transit, set) caused by Earth's rotation",
+      },
     ],
   },
   {

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Star Coordinates</title>
+  <link rel="stylesheet" href="../styles.css?v=202609210900" />
+</head>
+<body>
+  <main>
+    <p class="back-link"><a href="../index.html">&larr; Back to Sun Path Simulator</a></p>
+
+    <h1>Star Coordinates</h1>
+    <p class="subtitle">
+      Right ascension, declination, hour angle and sidereal time — pick a star, set your
+      observer conditions, and watch how they all relate.
+    </p>
+
+    <div class="layout">
+      <div class="diagram">
+        <canvas id="star-sky" width="420" height="420" aria-label="Sky diagram showing the selected star's position and diurnal path"></canvas>
+        <p class="legend" id="circumpolar-indicator"></p>
+      </div>
+
+      <div class="controls">
+        <div class="control">
+          <label for="star-select">Star</label>
+          <select id="star-select"></select>
+        </div>
+
+        <div class="control">
+          <label for="ra-slider">Right ascension: <span id="ra-label"></span></label>
+          <input type="range" id="ra-slider" min="0" max="23.99" step="0.01" value="2.53" />
+        </div>
+
+        <div class="control">
+          <label for="dec-slider">Declination: <span id="dec-label"></span></label>
+          <input type="range" id="dec-slider" min="-90" max="90" step="0.01" value="89.26" />
+        </div>
+
+        <div class="control">
+          <label for="lat-slider">Observer latitude: <span id="lat-label"></span></label>
+          <input type="range" id="lat-slider" min="-90" max="90" step="1" value="52" />
+        </div>
+
+        <div class="control">
+          <label for="lon-slider">Observer longitude: <span id="lon-label"></span></label>
+          <input type="range" id="lon-slider" min="-180" max="180" step="1" value="0" />
+        </div>
+
+        <div class="control">
+          <label for="date-slider">Date: <span id="date-label"></span></label>
+          <input type="range" id="date-slider" min="0" max="364" step="1" value="171" />
+        </div>
+
+        <div class="control">
+          <label for="time-slider">Time (UTC): <span id="time-label"></span></label>
+          <input type="range" id="time-slider" min="0" max="1439" step="1" value="1200" />
+        </div>
+
+        <dl class="readout">
+          <dt>Local sidereal time</dt>
+          <dd id="lst-value"></dd>
+          <dt>Hour angle</dt>
+          <dd id="ha-value"></dd>
+          <dt>Altitude</dt>
+          <dd id="altitude-value"></dd>
+          <dt>Azimuth</dt>
+          <dd id="azimuth-value"></dd>
+          <dt>Polar distance</dt>
+          <dd id="polar-distance-value"></dd>
+        </dl>
+
+        <p class="note" id="ha-explainer"></p>
+
+        <p class="coverage" id="coverage"></p>
+      </div>
+    </div>
+
+    <section class="latitude-finder">
+      <h2>Find your latitude using Polaris</h2>
+      <p>
+        Polaris sits so close to the north celestial pole that, to within about a degree, its
+        altitude <strong>is</strong> your latitude — whatever the time, date or hour angle. Measure
+        Polaris's altitude with a sextant or protractor, and you've measured your latitude.
+      </p>
+      <div class="control">
+        <label for="polaris-altitude-slider">Observed altitude of Polaris: <span id="polaris-altitude-label"></span></label>
+        <input type="range" id="polaris-altitude-slider" min="0" max="90" step="0.5" value="52" />
+      </div>
+      <p class="eot-readout" id="polaris-latitude-result"></p>
+    </section>
+
+    <section class="diurnal-section">
+      <h2>Diurnal motion</h2>
+      <p>
+        As Earth rotates, the selected star's altitude rises and falls through the day, always
+        peaking at hour angle 0 (transit). Drag anywhere on the graph to scrub through the hour
+        angle and see the sky diagram above follow along.
+      </p>
+      <canvas
+        id="diurnal-graph"
+        width="700"
+        height="320"
+        aria-label="Draggable graph of the selected star's altitude against hour angle in hours, across a full day"
+      ></canvas>
+    </section>
+  </main>
+
+  <script src="../src/curriculum.js?v=202609210900"></script>
+  <script src="../src/coordinates.js?v=202609210900"></script>
+  <script src="coordinates.js?v=202609210900"></script>
+</body>
+</html>
