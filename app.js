@@ -45,6 +45,15 @@
     return new Date(Date.UTC(day.getUTCFullYear(), day.getUTCMonth(), day.getUTCDate(), hours, minutes));
   }
 
+  // Rounding a raw azimuth to 1dp can land exactly on 360.0 when the
+  // true value is e.g. 359.98 (common right around transit) — wrap
+  // that back to 0.0 so the reading never displays "360.0°".
+  function formatAzimuth(azimuth) {
+    let rounded = Math.round(azimuth * 10) / 10;
+    if (rounded >= 360) rounded -= 360;
+    return `${rounded.toFixed(1)}°`;
+  }
+
   function formatDate(date) {
     return date.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', timeZone: 'UTC' });
   }
@@ -309,7 +318,7 @@
     const sun = SolarPosition.getSunPosition(date, lat, LONGITUDE);
 
     altitudeValue.textContent = `${sun.altitude.toFixed(1)}°${sun.altitude < 0 ? ' (below horizon)' : ''}`;
-    azimuthValue.textContent = `${sun.azimuth.toFixed(1)}°`;
+    azimuthValue.textContent = formatAzimuth(sun.azimuth);
     declinationValue.textContent = `${sun.declination.toFixed(2)}°`;
 
     const eqTimeAbs = Math.abs(sun.equationOfTime).toFixed(1);

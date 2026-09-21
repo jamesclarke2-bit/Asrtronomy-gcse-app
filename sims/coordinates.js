@@ -88,6 +88,15 @@
     return `${sign}${Math.abs(haDegrees).toFixed(1)}° (${sign}${formatHours(Math.abs(haDegrees) / 15)}) — ${label}`;
   }
 
+  // Rounding a raw azimuth to 1dp can land exactly on 360.0 when the
+  // true value is e.g. 359.98 (common right around transit) — wrap
+  // that back to 0.0 so the reading never displays "360.0°".
+  function formatAzimuth(azimuth) {
+    let rounded = Math.round(azimuth * 10) / 10;
+    if (rounded >= 360) rounded -= 360;
+    return `${rounded.toFixed(1)}°`;
+  }
+
   function polarPoint(cx, cy, radius, altitude, azimuth) {
     const r = (radius * (90 - altitude)) / 90;
     const rad = (azimuth * Math.PI) / 180;
@@ -337,7 +346,7 @@
     lstValue.textContent = formatHours(lst);
     haValue.textContent = formatHA(haDegrees);
     altitudeValue.textContent = `${altitude.toFixed(1)}°${altitude < 0 ? ' (below horizon)' : ''}`;
-    azimuthValue.textContent = `${azimuth.toFixed(1)}°`;
+    azimuthValue.textContent = formatAzimuth(azimuth);
     polarDistanceValue.textContent = `${polarDistance.toFixed(1)}°`;
     haExplainer.textContent =
       haDegrees < 0
