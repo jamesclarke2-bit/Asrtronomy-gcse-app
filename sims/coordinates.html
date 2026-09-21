@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Star Coordinates</title>
-  <link rel="stylesheet" href="../styles.css?v=202609211400" />
+  <link rel="stylesheet" href="../styles.css?v=202609211500" />
 </head>
 <body>
   <main>
@@ -19,7 +19,7 @@
     <div class="layout coordinates-layout">
       <div class="diagrams-column">
         <div class="diagram">
-          <canvas id="star-sky" width="420" height="420" aria-label="Sky diagram showing the selected star's position and diurnal path"></canvas>
+          <canvas id="star-sky" width="420" height="420" aria-label="Sky diagram showing the selected star's position and diurnal path, and the elevated celestial pole (NCP or SCP)"></canvas>
           <p class="legend">
             Is it
             <button type="button" class="glossary-toggle glossary-term-button" data-term="circumpolar" aria-label="What does circumpolar mean?" aria-expanded="false">circumpolar?</button>
@@ -34,12 +34,17 @@
             id="meridian-diagram"
             width="380"
             height="260"
-            aria-label="Side-on cross-section of the sky along the meridian, showing the celestial pole, the celestial equator and the star at the moment it transits"
+            aria-label="Side-on cross-section of the sky along the meridian, showing the elevated celestial pole (NCP or SCP), the celestial equator and the star at the moment it transits, each labelled with its altitude"
           ></canvas>
           <dl class="readout meridian-readout">
             <div class="readout-row">
-              <dt><span class="legend-dot legend-dot-observer"></span>Celestial pole</dt>
+              <dt>
+                <span class="legend-dot legend-dot-observer"></span>
+                <span id="pole-legend-label">NCP</span>
+                <button type="button" class="glossary-toggle" data-term="pole" aria-label="What is the NCP?" aria-expanded="false">?</button>
+              </dt>
               <dd id="pole-altitude-value"></dd>
+              <span class="glossary-definition glossary-definition-row" data-term="pole" hidden></span>
             </div>
             <div class="readout-row">
               <dt><span class="legend-dot legend-dot-observer"></span>Celestial equator</dt>
@@ -227,10 +232,10 @@
     </section>
   </main>
 
-  <script src="../src/curriculum.js?v=202609211400"></script>
-  <script src="../src/coordinates.js?v=202609211400"></script>
-  <script src="../src/coordinatesQuestions.js?v=202609211400"></script>
-  <script src="../quiz-ui.js?v=202609211400"></script>
-  <script src="coordinates.js?v=202609211400"></script>
+  <script src="../src/curriculum.js?v=202609211500"></script>
+  <script src="../src/coordinates.js?v=202609211500"></script>
+  <script src="../src/coordinatesQuestions.js?v=202609211500"></script>
+  <script src="../quiz-ui.js?v=202609211500"></script>
+  <script src="coordinates.js?v=202609211500"></script>
 </body>
 </html>

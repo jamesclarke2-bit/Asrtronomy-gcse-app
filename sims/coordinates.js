@@ -54,6 +54,33 @@
   const polarisAltitudeLabel = document.getElementById('polaris-altitude-label');
   const polarisLatitudeResult = document.getElementById('polaris-latitude-result');
 
+  const poleLegendLabel = document.getElementById('pole-legend-label');
+  const poleGlossaryDefinition = document.querySelector('.glossary-definition[data-term="pole"]');
+  const poleGlossaryButton = document.querySelector('.glossary-toggle[data-term="pole"]');
+
+  // Shared between the sky dome and the meridian cross-section: blue for
+  // facts that depend on the observer (pole, equator), amber for facts
+  // that depend on the star (its path, its transit position).
+  const OBSERVER_COLOR = '#2a6bd6';
+  const STAR_COLOR = '#f5a623';
+
+  const POLE_DEFINITIONS = {
+    NCP: "NCP: the north celestial pole — the point in the sky the Earth's axis points to in the north. Every star appears to circle around it once a day, and its altitude always equals your latitude.",
+    SCP: "SCP: the south celestial pole — the point in the sky the Earth's axis points to in the south. Every star appears to circle around it once a day, and its altitude always equals your latitude (as a positive number).",
+  };
+
+  // Whichever celestial pole is actually above the horizon from this
+  // latitude: the NCP for a northern observer, the SCP for a southern
+  // one — always at an altitude equal to |latitude|, due north or due
+  // south respectively. (The *other* pole is below the horizon and
+  // isn't shown — there's nothing to see there.)
+  function getElevatedPole(lat) {
+    if (lat >= 0) {
+      return { altitude: lat, azimuth: 0, code: 'NCP' };
+    }
+    return { altitude: -lat, azimuth: 180, code: 'SCP' };
+  }
+
   function dayOfYearToUTCDate(year, dayIndex) {
     const d = new Date(Date.UTC(year, 0, 1));
     d.setUTCDate(d.getUTCDate() + dayIndex);
@@ -170,6 +197,23 @@
     skyCtx.strokeStyle = '#333';
     skyCtx.lineWidth = 1.5;
     skyCtx.stroke();
+
+    // The elevated celestial pole (NCP or SCP, whichever is above the
+    // horizon here) — always visible, since by definition it never sets.
+    const pole = getElevatedPole(lat);
+    const polePoint = polarPoint(cx, cy, R, pole.altitude, pole.azimuth);
+    skyCtx.beginPath();
+    skyCtx.arc(polePoint.x, polePoint.y, 5, 0, Math.PI * 2);
+    skyCtx.fillStyle = OBSERVER_COLOR;
+    skyCtx.fill();
+    skyCtx.strokeStyle = '#173d75';
+    skyCtx.lineWidth = 1.5;
+    skyCtx.stroke();
+    skyCtx.fillStyle = OBSERVER_COLOR;
+    skyCtx.font = '600 12px sans-serif';
+    skyCtx.textAlign = 'center';
+    skyCtx.textBaseline = 'bottom';
+    skyCtx.fillText(pole.code, polePoint.x, polePoint.y - 9);
   }
 
   // --- Meridian cross-section: pole, equator and star at transit ------
@@ -180,8 +224,6 @@
   // on this page) rather than re-deriving the geometry, since those
   // functions are already proven correct for any latitude/declination.
 
-  const OBSERVER_COLOR = '#2a6bd6';
-  const STAR_COLOR = '#f5a623';
   const MERIDIAN_CX = meridianCanvas.width / 2;
   const MERIDIAN_CY = 185;
   const MERIDIAN_R = 140;
@@ -206,7 +248,10 @@
     };
   }
 
-  function drawMeridianFeature(altitude, azimuth, color) {
+  // labelText, when given, is drawn right next to the dot — e.g.
+  // "NCP 52.0°" — so a student can read a point's exact value without
+  // looking away to the summary list below.
+  function drawMeridianFeature(altitude, azimuth, color, labelText) {
     const point = meridianPoint(altitude, azimuth);
     meridianCtx.beginPath();
     meridianCtx.moveTo(MERIDIAN_CX, MERIDIAN_CY);
@@ -224,6 +269,14 @@
     meridianCtx.strokeStyle = '#222';
     meridianCtx.lineWidth = 1;
     meridianCtx.stroke();
+
+    if (labelText) {
+      meridianCtx.fillStyle = color;
+      meridianCtx.font = '600 10px sans-serif';
+      meridianCtx.textAlign = 'center';
+      meridianCtx.textBaseline = 'bottom';
+      meridianCtx.fillText(labelText, point.x, point.y - 9);
+    }
   }
 
   function drawMeridian(dec, lat) {
@@ -279,24 +332,26 @@
     meridianCtx.textBaseline = 'bottom';
     meridianCtx.fillText('Zenith', MERIDIAN_CX, MERIDIAN_CY - MERIDIAN_R - 8);
 
-    // Observer-dependent features: the pole (always due north, at
-    // altitude = latitude) and where the celestial equator crosses the
-    // meridian (a declination-0 object's own transit, so it's just
-    // getAltAz(0, 0, lat) — no separate formula needed).
-    drawMeridianFeature(lat, 0, OBSERVER_COLOR);
+    // Observer-dependent features: the elevated celestial pole (NCP for
+    // a northern observer, SCP for a southern one) and where the
+    // celestial equator crosses the meridian (a declination-0 object's
+    // own transit, so it's just getAltAz(0, 0, lat) — no separate
+    // formula needed).
+    const pole = getElevatedPole(lat);
+    drawMeridianFeature(pole.altitude, pole.azimuth, OBSERVER_COLOR, `${pole.code} ${pole.altitude.toFixed(1)}°`);
     const equator = Coordinates.getAltAz(0, 0, lat);
-    drawMeridianFeature(equator.altitude, equator.azimuth, OBSERVER_COLOR);
+    drawMeridianFeature(equator.altitude, equator.azimuth, OBSERVER_COLOR, `Equator ${equator.altitude.toFixed(1)}°`);
 
     // Star-dependent features: its position at upper transit (HA 0),
     // and, only when circumpolar, at lower transit (HA 180) too.
     const starUpper = Coordinates.getAltAz(dec, 0, lat);
-    drawMeridianFeature(starUpper.altitude, starUpper.azimuth, STAR_COLOR);
+    drawMeridianFeature(starUpper.altitude, starUpper.azimuth, STAR_COLOR, `Upper ${starUpper.altitude.toFixed(1)}°`);
 
     const circumpolar = Coordinates.isCircumpolar(dec, lat);
     let starLower = null;
     if (circumpolar) {
       starLower = Coordinates.getAltAz(dec, 180, lat);
-      drawMeridianFeature(starLower.altitude, starLower.azimuth, STAR_COLOR);
+      drawMeridianFeature(starLower.altitude, starLower.azimuth, STAR_COLOR, `Lower ${starLower.altitude.toFixed(1)}°`);
     }
 
     // Persistent reminder that this diagram ignores date/time — drawn
@@ -307,7 +362,11 @@
     meridianCtx.textBaseline = 'top';
     meridianCtx.fillText('Shown at transit only — ignores date & time', 4, 4);
 
-    poleAltitudeValue.textContent = `${lat.toFixed(1)}°`;
+    poleLegendLabel.textContent = pole.code;
+    if (poleGlossaryButton) poleGlossaryButton.setAttribute('aria-label', `What is the ${pole.code}?`);
+    if (poleGlossaryDefinition) poleGlossaryDefinition.textContent = POLE_DEFINITIONS[pole.code];
+
+    poleAltitudeValue.textContent = `${pole.altitude.toFixed(1)}°`;
     equatorAltitudeValue.textContent = `${equator.altitude.toFixed(1)}°`;
     starUpperValue.textContent = `${starUpper.altitude.toFixed(1)}°`;
     if (circumpolar && starLower) {
@@ -743,8 +802,13 @@
     document.querySelectorAll('.glossary-toggle').forEach((button) => {
       const term = button.dataset.term;
       const definition = document.querySelector(`.glossary-definition[data-term="${term}"]`);
-      if (!definition || !GLOSSARY[term]) return;
-      definition.textContent = GLOSSARY[term];
+      if (!definition) return;
+      // Most terms have fixed wording set once here. "pole" is the
+      // exception — its NCP/SCP wording depends on the latitude slider,
+      // so drawMeridian() keeps it current on every update() instead.
+      if (GLOSSARY[term]) {
+        definition.textContent = GLOSSARY[term];
+      }
       button.addEventListener('click', () => {
         const isOpen = !definition.hidden;
         definition.hidden = isOpen;
