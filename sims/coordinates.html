@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Star Coordinates</title>
-  <link rel="stylesheet" href="../styles.css?v=202609211300" />
+  <link rel="stylesheet" href="../styles.css?v=202609211400" />
 </head>
 <body>
   <main>
@@ -16,52 +16,54 @@
       observer conditions, and watch how they all relate.
     </p>
 
-    <div class="layout">
-      <div class="diagram">
-        <canvas id="star-sky" width="420" height="420" aria-label="Sky diagram showing the selected star's position and diurnal path"></canvas>
-        <p class="legend">
-          Is it
-          <button type="button" class="glossary-toggle glossary-term-button" data-term="circumpolar" aria-label="What does circumpolar mean?" aria-expanded="false">circumpolar?</button>
-          <span id="circumpolar-indicator"></span>
-        </p>
-        <span class="glossary-definition" data-term="circumpolar" hidden></span>
-      </div>
+    <div class="layout coordinates-layout">
+      <div class="diagrams-column">
+        <div class="diagram">
+          <canvas id="star-sky" width="420" height="420" aria-label="Sky diagram showing the selected star's position and diurnal path"></canvas>
+          <p class="legend">
+            Is it
+            <button type="button" class="glossary-toggle glossary-term-button" data-term="circumpolar" aria-label="What does circumpolar mean?" aria-expanded="false">circumpolar?</button>
+            <span id="circumpolar-indicator"></span>
+          </p>
+          <span class="glossary-definition" data-term="circumpolar" hidden></span>
+        </div>
 
-      <div class="meridian-panel">
-        <h2>Meridian cross-section</h2>
-        <canvas
-          id="meridian-diagram"
-          width="380"
-          height="260"
-          aria-label="Side-on cross-section of the sky along the meridian, showing the celestial pole, the celestial equator and the star at the moment it transits"
-        ></canvas>
-        <dl class="readout meridian-readout">
-          <div class="readout-row">
-            <dt><span class="legend-dot legend-dot-observer"></span>Celestial pole</dt>
-            <dd id="pole-altitude-value"></dd>
-          </div>
-          <div class="readout-row">
-            <dt><span class="legend-dot legend-dot-observer"></span>Celestial equator</dt>
-            <dd id="equator-altitude-value"></dd>
-          </div>
-          <div class="readout-row">
-            <dt><span class="legend-dot legend-dot-star"></span>Star (upper transit)</dt>
-            <dd id="star-upper-value"></dd>
-          </div>
-          <div class="readout-row" id="star-lower-row" hidden>
-            <dt><span class="legend-dot legend-dot-star"></span>Star (lower transit)</dt>
-            <dd id="star-lower-value"></dd>
-          </div>
-        </dl>
-        <p class="note meridian-caption">
-          This shows the star at the moment it crosses the
-          <button type="button" class="glossary-toggle glossary-term-button" data-term="meridian" aria-label="What is the meridian?" aria-expanded="false">meridian</button>
-          — its
-          <button type="button" class="glossary-toggle glossary-term-button" data-term="culmination" aria-label="What is culmination?" aria-expanded="false">culmination</button>
-          — use the other diagram to see its position at other times.
-        </p>
-        <span class="glossary-definition" data-term="meridian" hidden></span>
-        <span class="glossary-definition" data-term="culmination" hidden></span>
+        <div class="meridian-panel">
+          <h2>Meridian cross-section</h2>
+          <canvas
+            id="meridian-diagram"
+            width="380"
+            height="260"
+            aria-label="Side-on cross-section of the sky along the meridian, showing the celestial pole, the celestial equator and the star at the moment it transits"
+          ></canvas>
+          <dl class="readout meridian-readout">
+            <div class="readout-row">
+              <dt><span class="legend-dot legend-dot-observer"></span>Celestial pole</dt>
+              <dd id="pole-altitude-value"></dd>
+            </div>
+            <div class="readout-row">
+              <dt><span class="legend-dot legend-dot-observer"></span>Celestial equator</dt>
+              <dd id="equator-altitude-value"></dd>
+            </div>
+            <div class="readout-row">
+              <dt><span class="legend-dot legend-dot-star"></span>Star (upper transit)</dt>
+              <dd id="star-upper-value"></dd>
+            </div>
+            <div class="readout-row" id="star-lower-row" hidden>
+              <dt><span class="legend-dot legend-dot-star"></span>Star (lower transit)</dt>
+              <dd id="star-lower-value"></dd>
+            </div>
+          </dl>
+          <p class="note meridian-caption">
+            This shows the star at the moment it crosses the
+            <button type="button" class="glossary-toggle glossary-term-button" data-term="meridian" aria-label="What is the meridian?" aria-expanded="false">meridian</button>
+            — its
+            <button type="button" class="glossary-toggle glossary-term-button" data-term="culmination" aria-label="What is culmination?" aria-expanded="false">culmination</button>
+            — use the other diagram to see its position at other times.
+          </p>
+          <span class="glossary-definition" data-term="meridian" hidden></span>
+          <span class="glossary-definition" data-term="culmination" hidden></span>
+        </div>
       </div>
 
       <div class="controls">
@@ -225,10 +227,10 @@
     </section>
   </main>
 
-  <script src="../src/curriculum.js?v=202609211300"></script>
-  <script src="../src/coordinates.js?v=202609211300"></script>
-  <script src="../src/coordinatesQuestions.js?v=202609211300"></script>
-  <script src="../quiz-ui.js?v=202609211300"></script>
-  <script src="coordinates.js?v=202609211300"></script>
+  <script src="../src/curriculum.js?v=202609211400"></script>
+  <script src="../src/coordinates.js?v=202609211400"></script>
+  <script src="../src/coordinatesQuestions.js?v=202609211400"></script>
+  <script src="../quiz-ui.js?v=202609211400"></script>
+  <script src="coordinates.js?v=202609211400"></script>
 </body>
 </html>

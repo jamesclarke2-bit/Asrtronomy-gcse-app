@@ -91,6 +91,79 @@ canvas {
   background: #f5a623;
 }
 
+/* /sims/coordinates.html only (scoped via .coordinates-layout, a second
+   class alongside the shared .layout, so index.html's own .layout/.controls
+   are untouched): keep the control panels usable alongside the diagrams at
+   every viewport size, instead of them scrolling out of reach below two
+   tall diagrams. */
+.coordinates-layout {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  gap: 1.5rem;
+  align-items: stretch;
+}
+
+.diagrams-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+/* Narrow (portrait) viewports: keep the existing top-to-bottom order, but
+   pin the controls to the bottom of the viewport so a slider stays
+   reachable without scrolling past both diagrams first. The full control
+   stack is taller than most phones/tablets in portrait, so it gets a
+   capped height and its own scrollbar rather than covering the screen. */
+.coordinates-layout .controls {
+  flex: none;
+  width: 100%;
+  min-width: 0;
+  max-width: none;
+  position: sticky;
+  bottom: 0;
+  max-height: 45vh;
+  overflow-y: auto;
+  background: #f7f7f5;
+  padding-top: 0.75rem;
+  border-top: 1px solid #d8d8d3;
+  box-shadow: 0 -8px 16px -8px rgba(0, 0, 0, 0.2);
+  z-index: 5;
+}
+
+/* Wide (landscape) viewports: controls become a persistent left-hand
+   sidebar, with both diagrams stacked in the main area to the right. */
+@media (min-width: 900px) {
+  .coordinates-layout {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .coordinates-layout .diagrams-column {
+    order: 2;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .coordinates-layout .controls {
+    order: 1;
+    flex: none;
+    width: 320px;
+    min-width: 260px;
+    max-width: 360px;
+    position: sticky;
+    bottom: auto;
+    top: 1rem;
+    max-height: calc(100vh - 2rem);
+    overflow-y: auto;
+    background: transparent;
+    padding-top: 0;
+    border-top: none;
+    box-shadow: none;
+  }
+}
+
 .controls {
   flex: 1;
   min-width: 260px;
