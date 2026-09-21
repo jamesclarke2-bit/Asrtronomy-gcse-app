@@ -180,7 +180,18 @@
         const result = question.check(value);
         recordResult(question.units, result.correct, questions);
         feedback.className = 'question-feedback ' + (result.correct ? 'correct' : 'incorrect');
-        feedback.textContent = result.correct ? 'Correct!' : result.message;
+        // Always reveal the explanation, not just right/wrong — every
+        // question's message is written to read sensibly either way (a
+        // plain statement of the correct answer and reasoning), so this
+        // one prefix is all that needs to vary with the outcome.
+        feedback.textContent = (result.correct ? 'Correct! ' : 'Not quite. ') + (result.message || '');
+        // Optional per-question hook so a page can highlight or reference
+        // the answer on its own existing diagram (sky dome, meridian
+        // cross-section, diurnal graph, ...) instead of quiz-ui.js having
+        // to know anything about page-specific rendering.
+        if (typeof question.onAnswered === 'function') {
+          question.onAnswered(result, value);
+        }
       });
 
       container.appendChild(card);

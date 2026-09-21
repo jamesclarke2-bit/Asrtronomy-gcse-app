@@ -26,9 +26,10 @@ function makeEotQuestions(getSunPosition, obliquityComponent, eccentricityCompon
       check(value) {
         const eot = equationOfTimeOn(1, 12);
         const correctAnswer = eot >= 0 ? 'Ahead' : 'Behind';
+        const relativePhrase = eot >= 0 ? 'ahead of' : 'behind';
         return {
           correct: value === correctAnswer,
-          message: `On 12 February the equation of time is about ${eot.toFixed(1)} min, so the sundial is ${correctAnswer.toLowerCase()} of the clock.`,
+          message: `On 12 February the equation of time is about ${eot.toFixed(1)} min, so the sundial is ${relativePhrase} the clock.`,
         };
       },
     },

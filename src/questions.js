@@ -49,7 +49,7 @@ function makeQuestions(getSunPosition) {
         const correct = Math.abs(value - peak.altitude) <= 1;
         return {
           correct,
-          message: `Not quite — the simulator shows a maximum altitude of ${peak.altitude.toFixed(1)}°.`,
+          message: `The simulator shows a maximum altitude of ${peak.altitude.toFixed(1)}° that day — at the winter solstice, 52°N is as far from the overhead point (declination ≈ −23.44°) as it gets, so this is the sun's lowest noon peak of the year.`,
         };
       },
     },
@@ -67,7 +67,7 @@ function makeQuestions(getSunPosition) {
         const correct = Math.abs(90 - sun.altitude) <= 1;
         return {
           correct,
-          message: `At ${value}°N the simulator gives an altitude of ${sun.altitude.toFixed(1)}° at solar noon — aim for as close to 90° as possible.`,
+          message: `At ${value}°N the simulator gives an altitude of ${sun.altitude.toFixed(1)}° at solar noon. The sun is directly overhead at solar noon only where latitude equals declination — on the summer solstice (declination ≈ +23.44°), that's 23.44°N.`,
         };
       },
     },
@@ -167,7 +167,7 @@ function makeQuestions(getSunPosition) {
         const correct = Math.abs(90 - sun.altitude) <= 1;
         return {
           correct,
-          message: `At ${value}° the simulator gives an altitude of ${sun.altitude.toFixed(1)}° at solar noon — aim for as close to 90° as possible.`,
+          message: `At ${value}° the simulator gives an altitude of ${sun.altitude.toFixed(1)}° at solar noon. The sun is directly overhead at solar noon only where latitude equals declination — on the equinox (declination ≈ 0°), that's the equator, 0°.`,
         };
       },
     },

@@ -7,6 +7,12 @@
  * the live diagram rather than computing from fixed numbers, a
  * getLiveState() callback) so grading is testable in Node and runs
  * live in the browser off the same calculations the page itself uses.
+ *
+ * highlightDiurnalPoint (optional, third argument) lets quiz-ui.js's
+ * generic "explain the answer" step highlight the diagram-reading
+ * question's answer on the page's own diurnal-motion graph — a page
+ * function passed in rather than called directly, so this file stays
+ * plain and Node-testable with no DOM/canvas involved.
  */
 
 function normalizeText(value) {
@@ -23,7 +29,7 @@ function formatHoursMinutes(hoursDecimal) {
   return `${h}h ${String(m).padStart(2, '0')}m`;
 }
 
-function makeQuestions(Coordinates, getLiveState) {
+function makeQuestions(Coordinates, getLiveState, highlightDiurnalPoint) {
   const questions = [];
 
   // --- Misconception 1: hour angle sign --------------------------------
@@ -62,6 +68,8 @@ function makeQuestions(Coordinates, getLiveState) {
         } else {
           message = `The hour angle is ${trueHAFormatted} (${trueHA.toFixed(1)}°).`;
         }
+        message +=
+          ' You can see the same idea on the diurnal motion graph below: its centre is transit (hour angle 0) — everything to the left of centre (negative HA) hasn\'t transited yet, everything to the right (positive HA) already has.';
         return { correct, message };
       },
     };
@@ -96,7 +104,7 @@ function makeQuestions(Coordinates, getLiveState) {
       const correct = answers.altitude === correctAltitude && answers.azimuth === correctAzimuth;
       return {
         correct,
-        message: `Altitude = 90 − |latitude − declination| = 90 − |−34 − 0| = ${altitude.toFixed(0)}°. The equinox doesn't put the Sun overhead everywhere — only at the equator. And south of the tropics, the midday Sun is toward the equator, which from Sydney is north, not south: azimuth = ${azimuth.toFixed(0)}°.`,
+        message: `Altitude = 90 − |latitude − declination| = 90 − |−34 − 0| = ${altitude.toFixed(0)}°. The equinox doesn't put the Sun overhead everywhere — only at the equator. And south of the tropics, the midday Sun is toward the equator, which from Sydney is north, not south: azimuth = ${azimuth.toFixed(0)}°. You can see this exact point on the meridian cross-section diagram above: set declination to 0° and latitude to −34°, and the star marker sits on the north side, at ${altitude.toFixed(0)}° altitude.`,
       };
     },
   });
@@ -122,7 +130,7 @@ function makeQuestions(Coordinates, getLiveState) {
         return {
           correct: value === correctAnswer,
           message:
-            'At latitude 0°, every star rises and sets normally, whatever its declination — the celestial equator runs from due east through the zenith to due west, and every diurnal circle crosses the horizon there. A "high declination = circumpolar" rule only starts working once you’re away from the equator.',
+            `At latitude 0°, every star rises and sets normally, whatever its declination — the celestial equator runs from due east through the zenith to due west, and every diurnal circle crosses the horizon there. A "high declination = circumpolar" rule only starts working once you’re away from the equator. Try it on the sky dome above: set latitude to 0° and declination to ${dec}°, and the star's path still dips below the horizon on both sides, just like every other latitude-0° star.`,
         };
       },
     });
@@ -145,6 +153,11 @@ function makeQuestions(Coordinates, getLiveState) {
         const { altitude } = Coordinates.getAltAz(dec, haDegrees, lat);
         const correct = Math.abs(value - altitude) <= 1.5;
         return { correct, message: `The diagram currently shows an altitude of ${altitude.toFixed(1)}° at this hour angle.` };
+      },
+      onAnswered() {
+        if (typeof highlightDiurnalPoint === 'function') {
+          highlightDiurnalPoint();
+        }
       },
     });
   }

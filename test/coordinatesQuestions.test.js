@@ -100,6 +100,25 @@ test('diagram-reading question is omitted when no live-state getter is supplied'
   assert.equal(questions.some((q) => q.id === 'diagram-reading'), false);
 });
 
+test('diagram-reading question calls the highlight hook when supplied', () => {
+  const state = { dec: 38.8, lat: 56, haDegrees: 0 };
+  let highlightCalls = 0;
+  const questions = makeQuestions(Coordinates, () => state, () => {
+    highlightCalls += 1;
+  });
+  const q = findQuestion(questions, 'diagram-reading');
+  assert.equal(typeof q.onAnswered, 'function');
+  q.onAnswered();
+  assert.equal(highlightCalls, 1);
+});
+
+test('diagram-reading question tolerates a missing highlight hook', () => {
+  const state = { dec: 38.8, lat: 56, haDegrees: 0 };
+  const questions = makeQuestions(Coordinates, () => state);
+  const q = findQuestion(questions, 'diagram-reading');
+  assert.doesNotThrow(() => q.onAnswered());
+});
+
 // --- Chained multi-part question: the 4 reference exam cases ---------------
 
 test('reference case 1: Aldebaran (Rome -> Oxford) max altitude 54d45m', () => {

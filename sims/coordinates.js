@@ -767,6 +767,32 @@
     return { dec, lat, haDegrees };
   }
 
+  // For the "read the diagram" question's explanation: ring the existing
+  // draggable marker on the diurnal-motion graph rather than drawing a
+  // second, separate graphic. One-shot draw straight onto the canvas (no
+  // extra state to track) — it's naturally cleared the next time the
+  // graph redraws, e.g. when the student drags it or changes a slider,
+  // which is exactly when the highlight should stop applying anyway.
+  function highlightDiurnalAnswer() {
+    const { dec, lat, haDegrees } = getLiveState();
+    const { altitude } = Coordinates.getAltAz(dec, haDegrees, lat);
+    const x = diurnalXForHA(haDegrees / 15);
+    const y = diurnalYForAltitude(altitude);
+
+    diurnalCtx.beginPath();
+    diurnalCtx.arc(x, y, 13, 0, Math.PI * 2);
+    diurnalCtx.strokeStyle = '#1a7f37';
+    diurnalCtx.lineWidth = 3;
+    diurnalCtx.stroke();
+
+    const labelOnRight = x <= diurnalCanvas.width / 2;
+    diurnalCtx.fillStyle = '#1a7f37';
+    diurnalCtx.font = '600 11px sans-serif';
+    diurnalCtx.textAlign = labelOnRight ? 'left' : 'right';
+    diurnalCtx.textBaseline = 'middle';
+    diurnalCtx.fillText(`this point: ${altitude.toFixed(1)}°`, x + (labelOnRight ? 18 : -18), y);
+  }
+
   function updatePolarisFinder() {
     const alt = Number(polarisAltitudeSlider.value);
     polarisAltitudeLabel.textContent = `${alt.toFixed(1)}°`;
@@ -981,7 +1007,7 @@
   update();
   renderCoverage();
   updatePolarisFinder();
-  QuizUI.mount(CoordinatesQuestions.makeQuestions(Coordinates, getLiveState));
+  QuizUI.mount(CoordinatesQuestions.makeQuestions(Coordinates, getLiveState, highlightDiurnalAnswer));
   renderChainedQuestion(chainedContainer, CoordinatesQuestions.pickRandomChainedParams());
   initGlossary();
 
