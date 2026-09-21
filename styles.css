@@ -55,9 +55,40 @@ canvas {
   max-width: 300px;
 }
 
-.orbit-panel h2 {
+.orbit-panel h2,
+.meridian-panel h2 {
   font-size: 1.1rem;
   margin: 0 0 0.75rem;
+}
+
+.meridian-panel {
+  max-width: 400px;
+}
+
+.meridian-readout {
+  margin: 0.75rem 0;
+  font-size: 0.9rem;
+}
+
+.meridian-caption {
+  margin-top: 0.5rem;
+}
+
+.legend-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 0.4rem;
+  vertical-align: middle;
+}
+
+.legend-dot-observer {
+  background: #2a6bd6;
+}
+
+.legend-dot-star {
+  background: #f5a623;
 }
 
 .controls {
@@ -342,6 +373,13 @@ canvas {
 
 .readout-row {
   display: contents;
+}
+
+/* Same equal-specificity trap as .glossary-definition above: display: contents
+   on .readout-row would otherwise beat the browser's default [hidden] rule and
+   keep a "hidden" row's cells laid out in the grid. */
+.readout-row[hidden] {
+  display: none;
 }
 
 .readout .glossary-definition-row {

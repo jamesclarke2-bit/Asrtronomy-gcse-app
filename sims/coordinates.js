@@ -41,6 +41,14 @@
   const skyCtx = skyCanvas.getContext('2d');
   const diurnalCanvas = document.getElementById('diurnal-graph');
   const diurnalCtx = diurnalCanvas.getContext('2d');
+  const meridianCanvas = document.getElementById('meridian-diagram');
+  const meridianCtx = meridianCanvas.getContext('2d');
+
+  const poleAltitudeValue = document.getElementById('pole-altitude-value');
+  const equatorAltitudeValue = document.getElementById('equator-altitude-value');
+  const starUpperValue = document.getElementById('star-upper-value');
+  const starLowerRow = document.getElementById('star-lower-row');
+  const starLowerValue = document.getElementById('star-lower-value');
 
   const polarisAltitudeSlider = document.getElementById('polaris-altitude-slider');
   const polarisAltitudeLabel = document.getElementById('polaris-altitude-label');
@@ -162,6 +170,152 @@
     skyCtx.strokeStyle = '#333';
     skyCtx.lineWidth = 1.5;
     skyCtx.stroke();
+  }
+
+  // --- Meridian cross-section: pole, equator and star at transit ------
+  // A side-on view of the meridian great circle (S - zenith - N), fixed
+  // to hour angle 0 (upper transit) and, when circumpolar, HA 180
+  // (lower transit) — it never reads the time/date/hour-angle controls.
+  // Reuses Coordinates.getAltAz/isCircumpolar (already tested elsewhere
+  // on this page) rather than re-deriving the geometry, since those
+  // functions are already proven correct for any latitude/declination.
+
+  const OBSERVER_COLOR = '#2a6bd6';
+  const STAR_COLOR = '#f5a623';
+  const MERIDIAN_CX = meridianCanvas.width / 2;
+  const MERIDIAN_CY = 185;
+  const MERIDIAN_R = 140;
+
+  // Which side of the meridian (N or S) an azimuth of 0/180 falls on.
+  // HA 0 and HA 180 always resolve to azimuth very close to 0 or 180
+  // (floating point aside), so a wide threshold band is safe.
+  function meridianSide(azimuth) {
+    return azimuth > 90 && azimuth < 270 ? 'S' : 'N';
+  }
+
+  // Position, on the S-zenith-N semicircle, of a point at the given
+  // altitude and azimuth (azimuth only used to pick N or S side — this
+  // diagram only ever plots points exactly on the meridian).
+  function meridianPoint(altitude, azimuth) {
+    const side = meridianSide(azimuth);
+    const phiDeg = side === 'N' ? altitude : 180 - altitude;
+    const phi = (phiDeg * Math.PI) / 180;
+    return {
+      x: MERIDIAN_CX + MERIDIAN_R * Math.cos(phi),
+      y: Math.min(MERIDIAN_CY - MERIDIAN_R * Math.sin(phi), meridianCanvas.height - 10),
+    };
+  }
+
+  function drawMeridianFeature(altitude, azimuth, color) {
+    const point = meridianPoint(altitude, azimuth);
+    meridianCtx.beginPath();
+    meridianCtx.moveTo(MERIDIAN_CX, MERIDIAN_CY);
+    meridianCtx.lineTo(point.x, point.y);
+    meridianCtx.strokeStyle = color;
+    meridianCtx.lineWidth = 1.5;
+    meridianCtx.setLineDash([4, 3]);
+    meridianCtx.stroke();
+    meridianCtx.setLineDash([]);
+
+    meridianCtx.beginPath();
+    meridianCtx.arc(point.x, point.y, 6, 0, Math.PI * 2);
+    meridianCtx.fillStyle = color;
+    meridianCtx.fill();
+    meridianCtx.strokeStyle = '#222';
+    meridianCtx.lineWidth = 1;
+    meridianCtx.stroke();
+  }
+
+  function drawMeridian(dec, lat) {
+    const width = meridianCanvas.width;
+    const height = meridianCanvas.height;
+    meridianCtx.clearRect(0, 0, width, height);
+
+    // Ground, below the horizon
+    meridianCtx.fillStyle = '#efe9dc';
+    meridianCtx.fillRect(0, MERIDIAN_CY, width, height - MERIDIAN_CY);
+
+    // Altitude tick marks, 30deg and 60deg, both sides
+    [30, 60].forEach((alt) => {
+      ['N', 'S'].forEach((side) => {
+        const azimuth = side === 'N' ? 0 : 180;
+        const { x, y } = meridianPoint(alt, azimuth);
+        meridianCtx.beginPath();
+        meridianCtx.arc(x, y, 2, 0, Math.PI * 2);
+        meridianCtx.fillStyle = '#b8c2cc';
+        meridianCtx.fill();
+        meridianCtx.fillStyle = '#8a97a5';
+        meridianCtx.font = '10px sans-serif';
+        meridianCtx.textAlign = side === 'N' ? 'left' : 'right';
+        meridianCtx.textBaseline = 'middle';
+        meridianCtx.fillText(`${alt}°`, x + (side === 'N' ? 7 : -7), y);
+      });
+    });
+
+    // The meridian arc itself: S (left) - zenith (top) - N (right)
+    meridianCtx.beginPath();
+    meridianCtx.arc(MERIDIAN_CX, MERIDIAN_CY, MERIDIAN_R, Math.PI, 2 * Math.PI, false);
+    meridianCtx.strokeStyle = '#8a97a5';
+    meridianCtx.lineWidth = 1.5;
+    meridianCtx.stroke();
+
+    // Horizon line
+    meridianCtx.beginPath();
+    meridianCtx.moveTo(MERIDIAN_CX - MERIDIAN_R - 20, MERIDIAN_CY);
+    meridianCtx.lineTo(MERIDIAN_CX + MERIDIAN_R + 20, MERIDIAN_CY);
+    meridianCtx.strokeStyle = '#555';
+    meridianCtx.lineWidth = 2;
+    meridianCtx.stroke();
+
+    // N / S / Zenith labels
+    meridianCtx.fillStyle = '#333';
+    meridianCtx.font = '600 14px sans-serif';
+    meridianCtx.textBaseline = 'middle';
+    meridianCtx.textAlign = 'right';
+    meridianCtx.fillText('S', MERIDIAN_CX - MERIDIAN_R - 26, MERIDIAN_CY);
+    meridianCtx.textAlign = 'left';
+    meridianCtx.fillText('N', MERIDIAN_CX + MERIDIAN_R + 26, MERIDIAN_CY);
+    meridianCtx.textAlign = 'center';
+    meridianCtx.textBaseline = 'bottom';
+    meridianCtx.fillText('Zenith', MERIDIAN_CX, MERIDIAN_CY - MERIDIAN_R - 8);
+
+    // Observer-dependent features: the pole (always due north, at
+    // altitude = latitude) and where the celestial equator crosses the
+    // meridian (a declination-0 object's own transit, so it's just
+    // getAltAz(0, 0, lat) — no separate formula needed).
+    drawMeridianFeature(lat, 0, OBSERVER_COLOR);
+    const equator = Coordinates.getAltAz(0, 0, lat);
+    drawMeridianFeature(equator.altitude, equator.azimuth, OBSERVER_COLOR);
+
+    // Star-dependent features: its position at upper transit (HA 0),
+    // and, only when circumpolar, at lower transit (HA 180) too.
+    const starUpper = Coordinates.getAltAz(dec, 0, lat);
+    drawMeridianFeature(starUpper.altitude, starUpper.azimuth, STAR_COLOR);
+
+    const circumpolar = Coordinates.isCircumpolar(dec, lat);
+    let starLower = null;
+    if (circumpolar) {
+      starLower = Coordinates.getAltAz(dec, 180, lat);
+      drawMeridianFeature(starLower.altitude, starLower.azimuth, STAR_COLOR);
+    }
+
+    // Persistent reminder that this diagram ignores date/time — drawn
+    // on the canvas itself, not just in the caption below it.
+    meridianCtx.fillStyle = '#8a97a5';
+    meridianCtx.font = 'italic 10px sans-serif';
+    meridianCtx.textAlign = 'left';
+    meridianCtx.textBaseline = 'top';
+    meridianCtx.fillText('Shown at transit only — ignores date & time', 4, 4);
+
+    poleAltitudeValue.textContent = `${lat.toFixed(1)}°`;
+    equatorAltitudeValue.textContent = `${equator.altitude.toFixed(1)}°`;
+    starUpperValue.textContent = `${starUpper.altitude.toFixed(1)}°`;
+    if (circumpolar && starLower) {
+      starLowerRow.hidden = false;
+      starLowerValue.textContent = `${starLower.altitude.toFixed(1)}°`;
+    } else {
+      starLowerRow.hidden = true;
+    }
   }
 
   // --- Diurnal motion graph: altitude vs hour angle, draggable --------
@@ -368,6 +522,7 @@
 
     drawSky(dec, lat, { altitude, azimuth });
     drawDiurnalMotion(dec, lat, haDegrees);
+    drawMeridian(dec, lat);
   }
 
   function renderCoverage() {
@@ -580,6 +735,8 @@
     lst: 'Local sidereal time (LST): the right ascension currently crossing your meridian — a clock that tracks the stars rather than the Sun.',
     polarDistance: "Polar distance: a star's angular distance from the north celestial pole — 90° minus its declination.",
     circumpolar: "Circumpolar: never sets below the horizon — it stays above the horizon for the whole of Earth's rotation, so it's visible (weather and daylight allowing) at any hour.",
+    meridian: "Meridian: the imaginary north-south line running through the zenith, from the horizon due north to the horizon due south. Every star crosses it twice a day.",
+    culmination: 'Culmination (transit): the moment a star crosses the meridian. Upper culmination is its highest point that day; a circumpolar star also has a lower culmination, its lowest point, on the opposite side of the pole.',
   };
 
   function initGlossary() {
