@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Star Coordinates</title>
-  <link rel="stylesheet" href="../styles.css?v=202609211500" />
+  <link rel="stylesheet" href="../styles.css?v=202609211600" />
 </head>
 <body>
   <main>
@@ -178,6 +178,40 @@
       </div>
     </div>
 
+    <section class="ra-ha-explainer">
+      <h2>Understanding RA and hour angle</h2>
+      <p>
+        <strong>Right ascension</strong> is fixed to a star — like a number permanently printed on
+        a clock face, it never changes. <strong>Local sidereal time</strong> is like a clock hand
+        sweeping steadily round that face. <strong>Hour angle</strong> is simply the gap between
+        where the hand currently points and where a given star's number sits — which is why it
+        isn't a property of the star or of the observer alone, but of the relationship between them.
+      </p>
+
+      <div class="clock-widget">
+        <canvas
+          id="ra-clock"
+          width="360"
+          height="360"
+          aria-label="Clock face with star markers fixed at their right ascension, and a rotating pointer showing local sidereal time"
+        ></canvas>
+
+        <div class="clock-controls">
+          <div class="control">
+            <label for="clock-lst-slider">Local sidereal time: <span id="clock-lst-label"></span></label>
+            <input type="range" id="clock-lst-slider" min="0" max="23.99" step="0.01" value="0" />
+          </div>
+
+          <ul class="clock-star-list" id="clock-star-list"></ul>
+        </div>
+      </div>
+
+      <p class="note">
+        This is exactly what the sliders above are doing —
+        <a href="#ra-slider">try it there now</a>.
+      </p>
+    </section>
+
     <section class="latitude-finder">
       <h2>Find your latitude using Polaris</h2>
       <p>
@@ -232,10 +266,10 @@
     </section>
   </main>
 
-  <script src="../src/curriculum.js?v=202609211500"></script>
-  <script src="../src/coordinates.js?v=202609211500"></script>
-  <script src="../src/coordinatesQuestions.js?v=202609211500"></script>
-  <script src="../quiz-ui.js?v=202609211500"></script>
-  <script src="coordinates.js?v=202609211500"></script>
+  <script src="../src/curriculum.js?v=202609211600"></script>
+  <script src="../src/coordinates.js?v=202609211600"></script>
+  <script src="../src/coordinatesQuestions.js?v=202609211600"></script>
+  <script src="../quiz-ui.js?v=202609211600"></script>
+  <script src="coordinates.js?v=202609211600"></script>
 </body>
 </html>

@@ -54,6 +54,12 @@
   const polarisAltitudeLabel = document.getElementById('polaris-altitude-label');
   const polarisLatitudeResult = document.getElementById('polaris-latitude-result');
 
+  const clockCanvas = document.getElementById('ra-clock');
+  const clockCtx = clockCanvas.getContext('2d');
+  const clockLSTSlider = document.getElementById('clock-lst-slider');
+  const clockLSTLabel = document.getElementById('clock-lst-label');
+  const clockStarList = document.getElementById('clock-star-list');
+
   const poleLegendLabel = document.getElementById('pole-legend-label');
   const poleGlossaryDefinition = document.querySelector('.glossary-definition[data-term="pole"]');
   const poleGlossaryButton = document.querySelector('.glossary-toggle[data-term="pole"]');
@@ -533,6 +539,145 @@
     dragging = false;
   });
 
+  // --- RA / hour-angle explainer clock widget --------------------------
+  // A deliberately self-contained sandbox: its own LST slider (defaulted
+  // to the page's current LST, but not kept in sync afterwards) rather
+  // than reusing the date/time/longitude sliders above, so a student can
+  // spin LST freely and watch every star's hour angle change without
+  // disturbing the real diagrams. Hour angle itself is always
+  // Coordinates.raToHourAngleDegrees — the same function update() uses —
+  // never recomputed by hand here.
+
+  // Schedar, Polaris, Aldebaran, Sirius, Dubhe, Vega: a spread across the
+  // full 0-24h RA range, indices into the existing STAR_PRESETS so their
+  // ra/dec live in exactly one place on the page.
+  const CLOCK_STAR_INDICES = [2, 0, 6, 4, 1, 5];
+
+  function clockPoint(cx, cy, radius, hours) {
+    const angle = (hours / 24) * 2 * Math.PI;
+    return { x: cx + radius * Math.sin(angle), y: cy - radius * Math.cos(angle) };
+  }
+
+  function shortStarName(name) {
+    return name.replace(/\s*\(.*\)\s*$/, '');
+  }
+
+  function drawClock(lstHours) {
+    const width = clockCanvas.width;
+    const height = clockCanvas.height;
+    const cx = width / 2;
+    const cy = height / 2;
+    const R = Math.min(cx, cy) - 55;
+
+    clockCtx.clearRect(0, 0, width, height);
+
+    // Face
+    clockCtx.beginPath();
+    clockCtx.arc(cx, cy, R, 0, Math.PI * 2);
+    clockCtx.strokeStyle = '#8a97a5';
+    clockCtx.lineWidth = 1.5;
+    clockCtx.stroke();
+
+    // Hour ticks every 6h, like the numbers on a clock face
+    [0, 6, 12, 18].forEach((h) => {
+      const outer = clockPoint(cx, cy, R, h);
+      const inner = clockPoint(cx, cy, R - 8, h);
+      clockCtx.beginPath();
+      clockCtx.moveTo(inner.x, inner.y);
+      clockCtx.lineTo(outer.x, outer.y);
+      clockCtx.strokeStyle = '#b8c2cc';
+      clockCtx.lineWidth = 1.5;
+      clockCtx.stroke();
+
+      const tickLabel = clockPoint(cx, cy, R + 14, h);
+      clockCtx.fillStyle = '#8a97a5';
+      clockCtx.font = '10px sans-serif';
+      clockCtx.textAlign = 'center';
+      clockCtx.textBaseline = 'middle';
+      clockCtx.fillText(`${h}h`, tickLabel.x, tickLabel.y);
+    });
+
+    // Each clock star's current hour angle, via the same function used
+    // for the main diagrams — and whichever is closest to HA 0 is the
+    // one currently transiting.
+    const stars = CLOCK_STAR_INDICES.map((index) => {
+      const star = STAR_PRESETS[index];
+      return { ...star, haDegrees: Coordinates.raToHourAngleDegrees(star.ra, lstHours) };
+    });
+    let transitingIndex = 0;
+    stars.forEach((star, i) => {
+      if (Math.abs(star.haDegrees) < Math.abs(stars[transitingIndex].haDegrees)) transitingIndex = i;
+    });
+
+    // Star markers, fixed at their RA position on the face — these never
+    // move as the LST slider changes, only the pointer does.
+    stars.forEach((star, i) => {
+      const isTransiting = i === transitingIndex;
+      const point = clockPoint(cx, cy, R, star.ra);
+
+      if (isTransiting) {
+        clockCtx.beginPath();
+        clockCtx.arc(point.x, point.y, 10, 0, Math.PI * 2);
+        clockCtx.strokeStyle = '#1a7f37';
+        clockCtx.lineWidth = 2;
+        clockCtx.stroke();
+      }
+
+      clockCtx.beginPath();
+      clockCtx.arc(point.x, point.y, isTransiting ? 6 : 4, 0, Math.PI * 2);
+      clockCtx.fillStyle = STAR_COLOR;
+      clockCtx.fill();
+      clockCtx.strokeStyle = '#222';
+      clockCtx.lineWidth = 1;
+      clockCtx.stroke();
+
+      const labelPoint = clockPoint(cx, cy, R + 30, star.ra);
+      clockCtx.fillStyle = isTransiting ? '#1a7f37' : '#8a5b00';
+      clockCtx.font = (isTransiting ? '600 ' : '') + '11px sans-serif';
+      clockCtx.textAlign = 'center';
+      clockCtx.textBaseline = 'middle';
+      clockCtx.fillText(shortStarName(star.name), labelPoint.x, labelPoint.y);
+    });
+
+    // The LST pointer: the clock hand sweeping round the fixed RA marks.
+    const tip = clockPoint(cx, cy, R - 4, lstHours);
+    clockCtx.beginPath();
+    clockCtx.moveTo(cx, cy);
+    clockCtx.lineTo(tip.x, tip.y);
+    clockCtx.strokeStyle = '#333';
+    clockCtx.lineWidth = 3;
+    clockCtx.lineCap = 'round';
+    clockCtx.stroke();
+    clockCtx.beginPath();
+    clockCtx.arc(cx, cy, 4, 0, Math.PI * 2);
+    clockCtx.fillStyle = '#333';
+    clockCtx.fill();
+
+    clockStarList.innerHTML = '';
+    stars.forEach((star, i) => {
+      const isTransiting = i === transitingIndex;
+      const li = document.createElement('li');
+      li.className = 'clock-star-item' + (isTransiting ? ' transiting' : '');
+      const sign = star.haDegrees < 0 ? '−' : '+';
+      const label =
+        Math.abs(star.haDegrees) < 0.05
+          ? 'transiting now'
+          : star.haDegrees < 0
+            ? 'east — not yet transited'
+            : 'west — already transited';
+      li.textContent = `${shortStarName(star.name)}: HA ${sign}${Math.abs(star.haDegrees).toFixed(1)}° (${label})`;
+      clockStarList.appendChild(li);
+    });
+  }
+
+  function updateClock() {
+    const lstHours = Number(clockLSTSlider.value);
+    clockLSTLabel.textContent = formatHours(lstHours);
+    drawClock(lstHours);
+  }
+
+  clockLSTSlider.addEventListener('input', updateClock);
+
   // --- Main update loop -------------------------------------------------
 
   function update() {
@@ -823,4 +968,13 @@
   QuizUI.mount(CoordinatesQuestions.makeQuestions(Coordinates, getLiveState));
   renderChainedQuestion(chainedContainer, CoordinatesQuestions.pickRandomChainedParams());
   initGlossary();
+
+  // Default the clock widget's LST slider to the page's current LST
+  // (from the date/time/longitude sliders above), then leave it to the
+  // student from there.
+  clockLSTSlider.value = Coordinates.getLocalSiderealTime(
+    buildDateTime(Number(dateSlider.value), Number(timeSlider.value)),
+    Number(lonSlider.value)
+  ).toFixed(2);
+  updateClock();
 })();
