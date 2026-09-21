@@ -376,10 +376,157 @@
     coverageEl.textContent = 'Covers: ' + subtopics.map((s) => `${s.id} ${s.title}`).join(', ');
   }
 
+  // For the "read the diagram" question: whatever the diurnal-motion
+  // graph is showing right now, freshly recomputed each time it's
+  // called (not memoised), so it always reflects the live sliders.
+  function getLiveState() {
+    const dec = Number(decSlider.value);
+    const lat = Number(latSlider.value);
+    const lon = Number(lonSlider.value);
+    const dayIndex = Number(dateSlider.value);
+    const minutesOfDay = Number(timeSlider.value);
+    const ra = Number(raSlider.value);
+    const date = buildDateTime(dayIndex, minutesOfDay);
+    const lst = Coordinates.getLocalSiderealTime(date, lon);
+    const haDegrees = Coordinates.raToHourAngleDegrees(ra, lst);
+    return { dec, lat, haDegrees };
+  }
+
   function updatePolarisFinder() {
     const alt = Number(polarisAltitudeSlider.value);
     polarisAltitudeLabel.textContent = `${alt.toFixed(1)}°`;
     polarisLatitudeResult.textContent = `Estimated latitude: ${alt.toFixed(1)}°N`;
+  }
+
+  // --- Chained multi-part question ---------------------------------------
+  // Bespoke renderer (not QuizUI.mount) since each part's check() takes
+  // the student's own prior-part answers for error-carried-forward
+  // grading, which the flat single-question quiz model doesn't support.
+
+  function buildPartInput(part, form) {
+    if (part.fields) {
+      const getters = {};
+      part.fields.forEach((field) => {
+        const group = document.createElement('div');
+        group.className = 'question-field';
+        const label = document.createElement('span');
+        label.className = 'question-field-label';
+        label.textContent = field.label;
+        group.appendChild(label);
+        const input = document.createElement('input');
+        input.type = 'number';
+        input.step = '0.1';
+        group.appendChild(input);
+        if (field.unitLabel) {
+          const unit = document.createElement('span');
+          unit.textContent = field.unitLabel;
+          group.appendChild(unit);
+        }
+        getters[field.key] = () => parseFloat(input.value);
+        form.appendChild(group);
+      });
+      return () => {
+        const values = {};
+        part.fields.forEach((field) => {
+          values[field.key] = getters[field.key]();
+        });
+        return values;
+      };
+    }
+
+    if (part.type === 'choice') {
+      part.options.forEach((option) => {
+        const label = document.createElement('label');
+        label.className = 'choice-option';
+        const radio = document.createElement('input');
+        radio.type = 'radio';
+        radio.name = part.id;
+        radio.value = option;
+        label.appendChild(radio);
+        label.appendChild(document.createTextNode(option));
+        form.appendChild(label);
+      });
+      return () => {
+        const checked = form.querySelector(`input[name="${part.id}"]:checked`);
+        return checked ? checked.value : null;
+      };
+    }
+
+    if (part.type === 'text') {
+      const input = document.createElement('input');
+      input.type = 'text';
+      form.appendChild(input);
+      return () => input.value;
+    }
+
+    // number
+    const input = document.createElement('input');
+    input.type = 'number';
+    input.step = '0.1';
+    form.appendChild(input);
+    if (part.unitLabel) {
+      const unit = document.createElement('span');
+      unit.textContent = part.unitLabel;
+      form.appendChild(unit);
+    }
+    return () => parseFloat(input.value);
+  }
+
+  function isPartUnanswered(value) {
+    if (value && typeof value === 'object') {
+      return Object.values(value).some(isPartUnanswered);
+    }
+    return value === null || value === '' || (typeof value === 'number' && Number.isNaN(value));
+  }
+
+  function renderChainedQuestion(container, params) {
+    container.innerHTML = '';
+    const chained = CoordinatesQuestions.generateChainedQuestion(Coordinates, params);
+    const priorAnswers = {};
+
+    chained.parts.forEach((part, index) => {
+      const card = document.createElement('div');
+      card.className = 'question-card';
+
+      const partLabel = document.createElement('div');
+      partLabel.className = 'question-tags';
+      partLabel.textContent = `Part ${index + 1} of ${chained.parts.length}`;
+      card.appendChild(partLabel);
+
+      const prompt = document.createElement('p');
+      prompt.className = 'question-prompt';
+      prompt.textContent = part.prompt;
+      card.appendChild(prompt);
+
+      const form = document.createElement('div');
+      form.className = 'question-form';
+      const getValue = buildPartInput(part, form);
+      card.appendChild(form);
+
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.textContent = `Check part ${index + 1}`;
+      card.appendChild(button);
+
+      const feedback = document.createElement('p');
+      feedback.className = 'question-feedback';
+      card.appendChild(feedback);
+
+      button.addEventListener('click', () => {
+        const value = getValue();
+        if (isPartUnanswered(value)) {
+          feedback.className = 'question-feedback';
+          feedback.textContent = 'Enter an answer first.';
+          return;
+        }
+        const result = part.check(value, priorAnswers);
+        priorAnswers[part.id] = value;
+        feedback.className = 'question-feedback ' + (result.correct ? 'correct' : 'incorrect');
+        feedback.textContent = result.correct ? 'Correct! ' + result.message : result.message;
+      });
+
+      container.appendChild(card);
+    });
   }
 
   STAR_PRESETS.forEach((star, index) => {
@@ -414,7 +561,15 @@
 
   polarisAltitudeSlider.addEventListener('input', updatePolarisFinder);
 
+  const chainedContainer = document.getElementById('chained-question-container');
+  const regenerateButton = document.getElementById('regenerate-chained');
+  regenerateButton.addEventListener('click', () => {
+    renderChainedQuestion(chainedContainer, CoordinatesQuestions.pickRandomChainedParams());
+  });
+
   update();
   renderCoverage();
   updatePolarisFinder();
+  QuizUI.mount(CoordinatesQuestions.makeQuestions(Coordinates, getLiveState));
+  renderChainedQuestion(chainedContainer, CoordinatesQuestions.pickRandomChainedParams());
 })();

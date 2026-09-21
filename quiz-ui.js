@@ -54,28 +54,31 @@
     renderProgress(questions);
   }
 
-  function buildInput(question, form) {
-    if (question.type === 'number') {
+  // Renders one input for a field-like spec ({type, unitLabel, options}),
+  // grouping radios under `groupName`. Used both for a whole single-field
+  // question and for each sub-field of a multi-field one.
+  function buildSingleInput(fieldSpec, groupName, form) {
+    if (fieldSpec.type === 'number') {
       const input = document.createElement('input');
       input.type = 'number';
       input.step = '0.1';
       form.appendChild(input);
-      if (question.unitLabel) {
+      if (fieldSpec.unitLabel) {
         const unit = document.createElement('span');
-        unit.textContent = question.unitLabel;
+        unit.textContent = fieldSpec.unitLabel;
         form.appendChild(unit);
       }
       return () => parseFloat(input.value);
     }
 
-    if (question.type === 'time') {
+    if (fieldSpec.type === 'time') {
       const input = document.createElement('input');
       input.type = 'time';
       form.appendChild(input);
       return () => input.value;
     }
 
-    if (question.type === 'text') {
+    if (fieldSpec.type === 'text') {
       const input = document.createElement('input');
       input.type = 'text';
       form.appendChild(input);
@@ -83,21 +86,54 @@
     }
 
     // 'choice'
-    question.options.forEach((option) => {
+    fieldSpec.options.forEach((option) => {
       const label = document.createElement('label');
       label.className = 'choice-option';
       const radio = document.createElement('input');
       radio.type = 'radio';
-      radio.name = question.id;
+      radio.name = groupName;
       radio.value = option;
       label.appendChild(radio);
       label.appendChild(document.createTextNode(option));
       form.appendChild(label);
     });
     return () => {
-      const checked = form.querySelector(`input[name="${question.id}"]:checked`);
+      const checked = form.querySelector(`input[name="${groupName}"]:checked`);
       return checked ? checked.value : null;
     };
+  }
+
+  function isUnanswered(value) {
+    return value === null || value === '' || (typeof value === 'number' && Number.isNaN(value));
+  }
+
+  // Multi-field question support: question.fields is an array of
+  // {key, type, label, unitLabel?, options?}. Each renders as its own
+  // labelled sub-group; getValue() returns {[key]: value, ...}.
+  function buildFieldsInput(question, form) {
+    const getters = {};
+    question.fields.forEach((field) => {
+      const group = document.createElement('div');
+      group.className = 'question-field';
+      const label = document.createElement('span');
+      label.className = 'question-field-label';
+      label.textContent = field.label;
+      group.appendChild(label);
+      getters[field.key] = buildSingleInput(field, `${question.id}-${field.key}`, group);
+      form.appendChild(group);
+    });
+    return () => {
+      const values = {};
+      question.fields.forEach((field) => {
+        values[field.key] = getters[field.key]();
+      });
+      return values;
+    };
+  }
+
+  function buildInput(question, form) {
+    if (question.fields) return buildFieldsInput(question, form);
+    return buildSingleInput(question, question.id, form);
   }
 
   function renderQuestions(questions) {
@@ -133,7 +169,9 @@
 
       button.addEventListener('click', () => {
         const value = getValue();
-        const unanswered = value === null || value === '' || (typeof value === 'number' && Number.isNaN(value));
+        const unanswered = question.fields
+          ? Object.values(value).some(isUnanswered)
+          : isUnanswered(value);
         if (unanswered) {
           feedback.className = 'question-feedback';
           feedback.textContent = 'Enter an answer first.';
