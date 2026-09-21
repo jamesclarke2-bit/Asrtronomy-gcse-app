@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Star Coordinates</title>
-  <link rel="stylesheet" href="../styles.css?v=202609211600" />
+  <link rel="stylesheet" href="../styles.css?v=202609211700" />
 </head>
 <body>
   <main>
@@ -15,6 +15,40 @@
       Right ascension, declination, hour angle and sidereal time — pick a star, set your
       observer conditions, and watch how they all relate.
     </p>
+
+    <section class="ra-ha-explainer">
+      <h2>Understanding RA and hour angle</h2>
+      <p>
+        <strong>Right ascension</strong> is fixed to a star — like a number permanently printed on
+        a clock face, it never changes. <strong>Local sidereal time</strong> is like a clock hand
+        sweeping steadily round that face. <strong>Hour angle</strong> is simply the gap between
+        where the hand currently points and where a given star's number sits — which is why it
+        isn't a property of the star or of the observer alone, but of the relationship between them.
+      </p>
+
+      <div class="clock-widget">
+        <canvas
+          id="ra-clock"
+          width="360"
+          height="360"
+          aria-label="Clock face with star markers fixed at their right ascension (0h marked as the First Point of Aries), and a rotating pointer showing local sidereal time"
+        ></canvas>
+
+        <div class="clock-controls">
+          <div class="control">
+            <label for="clock-lst-slider">Local sidereal time: <span id="clock-lst-label"></span></label>
+            <input type="range" id="clock-lst-slider" min="0" max="23.99" step="0.01" value="0" />
+          </div>
+
+          <ul class="clock-star-list" id="clock-star-list"></ul>
+        </div>
+      </div>
+
+      <p class="note">
+        This is exactly what the sliders below are doing —
+        <a href="#ra-slider">try it there now</a>.
+      </p>
+    </section>
 
     <div class="layout coordinates-layout">
       <div class="diagrams-column">
@@ -178,38 +212,19 @@
       </div>
     </div>
 
-    <section class="ra-ha-explainer">
-      <h2>Understanding RA and hour angle</h2>
+    <section class="diurnal-section">
+      <h2>Diurnal motion</h2>
       <p>
-        <strong>Right ascension</strong> is fixed to a star — like a number permanently printed on
-        a clock face, it never changes. <strong>Local sidereal time</strong> is like a clock hand
-        sweeping steadily round that face. <strong>Hour angle</strong> is simply the gap between
-        where the hand currently points and where a given star's number sits — which is why it
-        isn't a property of the star or of the observer alone, but of the relationship between them.
+        As Earth rotates, the selected star's altitude rises and falls through the day, always
+        peaking at hour angle 0 (transit). Drag anywhere on the graph to scrub through the hour
+        angle and see the sky diagram above follow along.
       </p>
-
-      <div class="clock-widget">
-        <canvas
-          id="ra-clock"
-          width="360"
-          height="360"
-          aria-label="Clock face with star markers fixed at their right ascension, and a rotating pointer showing local sidereal time"
-        ></canvas>
-
-        <div class="clock-controls">
-          <div class="control">
-            <label for="clock-lst-slider">Local sidereal time: <span id="clock-lst-label"></span></label>
-            <input type="range" id="clock-lst-slider" min="0" max="23.99" step="0.01" value="0" />
-          </div>
-
-          <ul class="clock-star-list" id="clock-star-list"></ul>
-        </div>
-      </div>
-
-      <p class="note">
-        This is exactly what the sliders above are doing —
-        <a href="#ra-slider">try it there now</a>.
-      </p>
+      <canvas
+        id="diurnal-graph"
+        width="700"
+        height="320"
+        aria-label="Draggable graph of the selected star's altitude against hour angle in hours, across a full day"
+      ></canvas>
     </section>
 
     <section class="latitude-finder">
@@ -224,21 +239,6 @@
         <input type="range" id="polaris-altitude-slider" min="0" max="90" step="0.5" value="52" />
       </div>
       <p class="eot-readout" id="polaris-latitude-result"></p>
-    </section>
-
-    <section class="diurnal-section">
-      <h2>Diurnal motion</h2>
-      <p>
-        As Earth rotates, the selected star's altitude rises and falls through the day, always
-        peaking at hour angle 0 (transit). Drag anywhere on the graph to scrub through the hour
-        angle and see the sky diagram above follow along.
-      </p>
-      <canvas
-        id="diurnal-graph"
-        width="700"
-        height="320"
-        aria-label="Draggable graph of the selected star's altitude against hour angle in hours, across a full day"
-      ></canvas>
     </section>
 
     <section class="questions">
@@ -266,10 +266,10 @@
     </section>
   </main>
 
-  <script src="../src/curriculum.js?v=202609211600"></script>
-  <script src="../src/coordinates.js?v=202609211600"></script>
-  <script src="../src/coordinatesQuestions.js?v=202609211600"></script>
-  <script src="../quiz-ui.js?v=202609211600"></script>
-  <script src="coordinates.js?v=202609211600"></script>
+  <script src="../src/curriculum.js?v=202609211700"></script>
+  <script src="../src/coordinates.js?v=202609211700"></script>
+  <script src="../src/coordinatesQuestions.js?v=202609211700"></script>
+  <script src="../quiz-ui.js?v=202609211700"></script>
+  <script src="coordinates.js?v=202609211700"></script>
 </body>
 </html>

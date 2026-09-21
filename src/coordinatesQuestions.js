@@ -13,39 +13,54 @@ function normalizeText(value) {
   return String(value).trim().toLowerCase();
 }
 
+// Presentation only — the hour-angle *value* always comes from
+// Coordinates.raToHourAngleDegrees; this just renders it the way a GCSE
+// exam mark scheme would ("2h 12m"), matching the h/m input fields below.
+function formatHoursMinutes(hoursDecimal) {
+  const totalMinutes = Math.round(Math.abs(hoursDecimal) * 60);
+  const h = Math.floor(totalMinutes / 60);
+  const m = totalMinutes % 60;
+  return `${h}h ${String(m).padStart(2, '0')}m`;
+}
+
 function makeQuestions(Coordinates, getLiveState) {
   const questions = [];
 
   // --- Misconception 1: hour angle sign --------------------------------
-  // Students often give the right magnitude but the wrong sign, or the
-  // right sign but don't connect it to "has it transited yet?". Both
-  // fields are graded, and the sign is checked explicitly rather than
-  // relying on the tolerance window to catch it incidentally.
+  // Real exam papers ask for hour angle in hours/minutes (e.g. "2h 12m"),
+  // not degrees, with direction given as a separate east/west or
+  // transited/not-transited statement rather than a +/- sign on the
+  // number — so the magnitude field takes an unsigned h/m pair, and
+  // "sign" is entirely what the transited choice is graded against.
+  // (A student who types a negative value out of habit still has it
+  // read as a magnitude via Math.abs, since the direction is already
+  // covered by the transited field — no double jeopardy for one slip.)
   function makeHourAngleSignQuestion(id, starLabel, raHours, lstHours) {
     const trueHA = Coordinates.raToHourAngleDegrees(raHours, lstHours);
+    const trueHAHours = trueHA / 15;
     const correctTransited = trueHA >= 0 ? 'Yes, already transited' : 'No, not yet transited';
     return {
       id,
       units: ['u1.8'],
-      prompt: `${starLabel} has RA ${raHours}h. At a moment when the local sidereal time is ${lstHours}h, has it transited yet? Give its hour angle too, with the correct sign.`,
+      prompt: `${starLabel} has RA ${raHours}h. At a moment when the local sidereal time is ${lstHours}h, has it transited yet? Give its hour angle too, in hours and minutes.`,
       fields: [
         { key: 'transited', type: 'choice', label: 'Transited?', options: ['Yes, already transited', 'No, not yet transited'] },
-        { key: 'ha', type: 'number', label: 'Hour angle', unitLabel: '°' },
+        { key: 'haHours', type: 'number', label: 'Hour angle — hours', unitLabel: 'h' },
+        { key: 'haMinutes', type: 'number', label: 'Hour angle — minutes', unitLabel: 'm' },
       ],
       check(answers) {
         const transitedCorrect = answers.transited === correctTransited;
-        const signCorrect = Math.sign(answers.ha) === Math.sign(trueHA) || Math.abs(trueHA) < 1e-9;
-        const magnitudeCorrect = Math.abs(Math.abs(answers.ha) - Math.abs(trueHA)) <= 1;
-        const correct = transitedCorrect && signCorrect && magnitudeCorrect;
+        const givenMagnitudeHours = Math.abs(answers.haHours) + Math.abs(answers.haMinutes) / 60;
+        const magnitudeCorrect = Math.abs(givenMagnitudeHours - Math.abs(trueHAHours)) <= 4 / 60;
+        const correct = transitedCorrect && magnitudeCorrect;
+        const trueHAFormatted = formatHoursMinutes(trueHAHours);
         let message;
-        if (!signCorrect) {
-          message = `The sign is wrong even though your reasoning may be otherwise sound — the hour angle is ${trueHA.toFixed(1)}°. A negative sign means east of the meridian (not yet transited); positive means west (already transited).`;
-        } else if (!magnitudeCorrect) {
-          message = `The sign is right, but the size is off — the hour angle is ${trueHA.toFixed(1)}°.`;
+        if (!magnitudeCorrect) {
+          message = `The size is off — the hour angle is ${trueHAFormatted} (${trueHA.toFixed(1)}°).`;
         } else if (!transitedCorrect) {
-          message = `Your hour angle is right, but check the transited/not-transited call against its sign: ${trueHA.toFixed(1)}° means "${correctTransited}".`;
+          message = `Your hour angle is right, but check the transited/not-transited call: ${trueHAFormatted} means "${correctTransited}".`;
         } else {
-          message = `The hour angle is ${trueHA.toFixed(1)}°.`;
+          message = `The hour angle is ${trueHAFormatted} (${trueHA.toFixed(1)}°).`;
         }
         return { correct, message };
       },

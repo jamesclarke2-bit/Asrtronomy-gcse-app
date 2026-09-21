@@ -11,34 +11,41 @@ function findQuestion(questions, id) {
 
 // --- Misconception 1: hour angle sign -----------------------------------
 
-test('ha-sign-1: RA 10h at LST 8h30m has not transited, HA is negative', () => {
+test('ha-sign-1: RA 10h at LST 8h30m, correct 1h 30m magnitude and transited choice is correct', () => {
   const questions = makeQuestions(Coordinates, null);
   const q = findQuestion(questions, 'ha-sign-1');
-  const good = q.check({ transited: 'No, not yet transited', ha: -22.5 });
+  const good = q.check({ transited: 'No, not yet transited', haHours: 1, haMinutes: 30 });
   assert.ok(good.correct);
 });
 
-test('ha-sign-1: right magnitude, wrong sign is marked wrong', () => {
+test('ha-sign-1: correct magnitude but wrong transited choice is marked wrong', () => {
   const questions = makeQuestions(Coordinates, null);
   const q = findQuestion(questions, 'ha-sign-1');
-  const wrongSign = q.check({ transited: 'No, not yet transited', ha: 22.5 });
-  assert.equal(wrongSign.correct, false);
+  const wrongTransited = q.check({ transited: 'Yes, already transited', haHours: 1, haMinutes: 30 });
+  assert.equal(wrongTransited.correct, false);
 });
 
-test('ha-sign-1: right HA but inconsistent transited answer is marked wrong', () => {
+test('ha-sign-1: correct transited choice but wrong magnitude is marked wrong', () => {
   const questions = makeQuestions(Coordinates, null);
   const q = findQuestion(questions, 'ha-sign-1');
-  const inconsistent = q.check({ transited: 'Yes, already transited', ha: -22.5 });
-  assert.equal(inconsistent.correct, false);
+  const wrongMagnitude = q.check({ transited: 'No, not yet transited', haHours: 5, haMinutes: 0 });
+  assert.equal(wrongMagnitude.correct, false);
 });
 
-test('ha-sign-2: RA 14h at LST 17h15m has transited, HA is positive', () => {
+test('ha-sign-1: a negative h/m entry is read as a magnitude, not double-penalised', () => {
+  const questions = makeQuestions(Coordinates, null);
+  const q = findQuestion(questions, 'ha-sign-1');
+  const negativeEntry = q.check({ transited: 'No, not yet transited', haHours: -1, haMinutes: -30 });
+  assert.ok(negativeEntry.correct);
+});
+
+test('ha-sign-2: RA 14h at LST 17h15m has transited, HA is 3h 15m', () => {
   const questions = makeQuestions(Coordinates, null);
   const q = findQuestion(questions, 'ha-sign-2');
-  const good = q.check({ transited: 'Yes, already transited', ha: 48.75 });
+  const good = q.check({ transited: 'Yes, already transited', haHours: 3, haMinutes: 15 });
   assert.ok(good.correct);
-  const wrongSign = q.check({ transited: 'Yes, already transited', ha: -48.75 });
-  assert.equal(wrongSign.correct, false);
+  const wrongTransited = q.check({ transited: 'No, not yet transited', haHours: 3, haMinutes: 15 });
+  assert.equal(wrongTransited.correct, false);
 });
 
 // --- Misconception 2: equinox + southern hemisphere ----------------------

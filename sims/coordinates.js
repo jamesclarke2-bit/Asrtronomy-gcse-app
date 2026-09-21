@@ -578,7 +578,10 @@
     clockCtx.lineWidth = 1.5;
     clockCtx.stroke();
 
-    // Hour ticks every 6h, like the numbers on a clock face
+    // Hour ticks every 6h, like the numbers on a clock face. 0h gets its
+    // full name — the First Point of Aries is the actual reference point
+    // RA is measured from, and it's directly tested in exam questions,
+    // not just an arbitrary "0" on this widget's face.
     [0, 6, 12, 18].forEach((h) => {
       const outer = clockPoint(cx, cy, R, h);
       const inner = clockPoint(cx, cy, R - 8, h);
@@ -589,12 +592,21 @@
       clockCtx.lineWidth = 1.5;
       clockCtx.stroke();
 
-      const tickLabel = clockPoint(cx, cy, R + 14, h);
       clockCtx.fillStyle = '#8a97a5';
-      clockCtx.font = '10px sans-serif';
       clockCtx.textAlign = 'center';
-      clockCtx.textBaseline = 'middle';
-      clockCtx.fillText(`${h}h`, tickLabel.x, tickLabel.y);
+      if (h === 0) {
+        const baseY = cy - R - 8;
+        clockCtx.font = '600 9px sans-serif';
+        clockCtx.textBaseline = 'bottom';
+        clockCtx.fillText('First Point of Aries', cx, baseY - 10);
+        clockCtx.font = '9px sans-serif';
+        clockCtx.fillText('(RA = 0h)', cx, baseY);
+      } else {
+        const tickLabel = clockPoint(cx, cy, R + 14, h);
+        clockCtx.font = '10px sans-serif';
+        clockCtx.textBaseline = 'middle';
+        clockCtx.fillText(`${h}h`, tickLabel.x, tickLabel.y);
+      }
     });
 
     // Each clock star's current hour angle, via the same function used
