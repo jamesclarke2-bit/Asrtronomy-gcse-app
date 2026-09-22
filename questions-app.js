@@ -1,1 +1,0 @@
-QuizUI.mount(Questions.QUESTIONS);

@@ -3,163 +3,22 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sun Path Simulator</title>
-  <link rel="stylesheet" href="styles.css?v=202609212000" />
+  <title>GCSE Astronomy</title>
+  <link rel="stylesheet" href="styles.css?v=202609212100" />
 </head>
 <body>
   <main>
-    <h1>Sun Path Simulator</h1>
+    <h1>GCSE Astronomy</h1>
     <p class="subtitle">
-      Drag the sliders to see how the sun's position in the sky changes with
-      date, time of day, and latitude.
+      Interactive simulators and practice questions, organised by the GCSE Astronomy curriculum
+      unit each one teaches towards.
     </p>
 
-    <div class="layout tool-layout">
-      <div class="diagrams-column">
-        <div class="diagram">
-          <canvas id="sky" width="420" height="420" aria-label="Sky diagram showing the sun's position"></canvas>
-
-          <p class="legend" id="labels-legend">
-            <button type="button" class="glossary-toggle glossary-term-button" data-term="meridian" aria-label="What is the meridian?" aria-expanded="false">Meridian</button> — the N–S line through the zenith.
-            <button type="button" class="glossary-toggle glossary-term-button" data-term="zenith" aria-label="What is the zenith?" aria-expanded="false">Zenith</button> — the point directly overhead.
-            <button type="button" class="glossary-toggle glossary-term-button" data-term="horizon" aria-label="What is the horizon?" aria-expanded="false">Horizon</button> — 0° altitude, where sky meets ground.
-            <button type="button" class="glossary-toggle glossary-term-button" data-term="culmination" aria-label="What is culmination?" aria-expanded="false">Culmination</button> (sun's highest point / crosses the meridian) — marked in purple on the arc.
-          </p>
-          <span class="glossary-definition" data-term="meridian" hidden></span>
-          <span class="glossary-definition" data-term="zenith" hidden></span>
-          <span class="glossary-definition" data-term="horizon" hidden></span>
-          <span class="glossary-definition" data-term="culmination" hidden></span>
-        </div>
-
-        <div class="orbit-panel">
-          <h2>Earth's orbit</h2>
-          <canvas
-            id="orbit"
-            width="300"
-            height="300"
-            aria-label="Schematic diagram (not to scale) of Earth's orbit around the Sun, showing Earth's current position and its fixed-direction axis"
-          ></canvas>
-          <p class="note">
-            Not to scale. Earth's position comes from the sky diagram's declination
-            (+23.44° at the June solstice, −23.44° at the December solstice, 0° at
-            an equinox), so the two diagrams always agree. The red tick is Earth's
-            rotation axis — notice it points the <strong>same screen direction</strong>
-            at every position, whatever the season. That fixed tilt relative to the
-            Sun, not distance, is what causes the seasons.
-          </p>
-        </div>
-      </div>
-
-      <div class="controls">
-        <div class="control-panel star-panel">
-          <h3 class="panel-title">The Sun</h3>
-
-          <div class="control">
-            <label for="date-slider">Date: <span id="date-label"></span></label>
-            <input type="range" id="date-slider" min="0" max="364" value="171" />
-          </div>
-
-          <p class="panel-note">This is true everywhere — it doesn't depend on where you're observing from.</p>
-        </div>
-
-        <div class="control-panel observer-panel">
-          <h3 class="panel-title">The observer</h3>
-
-          <div class="control">
-            <label for="time-slider">Time: <span id="time-label"></span></label>
-            <input type="range" id="time-slider" min="0" max="1439" step="5" value="720" />
-          </div>
-
-          <div class="control">
-            <label for="lat-slider">Latitude: <span id="lat-label"></span></label>
-            <input type="range" id="lat-slider" min="-90" max="90" step="1" value="52" />
-          </div>
-
-          <p class="panel-note">These determine what you can actually see.</p>
-        </div>
-
-        <div class="control checkbox-control">
-          <label><input type="checkbox" id="labels-toggle" checked /> Show diagram labels</label>
-        </div>
-
-        <dl class="readout">
-          <div class="readout-row">
-            <dt>
-              Altitude
-              <button type="button" class="glossary-toggle" data-term="altitude" aria-label="What is altitude?" aria-expanded="false">?</button>
-            </dt>
-            <dd id="altitude-value"></dd>
-            <span class="glossary-definition glossary-definition-row" data-term="altitude" hidden></span>
-          </div>
-          <div class="readout-row">
-            <dt>
-              Azimuth
-              <button type="button" class="glossary-toggle" data-term="azimuth" aria-label="What is azimuth?" aria-expanded="false">?</button>
-            </dt>
-            <dd id="azimuth-value"></dd>
-            <span class="glossary-definition glossary-definition-row" data-term="azimuth" hidden></span>
-          </div>
-          <div class="readout-row">
-            <dt>
-              Declination
-              <button type="button" class="glossary-toggle" data-term="declination" aria-label="What is declination?" aria-expanded="false">?</button>
-            </dt>
-            <dd id="declination-value"></dd>
-            <span class="glossary-definition glossary-definition-row" data-term="declination" hidden></span>
-          </div>
-          <div class="readout-row">
-            <dt>
-              Sundial vs clock
-              <button type="button" class="glossary-toggle" data-term="eot" aria-label="What is the equation of time?" aria-expanded="false">?</button>
-            </dt>
-            <dd id="eqtime-value"></dd>
-            <span class="glossary-definition glossary-definition-row" data-term="eot" hidden></span>
-          </div>
-        </dl>
-
-        <p class="note">
-          Longitude is fixed at 0° (Greenwich); all times are UTC.
-          The orange arc traces the sun's path for the selected day.
-        </p>
-
-        <p class="eot-link">
-          <a href="sims/equation-of-time.html">Why isn't solar noon always 12:00? Explore the Equation of Time &rarr;</a>
-        </p>
-
-        <p class="eot-link">
-          <a href="sims/sun-declination.html">Why is the Sun higher in the sky in summer? Explore Sun Declination and Transit Altitude &rarr;</a>
-        </p>
-
-        <p class="coverage" id="coverage"></p>
-      </div>
-    </div>
-
-    <section class="questions">
-      <h2>Practice questions</h2>
-      <div id="questions-list"></div>
-    </section>
-
-    <section class="progress">
-      <h2>Your progress</h2>
-      <ul id="progress-list"></ul>
-      <p class="note">Stored in this browser only (localStorage) — no account needed.</p>
-    </section>
+    <div id="unit-list"></div>
   </main>
 
-  <!--
-    The ?v= query strings below are cache-busting: GitHub Pages and
-    browsers cache these files for several minutes, so without a
-    changing query string a fresh push can render an old HTML page
-    (fetched fresh) against stale cached JS (silently unchanged URL).
-    Bump every value below whenever any of these files change.
-  -->
-  <script src="src/curriculum.js?v=202609212000"></script>
-  <script src="src/solarPosition.js?v=202609212000"></script>
-  <script src="src/earthOrbit.js?v=202609212000"></script>
-  <script src="src/questions.js?v=202609212000"></script>
-  <script src="glossary.js?v=202609212000"></script>
-  <script src="app.js?v=202609212000"></script>
-  <script src="quiz-ui.js?v=202609212000"></script>
-  <script src="questions-app.js?v=202609212000"></script>
+  <script src="src/curriculum.js?v=202609212100"></script>
+  <script src="src/pages.js?v=202609212100"></script>
+  <script src="home.js?v=202609212100"></script>
 </body>
 </html>

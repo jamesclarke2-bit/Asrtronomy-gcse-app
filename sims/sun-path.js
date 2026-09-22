@@ -362,4 +362,5 @@
   updateLegendVisibility();
   renderCoverage();
   Glossary.init(GLOSSARY);
+  QuizUI.mount(Questions.QUESTIONS);
 })();
