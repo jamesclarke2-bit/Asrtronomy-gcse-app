@@ -143,6 +143,32 @@ function classifyAlignment(planetKey, date) {
   return { type: 'elongation', subtype: null, elongationDeg: elongation };
 }
 
+// The traditional 12 zodiac constellations, in order starting from the
+// vernal equinox direction (0 degrees ecliptic longitude — the First
+// Point of Aries). Heliocentric longitude in this module is measured
+// from that same direction, so this equal 30-degree-per-sign division
+// lines up with it; real constellation boundaries are irregular, but
+// the traditional equal division is the standard GCSE-level simplification.
+const ZODIAC_SIGNS = [
+  'Aries',
+  'Taurus',
+  'Gemini',
+  'Cancer',
+  'Leo',
+  'Virgo',
+  'Libra',
+  'Scorpius',
+  'Sagittarius',
+  'Capricornus',
+  'Aquarius',
+  'Pisces',
+];
+
+/** Which zodiac constellation a given ecliptic longitude (degrees) falls in. */
+function zodiacSignForLongitude(deg) {
+  return ZODIAC_SIGNS[Math.floor(normalizeDeg(deg) / 30) % 12];
+}
+
 const api = {
   PLANETS,
   heliocentricLongitude,
@@ -152,6 +178,8 @@ const api = {
   classifyAlignment,
   CONJUNCTION_THRESHOLD_DEG,
   OPPOSITION_THRESHOLD_DEG,
+  ZODIAC_SIGNS,
+  zodiacSignForLongitude,
 };
 
 if (typeof module !== 'undefined' && module.exports) {

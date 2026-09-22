@@ -98,3 +98,19 @@ test('apparentGeocentricLongitude is always a normalized 0-360 degree value', ()
     assert.ok(lon >= 0 && lon < 360, `longitude ${lon} out of range at day ${d}`);
   }
 });
+
+test('ZODIAC_SIGNS lists all twelve zodiac constellations', () => {
+  assert.equal(PlanetaryMotion.ZODIAC_SIGNS.length, 12);
+  assert.equal(new Set(PlanetaryMotion.ZODIAC_SIGNS).size, 12);
+});
+
+test('zodiacSignForLongitude divides the ecliptic into 12 equal 30-degree signs', () => {
+  assert.equal(PlanetaryMotion.zodiacSignForLongitude(0), 'Aries');
+  assert.equal(PlanetaryMotion.zodiacSignForLongitude(29.9), 'Aries');
+  assert.equal(PlanetaryMotion.zodiacSignForLongitude(30), 'Taurus');
+  assert.equal(PlanetaryMotion.zodiacSignForLongitude(359.9), 'Pisces');
+  // Wraps and normalizes negative/large inputs the same as normalizeDeg does.
+  assert.equal(PlanetaryMotion.zodiacSignForLongitude(-0.1), 'Pisces');
+  assert.equal(PlanetaryMotion.zodiacSignForLongitude(360), 'Aries');
+  assert.equal(PlanetaryMotion.zodiacSignForLongitude(400), 'Taurus');
+});

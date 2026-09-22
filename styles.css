@@ -38,6 +38,8 @@ canvas {
   background: #eaf2fb;
   border-radius: 12px;
   border: 1px solid #cdd7e1;
+  max-width: 100%;
+  height: auto;
 }
 
 .diagram {
@@ -309,6 +311,11 @@ canvas {
   background: #c0392b;
 }
 
+.zodiac-strip {
+  display: block;
+  margin-bottom: 1rem;
+}
+
 .analemma-section {
   max-width: 400px;
 }
@@ -316,7 +323,8 @@ canvas {
 .ra-ha-explainer,
 .latitude-finder,
 .diurnal-section,
-.retrograde-section {
+.retrograde-section,
+.concept-section {
   max-width: 700px;
   margin-top: 2.5rem;
 }
@@ -324,8 +332,50 @@ canvas {
 .ra-ha-explainer h2,
 .latitude-finder h2,
 .diurnal-section h2,
-.retrograde-section h2 {
+.retrograde-section h2,
+.concept-section h2 {
   margin-bottom: 0.5rem;
+}
+
+.concept-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.25rem;
+  margin-top: 1rem;
+}
+
+.concept-card {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 1rem 1.25rem;
+}
+
+.concept-card svg {
+  width: 100%;
+  height: auto;
+  background: #f7f7f5;
+  border-radius: 8px;
+}
+
+.concept-card .diagram-caption {
+  margin: 0.5rem 0 0;
+  font-size: 0.8rem;
+  color: #777;
+  text-align: center;
+  font-style: italic;
+}
+
+.concept-card h3 {
+  margin: 0.75rem 0 0.4rem;
+  font-size: 1rem;
+}
+
+.concept-card p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #444;
+  line-height: 1.5;
 }
 
 .clock-widget {

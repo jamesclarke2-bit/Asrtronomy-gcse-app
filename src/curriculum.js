@@ -105,6 +105,20 @@ const UNITS = [
         notes:
           "apparent retrograde loops, caused by Earth overtaking an outer planet on a faster inner orbit; conjunction, opposition and elongation as the possible Sun-Earth-planet alignments",
       },
+      {
+        id: 'u1.16',
+        title: 'The ecliptic and the zodiacal band',
+        depth: 'know',
+        notes:
+          "the ecliptic is the projection of Earth's orbital plane onto the sky; the Sun, Moon and planets are always found within the zodiacal band around it, home to the twelve zodiac constellations",
+      },
+      {
+        id: 'u1.17',
+        title: 'Transit and occultation',
+        depth: 'know',
+        notes:
+          'transit: a nearer body crossing the disc of a farther one, e.g. Venus or Mercury crossing the Sun; occultation: a nearer body completely hiding a farther one, e.g. the Moon occulting a star or planet',
+      },
     ],
   },
   {

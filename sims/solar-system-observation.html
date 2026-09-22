@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Retrograde Motion and Planetary Alignments</title>
-  <link rel="stylesheet" href="../styles.css?v=202609221000" />
+  <link rel="stylesheet" href="../styles.css?v=202609221100" />
 </head>
 <body>
   <main>
@@ -82,17 +82,31 @@
     <section class="retrograde-section">
       <h2>Mars's apparent position over time</h2>
       <p>
-        Mars's position projected against the background stars, plotted across the whole date
-        range above. The line climbs steadily most of the time (Mars drifting eastward through
-        the stars, as expected) but briefly bends backwards around each
+        Mars's apparent position lies along the
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="ecliptic" aria-label="What is the ecliptic?" aria-expanded="false">ecliptic</button>
+        — the strip of sky also known as the
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="zodiac" aria-label="What is the zodiacal band?" aria-expanded="false">zodiacal band</button>,
+        shown below with the currently-selected date's position marked. The graph underneath plots
+        that same position over the whole date range above: the line climbs steadily most of the
+        time (Mars drifting eastward through the stars, as expected) but briefly bends backwards
+        around each
         <button type="button" class="glossary-toggle glossary-term-button" data-term="opposition" aria-label="What is opposition?" aria-expanded="false">opposition</button>
         — that backward-curving stretch is the retrograde loop. It repeats once every
         <button type="button" class="glossary-toggle glossary-term-button" data-term="synodic" aria-label="What is a synodic period?" aria-expanded="false">synodic period</button>
         (about 780 days, roughly 26 months) — this graph spans exactly two of them, so you can see
         the pattern repeat.
       </p>
+      <span class="glossary-definition" data-term="ecliptic" hidden></span>
+      <span class="glossary-definition" data-term="zodiac" hidden></span>
       <span class="glossary-definition" data-term="opposition" hidden></span>
       <span class="glossary-definition" data-term="synodic" hidden></span>
+      <canvas
+        id="zodiac-strip"
+        width="700"
+        height="46"
+        class="zodiac-strip"
+        aria-label="A strip showing the 12 zodiac constellations along the ecliptic, with a marker showing Mars's current apparent position among them"
+      ></canvas>
       <canvas
         id="retrograde-graph"
         width="700"
@@ -100,11 +114,66 @@
         aria-label="Graph of Mars's apparent ecliptic longitude against date, showing the backward-curving retrograde loop around each opposition, with a marker at the currently-selected date"
       ></canvas>
     </section>
+
+    <section class="concept-section">
+      <h2>Transit and occultation</h2>
+      <p>
+        Two more precise alignments, rare enough that they're better understood from a diagram
+        than watched on a slider.
+      </p>
+      <div class="concept-grid">
+        <div class="concept-card">
+          <svg viewBox="0 0 220 160" role="img" aria-label="Diagram of a transit: a small dark dot of Venus crossing in front of the Sun's bright disc, as seen from Earth">
+            <circle cx="110" cy="80" r="55" fill="#f5a623" stroke="#c9820a" stroke-width="2" />
+            <circle cx="150" cy="58" r="7" fill="#1a1a1a" />
+          </svg>
+          <p class="diagram-caption">Venus, crossing the Sun's disc as seen from Earth</p>
+          <h3>Transit</h3>
+          <p>
+            A transit is when a nearer body crosses directly in front of a farther one, as seen
+            from Earth, appearing as a small dark dot moving across its disc. Only Mercury and
+            Venus — the two planets closer to the Sun than Earth — can transit the Sun, and only
+            when they pass between Earth and the Sun at a point where their (slightly tilted)
+            orbit also crosses Earth's line of sight, which is why transits are rare: Venus
+            transits come in pairs eight years apart, separated by over a century.
+          </p>
+        </div>
+        <div class="concept-card">
+          <svg viewBox="0 0 220 160" role="img" aria-label="Diagram of an occultation: the Moon's disc completely covering a star, as seen from Earth">
+            <circle cx="170" cy="80" r="4" fill="#1a1a1a" />
+            <path d="M 166 80 l 8 0 M 170 76 l 0 8" stroke="#1a1a1a" stroke-width="1" />
+            <circle cx="110" cy="80" r="45" fill="#c9d2db" stroke="#8a97a5" stroke-width="2" />
+          </svg>
+          <p class="diagram-caption">The Moon, having just occulted (hidden) a star, as seen from Earth</p>
+          <h3>Occultation</h3>
+          <p>
+            An occultation is when a nearer body passes directly in front of a farther one and
+            completely hides it, as seen from Earth — unlike a transit, the farther body
+            disappears rather than remaining visible as a dot. The Moon, being both nearby and
+            relatively large in the sky, most often occults stars and planets that happen to lie
+            along its path; a solar eclipse is really just the Moon occulting the Sun.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="questions">
+      <h2>Practice questions</h2>
+      <div id="questions-list"></div>
+    </section>
+
+    <section class="progress">
+      <h2>Your progress</h2>
+      <ul id="progress-list"></ul>
+      <p class="note">Stored in this browser only (localStorage) — no account needed.</p>
+    </section>
   </main>
 
-  <script src="../src/curriculum.js?v=202609221000"></script>
-  <script src="../src/planetaryMotion.js?v=202609221000"></script>
-  <script src="../glossary.js?v=202609221000"></script>
-  <script src="solar-system-observation.js?v=202609221000"></script>
+  <script src="../src/curriculum.js?v=202609221100"></script>
+  <script src="../src/planetaryMotion.js?v=202609221100"></script>
+  <script src="../src/planetaryMotionQuestions.js?v=202609221100"></script>
+  <script src="../glossary.js?v=202609221100"></script>
+  <script src="../quiz-ui.js?v=202609221100"></script>
+  <script src="solar-system-observation.js?v=202609221100"></script>
 </body>
 </html>

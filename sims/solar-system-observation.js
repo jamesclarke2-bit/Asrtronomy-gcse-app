@@ -1,5 +1,5 @@
 (function () {
-  const CURRICULUM_UNITS = ['u1.15'];
+  const CURRICULUM_UNITS = ['u1.15', 'u1.16', 'u1.17'];
   const REFERENCE_START = new Date(Date.UTC(2026, 0, 1));
   // Exactly two Mars synodic periods (~780 days each, see
   // planetaryMotion.test.js), so the retrograde loop visibly repeats
@@ -17,6 +17,8 @@
   const solarSystemCtx = solarSystemCanvas.getContext('2d');
   const graphCanvas = document.getElementById('retrograde-graph');
   const graphCtx = graphCanvas.getContext('2d');
+  const zodiacCanvas = document.getElementById('zodiac-strip');
+  const zodiacCtx = zodiacCanvas.getContext('2d');
 
   const EARTH_COLOR = '#2a6bd6';
   const MARS_COLOR = '#c0392b';
@@ -178,6 +180,54 @@
     solarSystemCtx.fillText('Mars', marsPx.x + (marsPx.x >= cx ? 9 : -9), marsPx.y);
   }
 
+  // --- Zodiac strip: Mars's current wrapped position among the 12
+  // zodiac constellations along the ecliptic ------------------------
+
+  const ZODIAC_MARKER_HEIGHT = 12;
+
+  function drawZodiacStrip(dayOffset) {
+    const width = zodiacCanvas.width;
+    const height = zodiacCanvas.height;
+    const stripTop = ZODIAC_MARKER_HEIGHT;
+    const stripHeight = height - stripTop;
+    zodiacCtx.clearRect(0, 0, width, height);
+
+    const signs = PlanetaryMotion.ZODIAC_SIGNS;
+    const segmentWidth = width / signs.length;
+
+    signs.forEach((sign, i) => {
+      zodiacCtx.fillStyle = i % 2 === 0 ? '#f7f2fb' : '#efe6f6';
+      zodiacCtx.fillRect(i * segmentWidth, stripTop, segmentWidth, stripHeight);
+      zodiacCtx.strokeStyle = '#ddd0e8';
+      zodiacCtx.lineWidth = 1;
+      zodiacCtx.strokeRect(i * segmentWidth, stripTop, segmentWidth, stripHeight);
+      zodiacCtx.fillStyle = '#7a6a88';
+      zodiacCtx.font = '10px sans-serif';
+      zodiacCtx.textAlign = 'center';
+      zodiacCtx.textBaseline = 'middle';
+      zodiacCtx.fillText(sign, i * segmentWidth + segmentWidth / 2, stripTop + stripHeight / 2);
+    });
+
+    // Current-date marker: a vertical line through the strip, capped
+    // with a small downward-pointing triangle above it, at Mars's
+    // current wrapped apparent longitude.
+    const lon = normalizeDeg(PlanetaryMotion.apparentGeocentricLongitude('mars', dateForDayOffset(dayOffset)));
+    const markerX = (lon / 360) * width;
+    zodiacCtx.strokeStyle = MARS_COLOR;
+    zodiacCtx.lineWidth = 2;
+    zodiacCtx.beginPath();
+    zodiacCtx.moveTo(markerX, stripTop);
+    zodiacCtx.lineTo(markerX, height);
+    zodiacCtx.stroke();
+    zodiacCtx.fillStyle = MARS_COLOR;
+    zodiacCtx.beginPath();
+    zodiacCtx.moveTo(markerX - 6, 0);
+    zodiacCtx.lineTo(markerX + 6, 0);
+    zodiacCtx.lineTo(markerX, stripTop);
+    zodiacCtx.closePath();
+    zodiacCtx.fill();
+  }
+
   // --- Retrograde-loop graph ---------------------------------------
 
   const GRAPH_MARGIN = { left: 55, right: 20, top: 15, bottom: 30 };
@@ -297,6 +347,7 @@
     alignmentReadout.textContent = alignmentText(classification);
 
     drawSolarSystem(dayOffset);
+    drawZodiacStrip(dayOffset);
     drawRetrogradeGraph(dayOffset);
   }
 
@@ -361,9 +412,14 @@
       "Opposition: the planet is opposite the Sun in Earth's sky (elongation 180°). It's then at its closest to Earth, appears biggest and brightest, and is visible all night.",
     synodic:
       "Synodic period: the time between two successive identical alignments (e.g. opposition to opposition) — longer than either planet's own orbital period, since it depends on how fast Earth catches up to the other planet.",
+    ecliptic:
+      "The ecliptic: the projection of Earth's orbital plane onto the sky — the path the Sun appears to trace against the background stars over a year. In this coplanar model, every body's apparent position lies exactly on it.",
+    zodiac:
+      'The zodiacal band: a strip of sky centred on the ecliptic, home to the twelve zodiac constellations. Because the Sun, Moon and planets all orbit close to the same plane, they are always found within this band.',
   };
 
   update();
   renderCoverage();
   Glossary.init(GLOSSARY);
+  QuizUI.mount(PlanetaryMotionQuestions.makeQuestions(PlanetaryMotion));
 })();
