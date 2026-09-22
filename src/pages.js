@@ -31,9 +31,10 @@ const PAGES = [
   },
   {
     title: 'Sun Declination and Transit Altitude',
-    description: "What's the Sun's altitude at transit at latitude X on date Y? The classic exam question, explored directly.",
+    description:
+      "What's the Sun's altitude at transit at latitude X on date Y? Plus the Sun's structure, sunspots, solar wind, and how to observe it safely.",
     href: 'sims/sun-declination.html',
-    units: ['u1.11', 'u2.9'],
+    units: ['u1.11', 'u2.9', 'u2.5', 'u2.11', 'u2.12'],
   },
   {
     title: 'Retrograde Motion and Planetary Alignments',

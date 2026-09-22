@@ -1,6 +1,6 @@
 (function () {
   const YEAR = 2026;
-  const CURRICULUM_UNITS = ['u1.11', 'u2.9'];
+  const CURRICULUM_UNITS = ['u1.11', 'u2.9', 'u2.5', 'u2.11', 'u2.12'];
 
   const dateSlider = document.getElementById('date-slider');
   const dateLabel = document.getElementById('date-label');
@@ -189,7 +189,13 @@
 
   [dateSlider, latSlider].forEach((el) => el.addEventListener('input', update));
 
+  const GLOSSARY = {
+    solarWind:
+      'Solar wind: a continuous stream of charged particles (mostly protons and electrons) escaping the corona fast enough to overcome the Sun\'s gravity, flowing outward through the whole Solar System.',
+  };
+
   update();
   renderCoverage();
   QuizUI.mount(SunDeclinationQuestions.makeQuestions(SolarPosition, Coordinates));
+  Glossary.init(GLOSSARY);
 })();

@@ -159,7 +159,8 @@ const UNITS = [
         id: 'u2.5',
         title: 'Sunspots',
         depth: 'understand',
-        notes: 'cooler, magnetically active regions; the solar cycle',
+        notes:
+          "cooler, magnetically active regions; the solar cycle; tracking a sunspot's position over successive days to estimate the Sun's rotation period",
       },
       {
         id: 'u2.6',
@@ -185,6 +186,20 @@ const UNITS = [
         title: 'Time',
         depth: 'understand',
         notes: 'solar time vs. clock time; the Equation of Time, caused by orbital eccentricity and axial tilt.',
+      },
+      {
+        id: 'u2.11',
+        title: "The Sun's structure",
+        depth: 'know',
+        notes:
+          'core, radiative zone and convective zone (energy transport outward from the core); photosphere, chromosphere and corona (the visible surface and outer atmosphere)',
+      },
+      {
+        id: 'u2.12',
+        title: 'Solar wind',
+        depth: 'understand',
+        notes:
+          'a continuous stream of charged particles escaping the corona; causes aurorae, shapes cometary ion tails, and can drive geomagnetic storms that disrupt satellites, aircraft and power grids',
       },
     ],
   },

@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sun Declination and Transit Altitude</title>
-  <link rel="stylesheet" href="../styles.css?v=202609221200" />
+  <link rel="stylesheet" href="../styles.css?v=202609221300" />
 </head>
 <body>
   <main>
@@ -91,13 +91,151 @@
       <ul id="progress-list"></ul>
       <p class="note">Stored in this browser only (localStorage) — no account needed.</p>
     </section>
+
+    <section class="notes-section">
+      <h2>Observing the Sun safely</h2>
+      <p class="warning-box">
+        <strong>Never look directly at the Sun</strong> &mdash; not with the naked eye, and
+        never through binoculars, a telescope or a camera viewfinder without a proper solar
+        filter. Its light and heat can burn the retina permanently within seconds. The retina
+        has no pain receptors, so this damage happens without any warning and often without
+        you noticing until afterwards.
+      </p>
+      <p>
+        The safest way to view the Sun's disc directly is through solar filters (or
+        "eclipse glasses") specifically certified to the ISO&nbsp;12312-2 standard, which fit
+        over the front of your eyes, binoculars or telescope. Ordinary sunglasses, smoked glass
+        and exposed camera film are all <strong>not</strong> safe &mdash; they don't block the
+        invisible infrared and ultraviolet light that does the damage.
+      </p>
+      <p>
+        A safer option that needs no special equipment at all is <strong>projection</strong>:
+      </p>
+      <ol class="tip-list">
+        <li>Pierce a small, clean hole in the centre of a piece of card.</li>
+        <li>With your back to the Sun, hold the card up so sunlight passes through the hole.</li>
+        <li>Hold a second, plain card in the hole's shadow, a short distance behind it, as a screen.</li>
+        <li>An inverted image of the Sun's disc appears on the screen card &mdash; look at that image, never at the Sun or through the hole itself.</li>
+      </ol>
+      <div class="diagram pinhole-diagram">
+        <svg viewBox="0 0 320 140" role="img" aria-label="Diagram of pinhole projection: sunlight passing through a small hole in one card forms an inverted image of the Sun on a second card held behind it">
+          <circle cx="30" cy="30" r="16" fill="#f5a623" />
+          <line x1="44" y1="42" x2="140" y2="70" stroke="#f5a623" stroke-width="1.5" />
+          <line x1="16" y1="46" x2="140" y2="72" stroke="#f5a623" stroke-width="1.5" />
+          <line x1="30" y1="46" x2="140" y2="71" stroke="#f5a623" stroke-width="1.5" />
+          <rect x="136" y="20" width="8" height="100" fill="#e8ddc7" stroke="#8a97a5" stroke-width="1.5" />
+          <circle cx="140" cy="71" r="2.5" fill="#7a5b1e" />
+          <line x1="144" y1="69" x2="270" y2="35" stroke="#f5a623" stroke-width="1" stroke-dasharray="2 2" />
+          <line x1="144" y1="73" x2="270" y2="105" stroke="#f5a623" stroke-width="1" stroke-dasharray="2 2" />
+          <rect x="266" y="20" width="8" height="100" fill="#efe9dc" stroke="#8a97a5" stroke-width="1.5" />
+          <circle cx="270" cy="70" r="10" fill="#f5a623" opacity="0.6" />
+        </svg>
+        <p class="diagram-caption">
+          Card with a pinhole (left), casting an inverted image of the Sun onto a screen card
+          (right)
+        </p>
+      </div>
+    </section>
+
+    <section class="notes-section">
+      <h2>The Sun's structure</h2>
+      <p>
+        The Sun is layered, from a fusion-powered core outward to a wispy outer atmosphere
+        visible only during a total eclipse or through specialised instruments.
+      </p>
+      <div class="diagram sun-structure-diagram">
+        <svg viewBox="0 0 300 300" role="img" aria-label="Cutaway diagram of the Sun's layered structure: core, radiative zone and convective zone inside, photosphere, chromosphere and corona outside">
+          <g>
+            <line x1="150" y1="150" x2="150" y2="10" stroke="#eaf2fb" stroke-width="2" />
+            <line x1="150" y1="150" x2="284" y2="150" stroke="#eaf2fb" stroke-width="2" />
+            <line x1="150" y1="150" x2="55" y2="245" stroke="#eaf2fb" stroke-width="2" />
+            <line x1="150" y1="150" x2="245" y2="245" stroke="#eaf2fb" stroke-width="2" />
+            <line x1="150" y1="150" x2="16" y2="150" stroke="#eaf2fb" stroke-width="2" />
+            <line x1="150" y1="150" x2="55" y2="55" stroke="#eaf2fb" stroke-width="2" />
+            <line x1="150" y1="150" x2="245" y2="55" stroke="#eaf2fb" stroke-width="2" />
+            <line x1="150" y1="150" x2="105" y2="14" stroke="#eaf2fb" stroke-width="2" />
+            <line x1="150" y1="150" x2="195" y2="14" stroke="#eaf2fb" stroke-width="2" />
+            <line x1="150" y1="150" x2="286" y2="110" stroke="#eaf2fb" stroke-width="2" />
+            <line x1="150" y1="150" x2="286" y2="190" stroke="#eaf2fb" stroke-width="2" />
+            <line x1="150" y1="150" x2="14" y2="110" stroke="#eaf2fb" stroke-width="2" />
+            <line x1="150" y1="150" x2="14" y2="190" stroke="#eaf2fb" stroke-width="2" />
+          </g>
+          <circle cx="150" cy="150" r="98" fill="#fdf1e3" />
+          <circle cx="150" cy="150" r="98" fill="none" stroke="#e05c3e" stroke-width="4" opacity="0.55" />
+          <circle cx="150" cy="150" r="90" fill="#f5a623" />
+          <circle cx="150" cy="150" r="70" fill="#e8631a" />
+          <circle cx="150" cy="150" r="45" fill="#ffb347" />
+          <circle cx="150" cy="150" r="20" fill="#fff7d6" />
+        </svg>
+      </div>
+      <ul class="legend layer-legend">
+        <li><span class="legend-dot layer-dot-core"></span><strong>Core</strong> &mdash; where nuclear fusion turns hydrogen into helium, releasing the Sun's energy at around 15 million &deg;C.</li>
+        <li><span class="legend-dot layer-dot-radiative"></span><strong>Radiative zone</strong> &mdash; energy moves outward as radiation, bouncing between particles so slowly it can take over 100,000 years to cross.</li>
+        <li><span class="legend-dot layer-dot-convective"></span><strong>Convective zone</strong> &mdash; cooler, less dense plasma carries energy the rest of the way outward by convection currents, like water boiling in a pan.</li>
+        <li><span class="legend-dot layer-dot-photosphere"></span><strong>Photosphere</strong> &mdash; the visible "surface", about 5,500&deg;C, where sunspots appear.</li>
+        <li><span class="legend-dot layer-dot-chromosphere"></span><strong>Chromosphere</strong> &mdash; a thin, hotter, reddish layer above the photosphere.</li>
+        <li><span class="legend-dot layer-dot-corona"></span><strong>Corona</strong> &mdash; the Sun's outer atmosphere, a faint, wispy halo of gas at over a million &deg;C, visible to the naked eye only during a total solar eclipse.</li>
+      </ul>
+    </section>
+
+    <section class="notes-section">
+      <h2>Sunspots and the solar cycle</h2>
+      <p>
+        Sunspots are patches of the photosphere a little cooler than their surroundings (around
+        3,500&ndash;4,000&deg;C, against the photosphere's usual 5,500&deg;C), caused by strong,
+        tangled magnetic fields suppressing the convection that would otherwise carry heat up to
+        the surface there &mdash; they look dark only by contrast with the brighter photosphere
+        around them. The number of sunspots visible rises and falls over an
+        <strong>11-year solar cycle</strong>, from a quiet solar minimum to an active solar
+        maximum and back again; sunspot number is the classic long-term index of solar activity.
+      </p>
+      <h3>Worked example: estimating the Sun's rotation period</h3>
+      <p>
+        Because sunspots are carried around by the Sun's own rotation, tracking one from day to
+        day across the visible disc gives a direct measurement of that rotation &mdash; the same
+        idea as timing a rotating turntable by watching a mark on its edge.
+      </p>
+      <p class="formula">
+        A sunspot is measured at 20&deg; east of the Sun's central meridian on day 1, and at
+        32&deg; west of the central meridian on day 5.<br />
+        Angular distance moved = 20&deg; + 32&deg; = 52&deg;, over 4 days.<br />
+        Rate = 52&deg; &divide; 4 days = 13&deg; per day.<br />
+        Full rotation = 360&deg; &divide; 13&deg;/day &asymp; <strong>28 days</strong>.
+      </p>
+      <p class="note">
+        This is the Sun's <em>synodic</em> rotation period &mdash; as seen from Earth, which is
+        itself orbiting the Sun, the same distinction as the Moon's synodic month versus its
+        sidereal one. It also only measures the latitude that sunspot happens to sit at: the Sun
+        is a ball of plasma, not a solid body, and rotates faster at its equator (about 25 days)
+        than near its poles (over 30 days) &mdash; a behaviour called differential rotation.
+      </p>
+    </section>
+
+    <section class="notes-section">
+      <h2>Solar wind and its effects</h2>
+      <p>
+        The corona is so hot that some of its charged particles &mdash; mostly protons and
+        electrons &mdash; move fast enough to escape the Sun's gravity entirely, streaming
+        outward through the Solar System as the
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="solarWind" aria-label="What is the solar wind?" aria-expanded="false">solar wind</button>.
+        A few of its effects reach all the way to Earth and beyond:
+      </p>
+      <span class="glossary-definition" data-term="solarWind" hidden></span>
+      <ul class="tip-list">
+        <li><strong>Aurorae</strong> &mdash; Earth's magnetic field funnels incoming charged particles toward the poles, where they collide with atmospheric gases and make them glow, seen as the aurora borealis and aurora australis.</li>
+        <li><strong>Cometary ion tails</strong> &mdash; the solar wind pushes a comet's ionised gas directly away from the Sun, so its ion tail always points away from the Sun regardless of which way the comet itself is travelling.</li>
+        <li><strong>Geomagnetic storms</strong> &mdash; a surge in solar wind, often from a coronal mass ejection, temporarily disturbs Earth's magnetic field.</li>
+        <li><strong>Satellites, aircraft and power grids</strong> &mdash; a strong geomagnetic storm can degrade GPS accuracy, disrupt satellite electronics and radio communications, raise radiation exposure on polar flight routes, and even induce damaging currents in power grids on the ground.</li>
+      </ul>
+    </section>
   </main>
 
-  <script src="../src/curriculum.js?v=202609221200"></script>
+  <script src="../src/curriculum.js?v=202609221300"></script>
   <script src="../src/solarPosition.js?v=202609212100"></script>
   <script src="../src/coordinates.js?v=202609212100"></script>
   <script src="../src/sunDeclinationQuestions.js?v=202609212100"></script>
+  <script src="../glossary.js?v=202609221200"></script>
   <script src="../quiz-ui.js?v=202609212100"></script>
-  <script src="sun-declination.js?v=202609212100"></script>
+  <script src="sun-declination.js?v=202609221200"></script>
 </body>
 </html>
