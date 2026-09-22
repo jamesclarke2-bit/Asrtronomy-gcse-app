@@ -1,10 +1,11 @@
 /**
- * Registry of every interactive page in the app, for the landing page
- * (index.html) to list grouped by curriculum unit. `units` mirrors each
- * page's own CURRICULUM_UNITS constant (solarPosition.js,
- * equation-of-time.js, coordinates.js, sun-declination.js) — kept here
- * as plain data, rather than loading every page's script just to read
- * one constant, so this stays a cheap, dependency-free listing.
+ * Registry of every interactive simulator (sims/) and static reference
+ * page (notes/) in the app, for the landing page (index.html) to list
+ * grouped by curriculum unit. `units` mirrors each page's own
+ * CURRICULUM_UNITS constant (solarPosition.js, equation-of-time.js,
+ * coordinates.js, sun-declination.js, ...) — kept here as plain data,
+ * rather than loading every page's script just to read one constant,
+ * so this stays a cheap, dependency-free listing.
  *
  * href is relative to the repo root (where index.html lives).
  */
@@ -39,6 +40,13 @@ const PAGES = [
     description: 'Watch Mars loop backwards against the stars as Earth overtakes it, and see conjunction, opposition and elongation as one repeating cycle.',
     href: 'sims/solar-system-observation.html',
     units: ['u1.15', 'u1.16', 'u1.17'],
+  },
+  {
+    title: 'Observing Techniques',
+    description:
+      'A planning reference for an observing session: dark adaptation and averted vision, finding targets with charts and apps, constellations across cultures, and meteor showers.',
+    href: 'notes/observing-techniques.html',
+    units: ['u1.5', 'u1.18', 'u1.19', 'u1.20'],
   },
 ];
 

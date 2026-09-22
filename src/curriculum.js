@@ -119,6 +119,27 @@ const UNITS = [
         notes:
           'transit: a nearer body crossing the disc of a farther one, e.g. Venus or Mercury crossing the Sun; occultation: a nearer body completely hiding a farther one, e.g. the Moon occulting a star or planet',
       },
+      {
+        id: 'u1.18',
+        title: 'Finding targets: star charts, planispheres and apps',
+        depth: 'be able to',
+        notes:
+          'using a star chart, a rotating planisphere set to the date and time, or a sky-mapping app to locate and identify targets before or during an observing session',
+      },
+      {
+        id: 'u1.19',
+        title: 'Constellations across cultures',
+        depth: 'understand',
+        notes:
+          "the 88 IAU constellations are one, largely Greco-Roman, tradition among many; other cultures group and name the same stars differently, e.g. Aboriginal Australian, Chinese and Polynesian astronomy",
+      },
+      {
+        id: 'u1.20',
+        title: 'Meteor showers and the radiant point',
+        depth: 'understand',
+        notes:
+          "caused by Earth passing through debris left by a comet (or occasionally an asteroid); meteors appear to radiate from one point (the radiant) as a perspective effect, and showers are named after the constellation containing it, e.g. the Perseids, Geminids and Orionids",
+      },
     ],
   },
   {

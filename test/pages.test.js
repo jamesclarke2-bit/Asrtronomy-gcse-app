@@ -31,8 +31,11 @@ test('hrefs are unique — no two pages point at the same file', () => {
   assert.equal(new Set(hrefs).size, hrefs.length, 'duplicate href found in PAGES');
 });
 
-test('hrefs point into sims/ (every entry is a sub-page, not the landing page itself)', () => {
+test('hrefs point into sims/ or notes/ (every entry is a sub-page, not the landing page itself)', () => {
   PAGES.forEach((page) => {
-    assert.ok(page.href.startsWith('sims/'), `${page.title} href should live under sims/: ${page.href}`);
+    assert.ok(
+      page.href.startsWith('sims/') || page.href.startsWith('notes/'),
+      `${page.title} href should live under sims/ or notes/: ${page.href}`
+    );
   });
 });
