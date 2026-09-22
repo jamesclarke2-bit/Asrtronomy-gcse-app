@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Retrograde Motion and Planetary Alignments</title>
+  <link rel="stylesheet" href="../styles.css?v=202609221000" />
+</head>
+<body>
+  <main>
+    <p class="back-link"><a href="../index.html">&larr; Back to all tools</a></p>
+
+    <h1>Retrograde Motion and Planetary Alignments</h1>
+    <p class="subtitle">
+      Mars orbits the Sun more slowly than Earth does — so roughly every 26 months, Earth
+      "overtakes" it on the inside track, and Mars briefly appears to move backwards against the
+      background stars. Watch it happen below, and see how conjunction, opposition and elongation
+      are just different stages of the same repeating cycle.
+    </p>
+
+    <div class="layout tool-layout">
+      <div class="diagrams-column">
+        <div class="diagram">
+          <h2>Solar system (top-down)</h2>
+          <canvas
+            id="solar-system"
+            width="380"
+            height="380"
+            aria-label="Top-down schematic of Earth's and Mars's circular orbits around the Sun, with a sightline from Earth to Mars showing its direction against the background stars"
+          ></canvas>
+          <p class="legend">
+            <span class="legend-swatch legend-earth-orbit"></span> Earth's orbit
+            &nbsp; <span class="legend-swatch legend-mars-orbit"></span> Mars's orbit
+          </p>
+        </div>
+      </div>
+
+      <div class="controls">
+        <div class="control">
+          <label for="date-slider">Date: <span id="date-label"></span></label>
+          <input type="range" id="date-slider" min="0" max="1560" step="1" value="0" />
+        </div>
+
+        <div class="control checkbox-control">
+          <button type="button" id="play-button" class="secondary-button" aria-pressed="false">&#9658; Animate</button>
+        </div>
+
+        <p class="eot-readout" id="alignment-readout"></p>
+
+        <dl class="readout">
+          <div class="readout-row">
+            <dt>
+              Elongation
+              <button type="button" class="glossary-toggle" data-term="elongation" aria-label="What is elongation?" aria-expanded="false">?</button>
+            </dt>
+            <dd id="elongation-value"></dd>
+            <span class="glossary-definition glossary-definition-row" data-term="elongation" hidden></span>
+          </div>
+          <div class="readout-row">
+            <dt>
+              Alignment
+              <button type="button" class="glossary-toggle" data-term="alignment" aria-label="What do conjunction, opposition and elongation mean?" aria-expanded="false">?</button>
+            </dt>
+            <dd id="alignment-value"></dd>
+            <span class="glossary-definition glossary-definition-row" data-term="alignment" hidden></span>
+          </div>
+        </dl>
+
+        <p class="note">
+          Both orbits are drawn as circles, to scale with each other, and both planets move at
+          constant speed — real orbits are slightly elliptical, but that doesn't change the basic
+          shape of
+          <button type="button" class="glossary-toggle glossary-term-button" data-term="retrograde" aria-label="What is retrograde motion?" aria-expanded="false">retrograde motion</button>
+          or when conjunction/opposition happen, which come from the two orbital periods alone.
+        </p>
+        <span class="glossary-definition" data-term="retrograde" hidden></span>
+
+        <p class="coverage" id="coverage"></p>
+      </div>
+    </div>
+
+    <section class="retrograde-section">
+      <h2>Mars's apparent position over time</h2>
+      <p>
+        Mars's position projected against the background stars, plotted across the whole date
+        range above. The line climbs steadily most of the time (Mars drifting eastward through
+        the stars, as expected) but briefly bends backwards around each
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="opposition" aria-label="What is opposition?" aria-expanded="false">opposition</button>
+        — that backward-curving stretch is the retrograde loop. It repeats once every
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="synodic" aria-label="What is a synodic period?" aria-expanded="false">synodic period</button>
+        (about 780 days, roughly 26 months) — this graph spans exactly two of them, so you can see
+        the pattern repeat.
+      </p>
+      <span class="glossary-definition" data-term="opposition" hidden></span>
+      <span class="glossary-definition" data-term="synodic" hidden></span>
+      <canvas
+        id="retrograde-graph"
+        width="700"
+        height="320"
+        aria-label="Graph of Mars's apparent ecliptic longitude against date, showing the backward-curving retrograde loop around each opposition, with a marker at the currently-selected date"
+      ></canvas>
+    </section>
+  </main>
+
+  <script src="../src/curriculum.js?v=202609221000"></script>
+  <script src="../src/planetaryMotion.js?v=202609221000"></script>
+  <script src="../glossary.js?v=202609221000"></script>
+  <script src="solar-system-observation.js?v=202609221000"></script>
+</body>
+</html>

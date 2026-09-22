@@ -34,6 +34,12 @@ const PAGES = [
     href: 'sims/sun-declination.html',
     units: ['u1.11', 'u2.9'],
   },
+  {
+    title: 'Retrograde Motion and Planetary Alignments',
+    description: 'Watch Mars loop backwards against the stars as Earth overtakes it, and see conjunction, opposition and elongation as one repeating cycle.',
+    href: 'sims/solar-system-observation.html',
+    units: ['u1.15'],
+  },
 ];
 
 const api = { PAGES };

@@ -301,20 +301,30 @@ canvas {
   background: #2e8b57;
 }
 
+.legend-earth-orbit {
+  background: #2a6bd6;
+}
+
+.legend-mars-orbit {
+  background: #c0392b;
+}
+
 .analemma-section {
   max-width: 400px;
 }
 
 .ra-ha-explainer,
 .latitude-finder,
-.diurnal-section {
+.diurnal-section,
+.retrograde-section {
   max-width: 700px;
   margin-top: 2.5rem;
 }
 
 .ra-ha-explainer h2,
 .latitude-finder h2,
-.diurnal-section h2 {
+.diurnal-section h2,
+.retrograde-section h2 {
   margin-bottom: 0.5rem;
 }
 
@@ -504,7 +514,8 @@ canvas {
   margin-bottom: 0.5rem;
 }
 
-#regenerate-chained {
+#regenerate-chained,
+.secondary-button {
   margin: 0.75rem 0 1.25rem;
   padding: 0.5rem 1rem;
   border: 1px solid #2a6bd6;
@@ -515,8 +526,14 @@ canvas {
   cursor: pointer;
 }
 
-#regenerate-chained:hover {
+#regenerate-chained:hover,
+.secondary-button:hover {
   background: #eaf2fb;
+}
+
+.secondary-button[aria-pressed='true'] {
+  background: #2a6bd6;
+  color: #fff;
 }
 
 .questions,

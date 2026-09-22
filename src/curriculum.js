@@ -98,6 +98,13 @@ const UNITS = [
         depth: 'understand',
         notes: "the apparent daily rotation of the sky (rise, transit, set) caused by Earth's rotation",
       },
+      {
+        id: 'u1.15',
+        title: 'Retrograde motion and planetary alignments',
+        depth: 'understand',
+        notes:
+          "apparent retrograde loops, caused by Earth overtaking an outer planet on a faster inner orbit; conjunction, opposition and elongation as the possible Sun-Earth-planet alignments",
+      },
     ],
   },
   {
