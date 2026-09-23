@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Observing the Sun</title>
-  <link rel="stylesheet" href="../styles.css?v=202609221700" />
+  <link rel="stylesheet" href="../styles.css?v=202609221800" />
 </head>
 <body>
   <main>
@@ -164,6 +164,81 @@
           (right)
         </p>
       </div>
+
+      <h3>Telescope projection</h3>
+      <p>
+        For an image large and sharp enough to see sunspots directly, project through a small
+        telescope instead of a simple pinhole:
+      </p>
+      <ol class="tip-list">
+        <li>Use a small refractor (about 60&ndash;80mm aperture) with a low-power eyepiece (25&ndash;40&times;).</li>
+        <li>Cap or cover the finder scope, so nobody looks through it by mistake.</li>
+        <li>Hold or clamp a plain card 20&ndash;50cm behind the eyepiece.</li>
+        <li>Focus the telescope until the Sun's edge (its limb) is sharp on the card.</li>
+      </ol>
+      <p class="warning-box">
+        <strong>Safety:</strong> never look through the eyepiece or finder scope &mdash; only ever
+        look at the projected image on the card. Never leave the telescope unattended while it's
+        pointed at the Sun: concentrated sunlight is a fire risk, and anyone else nearby could
+        look through it without knowing better. Keep sessions brief, since heat builds up inside
+        the eyepiece and tube. Never use a plastic eyepiece for this &mdash; the concentrated heat
+        can melt it.
+      </p>
+      <p class="note">
+        This method is good for observing sunspots directly, and &mdash; using the same tracking
+        idea as the worked example below &mdash; for estimating the Sun's rotation period.
+      </p>
+      <div class="diagram telescope-projection-diagram">
+        <svg viewBox="0 0 320 150" role="img" aria-label="Diagram of telescope projection: sunlight entering a small refractor through its eyepiece projects a sharp, magnified image of the Sun, including sunspots, onto a card held behind it">
+          <circle cx="22" cy="30" r="14" fill="#f5a623" />
+          <line x1="34" y1="40" x2="80" y2="60" stroke="#f5a623" stroke-width="1.5" />
+          <line x1="10" y1="44" x2="80" y2="63" stroke="#f5a623" stroke-width="1.5" />
+          <line x1="22" y1="44" x2="80" y2="64" stroke="#f5a623" stroke-width="1.5" />
+          <line x1="80" y1="50" x2="80" y2="80" stroke="#5b6b82" stroke-width="2" />
+          <rect x="80" y="55" width="110" height="20" fill="#d6dfe8" stroke="#8a97a5" stroke-width="1.5" />
+          <circle cx="193" cy="65" r="7" fill="#5b6b82" />
+          <line x1="198" y1="60" x2="276" y2="35" stroke="#f5a623" stroke-width="1" stroke-dasharray="2 2" />
+          <line x1="198" y1="70" x2="276" y2="95" stroke="#f5a623" stroke-width="1" stroke-dasharray="2 2" />
+          <rect x="276" y="20" width="8" height="100" fill="#efe9dc" stroke="#8a97a5" stroke-width="1.5" />
+          <circle cx="280" cy="65" r="13" fill="#f5a623" opacity="0.7" />
+          <circle cx="276" cy="61" r="1.6" fill="#5b3a1e" />
+          <circle cx="284" cy="69" r="1.3" fill="#5b3a1e" />
+        </svg>
+        <p class="diagram-caption">
+          A small refractor's eyepiece (centre) projects a magnified, focused image of the Sun
+          &mdash; including sunspots &mdash; onto a card held behind it
+        </p>
+      </div>
+
+      <h3>H-alpha filters</h3>
+      <p class="warning-box">
+        H-alpha solar filters must be dedicated, front-mounted systems, fitted over the full
+        aperture at the front of the telescope &mdash; <strong>never</strong> an eyepiece-end
+        filter (these sit at the telescope's concentrated focal point and can crack or fail from
+        the heat) and <strong>never</strong> a photographic or imaging-only H-alpha filter used
+        for direct visual observation (these aren't built to safely handle the full, concentrated
+        energy your eye would receive).
+      </p>
+      <p>
+        A correctly mounted H-alpha filter isolates an extremely narrow band of light at
+        656.28&nbsp;nm (deep red) &mdash; the hydrogen-alpha spectral line &mdash; blocking almost
+        everything else. This reveals features completely invisible in ordinary white light:
+        prominences (loops of glowing gas arcing above the edge of the disc), filaments (the same
+        kind of feature seen from above, as dark threads crossing the disc), plage (bright patches
+        near active regions), and spicules (short-lived jets of gas across the surface).
+      </p>
+
+      <h3>X-ray imaging</h3>
+      <p>
+        The Sun also emits X-rays, but Earth's atmosphere absorbs them before they reach the
+        ground &mdash; so X-ray telescopes must be based in space, in orbit above the atmosphere,
+        to see them at all.
+      </p>
+      <p>
+        On an X-ray image of the Sun, the bright white patches are active regions: sites of
+        intense, tangled magnetic activity, often around sunspot groups &mdash; the same regions
+        responsible for solar flares.
+      </p>
     </section>
 
     <section class="notes-section">
@@ -320,7 +395,7 @@
     </section>
   </main>
 
-  <script src="../src/curriculum.js?v=202609221500"></script>
+  <script src="../src/curriculum.js?v=202609221800"></script>
   <script src="../src/solarPosition.js?v=202609212100"></script>
   <script src="../src/coordinates.js?v=202609212100"></script>
   <script src="../src/earthOrbit.js?v=202609212100"></script>
@@ -328,6 +403,6 @@
   <script src="../src/sunDeclinationQuestions.js?v=202609212100"></script>
   <script src="../glossary.js?v=202609221600"></script>
   <script src="../quiz-ui.js?v=202609212100"></script>
-  <script src="sun-declination.js?v=202609221600"></script>
+  <script src="sun-declination.js?v=202609221800"></script>
 </body>
 </html>

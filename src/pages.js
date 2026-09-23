@@ -32,9 +32,9 @@ const PAGES = [
   {
     title: 'Observing the Sun',
     description:
-      "How the Sun's position in the sky changes through the year, and how to observe it safely — declination and transit altitude, structure, sunspots, and solar wind.",
+      "How the Sun's position in the sky changes through the year, and how to observe it safely — declination and transit altitude, structure, sunspots, solar wind, and observation methods from pinhole projection to X-ray imaging.",
     href: 'sims/sun-declination.html',
-    units: ['u1.11', 'u2.9', 'u2.5', 'u2.11', 'u2.12'],
+    units: ['u1.11', 'u2.9', 'u2.5', 'u2.11', 'u2.12', 'u5.4'],
   },
   {
     title: 'Retrograde Motion and Planetary Alignments',

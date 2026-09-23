@@ -280,6 +280,13 @@ const UNITS = [
         depth: 'know',
         notes: 'flyby, orbiter, lander and rover missions',
       },
+      {
+        id: 'u5.4',
+        title: 'Solar observation methods',
+        depth: 'know',
+        notes:
+          'telescope projection (safe; reveals sunspots and rotation); H-alpha filters (front-mounted only, isolating the 656.28nm line to reveal prominences, filaments, plage and spicules); X-ray imaging (must be done from space, since the atmosphere absorbs X-rays; bright patches are active regions linked to flares)',
+      },
     ],
   },
   {

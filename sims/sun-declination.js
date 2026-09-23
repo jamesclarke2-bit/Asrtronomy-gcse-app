@@ -1,6 +1,6 @@
 (function () {
   const YEAR = 2026;
-  const CURRICULUM_UNITS = ['u1.11', 'u2.9', 'u2.5', 'u2.11', 'u2.12'];
+  const CURRICULUM_UNITS = ['u1.11', 'u2.9', 'u2.5', 'u2.11', 'u2.12', 'u5.4'];
 
   const dateSlider = document.getElementById('date-slider');
   const dateLabel = document.getElementById('date-label');
