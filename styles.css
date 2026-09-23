@@ -93,6 +93,11 @@ canvas {
   background: #f5a623;
 }
 
+.legend-dot-reference-star {
+  background: #e8e8e0;
+  border: 1px solid #8a97a5;
+}
+
 /* Opt-in via .tool-layout, a second class alongside the shared .layout
    (so a plain .layout page is untouched): keep the control panels usable
    alongside the diagrams at every viewport size, instead of them

@@ -63,6 +63,13 @@ const PAGES = [
     href: 'sims/moon-phases.html',
     units: ['u2.3'],
   },
+  {
+    title: 'Sidereal vs Synodic Month',
+    description:
+      "Animate Earth orbiting the Sun and the Moon orbiting Earth to see why the Moon takes ~27.3 days to line up with the same star again, but ~29.53 days to repeat the same phase.",
+    href: 'sims/sidereal-vs-synodic.html',
+    units: ['u2.17'],
+  },
 ];
 
 const api = { PAGES };

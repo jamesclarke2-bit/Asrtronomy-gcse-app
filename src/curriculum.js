@@ -242,6 +242,13 @@ const UNITS = [
         notes:
           "which wavelengths reach the ground (mainly radio and optical, and some IR) versus get absorbed high up (UV, X-ray and gamma by the ozone layer and upper atmosphere; most IR by greenhouse gases); the reason ground-based astronomy is largely limited to optical/radio/near-IR, and why X-ray, gamma-ray and much of the IR/UV spectrum need a space telescope",
       },
+      {
+        id: 'u2.17',
+        title: 'Sidereal vs synodic month',
+        depth: 'understand',
+        notes:
+          'the sidereal month (~27.3 days) is how long the Moon takes to return to the same direction against the fixed stars; the synodic month (~29.53 days) is how long it takes to return to the same phase. The ~2.2-day gap exists because Earth also moves along its own orbit during that time, so the Moon needs a bit longer to catch back up to the same Sun-Earth-Moon alignment',
+      },
     ],
   },
   {
