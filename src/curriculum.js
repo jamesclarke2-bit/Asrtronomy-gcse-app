@@ -155,7 +155,13 @@ const UNITS = [
           'an oblate spheroid (nearly spherical, slightly flattened at the poles), diameter ~12,742 km; internally layered into core (inner/outer, iron-nickel, drives the magnetic field), mantle (thickest layer, semi-solid rock that slowly flows) and crust (thin, cool, brittle outer shell)',
       },
       { id: 'u2.2', title: 'Moon structure', depth: 'know' },
-      { id: 'u2.3', title: 'Phases of the Moon', depth: 'understand' },
+      {
+        id: 'u2.3',
+        title: 'Phases of the Moon',
+        depth: 'understand',
+        notes:
+          "caused by the Moon's changing position relative to the Sun as seen from Earth (and so how much of its permanently half-lit surface faces us), not by Earth's shadow — that's a lunar eclipse, a separate and much rarer event",
+      },
       {
         id: 'u2.4',
         title: 'Nuclear fusion',

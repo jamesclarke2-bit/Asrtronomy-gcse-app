@@ -56,6 +56,13 @@ const PAGES = [
     href: 'notes/earth-structure.html',
     units: ['u2.1', 'u2.9', 'u2.15', 'u2.16'],
   },
+  {
+    title: 'Moon Phases',
+    description:
+      "Two synced views, driven by one date: why phases happen (the Moon's position relative to the Sun) and what you'd actually see from Earth that night — plus why it isn't Earth's shadow.",
+    href: 'sims/moon-phases.html',
+    units: ['u2.3'],
+  },
 ];
 
 const api = { PAGES };

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Moon Phases</title>
+  <link rel="stylesheet" href="../styles.css?v=202609231200" />
+</head>
+<body>
+  <main>
+    <p class="back-link"><a href="../index.html">&larr; Back to all tools</a></p>
+
+    <h1>Moon Phases</h1>
+    <p class="subtitle">
+      Two views of the same moment, driven by one date: the top-down view shows
+      <strong>why</strong> &mdash; the Moon's position relative to the Sun &mdash; and the
+      Earth-view disc shows <strong>what you'd actually see</strong> from Earth that night.
+    </p>
+
+    <div class="layout tool-layout">
+      <div class="diagrams-column">
+        <div class="diagram">
+          <h2>Top-down: Earth, Moon and sunlight</h2>
+          <canvas
+            id="moon-orbit"
+            width="380"
+            height="300"
+            aria-label="Top-down schematic showing Earth at the centre, the Moon's current position on its orbit, and sunlight arriving from a fixed direction. The Moon is always drawn half-lit on the side facing the Sun, whatever its position."
+          ></canvas>
+          <p class="legend">
+            <span class="legend-dot legend-dot-observer"></span> Earth
+            &nbsp; <span class="legend-dot legend-dot-star"></span> Sunlight direction (fixed)
+          </p>
+          <p class="note">
+            The Moon is always half-lit on the side facing the Sun &mdash; that never changes.
+            What changes as it orbits is how much of that lit half <strong>we can see</strong>
+            from Earth.
+          </p>
+        </div>
+
+        <div class="diagram">
+          <h2>As seen from Earth</h2>
+          <canvas
+            id="moon-earth-view"
+            width="260"
+            height="260"
+            aria-label="The Moon's disc as it actually appears from Earth on the selected date, computed from the illuminated fraction"
+          ></canvas>
+          <p class="eot-readout" id="phase-name-readout"></p>
+        </div>
+      </div>
+
+      <div class="controls">
+        <div class="control">
+          <label for="date-slider">Date: <span id="date-label"></span></label>
+          <input type="range" id="date-slider" min="0" max="364" step="1" value="0" />
+        </div>
+
+        <dl class="readout">
+          <div class="readout-row">
+            <dt>Illuminated</dt>
+            <dd id="illuminated-value"></dd>
+          </div>
+          <div class="readout-row">
+            <dt>Waxing or waning</dt>
+            <dd id="waxing-value"></dd>
+          </div>
+        </dl>
+
+        <p class="exam-tip">
+          <strong>Common exam confusion:</strong> phases are caused by the Moon's changing
+          position relative to the Sun &mdash; and so how much of its permanently half-lit
+          surface faces Earth &mdash; <strong>not</strong> by Earth's shadow falling on the
+          Moon. Earth's shadow on the Moon is a completely separate, much rarer event: a
+          <button type="button" class="glossary-toggle glossary-term-button" data-term="lunarEclipse" aria-label="What is a lunar eclipse?" aria-expanded="false">lunar eclipse</button>,
+          which only happens when the Sun, Earth and Moon line up almost exactly &mdash; unlike
+          an ordinary phase, which happens every single day of every month.
+        </p>
+        <span class="glossary-definition" data-term="lunarEclipse" hidden></span>
+
+        <p class="eot-link">
+          <a href="../notes/earth-structure.html">Curious about the Earth-Sun-Moon system's other motions? See Earth: Structure, Atmosphere and Motion &rarr;</a>
+        </p>
+
+        <p class="coverage" id="coverage"></p>
+      </div>
+    </div>
+  </main>
+
+  <script src="../src/curriculum.js?v=202609231200"></script>
+  <script src="../src/moonPhase.js?v=202609231200"></script>
+  <script src="../glossary.js?v=202609221600"></script>
+  <script src="moon-phases.js?v=202609231200"></script>
+</body>
+</html>
