@@ -875,6 +875,17 @@ canvas {
   line-height: 1.5;
 }
 
+/* Flags a common exam mix-up — distinct from .warning-box (a safety
+   hazard) and .definition-box (a neutral term definition). */
+.exam-tip {
+  background: #eaf2fb;
+  border: 1px solid #b7cbe8;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  color: #173d75;
+  line-height: 1.5;
+}
+
 .pinhole-diagram,
 .telescope-projection-diagram {
   max-width: 380px;

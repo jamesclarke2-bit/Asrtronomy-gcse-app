@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Observing the Sun</title>
-  <link rel="stylesheet" href="../styles.css?v=202609221800" />
+  <link rel="stylesheet" href="../styles.css?v=202609221900" />
 </head>
 <body>
   <main>
@@ -370,20 +370,69 @@
       <p class="note">
         This is the Sun's <em>synodic</em> rotation period &mdash; as seen from Earth, which is
         itself orbiting the Sun, the same distinction as the Moon's synodic month versus its
-        sidereal one. It also only measures the latitude that sunspot happens to sit at: the Sun
-        is a ball of plasma, not a solid body, and rotates faster at its equator (about 25 days)
-        than near its poles (over 30 days) &mdash; a behaviour called differential rotation.
+        sidereal one. The real observed synodic period is about 27.27 days; a single worked
+        example like this rarely lands exactly on it, since it also depends on the latitude that
+        particular sunspot happens to sit at &mdash; the Sun is a ball of plasma, not a solid
+        body, and rotates faster at its equator (about 25 days, sidereal) than near its poles
+        (up to about 35 days) &mdash; a behaviour called differential rotation.
+      </p>
+      <p class="exam-tip">
+        <strong>Common exam confusion:</strong> the Sun's <strong>rotation period</strong>
+        (~25&ndash;35 days, how fast it spins) and the <strong>solar cycle</strong> (~11 years,
+        how sunspot number rises and falls) are entirely different things, on wildly different
+        timescales &mdash; don't mix them up just because both are described as "a period of the
+        Sun".
+      </p>
+
+      <h3>The butterfly diagram</h3>
+      <p>
+        Plotting each sunspot's latitude against the date it was observed produces the
+        "butterfly diagram": every cycle, sunspots first appear at high latitude (around
+        35&deg;, in both hemispheres) and drift steadily toward the equator as the cycle
+        progresses, before the next cycle begins again at high latitude. Drag the slider to see
+        where a typical sunspot would sit at a given point in the pattern.
+      </p>
+      <canvas
+        id="butterfly-graph"
+        width="700"
+        height="300"
+        aria-label="The sunspot butterfly diagram: latitude against year, showing sunspots starting near 35 degrees at the start of each roughly 11-year cycle and drifting toward the equator as each cycle progresses"
+      ></canvas>
+      <div class="control">
+        <label for="butterfly-year-slider">Year: <span id="butterfly-year-label"></span></label>
+        <input type="range" id="butterfly-year-slider" min="0" max="33" step="1" value="0" />
+      </div>
+      <p class="eot-readout" id="butterfly-readout"></p>
+      <p class="note">
+        Two values are easy to read straight off the diagram: the gap between successive
+        high-latitude starts gives the <strong>solar cycle length</strong> (about 11 years), and
+        the latitude those starts happen at gives the <strong>latitude at cycle start</strong>
+        (about 35&deg;).
+      </p>
+
+      <h3>The Maunder Minimum</h3>
+      <p>
+        Between 1645 and 1715, the Sun went through the <strong>Maunder Minimum</strong> &mdash;
+        a prolonged dip in the solar cycle where sunspot numbers barely rose at all. At its
+        deepest, from 1672 to 1699, fewer than 50 sunspots were recorded in total, against the
+        40,000&ndash;50,000 that would normally appear over a similar stretch. It coincided with
+        the coldest part of the <strong>Little Ice Age</strong> in Europe, and &mdash;
+        independently of the historical sunspot counts &mdash; has since been confirmed by
+        isotope data: proxies like carbon-14 and beryllium-10, produced when cosmic rays strike
+        the atmosphere, spike during quiet solar periods (a weaker solar wind lets more cosmic
+        rays through), and both show exactly this signature across 1645&ndash;1715.
       </p>
     </section>
 
     <section class="notes-section">
       <h2>Solar wind and its effects</h2>
       <p>
-        The corona is so hot that some of its charged particles &mdash; mostly protons and
-        electrons &mdash; move fast enough to escape the Sun's gravity entirely, streaming
-        outward through the Solar System as the
+        The corona is so hot that some of its charged particles &mdash; electrons, protons and
+        alpha particles &mdash; move fast enough to escape the Sun's gravity entirely, streaming
+        outward through the Solar System at typical speeds of 300&ndash;800&nbsp;km/s as the
         <button type="button" class="glossary-toggle glossary-term-button" data-term="solarWind" aria-label="What is the solar wind?" aria-expanded="false">solar wind</button>.
-        A few of its effects reach all the way to Earth and beyond:
+        It constantly influences every planet's magnetosphere; a few of its effects reach all the
+        way to Earth and beyond:
       </p>
       <span class="glossary-definition" data-term="solarWind" hidden></span>
       <ul class="tip-list">
@@ -392,17 +441,31 @@
         <li><strong>Geomagnetic storms</strong> &mdash; a surge in solar wind, often from a coronal mass ejection, temporarily disturbs Earth's magnetic field.</li>
         <li><strong>Satellites, aircraft and power grids</strong> &mdash; a strong geomagnetic storm can degrade GPS accuracy, disrupt satellite electronics and radio communications, raise radiation exposure on polar flight routes, and even induce damaging currents in power grids on the ground.</li>
       </ul>
+
+      <h3>Van Allen belts</h3>
+      <p>
+        Earth's magnetic field doesn't just deflect the solar wind &mdash; it also permanently
+        traps some of its charged particles in two doughnut-shaped regions called the
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="vanAllenBelts" aria-label="What are the Van Allen belts?" aria-expanded="false">Van Allen belts</button>:
+        an inner belt (mostly energetic protons) and an outer belt (mostly electrons). Together
+        they help shield the surface from this radiation &mdash; but pose a real risk to
+        satellites and astronauts that spend time passing through or within them, whose
+        electronics and health are both vulnerable to the trapped particles.
+      </p>
+      <span class="glossary-definition" data-term="vanAllenBelts" hidden></span>
     </section>
   </main>
 
-  <script src="../src/curriculum.js?v=202609221800"></script>
+  <script src="../src/curriculum.js?v=202609221900"></script>
   <script src="../src/solarPosition.js?v=202609212100"></script>
   <script src="../src/coordinates.js?v=202609212100"></script>
   <script src="../src/earthOrbit.js?v=202609212100"></script>
   <script src="../src/orbitPanel.js?v=202609221500"></script>
+  <script src="../src/butterflyDiagram.js?v=202609221900"></script>
   <script src="../src/sunDeclinationQuestions.js?v=202609212100"></script>
+  <script src="../src/solarActivityQuestions.js?v=202609221900"></script>
   <script src="../glossary.js?v=202609221600"></script>
   <script src="../quiz-ui.js?v=202609212100"></script>
-  <script src="sun-declination.js?v=202609221800"></script>
+  <script src="sun-declination.js?v=202609221900"></script>
 </body>
 </html>

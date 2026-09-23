@@ -1,6 +1,6 @@
 (function () {
   const YEAR = 2026;
-  const CURRICULUM_UNITS = ['u1.11', 'u2.9', 'u2.5', 'u2.11', 'u2.12', 'u5.4'];
+  const CURRICULUM_UNITS = ['u1.11', 'u2.9', 'u2.5', 'u2.11', 'u2.12', 'u2.13', 'u2.14', 'u5.4'];
 
   const dateSlider = document.getElementById('date-slider');
   const dateLabel = document.getElementById('date-label');
@@ -16,6 +16,12 @@
   const meridianCanvas = document.getElementById('sun-meridian');
   const meridianCtx = meridianCanvas.getContext('2d');
   const orbitCanvas = document.getElementById('orbit');
+
+  const butterflyCanvas = document.getElementById('butterfly-graph');
+  const butterflyCtx = butterflyCanvas.getContext('2d');
+  const butterflyYearSlider = document.getElementById('butterfly-year-slider');
+  const butterflyYearLabel = document.getElementById('butterfly-year-label');
+  const butterflyReadout = document.getElementById('butterfly-readout');
 
   // Same colour convention as coordinates.html: blue for facts that
   // depend on the observer (pole, equator), amber for facts that depend
@@ -162,6 +168,144 @@
     sunAltitudeValue.textContent = `${sunTransit.altitude.toFixed(1)}°${sunTransit.altitude < 0 ? ' (below horizon)' : ''}`;
   }
 
+  // --- Butterfly diagram --------------------------------------------
+  // Three successive cycles (schematic — see src/butterflyDiagram.js for
+  // the shared start-latitude/cycle-length model this and the practice
+  // questions both use), each with a scatter of sunspots in both
+  // hemispheres, randomly jittered around the smooth envelope so the
+  // plot reads as an actual scatter rather than a clean curve.
+  const BUTTERFLY_CYCLE_COUNT = 3;
+  const BUTTERFLY_MAX_YEAR = BUTTERFLY_CYCLE_COUNT * ButterflyDiagram.CYCLE_LENGTH_YEARS;
+  const BUTTERFLY_POINTS_PER_CYCLE = 90;
+
+  function seededRandom(seed) {
+    // Deterministic (not Math.random()) so the scatter doesn't
+    // reshuffle itself on every reload.
+    let s = seed;
+    return () => {
+      s = (s * 9301 + 49297) % 233280;
+      return s / 233280;
+    };
+  }
+
+  const BUTTERFLY_POINTS = (function precomputeButterflyPoints() {
+    const points = [];
+    const rand = seededRandom(42);
+    for (let cycle = 0; cycle < BUTTERFLY_CYCLE_COUNT; cycle++) {
+      const cycleStartYear = cycle * ButterflyDiagram.CYCLE_LENGTH_YEARS;
+      for (let i = 0; i < BUTTERFLY_POINTS_PER_CYCLE; i++) {
+        const t = rand() * ButterflyDiagram.CYCLE_LENGTH_YEARS;
+        const envelope = ButterflyDiagram.latitudeEnvelopeDeg(t);
+        const jitter = (rand() - 0.5) * 6;
+        const hemisphere = rand() < 0.5 ? 1 : -1;
+        points.push({ year: cycleStartYear + t, latitude: hemisphere * Math.max(1, envelope + jitter) });
+      }
+    }
+    return points;
+  })();
+
+  function drawButterfly(selectedYear) {
+    const width = butterflyCanvas.width;
+    const height = butterflyCanvas.height;
+    const marginLeft = 45;
+    const marginRight = 15;
+    const marginTop = 15;
+    const marginBottom = 30;
+    const plotWidth = width - marginLeft - marginRight;
+    const plotHeight = height - marginTop - marginBottom;
+    const minLat = -40;
+    const maxLat = 40;
+
+    const xForYear = (year) => marginLeft + (year / BUTTERFLY_MAX_YEAR) * plotWidth;
+    const yForLat = (lat) => marginTop + (1 - (lat - minLat) / (maxLat - minLat)) * plotHeight;
+
+    butterflyCtx.clearRect(0, 0, width, height);
+
+    // Gridlines: latitude every 10 degrees, years at each cycle boundary
+    butterflyCtx.strokeStyle = '#e5e9ee';
+    butterflyCtx.fillStyle = '#8a97a5';
+    butterflyCtx.font = '11px sans-serif';
+    butterflyCtx.textAlign = 'right';
+    butterflyCtx.textBaseline = 'middle';
+    for (let lat = minLat; lat <= maxLat; lat += 10) {
+      const y = yForLat(lat);
+      butterflyCtx.beginPath();
+      butterflyCtx.moveTo(marginLeft, y);
+      butterflyCtx.lineTo(width - marginRight, y);
+      butterflyCtx.stroke();
+      butterflyCtx.fillText(`${lat}°`, marginLeft - 8, y);
+    }
+    butterflyCtx.strokeStyle = '#b8c2cc';
+    butterflyCtx.lineWidth = 1.5;
+    butterflyCtx.beginPath();
+    butterflyCtx.moveTo(marginLeft, yForLat(0));
+    butterflyCtx.lineTo(width - marginRight, yForLat(0));
+    butterflyCtx.stroke();
+    butterflyCtx.lineWidth = 1;
+
+    butterflyCtx.textAlign = 'center';
+    butterflyCtx.textBaseline = 'top';
+    for (let cycle = 0; cycle <= BUTTERFLY_CYCLE_COUNT; cycle++) {
+      const year = cycle * ButterflyDiagram.CYCLE_LENGTH_YEARS;
+      butterflyCtx.fillText(String(year), xForYear(year), height - marginBottom + 6);
+    }
+
+    // The scatter itself
+    BUTTERFLY_POINTS.forEach(({ year, latitude }) => {
+      butterflyCtx.beginPath();
+      butterflyCtx.arc(xForYear(year), yForLat(latitude), 2.3, 0, Math.PI * 2);
+      butterflyCtx.fillStyle = latitude >= 0 ? '#f5a623' : '#c0674a';
+      butterflyCtx.fill();
+    });
+
+    // Selected-year marker, following the smooth envelope in both
+    // hemispheres so it's easy to read a value straight off it.
+    const yearsIntoCycle = selectedYear % ButterflyDiagram.CYCLE_LENGTH_YEARS;
+    const envelope = ButterflyDiagram.latitudeEnvelopeDeg(yearsIntoCycle);
+    const markerX = xForYear(selectedYear);
+    butterflyCtx.strokeStyle = '#173d75';
+    butterflyCtx.lineWidth = 1.5;
+    butterflyCtx.setLineDash([4, 3]);
+    butterflyCtx.beginPath();
+    butterflyCtx.moveTo(markerX, marginTop);
+    butterflyCtx.lineTo(markerX, height - marginBottom);
+    butterflyCtx.stroke();
+    butterflyCtx.setLineDash([]);
+    [envelope, -envelope].forEach((lat) => {
+      butterflyCtx.beginPath();
+      butterflyCtx.arc(markerX, yForLat(lat), 5, 0, Math.PI * 2);
+      butterflyCtx.fillStyle = '#2a6bd6';
+      butterflyCtx.fill();
+      butterflyCtx.strokeStyle = '#173d75';
+      butterflyCtx.lineWidth = 1.5;
+      butterflyCtx.stroke();
+    });
+
+    butterflyCtx.fillStyle = '#555';
+    butterflyCtx.font = '11px sans-serif';
+    butterflyCtx.textAlign = 'center';
+    butterflyCtx.textBaseline = 'top';
+    butterflyCtx.fillText('Year', width / 2, height - marginBottom + 18);
+    butterflyCtx.save();
+    butterflyCtx.translate(14, height / 2);
+    butterflyCtx.rotate(-Math.PI / 2);
+    butterflyCtx.textAlign = 'center';
+    butterflyCtx.textBaseline = 'middle';
+    butterflyCtx.fillText('Latitude', 0, 0);
+    butterflyCtx.restore();
+  }
+
+  function updateButterfly() {
+    const selectedYear = Number(butterflyYearSlider.value);
+    butterflyYearLabel.textContent = String(selectedYear);
+    const yearsIntoCycle = selectedYear % ButterflyDiagram.CYCLE_LENGTH_YEARS;
+    const cycleNumber = Math.floor(selectedYear / ButterflyDiagram.CYCLE_LENGTH_YEARS) + 1;
+    const envelope = ButterflyDiagram.latitudeEnvelopeDeg(yearsIntoCycle);
+    butterflyReadout.textContent =
+      `Cycle ${cycleNumber}, ${yearsIntoCycle} year${yearsIntoCycle === 1 ? '' : 's'} in: sunspots typically near ±${envelope.toFixed(0)}° latitude.`;
+    drawButterfly(selectedYear);
+  }
+
   // --- Main update loop -------------------------------------------------
 
   function update() {
@@ -190,10 +334,13 @@
   }
 
   [dateSlider, latSlider].forEach((el) => el.addEventListener('input', update));
+  butterflyYearSlider.addEventListener('input', updateButterfly);
 
   const GLOSSARY = {
     solarWind:
-      'Solar wind: a continuous stream of charged particles (mostly protons and electrons) escaping the corona fast enough to overcome the Sun\'s gravity, flowing outward through the whole Solar System.',
+      "Solar wind: a continuous stream of charged particles (electrons, protons and alpha particles) escaping the corona at roughly 300-800 km/s, fast enough to overcome the Sun's gravity, flowing outward through the whole Solar System.",
+    vanAllenBelts:
+      "Van Allen belts: two doughnut-shaped regions where Earth's magnetic field traps charged particles from the solar wind — an inner belt (mostly protons) and an outer belt (mostly electrons).",
     core: 'Core: where nuclear fusion turns hydrogen into helium, releasing the Sun\'s energy at around 15 million °C.',
     radiative:
       'Radiative zone: energy moves outward as radiation, bouncing between particles so slowly it can take over 100,000 years to cross.',
@@ -208,7 +355,11 @@
   };
 
   update();
+  updateButterfly();
   renderCoverage();
-  QuizUI.mount(SunDeclinationQuestions.makeQuestions(SolarPosition, Coordinates));
+  QuizUI.mount([
+    ...SunDeclinationQuestions.makeQuestions(SolarPosition, Coordinates),
+    ...SolarActivityQuestions.makeQuestions(ButterflyDiagram),
+  ]);
   Glossary.init(GLOSSARY);
 })();

@@ -160,7 +160,7 @@ const UNITS = [
         title: 'Sunspots',
         depth: 'understand',
         notes:
-          "cooler, magnetically active regions; the solar cycle; tracking a sunspot's position over successive days to estimate the Sun's rotation period",
+          "cooler, magnetically active regions; tracking a sunspot's position over successive days to estimate the Sun's (differential) rotation period, distinct from the ~11-year solar cycle of rising and falling sunspot number — a common exam confusion; the butterfly diagram, showing sunspot latitude drifting from around 35° toward the equator over each cycle",
       },
       {
         id: 'u2.6',
@@ -199,7 +199,21 @@ const UNITS = [
         title: 'Solar wind',
         depth: 'understand',
         notes:
-          'a continuous stream of charged particles escaping the corona; causes aurorae, shapes cometary ion tails, and can drive geomagnetic storms that disrupt satellites, aircraft and power grids',
+          'a continuous stream of charged particles (electrons, protons and alpha particles) escaping the corona at roughly 300-800 km/s; influences planetary magnetospheres, causes aurorae, shapes cometary ion tails, and can drive geomagnetic storms that disrupt satellites, aircraft and power grids',
+      },
+      {
+        id: 'u2.13',
+        title: 'Van Allen belts',
+        depth: 'know',
+        notes:
+          "two doughnut-shaped regions of charged particles trapped by Earth's magnetic field: an inner belt (mostly protons) and an outer belt (mostly electrons); shield the surface from radiation but pose a risk to satellites and astronauts",
+      },
+      {
+        id: 'u2.14',
+        title: 'The Maunder Minimum',
+        depth: 'know',
+        notes:
+          'a 1645-1715 dip in the solar cycle (under 50 sunspots recorded in 1672-99, against a normal 40,000-50,000); coincided with the Little Ice Age; confirmed independently via C-14 and Be-10 isotope data',
       },
     ],
   },
