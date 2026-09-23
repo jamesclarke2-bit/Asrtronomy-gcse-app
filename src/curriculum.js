@@ -147,7 +147,13 @@ const UNITS = [
     id: 'u2',
     title: 'Earth, Moon & Sun system',
     subtopics: [
-      { id: 'u2.1', title: 'Earth structure', depth: 'know' },
+      {
+        id: 'u2.1',
+        title: 'Earth structure',
+        depth: 'know',
+        notes:
+          'an oblate spheroid (nearly spherical, slightly flattened at the poles), diameter ~12,742 km; internally layered into core (inner/outer, iron-nickel, drives the magnetic field), mantle (thickest layer, semi-solid rock that slowly flows) and crust (thin, cool, brittle outer shell)',
+      },
       { id: 'u2.2', title: 'Moon structure', depth: 'know' },
       { id: 'u2.3', title: 'Phases of the Moon', depth: 'understand' },
       {
@@ -215,6 +221,20 @@ const UNITS = [
         depth: 'know',
         notes:
           'a 1645-1715 dip in the solar cycle (under 50 sunspots recorded in 1672-99, against a normal 40,000-50,000); coincided with the Little Ice Age; confirmed independently via C-14 and Be-10 isotope data',
+      },
+      {
+        id: 'u2.15',
+        title: "Earth's atmosphere",
+        depth: 'know',
+        notes:
+          'composition by volume: nitrogen 78%, oxygen 21%, argon 1%, carbon dioxide 0.04%, variable water vapour (~1%), trace neon/helium/methane; thins out to a boundary with space at roughly 10,000 km; layered into troposphere (weather, aircraft), stratosphere (ozone layer, UV absorption), mesosphere (meteors burn up) and thermosphere (aurorae, ISS orbit)',
+      },
+      {
+        id: 'u2.16',
+        title: 'Atmospheric transmission window',
+        depth: 'understand',
+        notes:
+          "which wavelengths reach the ground (mainly radio and optical, and some IR) versus get absorbed high up (UV, X-ray and gamma by the ozone layer and upper atmosphere; most IR by greenhouse gases); the reason ground-based astronomy is largely limited to optical/radio/near-IR, and why X-ray, gamma-ray and much of the IR/UV spectrum need a space telescope",
       },
     ],
   },

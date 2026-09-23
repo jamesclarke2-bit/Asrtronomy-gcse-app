@@ -49,6 +49,13 @@ const PAGES = [
     href: 'notes/observing-techniques.html',
     units: ['u1.5', 'u1.18', 'u1.19', 'u1.20'],
   },
+  {
+    title: 'Earth: Structure, Atmosphere and Motion',
+    description:
+      "Earth's shape and layered interior, the atmosphere's composition and layers, why it both helps and hinders astronomy, the transmission window that limits ground-based telescopes, and Earth's own rotation, revolution and tilt.",
+    href: 'notes/earth-structure.html',
+    units: ['u2.1', 'u2.9', 'u2.15', 'u2.16'],
+  },
 ];
 
 const api = { PAGES };
