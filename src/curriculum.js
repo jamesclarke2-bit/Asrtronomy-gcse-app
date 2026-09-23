@@ -41,7 +41,8 @@ const UNITS = [
         id: 'u1.5',
         title: 'Seeing conditions',
         depth: 'understand',
-        notes: 'light pollution, atmospheric seeing and transparency',
+        notes:
+          'light pollution and skyglow (the orange background haze over urban areas, from sources like floodlighting, streetlamps and car park lighting), Dark Sky Parks, atmospheric seeing and transparency',
       },
       {
         id: 'u1.6',
