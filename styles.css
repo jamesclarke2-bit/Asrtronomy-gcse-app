@@ -199,6 +199,17 @@ canvas {
   width: 100%;
 }
 
+.control input[type="date"] {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.5rem 0.6rem;
+  border: 1px solid #cdd7e1;
+  border-radius: 8px;
+  font: inherit;
+  color: inherit;
+  background: #fff;
+}
+
 .readout {
   display: grid;
   grid-template-columns: auto 1fr;

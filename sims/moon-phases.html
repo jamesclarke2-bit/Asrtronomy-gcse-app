@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Moon Phases</title>
-  <link rel="stylesheet" href="../styles.css?v=202609231200" />
+  <link rel="stylesheet" href="../styles.css?v=202609231400" />
 </head>
 <body>
   <main>
@@ -52,8 +52,13 @@
 
       <div class="controls">
         <div class="control">
-          <label for="date-slider">Date: <span id="date-label"></span></label>
-          <input type="range" id="date-slider" min="0" max="364" step="1" value="0" />
+          <label for="date-input">Date: <span id="date-label"></span></label>
+          <input type="date" id="date-input" />
+          <p class="panel-note">
+            A real calendar date, not a repeating cycle &mdash; the Moon's phase on any given
+            date depends on the year too, so you can check this against what's actually in the
+            sky tonight, or against any online almanac.
+          </p>
         </div>
 
         <dl class="readout">
@@ -88,8 +93,8 @@
   </main>
 
   <script src="../src/curriculum.js?v=202609231200"></script>
-  <script src="../src/moonPhase.js?v=202609231200"></script>
+  <script src="../src/moonPhase.js?v=202609231400"></script>
   <script src="../glossary.js?v=202609221600"></script>
-  <script src="moon-phases.js?v=202609231200"></script>
+  <script src="moon-phases.js?v=202609231400"></script>
 </body>
 </html>

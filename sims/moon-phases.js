@@ -1,8 +1,7 @@
 (function () {
-  const YEAR = 2026;
   const CURRICULUM_UNITS = ['u2.3'];
 
-  const dateSlider = document.getElementById('date-slider');
+  const dateInput = document.getElementById('date-input');
   const dateLabel = document.getElementById('date-label');
   const illuminatedValue = document.getElementById('illuminated-value');
   const waxingValue = document.getElementById('waxing-value');
@@ -18,14 +17,32 @@
   const MOON_LIT_COLOR = '#f5e8c8';
   const MOON_DARK_COLOR = '#3a3f4d';
 
-  function dayOfYearToUTCDate(year, dayIndex) {
-    const d = new Date(Date.UTC(year, 0, 1, 12, 0));
-    d.setUTCDate(d.getUTCDate() + dayIndex);
-    return d;
+  // dateInput.value is a "YYYY-MM-DD" string (native <input type="date">
+  // behaviour) — parsed as UTC noon, matching the noon-anchoring the rest
+  // of the app uses to sidestep local-timezone date-boundary issues.
+  function parseDateInput(value) {
+    const [year, month, day] = value.split('-').map(Number);
+    return new Date(Date.UTC(year, month - 1, day, 12, 0));
   }
 
+  function toDateInputValue(date) {
+    const year = String(date.getFullYear()).padStart(4, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
+  // Unlike the Sun's position, the Moon's phase does NOT repeat every
+  // calendar year (the ~29.53-day synodic month doesn't divide evenly
+  // into a year), so the year has to be shown here for the date to be a
+  // real, checkable moment rather than an ambiguous "21 June".
   function formatDate(date) {
-    return date.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', timeZone: 'UTC' });
+    return date.toLocaleDateString('en-GB', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+      timeZone: 'UTC',
+    });
   }
 
   // A small moon icon that is always half-lit on the side facing the Sun
@@ -171,8 +188,7 @@
   }
 
   function render() {
-    const dayIndex = Number(dateSlider.value);
-    const date = dayOfYearToUTCDate(YEAR, dayIndex);
+    const date = parseDateInput(dateInput.value);
     dateLabel.textContent = formatDate(date);
 
     const { theta, illuminatedFraction, waxing } = MoonPhase.getMoonPhase(date);
@@ -187,7 +203,8 @@
     phaseNameReadout.textContent = MoonPhase.phaseName(theta);
   }
 
-  dateSlider.addEventListener('input', render);
+  dateInput.value = toDateInputValue(new Date());
+  dateInput.addEventListener('input', render);
 
   function renderCoverage() {
     const coverageEl = document.getElementById('coverage');
