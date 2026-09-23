@@ -267,8 +267,55 @@ canvas {
   margin-bottom: 0.75rem;
 }
 
+.eot-graphs-section {
+  margin-top: 2.5rem;
+}
+
+.eot-graphs-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+.eot-graphs-row > .eot-graph-section {
+  flex: 2 1 500px;
+  /* Without this, the canvas's own intrinsic width sets this flex
+     item's automatic min-width, overriding max-width:100% on the
+     canvas and forcing a wrap well before the row actually runs out
+     of space. */
+  min-width: 0;
+}
+
+.eot-graphs-row > .analemma-section {
+  flex: 1 1 320px;
+  min-width: 0;
+}
+
 .eot-graph-section {
   max-width: 700px;
+}
+
+.definition-box {
+  background: #fffbe6;
+  border: 1px solid #f0e2a3;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  margin: 0.75rem 0;
+}
+
+.definition-box dt {
+  font-weight: 700;
+  margin-top: 0.6rem;
+}
+
+.definition-box dt:first-child {
+  margin-top: 0;
+}
+
+.definition-box dd {
+  margin: 0.2rem 0 0;
+  color: #444;
 }
 
 .eot-readout {
