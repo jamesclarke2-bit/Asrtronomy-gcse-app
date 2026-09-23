@@ -15,6 +15,7 @@
 
   const meridianCanvas = document.getElementById('sun-meridian');
   const meridianCtx = meridianCanvas.getContext('2d');
+  const orbitCanvas = document.getElementById('orbit');
 
   // Same colour convention as coordinates.html: blue for facts that
   // depend on the observer (pole, equator), amber for facts that depend
@@ -179,6 +180,7 @@
     declinationReadout.textContent = `Declination: ${declination >= 0 ? '+' : ''}${declination.toFixed(1)}°`;
 
     drawMeridian(declination, lat);
+    OrbitPanel.draw(orbitCanvas, dayIndex);
   }
 
   function renderCoverage() {

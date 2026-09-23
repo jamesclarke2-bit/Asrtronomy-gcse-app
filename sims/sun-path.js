@@ -20,13 +20,6 @@
   const labelsToggle = document.getElementById('labels-toggle');
 
   const orbitCanvas = document.getElementById('orbit');
-  const orbitCtx = orbitCanvas.getContext('2d');
-
-  // Earth's axial tilt, in degrees. The tick mark on the orbit diagram is
-  // drawn at this fixed screen angle for every orbital position — the axis
-  // keeps pointing the same direction in space through the year, which is
-  // the mechanism behind the seasons, not distance from the Sun.
-  const EARTH_AXIS_SCREEN_ANGLE_DEG = 66.6;
 
   // Cache the day's culmination (max-altitude point), since it only
   // depends on date and latitude, not the time slider.
@@ -90,100 +83,6 @@
     }
     culminationCache = { dayIndex, lat, result: best };
     return best;
-  }
-
-  function orbitPoint(cx, cy, radius, thetaDeg) {
-    const rad = (thetaDeg * Math.PI) / 180;
-    return { x: cx + radius * Math.cos(rad), y: cy - radius * Math.sin(rad) };
-  }
-
-  function textAlignFor(dx) {
-    if (Math.abs(dx) < 5) return 'center';
-    return dx > 0 ? 'left' : 'right';
-  }
-
-  function drawOrbit(dayIndex) {
-    const cx = orbitCanvas.width / 2;
-    const cy = orbitCanvas.height / 2;
-    const R = Math.min(cx, cy) - 80;
-
-    orbitCtx.clearRect(0, 0, orbitCanvas.width, orbitCanvas.height);
-    orbitCtx.textBaseline = 'middle';
-
-    // Orbit path
-    orbitCtx.beginPath();
-    orbitCtx.arc(cx, cy, R, 0, Math.PI * 2);
-    orbitCtx.strokeStyle = '#b7c3d1';
-    orbitCtx.lineWidth = 1.5;
-    orbitCtx.setLineDash([5, 5]);
-    orbitCtx.stroke();
-    orbitCtx.setLineDash([]);
-
-    // Reference points around the orbit
-    const REFERENCE_POINTS = [
-      { theta: 90, label: 'Jun sol.' },
-      { theta: 0, label: 'Mar eq.' },
-      { theta: 270, label: 'Dec sol.' },
-      { theta: 180, label: 'Sep eq.' },
-    ];
-    orbitCtx.font = '10px sans-serif';
-    orbitCtx.fillStyle = '#8a97a5';
-    REFERENCE_POINTS.forEach(({ theta, label }) => {
-      const p = orbitPoint(cx, cy, R, theta);
-      orbitCtx.beginPath();
-      orbitCtx.arc(p.x, p.y, 3, 0, Math.PI * 2);
-      orbitCtx.fill();
-
-      const labelPoint = orbitPoint(cx, cy, R + 16, theta);
-      orbitCtx.textAlign = textAlignFor(labelPoint.x - cx);
-      orbitCtx.fillText(label, labelPoint.x, labelPoint.y);
-    });
-
-    // The Sun, at the centre
-    orbitCtx.beginPath();
-    orbitCtx.arc(cx, cy, 12, 0, Math.PI * 2);
-    orbitCtx.fillStyle = '#ffb703';
-    orbitCtx.fill();
-    orbitCtx.strokeStyle = '#e08e00';
-    orbitCtx.lineWidth = 1.5;
-    orbitCtx.stroke();
-    orbitCtx.fillStyle = '#8a5b00';
-    orbitCtx.font = '600 11px sans-serif';
-    orbitCtx.textAlign = 'center';
-    orbitCtx.fillText('Sun', cx, cy + 24);
-
-    // Earth's current position
-    const theta = EarthOrbit.computeEarthOrbitAngle(dayIndex);
-    const earth = orbitPoint(cx, cy, R, theta);
-
-    // Fixed-direction axis tick: same screen angle at every position
-    const axisRad = (EARTH_AXIS_SCREEN_ANGLE_DEG * Math.PI) / 180;
-    const axisDx = Math.cos(axisRad);
-    const axisDy = -Math.sin(axisRad);
-    orbitCtx.beginPath();
-    orbitCtx.moveTo(earth.x - axisDx * 9, earth.y - axisDy * 9);
-    orbitCtx.lineTo(earth.x + axisDx * 16, earth.y + axisDy * 16);
-    orbitCtx.strokeStyle = '#c0392b';
-    orbitCtx.lineWidth = 2;
-    orbitCtx.stroke();
-    orbitCtx.beginPath();
-    orbitCtx.arc(earth.x + axisDx * 16, earth.y + axisDy * 16, 2.5, 0, Math.PI * 2);
-    orbitCtx.fillStyle = '#c0392b';
-    orbitCtx.fill();
-
-    // Earth marker
-    orbitCtx.beginPath();
-    orbitCtx.arc(earth.x, earth.y, 7, 0, Math.PI * 2);
-    orbitCtx.fillStyle = '#2a6bd6';
-    orbitCtx.fill();
-    orbitCtx.strokeStyle = '#173d75';
-    orbitCtx.lineWidth = 1.5;
-    orbitCtx.stroke();
-
-    orbitCtx.fillStyle = '#8a97a5';
-    orbitCtx.font = 'italic 11px sans-serif';
-    orbitCtx.textAlign = 'left';
-    orbitCtx.fillText('Not to scale', 8, orbitCanvas.height - 10);
   }
 
   function drawSky(lat, dayIndex, minutesOfDay, current, showLabels) {
@@ -326,7 +225,7 @@
     eqTimeValue.textContent = `Sundial reads ${eqTimeAbs} min ${eqTimeDirection} clock time`;
 
     drawSky(lat, dayIndex, minutesOfDay, sun, labelsToggle.checked);
-    drawOrbit(dayIndex);
+    OrbitPanel.draw(orbitCanvas, dayIndex);
   }
 
   function updateLegendVisibility() {

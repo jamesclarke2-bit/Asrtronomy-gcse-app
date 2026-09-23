@@ -30,9 +30,9 @@ const PAGES = [
     units: ['u1.7', 'u1.8', 'u1.9', 'u1.10', 'u1.11', 'u1.12', 'u1.13', 'u1.14'],
   },
   {
-    title: 'Sun Declination and Transit Altitude',
+    title: 'Observing the Sun',
     description:
-      "What's the Sun's altitude at transit at latitude X on date Y? Plus the Sun's structure, sunspots, solar wind, and how to observe it safely.",
+      "How the Sun's position in the sky changes through the year, and how to observe it safely — declination and transit altitude, structure, sunspots, and solar wind.",
     href: 'sims/sun-declination.html',
     units: ['u1.11', 'u2.9', 'u2.5', 'u2.11', 'u2.12'],
   },
