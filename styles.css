@@ -927,3 +927,75 @@ canvas {
   background: #cfe4f7;
   border: 1px solid #8a97a5;
 }
+
+/* Interactive Sun-structure diagram: each layer is a .glossary-toggle
+   SVG shape (see glossary.js), so the shared badge/button chrome from
+   .glossary-toggle mostly no-ops on a <circle> (no CSS box model) —
+   only cursor and these explicit overrides give it its own affordance. */
+.sun-region {
+  cursor: pointer;
+  transition: filter 0.15s ease;
+  /* Chromium gives focused SVG shapes a plain :focus outline (a thick
+     dark "auto" ring) regardless of input modality, unlike native
+     interactive elements where that's already gated on :focus-visible —
+     reset it here and reintroduce a deliberate one below, keyboard-only. */
+  outline: none;
+}
+
+.sun-region:hover,
+.sun-region:focus-visible {
+  filter: brightness(1.12);
+}
+
+.sun-region[aria-expanded='true'] {
+  filter: brightness(1.12) saturate(1.2);
+}
+
+.sun-region:focus-visible {
+  outline: 2px solid #173d75;
+  outline-offset: 2px;
+}
+
+.curiosity-box {
+  margin-top: 1.25rem;
+  padding: 0.75rem 1rem;
+  background: #f4effa;
+  border: 1px dashed #b39ddb;
+  border-radius: 8px;
+}
+
+.curiosity-toggle.glossary-toggle {
+  display: block;
+  width: 100%;
+  height: auto;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  background: none;
+  text-align: left;
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.5;
+  color: #4a2f7a;
+}
+
+.curiosity-toggle.glossary-toggle:hover,
+.curiosity-toggle.glossary-toggle:focus-visible,
+.curiosity-toggle.glossary-toggle[aria-expanded='true'] {
+  background: none;
+  color: #2e1c52;
+}
+
+.curiosity-badge {
+  display: inline-block;
+  background: #8e44ad;
+  color: #fff;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  padding: 0.15rem 0.45rem;
+  border-radius: 4px;
+  margin-right: 0.5rem;
+  vertical-align: middle;
+}

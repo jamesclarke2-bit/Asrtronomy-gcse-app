@@ -194,6 +194,17 @@
   const GLOSSARY = {
     solarWind:
       'Solar wind: a continuous stream of charged particles (mostly protons and electrons) escaping the corona fast enough to overcome the Sun\'s gravity, flowing outward through the whole Solar System.',
+    core: 'Core: where nuclear fusion turns hydrogen into helium, releasing the Sun\'s energy at around 15 million °C.',
+    radiative:
+      'Radiative zone: energy moves outward as radiation, bouncing between particles so slowly it can take over 100,000 years to cross.',
+    convective:
+      'Convective zone: cooler, less dense plasma carries energy the rest of the way outward by convection currents, like water boiling in a pan.',
+    photosphere: 'Photosphere: the visible "surface", about 5,500°C, where sunspots appear.',
+    chromosphere: 'Chromosphere: a thin, hotter, reddish layer above the photosphere.',
+    corona:
+      'Corona: the Sun\'s outer atmosphere, a faint, wispy halo of gas at over a million °C, visible to the naked eye only during a total solar eclipse.',
+    coronaHeating:
+      "Beyond the spec — the coronal heating problem: the corona (over a million °C) is far hotter than the photosphere beneath it (about 5,500°C), even though it's further from the Sun's fusion-powered core. Two mechanisms are thought to contribute: wave heating, where magnetohydrodynamic (MHD) waves carry energy up along the Sun's magnetic field lines and dump it in the corona; and nanoflares, tiny, constant bursts of energy released when tangled magnetic field lines suddenly reconnect. Which mechanism dominates — or whether both do, in different regions — is still an open question in solar physics, not a single settled answer.",
   };
 
   update();

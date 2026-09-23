@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Observing the Sun</title>
-  <link rel="stylesheet" href="../styles.css?v=202609221500" />
+  <link rel="stylesheet" href="../styles.css?v=202609221600" />
 </head>
 <body>
   <main>
@@ -172,9 +172,10 @@
         The Sun is layered, from a fusion-powered core outward to a wispy outer atmosphere
         visible only during a total eclipse or through specialised instruments.
       </p>
+      <p class="note">Click or tap a layer below to reveal what it is.</p>
       <div class="diagram sun-structure-diagram">
-        <svg viewBox="0 0 300 300" role="img" aria-label="Cutaway diagram of the Sun's layered structure: core, radiative zone and convective zone inside, photosphere, chromosphere and corona outside">
-          <g>
+        <svg viewBox="0 0 300 300" role="group" aria-label="Interactive cutaway diagram of the Sun's layered structure. Click or tap a layer — core, radiative zone, convective zone, photosphere, chromosphere or corona — to reveal what it is">
+          <g pointer-events="none">
             <line x1="150" y1="150" x2="150" y2="10" stroke="#eaf2fb" stroke-width="2" />
             <line x1="150" y1="150" x2="284" y2="150" stroke="#eaf2fb" stroke-width="2" />
             <line x1="150" y1="150" x2="55" y2="245" stroke="#eaf2fb" stroke-width="2" />
@@ -189,22 +190,66 @@
             <line x1="150" y1="150" x2="14" y2="110" stroke="#eaf2fb" stroke-width="2" />
             <line x1="150" y1="150" x2="14" y2="190" stroke="#eaf2fb" stroke-width="2" />
           </g>
-          <circle cx="150" cy="150" r="98" fill="#fdf1e3" />
-          <circle cx="150" cy="150" r="98" fill="none" stroke="#e05c3e" stroke-width="4" opacity="0.55" />
-          <circle cx="150" cy="150" r="90" fill="#f5a623" />
-          <circle cx="150" cy="150" r="70" fill="#e8631a" />
-          <circle cx="150" cy="150" r="45" fill="#ffb347" />
-          <circle cx="150" cy="150" r="20" fill="#fff7d6" />
+          <circle
+            class="glossary-toggle sun-region" data-term="corona" tabindex="0" role="button" aria-expanded="false" aria-label="Corona"
+            cx="150" cy="150" r="135" fill="transparent" pointer-events="all"
+          />
+          <circle
+            class="glossary-toggle sun-region" data-term="chromosphere" tabindex="0" role="button" aria-expanded="false" aria-label="Chromosphere"
+            cx="150" cy="150" r="98" fill="#fdf1e3" stroke="#e05c3e" stroke-width="4"
+          />
+          <circle
+            class="glossary-toggle sun-region" data-term="photosphere" tabindex="0" role="button" aria-expanded="false" aria-label="Photosphere"
+            cx="150" cy="150" r="90" fill="#f5a623"
+          />
+          <circle
+            class="glossary-toggle sun-region" data-term="convective" tabindex="0" role="button" aria-expanded="false" aria-label="Convective zone"
+            cx="150" cy="150" r="70" fill="#e8631a"
+          />
+          <circle
+            class="glossary-toggle sun-region" data-term="radiative" tabindex="0" role="button" aria-expanded="false" aria-label="Radiative zone"
+            cx="150" cy="150" r="45" fill="#ffb347"
+          />
+          <circle
+            class="glossary-toggle sun-region" data-term="core" tabindex="0" role="button" aria-expanded="false" aria-label="Core"
+            cx="150" cy="150" r="20" fill="#fff7d6"
+          />
         </svg>
       </div>
       <ul class="legend layer-legend">
-        <li><span class="legend-dot layer-dot-core"></span><strong>Core</strong> &mdash; where nuclear fusion turns hydrogen into helium, releasing the Sun's energy at around 15 million &deg;C.</li>
-        <li><span class="legend-dot layer-dot-radiative"></span><strong>Radiative zone</strong> &mdash; energy moves outward as radiation, bouncing between particles so slowly it can take over 100,000 years to cross.</li>
-        <li><span class="legend-dot layer-dot-convective"></span><strong>Convective zone</strong> &mdash; cooler, less dense plasma carries energy the rest of the way outward by convection currents, like water boiling in a pan.</li>
-        <li><span class="legend-dot layer-dot-photosphere"></span><strong>Photosphere</strong> &mdash; the visible "surface", about 5,500&deg;C, where sunspots appear.</li>
-        <li><span class="legend-dot layer-dot-chromosphere"></span><strong>Chromosphere</strong> &mdash; a thin, hotter, reddish layer above the photosphere.</li>
-        <li><span class="legend-dot layer-dot-corona"></span><strong>Corona</strong> &mdash; the Sun's outer atmosphere, a faint, wispy halo of gas at over a million &deg;C, visible to the naked eye only during a total solar eclipse.</li>
+        <li>
+          <span class="legend-dot layer-dot-core"></span><strong>Core</strong>
+          <span class="glossary-definition" data-term="core" hidden></span>
+        </li>
+        <li>
+          <span class="legend-dot layer-dot-radiative"></span><strong>Radiative zone</strong>
+          <span class="glossary-definition" data-term="radiative" hidden></span>
+        </li>
+        <li>
+          <span class="legend-dot layer-dot-convective"></span><strong>Convective zone</strong>
+          <span class="glossary-definition" data-term="convective" hidden></span>
+        </li>
+        <li>
+          <span class="legend-dot layer-dot-photosphere"></span><strong>Photosphere</strong>
+          <span class="glossary-definition" data-term="photosphere" hidden></span>
+        </li>
+        <li>
+          <span class="legend-dot layer-dot-chromosphere"></span><strong>Chromosphere</strong>
+          <span class="glossary-definition" data-term="chromosphere" hidden></span>
+        </li>
+        <li>
+          <span class="legend-dot layer-dot-corona"></span><strong>Corona</strong>
+          <span class="glossary-definition" data-term="corona" hidden></span>
+        </li>
       </ul>
+
+      <div class="curiosity-box">
+        <button type="button" class="glossary-toggle curiosity-toggle" data-term="coronaHeating" aria-expanded="false">
+          <span class="curiosity-badge">Beyond the spec</span>
+          Curious: why is the corona so much hotter than the surface below it?
+        </button>
+        <span class="glossary-definition" data-term="coronaHeating" hidden></span>
+      </div>
     </section>
 
     <section class="notes-section">
@@ -265,8 +310,8 @@
   <script src="../src/earthOrbit.js?v=202609212100"></script>
   <script src="../src/orbitPanel.js?v=202609221500"></script>
   <script src="../src/sunDeclinationQuestions.js?v=202609212100"></script>
-  <script src="../glossary.js?v=202609221200"></script>
+  <script src="../glossary.js?v=202609221600"></script>
   <script src="../quiz-ui.js?v=202609212100"></script>
-  <script src="sun-declination.js?v=202609221500"></script>
+  <script src="sun-declination.js?v=202609221600"></script>
 </body>
 </html>
