@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Observing the Sun</title>
-  <link rel="stylesheet" href="../styles.css?v=202609221600" />
+  <link rel="stylesheet" href="../styles.css?v=202609221700" />
 </head>
 <body>
   <main>
@@ -174,47 +174,63 @@
       </p>
       <p class="note">Click or tap a layer below to reveal what it is.</p>
       <div class="diagram sun-structure-diagram">
-        <svg viewBox="0 0 300 300" role="group" aria-label="Interactive cutaway diagram of the Sun's layered structure. Click or tap a layer — core, radiative zone, convective zone, photosphere, chromosphere or corona — to reveal what it is">
-          <g pointer-events="none">
-            <line x1="150" y1="150" x2="150" y2="10" stroke="#eaf2fb" stroke-width="2" />
-            <line x1="150" y1="150" x2="284" y2="150" stroke="#eaf2fb" stroke-width="2" />
-            <line x1="150" y1="150" x2="55" y2="245" stroke="#eaf2fb" stroke-width="2" />
-            <line x1="150" y1="150" x2="245" y2="245" stroke="#eaf2fb" stroke-width="2" />
-            <line x1="150" y1="150" x2="16" y2="150" stroke="#eaf2fb" stroke-width="2" />
-            <line x1="150" y1="150" x2="55" y2="55" stroke="#eaf2fb" stroke-width="2" />
-            <line x1="150" y1="150" x2="245" y2="55" stroke="#eaf2fb" stroke-width="2" />
-            <line x1="150" y1="150" x2="105" y2="14" stroke="#eaf2fb" stroke-width="2" />
-            <line x1="150" y1="150" x2="195" y2="14" stroke="#eaf2fb" stroke-width="2" />
-            <line x1="150" y1="150" x2="286" y2="110" stroke="#eaf2fb" stroke-width="2" />
-            <line x1="150" y1="150" x2="286" y2="190" stroke="#eaf2fb" stroke-width="2" />
-            <line x1="150" y1="150" x2="14" y2="110" stroke="#eaf2fb" stroke-width="2" />
-            <line x1="150" y1="150" x2="14" y2="190" stroke="#eaf2fb" stroke-width="2" />
-          </g>
-          <circle
-            class="glossary-toggle sun-region" data-term="corona" tabindex="0" role="button" aria-expanded="false" aria-label="Corona"
-            cx="150" cy="150" r="135" fill="transparent" pointer-events="all"
-          />
-          <circle
-            class="glossary-toggle sun-region" data-term="chromosphere" tabindex="0" role="button" aria-expanded="false" aria-label="Chromosphere"
-            cx="150" cy="150" r="98" fill="#fdf1e3" stroke="#e05c3e" stroke-width="4"
-          />
-          <circle
-            class="glossary-toggle sun-region" data-term="photosphere" tabindex="0" role="button" aria-expanded="false" aria-label="Photosphere"
-            cx="150" cy="150" r="90" fill="#f5a623"
-          />
-          <circle
-            class="glossary-toggle sun-region" data-term="convective" tabindex="0" role="button" aria-expanded="false" aria-label="Convective zone"
-            cx="150" cy="150" r="70" fill="#e8631a"
-          />
-          <circle
-            class="glossary-toggle sun-region" data-term="radiative" tabindex="0" role="button" aria-expanded="false" aria-label="Radiative zone"
-            cx="150" cy="150" r="45" fill="#ffb347"
-          />
-          <circle
-            class="glossary-toggle sun-region" data-term="core" tabindex="0" role="button" aria-expanded="false" aria-label="Core"
-            cx="150" cy="150" r="20" fill="#fff7d6"
-          />
-        </svg>
+        <div class="sun-structure-wrap">
+          <svg viewBox="0 0 500 500" role="group" aria-label="Interactive, labelled cutaway diagram of the Sun's layered structure. Click or tap a layer — core, radiative zone, convective zone, photosphere, chromosphere or corona — to reveal what it is">
+            <g pointer-events="none">
+              <line x1="250" y1="250" x2="250" y2="110" stroke="#eaf2fb" stroke-width="2" />
+              <line x1="250" y1="250" x2="384" y2="250" stroke="#eaf2fb" stroke-width="2" />
+              <line x1="250" y1="250" x2="155" y2="345" stroke="#eaf2fb" stroke-width="2" />
+              <line x1="250" y1="250" x2="345" y2="345" stroke="#eaf2fb" stroke-width="2" />
+              <line x1="250" y1="250" x2="116" y2="250" stroke="#eaf2fb" stroke-width="2" />
+              <line x1="250" y1="250" x2="155" y2="155" stroke="#eaf2fb" stroke-width="2" />
+              <line x1="250" y1="250" x2="345" y2="155" stroke="#eaf2fb" stroke-width="2" />
+              <line x1="250" y1="250" x2="205" y2="114" stroke="#eaf2fb" stroke-width="2" />
+              <line x1="250" y1="250" x2="295" y2="114" stroke="#eaf2fb" stroke-width="2" />
+              <line x1="250" y1="250" x2="386" y2="210" stroke="#eaf2fb" stroke-width="2" />
+              <line x1="250" y1="250" x2="386" y2="290" stroke="#eaf2fb" stroke-width="2" />
+              <line x1="250" y1="250" x2="114" y2="210" stroke="#eaf2fb" stroke-width="2" />
+              <line x1="250" y1="250" x2="114" y2="290" stroke="#eaf2fb" stroke-width="2" />
+            </g>
+            <circle
+              class="glossary-toggle sun-region" data-term="corona" tabindex="0" role="button" aria-expanded="false" aria-label="Corona"
+              cx="250" cy="250" r="135" fill="transparent" pointer-events="all"
+            />
+            <circle
+              class="glossary-toggle sun-region" data-term="chromosphere" tabindex="0" role="button" aria-expanded="false" aria-label="Chromosphere"
+              cx="250" cy="250" r="98" fill="#fdf1e3" stroke="#e05c3e" stroke-width="4"
+            />
+            <circle
+              class="glossary-toggle sun-region" data-term="photosphere" tabindex="0" role="button" aria-expanded="false" aria-label="Photosphere"
+              cx="250" cy="250" r="90" fill="#f5a623"
+            />
+            <circle
+              class="glossary-toggle sun-region" data-term="convective" tabindex="0" role="button" aria-expanded="false" aria-label="Convective zone"
+              cx="250" cy="250" r="70" fill="#e8631a"
+            />
+            <circle
+              class="glossary-toggle sun-region" data-term="radiative" tabindex="0" role="button" aria-expanded="false" aria-label="Radiative zone"
+              cx="250" cy="250" r="45" fill="#ffb347"
+            />
+            <circle
+              class="glossary-toggle sun-region" data-term="core" tabindex="0" role="button" aria-expanded="false" aria-label="Core"
+              cx="250" cy="250" r="20" fill="#fff7d6"
+            />
+            <g pointer-events="none" stroke="#8a97a5" stroke-width="1" stroke-dasharray="3 2">
+              <line x1="250" y1="230" x2="250" y2="34" />
+              <line x1="211.0" y1="227.5" x2="59.5" y2="140" />
+              <line x1="189.4" y1="285" x2="59.5" y2="360" />
+              <line x1="250" y1="340" x2="250" y2="466" />
+              <line x1="334.9" y1="299" x2="440.5" y2="360" />
+              <line x1="362.6" y1="185" x2="440.5" y2="140" />
+            </g>
+          </svg>
+          <span class="sun-structure-label" style="left: 50%; top: 6%;">Core</span>
+          <span class="sun-structure-label" style="left: 11.9%; top: 28%;">Radiative zone</span>
+          <span class="sun-structure-label" style="left: 11.9%; top: 72%;">Convective zone</span>
+          <span class="sun-structure-label" style="left: 50%; top: 94%;">Photosphere</span>
+          <span class="sun-structure-label" style="left: 88.1%; top: 72%;">Chromosphere</span>
+          <span class="sun-structure-label" style="left: 88.1%; top: 28%;">Corona</span>
+        </div>
       </div>
       <ul class="legend layer-legend">
         <li>

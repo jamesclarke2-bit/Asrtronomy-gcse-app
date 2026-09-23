@@ -875,9 +875,13 @@ canvas {
   line-height: 1.5;
 }
 
-.pinhole-diagram,
-.sun-structure-diagram {
+.pinhole-diagram {
   max-width: 380px;
+  margin: 1rem 0;
+}
+
+.sun-structure-diagram {
+  max-width: 480px;
   margin: 1rem 0;
 }
 
@@ -888,6 +892,22 @@ canvas {
   background: #f7f7f5;
   border-radius: 8px;
   border: 1px solid #cdd7e1;
+}
+
+.sun-structure-wrap {
+  position: relative;
+}
+
+.sun-structure-label {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 5.5rem;
+  text-align: center;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #555;
+  line-height: 1.2;
+  pointer-events: none;
 }
 
 .layer-legend {
