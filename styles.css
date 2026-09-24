@@ -830,16 +830,93 @@ canvas {
   border-bottom: 1px solid #eee;
 }
 
-/* index.html landing page: pages grouped by curriculum unit */
+/* index.html landing page — scope note, recommended path, and the
+   unit-grouped reference listing below it. */
+.scope-note {
+  max-width: 800px;
+  margin: 1rem 0 2rem;
+  padding: 0.85rem 1.1rem;
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-left: 4px solid #8a97a5;
+  border-radius: 8px;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: #333;
+}
+
+.path-section {
+  margin-top: 2rem;
+}
+
+.path-phase {
+  margin-top: 1.75rem;
+}
+
+.path-phase:first-of-type {
+  margin-top: 1rem;
+}
+
+.path-phase-heading {
+  font-size: 1rem;
+  color: #555;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin: 0 0 0.75rem;
+}
+
+/* Numbered natively via <ol start="…">, continuing the count across
+   phases (home.js sets each phase's start) rather than restarting at
+   1 — this is one sequence, just grouped for readability. */
+.path-steps {
+  list-style: decimal;
+  margin: 0;
+  padding-left: 1.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.path-steps li::marker {
+  font-weight: 700;
+  color: #2a6bd6;
+}
+
+.path-step-card {
+  max-width: 720px;
+}
+
+.path-step-why {
+  margin: 0.6rem 0 0;
+  padding-top: 0.6rem;
+  border-top: 1px dashed #e0e0e0;
+  font-size: 0.85rem;
+  color: #555;
+  font-style: italic;
+}
+
+.path-step-why::before {
+  content: 'Why here: ';
+  font-weight: 600;
+  font-style: normal;
+  color: #8a5b00;
+}
+
+.unit-reference-section {
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e0e0e0;
+}
+
 .unit-section {
   margin-top: 2.5rem;
 }
 
 .unit-section:first-of-type {
-  margin-top: 2rem;
+  margin-top: 1.5rem;
 }
 
-.unit-section h2 {
+.unit-section h3 {
   font-size: 1.2rem;
   margin-bottom: 1rem;
 }
@@ -867,7 +944,13 @@ canvas {
   box-shadow: 0 2px 10px rgba(42, 107, 214, 0.12);
 }
 
-.page-card h3 {
+/* .page-card h3 covers the plain, hand-written "Related pages" cards
+   on notes/ pages (see notes/TEMPLATE.md); .page-card-title covers
+   index.html's own cards, whose heading level varies (h4 under the
+   Recommended path's h3 phase headings, or under the unit-reference
+   listing's own h3s) so it's targeted by class rather than tag. */
+.page-card h3,
+.page-card-title {
   margin: 0 0 0.4rem;
   font-size: 1.05rem;
   color: #2a6bd6;

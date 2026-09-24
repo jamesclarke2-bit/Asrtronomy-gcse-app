@@ -109,7 +109,117 @@ const PAGES = [
   },
 ];
 
-const api = { PAGES };
+/**
+ * A suggested order to work through every page above, grouped into
+ * rough phases. This is editorial judgement about how a student would
+ * actually progress — deliberately not alphabetical and not spec
+ * order — so it's kept separate from PAGES itself, which stays plain,
+ * unordered data grouped only by curriculum unit.
+ *
+ * Each step's href must name a real PAGES entry exactly once across
+ * the whole path (test/pages.test.js checks this), and `why` is a
+ * one-line reason for that page's place in the sequence — what it
+ * builds on, or why it comes before/after its neighbours — shown
+ * alongside that page's own title and description on index.html.
+ */
+const RECOMMENDED_PATH = [
+  {
+    phase: 'Naked-eye observing, first',
+    steps: [
+      {
+        href: 'notes/naked-eye-sky.html',
+        why: "Start here — no maths yet, just learning to recognise what's actually up there and the star patterns worth knowing.",
+      },
+      {
+        href: 'notes/observing-techniques.html',
+        why: 'The how that goes with it: dark adaptation, star charts and apps, and catching a meteor shower.',
+      },
+    ],
+  },
+  {
+    phase: 'Coordinates, the Sun and time',
+    steps: [
+      {
+        href: 'sims/coordinates.html',
+        why: 'The toolkit most of what follows leans on: right ascension, declination, hour angle, sidereal time, and finding your latitude from Polaris.',
+      },
+      {
+        href: 'sims/sun-path.html',
+        why: 'Puts that toolkit to work on one object across a day and a year, and introduces the seasons.',
+      },
+      {
+        href: 'sims/equation-of-time.html',
+        why: 'Goes deeper into the time ideas Sun Path just raised — why a sundial and a clock disagree.',
+      },
+      {
+        href: 'sims/sun-declination.html',
+        why: "The Sun's own structure and how to observe it safely, reusing the transit-altitude idea from Star Coordinates.",
+      },
+      {
+        href: 'sims/solar-system-observation.html',
+        why: 'Carries the same sky-motion thinking from stars and the Sun out to the planets.',
+      },
+    ],
+  },
+  {
+    phase: 'Earth itself',
+    steps: [
+      {
+        href: 'notes/earth-structure.html',
+        why: 'Turns the lens on Earth itself, tying the seasons back to its axial tilt.',
+      },
+      {
+        href: 'notes/measuring-the-sky.html',
+        why: "How the ancients first measured Earth, the Moon and the Sun — reusing Star Coordinates' meridian diagram directly.",
+      },
+    ],
+  },
+  {
+    phase: 'The Moon system',
+    steps: [
+      {
+        href: 'sims/moon-phases.html',
+        why: 'Moves on to the Moon: why its shape changes, and its elliptical orbit.',
+      },
+      {
+        href: 'sims/sidereal-vs-synodic.html',
+        why: "The same sidereal-vs-solar distinction as Star Coordinates' day version, one level up: two different \"months\".",
+      },
+      {
+        href: 'notes/tides.html',
+        why: 'Spring and neap tides, tied directly to the phase just covered.',
+      },
+      {
+        href: 'sims/eclipses.html',
+        why: 'Needs the phase and tilted-orbit ideas from the last three pages to make sense of.',
+      },
+      {
+        href: 'notes/moon-structure.html',
+        why: 'Closes out the Moon cluster: its surface features, formation and internal structure.',
+      },
+    ],
+  },
+];
+
+/**
+ * How much of each curriculum unit has a page teaching towards it, for
+ * index.html's scope note. Takes `units` (normally Curriculum.UNITS)
+ * as a parameter rather than requiring curriculum.js directly, so this
+ * file stays plain data plus pure functions — see the file header.
+ */
+function computeUnitCoverage(units, pages) {
+  return units.map((unit) => {
+    const coveredIds = new Set();
+    pages.forEach((page) => {
+      page.units.forEach((id) => {
+        if (id.startsWith(`${unit.id}.`)) coveredIds.add(id);
+      });
+    });
+    return { id: unit.id, title: unit.title, total: unit.subtopics.length, covered: coveredIds.size };
+  });
+}
+
+const api = { PAGES, RECOMMENDED_PATH, computeUnitCoverage };
 
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = api;

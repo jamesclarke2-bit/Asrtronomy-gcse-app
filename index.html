@@ -4,21 +4,40 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>GCSE Astronomy</title>
-  <link rel="stylesheet" href="styles.css?v=202609260800" />
+  <link rel="stylesheet" href="styles.css?v=202609270100" />
 </head>
 <body>
   <main>
     <h1>GCSE Astronomy</h1>
     <p class="subtitle">
-      Interactive simulators and practice questions, organised by the GCSE Astronomy curriculum
-      unit each one teaches towards.
+      Interactive simulators and reference pages, each tagged with the exact part of the GCSE
+      Astronomy specification it teaches towards.
     </p>
 
-    <div id="unit-list"></div>
+    <p class="scope-note" id="scope-note"></p>
+
+    <section class="path-section">
+      <h2>Recommended path</h2>
+      <p class="note">
+        Every page in the app, start to finish, in the order most students should actually work
+        through them — not alphabetical, not spec order. Each step says why it comes where it
+        does.
+      </p>
+      <div id="path-list"></div>
+    </section>
+
+    <section class="unit-reference-section">
+      <h2>All pages, by curriculum unit</h2>
+      <p class="note">
+        The same pages again, grouped by which part of the spec each one teaches towards —
+        useful for finding something specific, not for reading start to finish.
+      </p>
+      <div id="unit-list"></div>
+    </section>
   </main>
 
-  <script src="src/curriculum.js?v=202609260800"></script>
-  <script src="src/pages.js?v=202609260800"></script>
-  <script src="home.js?v=202609212100"></script>
+  <script src="src/curriculum.js?v=202609270100"></script>
+  <script src="src/pages.js?v=202609270100"></script>
+  <script src="home.js?v=202609270100"></script>
 </body>
 </html>
