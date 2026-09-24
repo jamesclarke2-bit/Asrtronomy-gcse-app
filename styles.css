@@ -178,6 +178,20 @@ canvas {
   max-width: 360px;
 }
 
+/* Opt-in: a readout inside a .tool-layout .controls column that stays
+   pinned to the bottom of the column's own scroll area, so it's still in
+   view while a slider above it is being dragged, even when the column
+   holds more than fits (the capped-height panel on phones, or a long
+   sidebar). Once scrolled past, it rejoins the normal flow above the
+   controls that follow it. */
+.tool-layout .controls .pinned-readout {
+  position: sticky;
+  bottom: 0;
+  z-index: 1;
+  margin: 0.75rem 0;
+  box-shadow: 0 -6px 12px -8px rgba(0, 0, 0, 0.25);
+}
+
 .control {
   margin-bottom: 1.25rem;
 }
@@ -545,6 +559,18 @@ canvas {
 
 .observer-panel .panel-title {
   color: #173d75;
+}
+
+/* A one-line lead-in at the top of a .controls column, saying which
+   control drives the page (sims/equation-of-time.html). */
+.controls-intro {
+  margin: 0 0 1rem;
+  padding: 0.6rem 0.8rem;
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  line-height: 1.4;
 }
 
 .panel-note {

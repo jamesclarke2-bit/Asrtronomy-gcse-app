@@ -263,7 +263,7 @@
     document.getElementById('longitude-label').textContent = formatLongitude(lon);
     document.getElementById('lmt-value').textContent = formatClock(lmt, true);
     document.getElementById('ast-value').textContent = formatClock(ast, true);
-    document.getElementById('zone-value').textContent = `${zoneName}, ${formatClock(noonGMT + 60 * zone)}`;
+    document.getElementById('zone-value').textContent = `${zoneName} (${formatClock(noonGMT + 60 * zone)})`;
     const eot = EOT_BY_DAY[day];
     const lmtPart = lon === 0
       ? 'At longitude 0°, LMT is GMT.'

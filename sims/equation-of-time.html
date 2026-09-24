@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Equation of Time</title>
-  <link rel="stylesheet" href="../styles.css?v=202609260300" />
+  <link rel="stylesheet" href="../styles.css?v=202609260530" />
 </head>
 <body>
   <main>
@@ -68,8 +68,8 @@
       </ul>
     </section>
 
-    <section class="eot-graphs-section">
-      <div class="eot-graphs-row">
+    <div class="layout tool-layout">
+      <div class="diagrams-column eot-diagrams">
         <div class="eot-graph-section">
           <h2>Equation of time across the year</h2>
           <canvas
@@ -83,6 +83,23 @@
             &nbsp; <span class="legend-swatch legend-obliquity"></span> Axial tilt
             &nbsp; <span class="legend-swatch legend-eccentricity"></span> Orbital eccentricity
           </p>
+        </div>
+
+        <div class="eot-graph-section sunrise-graph-section">
+          <h2>Sunrise and sunset through the year</h2>
+          <canvas
+            id="sunrise-graph"
+            width="700"
+            height="340"
+            aria-label="Graph of sunrise and sunset times in GMT across the year at the chosen latitude, with the daylight between them shaded and the chosen date marked"
+          ></canvas>
+          <p class="legend">
+            <span class="legend-swatch legend-sunrise"></span> Sunrise
+            &nbsp; <span class="legend-swatch legend-sunset"></span> Sunset
+            &nbsp; <span class="legend-swatch legend-daylight"></span> Daylight
+          </p>
+          <p class="eot-readout" id="sunrise-value"></p>
+          <p class="note">Hover over the graph to read off a date, or click it to move the date slider there.</p>
         </div>
 
         <div class="analemma-section">
@@ -110,15 +127,69 @@
         </div>
       </div>
 
-      <div class="control">
-        <label for="date-slider">Date: <span id="date-label"></span></label>
-        <input type="range" id="date-slider" min="0" max="364" value="42" />
+      <div class="controls">
+        <p class="controls-intro">
+          <strong>Start here:</strong> the date drives every graph and readout on this page.
+        </p>
+
+        <div class="control-panel star-panel">
+          <h3 class="panel-title">Date and longitude</h3>
+
+          <div class="control">
+            <label for="date-slider">Date: <span id="date-label"></span></label>
+            <input type="range" id="date-slider" min="0" max="364" value="42" />
+            <p class="panel-note" id="eqtime-value"></p>
+          </div>
+
+          <div class="control">
+            <label for="longitude-slider">Longitude: <span id="longitude-label"></span></label>
+            <input type="range" id="longitude-slider" min="-180" max="180" step="0.1" value="-2.6" />
+            <div class="preset-list">
+              <button type="button" class="preset-button" data-longitude="0">Greenwich</button>
+              <button type="button" class="preset-button" data-longitude="-2.6">Bristol</button>
+              <button type="button" class="preset-button" data-longitude="1.3">Norwich</button>
+              <button type="button" class="preset-button" data-longitude="-74.0">New York</button>
+              <button type="button" class="preset-button" data-longitude="139.7">Tokyo</button>
+            </div>
+          </div>
+
+          <p class="panel-note">Together, the date and longitude set local mean time and sundial time.</p>
+        </div>
+
+        <dl class="readout pinned-readout">
+          <div class="readout-row">
+            <dt>GMT (UT)</dt>
+            <dd>12:00</dd>
+          </div>
+          <div class="readout-row">
+            <dt>LMT</dt>
+            <dd id="lmt-value"></dd>
+          </div>
+          <div class="readout-row">
+            <dt>AST (sundial)</dt>
+            <dd id="ast-value"></dd>
+          </div>
+          <div class="readout-row">
+            <dt>Nearest zone</dt>
+            <dd id="zone-value"></dd>
+          </div>
+        </dl>
+        <p class="panel-note" id="time-working"></p>
+
+        <div class="control-panel observer-panel">
+          <h3 class="panel-title">Latitude</h3>
+
+          <div class="control">
+            <label for="latitude-slider">Latitude: <span id="latitude-label"></span></label>
+            <input type="range" id="latitude-slider" min="-66" max="66" step="0.5" value="51.5" />
+          </div>
+
+          <p class="panel-note">Latitude only changes sunrise and sunset.</p>
+        </div>
       </div>
+    </div>
 
-      <p class="eot-readout" id="eqtime-value"></p>
-
-      <p class="coverage" id="coverage"></p>
-    </section>
+    <p class="coverage" id="coverage"></p>
 
     <section class="notes-section" id="time-zones">
       <h2>Local mean time, time zones and GMT</h2>
@@ -153,39 +224,9 @@
         thing. (Everyday clocks now follow UTC, an atomic-clock version kept within a second of
         UT.) The UK uses GMT in winter and British Summer Time, GMT+1, in summer.
       </p>
-
-      <div class="control">
-        <label for="longitude-slider">Longitude: <span id="longitude-label"></span></label>
-        <input type="range" id="longitude-slider" min="-180" max="180" step="0.1" value="-2.6" />
-        <div class="preset-list">
-          <button type="button" class="preset-button" data-longitude="0">Greenwich</button>
-          <button type="button" class="preset-button" data-longitude="-2.6">Bristol</button>
-          <button type="button" class="preset-button" data-longitude="1.3">Norwich</button>
-          <button type="button" class="preset-button" data-longitude="-74.0">New York</button>
-          <button type="button" class="preset-button" data-longitude="139.7">Tokyo</button>
-        </div>
-      </div>
-      <dl class="readout">
-        <div class="readout-row">
-          <dt>GMT (UT)</dt>
-          <dd>12:00</dd>
-        </div>
-        <div class="readout-row">
-          <dt>Local Mean Time (LMT)</dt>
-          <dd id="lmt-value"></dd>
-        </div>
-        <div class="readout-row">
-          <dt>Apparent Solar Time (AST, sundial)</dt>
-          <dd id="ast-value"></dd>
-        </div>
-        <div class="readout-row">
-          <dt>Nearest whole-hour time zone</dt>
-          <dd id="zone-value"></dd>
-        </div>
-      </dl>
-      <p class="eot-readout" id="time-working"></p>
       <p class="note">
-        For the date on the slider above. AST = LMT + equation of time. The time zone shown is
+        The readout box in the controls shows LMT and sundial time (AST = LMT + equation of
+        time) when GMT is 12:00, for the date and longitude you choose. The time zone shown is
         just the nearest 15&deg; meridian; real zones follow borders, and some countries add
         summer time.
       </p>
@@ -202,30 +243,9 @@
         equator, and the days are short. The further from the equator you are, the bigger the
         swing.
       </p>
-
-      <div class="eot-graph-section sunrise-graph-section">
-        <canvas
-          id="sunrise-graph"
-          width="700"
-          height="340"
-          aria-label="Graph of sunrise and sunset times in GMT across the year at the chosen latitude, with the daylight between them shaded and the chosen date marked"
-        ></canvas>
-        <p class="legend">
-          <span class="legend-swatch legend-sunrise"></span> Sunrise
-          &nbsp; <span class="legend-swatch legend-sunset"></span> Sunset
-          &nbsp; <span class="legend-swatch legend-daylight"></span> Daylight
-        </p>
-        <p class="note">Hover over the graph to read off a date, or click it to move the date slider there.</p>
-      </div>
-
-      <div class="control">
-        <label for="latitude-slider">Latitude: <span id="latitude-label"></span></label>
-        <input type="range" id="latitude-slider" min="-66" max="66" step="0.5" value="51.5" />
-      </div>
-      <p class="eot-readout" id="sunrise-value"></p>
-
       <p>
-        Two things in the graph are worth a closer look:
+        The sunrise and sunset graph shows the whole year for the latitude you choose in the
+        controls. Two things in it are worth a closer look:
       </p>
       <ul class="tip-list">
         <li>
@@ -261,6 +281,6 @@
   <script src="../src/eotQuestions.js?v=202609212100"></script>
   <script src="../quiz-ui.js?v=202609212100"></script>
   <script src="../glossary.js?v=202609221600"></script>
-  <script src="equation-of-time.js?v=202609260300"></script>
+  <script src="equation-of-time.js?v=202609260530"></script>
 </body>
 </html>
