@@ -201,7 +201,13 @@ const UNITS = [
         notes:
           "Eratosthenes' measurement of the Earth: the Sun's noon shadow angle at two places due north-south of each other, at the same moment, differs by the angle between them at Earth's centre (the Sun's rays being parallel), so angle / 360° = distance / circumference, e.g. 7.2° and ~800 km give ~40,000 km; Aristarchus' methods for the Moon and Sun: the width of Earth's shadow on the Moon during a lunar eclipse (~2.6 Moon diameters, plus ~1 for the shadow narrowing) gives the Moon's size relative to Earth's (~0.27), and the angle between the Moon and Sun at first quarter, when the Sun-Moon-Earth angle is 90°, gives their relative distances (he measured 87°, giving ~19×; the true ~89.85° gives ~390×)",
       },
-      { id: 'u2.7', title: 'Tides', depth: 'understand', notes: 'spring and neap tides' },
+      {
+        id: 'u2.7',
+        title: 'Tides',
+        depth: 'understand',
+        notes:
+          "the Moon's gravity pulls the near side of Earth more strongly than its centre, and its centre more than the far side, raising two tidal bulges, one facing the Moon and one opposite; Earth's rotation carries each place through both, giving two high and two low tides most days, about 12 h 25 min apart and ~50 min later each day; the Sun raises smaller bulges (its tidal effect is ~0.46 of the Moon's, despite a ~180× stronger overall pull, because tides depend on the difference in pull across Earth); spring tides at new and full Moon, when the Sun and Moon are in line, give the largest tidal range; neap tides at first and last quarter, when they are at right angles, give the smallest",
+      },
       {
         id: 'u2.8',
         title: 'Eclipses',

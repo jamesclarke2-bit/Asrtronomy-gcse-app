@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tides</title>
+  <link rel="stylesheet" href="../styles.css?v=202609260100" />
+</head>
+<body>
+  <main>
+    <p class="back-link"><a href="../index.html">&larr; Back to all tools</a></p>
+
+    <h1>Tides</h1>
+    <p class="subtitle">
+      How the Moon's gravity, helped a little by the Sun's, raises two bulges of water on Earth,
+      why that gives most places two high and two low tides a day, and why the tides are
+      biggest at new and full Moon and smallest at the quarters.
+    </p>
+
+    <section class="notes-section" id="bulges">
+      <h2>Why there are two tidal bulges</h2>
+      <p>
+        The Moon's gravity pulls on every part of Earth, but not equally: gravity gets weaker
+        with distance. The side of Earth facing the Moon is pulled a little more strongly than
+        Earth's centre, and the far side a little less. It's this <em>difference</em> in pull
+        across Earth, the
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="tidalForce" aria-label="What is a tidal force?" aria-expanded="false">tidal force</button>,
+        that raises the tides, not the pull itself.
+      </p>
+      <span class="glossary-definition" data-term="tidalForce" hidden></span>
+      <ul class="tip-list">
+        <li><strong>On the side facing the Moon</strong>, the water is pulled towards the Moon more than Earth is, so it heaps up into a bulge.</li>
+        <li><strong>On the far side</strong>, Earth is pulled towards the Moon more than the water is, so the water is left behind as a second bulge.</li>
+        <li><strong>In between</strong>, at right angles to the Moon, water is drawn away towards the bulges, and the sea is low.</li>
+      </ul>
+      <p>
+        As Earth spins, any one place is carried through both bulges and both low regions, so
+        most places get <strong>two high tides and two low tides</strong> a day. The Moon moves
+        on along its orbit while Earth turns, so it takes about
+        <strong id="lunar-day"></strong> for a place to come back under the Moon: the tides come
+        roughly 12&nbsp;hours 25&nbsp;minutes apart, and about 50 minutes later each day. That's
+        also why a calendar day occasionally has only one high tide.
+      </p>
+
+      <h3>The Sun's smaller share</h3>
+      <p>
+        The Sun raises tides in the same way. Its overall pull on Earth is about
+        <strong id="pull-ratio"></strong> times stronger than the Moon's, but it's so far away
+        that its pull is almost the same on both sides of Earth. The difference across Earth is
+        what counts, so the Sun's tidal effect is only about
+        <strong id="tide-ratio"></strong> of the Moon's: a bit less than half.
+      </p>
+    </section>
+
+    <section class="notes-section" id="spring-neap">
+      <h2>Spring tides and neap tides</h2>
+      <p>
+        Because the Sun raises its own, smaller pair of bulges, the size of the tides depends on
+        where the Sun and Moon are compared with each other, which is exactly what sets the Moon's
+        phase.
+      </p>
+      <div class="concept-grid">
+        <div class="concept-card">
+          <h3>Spring tides</h3>
+          <p>
+            At <strong>new Moon and full Moon</strong>, the Sun, Earth and Moon are in a line.
+            The Sun's bulges line up with the Moon's and add to them, giving higher high tides
+            and lower low tides: the <strong>largest</strong>
+            <button type="button" class="glossary-toggle glossary-term-button" data-term="tidalRange" aria-label="What is the tidal range?" aria-expanded="false">tidal range</button>.
+          </p>
+          <span class="glossary-definition" data-term="tidalRange" hidden></span>
+        </div>
+        <div class="concept-card">
+          <h3>Neap tides</h3>
+          <p>
+            At <strong>first and last quarter</strong>, the Sun and Moon are at right angles as
+            seen from Earth. The Sun's bulges fall where the Moon's low water is, partly filling
+            it in, giving lower high tides and higher low tides: the <strong>smallest</strong>
+            tidal range.
+          </p>
+        </div>
+      </div>
+      <p>
+        There's a new or full Moon about every 15 days, so spring and neap tides each come
+        round twice a month, alternating about a week apart. In this simple model a spring
+        tide's range is about <strong id="spring-neap-ratio"></strong> times a neap tide's.
+      </p>
+
+      <div class="diagram tide-diagram">
+        <div class="labelled-diagram-wrap" id="tide-wrap">
+          <svg
+            id="tide-diagram"
+            viewBox="0 0 440 360"
+            role="img"
+            aria-label="View from above Earth's North Pole with sunlight arriving from the right. Earth is surrounded by an oval of water stretched towards and away from the Moon, adjusted by the Sun's smaller bulges. The Moon's position around Earth follows its phase, and a marker shows a place on Earth turning through the high and low water."
+          ></svg>
+        </div>
+        <p class="diagram-caption">Seen from above the North Pole, not to scale. The bulges are hugely exaggerated.</p>
+      </div>
+
+      <div class="control">
+        <label for="age-slider">Days since new Moon: <span id="age-label"></span></label>
+        <input type="range" id="age-slider" min="0" max="29.53" step="0.01" value="0" />
+        <div class="preset-list">
+          <button type="button" class="preset-button" data-age="0">New Moon</button>
+          <button type="button" class="preset-button" data-age="0.25">First quarter</button>
+          <button type="button" class="preset-button" data-age="0.5">Full Moon</button>
+          <button type="button" class="preset-button" data-age="0.75">Last quarter</button>
+        </div>
+        <p class="eot-readout" id="tide-result"></p>
+      </div>
+
+      <div class="control">
+        <label for="hour-slider">Hours since the Moon was highest in the sky: <span id="hour-label"></span></label>
+        <input type="range" id="hour-slider" min="0" max="24.8" step="0.1" value="0" />
+        <p class="eot-readout" id="water-result"></p>
+      </div>
+
+      <div class="control">
+        <label for="date-input">Or check a real date:</label>
+        <input type="date" id="date-input" />
+        <p class="eot-readout" id="date-result"></p>
+      </div>
+
+      <p>
+        The date check uses the same lunar-phase model as the
+        <a href="../sims/moon-phases.html">Moon Phases</a> page. Look up the phase there for any
+        date and you can tell whether to expect spring or neap tides.
+      </p>
+      <p class="note">
+        Real tides follow this pattern, but coastlines and the shape of the sea floor change the
+        details. High tide at a real port doesn't come exactly when the Moon is overhead, a few
+        places get only one tide a day, and the biggest spring tides usually arrive a day or two
+        after the new or full Moon. The extra-large spring tides at a supermoon are covered on
+        Moon Phases too.
+      </p>
+    </section>
+
+    <section class="notes-section" id="exam-tips">
+      <h2>Exam tips</h2>
+      <p class="exam-tip">
+        <strong>Common exam confusion:</strong> there are <em>two</em> bulges, not one. The far
+        side bulges too, because the Moon pulls Earth's centre more strongly than the water on
+        the far side. Two bulges are why there are two high tides a day.
+        <a href="#bulges">Why there are two tidal bulges &uarr;</a>
+      </p>
+      <p class="exam-tip">
+        <strong>Common exam confusion:</strong> spring tides have nothing to do with the season.
+        They happen twice a month, at every new and full Moon, all year round.
+        <a href="#spring-neap">Spring tides and neap tides &uarr;</a>
+      </p>
+      <p class="exam-tip">
+        <strong>Common exam confusion:</strong> neap tides aren't unusually low tides. They're
+        tides with a small <em>range</em>: the high tides are lower than usual, and the low
+        tides are higher.
+        <a href="#spring-neap">Spring tides and neap tides &uarr;</a>
+      </p>
+      <p class="exam-tip">
+        <strong>Common exam confusion:</strong> the Sun pulls on Earth far more strongly than
+        the Moon does, yet the Moon causes most of the tide. Tides come from the
+        <em>difference</em> in pull across Earth, and that falls off much faster with distance
+        than the pull itself.
+        <a href="#bulges">The Sun's smaller share &uarr;</a>
+      </p>
+      <p class="exam-tip">
+        <strong>Common exam link:</strong> high tides come about 50 minutes later each day for
+        the same reason the Moon rises about 50 minutes later each day: it moves along its orbit
+        while Earth turns.
+        <a href="#bulges">Why there are two tidal bulges &uarr;</a>
+      </p>
+    </section>
+
+    <section class="notes-section" id="related">
+      <h2>Related pages</h2>
+      <div class="page-card-list">
+        <a class="page-card" href="../sims/moon-phases.html">
+          <h3>Moon Phases</h3>
+          <p class="page-card-description">Find the Moon's phase on any date, and so whether to expect spring or neap tides, plus supermoon spring tides.</p>
+        </a>
+        <a class="page-card" href="../sims/sidereal-vs-synodic.html">
+          <h3>Sidereal vs Synodic Month</h3>
+          <p class="page-card-description">Why phases, and so spring tides, repeat every 29.5 days rather than 27.3.</p>
+        </a>
+        <a class="page-card" href="../sims/eclipses.html">
+          <h3>Eclipses</h3>
+          <p class="page-card-description">Every eclipse happens at new or full Moon, so every eclipse comes with spring tides.</p>
+        </a>
+        <a class="page-card" href="measuring-the-sky.html">
+          <h3>Measuring the Sky</h3>
+          <p class="page-card-description">The real sizes and distances of the Earth, Moon and Sun behind the Sun's smaller tidal effect.</p>
+        </a>
+      </div>
+    </section>
+
+    <p class="coverage" id="coverage"></p>
+  </main>
+
+  <script src="../src/curriculum.js?v=202609260100"></script>
+  <script src="../src/moonPhase.js?v=202609241000"></script>
+  <script src="../src/tides.js?v=202609260100"></script>
+  <script src="../glossary.js?v=202609221600"></script>
+  <script src="tides.js?v=202609260100"></script>
+  <script src="../notesPage.js?v=202609252100"></script>
+</body>
+</html>

@@ -64,6 +64,13 @@ const PAGES = [
     units: ['u2.6', 'u2.28', 'u2.29'],
   },
   {
+    title: 'Tides',
+    description:
+      "How the Moon's gravity, and to a lesser extent the Sun's, raises two tidal bulges; why most places get two high and two low tides a day; and spring and neap tides, with a diagram that follows the Moon's phase.",
+    href: 'notes/tides.html',
+    units: ['u2.7'],
+  },
+  {
     title: 'Earth: Structure, Atmosphere and Motion',
     description:
       "Earth's shape and layered interior, latitude, longitude and the named reference lines on a labelled globe, the atmosphere's composition and layers, why it both helps and hinders astronomy, the transmission window that limits ground-based telescopes, and Earth's own rotation, revolution and tilt.",

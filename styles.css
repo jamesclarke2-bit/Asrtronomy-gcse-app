@@ -1445,11 +1445,12 @@ canvas {
   color: #a9c2ad;
 }
 
-/* notes/measuring-the-sky.html */
+/* notes/measuring-the-sky.html and notes/tides.html */
 .eratosthenes-diagram,
 .shadow-diagram,
 .quarter-diagram,
-.precession-diagram {
+.precession-diagram,
+.tide-diagram {
   max-width: 520px;
   margin: 1rem 0 0.5rem;
 }
@@ -1462,7 +1463,8 @@ canvas {
 .eratosthenes-diagram svg,
 .shadow-diagram svg,
 .quarter-diagram svg,
-.scale-diagram svg {
+.scale-diagram svg,
+.tide-diagram svg {
   display: block;
   width: 100%;
   height: auto;
