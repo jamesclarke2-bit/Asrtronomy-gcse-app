@@ -154,7 +154,13 @@ const UNITS = [
         notes:
           'an oblate spheroid (nearly spherical, slightly flattened at the poles), diameter ~12,742 km; internally layered into core (inner/outer, iron-nickel, drives the magnetic field), mantle (thickest layer, semi-solid rock that slowly flows) and crust (thin, cool, brittle outer shell)',
       },
-      { id: 'u2.2', title: 'Moon structure', depth: 'know' },
+      {
+        id: 'u2.2',
+        title: 'Moon structure',
+        depth: 'know',
+        notes:
+          "a near-sphere (though less perfectly spherical than the Sun), mean diameter ~3,500 km; surface features and their origins: craters (meteoroid impacts, of all sizes and ages), maria (dark, smooth lava that flooded low-lying impact basins), terrae/highlands (light, rugged, older and more heavily cratered), mountain ranges such as the Apennines (uplifted rims of large impact basins, not volcanoes), and rilles (narrow channels in the maria, thought to be collapsed lava tubes or lava channels); the far side looks more heavily cratered mainly because it has almost no maria to have buried older craters",
+      },
       {
         id: 'u2.3',
         title: 'Phases of the Moon',
@@ -262,6 +268,27 @@ const UNITS = [
         depth: 'understand',
         notes:
           "the Moon's orbit is tilted ~5.1° to the ecliptic, crossing it at two nodes; an eclipse is only possible when a new Moon (solar) or full Moon (lunar) falls within the ecliptic limit of a node — about 18.4° for at least a partial solar eclipse, 12.2° for a lunar one — so eclipses come in 'eclipse seasons' rather than every month",
+      },
+      {
+        id: 'u2.20',
+        title: 'Named lunar surface features',
+        depth: 'be able to',
+        notes:
+          'identify on sight: the Sea of Tranquility, Ocean of Storms and Sea of Crises (maria), the craters Tycho, Copernicus and Kepler, and the Apennine mountain range',
+      },
+      {
+        id: 'u2.21',
+        title: 'Synchronous rotation',
+        depth: 'understand',
+        notes:
+          "the Moon's rotation period equals its orbital period (~27.3 days, the sidereal month), so the same face always points towards Earth",
+      },
+      {
+        id: 'u2.22',
+        title: 'Libration',
+        depth: 'understand',
+        notes:
+          "small apparent rocking of the Moon that lets us see about 59% of its surface over time: in longitude (its orbital speed varies around its elliptical orbit while its rotation stays steady), in latitude (its axis is tilted relative to its orbital plane), and diurnal (parallax from the observer's position on Earth's surface)",
       },
     ],
   },

@@ -77,6 +77,13 @@ const PAGES = [
     href: 'sims/eclipses.html',
     units: ['u2.8', 'u2.19'],
   },
+  {
+    title: 'The Moon: Surface and Rotation',
+    description:
+      "The Moon's shape and surface features and how they formed, an interactive map for learning the seven named features on sight, synchronous rotation, and the three kinds of libration.",
+    href: 'notes/moon-structure.html',
+    units: ['u2.2', 'u2.20', 'u2.21', 'u2.22'],
+  },
 ];
 
 const api = { PAGES };

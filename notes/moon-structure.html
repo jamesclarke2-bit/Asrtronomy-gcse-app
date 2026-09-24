@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Moon: Surface and Rotation</title>
+  <link rel="stylesheet" href="../styles.css?v=202609250900" />
+</head>
+<body>
+  <main>
+    <p class="back-link"><a href="../index.html">&larr; Back to all tools</a></p>
+
+    <h1>The Moon: Surface and Rotation</h1>
+    <p class="subtitle">
+      What the Moon is shaped like, what its surface features are and how they formed, how to
+      recognise the named ones on sight &mdash; and why we only ever see one side of it.
+    </p>
+
+    <section class="notes-section">
+      <h2>Shape and size</h2>
+      <p>
+        Like Earth and the Sun, the Moon is a near-sphere &mdash; though noticeably less
+        perfectly spherical than the Sun. Its mean diameter is about
+        <strong>3,500&nbsp;km</strong> (3,475&nbsp;km more precisely), a little over a quarter
+        of Earth's 12,742&nbsp;km (see
+        <a href="earth-structure.html">Earth: Structure, Atmosphere and Motion</a>).
+      </p>
+    </section>
+
+    <section class="notes-section">
+      <h2>Surface features and how they formed</h2>
+      <div class="concept-grid">
+        <div class="concept-card">
+          <h3>Craters</h3>
+          <p>
+            Bowl-shaped hollows made by meteoroid impacts, ranging from tiny pits to basins
+            hundreds of kilometres across, and varying widely in age. With no air to burn up
+            incoming rock and almost no erosion, craters last for billions of years.
+          </p>
+        </div>
+        <div class="concept-card">
+          <h3>Maria (&ldquo;seas&rdquo;)</h3>
+          <p>
+            Dark grey, relatively smooth plains. They're not water: they formed when ancient lava
+            welled up and flooded low-lying impact basins, then set hard.
+          </p>
+        </div>
+        <div class="concept-card">
+          <h3>Terrae (highlands)</h3>
+          <p>
+            Light grey, mountainous and rugged. The highlands are older than the maria and far
+            more heavily cratered, because they've been collecting impacts for longer.
+          </p>
+        </div>
+        <div class="concept-card">
+          <h3>Mountains</h3>
+          <p>
+            Ranges such as the Apennines are the uplifted rims of huge impact basins &mdash;
+            thrown up by the impact itself, not by volcanic activity.
+          </p>
+        </div>
+        <div class="concept-card">
+          <h3>Valleys and rilles</h3>
+          <p>
+            Narrow, channel-like depressions winding across the maria, thought to be collapsed
+            lava tubes or channels left behind by ancient lava flows.
+          </p>
+        </div>
+      </div>
+      <p class="exam-tip">
+        <strong>The far side looks different:</strong> it's far more heavily cratered and has
+        almost no maria. That's not mainly because it was hit more often &mdash; on the near side,
+        lava floods buried and erased many older craters, while the far side's thicker crust
+        kept most lava from reaching the surface, so its ancient craters survive.
+      </p>
+    </section>
+
+    <section class="notes-section">
+      <h2>Recognise the named features</h2>
+      <p>
+        These seven features are worth knowing on sight. Click or tap one to reveal what it is,
+        then hide the labels and test yourself.
+      </p>
+      <div class="control">
+        <button type="button" id="toggle-labels" class="secondary-button" aria-pressed="false">Hide labels &mdash; test yourself</button>
+      </div>
+      <div class="diagram moon-map-diagram">
+        <div class="labelled-diagram-wrap" id="moon-map-wrap">
+          <svg
+            id="moon-map"
+            viewBox="0 0 600 600"
+            role="group"
+            aria-label="Map of the Moon's near side at full Moon, north at the top, with seven clickable features: the Sea of Tranquility, the Ocean of Storms, the Sea of Crises, the craters Tycho, Copernicus and Kepler, and the Apennine mountains"
+          ></svg>
+        </div>
+      </div>
+      <p class="note">
+        The near side at full Moon as seen from the Northern Hemisphere, north at the top. From
+        the Southern Hemisphere it appears upside down. Positions come from the features' real
+        lunar latitudes and longitudes; the small craters are drawn larger than life so you can
+        tap them.
+      </p>
+      <div class="moon-feature-definitions">
+        <span class="glossary-definition" data-term="tranquility" hidden></span>
+        <span class="glossary-definition" data-term="storms" hidden></span>
+        <span class="glossary-definition" data-term="crises" hidden></span>
+        <span class="glossary-definition" data-term="tycho" hidden></span>
+        <span class="glossary-definition" data-term="copernicus" hidden></span>
+        <span class="glossary-definition" data-term="kepler" hidden></span>
+        <span class="glossary-definition" data-term="apennines" hidden></span>
+      </div>
+    </section>
+
+    <section class="notes-section">
+      <h2>Synchronous rotation: why we only see one side</h2>
+      <p>
+        The Moon does spin on its axis &mdash; it's a common misconception that it doesn't. It
+        turns exactly once for every orbit of Earth, so its rotation period and orbital period
+        are equal, both about 27.3 days: the
+        <a href="../sims/sidereal-vs-synodic.html">sidereal month</a>. Because the two keep pace,
+        the same face always points towards Earth.
+      </p>
+      <div class="concept-grid">
+        <div class="concept-card">
+          <svg viewBox="0 0 220 220" role="img" aria-label="The Moon at four points around its orbit, with a red marker on its surface always pointing towards Earth">
+            <circle cx="110" cy="110" r="70" fill="none" stroke="#b7c3d1" stroke-width="1.5" stroke-dasharray="5 5" />
+            <circle cx="110" cy="110" r="14" fill="#2a6bd6" />
+            <circle cx="180" cy="110" r="13" fill="#c9cdd3" stroke="#6b7684" />
+            <circle cx="110" cy="40" r="13" fill="#c9cdd3" stroke="#6b7684" />
+            <circle cx="40" cy="110" r="13" fill="#c9cdd3" stroke="#6b7684" />
+            <circle cx="110" cy="180" r="13" fill="#c9cdd3" stroke="#6b7684" />
+            <circle cx="171" cy="110" r="3.5" fill="#c0392b" />
+            <circle cx="110" cy="49" r="3.5" fill="#c0392b" />
+            <circle cx="49" cy="110" r="3.5" fill="#c0392b" />
+            <circle cx="110" cy="171" r="3.5" fill="#c0392b" />
+          </svg>
+          <p class="diagram-caption">Rotating once per orbit: the red spot always faces Earth</p>
+          <h3>What actually happens</h3>
+          <p>One spin per orbit keeps the same hemisphere turned to us all month.</p>
+        </div>
+        <div class="concept-card">
+          <svg viewBox="0 0 220 220" role="img" aria-label="The Moon at four points around its orbit without rotating, with the red marker always pointing the same direction, so it faces away from Earth half the time">
+            <circle cx="110" cy="110" r="70" fill="none" stroke="#b7c3d1" stroke-width="1.5" stroke-dasharray="5 5" />
+            <circle cx="110" cy="110" r="14" fill="#2a6bd6" />
+            <circle cx="180" cy="110" r="13" fill="#c9cdd3" stroke="#6b7684" />
+            <circle cx="110" cy="40" r="13" fill="#c9cdd3" stroke="#6b7684" />
+            <circle cx="40" cy="110" r="13" fill="#c9cdd3" stroke="#6b7684" />
+            <circle cx="110" cy="180" r="13" fill="#c9cdd3" stroke="#6b7684" />
+            <circle cx="189" cy="110" r="3.5" fill="#c0392b" />
+            <circle cx="119" cy="40" r="3.5" fill="#c0392b" />
+            <circle cx="49" cy="110" r="3.5" fill="#c0392b" />
+            <circle cx="119" cy="180" r="3.5" fill="#c0392b" />
+          </svg>
+          <p class="diagram-caption">Not rotating: the red spot keeps pointing the same way</p>
+          <h3>If it didn't rotate at all</h3>
+          <p>We'd see every side of the Moon over the course of a month.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="notes-section">
+      <h2>Libration: seeing slightly more than half</h2>
+      <p>
+        Even though the same face always points our way, the Moon appears to rock and nod
+        slightly, letting us peek a little way round its edges. Over time this
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="libration" aria-label="What is libration?" aria-expanded="false">libration</button>
+        lets us see about <strong>59%</strong> of its surface from Earth &mdash; though never the
+        remaining 41%. It has three separate causes:
+      </p>
+      <span class="glossary-definition" data-term="libration" hidden></span>
+      <div class="concept-grid">
+        <div class="concept-card">
+          <h3>Libration in longitude</h3>
+          <p>
+            The Moon spins at a perfectly steady rate, but its orbit is an ellipse, so it moves
+            faster near perigee and slower near apogee (see
+            <a href="../sims/moon-phases.html#perigee-apogee">perigee and apogee</a>). The steady
+            spin and the uneven orbit drift slightly out of step, so we see up to about 8&deg;
+            further round its eastern and western edges.
+          </p>
+        </div>
+        <div class="concept-card">
+          <h3>Libration in latitude</h3>
+          <p>
+            The Moon's axis is tilted about 6.7&deg; to the plane of its orbit, so during each
+            orbit we see a little way over its north pole, then a little way under its south
+            pole &mdash; like seeing the top and then the bottom of a slowly nodding head.
+          </p>
+        </div>
+        <div class="concept-card">
+          <h3>Diurnal libration</h3>
+          <p>
+            A small parallax effect from where you stand: Earth's rotation carries you across its
+            ~12,700&nbsp;km width between moonrise and moonset, so you view the Moon from
+            slightly different angles &mdash; about 1&deg; further round one edge, then the other.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <p class="coverage" id="coverage"></p>
+  </main>
+
+  <script src="../src/curriculum.js?v=202609250900"></script>
+  <script src="../glossary.js?v=202609221600"></script>
+  <script src="moon-structure.js?v=202609250930"></script>
+</body>
+</html>

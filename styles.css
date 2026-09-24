@@ -1015,11 +1015,12 @@ canvas {
   border: 1px solid #8a97a5;
 }
 
-/* Interactive Sun-structure diagram: each layer is a .glossary-toggle
+/* Interactive diagram regions (the Sun's layers, the Moon's surface
+   features): each is a .glossary-toggle
    SVG shape (see glossary.js), so the shared badge/button chrome from
    .glossary-toggle mostly no-ops on a <circle> (no CSS box model) —
    only cursor and these explicit overrides give it its own affordance. */
-.sun-region {
+.diagram-region {
   cursor: pointer;
   transition: filter 0.15s ease;
   /* Chromium gives focused SVG shapes a plain :focus outline (a thick
@@ -1029,16 +1030,16 @@ canvas {
   outline: none;
 }
 
-.sun-region:hover,
-.sun-region:focus-visible {
+.diagram-region:hover,
+.diagram-region:focus-visible {
   filter: brightness(1.12);
 }
 
-.sun-region[aria-expanded='true'] {
+.diagram-region[aria-expanded='true'] {
   filter: brightness(1.12) saturate(1.2);
 }
 
-.sun-region:focus-visible {
+.diagram-region:focus-visible {
   outline: 2px solid #173d75;
   outline-offset: 2px;
 }
@@ -1276,4 +1277,32 @@ canvas {
   margin: 0;
   font-size: 0.9rem;
   line-height: 1.5;
+}
+
+/* notes/moon-structure.html */
+.moon-map-diagram {
+  max-width: 460px;
+  margin: 1rem 0 0.5rem;
+}
+
+.moon-map-diagram svg {
+  width: 100%;
+  height: auto;
+  background: #10141f;
+  border-radius: 8px;
+  border: 1px solid #cdd7e1;
+}
+
+.moon-map-diagram .labelled-diagram-label {
+  width: 5rem;
+  color: #eef1f5;
+}
+
+.labels-hidden .labelled-diagram-label,
+.labels-hidden .moon-map-leader {
+  visibility: hidden;
+}
+
+.moon-feature-definitions {
+  max-width: 460px;
 }
