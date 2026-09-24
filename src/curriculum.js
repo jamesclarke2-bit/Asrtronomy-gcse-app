@@ -23,13 +23,26 @@ const UNITS = [
     id: 'u1',
     title: 'Observations',
     subtopics: [
-      { id: 'u1.1', title: 'Naked-eye phenomena', depth: 'know' },
-      { id: 'u1.2', title: 'Constellations and asterisms', depth: 'understand' },
+      {
+        id: 'u1.1',
+        title: 'Naked-eye phenomena',
+        depth: 'know',
+        notes:
+          "the Sun, Moon, planets, stars, comets, meteors, aurorae and artificial satellites, what each looks like and how to tell them apart (planets shine more steadily than twinkling stars; satellites move steadily in a straight line over minutes; meteors streak across in under a second; comets drift slowly against the stars over nights); the Milky Way as a faint, diffuse band, best seen from a dark site",
+      },
+      {
+        id: 'u1.2',
+        title: 'Constellations and asterisms',
+        depth: 'understand',
+        notes:
+          'a constellation is one of the 88 official regions of the sky; an asterism is any other recognisable pattern, often part of a constellation or spanning several; recognise Cassiopeia, Cygnus, Orion, the Plough, the Southern Cross, the Summer Triangle and the Square of Pegasus',
+      },
       {
         id: 'u1.3',
         title: 'Pointer stars',
         depth: 'be able to',
-        notes: "e.g. using the Plough's Pointers to find Polaris",
+        notes:
+          "using the Plough's Pointers, Merak and Dubhe, to find Polaris (about five times their separation beyond Dubhe) and so due north",
       },
       {
         id: 'u1.4',

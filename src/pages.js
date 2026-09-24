@@ -50,6 +50,13 @@ const PAGES = [
     units: ['u1.5', 'u1.18', 'u1.19', 'u1.20'],
   },
   {
+    title: 'The Naked-Eye Sky',
+    description:
+      "What you can see without a telescope and how to tell it apart — planets, stars, satellites, meteors, comets and aurorae — plus the Milky Way, star charts of seven key constellations and asterisms, and using the Plough's Pointers to find Polaris.",
+    href: 'notes/naked-eye-sky.html',
+    units: ['u1.1', 'u1.2', 'u1.3'],
+  },
+  {
     title: 'Earth: Structure, Atmosphere and Motion',
     description:
       "Earth's shape and layered interior, latitude, longitude and the named reference lines on a labelled globe, the atmosphere's composition and layers, why it both helps and hinders astronomy, the transmission window that limits ground-based telescopes, and Earth's own rotation, revolution and tilt.",

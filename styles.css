@@ -1335,3 +1335,96 @@ canvas {
 .moon-feature-definitions {
   max-width: 460px;
 }
+
+/* notes/naked-eye-sky.html */
+.pattern-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.25rem;
+  margin-top: 1rem;
+}
+
+.pattern-card {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 1rem 1.25rem;
+}
+
+.pattern-card h3 {
+  margin: 0.75rem 0 0.4rem;
+  font-size: 1rem;
+}
+
+.pattern-card p {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin: 0 0 0.5rem;
+}
+
+.pattern-kind {
+  display: inline-block;
+  margin-left: 0.35rem;
+  padding: 0.05rem 0.45rem;
+  border-radius: 4px;
+  background: #e8eef6;
+  color: #36506e;
+  font-size: 0.72rem;
+  font-weight: 600;
+  vertical-align: middle;
+}
+
+.pattern-chart svg,
+.pole-finder-diagram svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: #10141f;
+  border-radius: 8px;
+  border: 1px solid #cdd7e1;
+}
+
+.pattern-card .pattern-chart p.pattern-span {
+  margin: 0.4rem 0 0;
+  font-size: 0.78rem;
+  color: #666;
+}
+
+/* Star names on the dark charts: the anchor is the point beside the
+   star, and data-side says which edge of the label sits on it. */
+.star-label {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  white-space: nowrap;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #dfe6ef;
+  pointer-events: none;
+}
+
+.star-label[data-side='left'] {
+  transform: translate(-100%, -50%);
+}
+
+.star-label[data-side='right'] {
+  transform: translate(0, -50%);
+}
+
+.pole-finder-diagram {
+  max-width: 460px;
+  margin: 1rem 0 0.5rem;
+}
+
+.finder-pattern-label {
+  font-size: 0.78rem;
+  color: #9fb8d8;
+}
+
+.finder-polaris-label {
+  color: #ffe9a8;
+  font-size: 0.78rem;
+}
+
+.finder-horizon-label {
+  color: #a9c2ad;
+}
