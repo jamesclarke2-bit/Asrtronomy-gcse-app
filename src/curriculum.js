@@ -295,14 +295,14 @@ const UNITS = [
         title: "The Moon's internal structure",
         depth: 'know',
         notes:
-          "crust, mantle and core, like Earth; mean crust ~50-60 km, proportionally much thicker than Earth's; a small core under 25% of the Moon's radius, offset ~2 km towards the near side",
+          "crust, mantle and core, like Earth; mean crust ~34-43 km (GRAIL; Wieczorek et al. 2013), proportionally much thicker than Earth's; a small core under 25% of the Moon's radius, offset ~2 km towards the near side",
       },
       {
         id: 'u2.24',
         title: 'Near side and far side',
         depth: 'understand',
         notes:
-          "the near side has large dark maria; the far side is almost devoid of them because its much thicker crust (up to ~150-160 km) kept lava from reaching the surface",
+          "the near side has large dark maria; the far side is almost devoid of them because its thicker crust (up to ~60 km in the far-side highlands, per GRAIL) kept lava from reaching the surface",
       },
       {
         id: 'u2.25',
