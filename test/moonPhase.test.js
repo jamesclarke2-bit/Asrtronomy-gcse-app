@@ -1,6 +1,6 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const { getMoonPhase, phaseName, SYNODIC_MONTH_DAYS } = require('../src/moonPhase');
+const { getMoonPhase, fromAgeDays, phaseName, SYNODIC_MONTH_DAYS } = require('../src/moonPhase');
 
 test('illuminated fraction is 0 at theta=0 (new) and 1 at theta=180 (full)', () => {
   // Sanity-check the theta -> illuminated fraction formula directly,
@@ -52,3 +52,26 @@ test('phaseName labels the four cardinal phases and the four in-between phases',
 function REFERENCE_NEW_MOON() {
   return Date.UTC(2000, 0, 6, 18, 14, 0);
 }
+
+test('fromAgeDays agrees with getMoonPhase at the same point in the cycle', () => {
+  for (const ageDays of [0, 7.4, 14.77, 22.1, 29.5]) {
+    const viaAge = fromAgeDays(ageDays);
+    const viaDate = getMoonPhase(new Date(REFERENCE_NEW_MOON() + ageDays * 86400000));
+    assert.ok(Math.abs(viaAge.theta - viaDate.theta) < 1e-9, `theta mismatch at age ${ageDays}`);
+    assert.ok(
+      Math.abs(viaAge.illuminatedFraction - viaDate.illuminatedFraction) < 1e-9,
+      `illuminatedFraction mismatch at age ${ageDays}`
+    );
+    assert.equal(viaAge.waxing, viaDate.waxing);
+  }
+});
+
+test('fromAgeDays wraps ages outside [0, SYNODIC_MONTH_DAYS)', () => {
+  const negative = fromAgeDays(-1);
+  const wrapped = fromAgeDays(SYNODIC_MONTH_DAYS - 1);
+  assert.ok(Math.abs(negative.ageDays - wrapped.ageDays) < 1e-9);
+
+  const overLong = fromAgeDays(SYNODIC_MONTH_DAYS + 5);
+  const short = fromAgeDays(5);
+  assert.ok(Math.abs(overLong.ageDays - short.ageDays) < 1e-9);
+});

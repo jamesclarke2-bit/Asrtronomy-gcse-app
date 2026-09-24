@@ -23,16 +23,35 @@ function makeMoonPhase() {
   // whole cycles from — not itself the subject of any claim here.
   const REFERENCE_NEW_MOON_MS = Date.UTC(2000, 0, 6, 18, 14, 0);
 
+  // The part of getMoonPhase that depends only on theta, not on any real
+  // date — shared with fromAgeDays below, so a raw cycle position (as
+  // used by moon-phases.html's "Explore the cycle" mode) and a real
+  // calendar date always agree on illuminated fraction and waxing/waning,
+  // rather than keeping two copies of the same formula.
+  function fromTheta(theta) {
+    const illuminatedFraction = (1 - Math.cos((theta * Math.PI) / 180)) / 2;
+    const waxing = theta < 180;
+    return { theta, illuminatedFraction, waxing };
+  }
+
   function getMoonPhase(date) {
     const daysSinceReference = (date.getTime() - REFERENCE_NEW_MOON_MS) / 86400000;
     const cycles = daysSinceReference / SYNODIC_MONTH_DAYS;
     const cycleFraction = ((cycles % 1) + 1) % 1;
     const ageDays = cycleFraction * SYNODIC_MONTH_DAYS;
     const theta = cycleFraction * 360;
-    const illuminatedFraction = (1 - Math.cos((theta * Math.PI) / 180)) / 2;
-    const waxing = theta < 180;
 
-    return { theta, ageDays, illuminatedFraction, waxing };
+    return { ageDays, ...fromTheta(theta) };
+  }
+
+  // Same shape as getMoonPhase, but driven directly by an elapsed-days
+  // position in the cycle (0 to SYNODIC_MONTH_DAYS) rather than a real
+  // date — for exploring the cycle in the abstract, not checking a
+  // specific moment.
+  function fromAgeDays(ageDays) {
+    const wrappedAge = ((ageDays % SYNODIC_MONTH_DAYS) + SYNODIC_MONTH_DAYS) % SYNODIC_MONTH_DAYS;
+    const theta = (wrappedAge / SYNODIC_MONTH_DAYS) * 360;
+    return { ageDays: wrappedAge, ...fromTheta(theta) };
   }
 
   function phaseName(theta) {
@@ -47,7 +66,7 @@ function makeMoonPhase() {
     return 'Waning Crescent';
   }
 
-  return { getMoonPhase, phaseName, SYNODIC_MONTH_DAYS };
+  return { getMoonPhase, fromAgeDays, phaseName, SYNODIC_MONTH_DAYS };
 }
 
 if (typeof module !== 'undefined' && module.exports) {

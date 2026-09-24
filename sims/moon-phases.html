@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Moon Phases</title>
-  <link rel="stylesheet" href="../styles.css?v=202609231600" />
+  <link rel="stylesheet" href="../styles.css?v=202609241000" />
 </head>
 <body>
   <main>
@@ -12,9 +12,10 @@
 
     <h1>Moon Phases</h1>
     <p class="subtitle">
-      Two views of the same moment, driven by one date: the top-down view shows
-      <strong>why</strong> &mdash; the Moon's position relative to the Sun &mdash; and the
-      Earth-view disc shows <strong>what you'd actually see</strong> from Earth that night.
+      Two views of the same moment: the top-down view shows <strong>why</strong> &mdash; the
+      Moon's position relative to the Sun &mdash; and the Earth-view disc shows
+      <strong>what you'd actually see</strong> from Earth that night. Explore the cycle freely,
+      or check a real date.
     </p>
 
     <div class="layout tool-layout">
@@ -52,13 +53,46 @@
 
       <div class="controls">
         <div class="control">
-          <label for="date-input">Date: <span id="date-label"></span></label>
-          <input type="date" id="date-input" />
+          <div class="mode-toggle" role="group" aria-label="Choose a mode">
+            <button type="button" id="mode-explore-button" class="mode-toggle-button" aria-pressed="true">Explore the cycle</button>
+            <button type="button" id="mode-check-button" class="mode-toggle-button" aria-pressed="false">Check a date</button>
+          </div>
+        </div>
+
+        <div id="explore-controls">
+          <div class="control">
+            <label for="cycle-slider">Elapsed time: <span id="cycle-label"></span></label>
+            <input type="range" id="cycle-slider" min="0" max="29.53" step="0.01" value="0" />
+          </div>
+
+          <div class="control checkbox-control">
+            <button type="button" id="play-button" class="secondary-button" aria-pressed="false">&#9658; Animate</button>
+          </div>
+
+          <div class="control">
+            <label for="speed-select">Animation speed</label>
+            <select id="speed-select">
+              <option value="slow">Slower &mdash; watch the detail</option>
+              <option value="fast">Faster &mdash; see the whole cycle</option>
+            </select>
+          </div>
+
           <p class="panel-note">
-            A real calendar date, not a repeating cycle &mdash; the Moon's phase on any given
-            date depends on the year too, so you can check this against what's actually in the
-            sky tonight, or against any online almanac.
+            A pure progression through the cycle, day by day &mdash; not tied to any particular
+            year, so it repeats identically every time.
           </p>
+        </div>
+
+        <div id="check-controls" hidden>
+          <div class="control">
+            <label for="date-input">Date: <span id="date-label"></span></label>
+            <input type="date" id="date-input" />
+            <p class="panel-note">
+              A real calendar date, not a repeating cycle &mdash; the Moon's phase on any given
+              date depends on the year too, so you can check this against what's actually in the
+              sky tonight, or against any online almanac.
+            </p>
+          </div>
         </div>
 
         <dl class="readout">
@@ -93,9 +127,9 @@
   </main>
 
   <script src="../src/curriculum.js?v=202609231600"></script>
-  <script src="../src/moonPhase.js?v=202609231400"></script>
+  <script src="../src/moonPhase.js?v=202609241000"></script>
   <script src="../src/moonOrbitPanel.js?v=202609231600"></script>
   <script src="../glossary.js?v=202609221600"></script>
-  <script src="moon-phases.js?v=202609231600"></script>
+  <script src="moon-phases.js?v=202609241000"></script>
 </body>
 </html>

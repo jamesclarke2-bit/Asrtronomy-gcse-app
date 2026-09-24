@@ -1,5 +1,16 @@
 (function () {
   const CURRICULUM_UNITS = ['u2.3'];
+  const SYNODIC = MoonPhase.SYNODIC_MONTH_DAYS;
+
+  const modeExploreButton = document.getElementById('mode-explore-button');
+  const modeCheckButton = document.getElementById('mode-check-button');
+  const exploreControls = document.getElementById('explore-controls');
+  const checkControls = document.getElementById('check-controls');
+
+  const cycleSlider = document.getElementById('cycle-slider');
+  const cycleLabel = document.getElementById('cycle-label');
+  const playButton = document.getElementById('play-button');
+  const speedSelect = document.getElementById('speed-select');
 
   const dateInput = document.getElementById('date-input');
   const dateLabel = document.getElementById('date-label');
@@ -12,6 +23,11 @@
 
   const MOON_LIT_COLOR = '#f5e8c8';
   const MOON_DARK_COLOR = '#3a3f4d';
+
+  let mode = 'explore';
+  // The single quantity both modes drive and carry across a mode switch:
+  // days elapsed since New Moon, 0 up to (not including) SYNODIC.
+  let currentAgeDays = 0;
 
   // dateInput.value is a "YYYY-MM-DD" string (native <input type="date">
   // behaviour) — parsed as UTC noon, matching the noon-anchoring the rest
@@ -95,23 +111,112 @@
     ctx.stroke();
   }
 
-  function render() {
-    const date = parseDateInput(dateInput.value);
-    dateLabel.textContent = formatDate(date);
+  function renderDiagramsAndReadouts(phase) {
+    MoonOrbitPanel.draw(orbitCanvas, { moonAngleDeg: phase.theta, sunAngleDeg: 0 });
+    drawEarthViewDisc(earthViewCanvas, phase.theta);
 
-    const { theta, illuminatedFraction, waxing } = MoonPhase.getMoonPhase(date);
-
-    MoonOrbitPanel.draw(orbitCanvas, { moonAngleDeg: theta, sunAngleDeg: 0 });
-    drawEarthViewDisc(earthViewCanvas, theta);
-
-    illuminatedValue.textContent = `${Math.round(illuminatedFraction * 100)}%`;
-    waxingValue.textContent = illuminatedFraction < 0.01 || illuminatedFraction > 0.99
+    illuminatedValue.textContent = `${Math.round(phase.illuminatedFraction * 100)}%`;
+    waxingValue.textContent = phase.illuminatedFraction < 0.01 || phase.illuminatedFraction > 0.99
       ? '—'
-      : waxing ? 'Waxing (growing)' : 'Waning (shrinking)';
-    phaseNameReadout.textContent = MoonPhase.phaseName(theta);
+      : phase.waxing ? 'Waxing (growing)' : 'Waning (shrinking)';
+    phaseNameReadout.textContent = MoonPhase.phaseName(phase.theta);
   }
 
-  dateInput.value = toDateInputValue(new Date());
+  function renderExplore() {
+    const ageDays = Number(cycleSlider.value);
+    currentAgeDays = ageDays;
+    cycleLabel.textContent = `Day ${ageDays.toFixed(1)} of ${SYNODIC.toFixed(1)}`;
+    renderDiagramsAndReadouts(MoonPhase.fromAgeDays(ageDays));
+  }
+
+  function renderCheck() {
+    const date = parseDateInput(dateInput.value);
+    dateLabel.textContent = formatDate(date);
+    const phase = MoonPhase.getMoonPhase(date);
+    currentAgeDays = phase.ageDays;
+    renderDiagramsAndReadouts(phase);
+  }
+
+  function render() {
+    if (mode === 'explore') renderExplore();
+    else renderCheck();
+  }
+
+  // --- Mode switching: both modes are driven by the same currentAgeDays,
+  // so switching carries the current position across instead of
+  // resetting to day 0.
+
+  function setMode(nextMode) {
+    stopAnimation();
+    mode = nextMode;
+    const exploring = mode === 'explore';
+    modeExploreButton.setAttribute('aria-pressed', String(exploring));
+    modeCheckButton.setAttribute('aria-pressed', String(!exploring));
+    exploreControls.hidden = !exploring;
+    checkControls.hidden = exploring;
+
+    if (exploring) {
+      cycleSlider.value = currentAgeDays;
+    } else {
+      // Pick a real date whose Moon age matches currentAgeDays as closely
+      // as a whole calendar day allows — <input type="date"> can't
+      // represent a fractional day, so this is the closest continuous
+      // handoff available.
+      const today = new Date();
+      const todayAgeDays = MoonPhase.getMoonPhase(today).ageDays;
+      const deltaDays = Math.round(currentAgeDays - todayAgeDays);
+      const matchedDate = new Date(today.getTime() + deltaDays * 86400000);
+      dateInput.value = toDateInputValue(matchedDate);
+    }
+    render();
+  }
+
+  modeExploreButton.addEventListener('click', () => {
+    if (mode !== 'explore') setMode('explore');
+  });
+  modeCheckButton.addEventListener('click', () => {
+    if (mode !== 'check') setMode('check');
+  });
+
+  // --- Explore mode: scrub or animate through the cycle. Setting
+  // cycleSlider.value programmatically doesn't fire 'input', so animation
+  // can't fight with the "stop on manual drag" handler below.
+  const SPEEDS = { slow: 0.02, fast: 0.08 };
+  let animationFrameId = null;
+
+  function stopAnimation() {
+    if (animationFrameId !== null) {
+      cancelAnimationFrame(animationFrameId);
+      animationFrameId = null;
+    }
+    playButton.textContent = '▶ Animate';
+    playButton.setAttribute('aria-pressed', 'false');
+  }
+
+  function startAnimation() {
+    playButton.textContent = '❚❚ Pause';
+    playButton.setAttribute('aria-pressed', 'true');
+    function step() {
+      const perFrame = SPEEDS[speedSelect.value] || SPEEDS.slow;
+      let next = Number(cycleSlider.value) + perFrame;
+      if (next > SYNODIC) next -= SYNODIC;
+      cycleSlider.value = next;
+      renderExplore();
+      animationFrameId = requestAnimationFrame(step);
+    }
+    animationFrameId = requestAnimationFrame(step);
+  }
+
+  playButton.addEventListener('click', () => {
+    if (animationFrameId !== null) stopAnimation();
+    else startAnimation();
+  });
+
+  cycleSlider.addEventListener('input', () => {
+    stopAnimation();
+    render();
+  });
+
   dateInput.addEventListener('input', render);
 
   function renderCoverage() {
@@ -125,6 +230,7 @@
       "A lunar eclipse: Earth passing directly between the Sun and a Full Moon, so Earth's shadow falls on the Moon. Unlike an ordinary phase, this needs an almost exact Sun-Earth-Moon alignment, so it only happens a few times a year at most — not every month.",
   };
 
+  dateInput.value = toDateInputValue(new Date());
   render();
   renderCoverage();
   Glossary.init(GLOSSARY);
