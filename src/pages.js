@@ -19,7 +19,8 @@ const PAGES = [
   },
   {
     title: 'Equation of Time',
-    description: 'Why a sundial and a clock rarely agree, and by how much across the year.',
+    description:
+      'Why a sundial and a clock rarely agree, and by how much across the year; apparent, mean and local mean time; time zones and GMT/UT; and how sunrise and sunset times change through the year.',
     href: 'sims/equation-of-time.html',
     units: ['u2.10'],
   },

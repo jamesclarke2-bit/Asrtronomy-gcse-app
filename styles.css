@@ -362,6 +362,25 @@ canvas {
   background: #2a6bd6;
 }
 
+/* sims/equation-of-time.html's sunrise and sunset graph */
+.legend-sunrise {
+  background: #c2610c;
+}
+
+.legend-sunset {
+  background: #2a5bd7;
+}
+
+.legend-daylight {
+  background: #fff1c2;
+  border: 1px solid #e8d48a;
+}
+
+.sunrise-graph-section canvas {
+  cursor: crosshair;
+  touch-action: pan-y;
+}
+
 .legend-eccentricity {
   background: #2e8b57;
 }

@@ -109,6 +109,49 @@ function getSunPosition(date, lat, lon) {
   };
 }
 
+/**
+ * Sunrise and sunset on a date, from the same declination and equation
+ * of time that getSunPosition gives (taken at 12:00 UT that day), so the
+ * yearly pattern comes from the one seasonal calculation the whole site
+ * uses rather than a second model.
+ *
+ * The Sun counts as risen when its centre is 0.833° below the horizon:
+ * its apparent radius plus the lift from atmospheric refraction, the
+ * standard convention for published sunrise and sunset times.
+ *
+ * @param {Date} date - any time on the day (its UTC date is used)
+ * @param {number} lat - latitude in degrees, north positive
+ * @param {number} lon - longitude in degrees, east positive
+ * @returns {{ sunriseUT: number|null, sunsetUT: number|null, solarNoonUT: number, dayLengthMinutes: number, polar: null|'day'|'night' }}
+ *   Times are minutes after midnight UT (GMT). Where the Sun never sets
+ *   or never rises that day, sunrise and sunset are null and `polar` says
+ *   which.
+ */
+function getSunriseSunset(date, lat, lon) {
+  const noon = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), 12));
+  const { declination, equationOfTime } = getSunPosition(noon, lat, lon);
+
+  // The Sun crosses the meridian when apparent solar time is 12:00: that's
+  // 4 minutes earlier for every degree east, and earlier again by the
+  // equation of time.
+  const solarNoonUT = 720 - 4 * lon - equationOfTime;
+
+  const cosH =
+    (sinD(-0.833) - sinD(lat) * sinD(declination)) / (cosD(lat) * cosD(declination));
+  if (cosH > 1) return { sunriseUT: null, sunsetUT: null, solarNoonUT, dayLengthMinutes: 0, polar: 'night' };
+  if (cosH < -1) return { sunriseUT: null, sunsetUT: null, solarNoonUT, dayLengthMinutes: 1440, polar: 'day' };
+
+  // Half the day's arc, converted from degrees of hour angle to minutes.
+  const halfDayMinutes = 4 * acosD(cosH);
+  return {
+    sunriseUT: solarNoonUT - halfDayMinutes,
+    sunsetUT: solarNoonUT + halfDayMinutes,
+    solarNoonUT,
+    dayLengthMinutes: 2 * halfDayMinutes,
+    polar: null,
+  };
+}
+
 // Curriculum subtopics this simulation teaches towards — see src/curriculum.js.
 // u1.4 coordinate systems (altitude/azimuth), u1.6 observational terminology
 // (meridian, zenith, horizon, culmination), u2.9 seasons (including the
@@ -116,7 +159,7 @@ function getSunPosition(date, lat, lon) {
 const CURRICULUM_UNITS = ['u1.4', 'u1.6', 'u2.9', 'u2.10'];
 
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { getSunPosition, CURRICULUM_UNITS };
+  module.exports = { getSunPosition, getSunriseSunset, CURRICULUM_UNITS };
 } else if (typeof window !== 'undefined') {
-  window.SolarPosition = { getSunPosition, CURRICULUM_UNITS };
+  window.SolarPosition = { getSunPosition, getSunriseSunset, CURRICULUM_UNITS };
 }

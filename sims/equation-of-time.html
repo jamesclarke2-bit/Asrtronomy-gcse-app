@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Equation of Time</title>
-  <link rel="stylesheet" href="../styles.css?v=202609260100" />
+  <link rel="stylesheet" href="../styles.css?v=202609260300" />
 </head>
 <body>
   <main>
@@ -18,18 +18,24 @@
     <section class="eot-formula">
       <h2>What the equation of time means</h2>
       <p>
-        <strong>Equation of time = apparent (sundial) solar time − mean (clock) solar time.</strong>
+        <strong>Equation of time = apparent solar time (AST) − mean solar time (MST).</strong>
         A positive value means the sundial is ahead of the clock; negative means it's behind.
       </p>
       <div class="definition-box">
         <dl>
-          <dt>Apparent solar time</dt>
+          <dt>Apparent Solar Time (AST)</dt>
           <dd>What a sundial reads &mdash; it tracks the real Sun's actual position in the sky, exactly as seen.</dd>
-          <dt>Mean solar time</dt>
+          <dt>Mean Solar Time (MST)</dt>
           <dd>
             What a clock reads &mdash; it tracks an averaged, perfectly steady, fictitious "mean
             sun", invented purely so that clocks run at a constant rate all year round, unlike
             the real Sun.
+          </dd>
+          <dt>Local Mean Time (LMT)</dt>
+          <dd>
+            Mean solar time at one particular longitude. Mean noon arrives 4 minutes later for
+            every degree further west, so before time zones every town kept its own slightly
+            different LMT. See <a href="#time-zones">Local mean time, time zones and GMT</a> below.
           </dd>
         </dl>
       </div>
@@ -114,6 +120,129 @@
       <p class="coverage" id="coverage"></p>
     </section>
 
+    <section class="notes-section" id="time-zones">
+      <h2>Local mean time, time zones and GMT</h2>
+      <p>
+        Earth turns 360&deg; in 24 hours: 15&deg; every hour, or 1&deg; every 4 minutes. So mean
+        solar noon, when the mean sun crosses the meridian, reaches each place 4 minutes later
+        for every degree of longitude further west. Mean solar time kept for one particular
+        longitude is that place's <strong>Local Mean Time (LMT)</strong>:
+      </p>
+      <p class="formula">LMT = GMT + longitude &divide; 15 hours (east positive, west negative)</p>
+      <p>
+        Until the mid-1800s, every town set its clocks to its own LMT. Bristol, 2.6&deg; west of
+        Greenwich, ran about 10 minutes behind London, and the clock on its Corn Exchange still has
+        two minute hands to show both. Once railways let people travel between towns in hours,
+        dozens of local times became unworkable. British railways adopted London time in the
+        1840s, it became the legal standard across Great Britain in 1880, and in 1884 an
+        international conference chose Greenwich as longitude 0&deg; for the whole world.
+      </p>
+      <p>
+        Today the world is divided into <strong>time zones</strong>. Each is roughly 15&deg;
+        wide, and everyone in it sets their clocks to the same standard time, usually a whole
+        number of hours ahead of or behind GMT. Within a zone clocks agree, even though the true
+        LMT varies across it (by about half an hour either side of the middle, or more where a
+        country chooses one zone for a wide area: all of China uses GMT+8). Zone boundaries
+        bend to follow national borders.
+      </p>
+      <p>
+        <strong>Greenwich Mean Time (GMT)</strong> is the mean solar time at Greenwich, on
+        longitude 0&deg;, and every zone is defined from it (Paris is GMT+1, New York GMT&minus;5).
+        Astronomers call it <strong>Universal Time (UT)</strong>, and give observation times in
+        UT so they can be compared anywhere in the world. For GCSE, GMT and UT are the same
+        thing. (Everyday clocks now follow UTC, an atomic-clock version kept within a second of
+        UT.) The UK uses GMT in winter and British Summer Time, GMT+1, in summer.
+      </p>
+
+      <div class="control">
+        <label for="longitude-slider">Longitude: <span id="longitude-label"></span></label>
+        <input type="range" id="longitude-slider" min="-180" max="180" step="0.1" value="-2.6" />
+        <div class="preset-list">
+          <button type="button" class="preset-button" data-longitude="0">Greenwich</button>
+          <button type="button" class="preset-button" data-longitude="-2.6">Bristol</button>
+          <button type="button" class="preset-button" data-longitude="1.3">Norwich</button>
+          <button type="button" class="preset-button" data-longitude="-74.0">New York</button>
+          <button type="button" class="preset-button" data-longitude="139.7">Tokyo</button>
+        </div>
+      </div>
+      <dl class="readout">
+        <div class="readout-row">
+          <dt>GMT (UT)</dt>
+          <dd>12:00</dd>
+        </div>
+        <div class="readout-row">
+          <dt>Local Mean Time (LMT)</dt>
+          <dd id="lmt-value"></dd>
+        </div>
+        <div class="readout-row">
+          <dt>Apparent Solar Time (AST, sundial)</dt>
+          <dd id="ast-value"></dd>
+        </div>
+        <div class="readout-row">
+          <dt>Nearest whole-hour time zone</dt>
+          <dd id="zone-value"></dd>
+        </div>
+      </dl>
+      <p class="eot-readout" id="time-working"></p>
+      <p class="note">
+        For the date on the slider above. AST = LMT + equation of time. The time zone shown is
+        just the nearest 15&deg; meridian; real zones follow borders, and some countries add
+        summer time.
+      </p>
+    </section>
+
+    <section class="notes-section" id="sunrise-sunset">
+      <h2>Sunrise and sunset through the year</h2>
+      <p>
+        How long the Sun spends above the horizon depends on its
+        declination, the same seasonal calculation that drives the analemma above and the
+        <a href="sun-path.html">Sun Path Simulator</a>. From March to September the Sun is north
+        of the celestial equator, so in the Northern Hemisphere its daily path is longer and
+        higher, with early sunrises and late sunsets. From September to March it's south of the
+        equator, and the days are short. The further from the equator you are, the bigger the
+        swing.
+      </p>
+
+      <div class="eot-graph-section sunrise-graph-section">
+        <canvas
+          id="sunrise-graph"
+          width="700"
+          height="340"
+          aria-label="Graph of sunrise and sunset times in GMT across the year at the chosen latitude, with the daylight between them shaded and the chosen date marked"
+        ></canvas>
+        <p class="legend">
+          <span class="legend-swatch legend-sunrise"></span> Sunrise
+          &nbsp; <span class="legend-swatch legend-sunset"></span> Sunset
+          &nbsp; <span class="legend-swatch legend-daylight"></span> Daylight
+        </p>
+        <p class="note">Hover over the graph to read off a date, or click it to move the date slider there.</p>
+      </div>
+
+      <div class="control">
+        <label for="latitude-slider">Latitude: <span id="latitude-label"></span></label>
+        <input type="range" id="latitude-slider" min="-66" max="66" step="0.5" value="51.5" />
+      </div>
+      <p class="eot-readout" id="sunrise-value"></p>
+
+      <p>
+        Two things in the graph are worth a closer look:
+      </p>
+      <ul class="tip-list">
+        <li>
+          <strong>The equinoxes aren't quite 12 hours of daylight.</strong> Sunrise and sunset
+          are counted from the moment the Sun's top edge touches the horizon, and the atmosphere
+          bends its light up over the horizon, so there's a few minutes more daylight than
+          darkness even at an equinox.
+        </li>
+        <li id="solstice-note"></li>
+      </ul>
+      <p class="note">
+        Times are GMT at longitude 0&deg;. At other longitudes they shift by 4 minutes per degree,
+        and UK clocks show an hour later during British Summer Time, which isn't drawn so the
+        curves stay smooth.
+      </p>
+    </section>
+
     <section class="questions">
       <h2>Practice questions</h2>
       <div id="questions-list"></div>
@@ -126,12 +255,12 @@
     </section>
   </main>
 
-  <script src="../src/curriculum.js?v=202609260100"></script>
-  <script src="../src/solarPosition.js?v=202609251600"></script>
+  <script src="../src/curriculum.js?v=202609260300"></script>
+  <script src="../src/solarPosition.js?v=202609260300"></script>
   <script src="../src/eotComponents.js?v=202609212100"></script>
   <script src="../src/eotQuestions.js?v=202609212100"></script>
   <script src="../quiz-ui.js?v=202609212100"></script>
   <script src="../glossary.js?v=202609221600"></script>
-  <script src="equation-of-time.js?v=202609212100"></script>
+  <script src="equation-of-time.js?v=202609260300"></script>
 </body>
 </html>

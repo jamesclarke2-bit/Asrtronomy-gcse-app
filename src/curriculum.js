@@ -224,7 +224,8 @@ const UNITS = [
         id: 'u2.10',
         title: 'Time',
         depth: 'understand',
-        notes: 'solar time vs. clock time; the Equation of Time, caused by orbital eccentricity and axial tilt.',
+        notes:
+          "Apparent Solar Time (AST, what a sundial reads) vs Mean Solar Time (MST, what a clock reads); the Equation of Time (AST - MST), caused by orbital eccentricity and axial tilt; Local Mean Time (LMT), mean solar time at a particular longitude, 4 minutes later for every degree west (LMT = GMT + longitude / 15 h), as each town kept before standard time; time zones, roughly 15° wide and usually whole hours from GMT, adopted once railways made local times unworkable; GMT/UT, mean solar time at Greenwich (longitude 0°), the reference for every zone; the annual variation in sunrise and sunset times, set by the Sun's changing declination, with the equation of time moving the earliest sunset and latest sunrise away from the winter solstice",
       },
       {
         id: 'u2.11',
