@@ -1,5 +1,5 @@
 (function () {
-  const CURRICULUM_UNITS = ['u2.2', 'u2.20', 'u2.21', 'u2.22'];
+  const CURRICULUM_UNITS = ['u2.2', 'u2.20', 'u2.21', 'u2.22', 'u2.23', 'u2.24', 'u2.25', 'u2.26', 'u2.27'];
   const SVG_NS = 'http://www.w3.org/2000/svg';
   const RAD = Math.PI / 180;
 
@@ -248,6 +248,10 @@
       'The Apennine Mountains (Montes Apenninus): a curved range along the south-eastern edge of the Sea of Rains (Mare Imbrium) — the uplifted rim of the giant impact that made that basin.',
     libration:
       "Libration: the Moon's slight apparent rocking and nodding as seen from Earth, which lets us see about 59% of its surface over time.",
+    escapeVelocity:
+      "Escape velocity: the speed an object needs to coast away from a planet's gravity for good, with no further push. About 11.2 km/s for Earth.",
+    giantImpact:
+      'The Giant Impact Hypothesis: the idea that the Moon formed from debris thrown out when a Mars-sized body, Theia, struck the young Earth a glancing blow.',
   };
 
   drawMoonMap();

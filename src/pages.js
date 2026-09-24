@@ -78,11 +78,11 @@ const PAGES = [
     units: ['u2.8', 'u2.19'],
   },
   {
-    title: 'The Moon: Surface and Rotation',
+    title: 'The Moon: Structure, Surface and Origin',
     description:
-      "The Moon's shape and surface features and how they formed, an interactive map for learning the seven named features on sight, synchronous rotation, and the three kinds of libration.",
+      "The Moon's layers and surface features, an interactive map for learning the seven named features on sight, synchronous rotation and libration, the near and far sides, what it takes to get there, and the Giant Impact Hypothesis.",
     href: 'notes/moon-structure.html',
-    units: ['u2.2', 'u2.20', 'u2.21', 'u2.22'],
+    units: ['u2.2', 'u2.20', 'u2.21', 'u2.22', 'u2.23', 'u2.24', 'u2.25', 'u2.26', 'u2.27'],
   },
 ];
 

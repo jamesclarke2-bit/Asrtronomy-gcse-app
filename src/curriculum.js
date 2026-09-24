@@ -290,6 +290,41 @@ const UNITS = [
         notes:
           "small apparent rocking of the Moon that lets us see about 59% of its surface over time: in longitude (its orbital speed varies around its elliptical orbit while its rotation stays steady), in latitude (its axis is tilted relative to its orbital plane), and diurnal (parallax from the observer's position on Earth's surface)",
       },
+      {
+        id: 'u2.23',
+        title: "The Moon's internal structure",
+        depth: 'know',
+        notes:
+          "crust, mantle and core, like Earth; mean crust ~50-60 km, proportionally much thicker than Earth's; a small core under 25% of the Moon's radius, offset ~2 km towards the near side",
+      },
+      {
+        id: 'u2.24',
+        title: 'Near side and far side',
+        depth: 'understand',
+        notes:
+          "the near side has large dark maria; the far side is almost devoid of them because its much thicker crust (up to ~150-160 km) kept lava from reaching the surface",
+      },
+      {
+        id: 'u2.25',
+        title: 'Exploring the far side',
+        depth: 'know',
+        notes:
+          'first photographed by Luna 3 in 1959, then mapped in more detail from orbit by the Lunar Orbiter program, Apollo orbital photography and modern missions such as LRO',
+      },
+      {
+        id: 'u2.26',
+        title: 'Escape velocity and rockets',
+        depth: 'understand',
+        notes:
+          "reaching the Moon means reaching (nearly) Earth's escape velocity, ~11.2 km/s; only rockets can supply the sustained thrust to do this in a vacuum, because they carry their own oxidiser and push by throwing exhaust backwards rather than pushing on air",
+      },
+      {
+        id: 'u2.27',
+        title: 'Origin of the Moon',
+        depth: 'understand',
+        notes:
+          "the Giant Impact Hypothesis (a Mars-sized body, Theia, struck the early Earth a glancing blow; the debris formed the Moon), supported by near-identical oxygen isotope ratios, the lack of water and volatiles in lunar samples, and KREEP-rich rocks in the Ocean of Storms and Sea of Showers; alternatives: Capture Theory and Co-accretion Theory",
+      },
     ],
   },
   {
