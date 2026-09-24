@@ -508,7 +508,7 @@
       `${formatDate(latestSunrise.date)} (${formatClock(latestSunrise.t.sunriseUT)}), either side ` +
       `of the winter solstice on ${north ? '21 December' : '21 June'}. That's the equation of ` +
       `time at work: around then it's falling by about ${driftSeconds} seconds a day (see ` +
-      'the graph above), so solar noon, and with it the whole day\'s sunrise and sunset, ' +
+      'the equation of time graph at the top), so solar noon, and with it the whole day\'s sunrise and sunset, ' +
       'drifts later.';
   }
 

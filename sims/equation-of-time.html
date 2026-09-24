@@ -70,23 +70,123 @@
 
     <div class="layout tool-layout">
       <div class="diagrams-column eot-diagrams">
-        <div class="eot-graph-section">
-          <h2>Equation of time across the year</h2>
-          <canvas
-            id="eot-graph"
-            width="700"
-            height="320"
-            aria-label="Graph of the equation of time in minutes across the year, split into its orbital-eccentricity and axial-tilt components"
-          ></canvas>
-          <p class="legend">
-            <span class="legend-swatch legend-total"></span> Total (precise calculation)
-            &nbsp; <span class="legend-swatch legend-obliquity"></span> Axial tilt
-            &nbsp; <span class="legend-swatch legend-eccentricity"></span> Orbital eccentricity
-          </p>
+        <!-- The equation of time and the analemma are two views of the same
+             data, so they stay side by side (or stacked, on narrower
+             screens) with nothing in between. -->
+        <div class="eot-graphs-row">
+            <div class="eot-graph-section">
+              <h2>Equation of time across the year</h2>
+              <canvas
+                id="eot-graph"
+                width="700"
+                height="320"
+                aria-label="Graph of the equation of time in minutes across the year, split into its orbital-eccentricity and axial-tilt components"
+              ></canvas>
+              <p class="legend">
+                <span class="legend-swatch legend-total"></span> Total (precise calculation)
+                &nbsp; <span class="legend-swatch legend-obliquity"></span> Axial tilt
+                &nbsp; <span class="legend-swatch legend-eccentricity"></span> Orbital eccentricity
+              </p>
+            </div>
+
+            <div class="analemma-section">
+              <h2>The analemma</h2>
+              <p>
+                If you photographed the Sun at the same clock time every few days for a year, its
+                position would trace this figure-eight — the
+                <button type="button" class="glossary-toggle glossary-term-button" data-term="analemma" aria-label="What is the analemma?" aria-expanded="false">analemma</button>.
+                The side-to-side spread is the equation of time (both effects combined, converted from
+                minutes to a sideways shift); the up-down spread is the
+                <button type="button" class="glossary-toggle glossary-term-button" data-term="declination" aria-label="What is declination?" aria-expanded="false">declination</button>
+                already used by the orbit panel on the
+                <a href="sun-path.html">Sun Path Simulator</a>. The shape is the same whichever clock
+                hour you choose to observe at — only its position in the actual sky would shift, not
+                its shape. The marker below shows the same date on both plots.
+              </p>
+              <span class="glossary-definition" data-term="analemma" hidden></span>
+              <span class="glossary-definition" data-term="declination" hidden></span>
+              <canvas
+                id="analemma-graph"
+                width="360"
+                height="480"
+                aria-label="The analemma: a figure-eight plot of the equation of time against declination across the year"
+              ></canvas>
+            </div>
         </div>
 
-        <div class="eot-graph-section sunrise-graph-section">
+        <section class="notes-section" id="time-zones">
+          <h2>Local mean time, time zones and GMT</h2>
+          <p>
+            Earth turns 360&deg; in 24 hours: 15&deg; every hour, or 1&deg; every 4 minutes. So mean
+            solar noon, when the mean sun crosses the meridian, reaches each place 4 minutes later
+            for every degree of longitude further west. Mean solar time kept for one particular
+            longitude is that place's <strong>Local Mean Time (LMT)</strong>:
+          </p>
+          <p class="formula">LMT = GMT + longitude &divide; 15 hours (east positive, west negative)</p>
+          <p>
+            Until the mid-1800s, every town set its clocks to its own LMT. Bristol, 2.6&deg; west of
+            Greenwich, ran about 10 minutes behind London, and the clock on its Corn Exchange still has
+            two minute hands to show both. Once railways let people travel between towns in hours,
+            dozens of local times became unworkable. British railways adopted London time in the
+            1840s, it became the legal standard across Great Britain in 1880, and in 1884 an
+            international conference chose Greenwich as longitude 0&deg; for the whole world.
+          </p>
+          <p>
+            Today the world is divided into <strong>time zones</strong>. Each is roughly 15&deg;
+            wide, and everyone in it sets their clocks to the same standard time, usually a whole
+            number of hours ahead of or behind GMT. Within a zone clocks agree, even though the true
+            LMT varies across it (by about half an hour either side of the middle, or more where a
+            country chooses one zone for a wide area: all of China uses GMT+8). Zone boundaries
+            bend to follow national borders.
+          </p>
+          <p>
+            <strong>Greenwich Mean Time (GMT)</strong> is the mean solar time at Greenwich, on
+            longitude 0&deg;, and every zone is defined from it (Paris is GMT+1, New York GMT&minus;5).
+            Astronomers call it <strong>Universal Time (UT)</strong>, and give observation times in
+            UT so they can be compared anywhere in the world. For GCSE, GMT and UT are the same
+            thing. (Everyday clocks now follow UTC, an atomic-clock version kept within a second of
+            UT.) The UK uses GMT in winter and British Summer Time, GMT+1, in summer.
+          </p>
+          <p class="note">
+            The readout box in the controls shows LMT and sundial time (AST = LMT + equation of
+            time) when GMT is 12:00, for the date and longitude you choose. The time zone shown is
+            just the nearest 15&deg; meridian; real zones follow borders, and some countries add
+            summer time.
+          </p>
+        </section>
+
+        <section class="notes-section" id="sunrise-sunset">
           <h2>Sunrise and sunset through the year</h2>
+          <p>
+            How long the Sun spends above the horizon depends on its
+            declination, the same seasonal calculation that drives the analemma above and the
+            <a href="sun-path.html">Sun Path Simulator</a>. From March to September the Sun is north
+            of the celestial equator, so in the Northern Hemisphere its daily path is longer and
+            higher, with early sunrises and late sunsets. From September to March it's south of the
+            equator, and the days are short. The further from the equator you are, the bigger the
+            swing.
+          </p>
+          <p>
+            The graph below shows sunrise and sunset across the whole year for the latitude you
+            choose in the controls. Two things in it are worth a closer look:
+          </p>
+          <ul class="tip-list">
+            <li>
+              <strong>The equinoxes aren't quite 12 hours of daylight.</strong> Sunrise and sunset
+              are counted from the moment the Sun's top edge touches the horizon, and the atmosphere
+              bends its light up over the horizon, so there's a few minutes more daylight than
+              darkness even at an equinox.
+            </li>
+            <li id="solstice-note"></li>
+          </ul>
+          <p class="note">
+            Times are GMT at longitude 0&deg;. At other longitudes they shift by 4 minutes per degree,
+            and UK clocks show an hour later during British Summer Time, which isn't drawn so the
+            curves stay smooth.
+          </p>
+        </section>
+
+        <div class="eot-graph-section sunrise-graph-section">
           <canvas
             id="sunrise-graph"
             width="700"
@@ -100,30 +200,6 @@
           </p>
           <p class="eot-readout" id="sunrise-value"></p>
           <p class="note">Hover over the graph to read off a date, or click it to move the date slider there.</p>
-        </div>
-
-        <div class="analemma-section">
-          <h2>The analemma</h2>
-          <p>
-            If you photographed the Sun at the same clock time every few days for a year, its
-            position would trace this figure-eight — the
-            <button type="button" class="glossary-toggle glossary-term-button" data-term="analemma" aria-label="What is the analemma?" aria-expanded="false">analemma</button>.
-            The side-to-side spread is the equation of time (both effects combined, converted from
-            minutes to a sideways shift); the up-down spread is the
-            <button type="button" class="glossary-toggle glossary-term-button" data-term="declination" aria-label="What is declination?" aria-expanded="false">declination</button>
-            already used by the orbit panel on the
-            <a href="sun-path.html">Sun Path Simulator</a>. The shape is the same whichever clock
-            hour you choose to observe at — only its position in the actual sky would shift, not
-            its shape. The marker below shows the same date on both plots.
-          </p>
-          <span class="glossary-definition" data-term="analemma" hidden></span>
-          <span class="glossary-definition" data-term="declination" hidden></span>
-          <canvas
-            id="analemma-graph"
-            width="360"
-            height="480"
-            aria-label="The analemma: a figure-eight plot of the equation of time against declination across the year"
-          ></canvas>
         </div>
       </div>
 
@@ -191,78 +267,6 @@
 
     <p class="coverage" id="coverage"></p>
 
-    <section class="notes-section" id="time-zones">
-      <h2>Local mean time, time zones and GMT</h2>
-      <p>
-        Earth turns 360&deg; in 24 hours: 15&deg; every hour, or 1&deg; every 4 minutes. So mean
-        solar noon, when the mean sun crosses the meridian, reaches each place 4 minutes later
-        for every degree of longitude further west. Mean solar time kept for one particular
-        longitude is that place's <strong>Local Mean Time (LMT)</strong>:
-      </p>
-      <p class="formula">LMT = GMT + longitude &divide; 15 hours (east positive, west negative)</p>
-      <p>
-        Until the mid-1800s, every town set its clocks to its own LMT. Bristol, 2.6&deg; west of
-        Greenwich, ran about 10 minutes behind London, and the clock on its Corn Exchange still has
-        two minute hands to show both. Once railways let people travel between towns in hours,
-        dozens of local times became unworkable. British railways adopted London time in the
-        1840s, it became the legal standard across Great Britain in 1880, and in 1884 an
-        international conference chose Greenwich as longitude 0&deg; for the whole world.
-      </p>
-      <p>
-        Today the world is divided into <strong>time zones</strong>. Each is roughly 15&deg;
-        wide, and everyone in it sets their clocks to the same standard time, usually a whole
-        number of hours ahead of or behind GMT. Within a zone clocks agree, even though the true
-        LMT varies across it (by about half an hour either side of the middle, or more where a
-        country chooses one zone for a wide area: all of China uses GMT+8). Zone boundaries
-        bend to follow national borders.
-      </p>
-      <p>
-        <strong>Greenwich Mean Time (GMT)</strong> is the mean solar time at Greenwich, on
-        longitude 0&deg;, and every zone is defined from it (Paris is GMT+1, New York GMT&minus;5).
-        Astronomers call it <strong>Universal Time (UT)</strong>, and give observation times in
-        UT so they can be compared anywhere in the world. For GCSE, GMT and UT are the same
-        thing. (Everyday clocks now follow UTC, an atomic-clock version kept within a second of
-        UT.) The UK uses GMT in winter and British Summer Time, GMT+1, in summer.
-      </p>
-      <p class="note">
-        The readout box in the controls shows LMT and sundial time (AST = LMT + equation of
-        time) when GMT is 12:00, for the date and longitude you choose. The time zone shown is
-        just the nearest 15&deg; meridian; real zones follow borders, and some countries add
-        summer time.
-      </p>
-    </section>
-
-    <section class="notes-section" id="sunrise-sunset">
-      <h2>Sunrise and sunset through the year</h2>
-      <p>
-        How long the Sun spends above the horizon depends on its
-        declination, the same seasonal calculation that drives the analemma above and the
-        <a href="sun-path.html">Sun Path Simulator</a>. From March to September the Sun is north
-        of the celestial equator, so in the Northern Hemisphere its daily path is longer and
-        higher, with early sunrises and late sunsets. From September to March it's south of the
-        equator, and the days are short. The further from the equator you are, the bigger the
-        swing.
-      </p>
-      <p>
-        The sunrise and sunset graph shows the whole year for the latitude you choose in the
-        controls. Two things in it are worth a closer look:
-      </p>
-      <ul class="tip-list">
-        <li>
-          <strong>The equinoxes aren't quite 12 hours of daylight.</strong> Sunrise and sunset
-          are counted from the moment the Sun's top edge touches the horizon, and the atmosphere
-          bends its light up over the horizon, so there's a few minutes more daylight than
-          darkness even at an equinox.
-        </li>
-        <li id="solstice-note"></li>
-      </ul>
-      <p class="note">
-        Times are GMT at longitude 0&deg;. At other longitudes they shift by 4 minutes per degree,
-        and UK clocks show an hour later during British Summer Time, which isn't drawn so the
-        curves stay smooth.
-      </p>
-    </section>
-
     <section class="questions">
       <h2>Practice questions</h2>
       <div id="questions-list"></div>
@@ -281,6 +285,6 @@
   <script src="../src/eotQuestions.js?v=202609212100"></script>
   <script src="../quiz-ui.js?v=202609212100"></script>
   <script src="../glossary.js?v=202609221600"></script>
-  <script src="equation-of-time.js?v=202609260530"></script>
+  <script src="equation-of-time.js?v=202609260700"></script>
 </body>
 </html>
