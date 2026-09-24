@@ -15,7 +15,7 @@ const PAGES = [
     title: 'Sun Path Simulator',
     description: "Drag date, time and latitude to see how the Sun's position and path across the sky change.",
     href: 'sims/sun-path.html',
-    units: ['u1.4', 'u1.6', 'u2.9', 'u2.10', 'u3.3'],
+    units: ['u1.4', 'u1.6', 'u2.9', 'u2.10'],
   },
   {
     title: 'Equation of Time',
@@ -52,7 +52,7 @@ const PAGES = [
   {
     title: 'Earth: Structure, Atmosphere and Motion',
     description:
-      "Earth's shape and layered interior, the atmosphere's composition and layers, why it both helps and hinders astronomy, the transmission window that limits ground-based telescopes, and Earth's own rotation, revolution and tilt.",
+      "Earth's shape and layered interior, latitude, longitude and the named reference lines on a labelled globe, the atmosphere's composition and layers, why it both helps and hinders astronomy, the transmission window that limits ground-based telescopes, and Earth's own rotation, revolution and tilt.",
     href: 'notes/earth-structure.html',
     units: ['u2.1', 'u2.9', 'u2.15', 'u2.16'],
   },

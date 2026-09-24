@@ -1120,6 +1120,35 @@ canvas {
   border: 1px solid #3f5a70;
 }
 
+.globe-diagram {
+  max-width: 520px;
+  margin: 1rem 0 0.5rem;
+}
+
+.globe-diagram svg {
+  width: 100%;
+  height: auto;
+  background: #f7f7f5;
+  border-radius: 8px;
+  border: 1px solid #cdd7e1;
+}
+
+/* Sized as a share of the diagram, not in rem, so the labels shrink with
+   the globe on a phone instead of spilling over it. */
+.globe-diagram .labelled-diagram-label {
+  width: 21%;
+  font-size: clamp(0.6rem, 1.9vw, 0.75rem);
+}
+
+.globe-label-value {
+  display: block;
+  font-weight: 400;
+}
+
+.globe-definitions {
+  max-width: 520px;
+}
+
 .transmission-diagram {
   max-width: 640px;
   margin: 1rem 0;

@@ -111,9 +111,9 @@ function getSunPosition(date, lat, lon) {
 
 // Curriculum subtopics this simulation teaches towards — see src/curriculum.js.
 // u1.4 coordinate systems (altitude/azimuth), u1.6 observational terminology
-// (meridian, zenith, horizon, culmination), u2.9 seasons, u2.10 time
-// (Equation of Time), u3.3 Earth's orbit around the Sun.
-const CURRICULUM_UNITS = ['u1.4', 'u1.6', 'u2.9', 'u2.10', 'u3.3'];
+// (meridian, zenith, horizon, culmination), u2.9 seasons (including the
+// orbit panel's fixed axis direction), u2.10 time (Equation of Time).
+const CURRICULUM_UNITS = ['u1.4', 'u1.6', 'u2.9', 'u2.10'];
 
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = { getSunPosition, CURRICULUM_UNITS };

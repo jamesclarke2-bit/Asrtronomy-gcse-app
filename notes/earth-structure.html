@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Earth: Structure, Atmosphere and Motion</title>
-  <link rel="stylesheet" href="../styles.css?v=202609250900" />
+  <link rel="stylesheet" href="../styles.css?v=202609251600" />
 </head>
 <body>
   <main>
@@ -29,6 +29,86 @@
         one percent.
       </p>
       <span class="glossary-definition" data-term="oblateSpheroid" hidden></span>
+    </section>
+
+    <section class="notes-section">
+      <h2>Latitude, longitude and reference lines</h2>
+      <p>
+        Any place on Earth's surface can be pinned down by two angles:
+      </p>
+      <ul class="tip-list">
+        <li>
+          <strong>Latitude</strong> &mdash; how far north or south of the equator a place is,
+          measured as an angle from Earth's centre: 0&deg; at the equator up to 90&deg;N or
+          90&deg;S at the poles. All places with the same latitude lie on a circle running
+          east&ndash;west, called a
+          <button type="button" class="glossary-toggle glossary-term-button" data-term="parallel" aria-label="What is a parallel?" aria-expanded="false">parallel</button>.
+        </li>
+        <li>
+          <strong>Longitude</strong> &mdash; how far east or west of the Prime Meridian a place
+          is, from 0&deg; up to 180&deg;E or 180&deg;W. All places with the same longitude lie on
+          a half-circle running from pole to pole, called a
+          <button type="button" class="glossary-toggle glossary-term-button" data-term="meridianLine" aria-label="What is a meridian?" aria-expanded="false">meridian</button>.
+        </li>
+      </ul>
+      <span class="glossary-definition" data-term="parallel" hidden></span>
+      <span class="glossary-definition" data-term="meridianLine" hidden></span>
+      <p>
+        For example, the Royal Observatory at Greenwich, London, is at about 51.5&deg;N,
+        0&deg;, and Sydney is at about 33.9&deg;S, 151.2&deg;E. A few lines of latitude and
+        longitude are special enough to have names. Click or tap one on the globe to find out
+        why.
+      </p>
+      <div class="diagram globe-diagram">
+        <div class="labelled-diagram-wrap" id="globe-wrap">
+          <svg
+            id="globe"
+            viewBox="0 0 660 520"
+            role="group"
+            aria-label="Globe with north at the top, showing lines of longitude and Earth's named reference lines, each clickable: the North and South Poles, the Arctic and Antarctic Circles, the Tropics of Cancer and Capricorn, the equator and the Prime Meridian"
+          ></svg>
+        </div>
+      </div>
+      <div class="globe-definitions">
+        <span class="glossary-definition" data-term="northPole" hidden></span>
+        <span class="glossary-definition" data-term="arcticCircle" hidden></span>
+        <span class="glossary-definition" data-term="tropicOfCancer" hidden></span>
+        <span class="glossary-definition" data-term="equator" hidden></span>
+        <span class="glossary-definition" data-term="tropicOfCapricorn" hidden></span>
+        <span class="glossary-definition" data-term="antarcticCircle" hidden></span>
+        <span class="glossary-definition" data-term="southPole" hidden></span>
+        <span class="glossary-definition" data-term="primeMeridian" hidden></span>
+      </div>
+      <table class="shower-table">
+        <caption>Earth's named reference lines and points</caption>
+        <thead>
+          <tr><th scope="col">Name</th><th scope="col">Position</th><th scope="col">What's special about it</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>North Pole</td><td>90&deg;N</td><td>Where Earth's rotation axis meets the surface in the north</td></tr>
+          <tr><td>Arctic Circle</td><td>~66.5&deg;N</td><td>North of it, there's at least one day a year when the Sun never sets, and one when it never rises</td></tr>
+          <tr><td>Tropic of Cancer</td><td>~23.5&deg;N</td><td>The farthest north the Sun is ever directly overhead at noon (at the June solstice)</td></tr>
+          <tr><td>Equator</td><td>0&deg; latitude</td><td>Halfway between the poles; the Sun is directly overhead here at noon at the equinoxes</td></tr>
+          <tr><td>Tropic of Capricorn</td><td>~23.5&deg;S</td><td>The farthest south the Sun is ever directly overhead at noon (at the December solstice)</td></tr>
+          <tr><td>Antarctic Circle</td><td>~66.5&deg;S</td><td>The southern match for the Arctic Circle</td></tr>
+          <tr><td>South Pole</td><td>90&deg;S</td><td>Where Earth's rotation axis meets the surface in the south</td></tr>
+          <tr><td>Prime Meridian</td><td>0&deg; longitude</td><td>The line longitude is measured from, running from pole to pole through Greenwich</td></tr>
+        </tbody>
+      </table>
+      <p>
+        The tropics and polar circles aren't arbitrary: they come from Earth's 23.5&deg; axial
+        tilt. The tropics are 23.5&deg; from the equator, and the polar circles are 23.5&deg;
+        from the poles (90&deg; &minus; 23.5&deg; = 66.5&deg;). The Prime Meridian is different.
+        Nothing in nature picks it out; it was chosen to run through Greenwich by international
+        agreement in 1884.
+      </p>
+      <p class="exam-tip">
+        <strong>Common exam link:</strong> the sky has a matching grid. Declination is the
+        sky's version of latitude, and right ascension is its version of longitude. Your own
+        latitude is what decides which stars are circumpolar and roughly how high Polaris
+        sits, and your longitude is needed to work out local sidereal time. Try both on the
+        <a href="../sims/coordinates.html">Star Coordinates</a> page.
+      </p>
     </section>
 
     <section class="notes-section">
@@ -259,11 +339,11 @@
     <p class="coverage" id="coverage"></p>
   </main>
 
-  <script src="../src/curriculum.js?v=202609251400"></script>
-  <script src="../src/solarPosition.js?v=202609241800"></script>
+  <script src="../src/curriculum.js?v=202609251600"></script>
+  <script src="../src/solarPosition.js?v=202609251600"></script>
   <script src="../src/earthOrbit.js?v=202609212100"></script>
   <script src="../src/orbitPanel.js?v=202609221500"></script>
   <script src="../glossary.js?v=202609221600"></script>
-  <script src="earth-structure.js?v=202609230900"></script>
+  <script src="earth-structure.js?v=202609251600"></script>
 </body>
 </html>

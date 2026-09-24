@@ -152,7 +152,7 @@ const UNITS = [
         title: 'Earth structure',
         depth: 'know',
         notes:
-          'an oblate spheroid (nearly spherical, slightly flattened at the poles), diameter ~12,742 km; internally layered into core (inner/outer, iron-nickel, drives the magnetic field), mantle (thickest layer, semi-solid rock that slowly flows) and crust (thin, cool, brittle outer shell)',
+          'an oblate spheroid (nearly spherical, slightly flattened at the poles), diameter ~12,742 km; internally layered into core (inner/outer, iron-nickel, drives the magnetic field), mantle (thickest layer, semi-solid rock that slowly flows) and crust (thin, cool, brittle outer shell); positions on the surface given by latitude (0-90° N or S of the equator, along parallels) and longitude (0-180° E or W of the Prime Meridian, along meridians); named reference lines and points: the equator, the Tropics of Cancer and Capricorn (~23.5° N/S, equal to the axial tilt), the Arctic and Antarctic Circles (~66.5° N/S), the Prime Meridian through Greenwich, and the North and South Poles',
       },
       {
         id: 'u2.2',
