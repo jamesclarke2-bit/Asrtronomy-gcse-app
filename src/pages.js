@@ -59,9 +59,9 @@ const PAGES = [
   {
     title: 'Moon Phases',
     description:
-      "Two synced views, driven by one date: why phases happen (the Moon's position relative to the Sun) and what you'd actually see from Earth that night — plus why it isn't Earth's shadow.",
+      "Two synced views: why phases happen (the Moon's position relative to the Sun) and what you'd actually see from Earth — plus the Moon's changing distance on its elliptical orbit, and when a full Moon counts as a supermoon.",
     href: 'sims/moon-phases.html',
-    units: ['u2.3'],
+    units: ['u2.3', 'u2.18'],
   },
   {
     title: 'Sidereal vs Synodic Month',

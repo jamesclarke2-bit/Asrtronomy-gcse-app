@@ -1,6 +1,7 @@
 (function () {
-  const CURRICULUM_UNITS = ['u2.3'];
+  const CURRICULUM_UNITS = ['u2.3', 'u2.18'];
   const SYNODIC = MoonPhase.SYNODIC_MONTH_DAYS;
+  const DAY_MS = 86400000;
 
   const modeExploreButton = document.getElementById('mode-explore-button');
   const modeCheckButton = document.getElementById('mode-check-button');
@@ -17,6 +18,9 @@
   const illuminatedValue = document.getElementById('illuminated-value');
   const waxingValue = document.getElementById('waxing-value');
   const phaseNameReadout = document.getElementById('phase-name-readout');
+  const distanceValue = document.getElementById('distance-value');
+  const perigeeValue = document.getElementById('perigee-value');
+  const supermoonFlag = document.getElementById('supermoon-flag');
 
   const orbitCanvas = document.getElementById('moon-orbit');
   const earthViewCanvas = document.getElementById('moon-earth-view');
@@ -28,6 +32,11 @@
   // The single quantity both modes drive and carry across a mode switch:
   // days elapsed since New Moon, 0 up to (not including) SYNODIC.
   let currentAgeDays = 0;
+  // The exact (mean) New Moon that starts the lunar cycle being shown.
+  // Phase alone doesn't fix the Moon's distance — perigee drifts against
+  // the phases by ~2 days a month — so Explore mode borrows a real cycle
+  // for distance: the one last checked, or the current one to begin with.
+  let anchorNewMoonMs = Date.now() - MoonPhase.getMoonPhase(new Date()).ageDays * DAY_MS;
 
   // dateInput.value is a "YYYY-MM-DD" string (native <input type="date">
   // behaviour) — parsed as UTC noon, matching the noon-anchoring the rest
@@ -42,6 +51,15 @@
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;
+  }
+
+  // The calendar date whose UTC noon (how parseDateInput reads a date) is
+  // nearest to the given instant — so Check -> Explore -> Check returns
+  // to exactly the same date.
+  function nearestNoonDateValue(ms) {
+    const noonOffset = 12 * 3600000;
+    const nearestNoon = new Date(Math.round((ms - noonOffset) / DAY_MS) * DAY_MS + noonOffset);
+    return nearestNoon.toISOString().slice(0, 10);
   }
 
   // Unlike the Sun's position, the Moon's phase does NOT repeat every
@@ -111,22 +129,48 @@
     ctx.stroke();
   }
 
-  function renderDiagramsAndReadouts(phase) {
-    MoonOrbitPanel.draw(orbitCanvas, { moonAngleDeg: phase.theta, sunAngleDeg: 0 });
+  function describePerigee(daysFromPerigee) {
+    const days = Math.abs(daysFromPerigee).toFixed(1);
+    if (days === '0.0') return 'Now';
+    return daysFromPerigee > 0 ? `${days} days ago` : `In ${days} days`;
+  }
+
+  function renderSupermoonFlag(name, daysFromPerigee) {
+    const atSyzygy = name === 'Full Moon' || name === 'New Moon';
+    const nearPerigee = Math.abs(daysFromPerigee) <= MoonOrbitPanel.SUPERMOON_WINDOW_DAYS;
+    supermoonFlag.hidden = !(atSyzygy && nearPerigee);
+    if (supermoonFlag.hidden) return;
+
+    const within = `within ${MoonOrbitPanel.SUPERMOON_WINDOW_DAYS} days of perigee`;
+    supermoonFlag.textContent = name === 'Full Moon'
+      ? `Supermoon! A full Moon ${within}. A full Moon at perigee can look up to about 14% larger and 30% brighter than one at apogee.`
+      : `Supermoon (new Moon): ${within}. It's lost in the Sun's glare, so you can't see it, but its extra pull raises unusually large spring tides.`;
+  }
+
+  function renderDiagramsAndReadouts(phase, orbit) {
+    // In the Sun-fixed frame the Moon sits at its phase angle, and it is
+    // trueAnomalyDeg past perigee — which fixes where perigee points.
+    const perigeeAngleDeg = phase.theta - orbit.trueAnomalyDeg;
+    MoonOrbitPanel.draw(orbitCanvas, { moonAngleDeg: phase.theta, sunAngleDeg: 0, perigeeAngleDeg });
     drawEarthViewDisc(earthViewCanvas, phase.theta);
 
+    const name = MoonPhase.phaseName(phase.theta);
     illuminatedValue.textContent = `${Math.round(phase.illuminatedFraction * 100)}%`;
     waxingValue.textContent = phase.illuminatedFraction < 0.01 || phase.illuminatedFraction > 0.99
       ? '—'
       : phase.waxing ? 'Waxing (growing)' : 'Waning (shrinking)';
-    phaseNameReadout.textContent = MoonPhase.phaseName(phase.theta);
+    phaseNameReadout.textContent = name;
+    distanceValue.textContent = `${Math.round(orbit.distanceKm).toLocaleString('en-GB')} km`;
+    perigeeValue.textContent = describePerigee(orbit.daysFromPerigee);
+    renderSupermoonFlag(name, orbit.daysFromPerigee);
   }
 
   function renderExplore() {
     const ageDays = Number(cycleSlider.value);
     currentAgeDays = ageDays;
     cycleLabel.textContent = `Day ${ageDays.toFixed(1)} of ${SYNODIC.toFixed(1)}`;
-    renderDiagramsAndReadouts(MoonPhase.fromAgeDays(ageDays));
+    const orbit = MoonOrbitPanel.getMoonOrbit(new Date(anchorNewMoonMs + ageDays * DAY_MS));
+    renderDiagramsAndReadouts(MoonPhase.fromAgeDays(ageDays), orbit);
   }
 
   function renderCheck() {
@@ -134,7 +178,8 @@
     dateLabel.textContent = formatDate(date);
     const phase = MoonPhase.getMoonPhase(date);
     currentAgeDays = phase.ageDays;
-    renderDiagramsAndReadouts(phase);
+    anchorNewMoonMs = date.getTime() - phase.ageDays * DAY_MS;
+    renderDiagramsAndReadouts(phase, MoonOrbitPanel.getMoonOrbit(date));
   }
 
   function render() {
@@ -158,15 +203,10 @@
     if (exploring) {
       cycleSlider.value = currentAgeDays;
     } else {
-      // Pick a real date whose Moon age matches currentAgeDays as closely
-      // as a whole calendar day allows — <input type="date"> can't
-      // represent a fractional day, so this is the closest continuous
-      // handoff available.
-      const today = new Date();
-      const todayAgeDays = MoonPhase.getMoonPhase(today).ageDays;
-      const deltaDays = Math.round(currentAgeDays - todayAgeDays);
-      const matchedDate = new Date(today.getTime() + deltaDays * 86400000);
-      dateInput.value = toDateInputValue(matchedDate);
+      // The real date in the anchored cycle closest to the current
+      // position — as close as a whole calendar day allows, since
+      // <input type="date"> can't represent a fraction of one.
+      dateInput.value = nearestNoonDateValue(anchorNewMoonMs + currentAgeDays * DAY_MS);
     }
     render();
   }
@@ -225,10 +265,29 @@
     coverageEl.textContent = 'Covers: ' + subtopics.map((s) => `${s.id} ${s.title}`).join(', ');
   }
 
+  const PERIGEE_DEFINITION =
+    "Perigee: the point in the Moon's elliptical orbit closest to Earth, about 363,300 km away. The Moon moves fastest here.";
+
   const GLOSSARY = {
     lunarEclipse:
       "A lunar eclipse: Earth passing directly between the Sun and a Full Moon, so Earth's shadow falls on the Moon. Unlike an ordinary phase, this needs an almost exact Sun-Earth-Moon alignment, so it only happens a few times a year at most — not every month.",
+    perigee: PERIGEE_DEFINITION,
+    perigeeSection: PERIGEE_DEFINITION,
+    apogee:
+      "Apogee: the point in the Moon's elliptical orbit farthest from Earth, about 405,500 km away. The Moon moves slowest here.",
+    supermoon:
+      'A supermoon: a full (or new) Moon that falls within a few days of perigee. It is a popular term rather than a strict scientific one — the effect is real but modest.',
   };
+
+  // The headline ~14% / ~30% figures come from the most extreme real
+  // distances; this page's fixed-shape orbit gives a slightly smaller
+  // spread. Computed from the model's own constants so it can't drift.
+  const sizeRatio = MoonOrbitPanel.APOGEE_KM / MoonOrbitPanel.PERIGEE_KM;
+  document.getElementById('model-spread-note').textContent =
+    `Those headline figures use the Moon's most extreme real distances — the Sun's pull stretches ` +
+    `the orbit enough that real perigees range from about 356,500 to 370,400 km. This page keeps the ` +
+    `orbit's shape fixed, so its perigee and apogee full Moons differ by a slightly smaller ` +
+    `~${Math.round((sizeRatio - 1) * 100)}% in size and ~${Math.round((sizeRatio ** 2 - 1) * 100)}% in brightness.`;
 
   dateInput.value = toDateInputValue(new Date());
   render();

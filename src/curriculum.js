@@ -249,6 +249,13 @@ const UNITS = [
         notes:
           'the sidereal month (~27.3 days) is how long the Moon takes to return to the same direction against the fixed stars; the synodic month (~29.53 days) is how long it takes to return to the same phase. The ~2.2-day gap exists because Earth also moves along its own orbit during that time, so the Moon needs a bit longer to catch back up to the same Sun-Earth-Moon alignment',
       },
+      {
+        id: 'u2.18',
+        title: 'Apogee, perigee and supermoons',
+        depth: 'understand',
+        notes:
+          "the Moon's orbit is slightly elliptical (eccentricity ~0.055, mean distance ~384,400 km): closest at perigee (~363,300 km), farthest at apogee (~405,500 km), and moving fastest near perigee; a supermoon is a full (or new) Moon within a few days of perigee — a perigee full Moon can look up to ~14% larger and ~30% brighter than an apogee one",
+      },
     ],
   },
   {
