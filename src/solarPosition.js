@@ -32,9 +32,10 @@ function toJulianDay(date) {
  * @param {Date} date - JS Date object (any local time; converted to UTC internally)
  * @param {number} lat - latitude in degrees, north positive
  * @param {number} lon - longitude in degrees, east positive
- * @returns {{ altitude: number, azimuth: number, declination: number, equationOfTime: number }}
+ * @returns {{ altitude: number, azimuth: number, declination: number, equationOfTime: number, apparentLongitude: number }}
  *   equationOfTime is in minutes: apparent (sundial) solar time minus mean
  *   (clock) solar time, so positive means the sundial is ahead of the clock.
+ *   apparentLongitude is the Sun's ecliptic longitude in degrees [0, 360).
  */
 function getSunPosition(date, lat, lon) {
   const jd = toJulianDay(date);
@@ -95,7 +96,13 @@ function getSunPosition(date, lat, lon) {
   );
   if (hourAngle > 0) azimuth = 360 - azimuth;
 
-  return { altitude, azimuth, declination: decl, equationOfTime: eqTime };
+  return {
+    altitude,
+    azimuth,
+    declination: decl,
+    equationOfTime: eqTime,
+    apparentLongitude: ((appLong % 360) + 360) % 360,
+  };
 }
 
 // Curriculum subtopics this simulation teaches towards — see src/curriculum.js.

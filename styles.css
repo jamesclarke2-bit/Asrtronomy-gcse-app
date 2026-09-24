@@ -1193,3 +1193,87 @@ canvas {
 .legend-block {
   background: #c0392b;
 }
+
+/* sims/eclipses.html */
+.eclipse-diagram {
+  max-width: 440px;
+}
+
+.legend-orbit-above {
+  background: #2f3f55;
+}
+
+.legend-orbit-below {
+  background: repeating-linear-gradient(90deg, #9aa5b1 0 4px, transparent 4px 7px);
+}
+
+.step-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.step-buttons .secondary-button {
+  margin: 0;
+  font-size: 0.85rem;
+}
+
+.preset-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.4rem;
+}
+
+.preset-button {
+  padding: 0.3rem 0.6rem;
+  border: 1px solid #cdd7e1;
+  border-radius: 6px;
+  background: #fff;
+  color: #173d75;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.preset-button:hover {
+  background: #eaf2fb;
+}
+
+.eclipse-indicator {
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid;
+}
+
+.eclipse-indicator[data-state='possible'] {
+  background: #e7f5ec;
+  border-color: #8fcaa3;
+  color: #1d5a33;
+}
+
+.eclipse-indicator[data-state='not-possible'] {
+  background: #f1f2f4;
+  border-color: #c9ced6;
+  color: #3d4550;
+}
+
+.eclipse-indicator-title {
+  margin: 0 0 0.3rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.eclipse-indicator[data-state='possible'] .eclipse-indicator-title::before {
+  content: '\2713  ';
+}
+
+.eclipse-indicator[data-state='not-possible'] .eclipse-indicator-title::before {
+  content: '\2715  ';
+}
+
+.eclipse-indicator-detail {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}

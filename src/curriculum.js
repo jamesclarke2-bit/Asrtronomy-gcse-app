@@ -256,6 +256,13 @@ const UNITS = [
         notes:
           "the Moon's orbit is slightly elliptical (eccentricity ~0.055, mean distance ~384,400 km): closest at perigee (~363,300 km), farthest at apogee (~405,500 km), and moving fastest near perigee; a supermoon is a full (or new) Moon within a few days of perigee — a perigee full Moon can look up to ~14% larger and ~30% brighter than an apogee one",
       },
+      {
+        id: 'u2.19',
+        title: "Eclipse conditions: the Moon's tilted orbit",
+        depth: 'understand',
+        notes:
+          "the Moon's orbit is tilted ~5.1° to the ecliptic, crossing it at two nodes; an eclipse is only possible when a new Moon (solar) or full Moon (lunar) falls within the ecliptic limit of a node — about 18.4° for at least a partial solar eclipse, 12.2° for a lunar one — so eclipses come in 'eclipse seasons' rather than every month",
+      },
     ],
   },
   {

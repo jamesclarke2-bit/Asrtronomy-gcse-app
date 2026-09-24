@@ -70,6 +70,13 @@ const PAGES = [
     href: 'sims/sidereal-vs-synodic.html',
     units: ['u2.17'],
   },
+  {
+    title: 'Eclipses',
+    description:
+      "Why there isn't an eclipse every month: pick a date to see where the Moon sits on its tilted orbit relative to the line of nodes, and whether a solar or lunar eclipse is geometrically possible.",
+    href: 'sims/eclipses.html',
+    units: ['u2.8', 'u2.19'],
+  },
 ];
 
 const api = { PAGES };

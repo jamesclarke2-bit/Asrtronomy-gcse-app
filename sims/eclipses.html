@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Eclipses</title>
+  <link rel="stylesheet" href="../styles.css?v=202609241500" />
+</head>
+<body>
+  <main>
+    <p class="back-link"><a href="../index.html">&larr; Back to all tools</a></p>
+
+    <h1>Eclipses</h1>
+    <p class="subtitle">
+      There's a new Moon and a full Moon every month, so why isn't there an eclipse every
+      month? Because the Moon's orbit is tilted &mdash; pick a date and see where the Moon sits
+      relative to the line where its orbit crosses Earth's.
+    </p>
+
+    <div class="layout tool-layout">
+      <div class="diagrams-column">
+        <div class="diagram eclipse-diagram">
+          <h2>The Moon's tilted orbit</h2>
+          <canvas
+            id="tilted-orbit"
+            width="440"
+            height="300"
+            aria-label="Angled view of the ecliptic plane with the Moon's tilted orbit crossing it at the ascending and descending nodes, joined by the line of nodes. The Sun is off to the right. The Moon is shown at its position on the selected date, with a line dropping to the ecliptic plane to show how far above or below it the Moon is."
+          ></canvas>
+          <p class="legend">
+            <span class="legend-dot legend-dot-observer"></span> Earth
+            &nbsp; <span class="legend-dot legend-dot-star"></span> Sun direction
+            &nbsp; <span class="legend-swatch legend-orbit-above"></span> Orbit above the ecliptic
+            &nbsp; <span class="legend-swatch legend-orbit-below"></span> below it
+          </p>
+          <p class="note">
+            Seen from above and to one side. The Moon's orbit is really tilted by only 5.1&deg;;
+            it's drawn 3&times; steeper here so you can see it.
+          </p>
+        </div>
+      </div>
+
+      <div class="controls">
+        <div class="control">
+          <label for="date-input">Date: <span id="date-label"></span></label>
+          <input type="date" id="date-input" value="2024-04-08" />
+        </div>
+
+        <div class="control step-buttons">
+          <button type="button" id="prev-syzygy" class="secondary-button">&#9664; Previous new/full Moon</button>
+          <button type="button" id="next-syzygy" class="secondary-button">Next new/full Moon &#9654;</button>
+        </div>
+
+        <div class="control">
+          <p class="panel-note">Real examples:</p>
+          <div class="preset-list">
+            <button type="button" class="preset-button" data-date="2023-10-14">14 Oct 2023 &mdash; annular solar</button>
+            <button type="button" class="preset-button" data-date="2024-04-08">8 Apr 2024 &mdash; total solar</button>
+            <button type="button" class="preset-button" data-date="2023-11-13">13 Nov 2023 &mdash; new Moon, no eclipse</button>
+            <button type="button" class="preset-button" data-date="2025-03-14">14 Mar 2025 &mdash; total lunar</button>
+          </div>
+        </div>
+
+        <div class="eclipse-indicator" id="eclipse-indicator" role="status">
+          <p class="eclipse-indicator-title" id="eclipse-indicator-title"></p>
+          <p class="eclipse-indicator-detail" id="eclipse-indicator-detail"></p>
+        </div>
+
+        <dl class="readout">
+          <div class="readout-row">
+            <dt>Phase on this date</dt>
+            <dd id="phase-value"></dd>
+          </div>
+          <div class="readout-row">
+            <dt>
+              Moon from nearest
+              <button type="button" class="glossary-toggle glossary-term-button" data-term="node" aria-label="What is a node?" aria-expanded="false">node</button>
+            </dt>
+            <dd id="node-distance-value"></dd>
+            <span class="glossary-definition glossary-definition-row" data-term="node" hidden></span>
+          </div>
+          <div class="readout-row">
+            <dt>Moon vs the ecliptic</dt>
+            <dd id="latitude-value"></dd>
+          </div>
+          <div class="readout-row">
+            <dt>Nearest new/full Moon</dt>
+            <dd id="syzygy-value"></dd>
+          </div>
+          <div class="readout-row">
+            <dt>At that new/full Moon</dt>
+            <dd id="syzygy-node-value"></dd>
+          </div>
+        </dl>
+
+        <p class="coverage" id="coverage"></p>
+      </div>
+    </div>
+
+    <section class="notes-section">
+      <h2>Why there isn't an eclipse every month</h2>
+      <p>
+        The Moon's orbit is tilted about <strong>5.1&deg;</strong> to the
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="ecliptic" aria-label="What is the ecliptic?" aria-expanded="false">ecliptic</button>
+        (the plane of Earth's orbit round the Sun). It crosses that plane at just two points,
+        the ascending and descending nodes, joined by the
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="lineOfNodes" aria-label="What is the line of nodes?" aria-expanded="false">line of nodes</button>.
+        At most new and full Moons, the Moon is well away from a node, so it passes a little
+        above or below the Sun (no solar eclipse) or above or below Earth's shadow (no lunar
+        eclipse).
+      </p>
+      <span class="glossary-definition" data-term="ecliptic" hidden></span>
+      <span class="glossary-definition" data-term="lineOfNodes" hidden></span>
+      <p>
+        An eclipse is only possible when a new or full Moon happens close to a node &mdash;
+        within the
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="eclipticLimit" aria-label="What is an ecliptic limit?" aria-expanded="false">ecliptic limit</button>:
+      </p>
+      <span class="glossary-definition" data-term="eclipticLimit" hidden></span>
+      <table class="shower-table">
+        <caption>Ecliptic limits (maximum distance from a node)</caption>
+        <thead>
+          <tr><th scope="col">Eclipse</th><th scope="col">At least partial</th><th scope="col">Total</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Solar (at new Moon)</td><td>18.4&deg;</td><td>11.8&deg;</td></tr>
+          <tr><td>Lunar (at full Moon)</td><td>12.2&deg;</td><td>5.9&deg;</td></tr>
+        </tbody>
+      </table>
+      <p>
+        The Sun sweeps past each node roughly every 173 days, so eclipses cluster into
+        <strong>eclipse seasons</strong> about six months apart &mdash; use the Next/Previous
+        buttons and watch the line of nodes swing round to point at the Sun.
+      </p>
+      <p class="exam-tip">
+        <strong>"Possible" doesn't mean "certain":</strong> these are the widest limits, reached
+        only when the Sun and Moon are at their closest. Near the edge, whether an eclipse
+        actually happens also depends on their distances. On 25 March 2024, for example, the
+        full Moon was about 11&deg; from a node &mdash; inside the lunar limit &mdash; but it only
+        grazed the faint outer part of Earth's shadow.
+      </p>
+    </section>
+  </main>
+
+  <script src="../src/curriculum.js?v=202609241500"></script>
+  <script src="../src/solarPosition.js?v=202609241500"></script>
+  <script src="../src/moonPhase.js?v=202609241000"></script>
+  <script src="../src/moonOrbitPanel.js?v=202609241200"></script>
+  <script src="../src/eclipseGeometry.js?v=202609241500"></script>
+  <script src="../glossary.js?v=202609221600"></script>
+  <script src="eclipses.js?v=202609241500"></script>
+</body>
+</html>
