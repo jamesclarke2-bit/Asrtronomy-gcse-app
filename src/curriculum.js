@@ -159,7 +159,7 @@ const UNITS = [
         title: 'Moon structure',
         depth: 'know',
         notes:
-          "a near-sphere (though less perfectly spherical than the Sun), mean diameter ~3,500 km; surface features and their origins: craters (meteoroid impacts, of all sizes and ages), maria (dark, smooth lava that flooded low-lying impact basins), terrae/highlands (light, rugged, older and more heavily cratered), mountain ranges such as the Apennines (uplifted rims of large impact basins, not volcanoes), and rilles (narrow channels in the maria, thought to be collapsed lava tubes or lava channels); the far side looks more heavily cratered mainly because it has almost no maria to have buried older craters",
+          "a near-sphere, mean diameter ~3,500 km (3,475 km more precisely); surface features and their origins: craters (meteoroid impacts, of all sizes and ages), maria (dark, smooth lava that flooded low-lying impact basins), terrae/highlands (light, rugged, older and more heavily cratered), mountain ranges such as the Apennines (uplifted rims of large impact basins, not volcanoes), and rilles (narrow channels in the maria, thought to be collapsed lava tubes or lava channels); the far side looks more heavily cratered mainly because it has almost no maria to have buried older craters",
       },
       {
         id: 'u2.3',
