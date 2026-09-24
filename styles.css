@@ -419,6 +419,7 @@ canvas {
 .ra-ha-explainer,
 .latitude-finder,
 .diurnal-section,
+.sidereal-day-section,
 .retrograde-section,
 .concept-section {
   max-width: 700px;
@@ -428,6 +429,7 @@ canvas {
 .ra-ha-explainer h2,
 .latitude-finder h2,
 .diurnal-section h2,
+.sidereal-day-section h2,
 .retrograde-section h2,
 .concept-section h2 {
   margin-bottom: 0.5rem;

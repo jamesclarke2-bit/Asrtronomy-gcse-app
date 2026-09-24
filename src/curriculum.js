@@ -154,6 +154,13 @@ const UNITS = [
         notes:
           "caused by Earth passing through debris left by a comet (or occasionally an asteroid); meteors appear to radiate from one point (the radiant) as a perspective effect, and showers are named after the constellation containing it, e.g. the Perseids, Geminids and Orionids",
       },
+      {
+        id: 'u1.21',
+        title: 'Sidereal day vs solar day',
+        depth: 'understand',
+        notes:
+          "the sidereal day (~23h 56m 04s) is how long Earth takes to rotate once relative to the fixed stars; the solar day (24h 00m, what a clock tracks) is how long it takes for the Sun to return to the same position, about 4 minutes longer — the same cause as the sidereal/synodic month gap, on a much shorter timescale: Earth's own orbital motion means it has to keep turning a little further each day to bring the Sun back to the meridian, so a star transits about 4 minutes earlier every day than it did the day before",
+      },
     ],
   },
   {

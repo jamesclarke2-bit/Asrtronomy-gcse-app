@@ -194,3 +194,37 @@ test('getAltAz at the north pole: altitude always equals declination, azimuth de
   closeTo(altitude, 45, 1e-9);
   assert.equal(azimuth, 0);
 });
+
+// --- Sidereal day vs solar day (sims/coordinates.html's "Sidereal day
+// vs solar day" section) ----------------------------------------------
+// The page derives this entirely from two getLocalSiderealTime calls a
+// calendar day apart, rather than any separate sidereal-rate maths of
+// its own — these tests check that reuse actually produces the right,
+// and date/longitude-independent, ~3m56s-4m gap.
+
+function siderealGapHours(dateStr, lonDeg) {
+  const date = new Date(dateStr);
+  const nextDay = new Date(date.getTime() + 86400000);
+  const lst1 = getLocalSiderealTime(date, lonDeg);
+  const lst2 = getLocalSiderealTime(nextDay, lonDeg);
+  return ((lst2 - lst1) % 24 + 24) % 24;
+}
+
+test('sidereal day vs solar day: LST at the same clock time gains about 3m56s (~4 min) every calendar day', () => {
+  const gap = siderealGapHours('2026-06-15T06:00:00Z', 0);
+  // 23h56m04s sidereal day vs 24h00m00s solar day -> ~3m56s gap, i.e.
+  // 3m56s-4m00s as decimal hours (0.0654-0.0667h).
+  closeTo(gap, 0.0657, 0.001, 'gap should be roughly 3m56s (0.0657h)');
+  closeTo(gap * 60, 3.94, 0.06, 'gap in minutes should read as "about 4 minutes"');
+});
+
+test('sidereal day vs solar day: the gap is the same size regardless of date or longitude', () => {
+  const cases = [
+    ['2000-01-01T12:00:00Z', 0],
+    ['2026-06-15T06:00:00Z', 0],
+    ['2026-06-15T06:00:00Z', 130],
+    ['2026-12-31T23:30:00Z', -45],
+  ];
+  const gaps = cases.map(([dateStr, lon]) => siderealGapHours(dateStr, lon));
+  gaps.forEach((gap) => closeTo(gap, gaps[0], 1e-6, 'the ~4-minute gap should not depend on date or longitude'));
+});

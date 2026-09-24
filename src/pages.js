@@ -26,9 +26,10 @@ const PAGES = [
   },
   {
     title: 'Star Coordinates',
-    description: 'Right ascension, declination, hour angle and sidereal time — pick a star and watch how they all relate.',
+    description:
+      'Right ascension, declination, hour angle and sidereal time — pick a star and watch how they all relate, and see why a sidereal day is about 4 minutes shorter than a solar one.',
     href: 'sims/coordinates.html',
-    units: ['u1.7', 'u1.8', 'u1.9', 'u1.10', 'u1.11', 'u1.12', 'u1.13', 'u1.14'],
+    units: ['u1.7', 'u1.8', 'u1.9', 'u1.10', 'u1.11', 'u1.12', 'u1.13', 'u1.14', 'u1.21'],
   },
   {
     title: 'Observing the Sun',

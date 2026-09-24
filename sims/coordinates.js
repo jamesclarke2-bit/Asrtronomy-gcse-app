@@ -1,7 +1,7 @@
 (function () {
   const YEAR = 2026;
   const SIDEREAL_RATE = 1.0027379093; // sidereal hours per solar hour
-  const CURRICULUM_UNITS = ['u1.7', 'u1.8', 'u1.9', 'u1.10', 'u1.11', 'u1.12', 'u1.13', 'u1.14'];
+  const CURRICULUM_UNITS = ['u1.7', 'u1.8', 'u1.9', 'u1.10', 'u1.11', 'u1.12', 'u1.13', 'u1.14', 'u1.21'];
 
   const STAR_PRESETS = [
     { name: 'Polaris (Ursa Minor)', ra: 2.53, dec: 89.26 },
@@ -36,6 +36,7 @@
   const polarDistanceValue = document.getElementById('polar-distance-value');
   const haExplainer = document.getElementById('ha-explainer');
   const circumpolarIndicator = document.getElementById('circumpolar-indicator');
+  const siderealDayResult = document.getElementById('sidereal-day-result');
 
   const skyCanvas = document.getElementById('star-sky');
   const skyCtx = skyCanvas.getContext('2d');
@@ -118,6 +119,16 @@
       h += 1;
     }
     return `${h}h ${String(m).padStart(2, '0')}m`;
+  }
+
+  // Small positive gaps (a few minutes), to the second — used only for
+  // the sidereal-day-vs-solar-day gap, which is too short for
+  // formatHours' minute-only precision to read as "about 4 minutes".
+  function formatMinSec(hoursDecimal) {
+    const totalSeconds = Math.round(hoursDecimal * 3600);
+    const m = Math.floor(totalSeconds / 60);
+    const s = totalSeconds % 60;
+    return `${m}m ${String(s).padStart(2, '0')}s`;
   }
 
   function formatHA(haDegrees) {
@@ -572,6 +583,7 @@
     const cx = width / 2;
     const cy = height / 2;
     const R = Math.min(cx, cy) - 55;
+    const STAR_LABEL_RADIUS = R + 30;
 
     clockCtx.clearRect(0, 0, width, height);
 
@@ -582,10 +594,12 @@
     clockCtx.lineWidth = 1.5;
     clockCtx.stroke();
 
-    // Hour ticks every 6h, like the numbers on a clock face. 0h gets its
-    // full name — the First Point of Aries is the actual reference point
-    // RA is measured from, and it's directly tested in exam questions,
-    // not just an arbitrary "0" on this widget's face.
+    // Hour ticks every 6h, like the numbers on a clock face. 0h and 12h
+    // get their full names — the First Point of Aries and the First
+    // Point of Libra are the actual reference points RA is measured
+    // from/against (the equinoxes, opposite each other on the ecliptic),
+    // and both are directly tested in exam questions, not just an
+    // arbitrary "0" or "12" on this widget's face.
     [0, 6, 12, 18].forEach((h) => {
       const outer = clockPoint(cx, cy, R, h);
       const inner = clockPoint(cx, cy, R - 8, h);
@@ -598,13 +612,20 @@
 
       clockCtx.fillStyle = '#8a97a5';
       clockCtx.textAlign = 'center';
-      if (h === 0) {
-        const baseY = cy - R - 8;
-        clockCtx.font = '600 9px sans-serif';
-        clockCtx.textBaseline = 'bottom';
-        clockCtx.fillText('First Point of Aries', cx, baseY - 10);
+      if (h === 0 || h === 12) {
+        // Placed beyond STAR_LABEL_RADIUS (not just outside the ring),
+        // so this two-line label never collides with a star label —
+        // several preset stars land close enough in RA to 0h/12h that
+        // anything nearer than that does overlap (checked against
+        // Schedar at 0.68h and Dubhe at 11.06h, the two closest).
+        const isAries = h === 0;
+        const near = isAries ? cy - STAR_LABEL_RADIUS - 10 : cy + STAR_LABEL_RADIUS + 10;
+        const far = isAries ? near - 12 : near + 12;
+        clockCtx.textBaseline = isAries ? 'bottom' : 'top';
         clockCtx.font = '9px sans-serif';
-        clockCtx.fillText('(RA = 0h)', cx, baseY);
+        clockCtx.fillText(`(RA = ${h}h)`, cx, near);
+        clockCtx.font = '600 9px sans-serif';
+        clockCtx.fillText(isAries ? 'First Point of Aries' : 'First Point of Libra', cx, far);
       } else {
         const tickLabel = clockPoint(cx, cy, R + 14, h);
         clockCtx.font = '10px sans-serif';
@@ -647,7 +668,7 @@
       clockCtx.lineWidth = 1;
       clockCtx.stroke();
 
-      const labelPoint = clockPoint(cx, cy, R + 30, star.ra);
+      const labelPoint = clockPoint(cx, cy, STAR_LABEL_RADIUS, star.ra);
       clockCtx.fillStyle = isTransiting ? '#1a7f37' : '#8a5b00';
       clockCtx.font = (isTransiting ? '600 ' : '') + '11px sans-serif';
       clockCtx.textAlign = 'center';
@@ -739,6 +760,21 @@
       circumpolarText = 'No — it rises and sets normally.';
     }
     circumpolarIndicator.textContent = circumpolarText;
+
+    // Sidereal day vs solar day: reuses the same getLocalSiderealTime
+    // call as the readout above, just evaluated one calendar day later
+    // at the same clock time and longitude — no separate sidereal-rate
+    // maths of its own. LST runs very slightly fast (a fixed ~3m56s per
+    // 24h, independent of date), so this naturally comes out the same
+    // whichever date is selected.
+    const lstTomorrow = Coordinates.getLocalSiderealTime(buildDateTime(dayIndex + 1, minutesOfDay), lon);
+    const siderealGapHours = ((lstTomorrow - lst) % 24 + 24) % 24;
+    siderealDayResult.textContent =
+      `On ${dateLabel.textContent} at ${timeLabel.textContent}, local sidereal time is ` +
+      `${formatHours(lst)}. At the exact same clock time tomorrow it'll have moved on to ` +
+      `${formatHours(lstTomorrow)} — ${formatMinSec(siderealGapHours)} further round the clock ` +
+      `face. That's why the star transiting right now will cross your meridian about ` +
+      `${formatMinSec(siderealGapHours)} earlier tomorrow.`;
 
     drawSky(dec, lat, { altitude, azimuth });
     drawDiurnalMotion(dec, lat, haDegrees);
@@ -982,6 +1018,8 @@
     circumpolar: "Circumpolar: never sets below the horizon — it stays above the horizon for the whole of Earth's rotation, so it's visible (weather and daylight allowing) at any hour.",
     meridian: "Meridian: the imaginary north-south line running through the zenith, from the horizon due north to the horizon due south. Every star crosses it twice a day.",
     culmination: 'Culmination (transit): the moment a star crosses the meridian. Upper culmination is its highest point that day; a circumpolar star also has a lower culmination, its lowest point, on the opposite side of the pole.',
+    siderealDay: "Sidereal day: how long Earth takes to rotate once relative to the distant stars — about 23h 56m 04s, a few minutes shorter than the solar day.",
+    solarDay: 'Solar day: how long it takes for the Sun to return to the same position in the sky (e.g. noon to noon) — 24h 00m 00s on average, the day length a clock tracks.',
   };
 
   update();
