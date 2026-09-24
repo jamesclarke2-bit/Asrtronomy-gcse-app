@@ -32,7 +32,7 @@ function toJulianDay(date) {
  * @param {Date} date - JS Date object (any local time; converted to UTC internally)
  * @param {number} lat - latitude in degrees, north positive
  * @param {number} lon - longitude in degrees, east positive
- * @returns {{ altitude: number, azimuth: number, declination: number, equationOfTime: number, apparentLongitude: number }}
+ * @returns {{ altitude: number, azimuth: number, declination: number, equationOfTime: number, apparentLongitude: number, distanceAu: number }}
  *   equationOfTime is in minutes: apparent (sundial) solar time minus mean
  *   (clock) solar time, so positive means the sundial is ahead of the clock.
  *   apparentLongitude is the Sun's ecliptic longitude in degrees [0, 360).
@@ -55,6 +55,9 @@ function getSunPosition(date, lat, lon) {
     sinD(3 * M) * 0.000289;
 
   const trueLong = L0 + C;
+
+  // Earth-Sun distance in AU (NOAA "sun radius vector"), from the true anomaly M + C
+  const distanceAu = (1.000001018 * (1 - e * e)) / (1 + e * cosD(M + C));
 
   // Apparent longitude (corrects for nutation + aberration)
   const omega = 125.04 - 1934.136 * T;
@@ -102,6 +105,7 @@ function getSunPosition(date, lat, lon) {
     declination: decl,
     equationOfTime: eqTime,
     apparentLongitude: ((appLong % 360) + 360) % 360,
+    distanceAu,
   };
 }
 

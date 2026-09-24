@@ -38,6 +38,18 @@
             it's drawn 3&times; steeper here so you can see it.
           </p>
         </div>
+
+        <div class="diagram eclipse-diagram" id="shadow-panel" hidden>
+          <h2 id="shadow-heading"></h2>
+          <canvas
+            id="shadow-diagram"
+            width="440"
+            height="220"
+            aria-label="Diagram of the shadow for the selected eclipse: for a solar eclipse, a side view of the Moon's umbra and penumbra cones and where the umbra ends relative to Earth's surface; for a lunar eclipse, a view along Earth's shadow showing its umbra and penumbra and where the Moon passes through them."
+          ></canvas>
+          <p class="note" id="shadow-caption"></p>
+          <dl class="readout" id="shadow-readout"></dl>
+        </div>
       </div>
 
       <div class="controls">
@@ -56,8 +68,10 @@
           <div class="preset-list">
             <button type="button" class="preset-button" data-date="2023-10-14">14 Oct 2023 &mdash; annular solar</button>
             <button type="button" class="preset-button" data-date="2024-04-08">8 Apr 2024 &mdash; total solar</button>
-            <button type="button" class="preset-button" data-date="2023-11-13">13 Nov 2023 &mdash; new Moon, no eclipse</button>
+            <button type="button" class="preset-button" data-date="2025-03-29">29 Mar 2025 &mdash; partial solar</button>
             <button type="button" class="preset-button" data-date="2025-03-14">14 Mar 2025 &mdash; total lunar</button>
+            <button type="button" class="preset-button" data-date="2024-03-25">25 Mar 2024 &mdash; penumbral lunar</button>
+            <button type="button" class="preset-button" data-date="2023-11-13">13 Nov 2023 &mdash; new Moon, no eclipse</button>
           </div>
         </div>
 
@@ -134,20 +148,58 @@
       </p>
       <p class="exam-tip">
         <strong>"Possible" doesn't mean "certain":</strong> these are the widest limits, reached
-        only when the Sun and Moon are at their closest. Near the edge, whether an eclipse
-        actually happens also depends on their distances. On 25 March 2024, for example, the
-        full Moon was about 11&deg; from a node &mdash; inside the lunar limit &mdash; but it only
-        grazed the faint outer part of Earth's shadow.
+        only when the Sun and Moon are at their closest. Near the edge, what actually happens
+        depends on their distances &mdash; which is what the shadow diagram works out. On
+        25 March 2024, for example, the full Moon was about 11&deg; from a node, inside the lunar
+        limit, but it only passed through the faint outer penumbra.
+      </p>
+    </section>
+
+    <section class="notes-section">
+      <h2>What kind of eclipse?</h2>
+      <p>
+        The Sun is a big light source, so every shadow in space has two parts: a dark central
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="umbra" aria-label="What is the umbra?" aria-expanded="false">umbra</button>,
+        where the Sun is completely blocked, and a fainter outer
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="penumbra" aria-label="What is the penumbra?" aria-expanded="false">penumbra</button>,
+        where it's only partly blocked.
+      </p>
+      <span class="glossary-definition" data-term="umbra" hidden></span>
+      <span class="glossary-definition" data-term="penumbra" hidden></span>
+      <ul class="tip-list">
+        <li>
+          <strong>Solar eclipses</strong> &mdash; the Moon's umbra is a cone about 374,000&nbsp;km
+          long, but the Moon is 356,000&ndash;407,000&nbsp;km away. When the Moon is near
+          <strong>perigee</strong>, the cone's tip reaches Earth: a <strong>total</strong>
+          eclipse, seen from a narrow path. Near <strong>apogee</strong> it falls short, the Moon
+          looks slightly smaller than the Sun, and a bright ring is left: an
+          <strong>annular</strong> eclipse. If the umbra's axis misses Earth altogether, only the
+          penumbra touches it: a <strong>partial</strong> eclipse.
+        </li>
+        <li>
+          <strong>Lunar eclipses</strong> &mdash; Earth's shadow is far bigger than the Moon.
+          If the Moon passes wholly into the umbra it's <strong>total</strong> (and often turns
+          coppery red, lit only by sunlight bent through Earth's atmosphere); partly into it,
+          <strong>partial</strong>; and if it only crosses the penumbra, a barely noticeable
+          <strong>penumbral</strong> eclipse.
+        </li>
+      </ul>
+      <p class="note">
+        This page takes the Moon's distance from its simplified elliptical orbit, whose shape is
+        fixed (perigee always 363,300&nbsp;km). Real perigees vary, so real shadow widths can
+        differ &mdash; on 8 April 2024 the real Moon was about 6,000&nbsp;km closer than this
+        model puts it, making the real path of totality (up to ~198&nbsp;km) wider than the
+        ~135&nbsp;km shown here. Which <em>type</em> of eclipse it was comes out the same.
       </p>
     </section>
   </main>
 
   <script src="../src/curriculum.js?v=202609241500"></script>
-  <script src="../src/solarPosition.js?v=202609241500"></script>
+  <script src="../src/solarPosition.js?v=202609241800"></script>
   <script src="../src/moonPhase.js?v=202609241000"></script>
   <script src="../src/moonOrbitPanel.js?v=202609241200"></script>
-  <script src="../src/eclipseGeometry.js?v=202609241500"></script>
+  <script src="../src/eclipseGeometry.js?v=202609241800"></script>
   <script src="../glossary.js?v=202609221600"></script>
-  <script src="eclipses.js?v=202609241500"></script>
+  <script src="eclipses.js?v=202609241845"></script>
 </body>
 </html>

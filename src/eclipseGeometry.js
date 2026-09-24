@@ -13,7 +13,12 @@
  *   solar: 18.4° (a total solar eclipse needs 11.8° or less)
  *   lunar: 12.2° (a total lunar eclipse needs 5.9° or less)
  * Inside the limit an eclipse is possible, not guaranteed — whether it
- * actually happens also depends on the Sun's and Moon's distances.
+ * actually happens, and what kind, depends on the Sun's and Moon's
+ * distances. So a second stage builds the shadow cones from the real
+ * distances on the day: for a solar eclipse, whether the Moon's umbra
+ * reaches Earth's surface (total), falls short (annular) or its axis
+ * misses Earth (partial); for a lunar eclipse, how far the Moon passes
+ * into Earth's umbra (total, partial) or only its penumbra (penumbral).
  *
  * Built from the existing models rather than new copies of them:
  *   - src/moonPhase.js: the starting guess for the nearest new/full Moon,
@@ -33,7 +38,18 @@ function makeEclipseGeometry({ getSunPosition, moonPhase, getMoonOrbit }) {
   const LUNAR_LIMIT_DEG = 12.2;
   const LUNAR_TOTAL_LIMIT_DEG = 5.9;
   const DAY_MS = 86400000;
+  const RAD_PER_DEG = Math.PI / 180;
   const MEAN_ELONGATION_DEG_PER_DAY = 360 / moonPhase.SYNODIC_MONTH_DAYS;
+
+  const SUN_RADIUS_KM = 695700;
+  const MOON_RADIUS_KM = 1737.4;
+  const EARTH_RADIUS_KM = 6371;
+  const AU_KM = 149597870.7;
+  // Earth's atmosphere makes its shadow on the Moon about 2% larger than
+  // pure geometry predicts; eclipse predictions conventionally add this.
+  const ATMOSPHERE_SHADOW_ENLARGEMENT = 1.02;
+  // Below this, a total/annular call is "only just" — close to a hybrid.
+  const NEAR_HYBRID_MARGIN_KM = 3000;
 
   function normalizeDeg(deg) {
     return ((deg % 360) + 360) % 360;
@@ -116,6 +132,103 @@ function makeEclipseGeometry({ getSunPosition, moonPhase, getMoonOrbit }) {
     return { type: isNew ? 'new' : 'full', date: new Date(ms) };
   }
 
+  // --- Shadow cones ----------------------------------------------------
+  // Inputs are plain distances and the Moon's latitude, so the same maths
+  // can be fed hypothetical values (e.g. "what if the Moon were at
+  // apogee?") as well as a real date's.
+
+  // Solar: the Moon's shadow falling on Earth. Its umbra is a cone that
+  // narrows to a point; whether that point reaches Earth's surface decides
+  // total (it does) versus annular (it falls short, leaving a ring of Sun).
+  function solarShadowFrom({ moonDistanceKm, sunDistanceKm, moonLatitudeDeg }) {
+    const sunToMoonKm = sunDistanceKm - moonDistanceKm;
+    const umbraHalfAngle = (SUN_RADIUS_KM - MOON_RADIUS_KM) / sunToMoonKm;
+    const penumbraHalfAngle = (SUN_RADIUS_KM + MOON_RADIUS_KM) / sunToMoonKm;
+    const umbraLengthKm = MOON_RADIUS_KM / umbraHalfAngle;
+
+    // How far the shadow's axis passes from Earth's centre; as a fraction
+    // of Earth's radius this is the eclipse's "gamma".
+    const axisOffsetKm = moonDistanceKm * Math.sin(moonLatitudeDeg * RAD_PER_DEG);
+    const central = Math.abs(axisOffsetKm) < EARTH_RADIUS_KM;
+    // Where the axis first meets Earth's surface (or, if it misses, the
+    // point level with Earth's centre).
+    const surfaceDistanceKm = central
+      ? moonDistanceKm - Math.sqrt(EARTH_RADIUS_KM ** 2 - axisOffsetKm ** 2)
+      : moonDistanceKm;
+
+    const umbraRadiusAtSurfaceKm = MOON_RADIUS_KM - surfaceDistanceKm * umbraHalfAngle;
+    const penumbraRadiusKm = MOON_RADIUS_KM + surfaceDistanceKm * penumbraHalfAngle;
+    const umbraMarginKm = umbraLengthKm - surfaceDistanceKm;
+
+    let type;
+    if (Math.abs(axisOffsetKm) > EARTH_RADIUS_KM + penumbraRadiusKm) type = 'none';
+    else if (!central) type = 'partial';
+    else type = umbraMarginKm >= 0 ? 'total' : 'annular';
+
+    return {
+      kind: 'solar',
+      type,
+      gamma: axisOffsetKm / EARTH_RADIUS_KM,
+      central,
+      moonDistanceKm,
+      umbraLengthKm,
+      surfaceDistanceKm,
+      umbraMarginKm,
+      nearHybrid: central && Math.abs(umbraMarginKm) < NEAR_HYBRID_MARGIN_KM,
+      // Width of the umbra (total) or antumbra (annular) where it meets Earth.
+      umbraDiameterKm: 2 * Math.abs(umbraRadiusAtSurfaceKm),
+      penumbraDiameterKm: 2 * penumbraRadiusKm,
+    };
+  }
+
+  // Lunar: Earth's shadow at the Moon's distance. How far into it the Moon
+  // reaches decides total (wholly in the umbra), partial (partly in it)
+  // or penumbral (only the faint outer shadow).
+  function lunarShadowFrom({ moonDistanceKm, sunDistanceKm, moonLatitudeDeg }) {
+    const umbraRadiusKm =
+      (EARTH_RADIUS_KM - (moonDistanceKm * (SUN_RADIUS_KM - EARTH_RADIUS_KM)) / sunDistanceKm) *
+      ATMOSPHERE_SHADOW_ENLARGEMENT;
+    const penumbraRadiusKm =
+      (EARTH_RADIUS_KM + (moonDistanceKm * (SUN_RADIUS_KM + EARTH_RADIUS_KM)) / sunDistanceKm) *
+      ATMOSPHERE_SHADOW_ENLARGEMENT;
+
+    // How far the Moon's centre passes from the centre of Earth's shadow.
+    const offsetKm = moonDistanceKm * Math.sin(moonLatitudeDeg * RAD_PER_DEG);
+    // Fraction of the Moon's diameter inside each shadow (>= 1: all of it).
+    const umbralMagnitude = (umbraRadiusKm + MOON_RADIUS_KM - Math.abs(offsetKm)) / (2 * MOON_RADIUS_KM);
+    const penumbralMagnitude = (penumbraRadiusKm + MOON_RADIUS_KM - Math.abs(offsetKm)) / (2 * MOON_RADIUS_KM);
+
+    let type;
+    if (umbralMagnitude >= 1) type = 'total';
+    else if (umbralMagnitude > 0) type = 'partial';
+    else if (penumbralMagnitude > 0) type = 'penumbral';
+    else type = 'none';
+
+    return {
+      kind: 'lunar',
+      type,
+      gamma: offsetKm / EARTH_RADIUS_KM,
+      moonDistanceKm,
+      offsetKm,
+      umbraDiameterKm: 2 * umbraRadiusKm,
+      penumbraDiameterKm: 2 * penumbraRadiusKm,
+      umbralMagnitude,
+      penumbralMagnitude,
+    };
+  }
+
+  // Shadow geometry at a real new/full Moon: the Moon's distance from the
+  // elliptical-orbit model, the Sun's from solarPosition.js, and the
+  // Moon's latitude from its distance to the node.
+  function shadowAt(syzygy) {
+    const inputs = {
+      moonDistanceKm: getMoonOrbit(syzygy.date).distanceKm,
+      sunDistanceKm: getSunPosition(syzygy.date, 0, 0).distanceAu * AU_KM,
+      moonLatitudeDeg: eclipticLatitude(argumentOfLatitude(syzygy.date)),
+    };
+    return syzygy.type === 'new' ? solarShadowFrom(inputs) : lunarShadowFrom(inputs);
+  }
+
   function sameUtcDay(a, b) {
     return a.toISOString().slice(0, 10) === b.toISOString().slice(0, 10);
   }
@@ -134,6 +247,9 @@ function makeEclipseGeometry({ getSunPosition, moonPhase, getMoonOrbit }) {
     const kind = syzygy.type === 'new' ? 'solar' : 'lunar';
     const limitDeg = kind === 'solar' ? SOLAR_LIMIT_DEG : LUNAR_LIMIT_DEG;
     const withinLimit = atSyzygy.degrees <= limitDeg;
+    // The ecliptic limit says an eclipse *could* happen; the shadow cones,
+    // with the real distances on the day, say which kind actually does.
+    const shadow = onThisDate && withinLimit ? shadowAt(syzygy) : null;
 
     return {
       phaseName: moonPhase.phaseName(elongationDeg),
@@ -151,6 +267,8 @@ function makeEclipseGeometry({ getSunPosition, moonPhase, getMoonOrbit }) {
       nodeDistanceAtSyzygyDeg: atSyzygy.degrees,
       withinLimit,
       eclipsePossible: onThisDate && withinLimit,
+      shadow,
+      eclipseType: shadow ? shadow.type : 'none',
     };
   }
 
@@ -166,6 +284,9 @@ function makeEclipseGeometry({ getSunPosition, moonPhase, getMoonOrbit }) {
     distanceFromNearestNode,
     eclipticLatitude,
     nearestNewOrFullMoon,
+    solarShadowFrom,
+    lunarShadowFrom,
+    shadowAt,
     getEclipseState,
   };
 }
