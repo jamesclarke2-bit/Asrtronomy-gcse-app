@@ -12,7 +12,7 @@ const NotesPage = require('../notesPage');
 
 const ROOT = path.join(__dirname, '..');
 
-const CONFORMING_PAGES = ['notes/naked-eye-sky.html'];
+const CONFORMING_PAGES = ['notes/naked-eye-sky.html', 'notes/measuring-the-sky.html'];
 
 function read(href) {
   return fs.readFileSync(path.join(ROOT, href), 'utf8');

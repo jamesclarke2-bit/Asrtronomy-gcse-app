@@ -198,7 +198,8 @@ const UNITS = [
         id: 'u2.6',
         title: 'Historical sizes and distances',
         depth: 'understand',
-        notes: "e.g. Eratosthenes' measurement of the Earth, Aristarchus' method for the Moon and Sun",
+        notes:
+          "Eratosthenes' measurement of the Earth: the Sun's noon shadow angle at two places due north-south of each other, at the same moment, differs by the angle between them at Earth's centre (the Sun's rays being parallel), so angle / 360° = distance / circumference, e.g. 7.2° and ~800 km give ~40,000 km; Aristarchus' methods for the Moon and Sun: the width of Earth's shadow on the Moon during a lunar eclipse (~2.6 Moon diameters, plus ~1 for the shadow narrowing) gives the Moon's size relative to Earth's (~0.27), and the angle between the Moon and Sun at first quarter, when the Sun-Moon-Earth angle is 90°, gives their relative distances (he measured 87°, giving ~19×; the true ~89.85° gives ~390×)",
       },
       { id: 'u2.7', title: 'Tides', depth: 'understand', notes: 'spring and neap tides' },
       {
@@ -337,6 +338,20 @@ const UNITS = [
         depth: 'understand',
         notes:
           "the Giant Impact Hypothesis (a Mars-sized body, Theia, struck the early Earth a glancing blow; the debris formed the Moon), supported by near-identical oxygen isotope ratios, the lack of water and volatiles in lunar samples, and KREEP-rich rocks in the Ocean of Storms and Sea of Showers; alternatives: Capture Theory and Co-accretion Theory",
+      },
+      {
+        id: 'u2.28',
+        title: 'Sizes and distances in the Earth-Moon-Sun system',
+        depth: 'know',
+        notes:
+          "the Sun's mean diameter is ~1.39 million km (Earth 12,742 km, Moon 3,475 km); the Moon is ~384,400 km away and the Sun ~149.6 million km (1 AU); the Sun is ~109× Earth's diameter and Earth ~3.7× the Moon's; the Sun is ~400× the Moon's diameter and ~400× as far away, so both appear ~0.5° across, the coincidence that makes total solar eclipses possible",
+      },
+      {
+        id: 'u2.29',
+        title: 'Precession',
+        depth: 'understand',
+        notes:
+          "the Sun's and Moon's pull on Earth's equatorial bulge makes the direction of its axis slowly trace a circle, taking ~26,000 years, while the tilt stays ~23.4°; the celestial pole circles the ecliptic pole, so the pole star changes: Thuban ~2800 BCE, Polaris now (closest in AD 2100), Vega ~AD 14,000",
       },
     ],
   },

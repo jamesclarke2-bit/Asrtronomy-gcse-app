@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Measuring the Sky</title>
+  <link rel="stylesheet" href="../styles.css?v=202609252300" />
+</head>
+<body>
+  <main>
+    <p class="back-link"><a href="../index.html">&larr; Back to all tools</a></p>
+
+    <h1>Measuring the Sky</h1>
+    <p class="subtitle">
+      How ancient astronomers measured the size of the Earth and the sizes and distances of the
+      Moon and Sun with nothing but shadows and angles, what the real figures are, and why the
+      Pole Star won't be the Pole Star forever.
+    </p>
+
+    <section class="notes-section" id="eratosthenes">
+      <h2>Eratosthenes measures the Earth</h2>
+      <p>
+        Around 240 BCE, Eratosthenes, a scholar in Alexandria, heard that at noon on the summer
+        solstice the Sun shone straight down a deep well at Syene (modern Aswan), far to the
+        south. The Sun was at the
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="zenith" aria-label="What is the zenith?" aria-expanded="false">zenith</button>
+        there, so upright objects cast no shadow. At the same moment in Alexandria, a vertical
+        stick, a
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="gnomon" aria-label="What is a gnomon?" aria-expanded="false">gnomon</button>,
+        did cast a shadow: the Sun was about <strong>7.2&deg;</strong> away from overhead, one
+        fiftieth of a full circle.
+      </p>
+      <span class="glossary-definition" data-term="zenith" hidden></span>
+      <span class="glossary-definition" data-term="gnomon" hidden></span>
+      <p>
+        The Sun is so far away that its rays arrive at Earth effectively
+        <strong>parallel</strong>. So the only reason the angle differs between the two cities is
+        that Earth's surface curves between them, and the 7.2&deg; shadow angle is also the
+        angle between the two cities at Earth's centre.
+      </p>
+
+      <div class="diagram eratosthenes-diagram">
+        <div class="labelled-diagram-wrap" id="eratosthenes-wrap">
+          <svg
+            id="eratosthenes-diagram"
+            viewBox="0 0 520 360"
+            role="img"
+            aria-label="Cross-section of Earth with parallel rays of sunlight arriving from above. At Syene a vertical stick casts no shadow, because the Sun is overhead. At Alexandria, further round the curve, a vertical stick casts a shadow, and the angle between the stick and the Sun's rays is the same as the angle between the two cities at Earth's centre."
+          ></svg>
+        </div>
+        <p class="diagram-caption">The shadow angle at Alexandria equals the angle between the two cities at Earth's centre</p>
+      </div>
+      <p class="note">The angle is drawn three times bigger than the real 7.2&deg; so it's visible.</p>
+
+      <p>
+        If 7.2&deg; is one fiftieth of a circle, the distance from Syene to Alexandria must be one
+        fiftieth of Earth's whole circumference:
+      </p>
+      <p class="formula">
+        angle &divide; 360&deg; = distance between the places &divide; circumference
+      </p>
+      <p>
+        Eratosthenes took the distance to be 5,000 stadia, giving 250,000 stadia. Nobody knows
+        exactly which length of stadion he meant; depending on which, that's somewhere between
+        about 39,000 and 46,000&nbsp;km. With today's figure of about 800&nbsp;km between
+        the two cities, 7.2&deg; gives <strong>40,000&nbsp;km</strong>, almost exactly the real
+        circumference.
+      </p>
+
+      <div class="control calculator">
+        <p class="panel-note">Try it with your own numbers:</p>
+        <label for="angle-input">Difference in shadow angle (&deg;)</label>
+        <input type="number" id="angle-input" value="7.2" min="0.1" max="90" step="0.1" />
+        <label for="distance-input">Distance north&ndash;south between the places (km)</label>
+        <input type="number" id="distance-input" value="800" min="1" max="20000" step="1" />
+        <p class="eot-readout" id="circumference-result"></p>
+      </div>
+
+      <p>
+        It only works if the two measurements are taken at <strong>local noon on the same
+        day</strong>, at places <strong>due north and south</strong> of each other (Eratosthenes
+        assumed Syene was due south of Alexandria; it's actually about 3&deg; of longitude
+        east).
+      </p>
+
+      <h3>The same geometry as the meridian cross-section</h3>
+      <p>
+        This isn't a new idea: it's the geometry behind the meridian cross-section on the Star
+        Coordinates page. There, an object's altitude as it crosses the meridian is
+        90&deg; &minus; |latitude &minus; declination|. For the same object at the same moment,
+        moving north or south changes its noon altitude by exactly the change in latitude.
+        Eratosthenes' object was the Sun, and his shadow angle was that change. To see it for
+        yourself, use the meridian cross-section on
+        <a href="../sims/coordinates.html">Star Coordinates</a>:
+      </p>
+      <ol class="tip-list">
+        <li>Set the declination to +23.4&deg;, where the Sun sits at the June solstice.</li>
+        <li>Set the latitude to 24&deg;, Syene: the transit altitude is almost 90&deg;, straight overhead.</li>
+        <li>Move the latitude to 31&deg;, Alexandria: the altitude drops by 7&deg;, which is Eratosthenes' shadow angle.</li>
+      </ol>
+    </section>
+
+    <section class="notes-section" id="aristarchus">
+      <h2>Aristarchus: the sizes and distances of the Moon and Sun</h2>
+      <p>
+        A few decades earlier, Aristarchus of Samos found ways to compare the Moon and Sun with
+        the Earth using only observations of the sky. His methods were sound, though some of his
+        measurements were not.
+      </p>
+
+      <h3>The Moon's size, from a lunar eclipse</h3>
+      <p>
+        During a lunar eclipse the Moon passes through Earth's
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="umbra" aria-label="What is the umbra?" aria-expanded="false">umbra</button>,
+        and the curved edge of the shadow shows how big it is compared with the Moon. Timing how
+        long the Moon takes to cross the shadow, compared with how long it takes to move its own
+        width, gives the same answer: the shadow is about
+        <strong id="shadow-width"></strong> Moons wide.
+      </p>
+      <span class="glossary-definition" data-term="umbra" hidden></span>
+
+      <div class="diagram shadow-diagram">
+        <div class="labelled-diagram-wrap" id="shadow-wrap">
+          <svg
+            id="shadow-diagram"
+            viewBox="0 0 440 200"
+            role="img"
+            aria-label="Earth's circular shadow at the Moon's distance, with Moon-sized circles laid across its width, showing it is about two and a half Moons wide."
+          ></svg>
+        </div>
+        <p class="diagram-caption">Earth's shadow at the distance of the Moon, drawn to scale with the Moon</p>
+      </div>
+
+      <p>
+        Earth itself is a little bigger than its shadow, because the Sun is bigger than Earth and
+        the shadow narrows as it goes. Between Earth and the Moon it narrows by about
+        <strong id="shadow-narrowing"></strong> Moon's width, so Earth is about
+        <strong id="earth-in-moons"></strong> Moons wide, and the Moon is roughly
+        <strong id="moon-fraction"></strong> of Earth's diameter: around 3,500&nbsp;km.
+        (Aristarchus himself estimated a little over a third.)
+      </p>
+      <p>
+        Once the Moon's size is known, its distance follows from how big it looks: it covers
+        about half a degree of sky, which puts it roughly 110 of its own diameters away, about
+        380,000&nbsp;km.
+      </p>
+
+      <h3>The Sun's distance, from the quarter Moon</h3>
+      <p>
+        At first quarter, the Moon is exactly half lit. That can only happen when the angle
+        Sun&ndash;Moon&ndash;Earth is a right angle. Aristarchus measured the angle between the
+        Moon and the Sun as seen from Earth, &theta;, and used the right-angled triangle to work
+        out how much farther away the Sun is than the Moon: cos&nbsp;&theta; = Earth&ndash;Moon
+        distance &divide; Earth&ndash;Sun distance.
+      </p>
+
+      <div class="diagram quarter-diagram">
+        <div class="labelled-diagram-wrap" id="quarter-wrap">
+          <svg
+            id="quarter-diagram"
+            viewBox="0 0 520 240"
+            role="img"
+            aria-label="Right-angled triangle joining the Earth, the half-lit Moon at first quarter, and the distant Sun. The right angle is at the Moon; the angle theta is measured at Earth, between the Moon and the Sun."
+          ></svg>
+        </div>
+      </div>
+      <p class="note">
+        Not to scale: the real angle is so close to 90&deg; that the real triangle is hundreds of
+        times longer than it is tall.
+      </p>
+
+      <div class="control">
+        <label for="quarter-slider">Angle &theta; between the Moon and Sun at first quarter: <span id="quarter-label"></span></label>
+        <input type="range" id="quarter-slider" min="80" max="89.9" step="0.001" value="87" />
+        <div class="preset-list">
+          <button type="button" class="preset-button" data-angle="87">Aristarchus: 87&deg;</button>
+          <button type="button" class="preset-button" data-angle="true">True value</button>
+        </div>
+        <p class="eot-readout" id="quarter-result"></p>
+      </div>
+
+      <p>
+        Aristarchus measured 87&deg;, making the Sun about 19 times farther away than the Moon.
+        The true angle is <strong id="true-quarter-angle"></strong>, which makes it about
+        <strong id="true-sun-ratio"></strong> times farther. The method was right; the angle is
+        just too close to 90&deg; to measure by eye. Even so, since the Sun and Moon look the same
+        size, a Sun 19 times farther away had to be 19 times wider than the Moon, and so far
+        bigger than Earth. That led Aristarchus to suggest that the Earth goes around the Sun,
+        nearly 1,800 years before Copernicus.
+      </p>
+    </section>
+
+    <section class="notes-section" id="scale">
+      <h2>The Earth, Moon and Sun in numbers</h2>
+      <p>
+        The Sun's mean diameter is about <strong>1.39 million km</strong>. Measured with modern
+        methods, the whole system looks like this:
+      </p>
+      <table class="shower-table">
+        <caption>Sizes and mean distances</caption>
+        <thead>
+          <tr><th scope="col">Body</th><th scope="col">Mean diameter</th><th scope="col">Mean distance from Earth</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Moon</td><td>3,475&nbsp;km</td><td>384,400&nbsp;km</td></tr>
+          <tr><td>Earth</td><td>12,742&nbsp;km</td><td>&ndash;</td></tr>
+          <tr><td>Sun</td><td>1,391,400&nbsp;km</td><td>149.6 million km (1&nbsp;AU)</td></tr>
+        </tbody>
+      </table>
+      <ul class="tip-list">
+        <li>The Sun is about <strong id="sun-earth-ratio"></strong> times Earth's diameter, and Earth is about <strong id="earth-moon-ratio"></strong> times the Moon's.</li>
+        <li>The Moon is about <strong id="moon-distance-earths"></strong> Earth diameters away.</li>
+        <li>Light takes about <strong id="light-moon"></strong> seconds to reach us from the Moon, and about <strong id="light-sun"></strong> minutes from the Sun.</li>
+      </ul>
+
+      <h3>The 400&times; coincidence</h3>
+      <p>
+        The Sun is about <strong id="sun-moon-size"></strong> times the Moon's diameter, and also
+        about <strong id="sun-moon-distance"></strong> times farther away. The two factors almost
+        cancel, so from Earth the Sun and Moon have almost exactly the same
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="angularDiameter" aria-label="What is angular diameter?" aria-expanded="false">angular diameter</button>,
+        about half a degree (<span id="moon-angle"></span> for the Moon at its mean distance,
+        <span id="sun-angle"></span> for the Sun). That's why the Moon can just cover the Sun in a
+        total solar eclipse. The Moon's distance varies, so when it's farther away than average
+        it looks slightly smaller than the Sun, and an eclipse is annular instead.
+      </p>
+      <span class="glossary-definition" data-term="angularDiameter" hidden></span>
+
+      <div class="diagram scale-diagram">
+        <div class="labelled-diagram-wrap" id="scale-wrap">
+          <svg
+            id="scale-diagram"
+            viewBox="0 0 600 90"
+            role="img"
+            aria-label="The Earth and the Moon drawn to scale, both in size and in the distance between them: the Moon is a small dot about 30 Earth-widths away."
+          ></svg>
+        </div>
+        <p class="diagram-caption">The Earth and Moon, with sizes and distance to the same scale</p>
+      </div>
+      <p class="note" id="sun-scale-note"></p>
+    </section>
+
+    <section class="notes-section" id="precession">
+      <h2>Precession: the wandering pole</h2>
+      <p>
+        Earth spins like a slightly lopsided top. The Sun's and Moon's gravity pull on its
+        equatorial bulge and try to straighten its tilt. Instead of straightening, the spinning
+        Earth responds by slowly swinging the direction of its axis around in a circle. This is
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="precession" aria-label="What is precession?" aria-expanded="false">precession</button>.
+        The tilt stays about 23.4&deg;, but the direction the axis points in space traces out a
+        cone, taking about <strong>26,000 years</strong> to go once round.
+      </p>
+      <span class="glossary-definition" data-term="precession" hidden></span>
+      <p>
+        On the sky, the north celestial pole therefore traces a circle about 23.4&deg; in radius
+        around the
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="eclipticPole" aria-label="What is the ecliptic pole?" aria-expanded="false">north ecliptic pole</button>.
+        Whichever bright star happens to lie near the pole at the time is the "pole star", so
+        Polaris hasn't always been the pole star, and won't always be.
+      </p>
+      <span class="glossary-definition" data-term="eclipticPole" hidden></span>
+
+      <div class="diagram precession-diagram">
+        <div class="labelled-diagram-wrap" id="precession-wrap">
+          <svg
+            id="precession-diagram"
+            viewBox="0 0 440 440"
+            role="img"
+            aria-label="The northern sky around the ecliptic pole, with the circle the north celestial pole follows over about 26,000 years, the stars near that circle (Thuban, Kochab, Polaris, Errai, Alderamin, Deneb and Vega), and a marker showing where the pole is in the chosen year."
+          ></svg>
+        </div>
+        <div class="control">
+          <label for="year-slider">Year: <span id="year-label"></span></label>
+          <input type="range" id="year-slider" min="-4000" max="23000" step="25" value="2025" />
+        </div>
+        <p class="eot-readout" id="pole-star-result"></p>
+      </div>
+      <p class="note">
+        As seen looking up at the northern sky. Star positions are today's; the stars' own
+        motions over these timescales are small enough to leave out, and the pole's circle is
+        treated as perfectly steady, so dates are good to within a few centuries.
+      </p>
+
+      <table class="shower-table">
+        <caption>Pole stars through time</caption>
+        <thead>
+          <tr><th scope="col">Star</th><th scope="col">Nearest the pole</th><th scope="col">How near</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Thuban</td><td>around 2800 BCE</td><td>within 0.2&deg;: the pole star when the Egyptian pyramids were built</td></tr>
+          <tr><td>Polaris</td><td>AD 2100</td><td>about 0.45&deg;</td></tr>
+          <tr><td>Errai</td><td>around AD 4000</td><td>about 2&deg;</td></tr>
+          <tr><td>Alderamin</td><td>around AD 7500</td><td>about 2.5&deg;</td></tr>
+          <tr><td>Vega</td><td>around AD 14,000</td><td>about 5&deg;, but by far the brightest pole star of the cycle</td></tr>
+        </tbody>
+      </table>
+      <p>
+        Precession also slowly shifts every star's right ascension and declination, which is why
+        star charts and catalogues state the date their coordinates are for (such as J2000), and
+        it moves the equinoxes westward along the ecliptic by about 1&deg; every 72 years.
+      </p>
+    </section>
+
+    <section class="notes-section" id="exam-tips">
+      <h2>Exam tips</h2>
+      <p class="exam-tip">
+        <strong>Common exam confusion:</strong> Eratosthenes' 7.2&deg; is the
+        <em>difference</em> between the Sun's angles at the two places. It only equals the angle
+        at Earth's centre because the Sun's rays arrive parallel, and only if both readings are
+        taken at local noon on the same day, at places due north and south of each other.
+        <a href="#eratosthenes">Eratosthenes measures the Earth &uarr;</a>
+      </p>
+      <p class="exam-tip">
+        <strong>Common exam confusion:</strong> Aristarchus' methods were right, but his quarter
+        Moon angle was wrong: 87&deg; instead of about 89.85&deg;. Close to 90&deg;, a tiny error
+        in the angle makes a huge error in the answer: 19 times the Moon's distance instead of
+        nearly 400.
+        <a href="#aristarchus">Aristarchus &uarr;</a>
+      </p>
+      <p class="exam-tip">
+        <strong>Common exam link:</strong> the Sun and Moon aren't the same size; they
+        <em>look</em> the same size, because the Sun is about 400 times wider and about 400 times
+        farther away. That's what makes total solar eclipses possible, and the Moon's changing
+        distance is why some eclipses are annular instead.
+        <a href="#scale">The Earth, Moon and Sun in numbers &uarr;</a>
+      </p>
+      <p class="exam-tip">
+        <strong>Common exam confusion:</strong> precession changes the <em>direction</em> Earth's
+        axis points, not how much it's tilted, and it takes about 26,000 years. It doesn't cause
+        the seasons, and Polaris is only the pole star for now.
+        <a href="#precession">Precession &uarr;</a>
+      </p>
+    </section>
+
+    <section class="notes-section" id="related">
+      <h2>Related pages</h2>
+      <div class="page-card-list">
+        <a class="page-card" href="../sims/coordinates.html">
+          <h3>Star Coordinates</h3>
+          <p class="page-card-description">Recreate Eratosthenes' shadow angle in the meridian cross-section by changing only the latitude.</p>
+        </a>
+        <a class="page-card" href="earth-structure.html">
+          <h3>Earth: Structure, Atmosphere and Motion</h3>
+          <p class="page-card-description">Latitude, the Tropic of Cancer that Syene sits on, and the equatorial bulge that precession acts on.</p>
+        </a>
+        <a class="page-card" href="../sims/eclipses.html">
+          <h3>Eclipses</h3>
+          <p class="page-card-description">See the 400&times; coincidence at work: whether a solar eclipse is total or annular depends on the Moon's distance.</p>
+        </a>
+        <a class="page-card" href="../sims/moon-phases.html">
+          <h3>Moon Phases</h3>
+          <p class="page-card-description">Where the Moon is when it's exactly half lit, the moment Aristarchus measured.</p>
+        </a>
+        <a class="page-card" href="naked-eye-sky.html">
+          <h3>The Naked-Eye Sky</h3>
+          <p class="page-card-description">Find today's pole star, Polaris, using the Plough's Pointers.</p>
+        </a>
+        <a class="page-card" href="../sims/sun-declination.html">
+          <h3>Observing the Sun</h3>
+          <p class="page-card-description">The Sun's structure, and how its noon height changes through the year.</p>
+        </a>
+      </div>
+    </section>
+
+    <p class="coverage" id="coverage"></p>
+  </main>
+
+  <script src="../src/curriculum.js?v=202609252300"></script>
+  <script src="../src/starPatterns.js?v=202609252300"></script>
+  <script src="../src/measuringTheSky.js?v=202609252300"></script>
+  <script src="../glossary.js?v=202609221600"></script>
+  <script src="measuring-the-sky.js?v=202609252300"></script>
+  <script src="../notesPage.js?v=202609252100"></script>
+</body>
+</html>

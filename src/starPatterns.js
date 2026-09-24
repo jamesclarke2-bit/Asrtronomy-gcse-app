@@ -3,8 +3,9 @@
  * -----------------------------------
  * Real positions (J2000 right ascension in hours, declination in
  * degrees) and apparent magnitudes for the stars in the constellations
- * and asterisms taught on notes/naked-eye-sky.html, so every diagram
- * there is drawn from the sky itself rather than by hand.
+ * and asterisms taught on notes/naked-eye-sky.html, and the past and
+ * future pole stars on notes/measuring-the-sky.html, so every diagram
+ * is drawn from the sky itself rather than by hand.
  *
  * Positions are J2000 values as catalogued in SIMBAD (Hipparcos
  * astrometry), rounded to the nearest arcminute; magnitudes are
@@ -69,6 +70,13 @@
     gacrux: { name: 'Gacrux', ra: ra(12, 31, 10), dec: dec(-1, 57, 7), mag: 1.63 },
     imai: { name: 'Imai', ra: ra(12, 15, 9), dec: dec(-1, 58, 45), mag: 2.79 },
     epsilonCru: { name: 'Epsilon Cru', ra: ra(12, 21, 22), dec: dec(-1, 60, 24), mag: 3.58 },
+
+    // Past and future pole stars, for precession on notes/measuring-the-sky.html
+    // (Polaris, Deneb and Vega are listed above).
+    thuban: { name: 'Thuban', ra: ra(14, 4, 23), dec: dec(1, 64, 23), mag: 3.67 },
+    kochab: { name: 'Kochab', ra: ra(14, 50, 42), dec: dec(1, 74, 9), mag: 2.08 },
+    errai: { name: 'Errai', ra: ra(23, 39, 21), dec: dec(1, 77, 38), mag: 3.21 },
+    alderamin: { name: 'Alderamin', ra: ra(21, 18, 35), dec: dec(1, 62, 35), mag: 2.46 },
 
     // The Square of Pegasus (three corners in Pegasus, one in Andromeda)
     markab: { name: 'Markab', ra: ra(23, 4, 46), dec: dec(1, 15, 12), mag: 2.49 },

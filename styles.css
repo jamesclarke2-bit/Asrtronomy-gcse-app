@@ -1444,3 +1444,55 @@ canvas {
 .finder-horizon-label {
   color: #a9c2ad;
 }
+
+/* notes/measuring-the-sky.html */
+.eratosthenes-diagram,
+.shadow-diagram,
+.quarter-diagram,
+.precession-diagram {
+  max-width: 520px;
+  margin: 1rem 0 0.5rem;
+}
+
+.scale-diagram {
+  max-width: 640px;
+  margin: 1rem 0 0.5rem;
+}
+
+.eratosthenes-diagram svg,
+.shadow-diagram svg,
+.quarter-diagram svg,
+.scale-diagram svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: #f7f7f5;
+  border-radius: 8px;
+  border: 1px solid #cdd7e1;
+}
+
+.precession-diagram svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  border: 1px solid #cdd7e1;
+}
+
+.calculator {
+  max-width: 420px;
+  padding: 0.75rem 1rem;
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+}
+
+.calculator input[type='number'] {
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 0.6rem;
+  padding: 0.4rem 0.5rem;
+  border: 1px solid #cdd7e1;
+  border-radius: 6px;
+  font-size: 1rem;
+}

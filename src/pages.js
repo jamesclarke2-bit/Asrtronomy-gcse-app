@@ -57,6 +57,13 @@ const PAGES = [
     units: ['u1.1', 'u1.2', 'u1.3'],
   },
   {
+    title: 'Measuring the Sky',
+    description:
+      "How Eratosthenes measured the Earth and Aristarchus the Moon and Sun, using shadows and angles; the real sizes and distances of the Earth, Moon and Sun, and the 400× coincidence behind eclipses; and precession, which slowly changes the pole star.",
+    href: 'notes/measuring-the-sky.html',
+    units: ['u2.6', 'u2.28', 'u2.29'],
+  },
+  {
     title: 'Earth: Structure, Atmosphere and Motion',
     description:
       "Earth's shape and layered interior, latitude, longitude and the named reference lines on a labelled globe, the atmosphere's composition and layers, why it both helps and hinders astronomy, the transmission window that limits ground-based telescopes, and Earth's own rotation, revolution and tilt.",

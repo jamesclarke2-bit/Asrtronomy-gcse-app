@@ -9,6 +9,7 @@ every page listed as conforming below.
 | Page | Built to this template? |
 |---|---|
 | `notes/naked-eye-sky.html` | Yes (retrofitted when the template was written) |
+| `notes/measuring-the-sky.html` | Yes (built to it from the start) |
 | `notes/earth-structure.html` | Not yet. Retrofit later |
 | `notes/moon-structure.html` | Not yet. Retrofit later |
 | `notes/observing-techniques.html` | Not yet. Retrofit later |
