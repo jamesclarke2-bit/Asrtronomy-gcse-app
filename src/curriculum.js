@@ -397,6 +397,13 @@ const UNITS = [
         depth: 'understand',
         notes: 'competing theories, e.g. cometary/asteroid delivery vs volcanic outgassing',
       },
+      {
+        id: 'u3.5',
+        title: 'Archaeoastronomy',
+        depth: 'understand',
+        notes:
+          "how axial precession (u2.29) — Earth's axis slowly tracing a ~26,000-year circle, changing which star sits at the pole (Thuban for the ancient Egyptians, Polaris now) and shifting the apparent position of the Sun, Moon and stars over long timescales — helps explain real ancient monuments, e.g. Stonehenge's solstice-sunrise alignment and the Great Pyramid of Giza's star-aligned shafts, whose targets have since shifted",
+      },
     ],
   },
   {

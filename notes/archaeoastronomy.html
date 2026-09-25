@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Archaeoastronomy: Precession and Monuments</title>
+  <link rel="stylesheet" href="../styles.css?v=202609291000" />
+</head>
+<body>
+  <main>
+    <p class="back-link"><a href="../index.html">&larr; Back to all tools</a></p>
+
+    <h1>Archaeoastronomy: Precession and Monuments</h1>
+    <p class="subtitle">
+      Earth's axis doesn't point the same way forever: it slowly traces a circle among the
+      stars, over about 26,000 years. That single fact changes which star sits at the pole, and
+      it's written into real ancient monuments, from Stonehenge to the Great Pyramid of Giza.
+      The wobble's own mechanism, and an interactive year-by-year explorer, are covered on its
+      companion page, Measuring the Sky.
+    </p>
+
+    <section class="notes-section" id="precession">
+      <h2>Axial precession, briefly</h2>
+      <p>
+        Earth spins like a slightly lopsided top. The Sun's and Moon's gravity pull on its
+        equatorial bulge, and instead of straightening the tilt, the spinning Earth responds by
+        slowly swinging the <em>direction</em> its axis points around in a circle &mdash; a
+        motion called
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="precession" aria-label="What is precession?" aria-expanded="false">precession</button>.
+        The tilt itself stays close to 23.4&deg; throughout; only the direction changes, taking
+        about <strong>26,000 years</strong> to go once round.
+      </p>
+      <span class="glossary-definition" data-term="precession" hidden></span>
+      <p>
+        Because the axis points somewhere new, the whole sky's apparent long-term geometry drifts
+        with it, even though nothing about a single day or year looks any different:
+      </p>
+      <ul class="tip-list">
+        <li>The <strong>pole star changes</strong>. Whichever bright star happens to lie near the axis's direction is the pole star of that era &mdash; and over centuries, a different one takes over.</li>
+        <li>The <strong>equinox points drift</strong> westward along the ecliptic, by about 1&deg; every 72 years, slowly shifting which constellation the Sun sits in at the moment of the spring equinox.</li>
+        <li>Every star's <strong>right ascension and declination</strong> shift slowly too, which is why star catalogues state the date (epoch) their coordinates are measured for, such as J2000.</li>
+      </ul>
+      <p>
+        This page is about what that means for a handful of real monuments. The wobble's cause,
+        a full interactive diagram, and the list of pole stars through history are covered in
+        depth on
+        <a href="measuring-the-sky.html#precession">Measuring the Sky</a>.
+      </p>
+    </section>
+
+    <section class="notes-section" id="pole-star">
+      <h2>The pole star then and now: Thuban to Polaris</h2>
+      <p>
+        Around <strong>2800 BCE</strong>, the faint star <strong>Thuban</strong> (Alpha Draconis)
+        sat within about 0.2&deg; of the north celestial pole &mdash; as close as Polaris sits
+        today. By the time the <strong>Great Pyramid</strong> was built, around
+        <strong>2560 BCE</strong>, precession had already carried the pole about
+        <strong id="thuban-then-sep"></strong> away from Thuban &mdash; not as tight a fit as a
+        couple of centuries earlier, but still far closer than any alternative: Polaris, at the
+        same date, was about <strong id="polaris-then-sep"></strong> from the pole, nowhere near
+        useful for finding north.
+      </p>
+      <p>
+        Today the position is reversed. Polaris sits about
+        <strong id="polaris-now-sep"></strong> from the pole &mdash; closing in further until
+        around AD 2100 &mdash; while Thuban has drifted roughly
+        <strong id="thuban-now-sep"></strong> away. Ancient Egyptian astronomers aligning a
+        building to true north would have sighted on Thuban; using Polaris the same way would
+        have pointed them noticeably off true north.
+      </p>
+
+      <div class="diagram pole-then-now-diagram">
+        <div class="labelled-diagram-wrap" id="pole-then-now-wrap">
+          <svg
+            id="pole-then-now-diagram"
+            viewBox="0 0 320 320"
+            role="img"
+            aria-label="The sky around the north ecliptic pole, with Thuban and Polaris in their real positions, the circle the celestial pole traces over about 26,000 years, and two markers showing the pole's own position around 2560 BCE and today, joined by the stretch of path travelled between them."
+          ></svg>
+        </div>
+        <p class="note">
+          Star positions are today's; the small distance they themselves drift over a few
+          millennia is left out. The highlighted stretch of the pole's path is the distance
+          precession has actually carried it since the Great Pyramid was built.
+        </p>
+      </div>
+    </section>
+
+    <section class="notes-section" id="stonehenge">
+      <h2>Stonehenge: the solstice-sunrise alignment</h2>
+      <p>
+        Stonehenge was built and reworked in stages from around 3000 BCE, with its famous ring of
+        great sarsen stones and trilithons raised around 2500 BCE. Its main axis, running out
+        along the Avenue past the outlying <strong>Heel Stone</strong>, is aligned with sunrise on
+        the <strong>midsummer solstice</strong> as seen from the centre of the monument. Face the
+        opposite way, back through the great trilithon, and the same axis frames sunset on the
+        <strong>midwinter solstice</strong> instead.
+      </p>
+      <p>
+        That single axis marking both events is deliberate: the solstices are the two days the
+        rising and setting Sun reach their most extreme points along the horizon, so a monument
+        built to track them needed no calendar at all &mdash; just a clear horizon and a fixed
+        line of sight.
+      </p>
+
+      <div class="diagram stonehenge-diagram">
+        <div class="labelled-diagram-wrap" id="stonehenge-wrap">
+          <svg
+            id="stonehenge-diagram"
+            viewBox="0 0 320 320"
+            role="img"
+            aria-label="Schematic top-down view of Stonehenge's stone circle, with the Heel Stone outside it along the main axis, an arrow marking midsummer sunrise in one direction and midwinter sunset in the opposite direction"
+          ></svg>
+        </div>
+        <p class="note">Schematic, not an accurate plan: the ring of standing stones (the sarsen circle) is drawn evenly spaced, but the real stone-by-stone layout is more irregular than this.</p>
+      </div>
+    </section>
+
+    <section class="notes-section" id="great-pyramid">
+      <h2>The Great Pyramid's star shafts</h2>
+      <p>
+        The Great Pyramid at Giza, built around 2560 BCE at a latitude very close to
+        <strong>30&deg;N</strong>, contains four narrow shafts running out from the King's and
+        Queen's Chambers &mdash; too narrow to be ventilation, and long thought to have had a
+        symbolic, sky-facing purpose. Each shaft holds a fixed angle, cut once and never
+        adjustable, so each one points at a single, unchanging direction in the sky.
+      </p>
+      <p>
+        For the King's Chamber's two shafts, that fixed direction has a long-proposed match in
+        the sky of 2560 BCE. The <strong>northern shaft</strong>, tilted about 32&ndash;33&deg;
+        above the horizon, points into the circumpolar region close to where Thuban sat near the
+        pole at the time. The <strong>southern shaft</strong>, tilted about 45&deg;, points to
+        where
+        <a href="naked-eye-sky.html#pointers">Orion's Belt</a>
+        &mdash; specifically its brightest star, Alnitak &mdash; would have crossed the meridian
+        at its lowest point above the horizon in that era.
+      </p>
+      <p>
+        Because of precession, neither target still sits where it did. Thuban is no longer near
+        the pole, and Orion's Belt now culminates at a different altitude from Giza than it did
+        4,500 years ago. The shafts still point exactly where they always have &mdash; it's the
+        sky around their fixed targets that has moved on.
+      </p>
+
+      <div class="diagram pyramid-shaft-diagram">
+        <div class="labelled-diagram-wrap" id="pyramid-shaft-wrap">
+          <svg
+            id="pyramid-shaft-diagram"
+            viewBox="0 0 320 260"
+            role="img"
+            aria-label="Schematic cross-section of the Great Pyramid, showing the King's Chamber and its two narrow shafts: one tilted about 33 degrees towards the north, historically aligned with Thuban near the pole, and one tilted about 45 degrees towards the south, historically aligned with Orion's Belt at its lowest crossing of the meridian"
+          ></svg>
+        </div>
+        <p class="note">Schematic cross-section, not to scale: the shaft angles are approximate published figures, not the pyramid's true internal layout.</p>
+      </div>
+    </section>
+
+    <section class="notes-section" id="exam-tips">
+      <h2>Exam tips</h2>
+      <p class="exam-tip">
+        <strong>Common exam confusion:</strong> Stonehenge's solstice alignment is not a
+        precession example. Precession changes the <em>direction</em> Earth's axis points, not
+        how much it's tilted, so it doesn't change how far north or south the solstice Sun rises
+        or sets from a given latitude. That's set by the axial tilt itself, which does also
+        change, but far more slowly (over about 41,000 years) and separately from precession.
+        <a href="#stonehenge">Stonehenge: the solstice-sunrise alignment &uarr;</a>
+      </p>
+      <p class="exam-tip">
+        <strong>Common exam confusion:</strong> it's tempting to assume Polaris has always been
+        the pole star, since it's the pole star now. The ancient Egyptians who built the pyramids
+        used Thuban instead &mdash; Polaris was tens of degrees from the pole in their time, no
+        use at all for finding true north.
+        <a href="#pole-star">The pole star then and now &uarr;</a>
+      </p>
+      <p class="exam-tip">
+        <strong>Common exam confusion:</strong> precession does not change the shapes of
+        constellations. The stars themselves barely move relative to each other over a human
+        lifetime (that tiny drift is proper motion, a separate and far slower effect). What
+        precession changes is the direction Earth's axis points against that essentially fixed
+        backdrop of stars.
+        <a href="#precession">Axial precession, briefly &uarr;</a>
+      </p>
+    </section>
+
+    <section class="notes-section" id="related">
+      <h2>Related pages</h2>
+      <div class="page-card-list">
+        <a class="page-card" href="measuring-the-sky.html">
+          <h3>Measuring the Sky</h3>
+          <p class="page-card-description">The mechanism behind precession in full, an interactive year-by-year explorer, and the complete list of pole stars through history.</p>
+        </a>
+        <a class="page-card" href="naked-eye-sky.html">
+          <h3>The Naked-Eye Sky</h3>
+          <p class="page-card-description">Find Orion's Belt for yourself, and see the constellations the Great Pyramid's shafts once pointed among.</p>
+        </a>
+        <a class="page-card" href="../sims/coordinates.html">
+          <h3>Star Coordinates</h3>
+          <p class="page-card-description">What right ascension and declination actually mean, and how sidereal time ties the sky to the ground beneath it.</p>
+        </a>
+        <a class="page-card" href="earth-structure.html">
+          <h3>Earth: Structure, Atmosphere and Motion</h3>
+          <p class="page-card-description">Earth's own axial tilt and rotation, the steady backdrop precession slowly turns against.</p>
+        </a>
+      </div>
+    </section>
+
+    <p class="coverage" id="coverage"></p>
+    <p class="next-page-link" id="next-page"></p>
+  </main>
+
+  <script src="../src/curriculum.js?v=202609290800"></script>
+  <script src="../src/pages.js?v=202609290800"></script>
+  <script src="../src/starPatterns.js?v=202609280900"></script>
+  <script src="../src/measuringTheSky.js?v=202609252300"></script>
+  <script src="../glossary.js?v=202609221600"></script>
+  <script src="archaeoastronomy.js?v=202609290800"></script>
+  <script src="../notesPage.js?v=202609252100"></script>
+  <script src="../nextPage.js?v=202609270100"></script>
+</body>
+</html>

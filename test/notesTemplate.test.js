@@ -19,6 +19,7 @@ const CONFORMING_PAGES = [
   'notes/earth-structure.html',
   'notes/moon-structure.html',
   'notes/observing-techniques.html',
+  'notes/archaeoastronomy.html',
 ];
 
 function read(href) {

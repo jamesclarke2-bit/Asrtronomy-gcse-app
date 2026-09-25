@@ -1773,6 +1773,25 @@ canvas {
   border: 1px solid #cdd7e1;
 }
 
+/* notes/archaeoastronomy.html */
+.pole-then-now-diagram,
+.stonehenge-diagram,
+.pyramid-shaft-diagram {
+  max-width: 420px;
+  margin: 1rem 0 0.5rem;
+}
+
+.pole-then-now-diagram svg,
+.stonehenge-diagram svg,
+.pyramid-shaft-diagram svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: #10141f;
+  border-radius: 8px;
+  border: 1px solid #cdd7e1;
+}
+
 .calculator {
   max-width: 420px;
   padding: 0.75rem 1rem;

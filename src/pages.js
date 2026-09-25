@@ -73,6 +73,13 @@ const PAGES = [
     units: ['u2.7'],
   },
   {
+    title: 'Archaeoastronomy: Precession and Monuments',
+    description:
+      "Why the pole star changes over millennia — Thuban, not Polaris, for the ancient Egyptians — and what that ~26,000-year wobble explains about two real monuments: Stonehenge's solstice-sunrise alignment and the Great Pyramid of Giza's star-aligned shafts.",
+    href: 'notes/archaeoastronomy.html',
+    units: ['u3.5'],
+  },
+  {
     title: 'Earth: Structure, Atmosphere and Motion',
     description:
       "Earth's shape and layered interior, latitude, longitude and the named reference lines on a labelled globe, the atmosphere's composition and layers, why it both helps and hinders astronomy, the transmission window that limits ground-based telescopes, and Earth's own rotation, revolution and tilt.",
@@ -171,6 +178,10 @@ const RECOMMENDED_PATH = [
       {
         href: 'notes/measuring-the-sky.html',
         why: "How the ancients first measured Earth, the Moon and the Sun — reusing Star Coordinates' meridian diagram directly.",
+      },
+      {
+        href: 'notes/archaeoastronomy.html',
+        why: "Builds directly on Measuring the Sky's precession section — what that 26,000-year wobble meant for real ancient monuments.",
       },
     ],
   },
