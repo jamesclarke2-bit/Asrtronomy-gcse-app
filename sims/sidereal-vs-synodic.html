@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sidereal vs Synodic Month</title>
-  <link rel="stylesheet" href="../styles.css?v=202609291000" />
+  <link rel="stylesheet" href="../styles.css?v=202609301200" />
 </head>
 <body>
   <main>
@@ -52,7 +52,7 @@
       <div class="controls">
         <div class="control">
           <label for="day-slider">Elapsed time: <span id="day-label"></span></label>
-          <input type="range" id="day-slider" min="0" max="30" step="0.1" value="0" />
+          <input type="range" id="day-slider" min="0" max="30" step="0.01" value="0" />
         </div>
 
         <div class="control checkbox-control">
@@ -110,6 +110,17 @@
       <a href="moon-phases.html">See the resulting phases play out in full on the Moon Phases page &rarr;</a>
     </p>
 
+    <section class="questions">
+      <h2>Practice questions</h2>
+      <div id="questions-list"></div>
+    </section>
+
+    <section class="progress">
+      <h2>Your progress</h2>
+      <ul id="progress-list"></ul>
+      <p class="note">Stored in this browser only (localStorage) — no account needed.</p>
+    </section>
+
     <p class="next-page-link" id="next-page"></p>
   </main>
 
@@ -120,8 +131,10 @@
   <script src="../src/orbitPanel.js?v=202609221500"></script>
   <script src="../src/moonPhase.js?v=202609241000"></script>
   <script src="../src/moonOrbitPanel.js?v=202609241200"></script>
+  <script src="../src/siderealSynodicQuestions.js?v=202609300900"></script>
   <script src="../glossary.js?v=202609221600"></script>
-  <script src="sidereal-vs-synodic.js?v=202609231600"></script>
+  <script src="../quiz-ui.js?v=202609212100"></script>
+  <script src="sidereal-vs-synodic.js?v=202609300900"></script>
   <script src="../nextPage.js?v=202609270100"></script>
 </body>
 </html>

@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Retrograde Motion and Planetary Alignments</title>
-  <link rel="stylesheet" href="../styles.css?v=202609291000" />
+  <link rel="stylesheet" href="../styles.css?v=202609301200" />
 </head>
 <body>
   <main>
@@ -33,6 +33,42 @@
             &nbsp; <span class="legend-swatch legend-mars-orbit"></span> Mars's orbit
           </p>
         </div>
+
+        <section class="retrograde-section">
+          <h2>Mars's apparent position over time</h2>
+          <p>
+            Mars's apparent position lies along the
+            <button type="button" class="glossary-toggle glossary-term-button" data-term="ecliptic" aria-label="What is the ecliptic?" aria-expanded="false">ecliptic</button>
+            — the strip of sky also known as the
+            <button type="button" class="glossary-toggle glossary-term-button" data-term="zodiac" aria-label="What is the zodiacal band?" aria-expanded="false">zodiacal band</button>,
+            shown below with the currently-selected date's position marked. The graph underneath plots
+            that same position over the whole date range above: the line climbs steadily most of the
+            time (Mars drifting eastward through the stars, as expected) but briefly bends backwards
+            around each
+            <button type="button" class="glossary-toggle glossary-term-button" data-term="opposition" aria-label="What is opposition?" aria-expanded="false">opposition</button>
+            — that backward-curving stretch is the retrograde loop. It repeats once every
+            <button type="button" class="glossary-toggle glossary-term-button" data-term="synodic" aria-label="What is a synodic period?" aria-expanded="false">synodic period</button>
+            (about 780 days, roughly 26 months) — this graph spans exactly two of them, so you can see
+            the pattern repeat.
+          </p>
+          <span class="glossary-definition" data-term="ecliptic" hidden></span>
+          <span class="glossary-definition" data-term="zodiac" hidden></span>
+          <span class="glossary-definition" data-term="opposition" hidden></span>
+          <span class="glossary-definition" data-term="synodic" hidden></span>
+          <canvas
+            id="zodiac-strip"
+            width="700"
+            height="46"
+            class="zodiac-strip"
+            aria-label="A strip showing the 12 zodiac constellations along the ecliptic, with a marker showing Mars's current apparent position among them"
+          ></canvas>
+          <canvas
+            id="retrograde-graph"
+            width="700"
+            height="320"
+            aria-label="Graph of Mars's apparent ecliptic longitude against date, showing the backward-curving retrograde loop around each opposition, with a marker at the currently-selected date"
+          ></canvas>
+        </section>
       </div>
 
       <div class="controls">
@@ -78,42 +114,6 @@
         <p class="coverage" id="coverage"></p>
       </div>
     </div>
-
-    <section class="retrograde-section">
-      <h2>Mars's apparent position over time</h2>
-      <p>
-        Mars's apparent position lies along the
-        <button type="button" class="glossary-toggle glossary-term-button" data-term="ecliptic" aria-label="What is the ecliptic?" aria-expanded="false">ecliptic</button>
-        — the strip of sky also known as the
-        <button type="button" class="glossary-toggle glossary-term-button" data-term="zodiac" aria-label="What is the zodiacal band?" aria-expanded="false">zodiacal band</button>,
-        shown below with the currently-selected date's position marked. The graph underneath plots
-        that same position over the whole date range above: the line climbs steadily most of the
-        time (Mars drifting eastward through the stars, as expected) but briefly bends backwards
-        around each
-        <button type="button" class="glossary-toggle glossary-term-button" data-term="opposition" aria-label="What is opposition?" aria-expanded="false">opposition</button>
-        — that backward-curving stretch is the retrograde loop. It repeats once every
-        <button type="button" class="glossary-toggle glossary-term-button" data-term="synodic" aria-label="What is a synodic period?" aria-expanded="false">synodic period</button>
-        (about 780 days, roughly 26 months) — this graph spans exactly two of them, so you can see
-        the pattern repeat.
-      </p>
-      <span class="glossary-definition" data-term="ecliptic" hidden></span>
-      <span class="glossary-definition" data-term="zodiac" hidden></span>
-      <span class="glossary-definition" data-term="opposition" hidden></span>
-      <span class="glossary-definition" data-term="synodic" hidden></span>
-      <canvas
-        id="zodiac-strip"
-        width="700"
-        height="46"
-        class="zodiac-strip"
-        aria-label="A strip showing the 12 zodiac constellations along the ecliptic, with a marker showing Mars's current apparent position among them"
-      ></canvas>
-      <canvas
-        id="retrograde-graph"
-        width="700"
-        height="320"
-        aria-label="Graph of Mars's apparent ecliptic longitude against date, showing the backward-curving retrograde loop around each opposition, with a marker at the currently-selected date"
-      ></canvas>
-    </section>
 
     <section class="concept-section">
       <h2>Transit and occultation</h2>

@@ -142,6 +142,12 @@
   // --- Animation: advance the day slider automatically, looping back to
   // the start. Setting .value programmatically doesn't fire 'input', so
   // this can't fight with the "stop on manual drag" handler below.
+  //
+  // A range input's value sanitisation snaps any value that isn't a whole
+  // multiple of its own step attribute — silently, even when set from
+  // script — so DAYS_PER_FRAME only actually moves the slider if it's a
+  // multiple of day-slider's step (0.01 in the HTML). A mismatch here
+  // doesn't throw or log anything: the slider just never leaves 0.
   const DAYS_PER_FRAME = 0.03;
   let animationFrameId = null;
 
@@ -193,4 +199,5 @@
   render();
   renderCoverage();
   Glossary.init(GLOSSARY);
+  QuizUI.mount(SiderealSynodicQuestions.makeQuestions(MoonPhase));
 })();
