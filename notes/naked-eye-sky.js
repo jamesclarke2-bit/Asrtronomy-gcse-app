@@ -106,7 +106,186 @@
     caption.textContent = `About ${Math.round(span)}° across, roughly ${Math.round(span / 0.5)} full Moons side by side`;
     chart.appendChild(caption);
 
+    card.classList.add(`pattern-card--${pattern.kind}`);
     card.querySelector('.pattern-kind').textContent = pattern.kind === 'asterism' ? 'Asterism' : 'Constellation';
+  }
+
+  // A scale-to-fit projection, shared by every star-hop diagram below: fits
+  // a set of already-projected (gnomonic) points into a pixel canvas, the
+  // same way drawPatternChart does for a single pattern.
+  function fitProjectedPoints(points, width, height, padding) {
+    const xs = points.map((p) => p.x);
+    const ys = points.map((p) => p.y);
+    const scale = Math.min(
+      (width - 2 * padding) / (Math.max(...xs) - Math.min(...xs)),
+      (height - 2 * padding) / (Math.max(...ys) - Math.min(...ys))
+    );
+    const midX = (Math.max(...xs) + Math.min(...xs)) / 2;
+    const midY = (Math.max(...ys) + Math.min(...ys)) / 2;
+    return (p) => ({
+      x: width / 2 + (p.x - midX) * scale,
+      y: height / 2 - (p.y - midY) * scale,
+    });
+  }
+
+  function drawArrowhead(svg, from, to, color) {
+    const angle = Math.atan2(to.y - from.y, to.x - from.x);
+    const size = 9;
+    const a1 = angle + Math.PI * 0.82;
+    const a2 = angle - Math.PI * 0.82;
+    const p1 = { x: to.x + size * Math.cos(a1), y: to.y + size * Math.sin(a1) };
+    const p2 = { x: to.x + size * Math.cos(a2), y: to.y + size * Math.sin(a2) };
+    svgEl('polygon', { points: `${to.x},${to.y} ${p1.x},${p1.y} ${p2.x},${p2.y}`, fill: color }, svg);
+  }
+
+  // A star cluster (the Pleiades): a loose knot of small dots, not one point.
+  function drawClusterGlyph(svg, centre) {
+    const offsets = [[0, -6], [7, -3], [5, 5], [-5, 6], [-7, -2], [1, 1]];
+    offsets.forEach(([dx, dy]) => {
+      svgEl('circle', { cx: centre.x + dx, cy: centre.y + dy, r: 3.2, fill: '#10141f' }, svg);
+      svgEl('circle', { cx: centre.x + dx, cy: centre.y + dy, r: 1.8, fill: '#fdfcf5' }, svg);
+    });
+  }
+
+  // A galaxy (Andromeda): a small, faint, elongated smudge, not one point.
+  function drawGalaxyGlyph(svg, centre, angleDeg) {
+    svgEl('ellipse', {
+      cx: centre.x, cy: centre.y, rx: 15, ry: 5.5,
+      transform: `rotate(${angleDeg} ${centre.x} ${centre.y})`,
+      fill: '#8fa3c9', opacity: 0.5,
+    }, svg);
+    svgEl('ellipse', {
+      cx: centre.x, cy: centre.y, rx: 7, ry: 2.6,
+      transform: `rotate(${angleDeg} ${centre.x} ${centre.y})`,
+      fill: '#c9d4e8', opacity: 0.8,
+    }, svg);
+  }
+
+  // --- Star-hopping from Orion's Belt: Sirius, Aldebaran, the Pleiades ---
+
+  const ORION_HOP_WIDTH = 380;
+  const ORION_HOP_HEIGHT = 380;
+  const HOP_PADDING = 38;
+
+  function drawOrionHopDiagram() {
+    const svg = document.getElementById('orion-hop');
+    const wrap = document.getElementById('orion-hop-wrap');
+    const orion = PATTERNS.find((p) => p.id === 'orion');
+
+    const gap = StarPatterns.angularSeparation(STARS.mintaka, STARS.alnilam);
+    const siriusRatio = StarPatterns.angularSeparation(STARS.alnilam, STARS.sirius) / gap;
+    const pleiadesRatio = StarPatterns.angularSeparation(STARS.mintaka, STARS.alcyone) / gap;
+
+    const allKeys = [...orion.stars, 'sirius', 'aldebaran', 'alcyone'];
+    const centre = StarPatterns.centreOf(allKeys.map((key) => STARS[key]));
+    const flat = {};
+    allKeys.forEach((key) => { flat[key] = StarPatterns.project(STARS[key], centre); });
+    const siriusEndRaw = StarPatterns.project(StarPatterns.extendBeyond(STARS.mintaka, STARS.alnilam, siriusRatio), centre);
+    const pleiadesEndRaw = StarPatterns.project(StarPatterns.extendBeyond(STARS.alnilam, STARS.mintaka, pleiadesRatio), centre);
+    const toScreen = fitProjectedPoints([...Object.values(flat), siriusEndRaw, pleiadesEndRaw], ORION_HOP_WIDTH, ORION_HOP_HEIGHT, HOP_PADDING);
+
+    // Orion's own outline, for context.
+    const lines = svgEl('g', { stroke: SKY_LINE_COLOR, 'stroke-width': 1.5 }, svg);
+    orion.lines.forEach(([a, b]) => {
+      const p = toScreen(flat[a]);
+      const q = toScreen(flat[b]);
+      svgEl('line', { x1: p.x, y1: p.y, x2: q.x, y2: q.y }, lines);
+    });
+
+    // One pointer line through the Belt's two innermost stars, extended
+    // past Alnilam to Sirius and past Mintaka to Aldebaran and the Pleiades.
+    const pointerLines = svgEl('g', { stroke: '#f5a623', 'stroke-width': 2, 'stroke-dasharray': '6 5' }, svg);
+    const siriusEnd = toScreen(siriusEndRaw);
+    const pleiadesEnd = toScreen(pleiadesEndRaw);
+    const mintakaPt = toScreen(flat.mintaka);
+    const alnilamPt = toScreen(flat.alnilam);
+    svgEl('line', { x1: alnilamPt.x, y1: alnilamPt.y, x2: siriusEnd.x, y2: siriusEnd.y }, pointerLines);
+    svgEl('line', { x1: mintakaPt.x, y1: mintakaPt.y, x2: pleiadesEnd.x, y2: pleiadesEnd.y }, pointerLines);
+
+    orion.stars.concat(['sirius', 'aldebaran']).forEach((key) => {
+      const p = toScreen(flat[key]);
+      const highlight = key === 'sirius' || key === 'aldebaran';
+      svgEl('circle', { cx: p.x, cy: p.y, r: starRadius(STARS[key].mag) + 2.5, fill: '#10141f' }, svg);
+      svgEl('circle', { cx: p.x, cy: p.y, r: starRadius(STARS[key].mag), fill: highlight ? '#ffe9a8' : '#fdfcf5' }, svg);
+    });
+    drawClusterGlyph(svg, toScreen(flat.alcyone));
+
+    const beltLabel = makeLabel(wrap, 'star-label', "Orion's Belt");
+    placeLabel(beltLabel, alnilamPt.x, alnilamPt.y, ORION_HOP_WIDTH, ORION_HOP_HEIGHT, 'left');
+    const siriusPt = toScreen(flat.sirius);
+    placeLabel(makeLabel(wrap, 'star-label hop-target-label', 'Sirius'), siriusPt.x + 6, siriusPt.y, ORION_HOP_WIDTH, ORION_HOP_HEIGHT, 'right');
+    const aldebaranPt = toScreen(flat.aldebaran);
+    placeLabel(makeLabel(wrap, 'star-label hop-target-label', 'Aldebaran'), aldebaranPt.x, aldebaranPt.y - 8, ORION_HOP_WIDTH, ORION_HOP_HEIGHT, 'above');
+    const pleiadesPt = toScreen(flat.alcyone);
+    placeLabel(makeLabel(wrap, 'star-label hop-target-label', 'The Pleiades'), pleiadesPt.x, pleiadesPt.y - 8, ORION_HOP_WIDTH, ORION_HOP_HEIGHT, 'left');
+  }
+
+  // --- Star-hopping from the Square of Pegasus: Fomalhaut, Andromeda -----
+
+  const PEGASUS_HOP_WIDTH = 340;
+  const PEGASUS_HOP_HEIGHT = 560;
+
+  function drawPegasusHopDiagram() {
+    const svg = document.getElementById('pegasus-hop');
+    const wrap = document.getElementById('pegasus-hop-wrap');
+    const square = PATTERNS.find((p) => p.id === 'squareOfPegasus');
+
+    const andromedaGap = StarPatterns.angularSeparation(STARS.markab, STARS.alpheratz);
+    const andromedaRatio = StarPatterns.angularSeparation(STARS.alpheratz, STARS.andromedaGalaxy) / andromedaGap;
+
+    const centre = StarPatterns.centreOf(square.stars.map((key) => STARS[key]));
+    const flat = {};
+    square.stars.forEach((key) => { flat[key] = StarPatterns.project(STARS[key], centre); });
+    flat.andromedaGalaxy = StarPatterns.project(STARS.andromedaGalaxy, centre);
+
+    // Fomalhaut is much further away than the diagram can show to scale
+    // (see the note below it): the arrow just continues the Scheat-Markab
+    // line one more gap's length beyond Markab, in the right direction.
+    const arrowTip = {
+      x: flat.markab.x + (flat.markab.x - flat.scheat.x),
+      y: flat.markab.y + (flat.markab.y - flat.scheat.y),
+    };
+
+    const andEndRaw = StarPatterns.project(StarPatterns.extendBeyond(STARS.markab, STARS.alpheratz, andromedaRatio), centre);
+
+    const toScreen = fitProjectedPoints(
+      [...Object.values(flat), arrowTip, andEndRaw],
+      PEGASUS_HOP_WIDTH, PEGASUS_HOP_HEIGHT, HOP_PADDING
+    );
+
+    const lines = svgEl('g', { stroke: SKY_LINE_COLOR, 'stroke-width': 1.5 }, svg);
+    square.lines.forEach(([a, b]) => {
+      const p = toScreen(flat[a]);
+      const q = toScreen(flat[b]);
+      svgEl('line', { x1: p.x, y1: p.y, x2: q.x, y2: q.y }, lines);
+    });
+
+    const pointerLines = svgEl('g', { stroke: '#f5a623', 'stroke-width': 2, 'stroke-dasharray': '6 5' }, svg);
+    const markabPt = toScreen(flat.markab);
+    const scheatPt = toScreen(flat.scheat);
+    const arrowTipPt = toScreen(arrowTip);
+    svgEl('line', { x1: scheatPt.x, y1: scheatPt.y, x2: arrowTipPt.x, y2: arrowTipPt.y }, pointerLines);
+    drawArrowhead(svg, markabPt, arrowTipPt, '#f5a623');
+
+    const andEnd = toScreen(andEndRaw);
+    svgEl('line', { x1: markabPt.x, y1: markabPt.y, x2: andEnd.x, y2: andEnd.y }, pointerLines);
+
+    square.stars.forEach((key) => {
+      const p = toScreen(flat[key]);
+      svgEl('circle', { cx: p.x, cy: p.y, r: starRadius(STARS[key].mag) + 2.5, fill: '#10141f' }, svg);
+      svgEl('circle', { cx: p.x, cy: p.y, r: starRadius(STARS[key].mag), fill: '#fdfcf5' }, svg);
+    });
+    const andromedaPt = toScreen(flat.andromedaGalaxy);
+    drawGalaxyGlyph(svg, andromedaPt, -35);
+
+    square.labels.forEach(([key, side]) => {
+      const p = toScreen(flat[key]);
+      const [dx, dy] = SIDE_OFFSETS[side];
+      const label = makeLabel(wrap, 'star-label', STARS[key].name);
+      placeLabel(label, p.x + dx, p.y + dy, PEGASUS_HOP_WIDTH, PEGASUS_HOP_HEIGHT, side);
+    });
+    placeLabel(makeLabel(wrap, 'star-label hop-target-label', 'Andromeda Galaxy'), andromedaPt.x, andromedaPt.y + 16, PEGASUS_HOP_WIDTH, PEGASUS_HOP_HEIGHT, 'right');
+    placeLabel(makeLabel(wrap, 'star-label hop-target-label', 'Fomalhaut →'), arrowTipPt.x, arrowTipPt.y, PEGASUS_HOP_WIDTH, PEGASUS_HOP_HEIGHT, 'below');
   }
 
   // --- Finding Polaris: the northern sky through the year ----------------
@@ -251,6 +430,21 @@
     const cruxStars = PATTERNS.find((p) => p.id === 'southernCross').stars.map((key) => STARS[key]);
     const latitude = Math.min(...cruxStars.map(StarPatterns.northernmostLatitudeToSee));
     document.getElementById('crux-latitude').textContent = `${Math.round(latitude)}°N`;
+
+    const beltGap = StarPatterns.angularSeparation(STARS.mintaka, STARS.alnilam);
+    const siriusRatio = StarPatterns.angularSeparation(STARS.alnilam, STARS.sirius) / beltGap;
+    document.getElementById('sirius-ratio').textContent = String(Math.round(siriusRatio));
+    const aldebaranRatio = StarPatterns.angularSeparation(STARS.mintaka, STARS.aldebaran) / beltGap;
+    document.getElementById('aldebaran-ratio').textContent = String(Math.round(aldebaranRatio));
+    const pleiadesRatio = StarPatterns.angularSeparation(STARS.mintaka, STARS.alcyone) / beltGap;
+    document.getElementById('pleiades-ratio').textContent = String(Math.round(pleiadesRatio));
+
+    const fomalhautGap = StarPatterns.angularSeparation(STARS.scheat, STARS.markab);
+    const fomalhautRatio = StarPatterns.angularSeparation(STARS.markab, STARS.fomalhaut) / fomalhautGap;
+    document.getElementById('fomalhaut-ratio').textContent = String(Math.round(fomalhautRatio * 2) / 2);
+    const andromedaGap = StarPatterns.angularSeparation(STARS.markab, STARS.alpheratz);
+    const andromedaRatio = StarPatterns.angularSeparation(STARS.alpheratz, STARS.andromedaGalaxy) / andromedaGap;
+    document.getElementById('andromeda-ratio').textContent = String(Math.round(andromedaRatio * 10) / 10);
   }
 
   function renderCoverage() {
@@ -268,11 +462,15 @@
       'An asterism: a recognisable star pattern that is not one of the 88 official constellations. It may be part of a constellation (the Plough, in Ursa Major) or use stars from several (the Summer Triangle).',
     circumpolar:
       'Circumpolar: close enough to the celestial pole that it never sets, but circles the pole all night and all year. Whether a star is circumpolar depends on your latitude.',
+    doubleStar:
+      "A double star: two stars that appear close together in the sky. Some are a true binary, genuinely orbiting each other, like Albireo in Cygnus; others just happen to lie in nearly the same direction from Earth, at very different real distances.",
   };
 
   document.querySelectorAll('.pattern-card').forEach(drawPatternChart);
   setUpPoleFinder();
   setUpMonthSlider();
+  drawOrionHopDiagram();
+  drawPegasusHopDiagram();
   fillFigures();
   renderCoverage();
   Glossary.init(GLOSSARY);

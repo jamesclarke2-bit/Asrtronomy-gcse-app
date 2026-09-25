@@ -1546,14 +1546,38 @@ canvas {
   vertical-align: middle;
 }
 
+/* Asterisms (the Plough, Summer Triangle, Square of Pegasus) get a subtle
+   warm tint and a differently-coloured badge, so the constellation/asterism
+   split reads at a glance without having to read each card. */
+.pattern-card--asterism {
+  background: #fdf8ee;
+  border-color: #ecdfc4;
+}
+
+.pattern-card--asterism .pattern-kind {
+  background: #f6ead0;
+  color: #7a5a17;
+}
+
 .pattern-chart svg,
-.pole-finder-diagram svg {
+.pole-finder-diagram svg,
+.hop-diagram svg {
   display: block;
   width: 100%;
   height: auto;
   background: #10141f;
   border-radius: 8px;
   border: 1px solid #cdd7e1;
+}
+
+.hop-diagram {
+  max-width: 420px;
+  margin: 1rem 0 0.5rem;
+}
+
+.hop-target-label {
+  color: #ffe9a8;
+  font-size: 0.78rem;
 }
 
 .pattern-card .pattern-chart p.pattern-span {

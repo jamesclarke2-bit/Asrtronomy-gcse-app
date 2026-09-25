@@ -28,7 +28,7 @@ const UNITS = [
         title: 'Naked-eye phenomena',
         depth: 'know',
         notes:
-          "the Sun, Moon, planets, stars, comets, meteors, aurorae and artificial satellites, what each looks like and how to tell them apart (planets shine more steadily than twinkling stars; satellites move steadily in a straight line over minutes; meteors streak across in under a second; comets drift slowly against the stars over nights); the Milky Way as a faint, diffuse band, best seen from a dark site",
+          "the Sun, Moon, stars (including double stars, two stars that appear close together or genuinely orbit each other, distinct from a constellation or asterism's unrelated pattern), star clusters, galaxies and nebulae (as their own category — a galaxy is a separate star system, a nebula a cloud of gas and dust within our own), planets, comets, meteors, aurorae, supernovae, artificial satellites and aircraft, what each looks like and how to tell them apart (planets shine more steadily than twinkling stars; satellites move steadily in a straight line over minutes with no flashing lights, unlike an aircraft, which blinks and often shows colour; meteors streak across in under a second; comets drift slowly against the stars over nights); the Milky Way as a faint, diffuse band, best seen from a dark site",
       },
       {
         id: 'u1.2',

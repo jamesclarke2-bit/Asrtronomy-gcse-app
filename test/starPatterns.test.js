@@ -95,6 +95,42 @@ test('the Southern Cross: its long axis extended about 4.5 times reaches the sou
   assert.ok(angularSeparation(landing, SOUTH_POLE) < 3);
 });
 
+test('Orion\'s Belt: Mintaka and Alnilam extended reach Sirius one way, Aldebaran and the Pleiades the other', () => {
+  const gap = angularSeparation(STARS.mintaka, STARS.alnilam);
+
+  const siriusRatio = angularSeparation(STARS.alnilam, STARS.sirius) / gap;
+  assert.equal(Math.round(siriusRatio), 17);
+  const siriusLanding = extendBeyond(STARS.mintaka, STARS.alnilam, siriusRatio);
+  assert.ok(angularSeparation(siriusLanding, STARS.sirius) < 3);
+
+  const aldebaranRatio = angularSeparation(STARS.mintaka, STARS.aldebaran) / gap;
+  assert.equal(Math.round(aldebaranRatio), 16);
+  const aldebaranLanding = extendBeyond(STARS.alnilam, STARS.mintaka, aldebaranRatio);
+  assert.ok(angularSeparation(aldebaranLanding, STARS.aldebaran) < 5);
+
+  const pleiadesRatio = angularSeparation(STARS.mintaka, STARS.alcyone) / gap;
+  assert.equal(Math.round(pleiadesRatio), 25);
+  const pleiadesLanding = extendBeyond(STARS.alnilam, STARS.mintaka, pleiadesRatio);
+  assert.ok(angularSeparation(pleiadesLanding, STARS.alcyone) < 4);
+
+  // Aldebaran and the Pleiades sit further out along the same line, not off to the side.
+  assert.ok(pleiadesRatio > aldebaranRatio);
+});
+
+test('the Square of Pegasus: Scheat-Markab extended reaches Fomalhaut, the Markab-Alpheratz diagonal reaches the Andromeda Galaxy', () => {
+  const fomalhautGap = angularSeparation(STARS.scheat, STARS.markab);
+  const fomalhautRatio = angularSeparation(STARS.markab, STARS.fomalhaut) / fomalhautGap;
+  assert.equal(Math.round(fomalhautRatio * 2) / 2, 3.5);
+  const fomalhautLanding = extendBeyond(STARS.scheat, STARS.markab, fomalhautRatio);
+  assert.ok(angularSeparation(fomalhautLanding, STARS.fomalhaut) < 3);
+
+  const andromedaGap = angularSeparation(STARS.markab, STARS.alpheratz);
+  const andromedaRatio = angularSeparation(STARS.alpheratz, STARS.andromedaGalaxy) / andromedaGap;
+  assert.equal(Math.round(andromedaRatio * 10) / 10, 0.7);
+  const andromedaLanding = extendBeyond(STARS.markab, STARS.alpheratz, andromedaRatio);
+  assert.ok(angularSeparation(andromedaLanding, STARS.andromedaGalaxy) < 6);
+});
+
 test("visibility claims: the Southern Cross can't be seen from the UK, the Plough and Cassiopeia never set there", () => {
   const cruxLimit = Math.min(...PATTERNS.find((p) => p.id === 'southernCross').stars.map((key) => northernmostLatitudeToSee(STARS[key])));
   assert.equal(Math.round(cruxLimit), 27);

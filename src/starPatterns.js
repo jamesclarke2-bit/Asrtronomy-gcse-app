@@ -83,6 +83,19 @@
     scheat: { name: 'Scheat', ra: ra(23, 3, 46), dec: dec(1, 28, 5), mag: 2.42 },
     algenib: { name: 'Algenib', ra: ra(0, 13, 14), dec: dec(1, 15, 11), mag: 2.83 },
     alpheratz: { name: 'Alpheratz', ra: ra(0, 8, 23), dec: dec(1, 29, 5), mag: 2.06 },
+
+    // Targets found by star-hopping from Orion's Belt and the Square of
+    // Pegasus, on notes/naked-eye-sky.html. `alcyone` (the Pleiades'
+    // brightest star) and `andromedaGalaxy` (M31) stand in for the whole
+    // cluster/galaxy, so a single ra/dec marks where to look; M31's
+    // magnitude is its total brightness spread across almost a degree of
+    // sky, not a point source, so it looks much fainter than the number
+    // alone suggests.
+    sirius: { name: 'Sirius', ra: ra(6, 45, 9), dec: dec(-1, 16, 43), mag: -1.46 },
+    aldebaran: { name: 'Aldebaran', ra: ra(4, 35, 55), dec: dec(1, 16, 30), mag: 0.85 },
+    alcyone: { name: 'The Pleiades', ra: ra(3, 47, 29), dec: dec(1, 24, 6), mag: 2.87 },
+    fomalhaut: { name: 'Fomalhaut', ra: ra(22, 57, 39), dec: dec(-1, 29, 37), mag: 1.16 },
+    andromedaGalaxy: { name: 'The Andromeda Galaxy', ra: ra(0, 42, 44), dec: dec(1, 41, 16), mag: 3.44 },
   };
 
   // `kind` is what the pattern officially is: one of the IAU's 88
