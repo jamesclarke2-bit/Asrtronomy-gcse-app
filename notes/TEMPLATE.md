@@ -193,6 +193,36 @@ Recommended path, it's exempt from the "every inline link must also be in Relate
 rule above — it isn't inline content, and it's regenerated from the same source
 `index.html` uses, not curated per page.
 
+## Optional: flashcards
+
+A page with enough discrete facts worth drilling (names, short definitions, pointer routes)
+can add a flip-card deck, built on the shared, content-agnostic `flashcards.js`. It's optional
+— not part of the checklist below — and first used on `notes/naked-eye-sky.html`.
+
+```html
+<section class="notes-section" id="flashcards">
+  <h2>Flashcards</h2>
+  <p>What this deck drills, in one sentence. Tap a card to flip it, or shuffle the deck.</p>
+  <div id="flashcard-deck"></div>
+</section>
+```
+
+```html
+<script src="../glossary.js?v=…"></script>
+<script src="../flashcards.js?v=…"></script>
+<script src="page-name.js?v=…"></script>
+```
+
+The page script calls `FlashCards.mount(container, cards)` with its own array of
+`{ id, front, back: { title, body }, category? }` objects — `front` is any DOM Node (an SVG
+icon, a cloned diagram, plain text), built however that page likes; `flashcards.js` itself
+knows nothing about astronomy, only how to flip and shuffle whatever it's given. See
+`naked-eye-sky.js` for a worked example: small hand-built SVG icons for the naked-eye
+phenomena, the existing star-chart code reused (cropped, unlabelled) for the constellations
+and asterisms, and one generic rotated glyph for every pointer-star card, with the ratio in
+each card's `back.body` computed from the real star data, the same way the page's own prose
+is.
+
 ## Page skeleton
 
 ```html

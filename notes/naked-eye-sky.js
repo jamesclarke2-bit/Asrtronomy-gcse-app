@@ -288,6 +288,270 @@
     placeLabel(makeLabel(wrap, 'star-label hop-target-label', 'Fomalhaut →'), arrowTipPt.x, arrowTipPt.y, PEGASUS_HOP_WIDTH, PEGASUS_HOP_HEIGHT, 'below');
   }
 
+  // --- Flashcards: naked-eye phenomena, patterns and pointer routes ------
+  //
+  // FlashCards.mount() (flashcards.js) is content-agnostic — it just
+  // flips and shuffles whatever { front, back } cards it's given. All
+  // the astronomy, including every icon, lives here.
+
+  const ICON_WIDTH = 140;
+  const ICON_HEIGHT = 100;
+  const ICON_BG = '#10141f';
+
+  function iconSvg() {
+    const svg = svgEl('svg', { viewBox: `0 0 ${ICON_WIDTH} ${ICON_HEIGHT}`, role: 'img', 'aria-hidden': 'true' });
+    svgEl('rect', { x: 0, y: 0, width: ICON_WIDTH, height: ICON_HEIGHT, rx: 10, fill: ICON_BG }, svg);
+    return svg;
+  }
+
+  const PHENOMENA_ICONS = {
+    sun() {
+      const svg = iconSvg();
+      const cx = ICON_WIDTH / 2;
+      const cy = ICON_HEIGHT / 2;
+      for (let i = 0; i < 8; i += 1) {
+        const angle = (i / 8) * 2 * Math.PI;
+        svgEl('line', {
+          x1: cx + Math.cos(angle) * 23, y1: cy + Math.sin(angle) * 23,
+          x2: cx + Math.cos(angle) * 34, y2: cy + Math.sin(angle) * 34,
+          stroke: '#ffcf5c', 'stroke-width': 3, 'stroke-linecap': 'round',
+        }, svg);
+      }
+      svgEl('circle', { cx, cy, r: 18, fill: '#ffcf5c' }, svg);
+      return svg;
+    },
+    moon() {
+      const svg = iconSvg();
+      const cx = ICON_WIDTH / 2;
+      const cy = ICON_HEIGHT / 2;
+      svgEl('circle', { cx, cy, r: 22, fill: '#fdfcf5' }, svg);
+      svgEl('circle', { cx: cx + 11, cy: cy - 5, r: 20, fill: ICON_BG }, svg);
+      return svg;
+    },
+    stars() {
+      const svg = iconSvg();
+      [[30, 28, 2.8], [58, 20, 2], [86, 32, 2.4], [104, 55, 1.7], [42, 62, 1.9], [66, 44, 1.4], [22, 50, 1.5]]
+        .forEach(([x, y, r]) => svgEl('circle', { cx: x, cy: y, r, fill: '#fdfcf5' }, svg));
+      // A close pair, to show what a double star looks like.
+      svgEl('circle', { cx: 92, cy: 74, r: 2.2, fill: '#fdfcf5' }, svg);
+      svgEl('circle', { cx: 98, cy: 76, r: 1.6, fill: '#fdfcf5' }, svg);
+      return svg;
+    },
+    starClusters() {
+      const svg = iconSvg();
+      drawClusterGlyph(svg, { x: ICON_WIDTH / 2, y: ICON_HEIGHT / 2 });
+      return svg;
+    },
+    galaxiesNebulae() {
+      const svg = iconSvg();
+      drawGalaxyGlyph(svg, { x: 52, y: 38 }, -25);
+      svgEl('circle', { cx: 96, cy: 66, r: 16, fill: '#c97b8a', opacity: 0.35 }, svg);
+      svgEl('circle', { cx: 96, cy: 66, r: 8, fill: '#e3a6b0', opacity: 0.55 }, svg);
+      return svg;
+    },
+    planets() {
+      const svg = iconSvg();
+      const cx = ICON_WIDTH / 2;
+      const cy = ICON_HEIGHT / 2;
+      svgEl('ellipse', {
+        cx, cy, rx: 32, ry: 8, fill: 'none', stroke: '#d8c98a', 'stroke-width': 3,
+        transform: `rotate(-18 ${cx} ${cy})`,
+      }, svg);
+      svgEl('circle', { cx, cy, r: 15, fill: '#e8b878' }, svg);
+      return svg;
+    },
+    comets() {
+      const svg = iconSvg();
+      svgEl('path', { d: 'M 98 32 L 38 74 L 62 52 Z', fill: '#bcd4f0', opacity: 0.6 }, svg);
+      svgEl('circle', { cx: 98, cy: 32, r: 8, fill: '#eaf2fb' }, svg);
+      return svg;
+    },
+    meteors() {
+      const svg = iconSvg();
+      svgEl('line', {
+        x1: 38, y1: 76, x2: 102, y2: 24, stroke: '#ffe9a8', 'stroke-width': 3,
+        'stroke-linecap': 'round', opacity: 0.85,
+      }, svg);
+      svgEl('circle', { cx: 102, cy: 24, r: 4, fill: '#fff6d9' }, svg);
+      return svg;
+    },
+    aurorae() {
+      const svg = iconSvg();
+      svgEl('path', {
+        d: 'M 12 70 Q 40 18 68 54 T 128 32', stroke: '#4fd39a', 'stroke-width': 5,
+        fill: 'none', opacity: 0.7, 'stroke-linecap': 'round',
+      }, svg);
+      svgEl('path', {
+        d: 'M 12 84 Q 40 36 68 68 T 128 46', stroke: '#8a6fd8', 'stroke-width': 5,
+        fill: 'none', opacity: 0.55, 'stroke-linecap': 'round',
+      }, svg);
+      return svg;
+    },
+    supernovae() {
+      const svg = iconSvg();
+      const cx = ICON_WIDTH / 2;
+      const cy = ICON_HEIGHT / 2;
+      for (let i = 0; i < 10; i += 1) {
+        const angle = (i / 10) * 2 * Math.PI;
+        const len = i % 2 === 0 ? 38 : 22;
+        svgEl('line', {
+          x1: cx, y1: cy, x2: cx + Math.cos(angle) * len, y2: cy + Math.sin(angle) * len,
+          stroke: '#ffd27a', 'stroke-width': 2.5, 'stroke-linecap': 'round',
+        }, svg);
+      }
+      svgEl('circle', { cx, cy, r: 9, fill: '#fff3d6' }, svg);
+      return svg;
+    },
+    satellites() {
+      const svg = iconSvg();
+      const cx = ICON_WIDTH / 2;
+      const cy = ICON_HEIGHT / 2;
+      svgEl('rect', { x: cx - 34, y: cy - 10, width: 22, height: 20, fill: '#4a7fc9' }, svg);
+      svgEl('rect', { x: cx + 12, y: cy - 10, width: 22, height: 20, fill: '#4a7fc9' }, svg);
+      svgEl('line', { x1: cx - 12, y1: cy, x2: cx - 6, y2: cy, stroke: '#cdd7e1', 'stroke-width': 2 }, svg);
+      svgEl('line', { x1: cx + 6, y1: cy, x2: cx + 12, y2: cy, stroke: '#cdd7e1', 'stroke-width': 2 }, svg);
+      svgEl('rect', { x: cx - 6, y: cy - 6, width: 12, height: 12, fill: '#cdd7e1' }, svg);
+      return svg;
+    },
+    aircraft() {
+      const svg = iconSvg();
+      svgEl('path', { d: 'M 28 50 L 90 42 L 112 50 L 90 58 Z', fill: '#cdd7e1' }, svg);
+      svgEl('path', { d: 'M 58 42 L 68 18 L 75 42 Z', fill: '#cdd7e1' }, svg);
+      svgEl('path', { d: 'M 58 58 L 68 82 L 75 58 Z', fill: '#cdd7e1' }, svg);
+      svgEl('circle', { cx: 63, cy: 44, r: 3, fill: '#e05a4e' }, svg);
+      svgEl('circle', { cx: 63, cy: 56, r: 3, fill: '#4fd39a' }, svg);
+      return svg;
+    },
+  };
+
+  const PHENOMENA_CARDS = [
+    { icon: 'sun', title: 'The Sun', body: 'By far the brightest object in the sky. Never look at it directly, even briefly.' },
+    { icon: 'moon', title: 'The Moon', body: "Earth's only natural satellite. Goes through a full cycle of phases roughly every 29.5 days." },
+    { icon: 'stars', title: 'Stars', body: 'Distant suns that twinkle and keep fixed patterns. A double star is two stars that appear close together — a different idea entirely from a constellation or asterism.' },
+    { icon: 'starClusters', title: 'Star clusters', body: 'A group of stars born together, still close enough to look like a tight knot or fuzzy patch, e.g. the Pleiades.' },
+    { icon: 'galaxiesNebulae', title: 'Galaxies and nebulae', body: 'A galaxy is an entire separate star system, like the Andromeda Galaxy. A nebula is a closer cloud of gas and dust inside our own Galaxy, like the Orion Nebula.' },
+    { icon: 'planets', title: 'Planets', body: 'Shine with a steadier light than stars, stay within the zodiacal band, and drift slowly against the background stars.' },
+    { icon: 'comets', title: 'Comets', body: 'A fuzzy coma with a faint tail that always points away from the Sun. Drifts slowly against the stars from one night to the next.' },
+    { icon: 'meteors', title: 'Meteors', body: '"Shooting stars": a brief streak of light under a second long, as a grain of dust burns up in the atmosphere.' },
+    { icon: 'aurorae', title: 'Aurorae', body: 'Glowing curtains, arcs or rays of light, mostly green, caused by solar wind particles striking the upper atmosphere near the poles.' },
+    { icon: 'supernovae', title: 'Supernovae', body: "A dying star's catastrophic explosion, briefly outshining its whole galaxy. A naked-eye one in our own Galaxy is extremely rare." },
+    { icon: 'satellites', title: 'Artificial satellites', body: 'A star-like point that glides steadily in a straight line for a few minutes, with no flashing lights.' },
+    { icon: 'aircraft', title: 'Aircraft', body: "Not an astronomical object at all — but it blinks with steady or flashing coloured lights, unlike a satellite's steady glide." },
+  ];
+
+  // A small SVG of just one pattern's stars and lines, unlabelled — the
+  // same real positions as its full pattern-card chart, cropped down to
+  // flashcard size.
+  function patternIcon(patternId) {
+    const svg = iconSvg();
+    const pattern = PATTERNS.find((p) => p.id === patternId);
+    const stars = pattern.stars.map((key) => STARS[key]);
+    const centre = StarPatterns.centreOf(stars);
+    const flat = {};
+    pattern.stars.forEach((key) => { flat[key] = StarPatterns.project(STARS[key], centre); });
+    const toScreen = fitProjectedPoints(Object.values(flat), ICON_WIDTH, ICON_HEIGHT, 16);
+    pattern.lines.forEach(([a, b]) => {
+      const p = toScreen(flat[a]);
+      const q = toScreen(flat[b]);
+      svgEl('line', { x1: p.x, y1: p.y, x2: q.x, y2: q.y, stroke: SKY_LINE_COLOR, 'stroke-width': 1.5 }, svg);
+    });
+    pattern.stars.forEach((key) => {
+      const p = toScreen(flat[key]);
+      svgEl('circle', { cx: p.x, cy: p.y, r: starRadius(STARS[key].mag), fill: '#fdfcf5' }, svg);
+    });
+    return svg;
+  }
+
+  const PATTERN_CARDS = [
+    { id: 'cassiopeia', body: 'Five stars in a distinctive W (or M), circumpolar from the UK.' },
+    { id: 'orion', body: 'The Hunter — look for the three-star Belt.' },
+    { id: 'cygnus', body: 'The Swan, flying down the Milky Way; its cross shape is also called the Northern Cross.' },
+    { id: 'southernCross', body: 'Crux, the smallest of all 88 constellations — a kite-shaped cross too far south to see from the UK.' },
+    { id: 'plough', body: "Part of Ursa Major. A seven-star 'saucepan'; its Pointers lead to Polaris." },
+    { id: 'summerTriangle', body: 'Spans three constellations: Vega (Lyra), Deneb (Cygnus) and Altair (Aquila).' },
+    { id: 'squareOfPegasus', body: 'Spans Pegasus and Andromeda. A large, near-empty square of four stars.' },
+  ];
+
+  // A generic "follow these two stars on to a target" glyph, rotated a
+  // little differently per card just so a run of them doesn't look
+  // identical — the direction isn't meant to match the real sky.
+  function pointerIcon(rotationDeg) {
+    const svg = iconSvg();
+    const cx = ICON_WIDTH / 2;
+    const cy = ICON_HEIGHT / 2;
+    const group = svgEl('g', { transform: `rotate(${rotationDeg} ${cx} ${cy})` }, svg);
+    svgEl('line', { x1: cx - 32, y1: cy, x2: cx - 8, y2: cy, stroke: '#8fa3c9', 'stroke-width': 2 }, group);
+    svgEl('line', {
+      x1: cx - 8, y1: cy, x2: cx + 32, y2: cy, stroke: '#f5a623', 'stroke-width': 2.5, 'stroke-dasharray': '5 4',
+    }, group);
+    svgEl('circle', { cx: cx - 32, cy, r: 3.5, fill: '#fdfcf5' }, group);
+    svgEl('circle', { cx: cx - 8, cy, r: 3.5, fill: '#fdfcf5' }, group);
+    svgEl('circle', { cx: cx + 32, cy, r: 6, fill: '#ffe9a8' }, group);
+    return svg;
+  }
+
+  // Ratios are computed the same way fillFigures() computes them for the
+  // page's own text, so a flashcard can never disagree with the page.
+  function pointerCards() {
+    const beltGap = StarPatterns.angularSeparation(STARS.mintaka, STARS.alnilam);
+    const siriusRatio = Math.round(StarPatterns.angularSeparation(STARS.alnilam, STARS.sirius) / beltGap);
+    const aldebaranRatio = Math.round(StarPatterns.angularSeparation(STARS.mintaka, STARS.aldebaran) / beltGap);
+    const pleiadesRatio = Math.round(StarPatterns.angularSeparation(STARS.mintaka, STARS.alcyone) / beltGap);
+
+    const pointerRatio = Math.round(StarPatterns.angularSeparation(STARS.dubhe, STARS.polaris) /
+      StarPatterns.angularSeparation(STARS.merak, STARS.dubhe));
+
+    const southPole = { ra: 0, dec: -90 };
+    const cruxRatio = Math.round(StarPatterns.angularSeparation(STARS.acrux, southPole) /
+      StarPatterns.angularSeparation(STARS.gacrux, STARS.acrux) * 2) / 2;
+
+    const fomalhautGap = StarPatterns.angularSeparation(STARS.scheat, STARS.markab);
+    const fomalhautRatio = Math.round(StarPatterns.angularSeparation(STARS.markab, STARS.fomalhaut) / fomalhautGap * 2) / 2;
+    const andromedaGap = StarPatterns.angularSeparation(STARS.markab, STARS.alpheratz);
+    const andromedaRatio = Math.round(StarPatterns.angularSeparation(STARS.alpheratz, STARS.andromedaGalaxy) / andromedaGap * 10) / 10;
+
+    return [
+      { title: 'Polaris', body: `Follow Merak through Dubhe (the Plough's Pointers) about ${pointerRatio}× their gap to find Polaris, and so due north.` },
+      { title: 'The south celestial pole', body: `Follow Gacrux through Acrux (the Southern Cross's long axis) about ${cruxRatio}× its length to reach the south celestial pole.` },
+      { title: 'Sirius', body: `Follow Mintaka through Alnilam (Orion's Belt) about ${siriusRatio}× their gap to reach Sirius, the brightest star in the sky.` },
+      { title: 'Aldebaran', body: `Follow the Belt the other way, about ${aldebaranRatio}× the Mintaka-Alnilam gap, to reach orange Aldebaran.` },
+      { title: 'The Pleiades', body: `Continue further along the same line, about ${pleiadesRatio}× the gap in total, to reach the Pleiades star cluster.` },
+      { title: 'Fomalhaut', body: `Follow Scheat through Markab (the Square of Pegasus's western side) about ${fomalhautRatio}× their gap, continuing south, to reach Fomalhaut.` },
+      { title: 'The Andromeda Galaxy', body: `Follow the diagonal from Markab through Alpheratz about ${andromedaRatio}× its length to reach the Andromeda Galaxy.` },
+    ];
+  }
+
+  function buildFlashcards() {
+    const container = document.getElementById('flashcard-deck');
+    if (!container || typeof FlashCards === 'undefined') return;
+
+    const phenomenaCards = PHENOMENA_CARDS.map((c) => ({
+      id: `phenomenon-${c.icon}`,
+      category: 'Naked-eye phenomena',
+      front: PHENOMENA_ICONS[c.icon](),
+      back: { title: c.title, body: c.body },
+    }));
+
+    const patternCards = PATTERN_CARDS.map((c) => {
+      const pattern = PATTERNS.find((p) => p.id === c.id);
+      return {
+        id: `pattern-${c.id}`,
+        category: pattern.kind === 'asterism' ? 'Asterism' : 'Constellation',
+        front: patternIcon(c.id),
+        back: { title: pattern.name, body: c.body },
+      };
+    });
+
+    const pointerCardsData = pointerCards().map((c, i) => ({
+      id: `pointer-${i}`,
+      category: 'Pointer stars',
+      front: pointerIcon((i * 47) % 360),
+      back: { title: c.title, body: c.body },
+    }));
+
+    FlashCards.mount(container, [...phenomenaCards, ...patternCards, ...pointerCardsData]);
+  }
+
   // --- Finding Polaris: the northern sky through the year ----------------
 
   const OBSERVER_LATITUDE = 52;
@@ -471,6 +735,7 @@
   setUpMonthSlider();
   drawOrionHopDiagram();
   drawPegasusHopDiagram();
+  buildFlashcards();
   fillFigures();
   renderCoverage();
   Glossary.init(GLOSSARY);
