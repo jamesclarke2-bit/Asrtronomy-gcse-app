@@ -11,12 +11,11 @@ every page listed as conforming below.
 | `notes/naked-eye-sky.html` | Yes (retrofitted when the template was written) |
 | `notes/measuring-the-sky.html` | Yes (built to it from the start) |
 | `notes/tides.html` | Yes (built to it from the start) |
-| `notes/earth-structure.html` | Not yet. Retrofit later |
-| `notes/moon-structure.html` | Not yet. Retrofit later |
-| `notes/observing-techniques.html` | Not yet. Retrofit later |
+| `notes/earth-structure.html` | Yes (retrofitted) |
+| `notes/moon-structure.html` | Yes (retrofitted) |
+| `notes/observing-techniques.html` | Yes (retrofitted) |
 
-The three older pages stay as they are until the template has been proven on a couple of
-pages built to it from the start. When a page is retrofitted, add it to `CONFORMING_PAGES`
+Every `notes/` page now conforms. When a page is retrofitted, add it to `CONFORMING_PAGES`
 in `test/notesTemplate.test.js` and update this table.
 
 ## Why: what the first four pages shared, and where they drifted
@@ -62,7 +61,8 @@ Every notes page has these parts, in this order:
 | **Core content** | one or more `section.notes-section` | Every section has an `id` (short, kebab-case, e.g. `id="milky-way"`) and opens with an `h2`. Subheads inside a section are `h3`, never another `h2`. |
 | **Exam tips** | `section.notes-section#exam-tips`, `h2` "Exam tips" | Every `.exam-tip` on the page, and nothing else. See section 3. |
 | **Related pages** | `section.notes-section#related`, `h2` "Related pages" | The footer component. See section 4. |
-| **Coverage** | `p.coverage#coverage` | Last thing in `<main>`, filled by the page script. |
+| **Coverage** | `p.coverage#coverage` | Filled by the page script. |
+| **Next page** | `p.next-page-link#next-page` | The true last thing in `<main>`, straight after Coverage. Filled by the shared `nextPage.js` from `Pages.RECOMMENDED_PATH` (`src/pages.js`) — never hand-written, and not specific to notes pages: every `sims/` page has the same empty `#next-page` paragraph and loads the same script. See section 5. |
 
 ## 2. Table of contents
 
@@ -171,7 +171,27 @@ sentence sends the reader somewhere to do something specific. For example:
 
 Passing "see also" mentions go in the footer instead. **Every page linked inline must also
 appear in Related pages.** The test enforces this, so the footer is always the complete set
-of places the page sends people.
+of places the page sends people. External links (a source citation, for example) are exempt
+— they're not part of the page's own navigation, so they never belong in Related pages.
+
+## 5. Next page
+
+Every page — every `sims/` page too, not just `notes/` ones — carries one more link past
+Related pages: which page comes next on `index.html`'s Recommended path.
+
+```html
+<p class="coverage" id="coverage"></p>
+<p class="next-page-link" id="next-page"></p>
+```
+
+`nextPage.js` fills it in, working purely from `Pages.RECOMMENDED_PATH`: never write the
+link by hand, and never add a page to `RECOMMENDED_PATH` without also adding
+`<script src="…/src/pages.js?v=…"></script>` and `<script src="…/nextPage.js?v=…"></script>`
+(the last script on the page) to that page. On the path's final page it says so instead of
+linking on. Since the link only ever points to a page already reachable from the
+Recommended path, it's exempt from the "every inline link must also be in Related pages"
+rule above — it isn't inline content, and it's regenerated from the same source
+`index.html` uses, not curated per page.
 
 ## Page skeleton
 
@@ -214,20 +234,24 @@ of places the page sends people.
     </section>
 
     <p class="coverage" id="coverage"></p>
+    <p class="next-page-link" id="next-page"></p>
   </main>
 
   <script src="../src/curriculum.js?v=YYYYMMDDHHmm"></script>
-  <!-- any src/ modules the page needs -->
+  <script src="../src/pages.js?v=YYYYMMDDHHmm"></script>
+  <!-- any other src/ modules the page needs -->
   <script src="../glossary.js?v=YYYYMMDDHHmm"></script>
   <script src="page-name.js?v=YYYYMMDDHHmm"></script>
   <script src="../notesPage.js?v=YYYYMMDDHHmm"></script>
+  <script src="../nextPage.js?v=YYYYMMDDHHmm"></script>
 </body>
 </html>
 ```
 
 The page script (`page-name.js`) is an IIFE that declares `CURRICULUM_UNITS`, renders the
 coverage line, builds any diagrams, and ends with `Glossary.init(GLOSSARY)`. See
-`naked-eye-sky.js`.
+`naked-eye-sky.js`. `notesPage.js` and `nextPage.js` are shared, not page scripts — both load
+last, in either order (one only ever touches the top of `<main>`, the other only the bottom).
 
 ## Site conventions that apply here too
 
@@ -252,6 +276,7 @@ coverage line, builds any diagrams, and ends with `Glossary.init(GLOSSARY)`. See
 4. Every glossary toggle has exactly one definition, placed straight after its block.
 5. Every inline link target is also in Related pages, and every Related pages card matches
    a `pages.js` title.
-6. `notesPage.js` is the last script.
-7. The page is in `src/pages.js` and in `CONFORMING_PAGES` in
+6. `#next-page` is the true last thing in `<main>`, straight after `#coverage`.
+7. `src/pages.js` is loaded, and `notesPage.js`/`nextPage.js` are the last two scripts.
+8. The page is in `src/pages.js`, in `Pages.RECOMMENDED_PATH`, and in `CONFORMING_PAGES` in
    `test/notesTemplate.test.js`, and `npm test` passes.

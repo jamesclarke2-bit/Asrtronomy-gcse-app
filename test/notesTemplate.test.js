@@ -12,7 +12,14 @@ const NotesPage = require('../notesPage');
 
 const ROOT = path.join(__dirname, '..');
 
-const CONFORMING_PAGES = ['notes/naked-eye-sky.html', 'notes/measuring-the-sky.html', 'notes/tides.html'];
+const CONFORMING_PAGES = [
+  'notes/naked-eye-sky.html',
+  'notes/measuring-the-sky.html',
+  'notes/tides.html',
+  'notes/earth-structure.html',
+  'notes/moon-structure.html',
+  'notes/observing-techniques.html',
+];
 
 function read(href) {
   return fs.readFileSync(path.join(ROOT, href), 'utf8');
@@ -80,8 +87,10 @@ CONFORMING_PAGES.forEach((href) => {
     assert.equal(new Set(ids).size, ids.length, 'section ids are unique');
   });
 
-  test(`${href}: the coverage line comes last in <main>`, () => {
-    assert.ok(/<\/section>\s*<p class="coverage" id="coverage"><\/p>\s*$/.test(main));
+  test(`${href}: coverage, then the next-page link, are the last two things in <main>`, () => {
+    assert.ok(
+      /<\/section>\s*<p class="coverage" id="coverage"><\/p>\s*<p class="next-page-link" id="next-page"><\/p>\s*$/.test(main)
+    );
   });
 
   test(`${href}: every exam tip sits in #exam-tips, with a lead-in and a link back to its section`, () => {
@@ -130,16 +139,17 @@ CONFORMING_PAGES.forEach((href) => {
     const related = sections.find((s) => s.id === 'related');
     const footerTargets = new Set([...related.body.matchAll(/href="([^"]+)"/g)].map((m) => resolveLink(href, m[1])));
     const body = main.replace(/<p class="back-link">[\s\S]*?<\/p>/, '').replace(related.body, '');
-    const inline = [...body.matchAll(/<a href="([^"#][^"]*)"/g)].map((m) => resolveLink(href, m[1]));
+    const inline = [...body.matchAll(/<a href="(?!https?:\/\/)([^"#][^"]*)"/g)].map((m) => resolveLink(href, m[1]));
     inline.forEach((target) => {
       assert.ok(fs.existsSync(path.join(ROOT, target)), `${target} exists`);
       assert.ok(footerTargets.has(target), `${target} is linked inline, so it must be in Related pages`);
     });
   });
 
-  test(`${href}: loads glossary.js, and notesPage.js as the last script`, () => {
+  test(`${href}: loads glossary.js, and notesPage.js then nextPage.js as the last two scripts`, () => {
     const scripts = [...html.matchAll(/<script src="([^"?]+)/g)].map((m) => m[1]);
     assert.ok(scripts.includes('../glossary.js'));
-    assert.equal(scripts.at(-1), '../notesPage.js');
+    assert.equal(scripts.at(-2), '../notesPage.js');
+    assert.equal(scripts.at(-1), '../nextPage.js');
   });
 });

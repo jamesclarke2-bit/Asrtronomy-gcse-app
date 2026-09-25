@@ -219,10 +219,8 @@ function computeUnitCoverage(units, pages) {
   });
 }
 
-const api = { PAGES, RECOMMENDED_PATH, computeUnitCoverage };
-
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = api;
+  module.exports = { PAGES, RECOMMENDED_PATH, computeUnitCoverage };
 } else if (typeof window !== 'undefined') {
-  window.Pages = api;
+  window.Pages = { PAGES, RECOMMENDED_PATH, computeUnitCoverage };
 }
