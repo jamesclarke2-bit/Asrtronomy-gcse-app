@@ -161,6 +161,17 @@
   // tSquaredOverRCubed against real Solar System data rather than only
   // self-consistent made-up numbers. To 3-4 significant figures — plenty
   // for the ~7% tolerance real orbital eccentricity and rounding allow.
+  //
+  // This is the engine's own precise tier, for internal maths (the
+  // Third Law graph's plotted points, etc.) where that extra precision
+  // matters. It intentionally does NOT match src/specData.js's rounded
+  // exam-data-sheet figures body-for-body — specData.js is the tier
+  // student-facing text and question stems quote instead, and
+  // test/specData.test.js checks the two agree within normal rounding so
+  // they can't silently drift apart. One body here, Makemake, has no
+  // entry in the exam sheet at all; leave it out of anything
+  // student-facing, and never use it as a "does this match the data
+  // sheet" test case.
 
   const PLANETARY_DATA = [
     { name: 'Mercury', kind: 'planet', semiMajorAxisAU: 0.387, periodYears: 0.241 },

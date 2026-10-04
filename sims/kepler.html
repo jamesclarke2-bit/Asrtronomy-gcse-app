@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Kepler's Laws of Planetary Motion</title>
-  <link rel="stylesheet" href="../styles.css?v=202609301200" />
+  <link rel="stylesheet" href="../styles.css?v=202610051000" />
 </head>
 <body>
   <main>
@@ -63,6 +63,7 @@
               <dd id="speed-value"></dd>
             </div>
           </dl>
+          <p class="panel-note" id="orbit-assumption"></p>
           <p class="note">
             Every shaded wedge covers the same time interval, and every wedge has the same area
             &mdash; so the short, wide wedges near perihelion and the long, thin wedges near
@@ -77,13 +78,16 @@
             id="third-law-graph"
             width="380"
             height="300"
-            aria-label="Graph of orbital period squared, in years, against semi-major axis cubed, in AU, for the eight planets, showing a straight line through the origin"
+            aria-label="Graph of orbital period squared, in years, against distance cubed, in AU, for the eight planets' exam data sheet values, showing a straight line through the origin"
           ></canvas>
           <p class="eot-readout" id="slope-readout"></p>
           <p class="note">
-            Every planet sits on the same straight line through the origin &mdash; that line is
-            Kepler's third law, T&sup2; = r&sup3; (T in years, r in AU), for anything orbiting the
-            Sun.
+            Every planet sits close to the same straight line through the origin &mdash; that
+            line is Kepler's third law, T&sup2; = r&sup3; (T in years, r in AU), for anything
+            orbiting the Sun. Plotted points use the exam
+            <a href="../notes/data-sheet.html#planet-data">data sheet's</a> own rounded distance
+            and period figures, so a point can sit very slightly off the line &mdash; that's the
+            data sheet's own rounding, not an error.
           </p>
         </div>
       </div>
@@ -139,13 +143,14 @@
     <p class="next-page-link" id="next-page"></p>
   </main>
 
-  <script src="../src/curriculum.js?v=202609290800"></script>
-  <script src="../src/pages.js?v=202610041300"></script>
+  <script src="../src/curriculum.js?v=202610051000"></script>
+  <script src="../src/pages.js?v=202610051000"></script>
   <script src="../src/orbitalMechanics.js?v=202610041200"></script>
-  <script src="../src/keplerQuestions.js?v=202610041300"></script>
+  <script src="../src/specData.js?v=202610051000"></script>
+  <script src="../src/keplerQuestions.js?v=202610051000"></script>
   <script src="../glossary.js?v=202609221600"></script>
   <script src="../quiz-ui.js?v=202609221100"></script>
-  <script src="kepler.js?v=202610041300"></script>
+  <script src="kepler.js?v=202610051000"></script>
   <script src="../nextPage.js?v=202609270100"></script>
 </body>
 </html>

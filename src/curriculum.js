@@ -404,19 +404,19 @@ const UNITS = [
       },
       {
         id: 'u3.3',
-        title: 'The heliocentric model and its evidence',
-        depth: 'understand',
+        title: 'Using scale information about the Solar System',
+        depth: 'be able to',
         spec: ['7.5'],
         notes:
-          "Copernicus placed the Sun, not Earth, at the centre in 1543, still using circular orbits; Galileo's early-17th-century telescope observations — Jupiter's four largest moons visibly orbiting Jupiter, not Earth — gave the first direct evidence that not everything orbits Earth, supporting the heliocentric model",
+          "use given data — e.g. a table of the planets' mean distances from the Sun in AU, as on the exam data sheet (src/specData.js) — to compare relative distances and sizes across the Solar System, or build a scale diagram/model from it; the 'be able to use' skill that sits alongside 7.6's unit definitions (u3.4)",
       },
       {
         id: 'u3.4',
         title: 'The scale of the Solar System',
-        depth: 'know',
+        depth: 'be able to',
         spec: ['7.6'],
         notes:
-          'the astronomical unit (1 AU ≈ 1.5 × 10⁸ km, the Earth-Sun distance), the light year and the parsec as the specialist units used for distances within the Solar System and to other stars',
+          'use the astronomical unit (1 AU ≈ 1.5 × 10⁸ km, the Earth-Sun distance), the light year and the parsec as the specialist units used for distances within the Solar System and to other stars',
       },
       {
         id: 'u3.5',
@@ -424,7 +424,7 @@ const UNITS = [
         depth: 'understand',
         spec: ['7.1', '7.2'],
         notes:
-          "how axial precession (u2.29) — Earth's axis slowly tracing a ~26,000-year circle, changing which star sits at the pole (Thuban for the ancient Egyptians, Polaris now) and shifting the apparent position of the Sun, Moon and stars over long timescales — helps explain real ancient monuments, e.g. Stonehenge's solstice-sunrise alignment and the Great Pyramid of Giza's star-aligned shafts, whose targets have since shifted",
+          "ancient civilisations used detailed observations of solar and lunar cycles for (a) agriculture — timing planting and harvest to the seasons; (b) religion — festivals and rituals tied to solstices, equinoxes and lunar phases; (c) time and calendar systems — the day, the (lunar) month and the year itself; and (d) aligning monuments to risings and settings, e.g. Stonehenge's solstice-sunrise alignment and the Great Pyramid of Giza's star-aligned shafts. Axial precession (u2.29) — Earth's axis slowly tracing a ~26,000-year circle — means those original alignments have since drifted: Thuban, not Polaris, was the pole star the ancient Egyptians aligned shafts to",
       },
       {
         id: 'u3.6',
@@ -440,7 +440,7 @@ const UNITS = [
         depth: 'understand',
         spec: ['8.2'],
         notes:
-          "Copernicus's heliocentric model, and Kepler's later work fitting Brahe's data to elliptical rather than circular orbits, completed the mathematical case for the heliocentric model",
+          "Copernicus's 1543 heliocentric model placed the Sun, not Earth, at the centre, still using circular orbits; Kepler's later work fitted Brahe's precise data to elliptical orbits instead, completing the mathematical case for the heliocentric model",
       },
       {
         id: 'u3.8',
@@ -461,7 +461,7 @@ const UNITS = [
       {
         id: 'u3.10',
         title: 'Perihelion, aphelion, apogee and perigee',
-        depth: 'know',
+        depth: 'understand',
         spec: ['8.5'],
         notes:
           'for a solar orbit, perihelion is the closest point to the Sun and aphelion the farthest; for an Earth orbit, the equivalent terms are perigee (closest) and apogee (farthest)',
@@ -476,16 +476,16 @@ const UNITS = [
       },
       {
         id: 'u3.12',
-        title: 'Orbital speed around an ellipse',
+        title: "Kepler's third law and the mass of the central body",
         depth: 'understand',
         spec: ['8.7'],
         notes:
-          "an orbiting body's speed isn't constant: it moves fastest at perihelion/perigee and slowest at aphelion/apogee, a direct consequence of Kepler's second law (equal areas in equal times needs a longer sweep, i.e. higher speed, where the orbit is tightest)",
+          "the constant in T²/r³ = constant (u3.11) is only the same ≈1 for every body here because they all orbit the Sun: in general the constant is 4π²/(GM), so it depends inversely on the central mass M — a planet at the same radius around a more massive star would have a shorter period and a smaller T²/r³ constant, and around a less massive star a longer period and a larger constant",
       },
       {
         id: 'u3.13',
         title: "Newton's explanation of Kepler's laws",
-        depth: 'understand',
+        depth: 'know',
         spec: ['8.8'],
         notes:
           "Newton showed that Kepler's three empirically-discovered laws all follow mathematically from one underlying cause: gravity obeying an inverse-square law",

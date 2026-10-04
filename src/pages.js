@@ -94,6 +94,18 @@ const PAGES = [
     units: ['u3.9', 'u3.10', 'u3.11', 'u3.12'],
   },
   {
+    title: 'Formulae and Data Sheet',
+    description:
+      "The exam's own Appendix 2 data sheet, reproduced in full: all six given equations (linked to the page that uses each, where one exists), the constants, and the planet and dwarf-planet table every Kepler's-third-law question draws on.",
+    href: 'notes/data-sheet.html',
+    // Only the units this page actually teaches towards, not every unit
+    // its "coming soon" equation rows merely name — those equations
+    // (magnification, distance modulus, redshift, Hubble's law) aren't
+    // taught anywhere yet, so tagging this page with u4.2/u5.2/u6.1/u6.2
+    // would wrongly claim they're covered.
+    units: ['u1.21', 'u2.28', 'u3.4', 'u3.11'],
+  },
+  {
     title: 'Moon Phases',
     description:
       "Two synced views: why phases happen (the Moon's position relative to the Sun) and what you'd actually see from Earth — plus the Moon's changing distance on its elliptical orbit, and when a full Moon counts as a supermoon.",
@@ -193,6 +205,10 @@ const RECOMMENDED_PATH = [
       {
         href: 'sims/kepler.html',
         why: 'From ancient models of the sky to the actual physics of orbits: why they’re ellipses, why speed changes around one, and how period and distance relate.',
+      },
+      {
+        href: 'notes/data-sheet.html',
+        why: 'The reference page Kepler’s third law questions just started drawing on — worth bookmarking, since every exam question gives you these same equations and figures.',
       },
     ],
   },

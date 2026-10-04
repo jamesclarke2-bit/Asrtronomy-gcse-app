@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Formulae and Data Sheet</title>
+  <link rel="stylesheet" href="../styles.css?v=202610051000" />
+</head>
+<body>
+  <main>
+    <p class="back-link"><a href="../index.html">&larr; Back to all tools</a></p>
+
+    <h1>Formulae and Data Sheet</h1>
+    <p class="subtitle">
+      The equations and constants given on the exam's own Appendix 2 data sheet, reproduced here
+      exactly so you can check your working against them &mdash; the same numbers every other
+      page on this site uses.
+    </p>
+
+    <section class="notes-section" id="equations">
+      <h2>Equations</h2>
+      <p>
+        Six equations the exam gives you. Where a page on this site lets you work with one
+        interactively, it's linked; the rest are marked "Coming soon".
+      </p>
+      <table class="shower-table">
+        <thead>
+          <tr>
+            <th scope="col">Equation</th>
+            <th scope="col">Formula</th>
+            <th scope="col">Used on</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Equation of time</th>
+            <td>Equation of time = AST &minus; MST</td>
+            <td><a href="../sims/equation-of-time.html">Equation of Time</a></td>
+          </tr>
+          <tr>
+            <th scope="row">Kepler's third law</th>
+            <td>T&sup2; / r&sup3; = constant</td>
+            <td><a href="../sims/kepler.html">Kepler's Laws of Planetary Motion</a></td>
+          </tr>
+          <tr>
+            <th scope="row">Magnification</th>
+            <td>magnification = f<sub>objective</sub> / f<sub>eyepiece</sub></td>
+            <td>Coming soon</td>
+          </tr>
+          <tr>
+            <th scope="row">Distance modulus</th>
+            <td>m &minus; M = 5 log&#8321;&#8320;(d) &minus; 5, d in parsecs</td>
+            <td>Coming soon</td>
+          </tr>
+          <tr>
+            <th scope="row">Redshift</th>
+            <td>(&lambda; &minus; &lambda;&#8320;) / &lambda;&#8320; = v / c</td>
+            <td>Coming soon</td>
+          </tr>
+          <tr>
+            <th scope="row">Hubble's law</th>
+            <td>v = H&#8320; &times; d</td>
+            <td>Coming soon</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="note">
+        T is the orbital period and r the mean orbital radius for Kepler's third law &mdash; see
+        <a href="../sims/kepler.html">Kepler's Laws of Planetary Motion</a> for the AU/years
+        special case (T&sup2; = r&sup3;) that holds for anything orbiting the Sun, and for how the
+        constant changes with a different central mass.
+      </p>
+    </section>
+
+    <section class="notes-section" id="constants">
+      <h2>Constants</h2>
+      <p>
+        These never change between questions &mdash; learn where to find them here rather than
+        memorising them. The astronomical unit, light year and
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="parsec" aria-label="What is a parsec?" aria-expanded="false">parsec</button>
+        are all specialist units of distance, chosen to keep the numbers manageable at very
+        different scales: AU within the Solar System, light years and parsecs beyond it.
+      </p>
+      <span class="glossary-definition" data-term="parsec" hidden></span>
+      <table class="shower-table">
+        <thead>
+          <tr>
+            <th scope="col">Constant</th>
+            <th scope="col">Value</th>
+          </tr>
+        </thead>
+        <tbody id="constants-body"></tbody>
+      </table>
+    </section>
+
+    <section class="notes-section" id="planet-data">
+      <h2>Planets and dwarf planets</h2>
+      <p>
+        Mean distance from the Sun and orbital period for every planet and recognised dwarf
+        planet, plus the other figures the exam sheet gives for each body. Distance and period are
+        used directly in <a href="../sims/kepler.html">Kepler's third law</a> questions.
+      </p>
+      <div class="table-scroll">
+        <table class="shower-table">
+          <thead>
+            <tr>
+              <th scope="col">Body</th>
+              <th scope="col">Kind</th>
+              <th scope="col">Type</th>
+              <th scope="col">Distance (AU)</th>
+              <th scope="col">Period (years)</th>
+              <th scope="col">Mean temp (&deg;C)</th>
+              <th scope="col">Diameter (1000 km)</th>
+              <th scope="col">Mass (Earth masses)</th>
+              <th scope="col">Rings</th>
+              <th scope="col">Moons</th>
+            </tr>
+          </thead>
+          <tbody id="planets-body"></tbody>
+        </table>
+      </div>
+      <p class="note">
+        These are the exam's own rounded figures, not the precise modern values &mdash; see
+        <a href="../sims/kepler.html">Kepler's Laws of Planetary Motion</a>, which uses this same
+        table for its Third Law graph.
+      </p>
+    </section>
+
+    <section class="notes-section" id="exam-tips">
+      <h2>Exam tips</h2>
+      <p class="exam-tip">
+        <strong>Common exam confusion:</strong> this data sheet's distance and period columns are
+        each rounded separately, so calculating one from the other with T&sup2;/r&sup3; = constant
+        won't always reproduce the table's own figure exactly &mdash; both the calculated and the
+        tabulated answer are accepted in an exam when that happens.
+        <a href="#planet-data">Planets and dwarf planets &uarr;</a>
+      </p>
+      <p class="exam-tip">
+        <strong>Common exam confusion:</strong> the photosphere temperature (5800 K) is the Sun's
+        visible surface, not its core &mdash; the core is millions of kelvin, far hotter, and
+        isn't the figure this data sheet gives.
+        <a href="#constants">Constants &uarr;</a>
+      </p>
+    </section>
+
+    <section class="notes-section" id="related">
+      <h2>Related pages</h2>
+      <div class="page-card-list">
+        <a class="page-card" href="../sims/kepler.html">
+          <h3>Kepler's Laws of Planetary Motion</h3>
+          <p class="page-card-description">Puts this page's planet table and Kepler's third law to work on an interactive graph.</p>
+        </a>
+        <a class="page-card" href="../sims/equation-of-time.html">
+          <h3>Equation of Time</h3>
+          <p class="page-card-description">Works through AST &minus; MST in detail, across a whole year.</p>
+        </a>
+        <a class="page-card" href="measuring-the-sky.html">
+          <h3>Measuring the Sky</h3>
+          <p class="page-card-description">How the Earth-Moon-Sun sizes and distances on this sheet were first measured.</p>
+        </a>
+      </div>
+    </section>
+
+    <p class="coverage" id="coverage"></p>
+    <p class="next-page-link" id="next-page"></p>
+  </main>
+
+  <script src="../src/curriculum.js?v=202610051000"></script>
+  <script src="../src/pages.js?v=202610051000"></script>
+  <script src="../src/specData.js?v=202610051000"></script>
+  <script src="../glossary.js?v=202609221600"></script>
+  <script src="data-sheet.js?v=202610051000"></script>
+  <script src="../notesPage.js?v=202609252100"></script>
+  <script src="../nextPage.js?v=202609270100"></script>
+</body>
+</html>

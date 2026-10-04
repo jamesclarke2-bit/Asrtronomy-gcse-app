@@ -1196,6 +1196,13 @@ canvas {
   letter-spacing: 0.03em;
 }
 
+/* Wraps a wide .shower-table (notes/data-sheet.html's planet table) so it
+   scrolls horizontally on narrow viewports instead of overflowing the
+   page. */
+.table-scroll {
+  overflow-x: auto;
+}
+
 /* sims/sun-declination.html: safe-observation warning, and the Sun's
    layered-structure diagram legend. */
 .warning-box {

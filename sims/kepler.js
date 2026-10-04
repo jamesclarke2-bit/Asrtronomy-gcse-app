@@ -1,6 +1,7 @@
 (function () {
   const CURRICULUM_UNITS = ['u3.9', 'u3.10', 'u3.11', 'u3.12'];
   const OM = OrbitalMechanics;
+  const SD = SpecData;
 
   const SUN_COLOR = '#f5a623';
   const PLANET_COLOR = '#2a6bd6';
@@ -30,6 +31,7 @@
   const speedValue = document.getElementById('speed-value');
   const massSelect = document.getElementById('mass-select');
   const massReadout = document.getElementById('mass-readout');
+  const orbitAssumption = document.getElementById('orbit-assumption');
   const orbitCanvas = document.getElementById('orbit-view');
   const secondLawCanvas = document.getElementById('second-law');
   const thirdLawCanvas = document.getElementById('third-law-graph');
@@ -181,12 +183,24 @@
     }
   }
 
+  // The million-km conversion is a readout a student would reproduce by
+  // hand from the exam data sheet's own 1 AU = 1.5 × 10⁸ km, so it uses
+  // SpecData's rounded constant rather than the engine's precise AU_KM —
+  // the underlying physics (orbitalSpeed below) still needs the precise
+  // value, since G and the Sun's mass aren't on the data sheet at all.
   function formatDistanceAU(au) {
-    return `${au.toFixed(2)} AU (${Math.round(au * OM.AU_KM / 1e6)} million km)`;
+    return `${au.toFixed(2)} AU (${Math.round((au * SD.CONSTANTS.auKm) / 1e6)} million km)`;
   }
 
   function formatSpeed(kmPerS) {
     return `${kmPerS.toFixed(1)} km/s`;
+  }
+
+  function updateOrbitAssumption() {
+    orbitAssumption.textContent =
+      `Distance and speed above assume a semi-major axis of 1 AU around the Sun (1 solar mass), ` +
+      `at the eccentricity set by the slider (e = ${state.eccentricity.toFixed(2)}) — from the ` +
+      `vis-viva equation, checked against this perihelion/aphelion speed ratio in test/orbitalMechanics.test.js.`;
   }
 
   function drawSecondLaw() {
@@ -209,6 +223,7 @@
     const speedMPerS = OM.orbitalSpeed(distanceM, SEMI_MAJOR_AXIS_AU * OM.AU_M, OM.SOLAR_MASS_KG);
     distanceValue.textContent = formatDistanceAU(r);
     speedValue.textContent = formatSpeed(speedMPerS / 1000);
+    updateOrbitAssumption();
   }
 
   function redrawOrbitDiagrams() {
@@ -261,7 +276,11 @@
   // --- Diagram 3: Kepler's third law, T² against r³ -------------------
 
   const GRAPH_MARGIN = { left: 60, right: 20, top: 15, bottom: 45 };
-  const PLANETS = OM.PLANETARY_DATA.filter((body) => body.kind === 'planet');
+  // The exam data sheet's own rounded figures (src/specData.js), not the
+  // engine's precise PLANETARY_DATA — see that file's header comment on
+  // why the two tiers exist and test/specData.test.js for how they're
+  // kept from drifting apart.
+  const PLANETS = SD.PLANETARY_DATA.filter((body) => body.kind === 'planet');
 
   function graphScales(maxR3, maxT2) {
     const width = thirdLawCanvas.width;
@@ -277,7 +296,7 @@
 
   function drawThirdLawGraph() {
     const ctx = thirdLawCanvas.getContext('2d');
-    const maxR3 = Math.max(...PLANETS.map((p) => Math.pow(p.semiMajorAxisAU, 3))) * 1.08;
+    const maxR3 = Math.max(...PLANETS.map((p) => Math.pow(p.distanceAU, 3))) * 1.08;
     const maxT2 = Math.max(...PLANETS.map((p) => Math.pow(p.periodYears, 2))) * 1.08;
     const { xFor, yFor, width, height } = graphScales(maxR3, maxT2);
 
@@ -335,7 +354,7 @@
 
     // Each real planet, as a point.
     PLANETS.forEach((p) => {
-      const r3 = Math.pow(p.semiMajorAxisAU, 3);
+      const r3 = Math.pow(p.distanceAU, 3);
       const t2 = Math.pow(p.periodYears, 2);
       const x = xFor(r3);
       const y = yFor(t2);
@@ -353,7 +372,7 @@
     ctx.textAlign = 'left';
     ctx.textBaseline = 'bottom';
     PLANETS.forEach((p) => {
-      const r3 = Math.pow(p.semiMajorAxisAU, 3);
+      const r3 = Math.pow(p.distanceAU, 3);
       const t2 = Math.pow(p.periodYears, 2);
       ctx.fillText(p.name, xFor(r3) + 7, yFor(t2) - 4);
     });
@@ -373,7 +392,7 @@
     ctx.restore();
 
     slopeReadout.textContent =
-      `Line through the real planets: slope ≈ 1.00 years²/AU³ (T²/r³ for every planet, checked in test/orbitalMechanics.test.js, is within a fraction of a percent of 1).` +
+      `Line through the real planets (exam data sheet values): slope ≈ 1.00 years²/AU³ — T²/r³ for every planet is close to 1, within the data sheet's own rounding (test/specData.test.js checks this against the engine's precise figures too).` +
       (multiplier !== 1
         ? ` Dashed line: the same r³ values around a ${multiplier}×-solar-mass star instead — slope ≈ ${(1 / multiplier).toFixed(2)}.`
         : '');
@@ -414,5 +433,5 @@
   updateMassReadout();
   renderCoverage();
   Glossary.init(GLOSSARY);
-  QuizUI.mount(KeplerQuestions.makeQuestions(OM));
+  QuizUI.mount(KeplerQuestions.makeQuestions(OM, SD));
 })();
