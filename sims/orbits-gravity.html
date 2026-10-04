@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Orbits and Gravity</title>
+  <link rel="stylesheet" href="../styles.css?v=202610051000" />
+</head>
+<body>
+  <main>
+    <p class="back-link"><a href="../index.html">&larr; Back to all tools</a></p>
+
+    <h1>Orbits and Gravity</h1>
+    <p class="subtitle">
+      Newton's own argument for why the Moon doesn't fall out of the sky: fire a cannonball fast
+      enough sideways, and "falling" and "orbiting" become the same thing. Watch a real,
+      step-by-step simulation of gravity alone turn a launch speed into a path, then see why
+      gravity's strength depends on distance and mass the way it does.
+    </p>
+
+    <div class="layout tool-layout">
+      <div class="diagrams-column">
+        <div class="diagram">
+          <h2>1. Newton's cannon</h2>
+          <canvas
+            id="cannon-view"
+            width="380"
+            height="340"
+            aria-label="A schematic Earth with a cannon on a tower, firing horizontally. The resulting path is computed by numerically integrating gravity step by step, shaded with equal-area wedges swept in equal time intervals, and rescales to fit whichever path results"
+          ></canvas>
+          <p class="legend">
+            <span class="legend-dot" style="background:#2a6bd6"></span> Earth
+            &nbsp; <span class="legend-dot" style="background:#c0392b"></span> Cannonball
+          </p>
+          <dl class="readout pinned-readout">
+            <div class="readout-row">
+              <dt>Path</dt>
+              <dd id="orbit-classification"></dd>
+            </div>
+            <div class="readout-row">
+              <dt>Detail</dt>
+              <dd id="outcome-detail"></dd>
+            </div>
+          </dl>
+          <p class="note">
+            Every shaded wedge covers an equal time interval, and every wedge has the same area
+            &mdash; exactly like the wedges on
+            <a href="kepler.html">Kepler's Laws of Planetary Motion</a>, but this time nothing
+            about ellipses or equal areas was assumed in advance. The path above comes purely
+            from numerically stepping gravity (F = GMm/r&sup2;) forward in tiny increments; the
+            equal areas, and the ellipse itself, fall straight out of that &mdash; exactly what
+            Newton showed.
+          </p>
+          <p class="note">
+            Fired from a schematic 10&nbsp;km tower, like Newton's own very-tall-mountain thought
+            experiment, so the cannonball has real ground to fall to below its launch point.
+          </p>
+        </div>
+
+        <div class="diagram">
+          <h2>2. Inverse-square law</h2>
+          <canvas
+            id="inverse-square-view"
+            width="380"
+            height="200"
+            aria-label="Two masses on a line, sized by their mass multiplier and spaced by their separation multiplier, joined by a line whose thickness shows the relative gravitational force between them"
+          ></canvas>
+          <p id="force-ratio-readout" class="eot-readout"></p>
+          <p class="note" id="example-distance-note"></p>
+          <p class="note" id="example-mass-note"></p>
+          <div class="curiosity-box">
+            <button type="button" class="glossary-toggle curiosity-toggle" data-term="inverseSquareFormula" aria-expanded="false">
+              <span class="curiosity-badge">Beyond the spec</span>
+              See the actual equation
+            </button>
+            <span class="glossary-definition" data-term="inverseSquareFormula" hidden></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <div class="control">
+          <p>Newton's cannon presets</p>
+          <div class="preset-list">
+            <button type="button" class="preset-button" data-cannon-preset="slow">Too slow</button>
+            <button type="button" class="preset-button" data-cannon-preset="circular">Circular</button>
+            <button type="button" class="preset-button" data-cannon-preset="elliptical">Elliptical</button>
+            <button type="button" class="preset-button" data-cannon-preset="escape">Escape</button>
+          </div>
+        </div>
+
+        <div class="control">
+          <label for="launch-speed-slider">Launch speed: <span id="launch-speed-label"></span></label>
+          <input type="range" id="launch-speed-slider" min="1" max="18" step="0.05" value="7.9" list="launch-speed-marks" />
+          <datalist id="launch-speed-marks">
+            <option value="7.9"></option>
+            <option value="11.2"></option>
+          </datalist>
+        </div>
+
+        <div class="control checkbox-control">
+          <button type="button" id="cannon-play-button" class="secondary-button" aria-pressed="false">&#9658; Animate</button>
+        </div>
+
+        <p class="note">
+          Marked on the slider: circular orbit speed (<strong id="circular-speed-value"></strong>)
+          and escape speed (<strong id="escape-speed-value"></strong>). Escape speed here is the
+          same escape velocity a rocket needs to reach the Moon &mdash; see
+          <a href="../notes/moon-structure.html#escape-velocity">Escape velocity and rockets on The Moon: Structure, Surface and Origin</a>
+          rather than re-deriving it here.
+        </p>
+
+        <div class="control">
+          <p>Two masses</p>
+          <label for="mass1-slider">Mass 1: <span id="mass1-label"></span></label>
+          <input type="range" id="mass1-slider" min="1" max="4" step="1" value="1" />
+          <label for="mass2-slider">Mass 2: <span id="mass2-label"></span></label>
+          <input type="range" id="mass2-slider" min="1" max="4" step="1" value="1" />
+          <label for="separation-slider">Separation: <span id="separation-label"></span></label>
+          <input type="range" id="separation-slider" min="0" max="4" step="1" value="1" />
+        </div>
+
+        <p class="coverage" id="coverage"></p>
+      </div>
+    </div>
+
+    <section class="notes-section" id="validation">
+      <h2>Checking against known values</h2>
+      <p>
+        These come straight from the same functions driving the diagrams above, not a separate
+        hand-typed copy &mdash; <code>test/orbitalMechanics.test.js</code> checks them against the
+        values below on every test run, and <code>test/gravitySim.test.js</code> checks that the
+        numerical integrator itself conserves energy and angular momentum over many simulated
+        orbits, both circular and eccentric.
+      </p>
+      <dl class="readout">
+        <div class="readout-row">
+          <dt>Circular orbit speed at Earth's surface</dt>
+          <dd id="validation-circular"></dd>
+        </div>
+        <div class="readout-row">
+          <dt>Escape speed at Earth's surface</dt>
+          <dd id="validation-escape"></dd>
+        </div>
+        <div class="readout-row">
+          <dt>Period of a circular orbit at 400&nbsp;km altitude (ISS-like)</dt>
+          <dd id="validation-period"></dd>
+        </div>
+      </dl>
+    </section>
+
+    <section class="questions">
+      <h2>Practice questions</h2>
+      <div id="questions-list"></div>
+    </section>
+
+    <section class="progress">
+      <h2>Your progress</h2>
+      <ul id="progress-list"></ul>
+      <p class="note">Stored in this browser only (localStorage) &mdash; no account needed.</p>
+    </section>
+
+    <p class="next-page-link" id="next-page"></p>
+  </main>
+
+  <script src="../src/curriculum.js?v=202610051000"></script>
+  <script src="../src/pages.js?v=202610071000"></script>
+  <script src="../src/orbitalMechanics.js?v=202610071000"></script>
+  <script src="../src/gravitySim.js?v=202610071000"></script>
+  <script src="../src/orbitsGravityQuestions.js?v=202610071000"></script>
+  <script src="../glossary.js?v=202609221600"></script>
+  <script src="../quiz-ui.js?v=202609221100"></script>
+  <script src="orbits-gravity.js?v=202610071000"></script>
+  <script src="../nextPage.js?v=202609270100"></script>
+</body>
+</html>

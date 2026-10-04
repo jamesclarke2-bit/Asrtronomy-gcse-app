@@ -33,6 +33,9 @@
   const YEAR_SECONDS = YEAR_DAYS * 86400;
   const SOLAR_MASS_KG = 1.98847e30;
   const EARTH_MASS_KG = 5.9722e24;
+  // Same mean radius as src/measuringTheSky.js and src/eclipseGeometry.js.
+  const EARTH_RADIUS_KM = 6371;
+  const EARTH_RADIUS_M = EARTH_RADIUS_KM * 1000;
 
   // --- Kepler's third law --------------------------------------------------
   //
@@ -141,6 +144,21 @@
     return Math.sqrt(G * centralMassKg * (2 / distance - 1 / semiMajorAxis));
   }
 
+  // A circular orbit is vis-viva's own special case, distance = semiMajorAxis
+  // (2/r - 1/r = 1/r), kept here as a named function rather than making
+  // every caller rediscover that.
+  function circularOrbitSpeed(distance, centralMassKg) {
+    return orbitalSpeed(distance, distance, centralMassKg);
+  }
+
+  // Escape speed is vis-viva's limit as the semi-major axis (and so the
+  // orbit itself) opens out to infinity — a parabolic, just-barely-unbound
+  // path. 1/Infinity is exactly 0 in IEEE 754, so this is genuinely that
+  // limit, not an approximation of it.
+  function escapeSpeed(distance, centralMassKg) {
+    return orbitalSpeed(distance, Infinity, centralMassKg);
+  }
+
   // --- Newton's law of gravitation: the inverse-square force ratio ---------
   //
   // F = Gm₁m₂/r², so scaling either mass by a factor or the separation
@@ -197,6 +215,8 @@
     YEAR_SECONDS,
     SOLAR_MASS_KG,
     EARTH_MASS_KG,
+    EARTH_RADIUS_KM,
+    EARTH_RADIUS_M,
     PLANETARY_DATA,
     periodYearsFromSemiMajorAxisAU,
     semiMajorAxisAUFromPeriodYears,
@@ -210,6 +230,8 @@
     perihelionDistance,
     aphelionDistance,
     orbitalSpeed,
+    circularOrbitSpeed,
+    escapeSpeed,
     gravitationalForceRatio,
   };
 

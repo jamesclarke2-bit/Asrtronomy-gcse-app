@@ -94,6 +94,13 @@ const PAGES = [
     units: ['u3.9', 'u3.10', 'u3.11', 'u3.12'],
   },
   {
+    title: 'Orbits and Gravity',
+    description:
+      "Newton's cannon: a real numerical simulation of gravity alone turning a launch speed into a falling arc, a circle, an ellipse or an escape — with the equal-area wedges emerging from the physics, not assumed. Plus an inverse-square widget for how gravity's strength changes with distance and mass, by ratio rather than formula.",
+    href: 'sims/orbits-gravity.html',
+    units: ['u3.8', 'u3.13', 'u3.14'],
+  },
+  {
     title: 'Formulae and Data Sheet',
     description:
       "The exam's own Appendix 2 data sheet, reproduced in full: all six given equations (linked to the page that uses each, where one exists), the constants, and the planet and dwarf-planet table every Kepler's-third-law question draws on.",
@@ -205,6 +212,10 @@ const RECOMMENDED_PATH = [
       {
         href: 'sims/kepler.html',
         why: 'From ancient models of the sky to the actual physics of orbits: why they’re ellipses, why speed changes around one, and how period and distance relate.',
+      },
+      {
+        href: 'sims/orbits-gravity.html',
+        why: "Kepler described the three laws; this is Newton explaining why they're true — simulating gravity itself, rather than assuming the ellipse Kepler's page draws.",
       },
       {
         href: 'notes/data-sheet.html',

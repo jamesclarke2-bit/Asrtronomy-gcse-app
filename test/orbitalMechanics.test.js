@@ -173,3 +173,17 @@ test('gravitationalForceRatio: combines independently, and an unchanged system h
   const combined = OM.gravitationalForceRatio({ massFactor1: 3, massFactor2: 3, separationFactor: 2 });
   assert.ok(Math.abs(combined - 2.25) < 1e-12);
 });
+
+test("sims/orbits-gravity.html's headline values: ~7.9 km/s circular speed, ~11.2 km/s escape speed, ~92 min period at 400 km", () => {
+  const r = OM.EARTH_RADIUS_M;
+  const vCircular = OM.circularOrbitSpeed(r, OM.EARTH_MASS_KG);
+  const vEscape = OM.escapeSpeed(r, OM.EARTH_MASS_KG);
+  assert.ok(Math.abs(vCircular / 1000 - 7.9) < 0.05, `v_circular = ${(vCircular / 1000).toFixed(3)} km/s`);
+  assert.ok(Math.abs(vEscape / 1000 - 11.2) < 0.05, `v_escape = ${(vEscape / 1000).toFixed(3)} km/s`);
+  // Escape speed is exactly √2 times circular speed at the same distance
+  // — the GM and r both cancel out of the ratio entirely.
+  assert.ok(Math.abs(vEscape / vCircular - Math.sqrt(2)) < 1e-9);
+
+  const periodAt400kmS = OM.periodFromSemiMajorAxis(r + 400000, OM.EARTH_MASS_KG);
+  assert.ok(Math.abs(periodAt400kmS / 60 - 92) < 1, `period = ${(periodAt400kmS / 60).toFixed(2)} min`);
+});
