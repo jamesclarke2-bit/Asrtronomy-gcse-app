@@ -280,7 +280,7 @@
   // engine's precise PLANETARY_DATA — see that file's header comment on
   // why the two tiers exist and test/specData.test.js for how they're
   // kept from drifting apart.
-  const PLANETS = SD.PLANETARY_DATA.filter((body) => body.kind === 'planet');
+  const PLANETS = SD.PLANETARY_DATA.filter((body) => body.type === 'planet');
 
   function graphScales(maxR3, maxT2) {
     const width = thirdLawCanvas.width;

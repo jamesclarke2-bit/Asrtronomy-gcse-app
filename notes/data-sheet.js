@@ -66,8 +66,7 @@
       nameCell.textContent = body.name;
       tr.appendChild(nameCell);
       [
-        body.kind === 'dwarf planet' ? 'Dwarf planet' : 'Planet',
-        body.type,
+        body.type === 'dwarf planet' ? 'Dwarf planet' : 'Planet',
         body.distanceAU,
         body.periodYears,
         body.meanTemperatureC,
