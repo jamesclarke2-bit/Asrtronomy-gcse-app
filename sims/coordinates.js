@@ -1018,7 +1018,7 @@
     circumpolar: "Circumpolar: never sets below the horizon — it stays above the horizon for the whole of Earth's rotation, so it's visible (weather and daylight allowing) at any hour.",
     meridian: "Meridian: the imaginary north-south line running through the zenith, from the horizon due north to the horizon due south. Every star crosses it twice a day.",
     culmination: 'Culmination (transit): the moment a star crosses the meridian. Upper culmination is its highest point that day; a circumpolar star also has a lower culmination, its lowest point, on the opposite side of the pole.',
-    siderealDay: "Sidereal day: how long Earth takes to rotate once relative to the distant stars — about 23h 56m 04s, a few minutes shorter than the solar day.",
+    siderealDay: "Sidereal day: how long Earth takes to rotate once relative to the distant stars — about 23 h 56 min (more precisely 23 h 56 min 4 s), a few minutes shorter than the solar day.",
     solarDay: 'Solar day: how long it takes for the Sun to return to the same position in the sky (e.g. noon to noon) — 24h 00m 00s on average, the day length a clock tracks.',
   };
 
