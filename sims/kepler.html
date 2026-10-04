@@ -14,8 +14,9 @@
     <p class="subtitle">
       Three rules that describe every orbit: the shape (an ellipse with the Sun at one focus),
       the changing speed around it (faster near the Sun, slower far away), and how period and
-      distance relate across the whole Solar System. Drag the eccentricity slider, watch the
-      planet move, and see the straight-line graph that falls out of the third law.
+      distance relate across the whole Solar System. Drag the sliders, watch the body move, and
+      see the straight-line graph that falls out of the third law &mdash; try the presets below
+      to jump from Earth's gentle orbit to a comet's wildly elongated one.
     </p>
 
     <div class="layout tool-layout">
@@ -26,11 +27,12 @@
             id="orbit-view"
             width="380"
             height="300"
-            aria-label="A planet on an elliptical orbit with the Sun at one focus, with perihelion and aphelion marked"
+            aria-label="A body on an elliptical orbit with the Sun at one focus, with perihelion and aphelion marked. The view rescales automatically to fit the current orbit, and draws a tail pointing away from the Sun when the orbit is comet-like"
           ></canvas>
           <p class="legend">
             <span class="legend-dot" style="background:#f5a623"></span> Sun (at one focus)
             &nbsp; <span class="legend-dot" style="background:#2a6bd6"></span> Planet
+            &nbsp; <span class="legend-dot" style="background:#e8eef5;border:1px solid #6b7684"></span> Comet
           </p>
           <p class="note">
             <button type="button" class="glossary-toggle glossary-term-button" data-term="perihelion" aria-label="What is perihelion?" aria-expanded="false">Perihelion</button>
@@ -43,6 +45,12 @@
           </p>
           <span class="glossary-definition" data-term="perihelion" hidden></span>
           <span class="glossary-definition" data-term="aphelion" hidden></span>
+          <p class="note">
+            A comet's tail always points directly away from the Sun, and grows longer the closer
+            it gets &mdash; it's pushed outward by the solar wind and radiation pressure, not
+            left behind by the comet's own motion. See the
+            <a href="sun-declination.html#solar-wind">solar wind section on the Observing the Sun page</a>.
+          </p>
         </div>
 
         <div class="diagram">
@@ -62,6 +70,10 @@
               <dt>Orbital speed</dt>
               <dd id="speed-value"></dd>
             </div>
+            <div class="readout-row">
+              <dt>Orbital period</dt>
+              <dd id="period-value"></dd>
+            </div>
           </dl>
           <p class="panel-note" id="orbit-assumption"></p>
           <p class="note">
@@ -78,8 +90,12 @@
             id="third-law-graph"
             width="380"
             height="300"
-            aria-label="Graph of orbital period squared, in years, against distance cubed, in AU, for the eight planets' exam data sheet values, showing a straight line through the origin"
+            aria-label="Graph of orbital period squared, in years, against distance cubed, in AU, for the eight planets' exam data sheet values plus Halley's and Encke's comets, showing a straight line through the origin"
           ></canvas>
+          <p class="legend">
+            <span class="legend-dot" style="background:#f5a623"></span> Planets (exam data sheet)
+            &nbsp; <span class="legend-dot" style="background:#8e5fc9"></span> Comets (not on the exam data sheet)
+          </p>
           <p class="eot-readout" id="slope-readout"></p>
           <p class="note">
             Every planet sits close to the same straight line through the origin &mdash; that
@@ -94,11 +110,27 @@
 
       <div class="controls">
         <div class="control">
+          <p>Presets</p>
+          <div class="preset-list">
+            <button type="button" class="preset-button" data-preset="earth">Earth</button>
+            <button type="button" class="preset-button" data-preset="halley">Halley's Comet</button>
+            <button type="button" class="preset-button" data-preset="encke">Encke's Comet</button>
+            <button type="button" class="preset-button" data-preset="long-period">Long-period comet</button>
+          </div>
+        </div>
+        <p class="panel-note" id="preset-note"></p>
+
+        <div class="control">
+          <label for="semi-major-axis-slider">Semi-major axis: <span id="semi-major-axis-label"></span></label>
+          <input type="range" id="semi-major-axis-slider" min="-1" max="4.5" step="0.001" value="0" />
+        </div>
+
+        <div class="control">
           <label for="eccentricity-slider">
             Eccentricity: <span id="eccentricity-label"></span>
             <button type="button" class="glossary-toggle" data-term="eccentricity" aria-label="What is eccentricity?" aria-expanded="false">?</button>
           </label>
-          <input type="range" id="eccentricity-slider" min="0" max="0.85" step="0.01" value="0.5" />
+          <input type="range" id="eccentricity-slider" min="0" max="0.99" step="0.01" value="0.5" />
         </div>
         <span class="glossary-definition" data-term="eccentricity" hidden></span>
 
@@ -119,10 +151,15 @@
         <p class="panel-note" id="mass-readout"></p>
 
         <p class="note">
-          Orbit view and Second law both use a fixed 1 AU semi-major axis around our own Sun, so
-          one full animated sweep always represents one real year, whatever the eccentricity is
-          set to &mdash; period depends on the semi-major axis alone (Kepler's third law), never
-          on eccentricity.
+          One full animated sweep always represents one full orbit of whatever body is currently
+          selected &mdash; a few seconds on screen whether that orbit really takes one year
+          (Earth) or 2.8 million years (the long-period comet). Only the semi-major axis changes
+          the real period (Kepler's third law); eccentricity alone never does.
+        </p>
+        <p class="note">
+          The orbit view and second law diagrams rescale automatically to fit whichever orbit is
+          selected, so a comet's enormous orbit and Earth's tiny one can look about the same size
+          here &mdash; only the AU figures tell you the real difference.
         </p>
 
         <p class="coverage" id="coverage"></p>
@@ -150,7 +187,7 @@
   <script src="../src/keplerQuestions.js?v=202610051000"></script>
   <script src="../glossary.js?v=202609221600"></script>
   <script src="../quiz-ui.js?v=202609221100"></script>
-  <script src="kepler.js?v=202610051000"></script>
+  <script src="kepler.js?v=202610061200"></script>
   <script src="../nextPage.js?v=202609270100"></script>
 </body>
 </html>

@@ -88,6 +88,39 @@ test("Earth's perihelion-to-aphelion speed ratio is (1+e)/(1-e), about 1.034", (
   assert.ok(vPeri > vApo, 'faster at perihelion than aphelion');
 });
 
+test('orbital speed at 1 AU around the Sun: absolute perihelion/aphelion km/s for e=0.3 and e=0.5 (sims/kepler.html\'s assumed orbit)', () => {
+  // Not just the ratio (already checked above) — the actual km/s values
+  // sims/kepler.html displays, so a unit or constant mistake that
+  // happens to preserve the ratio still gets caught.
+  const a = OM.AU_M;
+  const expected = {
+    0.3: { peri: 40.6, apo: 21.9 },
+    0.5: { peri: 51.6, apo: 17.2 },
+  };
+  Object.entries(expected).forEach(([eStr, { peri, apo }]) => {
+    const e = Number(eStr);
+    const vPeri = OM.orbitalSpeed(OM.perihelionDistance(a, e), a, OM.SOLAR_MASS_KG) / 1000;
+    const vApo = OM.orbitalSpeed(OM.aphelionDistance(a, e), a, OM.SOLAR_MASS_KG) / 1000;
+    assert.ok(Math.abs(vPeri - peri) < 0.1, `e=${e} perihelion: got ${vPeri.toFixed(2)} km/s, expected ~${peri}`);
+    assert.ok(Math.abs(vApo - apo) < 0.1, `e=${e} aphelion: got ${vApo.toFixed(2)} km/s, expected ~${apo}`);
+  });
+});
+
+test("sims/kepler.html's comet presets (Halley's and Encke's) satisfy Kepler's third law, T²/r³ ≈ 1", () => {
+  // Mirrors the COMETS constant plotted on kepler.html's Third Law
+  // graph and the Halley/Encke preset figures — approximate, not from
+  // the exam data sheet, but still real enough to sit close to the
+  // planets' own T²/r³ ≈ 1 line.
+  const comets = [
+    { name: "Halley's Comet", distanceAU: 17.8, periodYears: 75 },
+    { name: "Encke's Comet", distanceAU: 2.2, periodYears: 3.3 },
+  ];
+  comets.forEach(({ name, distanceAU, periodYears }) => {
+    const k = OM.tSquaredOverRCubed(periodYears, distanceAU);
+    assert.ok(Math.abs(k - 1) <= 0.03, `${name}: T²/r³ = ${k.toFixed(4)}`);
+  });
+});
+
 test("numerically stepping an eccentric orbit sweeps equal areas in equal times (Kepler's 2nd law)", () => {
   // Equal steps in mean anomaly ARE equal steps in time (mean anomaly is
   // defined to advance uniformly), so if the area the focus-to-body line
