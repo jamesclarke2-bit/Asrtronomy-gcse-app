@@ -256,7 +256,7 @@
     ctx.font = 'italic 11px sans-serif';
     ctx.textAlign = 'left';
     ctx.textBaseline = 'alphabetic';
-    ctx.fillText('Not to scale — rescales to fit the current path', 8, cannonCanvas.height - 10);
+    ctx.fillText('Not to scale — altitude exaggerated for visibility', 8, cannonCanvas.height - 10);
   }
 
   function updateCannonReadouts(launchSpeedKmPerS) {

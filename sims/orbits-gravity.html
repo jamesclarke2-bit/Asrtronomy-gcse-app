@@ -54,6 +54,16 @@
           <p class="note">
             Fired from a schematic 10&nbsp;km tower, like Newton's own very-tall-mountain thought
             experiment, so the cannonball has real ground to fall to below its launch point.
+            <strong>Not to scale:</strong> that 10&nbsp;km gap is stretched out visually so it's
+            actually visible next to Earth's 6,371&nbsp;km radius &mdash; the simulation itself
+            uses the true, un-exaggerated altitude throughout, only the drawing is stretched.
+          </p>
+          <p class="note">
+            Air resistance is ignored completely. A real object launched from only 10&nbsp;km up
+            would still be deep in the atmosphere and would burn up or slow dramatically long
+            before tracing any of these paths &mdash; this is a vacuum, gravity-only
+            idealisation, the same one Newton's own thought experiment imagined by firing from
+            above the atmosphere entirely.
           </p>
         </div>
 
@@ -97,6 +107,13 @@
             <option value="11.2"></option>
           </datalist>
         </div>
+        <p class="panel-note">
+          Dragging close to circular speed locks on to it exactly, rather than landing on the
+          nearest slider step. That's deliberate, not a glitch: orbits this close to the ground
+          are extremely sensitive, and a speed only a fraction of a percent too slow sends the
+          path straight into the ground instead of around it &mdash; the snap is what keeps a
+          deliberate circular launch from becoming an accidental crash.
+        </p>
 
         <div class="control checkbox-control">
           <button type="button" id="cannon-play-button" class="secondary-button" aria-pressed="false">&#9658; Animate</button>
@@ -170,7 +187,7 @@
   <script src="../src/orbitsGravityQuestions.js?v=202610071000"></script>
   <script src="../glossary.js?v=202609221600"></script>
   <script src="../quiz-ui.js?v=202609221100"></script>
-  <script src="orbits-gravity.js?v=202610071000"></script>
+  <script src="orbits-gravity.js?v=202610071400"></script>
   <script src="../nextPage.js?v=202609270100"></script>
 </body>
 </html>
