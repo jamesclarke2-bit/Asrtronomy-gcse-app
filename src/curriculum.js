@@ -16,6 +16,19 @@
  * "Our place in the Galaxy" appears under both u4 and u6 on purpose:
  * u4.4 is about the Milky Way's own structure, u6.5 is about our
  * position within the wider observable Universe.
+ *
+ * Where a subtopic has been checked against the real specification, it
+ * also carries an optional `spec` array naming the matching spec point(s)
+ * (e.g. `spec: ['8.4']`), so coverage can be mechanically audited against
+ * the spec document later — an array because a spec point can need more
+ * than one subtopic, or a subtopic can answer more than one spec point.
+ * Most subtopics don't have it yet; retrofitting is ongoing. u3's Topic 7
+ * ("Early models of the Solar System") and Topic 8 ("Planetary motion
+ * and gravity") entries are the first fully-tagged example, matched
+ * against the Edexcel GCSE Astronomy (1AS0) specification. 7.1-7.4 and
+ * 8.1-8.5 are confirmed directly; 7.5-7.6 and 8.6-8.9 are a best-effort
+ * placement (content is solid, exact decimal numbering less certain)
+ * pending a check against the primary spec PDF.
  */
 
 const UNITS = [
@@ -375,34 +388,115 @@ const UNITS = [
     subtopics: [
       {
         id: 'u3.1',
-        title: 'Historical models',
-        depth: 'know',
-        notes: 'geocentric vs heliocentric — Ptolemy, Copernicus, Galileo, Kepler',
+        title: 'Early geocentric models',
+        depth: 'understand',
+        spec: ['7.3'],
+        notes:
+          "early models placed Earth at the centre of the universe, with the Moon, Sun and planets moving around it against the 'fixed' stars; Ptolemy's geocentric model, accepted for over a thousand years, used a deferent (a planet's main circular path around Earth) and an equant (an off-centre point about which the planet appeared to move at a uniform rate)",
       },
       {
         id: 'u3.2',
-        title: 'Orbital mechanics',
-        depth: 'be able to',
-        notes: "Kepler's laws, including calculations relating orbital period and distance",
+        title: 'Epicycles',
+        depth: 'understand',
+        spec: ['7.4'],
+        notes:
+          "Ptolemy added epicycles — small circular loops riding on the main deferent — to account for planets' observed retrograde motion and changing brightness, which a simple single-circle geocentric model couldn't explain",
       },
       {
         id: 'u3.3',
-        title: 'Formation of the Solar System',
+        title: 'The heliocentric model and its evidence',
         depth: 'understand',
-        notes: 'solar nebula theory; formation of the Sun and planets',
+        spec: ['7.5'],
+        notes:
+          "Copernicus placed the Sun, not Earth, at the centre in 1543, still using circular orbits; Galileo's early-17th-century telescope observations — Jupiter's four largest moons visibly orbiting Jupiter, not Earth — gave the first direct evidence that not everything orbits Earth, supporting the heliocentric model",
       },
       {
         id: 'u3.4',
-        title: 'Water on Earth theory',
-        depth: 'understand',
-        notes: 'competing theories, e.g. cometary/asteroid delivery vs volcanic outgassing',
+        title: 'The scale of the Solar System',
+        depth: 'know',
+        spec: ['7.6'],
+        notes:
+          'the astronomical unit (1 AU ≈ 1.5 × 10⁸ km, the Earth-Sun distance), the light year and the parsec as the specialist units used for distances within the Solar System and to other stars',
       },
       {
         id: 'u3.5',
         title: 'Archaeoastronomy',
         depth: 'understand',
+        spec: ['7.1', '7.2'],
         notes:
           "how axial precession (u2.29) — Earth's axis slowly tracing a ~26,000-year circle, changing which star sits at the pole (Thuban for the ancient Egyptians, Polaris now) and shifting the apparent position of the Sun, Moon and stars over long timescales — helps explain real ancient monuments, e.g. Stonehenge's solstice-sunrise alignment and the Great Pyramid of Giza's star-aligned shafts, whose targets have since shifted",
+      },
+      {
+        id: 'u3.6',
+        title: "Brahe's observations",
+        depth: 'understand',
+        spec: ['8.1'],
+        notes:
+          "Tycho Brahe's precise naked-eye observations, made before the telescope existed, provided the accurate positional data the geocentric-to-heliocentric transition needed",
+      },
+      {
+        id: 'u3.7',
+        title: "Copernicus and Kepler's mathematical modelling",
+        depth: 'understand',
+        spec: ['8.2'],
+        notes:
+          "Copernicus's heliocentric model, and Kepler's later work fitting Brahe's data to elliptical rather than circular orbits, completed the mathematical case for the heliocentric model",
+      },
+      {
+        id: 'u3.8',
+        title: 'Gravity and stable elliptical orbits',
+        depth: 'understand',
+        spec: ['8.3'],
+        notes:
+          'gravity, pulling a planet continuously towards the Sun, is what keeps it in a closed elliptical orbit rather than flying off in a straight line or falling in',
+      },
+      {
+        id: 'u3.9',
+        title: "Kepler's laws of planetary motion",
+        depth: 'understand',
+        spec: ['8.4'],
+        notes:
+          '1) every orbit is an ellipse with the Sun at one focus; 2) a line from the Sun to an orbiting body sweeps out equal areas in equal times, so it moves fastest near the Sun and slowest when farthest away; 3) the square of the orbital period is proportional to the cube of the orbit’s mean radius, T² ∝ r³',
+      },
+      {
+        id: 'u3.10',
+        title: 'Perihelion, aphelion, apogee and perigee',
+        depth: 'know',
+        spec: ['8.5'],
+        notes:
+          'for a solar orbit, perihelion is the closest point to the Sun and aphelion the farthest; for an Earth orbit, the equivalent terms are perigee (closest) and apogee (farthest)',
+      },
+      {
+        id: 'u3.11',
+        title: "Using Kepler's third law",
+        depth: 'be able to',
+        spec: ['8.6'],
+        notes:
+          "use T²/r³ = constant to calculate an orbital period from a mean orbital radius, or vice versa, given one body's own values as a reference (e.g. Earth: 1 year, 1 AU)",
+      },
+      {
+        id: 'u3.12',
+        title: 'Orbital speed around an ellipse',
+        depth: 'understand',
+        spec: ['8.7'],
+        notes:
+          "an orbiting body's speed isn't constant: it moves fastest at perihelion/perigee and slowest at aphelion/apogee, a direct consequence of Kepler's second law (equal areas in equal times needs a longer sweep, i.e. higher speed, where the orbit is tightest)",
+      },
+      {
+        id: 'u3.13',
+        title: "Newton's explanation of Kepler's laws",
+        depth: 'understand',
+        spec: ['8.8'],
+        notes:
+          "Newton showed that Kepler's three empirically-discovered laws all follow mathematically from one underlying cause: gravity obeying an inverse-square law",
+      },
+      {
+        id: 'u3.14',
+        title: "Newton's law of gravitation",
+        depth: 'understand',
+        spec: ['8.9'],
+        notes:
+          'the gravitational force between two bodies is proportional to the product of their masses and inversely proportional to the square of the distance between their centres — doubling the separation cuts the force to a quarter, tripling a mass triples the force',
       },
     ],
   },

@@ -74,7 +74,7 @@ function makeQuestions(getSunPosition) {
     {
       id: 'q3',
       type: 'number',
-      units: ['u2.9', 'u3.2'],
+      units: ['u2.9', 'u1.11'],
       prompt:
         "Using altitude = 90 − |latitude − declination|, calculate the sun's altitude at solar noon for 52°N on the summer solstice (declination ≈ +23.44°). Then check your answer against the simulator.",
       unitLabel: '°',

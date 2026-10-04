@@ -49,3 +49,26 @@ test('every question only tags curriculum ids that actually exist', () => {
     }
   }
 });
+
+test('every subtopic\'s optional spec field, where present, is a non-empty array of strings', () => {
+  for (const unit of UNITS) {
+    for (const subtopic of unit.subtopics) {
+      if (!('spec' in subtopic)) continue;
+      assert.ok(Array.isArray(subtopic.spec), `${subtopic.id}: spec should be an array`);
+      assert.ok(subtopic.spec.length > 0, `${subtopic.id}: spec array is empty`);
+      subtopic.spec.forEach((point) => {
+        assert.equal(typeof point, 'string', `${subtopic.id}: spec entry "${point}" should be a string`);
+      });
+    }
+  }
+});
+
+test('u3\'s Topic 7 and Topic 8 entries (u3.1-u3.14) are all tagged with a spec point', () => {
+  const unit = getUnit('u3');
+  const topic78 = unit.subtopics.filter((s) => {
+    const n = Number(s.id.split('.')[1]);
+    return n >= 1 && n <= 14;
+  });
+  assert.equal(topic78.length, 14, 'expected u3.1 through u3.14');
+  topic78.forEach((s) => assert.ok(s.spec && s.spec.length > 0, `${s.id} (${s.title}) has no spec field`));
+});

@@ -33,9 +33,9 @@ test('q2: latitude for 90deg altitude on summer solstice (u1.4)', () => {
   assert.ok(!q2.check(52).correct);
 });
 
-test('q3: calculate-then-verify altitude at 52N summer solstice (u2.9, u3.2)', () => {
+test('q3: calculate-then-verify altitude at 52N summer solstice (u2.9, u1.11)', () => {
   const q3 = findQuestion('q3');
-  assert.deepEqual(q3.units, ['u2.9', 'u3.2']);
+  assert.deepEqual(q3.units, ['u2.9', 'u1.11']);
   const summerNoon = new Date(Date.UTC(2026, 5, 21, 12, 0));
   const decl = getSunPosition(summerNoon, 0, 0).declination;
   const calculated = 90 - Math.abs(52 - decl);

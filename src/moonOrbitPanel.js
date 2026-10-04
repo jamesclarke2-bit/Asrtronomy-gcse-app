@@ -23,8 +23,13 @@
  * to draw the orbit as an ellipse with Earth at one focus; leave it out
  * for a plain circle (sidereal-vs-synodic.html, where orbit shape isn't
  * the point).
+ *
+ * Solving Kepler's equation (mean anomaly -> true anomaly) is delegated
+ * to src/orbitalMechanics.js's general, any-eccentricity solver, rather
+ * than this file keeping its own Newton's-method copy hardcoded to the
+ * Moon's eccentricity.
  */
-(function () {
+function makeMoonOrbitPanel(OM) {
   const SEMI_MAJOR_AXIS_KM = 384400;
   const ECCENTRICITY = 0.0549;
   const PERIGEE_KM = SEMI_MAJOR_AXIS_KM * (1 - ECCENTRICITY);
@@ -58,23 +63,9 @@
     );
   }
 
-  // Kepler's equation, M = E - e sin E, solved for E by Newton's method.
-  // With e this small it converges to machine precision in a few steps.
-  function eccentricAnomalyRad(meanAnomalyDeg) {
-    const M = (normalizeDeg(meanAnomalyDeg) * Math.PI) / 180;
-    let E = M;
-    for (let i = 0; i < 8; i++) {
-      E -= (E - ECCENTRICITY * Math.sin(E) - M) / (1 - ECCENTRICITY * Math.cos(E));
-    }
-    return E;
-  }
-
   function trueAnomalyFromMean(meanAnomalyDeg) {
-    const E = eccentricAnomalyRad(meanAnomalyDeg);
-    const nu = 2 * Math.atan2(
-      Math.sqrt(1 + ECCENTRICITY) * Math.sin(E / 2),
-      Math.sqrt(1 - ECCENTRICITY) * Math.cos(E / 2)
-    );
+    const meanAnomalyRad = (normalizeDeg(meanAnomalyDeg) * Math.PI) / 180;
+    const nu = OM.trueAnomaly(meanAnomalyRad, ECCENTRICITY);
     return normalizeDeg((nu * 180) / Math.PI);
   }
 
@@ -256,9 +247,11 @@
     pointAt,
   };
 
-  if (typeof module !== 'undefined' && module.exports) {
-    module.exports = moonOrbitPanelApi;
-  } else if (typeof window !== 'undefined') {
-    window.MoonOrbitPanel = moonOrbitPanelApi;
-  }
-})();
+  return moonOrbitPanelApi;
+}
+
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = { ...makeMoonOrbitPanel(require('./orbitalMechanics')), makeMoonOrbitPanel };
+} else if (typeof window !== 'undefined') {
+  window.MoonOrbitPanel = { ...makeMoonOrbitPanel(window.OrbitalMechanics), makeMoonOrbitPanel };
+}
