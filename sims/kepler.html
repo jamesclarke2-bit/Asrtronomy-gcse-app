@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kepler's Laws of Planetary Motion</title>
+  <link rel="stylesheet" href="../styles.css?v=202609301200" />
+</head>
+<body>
+  <main>
+    <p class="back-link"><a href="../index.html">&larr; Back to all tools</a></p>
+
+    <h1>Kepler's Laws of Planetary Motion</h1>
+    <p class="subtitle">
+      Three rules that describe every orbit: the shape (an ellipse with the Sun at one focus),
+      the changing speed around it (faster near the Sun, slower far away), and how period and
+      distance relate across the whole Solar System. Drag the eccentricity slider, watch the
+      planet move, and see the straight-line graph that falls out of the third law.
+    </p>
+
+    <div class="layout tool-layout">
+      <div class="diagrams-column">
+        <div class="diagram">
+          <h2>1. Orbit view</h2>
+          <canvas
+            id="orbit-view"
+            width="380"
+            height="300"
+            aria-label="A planet on an elliptical orbit with the Sun at one focus, with perihelion and aphelion marked"
+          ></canvas>
+          <p class="legend">
+            <span class="legend-dot" style="background:#f5a623"></span> Sun (at one focus)
+            &nbsp; <span class="legend-dot" style="background:#2a6bd6"></span> Planet
+          </p>
+          <p class="note">
+            <button type="button" class="glossary-toggle glossary-term-button" data-term="perihelion" aria-label="What is perihelion?" aria-expanded="false">Perihelion</button>
+            and
+            <button type="button" class="glossary-toggle glossary-term-button" data-term="aphelion" aria-label="What is aphelion?" aria-expanded="false">aphelion</button>
+            are the closest and farthest points of an orbit <strong>around the Sun</strong>. The
+            same two ideas have different names for an orbit <strong>around Earth</strong> &mdash;
+            perigee (closest) and apogee (farthest) &mdash; covered on the
+            <a href="moon-phases.html#perigee-apogee">Moon Phases page's perigee/apogee section</a>.
+          </p>
+          <span class="glossary-definition" data-term="perihelion" hidden></span>
+          <span class="glossary-definition" data-term="aphelion" hidden></span>
+        </div>
+
+        <div class="diagram">
+          <h2>2. Second law: equal areas in equal times</h2>
+          <canvas
+            id="second-law"
+            width="380"
+            height="300"
+            aria-label="The same orbit, divided into twelve wedges of equal area swept out in equal time intervals, with the planet animated around it"
+          ></canvas>
+          <dl class="readout pinned-readout">
+            <div class="readout-row">
+              <dt>Distance from Sun</dt>
+              <dd id="distance-value"></dd>
+            </div>
+            <div class="readout-row">
+              <dt>Orbital speed</dt>
+              <dd id="speed-value"></dd>
+            </div>
+          </dl>
+          <p class="note">
+            Every shaded wedge covers the same time interval, and every wedge has the same area
+            &mdash; so the short, wide wedges near perihelion and the long, thin wedges near
+            aphelion are swept out at the same rate. That's only possible if the planet moves
+            fastest near perihelion and slowest near aphelion.
+          </p>
+        </div>
+
+        <div class="diagram">
+          <h2>3. Third law: T&sup2; against r&sup3;</h2>
+          <canvas
+            id="third-law-graph"
+            width="380"
+            height="300"
+            aria-label="Graph of orbital period squared, in years, against semi-major axis cubed, in AU, for the eight planets, showing a straight line through the origin"
+          ></canvas>
+          <p class="eot-readout" id="slope-readout"></p>
+          <p class="note">
+            Every planet sits on the same straight line through the origin &mdash; that line is
+            Kepler's third law, T&sup2; = r&sup3; (T in years, r in AU), for anything orbiting the
+            Sun.
+          </p>
+        </div>
+      </div>
+
+      <div class="controls">
+        <div class="control">
+          <label for="eccentricity-slider">
+            Eccentricity: <span id="eccentricity-label"></span>
+            <button type="button" class="glossary-toggle" data-term="eccentricity" aria-label="What is eccentricity?" aria-expanded="false">?</button>
+          </label>
+          <input type="range" id="eccentricity-slider" min="0" max="0.85" step="0.01" value="0.5" />
+        </div>
+        <span class="glossary-definition" data-term="eccentricity" hidden></span>
+
+        <div class="control checkbox-control">
+          <button type="button" id="play-button" class="secondary-button" aria-pressed="false">&#9658; Animate</button>
+        </div>
+
+        <div class="control">
+          <label for="mass-select">Central body's mass</label>
+          <select id="mass-select">
+            <option value="0.25">0.25&times; the Sun's mass</option>
+            <option value="0.5">0.5&times; the Sun's mass</option>
+            <option value="1" selected>1&times; the Sun's mass (our Sun)</option>
+            <option value="2">2&times; the Sun's mass</option>
+            <option value="4">4&times; the Sun's mass</option>
+          </select>
+        </div>
+        <p class="panel-note" id="mass-readout"></p>
+
+        <p class="note">
+          Orbit view and Second law both use a fixed 1 AU semi-major axis around our own Sun, so
+          one full animated sweep always represents one real year, whatever the eccentricity is
+          set to &mdash; period depends on the semi-major axis alone (Kepler's third law), never
+          on eccentricity.
+        </p>
+
+        <p class="coverage" id="coverage"></p>
+      </div>
+    </div>
+
+    <section class="questions">
+      <h2>Practice questions</h2>
+      <div id="questions-list"></div>
+    </section>
+
+    <section class="progress">
+      <h2>Your progress</h2>
+      <ul id="progress-list"></ul>
+      <p class="note">Stored in this browser only (localStorage) &mdash; no account needed.</p>
+    </section>
+
+    <p class="next-page-link" id="next-page"></p>
+  </main>
+
+  <script src="../src/curriculum.js?v=202609290800"></script>
+  <script src="../src/pages.js?v=202610041300"></script>
+  <script src="../src/orbitalMechanics.js?v=202610041200"></script>
+  <script src="../src/keplerQuestions.js?v=202610041300"></script>
+  <script src="../glossary.js?v=202609221600"></script>
+  <script src="../quiz-ui.js?v=202609221100"></script>
+  <script src="kepler.js?v=202610041300"></script>
+  <script src="../nextPage.js?v=202609270100"></script>
+</body>
+</html>

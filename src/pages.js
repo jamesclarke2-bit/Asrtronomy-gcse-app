@@ -87,6 +87,13 @@ const PAGES = [
     units: ['u2.1', 'u2.9', 'u2.15', 'u2.16'],
   },
   {
+    title: "Kepler's Laws of Planetary Motion",
+    description:
+      "An ellipse with the Sun at one focus, perihelion and aphelion, equal-area wedges swept out faster near the Sun and slower away from it, and the T² vs r³ graph for the eight planets — plus a central-mass control showing why the constant depends inversely on mass.",
+    href: 'sims/kepler.html',
+    units: ['u3.9', 'u3.10', 'u3.11', 'u3.12'],
+  },
+  {
     title: 'Moon Phases',
     description:
       "Two synced views: why phases happen (the Moon's position relative to the Sun) and what you'd actually see from Earth — plus the Moon's changing distance on its elliptical orbit, and when a full Moon counts as a supermoon.",
@@ -182,6 +189,10 @@ const RECOMMENDED_PATH = [
       {
         href: 'notes/archaeoastronomy.html',
         why: "Builds directly on Measuring the Sky's precession section — what that 26,000-year wobble meant for real ancient monuments.",
+      },
+      {
+        href: 'sims/kepler.html',
+        why: 'From ancient models of the sky to the actual physics of orbits: why they’re ellipses, why speed changes around one, and how period and distance relate.',
       },
     ],
   },
