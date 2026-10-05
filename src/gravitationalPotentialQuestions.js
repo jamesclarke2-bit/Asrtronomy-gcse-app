@@ -13,7 +13,12 @@ function makeQuestions(GravityField, OrbitalMechanics) {
   const M = OrbitalMechanics.EARTH_MASS_KG;
   const R = OrbitalMechanics.EARTH_RADIUS_M;
 
-  const height = 50000; // 50 km
+  // 1000 km, not a "nearby" height like 50 km — close in, mgh and the
+  // exact formula agree too well for a loose tolerance to tell them
+  // apart (see test/gravityField.test.js's own 1 km/100 km case for
+  // just how close). At 1000 km the exact answer is only about 86% of
+  // mgh, a gap no reasonable rounding of G, M or R can close.
+  const height = 1000000;
   const exactDeltaU = GravityField.potentialEnergyDifferenceNumerical(M, 1, R, R + height);
   const g0 = GravityField.fieldMagnitude(M, R);
   const mghApprox = g0 * height;
@@ -46,7 +51,7 @@ function makeQuestions(GravityField, OrbitalMechanics) {
         return {
           correct,
           message:
-            "V(r) is defined as the work an external agent does moving a unit mass in from infinity to r, at constant speed (so kinetic energy never changes, only potential energy does). Gravity already pulls the mass inward on its own, so to keep the speed constant the external agent has to resist that pull — a force pointing outward, opposite the inward motion — which is negative work by definition (force opposite to displacement). That negative number, accumulated all the way in from infinity (where V = 0), is V(r) itself: V(r) = GM/r × (-1) = -GM/r. It isn't an arbitrary sign choice; it falls directly out of what 'bringing a mass in from infinity' actually requires an external agent to do.",
+            "V(r) is defined as the work an external agent — the hand, in this page's 'Lower it slowly' mode — does moving a unit mass in from the release point at constant speed (so kinetic energy never changes, only potential energy does; that's exactly why the 'Work done by the hand' and 'Potential energy change' counters show the same number in that mode). Gravity already pulls the mass inward on its own, so to keep the speed constant the hand has to resist that pull — a force pointing outward, opposite the inward motion — which is negative work by definition (force opposite to displacement). Taken from a release point far enough to stand in for infinity, that negative number is V(r) itself: V(r) = GM/r × (-1) = -GM/r. It isn't an arbitrary sign choice; it falls directly out of what lowering a mass in at constant speed actually requires the hand to do.",
         };
       },
     },
@@ -68,7 +73,7 @@ function makeQuestions(GravityField, OrbitalMechanics) {
         return {
           correct,
           message:
-            "For any conservative force, the work the field itself does equals minus the change in potential energy: W(field) = -ΔU. Here ΔU is itself defined as the external agent's own work, so this isn't a coincidence or a separate fact to remember — it's the same relationship twice over. A mass falling inward has the field doing positive work on it (gravity helping it along) while potential energy decreases (ΔU negative); a mass being hauled outward has the field doing negative work (gravity resisting) while potential energy increases. Either way, field work and ΔU always have opposite signs, which is exactly workByField = -workByExternalAgent in the engine.",
+            "For any conservative force, the work the field itself does equals minus the change in potential energy: W(field) = -ΔU. Here ΔU is itself defined as the external agent's (the hand's) own work, so this isn't a coincidence to remember — it's the same relationship stated twice. In 'Let it fall' mode the field's work on the falling mass is positive, and it all becomes kinetic energy, while potential energy drops by exactly that much (ΔU negative). In 'Lower it slowly' mode, moving the same mass over the same radii, the field still does that identical positive work — but kinetic energy never builds up, because the hand does the matching negative work instead. Either way, field work and ΔU always have opposite signs, which is exactly workByField = -workByExternalAgent in the engine.",
         };
       },
     },
@@ -77,13 +82,20 @@ function makeQuestions(GravityField, OrbitalMechanics) {
       units: ['u3.26'],
       type: 'number',
       unitLabel: 'J/kg',
-      prompt: `Using ΔU = GMm(1/R - 1/(R+h)) with m = 1 kg, calculate the exact gravitational potential energy gained climbing ${height / 1000} km above Earth's surface (G = 6.6743×10⁻¹¹, Earth's mass and radius as usual).`,
+      prompt: `Using ΔU = GMm(1/R - 1/(R+h)) with m = 1 kg, calculate the exact gravitational potential energy gained climbing h = ${height / 1000} km above Earth's surface. Use G = 6.6743×10⁻¹¹ N·m²/kg², Earth's mass M = 5.97×10²⁴ kg, Earth's radius R = 6,371 km, and (for comparison only — it is not the formula to use here) surface gravity g = 9.8 m/s².`,
       check(value) {
-        const correct = Math.abs(value - exactDeltaU) / exactDeltaU < 0.001;
+        // 2%, not the tight tolerance a nearby-height version of this
+        // question could get away with: loose enough to accept any
+        // reasonable textbook rounding of G, M and R (5.97×10²⁴ kg or
+        // 5.98×10²⁴ kg both land well inside it — see
+        // test/gravitationalPotentialQuestions.test.js), but nowhere
+        // near loose enough to also accept mgh, which misses by ~16%
+        // at this height.
+        const correct = Math.abs(value - exactDeltaU) / exactDeltaU < 0.02;
         const pctDiff = (100 * Math.abs(exactDeltaU - mghApprox)) / exactDeltaU;
         return {
           correct,
-          message: `ΔU = GM(1/R - 1/(R+h)) = ${exactDeltaU.toFixed(0)} J/kg ≈ ${(exactDeltaU / 1e3).toFixed(1)} kJ/kg. The near-surface approximation mgh gives g₀h = ${mghApprox.toFixed(0)} J/kg here — close, but not exact, a difference of about ${pctDiff.toFixed(2)}%.`,
+          message: `ΔU = GM(1/R - 1/(R+h)) ≈ ${(exactDeltaU / 1e6).toFixed(2)} MJ/kg. The near-surface approximation mgh gives g₀h ≈ ${(mghApprox / 1e6).toFixed(2)} MJ/kg instead — about ${pctDiff.toFixed(0)}% too high at this height, since g has already dropped noticeably over a 1000 km climb. (A 2% tolerance here allows for rounding G, M or R differently, not for using mgh.)`,
         };
       },
     },
@@ -114,6 +126,11 @@ function makeQuestions(GravityField, OrbitalMechanics) {
       unitLabel: 'J/kg',
       prompt: `On the g-r graph, g = GM/r² is plotted against r. What is the area under that curve between r = R (Earth's surface) and r = 4R? (The engine finds this by numerically integrating g(r), the same way it finds any area under this curve.)`,
       check(value) {
+        // 2%: this is a "read it off the graph and estimate the area"
+        // question, not a plug-into-a-formula one, so the tolerance
+        // needs room for a student's own numerical-integration error
+        // (e.g. approximating with a handful of trapezoids by eye), on
+        // top of the usual G/M/R rounding — not just one or the other.
         const correct = Math.abs(value - areaUnderGR) / areaUnderGR < 0.02;
         return {
           correct,

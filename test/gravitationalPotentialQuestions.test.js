@@ -31,12 +31,36 @@ test('field-work-opposite-sign: the W = -ΔU explanation is the only correct opt
   assert.equal(q.check("It doesn't really — they're the same number, just rounded differently").correct, false);
 });
 
-test('mgh-vs-exact: accepts the exact ΔU computed by the engine for a 50 km climb', () => {
+test('mgh-vs-exact: accepts the exact ΔU computed by the engine for a 1000 km climb, and rejects mgh', () => {
   const q = findQuestion(makeQuestions(GravityField, OrbitalMechanics), 'mgh-vs-exact');
-  const exact = GravityField.potentialEnergyDifferenceNumerical(OrbitalMechanics.EARTH_MASS_KG, 1, OrbitalMechanics.EARTH_RADIUS_M, OrbitalMechanics.EARTH_RADIUS_M + 50000);
+  const R = OrbitalMechanics.EARTH_RADIUS_M;
+  const exact = GravityField.potentialEnergyDifferenceNumerical(OrbitalMechanics.EARTH_MASS_KG, 1, R, R + 1000000);
   assert.ok(q.check(exact).correct);
-  const g0 = GravityField.fieldMagnitude(OrbitalMechanics.EARTH_MASS_KG, OrbitalMechanics.EARTH_RADIUS_M);
-  assert.equal(q.check(g0 * 50000).correct, false, 'the mgh approximation itself should not count as the exact answer');
+  const g0 = GravityField.fieldMagnitude(OrbitalMechanics.EARTH_MASS_KG, R);
+  assert.equal(q.check(g0 * 1000000).correct, false, 'the mgh approximation itself should not count as the exact answer');
+});
+
+test('mgh-vs-exact: the question states the constants it uses, and the 2% tolerance accepts a couple of textbook roundings of Earth\'s mass', () => {
+  const q = findQuestion(makeQuestions(GravityField, OrbitalMechanics), 'mgh-vs-exact');
+  const R = OrbitalMechanics.EARTH_RADIUS_M;
+
+  assert.match(q.prompt, /G = 6\.6743×10⁻¹¹/, 'prompt should state G');
+  assert.match(q.prompt, /M = 5\.97×10²⁴ kg/, 'prompt should state Earth\'s mass');
+  assert.match(q.prompt, /R = 6,371 km/, 'prompt should state Earth\'s radius');
+  assert.match(q.prompt, /g = 9\.8 m\/s²/, 'prompt should state g');
+
+  // A student working from a slightly different textbook rounding of
+  // Earth's mass should still land inside the 2% tolerance — the
+  // question is pinned to the engine's own exact figure, but it isn't
+  // so tight that it only accepts one specific rounding.
+  const using597 = GravityField.potentialEnergyDifferenceNumerical(5.97e24, 1, R, R + 1000000);
+  assert.ok(q.check(using597).correct, 'answer computed with M = 5.97×10²⁴ kg should be accepted');
+
+  const using598 = GravityField.potentialEnergyDifferenceNumerical(5.98e24, 1, R, R + 1000000);
+  assert.ok(q.check(using598).correct, 'answer computed with M = 5.98×10²⁴ kg should be accepted');
+
+  const g0 = GravityField.fieldMagnitude(OrbitalMechanics.EARTH_MASS_KG, R);
+  assert.equal(q.check(g0 * 1000000).correct, false, 'mgh should still be rejected even with the wider tolerance');
 });
 
 test('when-is-mgh-valid: "h small compared with R" is the only correct option', () => {
