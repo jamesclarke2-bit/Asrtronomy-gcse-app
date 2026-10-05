@@ -18,6 +18,7 @@ every page listed as conforming below.
 | `notes/data-sheet.html` | Yes (built to it from the start) |
 | `notes/geocentric-to-heliocentric.html` | Yes (built to it from the start) |
 | `notes/scale-of-the-solar-system.html` | Yes (built to it from the start) |
+| `notes/telescopes.html` | Yes (built to it from the start) |
 
 Every `notes/` page now conforms. When a page is retrofitted, add it to `CONFORMING_PAGES`
 in `test/notesTemplate.test.js` and update this table.

@@ -542,12 +542,27 @@ const UNITS = [
     id: 'u5',
     title: 'Observational equipment',
     subtopics: [
-      { id: 'u5.1', title: 'Telescopes', depth: 'know', notes: 'refracting and reflecting designs' },
+      {
+        id: 'u5.1',
+        title: 'Telescopes',
+        depth: 'know',
+        // Best-effort placement, like 7.5-7.6 and 8.6-8.9 above: the
+        // content is solid, but the exact spec numbering within
+        // 11.19-11.25 is inferred from sequence (11.24 is already
+        // confirmed elsewhere as Galileo's telescopic evidence, u3.15,
+        // which this page only links to rather than re-teaching), not
+        // checked against the primary spec PDF.
+        spec: ['11.19', '11.20', '11.21', '11.22', '11.23', '11.25'],
+        notes:
+          "refracting designs (Galilean: a diverging eyepiece lens, giving an upright image but a narrow field of view — what Galileo himself used; Keplerian: a converging eyepiece lens, giving a wider field of view but an inverted image — the layout almost all modern refractors use) and reflecting designs (Newtonian: a parabolic primary mirror reflects light back up to a flat secondary mirror, out to an eyepiece on the side of the tube; Cassegrain: a parabolic primary mirror reflects light up to a convex secondary, back down through a hole in the primary to an eyepiece behind it); reflectors' advantages over refractors: no chromatic aberration (mirrors reflect every wavelength the same way, with nothing to focus differently by colour), mirrors can be made far larger than lenses (supported across their whole back, not just gripped at the rim), a long focal length folds into a short tube (most dramatically in the Cassegrain), and multiple mirrors can be combined",
+      },
       {
         id: 'u5.2',
         title: 'Magnification and resolution',
         depth: 'be able to',
-        notes: 'including calculations from focal lengths and aperture',
+        spec: ['11.14', '11.15', '11.16', '11.17', '11.18'],
+        notes:
+          "magnification = f(objective) / f(eyepiece); light grasp (how much light a telescope collects) is proportional to the square of the objective diameter, so doubling the aperture gives 4x the light grasp; angular resolution improves with a larger objective diameter and is worse at longer wavelengths (the Rayleigh criterion, 1.22 x wavelength / diameter, gives the actual angle); the human eye's own limits — a small aperture (a fully dark-adapted pupil is only about 7mm) and poor low-light sensitivity — are the baseline every telescope improves on, e.g. a 100mm telescope collects roughly 200x the light of a dark-adapted eye",
       },
       {
         id: 'u5.3',

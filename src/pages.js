@@ -120,10 +120,10 @@ const PAGES = [
       "The exam's own Appendix 2 data sheet, reproduced in full: all six given equations (linked to the page that uses each, where one exists), the constants, and the planet and dwarf-planet table every Kepler's-third-law question draws on.",
     href: 'notes/data-sheet.html',
     // Only the units this page actually teaches towards, not every unit
-    // its "coming soon" equation rows merely name — those equations
-    // (magnification, distance modulus, redshift, Hubble's law) aren't
-    // taught anywhere yet, so tagging this page with u4.2/u5.2/u6.1/u6.2
-    // would wrongly claim they're covered.
+    // its "coming soon" equation rows merely name — distance modulus,
+    // redshift and Hubble's law (u4.2/u6.1/u6.2) aren't taught anywhere
+    // yet, so tagging this page with them would wrongly claim they're
+    // covered. Magnification now links to Telescopes (u5.2) instead.
     units: ['u1.21', 'u2.28', 'u3.4', 'u3.11'],
   },
   {
@@ -153,6 +153,13 @@ const PAGES = [
       "The Moon's layers and surface features, an interactive map for learning the seven named features on sight, synchronous rotation and libration, the near and far sides, what it takes to get there, and the Giant Impact Hypothesis.",
     href: 'notes/moon-structure.html',
     units: ['u2.2', 'u2.20', 'u2.21', 'u2.22', 'u2.23', 'u2.24', 'u2.25', 'u2.26', 'u2.27'],
+  },
+  {
+    title: 'Telescopes: Magnification, Light Grasp and Resolution',
+    description:
+      "Why a telescope beats the naked eye, live magnification/light-grasp/resolution readouts with a simulated double star and star cluster that sharpen as the aperture grows, the four classic telescope designs, and why reflectors took over from refractors.",
+    href: 'notes/telescopes.html',
+    units: ['u5.1', 'u5.2'],
   },
 ];
 
@@ -267,6 +274,15 @@ const RECOMMENDED_PATH = [
       {
         href: 'notes/moon-structure.html',
         why: 'Closes out the Moon cluster: its surface features, formation and internal structure.',
+      },
+    ],
+  },
+  {
+    phase: 'Observational equipment',
+    steps: [
+      {
+        href: 'notes/telescopes.html',
+        why: "Finishes with the equipment that made everything above observable in the first place — including Galileo's own telescope, back on From Earth-Centred to Sun-Centred.",
       },
     ],
   },
