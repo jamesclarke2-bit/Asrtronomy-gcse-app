@@ -168,6 +168,13 @@ const PAGES = [
     href: 'notes/solar-system-bodies.html',
     units: ['u3.16', 'u3.17', 'u3.18', 'u3.19', 'u3.20', 'u3.21', 'u3.22', 'u3.23', 'u3.24', 'u3.25'],
   },
+  {
+    title: 'Gravitational Potential Energy and Orbital Energy',
+    description:
+      "Beyond the GCSE spec: A-level extension. Gravitational potential energy defined as work, a draggable V(r) = -GM/r potential well, mgh vs the exact formula, the g-r graph's shaded area as potential difference, a satellite's live kinetic/potential/total energy as its orbit is raised, and escaping as total energy reaching zero.",
+    href: 'sims/gravitational-potential.html',
+    units: ['u3.26', 'u3.27'],
+  },
 ];
 
 /**
@@ -304,21 +311,46 @@ const RECOMMENDED_PATH = [
  * index.html's scope note. Takes `units` (normally Curriculum.UNITS)
  * as a parameter rather than requiring curriculum.js directly, so this
  * file stays plain data plus pure functions — see the file header.
+ *
+ * Subtopics tagged `level: 'extension'` (src/curriculum.js's own header
+ * comment documents the field) are left out entirely — out of a unit's
+ * total subtopic count, and out of its covered count even if some page
+ * does declare that id — since they're beyond the GCSE spec this stat
+ * is meant to describe coverage of.
  */
 function computeUnitCoverage(units, pages) {
   return units.map((unit) => {
+    const gcseSubtopicIds = new Set(unit.subtopics.filter((s) => s.level !== 'extension').map((s) => s.id));
     const coveredIds = new Set();
     pages.forEach((page) => {
       page.units.forEach((id) => {
-        if (id.startsWith(`${unit.id}.`)) coveredIds.add(id);
+        if (gcseSubtopicIds.has(id)) coveredIds.add(id);
       });
     });
-    return { id: unit.id, title: unit.title, total: unit.subtopics.length, covered: coveredIds.size };
+    return { id: unit.id, title: unit.title, total: gcseSubtopicIds.size, covered: coveredIds.size };
+  });
+}
+
+/**
+ * Whether a page is "extension" content — entirely beyond the GCSE
+ * spec — rather than appearing in index.html's main Recommended path.
+ * A page counts as extension when every one of its declared units
+ * resolves (via getSubtopic, normally Curriculum.getSubtopic — passed
+ * in rather than required, same reasoning as computeUnitCoverage above)
+ * to a subtopic tagged `level: 'extension'`. There's no separate flag
+ * on the page entry itself to keep in sync by hand: a page's
+ * extension-ness is entirely determined by which curriculum subtopics
+ * it declares.
+ */
+function isExtensionPage(page, getSubtopic) {
+  return page.units.length > 0 && page.units.every((id) => {
+    const subtopic = getSubtopic(id);
+    return subtopic && subtopic.level === 'extension';
   });
 }
 
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { PAGES, RECOMMENDED_PATH, computeUnitCoverage };
+  module.exports = { PAGES, RECOMMENDED_PATH, computeUnitCoverage, isExtensionPage };
 } else if (typeof window !== 'undefined') {
-  window.Pages = { PAGES, RECOMMENDED_PATH, computeUnitCoverage };
+  window.Pages = { PAGES, RECOMMENDED_PATH, computeUnitCoverage, isExtensionPage };
 }

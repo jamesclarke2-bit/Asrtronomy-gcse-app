@@ -2,6 +2,8 @@
   const scopeNoteEl = document.getElementById('scope-note');
   const pathListEl = document.getElementById('path-list');
   const unitListEl = document.getElementById('unit-list');
+  const extensionSectionEl = document.getElementById('extension-section');
+  const extensionListEl = document.getElementById('extension-list');
 
   function pagesForUnit(unitId) {
     return Pages.PAGES.filter((page) => page.units.some((u) => u.startsWith(`${unitId}.`)));
@@ -94,6 +96,42 @@
     });
   }
 
+  // --- Beyond GCSE: A-level extension pages ---------------------------------
+  // Kept out of the Recommended path (test/pages.test.js enforces that) and
+  // out of the scope note's coverage figures (Pages.computeUnitCoverage
+  // already excludes level:'extension' subtopics) — listed here instead,
+  // collapsed by default since they're optional extra depth, not part of
+  // the GCSE course the rest of this page is organised around.
+
+  function renderExtensionPages() {
+    const extensionPages = Pages.PAGES.filter((page) => Pages.isExtensionPage(page, Curriculum.getSubtopic));
+    if (extensionPages.length === 0) return;
+
+    extensionSectionEl.hidden = false;
+    const list = document.createElement('div');
+    list.className = 'page-card-list';
+
+    extensionPages.forEach((page) => {
+      const card = document.createElement('a');
+      card.className = 'page-card';
+      card.href = page.href;
+
+      const title = document.createElement('h4');
+      title.className = 'page-card-title';
+      title.textContent = page.title;
+      card.appendChild(title);
+
+      const description = document.createElement('p');
+      description.className = 'page-card-description';
+      description.textContent = page.description;
+      card.appendChild(description);
+
+      list.appendChild(card);
+    });
+
+    extensionListEl.appendChild(list);
+  }
+
   // --- Reference listing, grouped by curriculum unit ------------------------
 
   function renderUnitReference() {
@@ -150,5 +188,6 @@
 
   renderScopeNote();
   renderPath();
+  renderExtensionPages();
   renderUnitReference();
 })();

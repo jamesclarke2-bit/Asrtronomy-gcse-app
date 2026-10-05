@@ -1,0 +1,176 @@
+/**
+ * Practice questions for sims/gravitational-potential.html — beyond the
+ * GCSE spec (A-level extension), so every question here is tagged with
+ * one of this page's own `level: 'extension'` curriculum ids (u3.26,
+ * u3.27 — see src/curriculum.js), never a real GCSE spec point.
+ *
+ * Every number is computed live from src/gravityField.js, the same
+ * engine the page's own widgets use, so a question can never quote a
+ * figure the page itself would disagree with.
+ */
+
+function makeQuestions(GravityField, OrbitalMechanics) {
+  const M = OrbitalMechanics.EARTH_MASS_KG;
+  const R = OrbitalMechanics.EARTH_RADIUS_M;
+
+  const height = 50000; // 50 km
+  const exactDeltaU = GravityField.potentialEnergyDifferenceNumerical(M, 1, R, R + height);
+  const g0 = GravityField.fieldMagnitude(M, R);
+  const mghApprox = g0 * height;
+
+  const r1 = R;
+  const r2 = R * 4;
+  const areaUnderGR = GravityField.potentialDifferenceNumerical(M, r1, r2);
+
+  const lowOrbit = R + 400000;
+  const highOrbit = R + 4000000;
+  const lowEnergetics = GravityField.circularOrbitEnergetics(M, lowOrbit);
+  const highEnergetics = GravityField.circularOrbitEnergetics(M, highOrbit);
+
+  return [
+    {
+      id: 'why-is-v-negative',
+      units: ['u3.26'],
+      type: 'choice',
+      prompt: 'Gravitational potential, V(r) = -GM/r, is negative everywhere and zero only at infinity. Why?',
+      options: [
+        'Because gravity is a made-up "negative" force, unlike the other fundamental forces',
+        'Because V is defined as the work an external agent does bringing a unit mass in from infinity at constant speed — and since gravity itself pulls that mass inward the whole way, the external agent has to hold it back (push outward, against the motion) the whole way, doing negative work',
+        "Because distance r is being measured in the wrong direction",
+        'It is a convention with no physical meaning — V could equally well be defined as positive',
+      ],
+      check(value) {
+        const correct =
+          value ===
+          'Because V is defined as the work an external agent does bringing a unit mass in from infinity at constant speed — and since gravity itself pulls that mass inward the whole way, the external agent has to hold it back (push outward, against the motion) the whole way, doing negative work';
+        return {
+          correct,
+          message:
+            "V(r) is defined as the work an external agent does moving a unit mass in from infinity to r, at constant speed (so kinetic energy never changes, only potential energy does). Gravity already pulls the mass inward on its own, so to keep the speed constant the external agent has to resist that pull — a force pointing outward, opposite the inward motion — which is negative work by definition (force opposite to displacement). That negative number, accumulated all the way in from infinity (where V = 0), is V(r) itself: V(r) = GM/r × (-1) = -GM/r. It isn't an arbitrary sign choice; it falls directly out of what 'bringing a mass in from infinity' actually requires an external agent to do.",
+        };
+      },
+    },
+    {
+      id: 'field-work-opposite-sign',
+      units: ['u3.26'],
+      type: 'choice',
+      prompt: "Why does the work gravity itself does (workByField) come out with the opposite sign to gravitational potential energy, for the same move?",
+      options: [
+        "It doesn't really — they're the same number, just rounded differently",
+        'Because work done by the field always equals minus the change in potential energy (W = -ΔU) for any conservative force, and potential energy is defined as the external agent\'s work — so the field\'s work is, by that same definition, the external agent\'s work reversed',
+        'Because the field is measured in different units from potential energy',
+        'Only because Earth happens to attract rather than repel — a repulsive force would make them agree',
+      ],
+      check(value) {
+        const correct =
+          value ===
+          "Because work done by the field always equals minus the change in potential energy (W = -ΔU) for any conservative force, and potential energy is defined as the external agent's work — so the field's work is, by that same definition, the external agent's work reversed";
+        return {
+          correct,
+          message:
+            "For any conservative force, the work the field itself does equals minus the change in potential energy: W(field) = -ΔU. Here ΔU is itself defined as the external agent's own work, so this isn't a coincidence or a separate fact to remember — it's the same relationship twice over. A mass falling inward has the field doing positive work on it (gravity helping it along) while potential energy decreases (ΔU negative); a mass being hauled outward has the field doing negative work (gravity resisting) while potential energy increases. Either way, field work and ΔU always have opposite signs, which is exactly workByField = -workByExternalAgent in the engine.",
+        };
+      },
+    },
+    {
+      id: 'mgh-vs-exact',
+      units: ['u3.26'],
+      type: 'number',
+      unitLabel: 'J/kg',
+      prompt: `Using ΔU = GMm(1/R - 1/(R+h)) with m = 1 kg, calculate the exact gravitational potential energy gained climbing ${height / 1000} km above Earth's surface (G = 6.6743×10⁻¹¹, Earth's mass and radius as usual).`,
+      check(value) {
+        const correct = Math.abs(value - exactDeltaU) / exactDeltaU < 0.001;
+        const pctDiff = (100 * Math.abs(exactDeltaU - mghApprox)) / exactDeltaU;
+        return {
+          correct,
+          message: `ΔU = GM(1/R - 1/(R+h)) = ${exactDeltaU.toFixed(0)} J/kg ≈ ${(exactDeltaU / 1e3).toFixed(1)} kJ/kg. The near-surface approximation mgh gives g₀h = ${mghApprox.toFixed(0)} J/kg here — close, but not exact, a difference of about ${pctDiff.toFixed(2)}%.`,
+        };
+      },
+    },
+    {
+      id: 'when-is-mgh-valid',
+      units: ['u3.26'],
+      type: 'choice',
+      prompt: 'mgh is often used as "the" formula for gravitational potential energy. Under what condition does it actually match the exact ΔU = GMm(1/R - 1/(R+h)) closely?',
+      options: [
+        'Always — mgh is exact everywhere, not just near a surface',
+        'When the height h climbed is small compared with the radius R, so g barely changes over that climb',
+        'Only on the Moon, never on Earth',
+        'When the mass m is very large',
+      ],
+      check(value) {
+        const correct = value === 'When the height h climbed is small compared with the radius R, so g barely changes over that climb';
+        return {
+          correct,
+          message:
+            'mgh assumes g stays constant over the climb, which is only true when h is small compared with R — climb from 6,371 km to 6,372 km and g has barely changed, but climb to 12,742 km (R itself) and g has dropped to a quarter of its surface value, so mgh badly overestimates the energy needed. The ratio ΔU(exact)/mgh starts at 1 for h → 0 and drifts further from 1 as h grows relative to R.',
+        };
+      },
+    },
+    {
+      id: 'g-r-area-meaning',
+      units: ['u3.26'],
+      type: 'number',
+      unitLabel: 'J/kg',
+      prompt: `On the g-r graph, g = GM/r² is plotted against r. What is the area under that curve between r = R (Earth's surface) and r = 4R? (The engine finds this by numerically integrating g(r), the same way it finds any area under this curve.)`,
+      check(value) {
+        const correct = Math.abs(value - areaUnderGR) / areaUnderGR < 0.02;
+        return {
+          correct,
+          message: `The shaded area between R and 4R is ∫g dr over that range ≈ ${(areaUnderGR / 1e6).toFixed(1)} MJ/kg — and that area is exactly the potential difference V(4R) - V(R), since dV/dr = g(r) by definition. "Area under the g-r graph" and "potential difference" are the same number, not just related ones.`,
+        };
+      },
+    },
+    {
+      id: 'satellite-ke-higher-orbit',
+      units: ['u3.27'],
+      type: 'choice',
+      prompt: "A satellite is moved from a low circular orbit to a higher one. What happens to its kinetic energy, and to its total energy?",
+      options: [
+        'Both increase — a higher orbit needs more energy, so everything about it goes up',
+        'Kinetic energy falls (it moves slower, further out); total energy rises — becomes less negative, since it is now closer to escaping',
+        'Kinetic energy rises (it needs more speed to stay up); total energy falls',
+        'Neither changes — orbital energy only depends on the planet, not the orbit',
+      ],
+      check(value) {
+        const correct =
+          value === 'Kinetic energy falls (it moves slower, further out); total energy rises — becomes less negative, since it is now closer to escaping';
+        return {
+          correct,
+          message:
+            `A circular orbit's speed is √(GM/r), so a higher r means a slower orbit and less kinetic energy — at 400 km altitude KE ≈ ${(lowEnergetics.kinetic / 1e6).toFixed(1)} MJ/kg, but at 4,000 km altitude it's only ≈ ${(highEnergetics.kinetic / 1e6).toFixed(1)} MJ/kg. Potential energy rises faster than kinetic energy falls though (PE = -GM/r, twice the size of KE and growing twice as fast), so the total, KE + PE, still rises overall: from ≈ ${(lowEnergetics.total / 1e6).toFixed(1)} MJ/kg to ≈ ${(highEnergetics.total / 1e6).toFixed(1)} MJ/kg — less negative, i.e. closer to the zero that marks escape, even though the satellite is moving slower, not faster.`,
+        };
+      },
+    },
+    {
+      id: 'escape-is-zero-total-energy',
+      units: ['u3.27'],
+      type: 'choice',
+      prompt: 'In terms of total specific energy (KE + PE per unit mass), what marks the boundary between an object that eventually falls back and one that escapes forever?',
+      options: [
+        'Total energy equal to the kinetic energy of a circular orbit at that radius',
+        'Total energy exactly zero — negative is bound (falls back or stays in orbit), zero is the marginal "just escaping" case, positive is unbound with speed left over',
+        'Total energy equal to the potential energy at that radius',
+        'There is no such boundary — escaping only depends on direction, not speed',
+      ],
+      check(value) {
+        const correct =
+          value ===
+          'Total energy exactly zero — negative is bound (falls back or stays in orbit), zero is the marginal "just escaping" case, positive is unbound with speed left over';
+        return {
+          correct,
+          message:
+            "Total specific energy (KE + PE) is conserved as an object moves, so its sign at any one point tells you its fate everywhere: negative means it can never reach infinity (not enough energy to pay the full climb out of the potential well) — bound, whether that's a stable orbit or a path that falls back. Exactly zero is the marginal case: just enough energy to reach infinity, arriving there with zero speed left — this is exactly what escape speed is derived from, and classifyOrbit's 'parabolic' case. Positive means it reaches infinity with speed to spare — hyperbolic, truly unbound.",
+        };
+      },
+    },
+  ];
+}
+
+const gravitationalPotentialQuestionsApi = { makeQuestions };
+
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = gravitationalPotentialQuestionsApi;
+} else if (typeof window !== 'undefined') {
+  window.GravitationalPotentialQuestions = gravitationalPotentialQuestionsApi;
+}

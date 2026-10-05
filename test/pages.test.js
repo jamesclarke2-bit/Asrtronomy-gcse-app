@@ -1,6 +1,6 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const { PAGES, RECOMMENDED_PATH, computeUnitCoverage } = require('../src/pages');
+const { PAGES, RECOMMENDED_PATH, computeUnitCoverage, isExtensionPage } = require('../src/pages');
 const { getSubtopic, UNITS } = require('../src/curriculum');
 
 test('every page has a title, description and href', () => {
@@ -58,12 +58,33 @@ test('every RECOMMENDED_PATH step names a real page and gives a reason', () => {
   });
 });
 
-test('RECOMMENDED_PATH covers every page in PAGES exactly once — no page missing, none duplicated', () => {
+test('RECOMMENDED_PATH covers every non-extension page in PAGES exactly once — no page missing, none duplicated, and no extension page included', () => {
   const pathHrefs = RECOMMENDED_PATH.flatMap((phase) => phase.steps.map((step) => step.href));
   assert.equal(new Set(pathHrefs).size, pathHrefs.length, 'a page appears more than once in RECOMMENDED_PATH');
-  const missing = PAGES.map((page) => page.href).filter((href) => !pathHrefs.includes(href));
-  assert.deepEqual(missing, [], 'pages missing from RECOMMENDED_PATH');
-  assert.equal(pathHrefs.length, PAGES.length, 'RECOMMENDED_PATH and PAGES should be the same length');
+
+  // Extension pages (beyond the GCSE spec) live in index.html's
+  // collapsed "Beyond GCSE" section instead — see isExtensionPage below
+  // and home.js's own rendering.
+  const nonExtensionPages = PAGES.filter((page) => !isExtensionPage(page, getSubtopic));
+  const missing = nonExtensionPages.map((page) => page.href).filter((href) => !pathHrefs.includes(href));
+  assert.deepEqual(missing, [], 'non-extension pages missing from RECOMMENDED_PATH');
+  assert.equal(pathHrefs.length, nonExtensionPages.length, 'RECOMMENDED_PATH and non-extension PAGES should be the same length');
+
+  const extensionPages = PAGES.filter((page) => isExtensionPage(page, getSubtopic));
+  extensionPages.forEach((page) => {
+    assert.ok(!pathHrefs.includes(page.href), `extension page "${page.title}" should not be in RECOMMENDED_PATH`);
+  });
+});
+
+test('isExtensionPage: true only when every declared unit is a level:\'extension\' subtopic', () => {
+  const extensionSubtopic = { id: 'x.1', level: 'extension' };
+  const gcseSubtopic = { id: 'x.2' };
+  const lookup = (id) => ({ 'x.1': extensionSubtopic, 'x.2': gcseSubtopic }[id]);
+
+  assert.equal(isExtensionPage({ units: ['x.1'] }, lookup), true);
+  assert.equal(isExtensionPage({ units: ['x.1', 'x.2'] }, lookup), false, 'mixing in a GCSE-spec unit should not count as extension');
+  assert.equal(isExtensionPage({ units: ['x.2'] }, lookup), false);
+  assert.equal(isExtensionPage({ units: [] }, lookup), false, 'a page with no units is not extension content');
 });
 
 // --- computeUnitCoverage (index.html's scope note) -------------------------
@@ -97,12 +118,27 @@ test("computeUnitCoverage: unit id prefix matching doesn't collide across units 
   assert.equal(u10Coverage.covered, 1);
 });
 
-test('computeUnitCoverage against the real data: every unit resolves, and total matches its subtopic count', () => {
+test('computeUnitCoverage against the real data: every unit resolves, and total matches its non-extension subtopic count', () => {
   const coverage = computeUnitCoverage(UNITS, PAGES);
   assert.equal(coverage.length, UNITS.length);
   coverage.forEach((entry, i) => {
+    const gcseSubtopicCount = UNITS[i].subtopics.filter((s) => s.level !== 'extension').length;
     assert.equal(entry.id, UNITS[i].id);
-    assert.equal(entry.total, UNITS[i].subtopics.length);
+    assert.equal(entry.total, gcseSubtopicCount);
     assert.ok(entry.covered >= 0 && entry.covered <= entry.total, `${entry.id}: covered (${entry.covered}) out of range for total (${entry.total})`);
   });
+});
+
+test('computeUnitCoverage: extension subtopics are excluded from both total and covered', () => {
+  const units = [
+    {
+      id: 'u9',
+      title: 'Test unit',
+      subtopics: [{ id: 'u9.1' }, { id: 'u9.2', level: 'extension' }],
+    },
+  ];
+  const pages = [{ units: ['u9.1', 'u9.2'] }];
+  const [coverage] = computeUnitCoverage(units, pages);
+  assert.equal(coverage.total, 1, 'the extension subtopic should not count towards total');
+  assert.equal(coverage.covered, 1, 'the extension subtopic should not count towards covered, even though a page declares it');
 });

@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gravitational Potential Energy and Orbital Energy</title>
+  <link rel="stylesheet" href="../styles.css?v=202610072100" />
+</head>
+<body>
+  <main>
+    <p class="back-link"><a href="../index.html">&larr; Back to all tools</a></p>
+
+    <div class="extension-page-banner">
+      <span class="curiosity-badge">Beyond the GCSE spec</span>
+      <strong>A-level extension.</strong> Everything on this page goes past the GCSE Astronomy
+      specification. It's the "why" underneath two things the spec does ask for &mdash; escape
+      velocity (see <a href="../notes/moon-structure.html#escape-velocity">The Moon: Structure,
+      Surface and Origin</a>) and orbits (see <a href="orbits-gravity.html">Orbits and
+      Gravity</a>) &mdash; for anyone who wants to go further. Nothing here is needed for the
+      exam.
+    </div>
+
+    <h1>Gravitational Potential Energy and Orbital Energy</h1>
+    <p class="subtitle">
+      Why is gravitational potential energy always negative? Why does mgh stop working once
+      you're far from a surface? And what actually happens to a satellite's energy as its orbit
+      changes? All three come from the same engine &mdash; a point mass's gravitational field,
+      g(r) = GM/r&sup2; &mdash; worked through honestly rather than quoted.
+    </p>
+
+    <section class="notes-section" id="definitions">
+      <h2>Defining gravitational potential energy</h2>
+      <p>
+        Start from the external agent, not the field, because that's the definition:
+        <strong>gravitational potential energy is the work an external agent does bringing a mass
+        in from infinity to some point, moving it at constant speed the whole way.</strong>
+        "Constant speed" matters &mdash; it means kinetic energy never changes during the move, so
+        every bit of work the agent does goes straight into potential energy, with nothing left
+        over to argue about.
+      </p>
+      <p>
+        <strong>Equivalently</strong>, since the field is conservative, that work is exactly minus
+        the work gravity itself does over the same move:
+      </p>
+      <p class="formula">&Delta;U = W<sub>agent</sub> = &minus;W<sub>field</sub></p>
+      <p>
+        <strong>Why the opposite sign?</strong> Gravity pulls the mass inward on its own, every
+        step of the way in from infinity. To keep the speed constant against that pull, the
+        agent has to push back &mdash; outward, opposite to the direction the mass is actually
+        moving &mdash; and a force applied opposite to motion is, by definition, negative work.
+        So the agent's work (potential energy) comes out negative precisely because gravity's own
+        work, over that same inward move, is positive. Flip the move around &mdash; haul the mass
+        back out to infinity &mdash; and every sign in that paragraph flips too.
+      </p>
+      <p>
+        That's also why V(r) = &minus;GM/r is negative everywhere and zero only at infinity: zero
+        is simply where the agent starts, before having done any work at all, and every step
+        closer costs (in the agent's bookkeeping) a bit more negative work.
+      </p>
+      <p class="note">
+        Every number on this page comes from <code>src/gravityField.js</code>'s
+        <code>workByField</code> and <code>workByExternalAgent</code> (and the functions built on
+        them) &mdash; the same engine throughout, never a separately hand-typed copy.
+      </p>
+    </section>
+
+    <section class="notes-section" id="work-counters">
+      <h2>1. Falling in: two work counters</h2>
+      <p>
+        A 1&nbsp;kg mass is released from rest a long way from Earth and falls straight in. Drag
+        the slider (or press Animate) to follow it down, and watch two running totals: the work
+        gravity itself has done so far (positive, growing as it falls &mdash; and exactly equal to
+        the kinetic energy it has gained, since it started at rest and nothing else is acting on
+        it), and, side by side, what an external agent would have had to do to lower it to the
+        same point at constant speed instead (negative, by the definition above).
+      </p>
+      <div class="diagram">
+        <canvas
+          id="fall-view"
+          width="200"
+          height="360"
+          aria-label="A schematic vertical line with a planet at the bottom and a falling mass above it, moving down as the slider or animation advances"
+        ></canvas>
+      </div>
+      <div class="control">
+        <label for="fall-progress-slider">Fallen so far: <span id="fall-progress-label"></span></label>
+        <input type="range" id="fall-progress-slider" min="0" max="1000" step="1" value="0" />
+      </div>
+      <div class="control checkbox-control">
+        <button type="button" id="fall-play-button" class="secondary-button" aria-pressed="false">&#9658; Animate</button>
+      </div>
+      <dl class="readout">
+        <div class="readout-row">
+          <dt>Current radius</dt>
+          <dd id="fall-radius-readout"></dd>
+        </div>
+        <div class="readout-row">
+          <dt>Kinetic energy gained</dt>
+          <dd id="fall-ke-readout"></dd>
+        </div>
+      </dl>
+      <div class="energy-bar-pair">
+        <div class="energy-bar">
+          <p class="energy-bar-label">Work done by the field</p>
+          <div class="energy-bar-track">
+            <div class="energy-bar-zero-line"></div>
+            <div class="energy-bar-fill energy-bar-fill-positive" id="fall-field-bar-fill"></div>
+          </div>
+          <p class="energy-bar-value" id="fall-field-work-readout"></p>
+        </div>
+        <div class="energy-bar">
+          <p class="energy-bar-label">Work an external agent would do (holding it back)</p>
+          <div class="energy-bar-track">
+            <div class="energy-bar-zero-line"></div>
+            <div class="energy-bar-fill energy-bar-fill-negative" id="fall-agent-bar-fill"></div>
+          </div>
+          <p class="energy-bar-value" id="fall-agent-work-readout"></p>
+        </div>
+      </div>
+      <p class="note">
+        The two counters are always exactly opposite, and the field's counter always matches the
+        kinetic energy gained &mdash; not because the agent is actually there (it isn't; the mass
+        is genuinely in free fall), but because both numbers are computed the same way, as a
+        function of radius alone: work done by a conservative field never depends on how fast
+        something moves between two points, only on where it starts and ends.
+      </p>
+    </section>
+
+    <section class="notes-section" id="potential-well">
+      <h2>2. The potential well, V(r) = &minus;GM/r</h2>
+      <p>
+        Plotting V(r) against r draws a "well": deepest (most negative) at the surface, rising
+        &mdash; getting less negative &mdash; as r grows, flattening out as it approaches zero.
+        Zero itself is a convention, not a special physical place: it's wherever the external
+        agent of section 1 would have started, which by definition is infinity. "Higher" on this
+        graph always means less negative, never positive &mdash; and escaping means climbing all
+        the way out, up to that zero line.
+      </p>
+      <p>
+        Drag the dot along the curve (or use the slider) to see how far out you'd have to climb,
+        and how much of the well's full depth that is.
+      </p>
+      <div class="diagram">
+        <canvas
+          id="well-view"
+          width="640"
+          height="300"
+          aria-label="Gravitational potential V(r) = -GM/r plotted against radius r, a negative curve rising towards a dashed zero line marked 'zero at infinity', with a draggable marker on the curve"
+        ></canvas>
+      </div>
+      <div class="control">
+        <label for="well-radius-slider">Radius: <span id="well-radius-label"></span></label>
+        <input type="range" id="well-radius-slider" min="0" max="1000" step="1" value="0" />
+      </div>
+      <dl class="readout">
+        <div class="readout-row">
+          <dt>Radius</dt>
+          <dd id="well-radius-readout"></dd>
+        </div>
+        <div class="readout-row">
+          <dt>Potential, V(r)</dt>
+          <dd id="well-potential-readout"></dd>
+        </div>
+        <div class="readout-row">
+          <dt>Climbed out of the well</dt>
+          <dd id="well-climbed-readout"></dd>
+        </div>
+      </dl>
+    </section>
+
+    <section class="notes-section" id="mgh-vs-exact">
+      <h2>3. mgh vs the exact formula</h2>
+      <p>
+        mgh assumes g stays constant over the climb &mdash; true only close to a surface. The
+        exact potential energy gained climbing from radius R to R + h is
+      </p>
+      <p class="formula">&Delta;U = GMm(1/R &minus; 1/(R+h))</p>
+      <p>
+        Slide the height up from a few metres to thousands of kilometres and watch the exact
+        value and mgh pull apart &mdash; and the ratio between them drift away from 1 as h stops
+        being small compared with R.
+      </p>
+      <div class="control">
+        <label for="height-slider">Height climbed, h: <span id="height-label"></span></label>
+        <input type="range" id="height-slider" min="1000" max="6000000" step="1000" value="50000" />
+      </div>
+      <dl class="readout">
+        <div class="readout-row">
+          <dt>Exact: GMm(1/R &minus; 1/(R+h))</dt>
+          <dd id="exact-deltaU-readout"></dd>
+        </div>
+        <div class="readout-row">
+          <dt>Approximation: mgh</dt>
+          <dd id="mgh-readout"></dd>
+        </div>
+        <div class="readout-row">
+          <dt>Ratio, exact &divide; mgh</dt>
+          <dd id="ratio-readout"></dd>
+        </div>
+      </dl>
+      <div class="bar-compare">
+        <div class="bar-compare-row">
+          <p class="bar-compare-label">Exact</p>
+          <div class="bar-compare-track"><div class="bar-compare-fill bar-compare-fill-exact" id="exact-bar-fill"></div></div>
+        </div>
+        <div class="bar-compare-row">
+          <p class="bar-compare-label">mgh</p>
+          <div class="bar-compare-track"><div class="bar-compare-fill bar-compare-fill-mgh" id="mgh-bar-fill"></div></div>
+        </div>
+      </div>
+      <p class="note">
+        At h = 50&nbsp;m the two are indistinguishable to several decimal places; by the time h is
+        a sizeable fraction of Earth's own radius (6,371&nbsp;km), mgh is overestimating by a
+        margin an exam-level calculation can't ignore.
+      </p>
+    </section>
+
+    <section class="notes-section" id="g-r-area">
+      <h2>4. The g-r graph: area as potential difference</h2>
+      <p>
+        g = GM/r&sup2; falls off with distance. The area shaded under that curve between any two
+        radii is the potential difference between them &mdash; found here the same way the engine
+        finds it everywhere else on this page: numerically integrating g(r), not just evaluating
+        &minus;GM/r at each end and subtracting.
+      </p>
+      <div class="diagram">
+        <canvas
+          id="g-r-view"
+          width="640"
+          height="300"
+          aria-label="g against r, falling off with distance, with the area under the curve between two chosen radii shaded"
+        ></canvas>
+      </div>
+      <div class="control">
+        <label for="r1-slider">Inner radius, r&#8321;: <span id="r1-label"></span></label>
+        <input type="range" id="r1-slider" min="10" max="60" step="1" value="10" />
+        <label for="r2-slider">Outer radius, r&#8322;: <span id="r2-label"></span></label>
+        <input type="range" id="r2-slider" min="10" max="60" step="1" value="40" />
+      </div>
+      <dl class="readout">
+        <div class="readout-row">
+          <dt>Shaded area (= V(r&#8322;) &minus; V(r&#8321;))</dt>
+          <dd id="g-r-area-readout"></dd>
+        </div>
+      </dl>
+    </section>
+
+    <section class="notes-section" id="satellite-energy">
+      <h2>5. A satellite's energy budget</h2>
+      <p>
+        A circular orbit has kinetic energy (&half;v&sup2;, from v = &radic;(GM/r)), potential
+        energy (&minus;GM/r) and their sum, the total. Raise the orbit radius and watch kinetic
+        energy fall &mdash; a higher orbit is a slower one &mdash; while potential energy rises
+        faster than kinetic energy falls, so the total rises too (becomes less negative), even
+        though the satellite is moving slower, not faster.
+      </p>
+      <div class="control">
+        <label for="orbit-altitude-slider">Altitude above the surface: <span id="orbit-altitude-label"></span></label>
+        <input type="range" id="orbit-altitude-slider" min="200000" max="10000000" step="50000" value="400000" />
+      </div>
+      <dl class="readout">
+        <div class="readout-row">
+          <dt>Orbital radius</dt>
+          <dd id="orbit-radius-readout"></dd>
+        </div>
+        <div class="readout-row">
+          <dt>Orbital speed</dt>
+          <dd id="orbit-speed-readout"></dd>
+        </div>
+      </dl>
+      <div class="energy-bar-pair">
+        <div class="energy-bar">
+          <p class="energy-bar-label">Kinetic energy</p>
+          <div class="energy-bar-track">
+            <div class="energy-bar-zero-line"></div>
+            <div class="energy-bar-fill energy-bar-fill-positive" id="orbit-ke-bar-fill"></div>
+          </div>
+          <p class="energy-bar-value" id="orbit-ke-readout"></p>
+        </div>
+        <div class="energy-bar">
+          <p class="energy-bar-label">Potential energy</p>
+          <div class="energy-bar-track">
+            <div class="energy-bar-zero-line"></div>
+            <div class="energy-bar-fill energy-bar-fill-negative" id="orbit-pe-bar-fill"></div>
+          </div>
+          <p class="energy-bar-value" id="orbit-pe-readout"></p>
+        </div>
+        <div class="energy-bar">
+          <p class="energy-bar-label">Total energy <span id="orbit-total-sign"></span></p>
+          <div class="energy-bar-track">
+            <div class="energy-bar-zero-line"></div>
+            <div class="energy-bar-fill energy-bar-fill-negative" id="orbit-total-bar-fill"></div>
+          </div>
+          <p class="energy-bar-value" id="orbit-total-readout"></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="notes-section" id="escape">
+      <h2>6. Escaping: total energy reaching zero</h2>
+      <p>
+        Total specific energy (kinetic + potential) is conserved, so its sign at launch decides
+        the outcome everywhere along the path: negative and it can never reach infinity (bound
+        &mdash; it falls back or settles into an orbit); exactly zero and it just barely reaches
+        infinity, arriving with nothing left (this is exactly where escape speed comes from, and
+        the same thing <a href="../notes/moon-structure.html#escape-velocity">escape velocity</a>
+        on The Moon: Structure, Surface and Origin derives from); positive and it's unbound with
+        speed to spare.
+      </p>
+      <p>
+        <code>classifyOrbit</code> below is tolerance-aware: a speed only a tiny fraction away
+        from exact escape speed still reads as "parabolic (just escaping)", the same way a real
+        launch never lands on exactly zero total energy in floating point either.
+      </p>
+      <div class="control">
+        <label for="escape-speed-slider">Launch speed, at the surface: <span id="escape-speed-label"></span></label>
+        <input type="range" id="escape-speed-slider" min="0" max="13000" step="10" value="7900" list="escape-speed-marks" />
+        <datalist id="escape-speed-marks">
+          <option value="7900"></option>
+          <option id="escape-speed-mark" value="11200"></option>
+        </datalist>
+      </div>
+      <dl class="readout">
+        <div class="readout-row">
+          <dt>Total specific energy</dt>
+          <dd id="escape-total-readout"></dd>
+        </div>
+        <div class="readout-row">
+          <dt>Classification</dt>
+          <dd id="escape-classification"></dd>
+        </div>
+      </dl>
+      <p class="note">
+        Marked on the slider: a typical low-orbit speed (7.9&nbsp;km/s) and escape speed itself
+        (<strong id="escape-speed-value"></strong>). See
+        <a href="orbits-gravity.html">Orbits and Gravity</a> for the same escape speed reached by
+        firing Newton's cannon fast enough to never come back &mdash; this page's "total energy
+        zero" and that page's "the path never turns back" are the same boundary, described two
+        different ways.
+      </p>
+    </section>
+
+    <section class="questions">
+      <h2>Practice questions</h2>
+      <div id="questions-list"></div>
+    </section>
+
+    <section class="progress">
+      <h2>Your progress</h2>
+      <ul id="progress-list"></ul>
+      <p class="note">Stored in this browser only (localStorage) &mdash; no account needed.</p>
+    </section>
+
+    <p class="coverage" id="coverage"></p>
+    <p class="next-page-link" id="next-page"></p>
+  </main>
+
+  <script src="../src/curriculum.js?v=202610072000"></script>
+  <script src="../src/pages.js?v=202610072000"></script>
+  <script src="../src/orbitalMechanics.js?v=202610071000"></script>
+  <script src="../src/gravitySim.js?v=202610071000"></script>
+  <script src="../src/tides.js?v=202609260100"></script>
+  <script src="../src/gravityField.js?v=202610072100"></script>
+  <script src="../src/gravitationalPotentialQuestions.js?v=202610072100"></script>
+  <script src="../quiz-ui.js?v=202609221100"></script>
+  <script src="gravitational-potential.js?v=202610072100"></script>
+  <script src="../nextPage.js?v=202609270100"></script>
+</body>
+</html>

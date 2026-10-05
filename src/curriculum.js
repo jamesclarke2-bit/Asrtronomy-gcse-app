@@ -29,6 +29,18 @@
  * 8.1-8.5 are confirmed directly; 7.5-7.6 and 8.6-8.9 are a best-effort
  * placement (content is solid, exact decimal numbering less certain)
  * pending a check against the primary spec PDF.
+ *
+ * A subtopic can also carry `level: 'extension'`, for content that goes
+ * beyond the GCSE spec entirely (A-level-reaching material, e.g.
+ * sims/gravitational-potential.html's work/energy treatment of
+ * gravitational potential). An extension subtopic never carries a
+ * `spec` array — there's no spec point for it to answer — and is
+ * excluded from spec-coverage accounting: Pages.computeUnitCoverage
+ * (src/pages.js) leaves it out of both a unit's total subtopic count
+ * and its covered count, so a page that only teaches extension content
+ * can't make a unit look more (or differently) covered against the
+ * actual GCSE spec than it really is. Everything without `level` is
+ * ordinary GCSE-spec content, same as before this field existed.
  */
 
 const UNITS = [
@@ -585,6 +597,22 @@ const UNITS = [
         spec: ['11.13'],
         notes:
           'brief overview only — covered in depth on the Topic 12 formation-of-planetary-systems page (not yet built): competing theories include delivery by water-rich asteroids and/or comets colliding with the early Earth, and outgassing of water vapour from volcanic activity as Earth itself cooled; current evidence (e.g. asteroid-like hydrogen isotope ratios in Earth’s oceans) favours asteroids as the larger contributor, with comets and outgassing both still thought to have played a part',
+      },
+      {
+        id: 'u3.26',
+        title: 'Gravitational potential energy as work',
+        depth: 'understand',
+        level: 'extension',
+        notes:
+          'beyond the GCSE spec — gravitational potential energy (per unit mass, gravitational potential V) defined as the work an external agent does bringing a mass in from infinity at constant speed, which is exactly the negative of the work gravity itself does over the same move (so V is negative everywhere, zero only at infinity); V(r) = -GM/r, the "potential well" a mass must climb out of to escape; near a surface, the familiar ΔU = mgh is only the small-height approximation to the exact ΔU = GMm(1/R - 1/(R+h))',
+      },
+      {
+        id: 'u3.27',
+        title: 'Orbital energy and escaping',
+        depth: 'understand',
+        level: 'extension',
+        notes:
+          'beyond the GCSE spec — a satellite’s kinetic, potential and total specific energy at any orbital radius; raising a circular orbit trades kinetic energy for potential energy (KE falls, PE and the total both rise — the total staying negative, less so the higher the orbit) rather than simply adding energy to both; escaping is the limit where total energy reaches exactly zero, the same condition escape speed (u2.26) is derived from',
       },
     ],
   },

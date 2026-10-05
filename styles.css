@@ -934,6 +934,42 @@ canvas {
   color: #8a5b00;
 }
 
+/* Collapsed by default (no "open" attribute) — A-level extension pages,
+   kept out of the Recommended path above and out of the scope note's
+   coverage figures (see src/curriculum.js's `level: 'extension'` and
+   Pages.computeUnitCoverage). */
+.extension-section {
+  margin-top: 2rem;
+  max-width: 800px;
+}
+
+.extension-section details {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-left: 4px solid #8a5b00;
+  border-radius: 8px;
+  padding: 0.85rem 1.1rem;
+}
+
+.extension-section summary {
+  cursor: pointer;
+  font-weight: 700;
+  color: #8a5b00;
+}
+
+.extension-section summary:hover,
+.extension-section summary:focus-visible {
+  color: #5c3c00;
+}
+
+.extension-section .note {
+  margin-top: 0.75rem;
+}
+
+.extension-section .page-card-list {
+  margin-top: 1rem;
+}
+
 .unit-reference-section {
   margin-top: 3rem;
   padding-top: 1.5rem;
@@ -1841,4 +1877,142 @@ canvas {
   border: 1px solid #cdd7e1;
   border-radius: 6px;
   font-size: 1rem;
+}
+
+/* sims/gravitational-potential.html — same purple "beyond the spec"
+   theme as .curiosity-box, but a full-width page-level banner rather
+   than an inline aside, since the whole page (not just one box on it)
+   is A-level extension content. */
+.extension-page-banner {
+  max-width: 800px;
+  margin: 1rem 0 1.5rem;
+  padding: 0.85rem 1.1rem;
+  background: #f4effa;
+  border: 1px solid #e0e0e0;
+  border-left: 4px solid #8e44ad;
+  border-radius: 8px;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: #4a2f7a;
+}
+
+.extension-page-banner a {
+  color: #4a2f7a;
+  font-weight: 600;
+}
+
+/* A signed vertical bar: one zero line in the middle, a fill growing
+   up from it for a positive value or down from it for a negative one
+   — sims/gravitational-potential.html's work counters (section 1) and
+   satellite energy budget (section 5), the only two places on the
+   site a reader needs to compare a positive and a negative quantity
+   at a glance. */
+.energy-bar-pair {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin: 1.25rem 0;
+}
+
+.energy-bar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 140px;
+}
+
+.energy-bar-label {
+  font-size: 0.8rem;
+  color: #444;
+  text-align: center;
+  margin: 0 0 0.5rem;
+  min-height: 2.2em;
+}
+
+.energy-bar-track {
+  position: relative;
+  width: 60px;
+  height: 160px;
+  background: #eef1f4;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.energy-bar-zero-line {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #888;
+  z-index: 1;
+}
+
+.energy-bar-fill {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 0;
+}
+
+.energy-bar-fill-positive {
+  bottom: 50%;
+  background: #2a6bd6;
+}
+
+.energy-bar-fill-negative {
+  top: 50%;
+  background: #c0392b;
+}
+
+.energy-bar-value {
+  margin: 0.5rem 0 0;
+  font-size: 0.85rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+
+/* A simple two-row horizontal comparison, for mgh vs the exact formula
+   (section 3) — both values are positive here, so the signed well-bar
+   component above (with its zero line) would be the wrong shape. */
+.bar-compare {
+  max-width: 420px;
+  margin: 1.25rem 0;
+}
+
+.bar-compare-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.bar-compare-label {
+  width: 48px;
+  margin: 0;
+  font-size: 0.85rem;
+  color: #444;
+  text-align: right;
+}
+
+.bar-compare-track {
+  flex: 1;
+  height: 18px;
+  background: #eef1f4;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.bar-compare-fill {
+  height: 100%;
+  width: 0;
+}
+
+.bar-compare-fill-exact {
+  background: #2a6bd6;
+}
+
+.bar-compare-fill-mgh {
+  background: #e8a23a;
 }
