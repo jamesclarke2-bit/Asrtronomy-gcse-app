@@ -1,9 +1,11 @@
 /**
  * Practice questions for notes/geocentric-to-heliocentric.html: why
- * epicycles were added to the geocentric model (7.4), what Tycho Brahe
- * actually contributed and why it mattered (8.1), what Kepler did with
- * Brahe's data (8.2), and Galileo's two telescopic observations that
- * supported the heliocentric model (11.24).
+ * epicycles were added to the geocentric model (7.4), the one-year outer-
+ * planet epicycle period and what it reveals once you switch to the
+ * Sun-centred model (7.4, 8.2), what Tycho Brahe actually contributed and
+ * why it mattered (8.1), what Kepler did with Brahe's data (8.2), and
+ * Galileo's two telescopic observations that supported the heliocentric
+ * model (11.24).
  */
 
 function makeQuestions() {
@@ -26,6 +28,29 @@ function makeQuestions() {
           correct,
           message:
             "A planet moving on a single circle around Earth would always drift the same way across the sky, at a steady brightness. Real planets don't: they periodically loop backwards (retrograde motion) and visibly brighten and dim. Epicycles — small circles riding on the main deferent — gave Ptolemy's model enough extra freedom to reproduce both effects, even though the real cause (Earth and the planets orbiting the Sun at different speeds, changing their distance from Earth) wasn't part of his Earth-centred picture at all.",
+        };
+      },
+    },
+    {
+      id: 'epicycle-period-coincidence',
+      units: ['u3.2', 'u3.7'],
+      type: 'choice',
+      prompt:
+        "Every outer planet's epicycle in Ptolemy's model takes exactly one year to complete — matching the Sun's own apparent yearly motion around the sky. Why is that such a strange coincidence in Ptolemy's Earth-centred model, and what does Copernicus's Sun-centred model reveal it actually is?",
+      options: [
+        "It isn't really a coincidence — Ptolemy deliberately copied the Sun's own period into every planet's epicycle by design",
+        "In Ptolemy's model, nothing requires an outer planet's epicycle period to match the Sun's — it has to be assumed separately, planet by planet, purely to fit the observations. In Copernicus's model, that 'epicycle' turns out to just be a reflection of Earth's own one-year orbit, shared by every outer planet because the same orbiting Earth is doing the observing",
+        'It is not a coincidence at all — every planet, including the Sun, genuinely orbits Earth in exactly one year',
+        'The one-year epicycle period is only needed for Mars; the other outer planets do not need one',
+      ],
+      check(value) {
+        const correct =
+          value ===
+          "In Ptolemy's model, nothing requires an outer planet's epicycle period to match the Sun's — it has to be assumed separately, planet by planet, purely to fit the observations. In Copernicus's model, that 'epicycle' turns out to just be a reflection of Earth's own one-year orbit, shared by every outer planet because the same orbiting Earth is doing the observing";
+        return {
+          correct,
+          message:
+            "In Ptolemy's geocentric model, each planet's deferent and epicycle periods are independent numbers, chosen separately to fit what's observed — nothing inside the model says Mars's epicycle, Jupiter's epicycle and Saturn's epicycle should all just happen to take exactly one year, the same as the Sun's own motion. Yet every single outer planet needs that same one-year epicycle, which is a real, unexplained coincidence repeated once per planet. Switch to Copernicus's Sun-centred model and the coincidence disappears: that shared 'epicycle' isn't a separate circle around each planet at all — it's Earth's own one-year orbit, which gets added into the apparent position of every outer planet simply because Earth is the moving platform doing the observing. That's also exactly why retrograde loops happen only around opposition: they occur when Earth, on its faster inner orbit, overtakes an outer planet — the same explanation as on the Retrograde Motion and Planetary Alignments page.",
         };
       },
     },

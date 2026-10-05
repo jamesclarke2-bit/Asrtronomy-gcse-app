@@ -15,6 +15,20 @@ test('why-epicycles: explaining retrograde motion and brightness changes is the 
   assert.equal(q.check('To make the model simpler and easier to calculate with').correct, false);
 });
 
+test('epicycle-period-coincidence: "Earth\'s own orbit" is the only correct option', () => {
+  const questions = makeQuestions();
+  const q = findQuestion(questions, 'epicycle-period-coincidence');
+  assert.ok(
+    q.check(
+      "In Ptolemy's model, nothing requires an outer planet's epicycle period to match the Sun's — it has to be assumed separately, planet by planet, purely to fit the observations. In Copernicus's model, that 'epicycle' turns out to just be a reflection of Earth's own one-year orbit, shared by every outer planet because the same orbiting Earth is doing the observing"
+    ).correct
+  );
+  assert.equal(
+    q.check("It isn't really a coincidence — Ptolemy deliberately copied the Sun's own period into every planet's epicycle by design").correct,
+    false
+  );
+});
+
 test("brahe-contribution: precise naked-eye observations of Mars is the only correct option", () => {
   const questions = makeQuestions();
   const q = findQuestion(questions, 'brahe-contribution');
