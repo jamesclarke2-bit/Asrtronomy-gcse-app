@@ -39,21 +39,13 @@ test('the numerically integrated ΔU agrees with mgh to ~0.02% at 1 km and diffe
 test('workByField and workByExternalAgent, for a move inward from far away to Earth\'s radius', () => {
   const exact = (G * EARTH_MASS_KG) / EARTH_RADIUS_M;
   const far = EARTH_RADIUS_M * 1e8;
-  // 2000 steps, not workByField's own 1000-step default: the same step
-  // count integrateFieldToInfinity uses, and for the same reason — a
-  // range spanning 8 orders of magnitude needs more samples than a
-  // "nearby" range (e.g. the 1 km/100 km ΔU test above) does to hit
-  // 1e-4 relative on the trapezoidal rule. Not a loosened tolerance:
-  // the 1e-4 target itself is unchanged, this just gives the
-  // integration enough steps to reach it.
-  const steps = 2000;
 
-  const workIn = GravityField.workByField(EARTH_MASS_KG, far, EARTH_RADIUS_M, steps);
+  const workIn = GravityField.workByField(EARTH_MASS_KG, far, EARTH_RADIUS_M);
   assert.ok(workIn > 0, `expected positive (inward) work, got ${workIn}`);
   const relativeError = Math.abs(workIn - exact) / exact;
   assert.ok(relativeError < 1e-4, `relative error ${relativeError} should be under 1e-4`);
 
-  const workExtIn = GravityField.workByExternalAgent(EARTH_MASS_KG, far, EARTH_RADIUS_M, steps);
+  const workExtIn = GravityField.workByExternalAgent(EARTH_MASS_KG, far, EARTH_RADIUS_M);
   assert.ok(workExtIn < 0, `expected negative external-agent work, got ${workExtIn}`);
   assert.equal(Math.abs(workExtIn), workIn);
   assert.equal(workIn + workExtIn, 0);
@@ -68,16 +60,31 @@ test('workByField and workByExternalAgent, for a move inward from far away to Ea
 
 test('workByField and workByExternalAgent reverse sign for the equivalent outward move', () => {
   const far = EARTH_RADIUS_M * 1e8;
-  const steps = 2000;
 
-  const workOut = GravityField.workByField(EARTH_MASS_KG, EARTH_RADIUS_M, far, steps);
-  const workExtOut = GravityField.workByExternalAgent(EARTH_MASS_KG, EARTH_RADIUS_M, far, steps);
+  const workOut = GravityField.workByField(EARTH_MASS_KG, EARTH_RADIUS_M, far);
+  const workExtOut = GravityField.workByExternalAgent(EARTH_MASS_KG, EARTH_RADIUS_M, far);
   assert.ok(workOut < 0, `expected negative (outward) field work, got ${workOut}`);
   assert.ok(workExtOut > 0, `expected positive external-agent work, got ${workExtOut}`);
   assert.equal(workOut + workExtOut, 0);
 
-  const workIn = GravityField.workByField(EARTH_MASS_KG, far, EARTH_RADIUS_M, steps);
+  const workIn = GravityField.workByField(EARTH_MASS_KG, far, EARTH_RADIUS_M);
   assert.equal(workOut, -workIn);
+});
+
+test('workByField and workByExternalAgent default to enough steps that a far-away start needs no help from the caller', () => {
+  // No steps argument at all — this is exactly the "a caller who
+  // doesn't know to ask for more steps" case workByField's own default
+  // (2000, not potentialDifferenceNumerical's 1000) exists for.
+  const exact = (G * EARTH_MASS_KG) / EARTH_RADIUS_M;
+  const far = EARTH_RADIUS_M * 1e8;
+
+  const workIn = GravityField.workByField(EARTH_MASS_KG, far, EARTH_RADIUS_M);
+  const relativeErrorField = Math.abs(workIn - exact) / exact;
+  assert.ok(relativeErrorField < 1e-4, `workByField with no steps argument: relative error ${relativeErrorField} should be under 1e-4`);
+
+  const workExtIn = GravityField.workByExternalAgent(EARTH_MASS_KG, far, EARTH_RADIUS_M);
+  const relativeErrorAgent = Math.abs(Math.abs(workExtIn) - exact) / exact;
+  assert.ok(relativeErrorAgent < 1e-4, `workByExternalAgent with no steps argument: relative error ${relativeErrorAgent} should be under 1e-4`);
 });
 
 // --- Layer 2: superposition --------------------------------------------------

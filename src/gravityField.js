@@ -109,8 +109,17 @@ function makeGravityField(OrbitalMechanics, GravitySim, Tides) {
   // -ΔV for a unit mass. Positive when the move is inward (r2 < r1, the
   // field pulling the same way the mass moves), negative when it's
   // outward.
+  //
+  // Defaults to 2000 steps, not potentialDifferenceNumerical's own 1000,
+  // when the caller doesn't say — a "from very far away" move (r1 or r2
+  // many orders of magnitude from the other) is exactly this function's
+  // own use case (see workByExternalAgent's doc comment and
+  // test/gravityField.test.js), and 1000 steps isn't quite enough to
+  // hold the trapezoidal rule's error under 1e-4 relative across that
+  // wide a range. A caller integrating over a "nearby" range can still
+  // pass an explicit, smaller steps if it wants to.
   function workByField(mass, r1, r2, steps) {
-    return -potentialDifferenceNumerical(mass, r1, r2, steps);
+    return -potentialDifferenceNumerical(mass, r1, r2, steps || 2000);
   }
 
   // The work an external agent must do moving a unit mass from r1 to r2
@@ -118,6 +127,7 @@ function makeGravityField(OrbitalMechanics, GravitySim, Tides) {
   // in, or hauling it up against the field on the way out — exactly the
   // field's own work, reversed, since together they leave kinetic
   // energy unchanged (that's what "constant speed" means here).
+  // Inherits workByField's own 2000-step default for the same reason.
   function workByExternalAgent(mass, r1, r2, steps) {
     return -workByField(mass, r1, r2, steps);
   }

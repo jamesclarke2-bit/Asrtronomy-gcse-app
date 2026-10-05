@@ -2,6 +2,7 @@
   const CURRICULUM_UNITS = ['u3.8', 'u3.13', 'u3.14'];
   const OM = OrbitalMechanics;
   const GS = GravitySim;
+  const GF = GravityField;
 
   const GM = OM.G * OM.EARTH_MASS_KG;
   const R = OM.EARTH_RADIUS_M;
@@ -70,20 +71,41 @@
     return 1 / (2 / LAUNCH_RADIUS_M - (v * v) / GM);
   }
 
+  // Bound / parabolic / hyperbolic, from specific orbital energy
+  // directly via GravityField.classifyOrbit — not from testing the
+  // semi-major axis above for being positive and finite. That test
+  // looks right (1/a is exactly the vis-viva quantity), but 1/x is
+  // numerically unstable right at the knife edge this matters most
+  // for: at *exactly* escape speed, "2/LAUNCH_RADIUS - v²/GM" can land
+  // on a tiny nonzero floating-point value instead of the true zero,
+  // and 1/(tiny nonzero) is some huge but finite a — Number.isFinite(a)
+  // then wrongly says "bound", and simulateCannon below would size the
+  // simulation for a gigantic elliptical period instead of recognising
+  // an escape. classifyOrbit's own tolerance (relative to the
+  // potential energy here, not an absolute cutoff) is built for
+  // exactly this, and never divides by the quantity it's testing.
+  function cannonEnergyClassification(launchSpeedMPerS) {
+    const total = GF.totalEnergyPerMass(OM.EARTH_MASS_KG, LAUNCH_RADIUS_M, launchSpeedMPerS);
+    const potentialValue = GF.potentialEnergyPerMass(OM.EARTH_MASS_KG, LAUNCH_RADIUS_M);
+    return GF.classifyOrbit(total, potentialValue);
+  }
+
   function simulateCannon(launchSpeedMPerS) {
-    const a = semiMajorAxisFromLaunch(launchSpeedMPerS);
+    const bound = cannonEnergyClassification(launchSpeedMPerS) === 'bound';
     let dt;
     let maxSteps;
     let maxRadius;
-    if (a > 0 && Number.isFinite(a)) {
+    if (bound) {
+      const a = semiMajorAxisFromLaunch(launchSpeedMPerS);
       const period = 2 * Math.PI * Math.sqrt((a * a * a) / GM);
       dt = period / 720;
       maxSteps = Math.ceil((period * 1.05) / dt);
       maxRadius = a * 2.2; // comfortably above any possible apoapsis for this a (<= 2a)
       cannon.periodSeconds = period;
     } else {
-      // Unbound: scale the step to the time to cross one Earth radius at
-      // this speed, and simulate out to a generous multiple of R.
+      // Parabolic or hyperbolic: scale the step to the time to cross
+      // one Earth radius at this speed, and simulate out to a generous
+      // multiple of R.
       dt = LAUNCH_RADIUS_M / launchSpeedMPerS;
       maxSteps = 4000;
       maxRadius = R * 12;
@@ -98,13 +120,11 @@
     cannon.outcome = result.outcome;
   }
 
-  function classifyOrbit(launchSpeedKmPerS) {
+  function classifyCannonPath(launchSpeedKmPerS) {
     if (cannon.outcome === 'impact') return 'Sub-orbital — falls back to Earth';
-    if (cannon.outcome === 'escaped') {
-      return Math.abs(launchSpeedKmPerS - V_ESCAPE_LAUNCH / 1000) < 0.03
-        ? 'Escape — a parabola'
-        : 'Escape — a hyperbola, with speed to spare';
-    }
+    const energyClass = cannonEnergyClassification(launchSpeedKmPerS * 1000);
+    if (energyClass === 'parabolic') return 'Escape — a parabola';
+    if (energyClass === 'hyperbolic') return 'Escape — a hyperbola, with speed to spare';
     return Math.abs(launchSpeedKmPerS - V_CIRCULAR_LAUNCH / 1000) < 0.02
       ? 'A perfect circle'
       : 'An ellipse — closed, and repeating forever';
@@ -260,7 +280,7 @@
   }
 
   function updateCannonReadouts(launchSpeedKmPerS) {
-    orbitClassification.textContent = classifyOrbit(launchSpeedKmPerS);
+    orbitClassification.textContent = classifyCannonPath(launchSpeedKmPerS);
     outcomeDetail.textContent = outcomeDetailText();
   }
 

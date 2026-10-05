@@ -65,25 +65,33 @@
     </section>
 
     <section class="notes-section" id="work-counters">
-      <h2>1. Falling in: two work counters</h2>
+      <h2>1. Two ways in: two work counters</h2>
       <p>
-        A 1&nbsp;kg mass is released from rest a long way from Earth and falls straight in. Drag
-        the slider (or press Animate) to follow it down, and watch two running totals: the work
-        gravity itself has done so far (positive, growing as it falls &mdash; and exactly equal to
-        the kinetic energy it has gained, since it started at rest and nothing else is acting on
-        it), and, side by side, what an external agent would have had to do to lower it to the
-        same point at constant speed instead (negative, by the definition above).
+        A mass starts at rest at a release point you choose, somewhere between 2 and
+        1,000&nbsp;Earth radii out. What happens next depends on the mode below: <strong>let it
+        fall</strong> freely under gravity alone, with nothing else acting on it, or <strong>lower
+        it slowly</strong>, carried in by hand at constant speed the whole way. Every counter
+        below is measured <strong>from the release point</strong>, not from true infinity &mdash;
+        worth saying plainly, since nothing here is ever literally brought in from infinity.
       </p>
+      <div class="mode-toggle" role="group" aria-label="Choose how the mass gets in">
+        <button type="button" id="fall-mode-fall-button" class="mode-toggle-button" aria-pressed="true">Let it fall</button>
+        <button type="button" id="fall-mode-lower-button" class="mode-toggle-button" aria-pressed="false">Lower it slowly</button>
+      </div>
       <div class="diagram">
         <canvas
           id="fall-view"
           width="200"
           height="360"
-          aria-label="A schematic vertical line with a planet at the bottom and a falling mass above it, moving down as the slider or animation advances"
+          aria-label="A schematic vertical line with a planet at the bottom and a mass above it, moving down as the slider or animation advances"
         ></canvas>
       </div>
       <div class="control">
-        <label for="fall-progress-slider">Fallen so far: <span id="fall-progress-label"></span></label>
+        <label for="release-distance-slider">Release distance: <span id="release-distance-label"></span></label>
+        <input type="range" id="release-distance-slider" min="0" max="1000" step="1" value="550" />
+      </div>
+      <div class="control">
+        <label for="fall-progress-slider"><span id="fall-progress-caption-text">Fallen so far</span>: <span id="fall-progress-label"></span></label>
         <input type="range" id="fall-progress-slider" min="0" max="1000" step="1" value="0" />
       </div>
       <div class="control checkbox-control">
@@ -95,13 +103,25 @@
           <dd id="fall-radius-readout"></dd>
         </div>
         <div class="readout-row">
-          <dt>Kinetic energy gained</dt>
+          <dt id="fall-ke-label">Kinetic energy gained</dt>
           <dd id="fall-ke-readout"></dd>
+        </div>
+        <div class="readout-row">
+          <dt>Potential energy change, from the release point</dt>
+          <dd id="fall-pe-readout"></dd>
+        </div>
+        <div class="readout-row" id="fall-hand-work-row" hidden>
+          <dt>Work done by the hand, from the release point</dt>
+          <dd id="fall-hand-work-readout"></dd>
+        </div>
+        <div class="readout-row" id="fall-total-energy-row">
+          <dt>Total energy (stays constant)</dt>
+          <dd id="fall-total-energy-readout"></dd>
         </div>
       </dl>
       <div class="energy-bar-pair">
         <div class="energy-bar">
-          <p class="energy-bar-label">Work done by the field</p>
+          <p class="energy-bar-label">Work done by the field, from the release point</p>
           <div class="energy-bar-track">
             <div class="energy-bar-zero-line"></div>
             <div class="energy-bar-fill energy-bar-fill-positive" id="fall-field-bar-fill"></div>
@@ -109,7 +129,7 @@
           <p class="energy-bar-value" id="fall-field-work-readout"></p>
         </div>
         <div class="energy-bar">
-          <p class="energy-bar-label">Work an external agent would do (holding it back)</p>
+          <p class="energy-bar-label" id="fall-second-bar-label">Potential energy change</p>
           <div class="energy-bar-track">
             <div class="energy-bar-zero-line"></div>
             <div class="energy-bar-fill energy-bar-fill-negative" id="fall-agent-bar-fill"></div>
@@ -117,13 +137,37 @@
           <p class="energy-bar-value" id="fall-agent-work-readout"></p>
         </div>
       </div>
-      <p class="note">
-        The two counters are always exactly opposite, and the field's counter always matches the
-        kinetic energy gained &mdash; not because the agent is actually there (it isn't; the mass
-        is genuinely in free fall), but because both numbers are computed the same way, as a
-        function of radius alone: work done by a conservative field never depends on how fast
-        something moves between two points, only on where it starts and ends.
+      <p class="note" id="fall-mode-note">
+        Released from rest, nothing but gravity acts on it: the field's work all becomes kinetic
+        energy, and potential energy falls by exactly that much &mdash; so the total, kinetic plus
+        potential, never changes. It stays at the value it started with, for as long as the mass
+        is actually in free fall.
       </p>
+      <p class="note" id="lower-mode-note" hidden>
+        This is the definition in practice: potential energy is <strong>defined</strong> as the
+        work an external agent does bringing a mass in at constant speed, which is exactly why the
+        "work done by the hand" row above and the "potential energy change" row above it show the
+        same number &mdash; they're not two separate facts that happen to agree, they're the same
+        fact stated twice.
+      </p>
+      <div class="control" id="full-lower-panel" hidden>
+        <p>
+          Lowering all the way from the release point to the surface, the hand's total work
+          approaches &minus;GM/R as the release point moves out &mdash; and gets there faster than
+          you might expect: 90% of the way there at 10 radii out, 99% at 100 radii. "Infinity" is
+          not far away in practice.
+        </p>
+        <dl class="readout">
+          <div class="readout-row">
+            <dt>Hand's work, release point &rarr; surface</dt>
+            <dd id="full-lower-work-readout"></dd>
+          </div>
+          <div class="readout-row">
+            <dt>As a fraction of the &minus;GM/R limit (release point &rarr; &infin;)</dt>
+            <dd id="full-lower-fraction-readout"></dd>
+          </div>
+        </dl>
+      </div>
     </section>
 
     <section class="notes-section" id="potential-well">
@@ -360,10 +404,10 @@
   <script src="../src/orbitalMechanics.js?v=202610071000"></script>
   <script src="../src/gravitySim.js?v=202610071000"></script>
   <script src="../src/tides.js?v=202609260100"></script>
-  <script src="../src/gravityField.js?v=202610072100"></script>
+  <script src="../src/gravityField.js?v=202610072200"></script>
   <script src="../src/gravitationalPotentialQuestions.js?v=202610072100"></script>
   <script src="../quiz-ui.js?v=202609221100"></script>
-  <script src="gravitational-potential.js?v=202610072100"></script>
+  <script src="gravitational-potential.js?v=202610072200"></script>
   <script src="../nextPage.js?v=202609270100"></script>
 </body>
 </html>

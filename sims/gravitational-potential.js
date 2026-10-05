@@ -11,26 +11,49 @@
   const CURVE_COLOR = '#3a3f4d';
   const SHADE_COLOR = 'rgba(42, 107, 214, 0.22)';
 
-  // --- 1. Falling in: two work counters -----------------------------------
+  // --- 1. Two ways in: two work counters ----------------------------------
 
-  const FALL_FAR_RADIUS = R * 60;
+  const RELEASE_MIN_RADIUS = R * 2;
+  const RELEASE_MAX_RADIUS = R * 1000;
 
   const fallCanvas = document.getElementById('fall-view');
   const fallCtx = fallCanvas.getContext('2d');
+  const releaseDistanceSlider = document.getElementById('release-distance-slider');
+  const releaseDistanceLabel = document.getElementById('release-distance-label');
   const fallProgressSlider = document.getElementById('fall-progress-slider');
   const fallProgressLabel = document.getElementById('fall-progress-label');
+  const fallProgressCaptionText = document.getElementById('fall-progress-caption-text');
   const fallPlayButton = document.getElementById('fall-play-button');
   const fallRadiusReadout = document.getElementById('fall-radius-readout');
+  const fallKeLabel = document.getElementById('fall-ke-label');
   const fallKeReadout = document.getElementById('fall-ke-readout');
+  const fallPeReadout = document.getElementById('fall-pe-readout');
+  const fallHandWorkRow = document.getElementById('fall-hand-work-row');
+  const fallHandWorkReadout = document.getElementById('fall-hand-work-readout');
+  const fallTotalEnergyRow = document.getElementById('fall-total-energy-row');
+  const fallTotalEnergyReadout = document.getElementById('fall-total-energy-readout');
   const fallFieldWorkReadout = document.getElementById('fall-field-work-readout');
+  const fallSecondBarLabel = document.getElementById('fall-second-bar-label');
   const fallAgentWorkReadout = document.getElementById('fall-agent-work-readout');
   const fallFieldBarFill = document.getElementById('fall-field-bar-fill');
   const fallAgentBarFill = document.getElementById('fall-agent-bar-fill');
+  const fallModeFallButton = document.getElementById('fall-mode-fall-button');
+  const fallModeLowerButton = document.getElementById('fall-mode-lower-button');
+  const fallModeNote = document.getElementById('fall-mode-note');
+  const lowerModeNote = document.getElementById('lower-mode-note');
+  const fullLowerPanel = document.getElementById('full-lower-panel');
+  const fullLowerWorkReadout = document.getElementById('full-lower-work-readout');
+  const fullLowerFractionReadout = document.getElementById('full-lower-fraction-readout');
 
-  const MAX_FIELD_WORK = GF.workByField(M, FALL_FAR_RADIUS, R);
+  let fallMode = 'fall';
 
-  function fallRadiusFromFraction(fraction) {
-    return FALL_FAR_RADIUS * Math.pow(R / FALL_FAR_RADIUS, fraction);
+  function releaseDistanceFromSlider() {
+    const fraction = Number(releaseDistanceSlider.value) / 1000;
+    return RELEASE_MIN_RADIUS * Math.pow(RELEASE_MAX_RADIUS / RELEASE_MIN_RADIUS, fraction);
+  }
+
+  function fallRadiusFromFraction(r0, fraction) {
+    return r0 * Math.pow(R / r0, fraction);
   }
 
   function drawFall(fraction) {
@@ -53,7 +76,7 @@
     fallCtx.fillStyle = '#888';
     fallCtx.font = '11px sans-serif';
     fallCtx.textAlign = 'center';
-    fallCtx.fillText('far away', width / 2, topY - 6);
+    fallCtx.fillText('release point', width / 2, topY - 6);
 
     fallCtx.beginPath();
     fallCtx.arc(width / 2, planetY, planetRadius, 0, Math.PI * 2);
@@ -73,26 +96,86 @@
     fallCtx.stroke();
   }
 
-  function updateFall() {
-    const fraction = Number(fallProgressSlider.value) / 1000;
-    const r = fallRadiusFromFraction(fraction);
-    const fieldWork = GF.workByField(M, FALL_FAR_RADIUS, r);
-    const agentWork = GF.workByExternalAgent(M, FALL_FAR_RADIUS, r);
-    const speed = Math.sqrt(Math.max(0, 2 * fieldWork));
-    const ke = GF.kineticEnergyPerMass(speed);
+  function updateFullLowerPanel(r0) {
+    const fullHandWork = GF.workByExternalAgent(M, r0, R);
+    const limit = -(OM.G * M) / R;
+    const fraction = fullHandWork / limit;
 
+    fullLowerWorkReadout.textContent = `${(fullHandWork / 1e6).toFixed(2)} MJ/kg`;
+    fullLowerFractionReadout.textContent = `${(fraction * 100).toFixed(1)}%`;
+  }
+
+  function updateFall() {
+    const r0 = releaseDistanceFromSlider();
+    const maxFieldWork = GF.workByField(M, r0, R);
+    const fraction = Number(fallProgressSlider.value) / 1000;
+    const r = fallRadiusFromFraction(r0, fraction);
+
+    const fieldWork = GF.workByField(M, r0, r);
+    const agentWork = GF.workByExternalAgent(M, r0, r); // = -fieldWork = ΔPE, always
+    const potentialAtRelease = GF.potentialEnergyPerMass(M, r0);
+    const potentialAtR = GF.potentialEnergyPerMass(M, r);
+
+    releaseDistanceLabel.textContent = `${(r0 / R).toFixed(1)} × Earth's radius`;
     fallProgressLabel.textContent = `${(fraction * 100).toFixed(0)}%`;
     fallRadiusReadout.textContent = `${(r / 1000).toFixed(0)} km (${(r / R).toFixed(1)} × Earth's radius)`;
-    fallKeReadout.textContent = `${(ke / 1e6).toFixed(2)} MJ/kg`;
+    fallPeReadout.textContent = `${(agentWork / 1e6).toFixed(2)} MJ/kg`;
     fallFieldWorkReadout.textContent = `${(fieldWork / 1e6).toFixed(2)} MJ/kg`;
     fallAgentWorkReadout.textContent = `${(agentWork / 1e6).toFixed(2)} MJ/kg`;
 
-    const barFraction = Math.min(1, fieldWork / MAX_FIELD_WORK);
+    if (fallMode === 'fall') {
+      // Released from rest: the work-energy theorem makes kinetic energy
+      // gained exactly the field's own work, no agent involved at all.
+      const speed = Math.sqrt(Math.max(0, 2 * fieldWork));
+      const ke = GF.kineticEnergyPerMass(speed);
+      fallKeReadout.textContent = `${(ke / 1e6).toFixed(2)} MJ/kg`;
+      // KE(r) + V(r) = V(r0) always, for a mass released from rest at r0
+      // and acted on by gravity alone — energy conservation, shown here
+      // as a number that never changes as the slider moves.
+      const total = ke + potentialAtR;
+      fallTotalEnergyReadout.textContent = `${(total / 1e6).toFixed(2)} MJ/kg (= V at the release point, ${(potentialAtRelease / 1e6).toFixed(2)} MJ/kg)`;
+    } else {
+      // Constant speed the whole way: kinetic energy never builds up.
+      fallKeReadout.textContent = '≈0 MJ/kg (constant speed)';
+      fallHandWorkReadout.textContent = `${(agentWork / 1e6).toFixed(2)} MJ/kg`;
+      updateFullLowerPanel(r0);
+    }
+
+    const barFraction = Math.min(1, fieldWork / maxFieldWork);
     fallFieldBarFill.style.height = `${barFraction * 50}%`;
     fallAgentBarFill.style.height = `${barFraction * 50}%`;
 
     drawFall(fraction);
   }
+
+  function setFallMode(nextMode) {
+    fallMode = nextMode;
+    const falling = fallMode === 'fall';
+    fallModeFallButton.setAttribute('aria-pressed', String(falling));
+    fallModeLowerButton.setAttribute('aria-pressed', String(!falling));
+    fallKeLabel.textContent = falling ? 'Kinetic energy gained' : 'Kinetic energy';
+    fallSecondBarLabel.textContent = falling ? 'Potential energy change' : 'Work done by the hand, from the release point';
+    fallProgressCaptionText.textContent = falling ? 'Fallen so far' : 'Lowered so far';
+    fallHandWorkRow.hidden = falling;
+    fallTotalEnergyRow.hidden = !falling;
+    fallModeNote.hidden = !falling;
+    lowerModeNote.hidden = falling;
+    fullLowerPanel.hidden = falling;
+    updateFall();
+  }
+
+  fallModeFallButton.addEventListener('click', () => {
+    if (fallMode !== 'fall') setFallMode('fall');
+  });
+  fallModeLowerButton.addEventListener('click', () => {
+    if (fallMode !== 'lower') setFallMode('lower');
+  });
+
+  releaseDistanceSlider.addEventListener('input', () => {
+    stopFallAnimation();
+    fallProgressSlider.value = 0;
+    updateFall();
+  });
 
   fallProgressSlider.addEventListener('input', () => {
     stopFallAnimation();
@@ -496,7 +579,7 @@
     coverageEl.textContent = 'Covers: ' + subtopics.map((s) => `${s.id} ${s.title}`).join(', ');
   }
 
-  updateFall();
+  setFallMode('fall');
   updateWell();
   updateMghComparison();
   updateGR();
