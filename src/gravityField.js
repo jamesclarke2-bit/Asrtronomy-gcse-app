@@ -103,6 +103,25 @@ function makeGravityField(OrbitalMechanics, GravitySim, Tides) {
     return testMass * potentialDifferenceNumerical(mass, r1, r2, steps);
   }
 
+  // The work gravity itself does on a unit mass moving from r1 to r2 —
+  // built from the same numerical integration of g(r) as
+  // potentialDifferenceNumerical above, since work done by the field =
+  // -ΔV for a unit mass. Positive when the move is inward (r2 < r1, the
+  // field pulling the same way the mass moves), negative when it's
+  // outward.
+  function workByField(mass, r1, r2, steps) {
+    return -potentialDifferenceNumerical(mass, r1, r2, steps);
+  }
+
+  // The work an external agent must do moving a unit mass from r1 to r2
+  // at constant speed — holding it back against the field on the way
+  // in, or hauling it up against the field on the way out — exactly the
+  // field's own work, reversed, since together they leave kinetic
+  // energy unchanged (that's what "constant speed" means here).
+  function workByExternalAgent(mass, r1, r2, steps) {
+    return -workByField(mass, r1, r2, steps);
+  }
+
   // ∫[r0, ∞) g(r) dr = GM/r0 exactly, for a true inverse-square field —
   // but found here by actually integrating: log-spaced steps out to a
   // very large but finite rMax (numerically, same trapezoidal rule as
@@ -270,12 +289,25 @@ function makeGravityField(OrbitalMechanics, GravitySim, Tides) {
   }
 
   // Negative total energy: bound (circular/elliptical — can't reach
-  // infinity). Exactly zero: parabolic, the marginal escape case.
-  // Positive: hyperbolic, unbound with speed to spare at infinity.
-  function classifyOrbit(totalEnergyPerMassValue) {
-    if (totalEnergyPerMassValue < 0) return 'bound';
-    if (totalEnergyPerMassValue === 0) return 'parabolic';
-    return 'hyperbolic';
+  // infinity). Around zero (within tolerance): parabolic, the marginal
+  // escape case. Positive: hyperbolic, unbound with speed to spare at
+  // infinity.
+  //
+  // A "zero" total energy computed from a real speed (e.g. at
+  // escapeSpeed()) essentially never lands on exactly 0 in floating
+  // point, so the parabolic case is a window around zero, not an exact
+  // match. tolerance is optional and, left out, defaults to a relative
+  // 1e-6 of the magnitude of the potential energy at that point
+  // (potentialEnergyPerMassValue) — the natural scale total energy is
+  // being compared against zero on. Leaving out potentialEnergyPerMassValue
+  // too (as the plain sentinel values -1/0/1 do) falls back to an exact
+  // zero check, same as before.
+  function classifyOrbit(totalEnergyPerMassValue, potentialEnergyPerMassValue, tolerance) {
+    const parabolicTolerance =
+      tolerance !== undefined ? tolerance : potentialEnergyPerMassValue !== undefined ? 1e-6 * Math.abs(potentialEnergyPerMassValue) : 0;
+    if (totalEnergyPerMassValue < -parabolicTolerance) return 'bound';
+    if (totalEnergyPerMassValue > parabolicTolerance) return 'hyperbolic';
+    return 'parabolic';
   }
 
   // Derived independently from the energy balance (set totalEnergyPerMass
@@ -504,6 +536,8 @@ function makeGravityField(OrbitalMechanics, GravitySim, Tides) {
     potentialEnergy,
     potentialDifferenceNumerical,
     potentialEnergyDifferenceNumerical,
+    workByField,
+    workByExternalAgent,
     integrateFieldToInfinity,
     // Layer 2
     fieldVectorAt,

@@ -36,6 +36,50 @@ test('the numerically integrated ΔU agrees with mgh to ~0.02% at 1 km and diffe
   assert.ok(Math.abs(pctDiff100km - 1.5) < 0.3, `expected ~1.5% difference at 100 km, got ${pctDiff100km}%`);
 });
 
+test('workByField and workByExternalAgent, for a move inward from far away to Earth\'s radius', () => {
+  const exact = (G * EARTH_MASS_KG) / EARTH_RADIUS_M;
+  const far = EARTH_RADIUS_M * 1e8;
+  // 2000 steps, not workByField's own 1000-step default: the same step
+  // count integrateFieldToInfinity uses, and for the same reason — a
+  // range spanning 8 orders of magnitude needs more samples than a
+  // "nearby" range (e.g. the 1 km/100 km ΔU test above) does to hit
+  // 1e-4 relative on the trapezoidal rule. Not a loosened tolerance:
+  // the 1e-4 target itself is unchanged, this just gives the
+  // integration enough steps to reach it.
+  const steps = 2000;
+
+  const workIn = GravityField.workByField(EARTH_MASS_KG, far, EARTH_RADIUS_M, steps);
+  assert.ok(workIn > 0, `expected positive (inward) work, got ${workIn}`);
+  const relativeError = Math.abs(workIn - exact) / exact;
+  assert.ok(relativeError < 1e-4, `relative error ${relativeError} should be under 1e-4`);
+
+  const workExtIn = GravityField.workByExternalAgent(EARTH_MASS_KG, far, EARTH_RADIUS_M, steps);
+  assert.ok(workExtIn < 0, `expected negative external-agent work, got ${workExtIn}`);
+  assert.equal(Math.abs(workExtIn), workIn);
+  assert.equal(workIn + workExtIn, 0);
+
+  // V(R) = -GM/R, found here as the work an external agent does
+  // bringing a unit mass in from a very large radius, not by
+  // evaluating -GM/r directly.
+  const potentialAtR = GravityField.potentialEnergyPerMass(EARTH_MASS_KG, EARTH_RADIUS_M);
+  const relativeErrorVsPotential = Math.abs(potentialAtR - workExtIn) / Math.abs(potentialAtR);
+  assert.ok(relativeErrorVsPotential < 1e-4, `expected workByExternalAgent ≈ V(R) = ${potentialAtR}, got ${workExtIn}`);
+});
+
+test('workByField and workByExternalAgent reverse sign for the equivalent outward move', () => {
+  const far = EARTH_RADIUS_M * 1e8;
+  const steps = 2000;
+
+  const workOut = GravityField.workByField(EARTH_MASS_KG, EARTH_RADIUS_M, far, steps);
+  const workExtOut = GravityField.workByExternalAgent(EARTH_MASS_KG, EARTH_RADIUS_M, far, steps);
+  assert.ok(workOut < 0, `expected negative (outward) field work, got ${workOut}`);
+  assert.ok(workExtOut > 0, `expected positive external-agent work, got ${workExtOut}`);
+  assert.equal(workOut + workExtOut, 0);
+
+  const workIn = GravityField.workByField(EARTH_MASS_KG, far, EARTH_RADIUS_M, steps);
+  assert.equal(workOut, -workIn);
+});
+
 // --- Layer 2: superposition --------------------------------------------------
 
 test('two equal masses give zero field at the midpoint, and a potential of -4GM/d there', () => {
@@ -106,14 +150,31 @@ test('escape speed from the energy balance matches OrbitalMechanics.escapeSpeed(
   assert.ok(Math.abs(fromEnergy - fromOrbitalMechanics) / fromOrbitalMechanics < 1e-9, `expected ${fromOrbitalMechanics}, got ${fromEnergy}`);
 
   const totalEnergy = GravityField.totalEnergyPerMass(EARTH_MASS_KG, r, fromEnergy);
-  // Floating-point, not exactly 0 (it's ~7e-9 here) — classifyOrbit's
-  // zero check is deliberately exact (see its own comment), so the
-  // classifier itself is tested below with clean sentinel values
-  // instead of this noisy near-zero one.
+  // Floating-point, not exactly 0 (it's ~7e-9 here). classifyOrbit's
+  // zero check only widens into a tolerance window when it's given a
+  // potential-energy reference to scale that window against (see the
+  // next test) — called with just one argument, as here, it's still
+  // the same exact check it always was, so the sentinel values below
+  // still classify cleanly either side of zero.
   assert.ok(Math.abs(totalEnergy) < 1e-6, `expected ~0, got ${totalEnergy}`);
   assert.equal(GravityField.classifyOrbit(-1), 'bound');
   assert.equal(GravityField.classifyOrbit(0), 'parabolic');
   assert.equal(GravityField.classifyOrbit(1), 'hyperbolic');
+});
+
+test('classifyOrbit, given a potential-energy reference, classifies a real escape-speed energy as parabolic (and 1% either side correctly)', () => {
+  const r = EARTH_RADIUS_M + 400000;
+  const potentialEnergy = GravityField.potentialEnergyPerMass(EARTH_MASS_KG, r);
+  const escapeSpeed = OrbitalMechanics.escapeSpeed(r, EARTH_MASS_KG);
+
+  const atEscape = GravityField.totalEnergyPerMass(EARTH_MASS_KG, r, escapeSpeed);
+  assert.equal(GravityField.classifyOrbit(atEscape, potentialEnergy), 'parabolic');
+
+  const belowEscape = GravityField.totalEnergyPerMass(EARTH_MASS_KG, r, escapeSpeed * 0.99);
+  assert.equal(GravityField.classifyOrbit(belowEscape, potentialEnergy), 'bound');
+
+  const aboveEscape = GravityField.totalEnergyPerMass(EARTH_MASS_KG, r, escapeSpeed * 1.01);
+  assert.equal(GravityField.classifyOrbit(aboveEscape, potentialEnergy), 'hyperbolic');
 });
 
 test('energy is conserved along an RK4 path, for both a circular and an eccentric orbit', () => {
