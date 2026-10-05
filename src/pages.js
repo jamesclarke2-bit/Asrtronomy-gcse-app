@@ -87,6 +87,13 @@ const PAGES = [
     units: ['u2.1', 'u2.9', 'u2.15', 'u2.16'],
   },
   {
+    title: 'From Earth-Centred to Sun-Centred',
+    description:
+      "How astronomy moved on from a thousand years of Earth at the centre: Ptolemy's epicycles (try the interactive diagram and watch a retrograde loop appear), Tycho Brahe's unprecedented observational precision, Kepler finding ellipses in Brahe's own Mars data, and the two telescope observations — Jupiter's moons and the phases of Venus — Galileo made that the old model couldn't explain.",
+    href: 'notes/geocentric-to-heliocentric.html',
+    units: ['u3.1', 'u3.2', 'u3.6', 'u3.7', 'u3.15'],
+  },
+  {
     title: "Kepler's Laws of Planetary Motion",
     description:
       "An ellipse with the Sun at one focus, perihelion and aphelion, equal-area wedges swept out faster near the Sun and slower away from it, and the T² vs r³ graph for the eight planets — plus a central-mass control showing why the constant depends inversely on mass.",
@@ -208,6 +215,10 @@ const RECOMMENDED_PATH = [
       {
         href: 'notes/archaeoastronomy.html',
         why: "Builds directly on Measuring the Sky's precession section — what that 26,000-year wobble meant for real ancient monuments.",
+      },
+      {
+        href: 'notes/geocentric-to-heliocentric.html',
+        why: 'Another piece of astronomy’s history: how the Earth-centred model slowly gave way to the Sun-centred one, setting up why Kepler’s laws, next, were worth discovering at all.',
       },
       {
         href: 'sims/kepler.html',

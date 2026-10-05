@@ -443,6 +443,14 @@ const UNITS = [
           "Copernicus's 1543 heliocentric model placed the Sun, not Earth, at the centre, still using circular orbits; Kepler's later work fitted Brahe's precise data to elliptical orbits instead, completing the mathematical case for the heliocentric model",
       },
       {
+        id: 'u3.15',
+        title: "Galileo's telescopic evidence",
+        depth: 'understand',
+        spec: ['11.24'],
+        notes:
+          "two early-17th-century telescopic observations that supported the heliocentric model: (1) four moons visibly orbiting Jupiter, not Earth, showing not everything in the universe orbits Earth; (2) Venus showing a full set of phases, from thin crescent through to nearly full — in a strict Earth-centred model with Venus always between Earth and the Sun, only crescent phases are ever possible, so the full range Galileo saw meant Venus must orbit the Sun",
+      },
+      {
         id: 'u3.8',
         title: 'Gravity and stable elliptical orbits',
         depth: 'understand',

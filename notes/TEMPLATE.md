@@ -16,6 +16,7 @@ every page listed as conforming below.
 | `notes/observing-techniques.html` | Yes (retrofitted) |
 | `notes/archaeoastronomy.html` | Yes (built to it from the start) |
 | `notes/data-sheet.html` | Yes (built to it from the start) |
+| `notes/geocentric-to-heliocentric.html` | Yes (built to it from the start) |
 
 Every `notes/` page now conforms. When a page is retrofitted, add it to `CONFORMING_PAGES`
 in `test/notesTemplate.test.js` and update this table.
@@ -224,6 +225,40 @@ phenomena, the existing star-chart code reused (cropped, unlabelled) for the con
 and asterisms, and one generic rotated glyph for every pointer-star card, with the ratio in
 each card's `back.body` computed from the real star data, the same way the page's own prose
 is.
+
+## Optional: practice questions
+
+A page can add a short practice-questions section on the same shared `quiz-ui.js` component
+`sims/` pages use. It's optional — not part of the checklist below — and first used on
+`notes/geocentric-to-heliocentric.html`. It sits after `#related` and before Coverage, using
+its own (non-`notes-section`) classes, so it doesn't disturb the core -> exam tips -> related
+section order the checklist checks.
+
+```html
+<section class="questions">
+  <h2>Practice questions</h2>
+  <div id="questions-list"></div>
+</section>
+
+<section class="progress">
+  <h2>Your progress</h2>
+  <ul id="progress-list"></ul>
+  <p class="note">Stored in this browser only (localStorage) — no account needed.</p>
+</section>
+```
+
+```html
+<script src="../src/page-name-questions.js?v=…"></script>
+<script src="../glossary.js?v=…"></script>
+<script src="../quiz-ui.js?v=…"></script>
+<script src="page-name.js?v=…"></script>
+<script src="../notesPage.js?v=…"></script>
+<script src="../nextPage.js?v=…"></script>
+```
+
+The page script ends with `QuizUI.mount(PageNameQuestions.makeQuestions(...))`, same as any
+`sims/` page — see section 5 of the main checklist below for the shared `message`-always-shown
+convention.
 
 ## Page skeleton
 

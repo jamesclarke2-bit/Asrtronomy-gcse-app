@@ -21,6 +21,7 @@ const CONFORMING_PAGES = [
   'notes/observing-techniques.html',
   'notes/archaeoastronomy.html',
   'notes/data-sheet.html',
+  'notes/geocentric-to-heliocentric.html',
 ];
 
 function read(href) {
