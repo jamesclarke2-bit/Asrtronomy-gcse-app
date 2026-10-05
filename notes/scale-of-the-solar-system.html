@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Scale of the Solar System</title>
+  <link rel="stylesheet" href="../styles.css?v=202610051000" />
+</head>
+<body>
+  <main>
+    <p class="back-link"><a href="../index.html">&larr; Back to all tools</a></p>
+
+    <h1>The Scale of the Solar System</h1>
+    <p class="subtitle">
+      From the Moon, a short hop away, out through the planets to the nearest stars &mdash; plain
+      kilometres stop being a sensible way to write any of these distances down well before you
+      reach the edge of the Solar System. This page covers the scale itself, the astronomical
+      unit, light year and parsec that exist to deal with it, and how long light takes to cross
+      it.
+    </p>
+
+    <section class="notes-section" id="distance-scale">
+      <h2>Distances across the Solar System</h2>
+      <p>
+        Drag the slider below across a <strong>logarithmic</strong> scale &mdash; each step
+        multiplies the distance rather than adding to it, the only sensible way to fit the Moon
+        and the nearest star on the same line. The planets are placed using the mean
+        distances from the Sun in AU on the exam data sheet (<a href="data-sheet.html">Formulae and Data Sheet</a>), converted to km.
+      </p>
+
+      <canvas
+        id="distance-diagram"
+        width="760"
+        height="230"
+        aria-label="A logarithmic number line of distance in kilometres, from the Moon through the eight planets' mean distances from the Sun to the nearest star beyond the Sun, with a marker showing the slider's current position"
+      ></canvas>
+
+      <div class="control">
+        <label for="distance-slider">Distance: <span id="distance-slider-label"></span></label>
+        <input type="range" id="distance-slider" min="0" max="1" step="0.001" value="0.5" />
+      </div>
+
+      <p class="eot-readout" id="distance-readout"></p>
+      <p class="eot-readout" id="distance-nearest"></p>
+      <p class="eot-readout" id="distance-light-time"></p>
+
+      <p class="note">
+        Notice how tightly the eight planets bunch up together on this scale &mdash; Mercury to
+        Neptune spans less than two decades (powers of ten) &mdash; while the gap from Neptune to
+        the nearest star beyond the Sun is over three more decades on top of that: more than
+        10,000&times; farther than Neptune is from the Sun. That gap is exactly why the Solar
+        System gets its own unit (the AU) and interstellar space gets different ones
+        (light years and parsecs) &mdash; see the next section.
+      </p>
+    </section>
+
+    <section class="notes-section" id="distance-units">
+      <h2>Units of astronomical distance</h2>
+      <p>
+        Three specialist units of distance appear throughout astronomy, each sized to keep the
+        numbers at its own scale sensible rather than awkwardly huge or tiny.
+      </p>
+      <div class="table-scroll">
+        <table class="shower-table">
+          <thead>
+            <tr>
+              <th scope="col">Unit</th>
+              <th scope="col">Value</th>
+              <th scope="col">Used for</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">
+                <button type="button" class="glossary-toggle glossary-term-button" data-term="au" aria-label="What is an astronomical unit?" aria-expanded="false">Astronomical unit (AU)</button>
+              </th>
+              <td id="au-value"></td>
+              <td>Distances within the Solar System &mdash; planets, moons, comets and asteroids. Neptune sits at a manageable 30 AU, rather than 4.5 billion km.</td>
+            </tr>
+            <tr>
+              <th scope="row">
+                <button type="button" class="glossary-toggle glossary-term-button" data-term="light-year" aria-label="What is a light year?" aria-expanded="false">Light year (ly)</button>
+              </th>
+              <td id="ly-value"></td>
+              <td>Distances to stars and galaxies, especially in popular writing &mdash; intuitive, since it directly tells you how long the light you're seeing has been travelling.</td>
+            </tr>
+            <tr>
+              <th scope="row">
+                <button type="button" class="glossary-toggle glossary-term-button" data-term="parsec" aria-label="What is a parsec?" aria-expanded="false">Parsec (pc)</button>
+              </th>
+              <td id="parsec-value"></td>
+              <td>The unit professional astronomers prefer for stellar and galactic distances &mdash; defined directly from how a star's position appears to shift (parallax) as Earth orbits the Sun, which is how many of these distances are actually measured.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <span class="glossary-definition" data-term="au" hidden></span>
+      <span class="glossary-definition" data-term="light-year" hidden></span>
+      <span class="glossary-definition" data-term="parsec" hidden></span>
+
+      <p class="note">
+        The AU itself &mdash; the Sun-Earth distance &mdash; was first measured precisely using
+        transits of Venus: Venus passing directly across the face of the Sun, as seen from Earth.
+        Timing that transit from several widely separated places on Earth let astronomers
+        triangulate the Sun's true distance. That method, and why a transit of Venus is rare, is
+        covered in Topic 11's own notes.
+      </p>
+    </section>
+
+    <section class="notes-section" id="light-travel-time">
+      <h2>Light travel time</h2>
+      <p>
+        Distance and travel time are two sides of the same coin once you fix a speed, and light's
+        speed (on the data sheet) is about as fixed as speeds get. The table below uses
+        time = distance / speed to show how long light takes to reach each planet from the Sun
+        &mdash; a genuinely intuitive way to feel the Solar System's scale, since it's the same
+        delay you'd see in a (very long-distance) phone call.
+      </p>
+      <div class="table-scroll">
+        <table class="shower-table">
+          <thead>
+            <tr>
+              <th scope="col">Body</th>
+              <th scope="col">Distance</th>
+              <th scope="col">Light travel time</th>
+            </tr>
+          </thead>
+          <tbody id="light-time-body"></tbody>
+        </table>
+      </div>
+      <p class="note">
+        The Moon's row is measured from <strong>Earth</strong>, not the Sun &mdash; it's the one
+        distance here that isn't a Sun-to-body distance. Every other row is sunlight travelling
+        to that planet.
+      </p>
+      <p class="note">
+        This is exactly why the unit is called a light <em>year</em>: the nearest star beyond the
+        Sun sits about 4.25 light years away, and &mdash; by that same definition &mdash; its
+        light takes about 4.25 years to reach us.
+      </p>
+    </section>
+
+    <section class="notes-section" id="exam-tips">
+      <h2>Exam tips</h2>
+      <p class="exam-tip">
+        <strong>Common exam confusion:</strong> the data sheet's planet distances are each
+        measured <em>from the Sun</em>, not from Earth. Mars's distance from Earth actually
+        varies between roughly 0.5 AU and 2.5 AU depending on where both planets currently sit on
+        their own orbits &mdash; the data sheet's single 1.5 AU figure is Mars's distance from the
+        Sun, not from us.
+        <a href="#distance-scale">Distances across the Solar System &uarr;</a>
+      </p>
+      <p class="exam-tip">
+        <strong>Common exam confusion:</strong> a parsec is bigger than a light year (1 pc = 3.26
+        ly), not the other way round &mdash; easy to mix up since "parsec" doesn't sound bigger.
+        The order, smallest to largest, is AU, then light year, then parsec.
+        <a href="#distance-units">Units of astronomical distance &uarr;</a>
+      </p>
+      <p class="exam-tip">
+        <strong>Common exam link:</strong> light travel time means you never see a distant object
+        as it is <em>now</em> &mdash; only as it was however long ago its light set out. Even the
+        Sun you see is about 8 minutes in the past; Saturn's light takes well over an hour.
+        <a href="#light-travel-time">Light travel time &uarr;</a>
+      </p>
+    </section>
+
+    <section class="notes-section" id="related">
+      <h2>Related pages</h2>
+      <div class="page-card-list">
+        <a class="page-card" href="data-sheet.html">
+          <h3>Formulae and Data Sheet</h3>
+          <p class="page-card-description">The constants and planet table this page's distances, conversions and light travel times are all drawn from directly.</p>
+        </a>
+        <a class="page-card" href="../sims/kepler.html">
+          <h3>Kepler's Laws of Planetary Motion</h3>
+          <p class="page-card-description">Puts the same AU distances to work in Kepler's third law, with an interactive T&sup2; vs r&sup3; graph.</p>
+        </a>
+        <a class="page-card" href="measuring-the-sky.html">
+          <h3>Measuring the Sky</h3>
+          <p class="page-card-description">How the Earth-Moon-Sun distances behind this page's own Moon marker were first measured, without a transit of Venus.</p>
+        </a>
+      </div>
+    </section>
+
+    <section class="questions">
+      <h2>Practice questions</h2>
+      <div id="questions-list"></div>
+    </section>
+
+    <section class="progress">
+      <h2>Your progress</h2>
+      <ul id="progress-list"></ul>
+      <p class="note">Stored in this browser only (localStorage) &mdash; no account needed.</p>
+    </section>
+
+    <p class="coverage" id="coverage"></p>
+    <p class="next-page-link" id="next-page"></p>
+  </main>
+
+  <script src="../src/curriculum.js?v=202610071500"></script>
+  <script src="../src/pages.js?v=202610071500"></script>
+  <script src="../src/specData.js?v=202610051000"></script>
+  <script src="../src/scaleOfSolarSystemQuestions.js?v=202610071500"></script>
+  <script src="../glossary.js?v=202609221600"></script>
+  <script src="../quiz-ui.js?v=202609221100"></script>
+  <script src="scale-of-the-solar-system.js?v=202610071500"></script>
+  <script src="../notesPage.js?v=202609252100"></script>
+  <script src="../nextPage.js?v=202609270100"></script>
+</body>
+</html>

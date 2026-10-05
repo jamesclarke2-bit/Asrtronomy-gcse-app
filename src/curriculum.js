@@ -506,6 +506,22 @@ const UNITS = [
         notes:
           'the gravitational force between two bodies is proportional to the product of their masses and inversely proportional to the square of the distance between their centres — doubling the separation cuts the force to a quarter, tripling a mass triples the force',
       },
+      {
+        id: 'u3.16',
+        title: 'Converting between distance units',
+        depth: 'be able to',
+        spec: ['11.8'],
+        notes:
+          'convert a distance between km, AU, light years and parsecs using the data sheet’s own conversion figures: 1 AU = 1.5 × 10⁸ km; 1 light year = 9.5 × 10¹² km; 1 parsec = 3.1 × 10¹³ km = 3.26 light years',
+      },
+      {
+        id: 'u3.17',
+        title: 'Light travel time',
+        depth: 'be able to',
+        spec: ['11.9'],
+        notes:
+          'calculate how long light takes to cross a given distance, time = distance / speed of light, using the data sheet’s speed of light (3.0 × 10⁸ m/s) — e.g. sunlight takes about 8 minutes to reach Earth, and over 4 hours to reach Neptune',
+      },
     ],
   },
   {

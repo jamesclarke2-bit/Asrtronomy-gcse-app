@@ -108,6 +108,13 @@ const PAGES = [
     units: ['u3.8', 'u3.13', 'u3.14'],
   },
   {
+    title: 'The Scale of the Solar System',
+    description:
+      "A logarithmic distance slider from the Moon out past Neptune to the nearest stars, the astronomical unit, light year and parsec explained side by side, and how long light takes to reach each planet.",
+    href: 'notes/scale-of-the-solar-system.html',
+    units: ['u3.3', 'u3.4', 'u3.16', 'u3.17'],
+  },
+  {
     title: 'Formulae and Data Sheet',
     description:
       "The exam's own Appendix 2 data sheet, reproduced in full: all six given equations (linked to the page that uses each, where one exists), the constants, and the planet and dwarf-planet table every Kepler's-third-law question draws on.",
@@ -231,6 +238,10 @@ const RECOMMENDED_PATH = [
       {
         href: 'notes/data-sheet.html',
         why: 'The reference page Kepler’s third law questions just started drawing on — worth bookmarking, since every exam question gives you these same equations and figures.',
+      },
+      {
+        href: 'notes/scale-of-the-solar-system.html',
+        why: 'Puts that same data-sheet distance table to a different use: just how big the Solar System actually is, and why AU, light years and parsecs each earn their place.',
       },
     ],
   },

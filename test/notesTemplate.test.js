@@ -22,6 +22,7 @@ const CONFORMING_PAGES = [
   'notes/archaeoastronomy.html',
   'notes/data-sheet.html',
   'notes/geocentric-to-heliocentric.html',
+  'notes/scale-of-the-solar-system.html',
 ];
 
 function read(href) {
