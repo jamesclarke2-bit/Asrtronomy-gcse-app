@@ -406,17 +406,17 @@ const UNITS = [
         id: 'u3.3',
         title: 'Using scale information about the Solar System',
         depth: 'be able to',
-        spec: ['7.5'],
+        spec: ['7.5', '11.8'],
         notes:
-          "use given data — e.g. a table of the planets' mean distances from the Sun in AU, as on the exam data sheet (src/specData.js) — to compare relative distances and sizes across the Solar System, or build a scale diagram/model from it; the 'be able to use' skill that sits alongside 7.6's unit definitions (u3.4)",
+          "use given data — e.g. a table of the planets' mean distances from the Sun in AU, as on the exam data sheet (src/specData.js) — to compare relative distances and sizes across the Solar System, or build a scale diagram/model from it; convert a distance between km, AU, light years and parsecs using the data sheet's own conversion figures: 1 AU = 1.5 × 10⁸ km; 1 light year = 9.5 × 10¹² km; 1 parsec = 3.1 × 10¹³ km = 3.26 light years; the 'be able to use' skill that sits alongside 7.6's unit definitions (u3.4)",
       },
       {
         id: 'u3.4',
         title: 'The scale of the Solar System',
         depth: 'be able to',
-        spec: ['7.6'],
+        spec: ['7.6', '11.9'],
         notes:
-          'use the astronomical unit (1 AU ≈ 1.5 × 10⁸ km, the Earth-Sun distance), the light year and the parsec as the specialist units used for distances within the Solar System and to other stars',
+          "use the astronomical unit (1 AU ≈ 1.5 × 10⁸ km, the Earth-Sun distance), the light year and the parsec as the specialist units used for distances within the Solar System and to other stars; calculate how long light takes to cross a given distance, time = distance / speed of light, using the data sheet's speed of light (3.0 × 10⁸ m/s) — e.g. sunlight takes about 8 minutes to reach Earth, and over 4 hours to reach Neptune",
       },
       {
         id: 'u3.5',
@@ -505,22 +505,6 @@ const UNITS = [
         spec: ['8.9'],
         notes:
           'the gravitational force between two bodies is proportional to the product of their masses and inversely proportional to the square of the distance between their centres — doubling the separation cuts the force to a quarter, tripling a mass triples the force',
-      },
-      {
-        id: 'u3.16',
-        title: 'Converting between distance units',
-        depth: 'be able to',
-        spec: ['11.8'],
-        notes:
-          'convert a distance between km, AU, light years and parsecs using the data sheet’s own conversion figures: 1 AU = 1.5 × 10⁸ km; 1 light year = 9.5 × 10¹² km; 1 parsec = 3.1 × 10¹³ km = 3.26 light years',
-      },
-      {
-        id: 'u3.17',
-        title: 'Light travel time',
-        depth: 'be able to',
-        spec: ['11.9'],
-        notes:
-          'calculate how long light takes to cross a given distance, time = distance / speed of light, using the data sheet’s speed of light (3.0 × 10⁸ m/s) — e.g. sunlight takes about 8 minutes to reach Earth, and over 4 hours to reach Neptune',
       },
     ],
   },

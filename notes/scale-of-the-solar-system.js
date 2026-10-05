@@ -11,7 +11,7 @@
  * marked as a real-world figure, not an exam one, everywhere it's used.
  */
 (function () {
-  const CURRICULUM_UNITS = ['u3.3', 'u3.4', 'u3.16', 'u3.17'];
+  const CURRICULUM_UNITS = ['u3.3', 'u3.4'];
 
   const C = SpecData.CONSTANTS;
   const AU_KM = C.auKm;

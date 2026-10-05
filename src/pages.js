@@ -112,7 +112,7 @@ const PAGES = [
     description:
       "A logarithmic distance slider from the Moon out past Neptune to the nearest stars, the astronomical unit, light year and parsec explained side by side, and how long light takes to reach each planet.",
     href: 'notes/scale-of-the-solar-system.html',
-    units: ['u3.3', 'u3.4', 'u3.16', 'u3.17'],
+    units: ['u3.3', 'u3.4'],
   },
   {
     title: 'Formulae and Data Sheet',

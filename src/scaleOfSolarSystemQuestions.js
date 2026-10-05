@@ -1,8 +1,9 @@
 /**
  * Practice questions for notes/scale-of-the-solar-system.html: converting
- * a distance between km, AU, light years and parsecs (11.8), and
- * calculating light travel time (11.9), plus one conceptual question on
- * why astronomers switch units at different scales (7.6).
+ * a distance between km, AU, light years and parsecs (7.5/11.8, u3.3),
+ * and calculating light travel time (7.6/11.9, u3.4), plus one
+ * conceptual question on why astronomers switch units at different
+ * scales (7.6, u3.4).
  *
  * Every figure in a prompt is derived live from SpecData (the exam's own
  * data sheet), so a question can never quote a number that drifts out of
@@ -43,7 +44,7 @@ function makeQuestions(SpecData) {
   return [
     {
       id: 'convert-km-to-au',
-      units: ['u3.16'],
+      units: ['u3.3'],
       type: 'number',
       unitLabel: 'AU',
       prompt: `Neptune's mean distance from the Sun is ${formatScientific(neptuneKm, 1)} km. Using the data sheet's 1 AU = ${formatScientific(C.auKm, 1)} km, convert this to AU.`,
@@ -59,7 +60,7 @@ function makeQuestions(SpecData) {
     },
     {
       id: 'convert-au-to-km',
-      units: ['u3.16'],
+      units: ['u3.3'],
       type: 'number',
       unitLabel: 'km',
       prompt: `The data sheet gives Jupiter's mean distance from the Sun as ${jupiter.distanceAU} AU. Using 1 AU = ${formatScientific(C.auKm, 1)} km, convert this to km.`,
@@ -74,7 +75,7 @@ function makeQuestions(SpecData) {
     },
     {
       id: 'convert-ly-to-km',
-      units: ['u3.16'],
+      units: ['u3.3'],
       type: 'number',
       unitLabel: 'km',
       prompt: `Proxima Centauri, the nearest star beyond the Sun, is about ${nearestStarLy} light years away. Using the data sheet's 1 light year = ${formatScientific(C.lightYearKm, 1)} km, convert this to km.`,
@@ -89,7 +90,7 @@ function makeQuestions(SpecData) {
     },
     {
       id: 'convert-parsec-to-ly',
-      units: ['u3.16'],
+      units: ['u3.3'],
       type: 'number',
       unitLabel: 'light years',
       prompt: `A star is measured to be 2.5 parsecs away. Using the data sheet's figure that 1 parsec = ${C.parsecLightYears} light years, convert this to light years.`,
@@ -104,7 +105,7 @@ function makeQuestions(SpecData) {
     },
     {
       id: 'light-travel-time-mars',
-      units: ['u3.17'],
+      units: ['u3.4'],
       type: 'number',
       unitLabel: 'minutes',
       prompt: `Using Mars's mean distance from the Sun (${mars.distanceAU} AU, from the data sheet) and the data sheet's speed of light (${formatScientific(C.speedOfLightMPerS, 1)} m/s), calculate how long light takes to travel from the Sun to Mars, in minutes.`,
