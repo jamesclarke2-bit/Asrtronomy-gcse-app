@@ -506,6 +506,86 @@ const UNITS = [
         notes:
           'the gravitational force between two bodies is proportional to the product of their masses and inversely proportional to the square of the distance between their centres — doubling the separation cuts the force to a quarter, tripling a mass triples the force',
       },
+      {
+        id: 'u3.16',
+        title: 'Planets and dwarf planets: comparing key data',
+        depth: 'be able to',
+        spec: ['11.1', '11.6'],
+        notes:
+          'use given data — the exam data sheet’s own table (src/specData.js) — to compare the planets and dwarf planets by relative size, relative mass, temperature, moons and rings',
+      },
+      {
+        id: 'u3.17',
+        title: 'Small Solar System objects',
+        depth: 'know',
+        spec: ['11.1'],
+        notes:
+          'besides the planets and dwarf planets, the Solar System holds asteroids (small rocky bodies, mostly orbiting in the asteroid belt between Mars and Jupiter), meteoroids (much smaller fragments of rock or dust) and comets (small bodies of ice, dust and rock that develop a glowing coma and tail(s) as they near the Sun)',
+      },
+      {
+        id: 'u3.18',
+        title: 'Comet structure',
+        depth: 'know',
+        spec: ['11.2'],
+        notes:
+          'the nucleus (a solid core of ice, dust and rock, often called a ‘dirty snowball’), the coma (a glowing cloud of gas and dust released as the nucleus is heated near the Sun) and the tail(s) (gas and dust pushed away from the coma by the solar wind and radiation pressure); a comet can show two separate tails — a straighter, bluish ion tail and a curved, whitish dust tail — and both always point away from the Sun, not behind the comet’s direction of travel',
+      },
+      {
+        id: 'u3.19',
+        title: 'Short-period and long-period comets',
+        depth: 'understand',
+        spec: ['11.3', '11.4'],
+        notes:
+          'short-period comets (orbital period under ~200 years, e.g. Halley’s and Encke’s Comets) are thought to originate in the Kuiper Belt, in roughly the same plane as the planets; long-period comets (orbital periods of thousands to millions of years, on highly elongated orbits that can arrive from any direction) are thought to originate much farther out, in the roughly spherical Oort Cloud',
+      },
+      {
+        id: 'u3.20',
+        title: 'The Kuiper Belt, Oort Cloud and heliosphere',
+        depth: 'know',
+        spec: ['11.5'],
+        notes:
+          'the Kuiper Belt (a disc of icy bodies from roughly 30 to 50 AU, beyond Neptune, in the same plane as the planets); the heliosphere (the vast bubble the solar wind inflates around the Sun, with its outer edge, the heliopause, at roughly 120 AU — Voyager 1 crossed it in 2012); and the Oort Cloud (a far larger, roughly spherical shell of icy bodies thought to extend from a few thousand AU out to perhaps 100,000 AU, around a third of the way to the nearest star)',
+      },
+      {
+        id: 'u3.21',
+        title: 'Formation of gas giants',
+        depth: 'know',
+        spec: ['11.7'],
+        notes:
+          'brief overview only — covered in depth on the Topic 12 formation-of-planetary-systems page (not yet built): the leading model, core accretion, has a solid core of ice and rock grow large enough, far enough from the young Sun for ices to survive, to gravitationally capture a massive envelope of hydrogen and helium gas directly from the surrounding protoplanetary disc',
+      },
+      {
+        id: 'u3.22',
+        title: 'Meteoroids and meteorites',
+        depth: 'know',
+        spec: ['11.10'],
+        notes:
+          'a meteoroid is a small fragment of rock or metal in space, usually a piece broken off an asteroid or shed by a comet; one that survives the fall through the atmosphere and reaches the ground is a meteorite; meteorites are classified by structure/composition as stony (the most common, rocky, similar to asteroid material), iron (dense, metallic, from the cores of shattered differentiated asteroids) or stony-iron (a mix of both) — distinct from a meteor, the visible streak of light while still burning up in the atmosphere (u1.20)',
+      },
+      {
+        id: 'u3.23',
+        title: 'The ecliptic plane and Solar System debris',
+        depth: 'understand',
+        spec: ['11.11'],
+        notes:
+          'the ecliptic is the plane of Earth’s own orbit (u1.16); most Solar System material — the planets, the asteroid belt and the Kuiper Belt — formed from, and still roughly orbits within, that same flattened plane, which is why asteroids and short-period comets are usually found close to it, while long-period comets from the roughly spherical Oort Cloud can arrive from any angle',
+      },
+      {
+        id: 'u3.24',
+        title: 'Transits of Venus and measuring the AU',
+        depth: 'understand',
+        spec: ['11.12'],
+        notes:
+          'Edmond Halley proposed timing a transit of Venus — Venus passing directly across the Sun’s disc, as seen from Earth — from widely separated latitudes: parallax means observers at different latitudes see Venus cross along very slightly different paths (and so at slightly different times), and combining that small measured difference with the known geometry let 18th- and 19th-century astronomers triangulate the real Sun-Earth distance (the AU) for the first time',
+      },
+      {
+        id: 'u3.25',
+        title: "The origin of Earth's water",
+        depth: 'know',
+        spec: ['11.13'],
+        notes:
+          'brief overview only — covered in depth on the Topic 12 formation-of-planetary-systems page (not yet built): competing theories include delivery by water-rich asteroids and/or comets colliding with the early Earth, and outgassing of water vapour from volcanic activity as Earth itself cooled; current evidence (e.g. asteroid-like hydrogen isotope ratios in Earth’s oceans) favours asteroids as the larger contributor, with comets and outgassing both still thought to have played a part',
+      },
     ],
   },
   {

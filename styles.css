@@ -1196,6 +1196,26 @@ canvas {
   letter-spacing: 0.03em;
 }
 
+/* A sortable .shower-table's column-header buttons (notes/solar-system-bodies.js) */
+.sort-header-button {
+  width: 100%;
+  padding: 0;
+  border: none;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-transform: inherit;
+  letter-spacing: inherit;
+  text-align: left;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.sort-header-button:hover,
+.sort-header-button:focus-visible {
+  color: #2a6bd6;
+}
+
 /* Wraps a wide .shower-table (notes/data-sheet.html's planet table) so it
    scrolls horizontally on narrow viewports instead of overflowing the
    page. */

@@ -24,6 +24,7 @@ const CONFORMING_PAGES = [
   'notes/geocentric-to-heliocentric.html',
   'notes/scale-of-the-solar-system.html',
   'notes/telescopes.html',
+  'notes/solar-system-bodies.html',
 ];
 
 function read(href) {

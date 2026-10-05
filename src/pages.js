@@ -161,6 +161,13 @@ const PAGES = [
     href: 'notes/telescopes.html',
     units: ['u5.1', 'u5.2'],
   },
+  {
+    title: 'Bodies of the Solar System',
+    description:
+      "A sortable table and bar chart comparing the planets and dwarf planets, asteroids/meteoroids/comets, a comet-tail diagram and the Kuiper Belt/Oort Cloud on a logarithmic scale, meteorites, the ecliptic plane, transits of Venus and measuring the AU, and brief formation theories — a first draft pending teacher review.",
+    href: 'notes/solar-system-bodies.html',
+    units: ['u3.16', 'u3.17', 'u3.18', 'u3.19', 'u3.20', 'u3.21', 'u3.22', 'u3.23', 'u3.24', 'u3.25'],
+  },
 ];
 
 /**
@@ -249,6 +256,10 @@ const RECOMMENDED_PATH = [
       {
         href: 'notes/scale-of-the-solar-system.html',
         why: 'Puts that same data-sheet distance table to a different use: just how big the Solar System actually is, and why AU, light years and parsecs each earn their place.',
+      },
+      {
+        href: 'notes/solar-system-bodies.html',
+        why: "Rounds out the Solar System itself: the same data-sheet planet table compared directly, then everything smaller — asteroids, comets, meteorites — plus how a transit of Venus first measured the AU just introduced.",
       },
     ],
   },

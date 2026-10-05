@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bodies of the Solar System</title>
+  <link rel="stylesheet" href="../styles.css?v=202610071900" />
+</head>
+<body>
+  <main>
+    <p class="back-link"><a href="../index.html">&larr; Back to all tools</a></p>
+
+    <h1>Bodies of the Solar System</h1>
+    <p class="subtitle">
+      The planets and dwarf planets compared side by side, the smaller debris between and beyond
+      them &mdash; asteroids, meteoroids and comets &mdash; and two historical questions: how a
+      transit of Venus first measured the Sun-Earth distance, and where Earth's water came from.
+    </p>
+
+    <section class="notes-section" id="planet-data">
+      <h2>Planets and dwarf planets: comparing key data</h2>
+      <p class="note">
+        <strong>First draft.</strong> This page is a first pass through Topic 11's content on the
+        Solar System's bodies, for a teacher to check before students rely on it. Every fact is
+        marked as either from the exam data sheet (<a href="data-sheet.html">Formulae and Data
+        Sheet</a>) or, where the data sheet doesn't cover something, a separately sourced figure
+        that still needs verifying.
+      </p>
+      <p>
+        Every column below except <strong>Atmosphere</strong> comes directly from the exam data
+        sheet (<a href="data-sheet.html">Formulae and Data Sheet</a>). Relative size and relative
+        mass are both given as multiples of Earth's own, so Jupiter's "11.2" in the size column
+        means 11.2&times; Earth's diameter. Tap a body's name for a one-line summary, and click a
+        column heading to sort by it.
+      </p>
+      <p class="note">
+        <strong>Atmosphere is a first draft, not from the data sheet.</strong> The exam data sheet
+        doesn't give atmospheric composition at all &mdash; every figure in that column is
+        separately sourced and needs checking before use.
+      </p>
+      <div class="table-scroll">
+        <table class="shower-table" id="planet-table">
+          <thead>
+            <tr id="planet-table-head"></tr>
+          </thead>
+          <tbody id="planet-table-body"></tbody>
+        </table>
+      </div>
+      <div id="planet-table-definitions"></div>
+
+      <canvas
+        id="size-bar-chart"
+        width="700"
+        height="380"
+        aria-label="A horizontal bar chart of each planet and dwarf planet's diameter relative to Earth's, from the exam data sheet, sorted largest to smallest"
+      ></canvas>
+      <p class="diagram-caption">Relative size (diameter, &times; Earth) &mdash; not to scale for mass or distance</p>
+    </section>
+
+    <section class="notes-section" id="small-bodies">
+      <h2>Asteroids, meteoroids and comets</h2>
+      <p>
+        Beyond the planets and dwarf planets, the Solar System holds huge numbers of much smaller
+        bodies, in three broad categories:
+      </p>
+      <div class="concept-grid">
+        <div class="concept-card">
+          <h3>Asteroids</h3>
+          <p>
+            Small, rocky (or metallic) bodies, mostly orbiting the Sun in the asteroid belt
+            between Mars and Jupiter. Ceres, in the table above, is the largest.
+          </p>
+        </div>
+        <div class="concept-card">
+          <h3>Meteoroids</h3>
+          <p>
+            Much smaller fragments of rock or dust in space &mdash; often broken off an asteroid,
+            or shed by a comet. See <a href="#meteoroids-ecliptic">Meteoroids and meteorites</a>
+            below for what happens when one reaches Earth.
+          </p>
+        </div>
+        <div class="concept-card">
+          <h3>Comets</h3>
+          <p>
+            Small bodies of ice, dust and rock that develop a glowing coma and tail(s) as they
+            near the Sun. See <a href="#comets">Comets</a> below.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="notes-section" id="comets">
+      <h2>Comets</h2>
+      <p>
+        A comet is built from three parts: the
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="nucleus" aria-label="What is a comet's nucleus?" aria-expanded="false">nucleus</button>,
+        the
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="coma" aria-label="What is a comet's coma?" aria-expanded="false">coma</button>,
+        and its
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="comet-tail" aria-label="What is a comet's tail?" aria-expanded="false">tail (or tails)</button>.
+        Both the ion and dust tails always point away from the Sun, whichever way the comet is
+        actually travelling &mdash; so a comet heading away from the Sun has its tail out in
+        front of it, leading the way.
+      </p>
+      <span class="glossary-definition" data-term="nucleus" hidden></span>
+      <span class="glossary-definition" data-term="coma" hidden></span>
+      <span class="glossary-definition" data-term="comet-tail" hidden></span>
+
+      <canvas
+        id="comet-diagram"
+        width="700"
+        height="260"
+        aria-label="A schematic comet orbit around the Sun, shown at four points. At each point the comet's ion tail (a straight line) and dust tail (a gently curved line) both point away from the Sun, not behind the comet's direction of travel"
+      ></canvas>
+      <p class="diagram-caption">Not to scale &mdash; a schematic orbit, to show tail direction only</p>
+
+      <h3>Short-period and long-period comets</h3>
+      <p>
+        <strong>Short-period comets</strong> (orbital period under roughly 200 years, e.g.
+        Halley's and Encke's Comets) are thought to come from the
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="kuiper-belt" aria-label="What is the Kuiper Belt?" aria-expanded="false">Kuiper Belt</button>,
+        a disc of icy bodies beyond Neptune lying roughly in the same plane as the planets.
+        <strong>Long-period comets</strong> (periods of thousands to millions of years, able to
+        arrive from any direction) are thought to come from much farther out, in the roughly
+        spherical
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="oort-cloud" aria-label="What is the Oort Cloud?" aria-expanded="false">Oort Cloud</button>.
+        Try the Halley's Comet and Encke's Comet presets (short-period) or the Long-period comet
+        preset on <a href="../sims/kepler.html">Kepler's Laws of Planetary Motion</a> to see both
+        kinds of orbit.
+      </p>
+      <span class="glossary-definition" data-term="kuiper-belt" hidden></span>
+      <span class="glossary-definition" data-term="oort-cloud" hidden></span>
+
+      <canvas
+        id="kuiper-oort-diagram"
+        width="700"
+        height="170"
+        aria-label="A logarithmic scale diagram from Neptune's orbit out through the Kuiper Belt, the heliopause and the Oort Cloud to the nearest star beyond the Sun"
+      ></canvas>
+      <p class="diagram-caption">
+        Logarithmic distance axis &mdash; see
+        <a href="scale-of-the-solar-system.html">The Scale of the Solar System</a> for an
+        interactive version of this same idea, from the Moon all the way out to here.
+      </p>
+      <p class="note">
+        The heliosphere &mdash; the bubble the solar wind inflates around the Sun &mdash; and the
+        Oort Cloud's own outer edge aren't on the exam data sheet; the distances above are
+        separately sourced (Voyager 1 crossed the heliopause, the heliosphere's outer edge, in
+        2012) and are rough figures, not precise boundaries.
+      </p>
+    </section>
+
+    <section class="notes-section" id="meteoroids-ecliptic">
+      <h2>Meteoroids, meteorites and the ecliptic plane</h2>
+      <p>
+        A meteoroid that survives its fall through the atmosphere and reaches the ground is a
+        meteorite &mdash; a different object from a meteor, the streak of light you see while it's
+        still burning up (see
+        <a href="observing-techniques.html#meteor-showers">Observing Techniques</a> for meteor
+        showers, caused by Earth passing through a comet's debris trail). Meteorites are grouped
+        by what they're made of: <strong>stony</strong> (the most common, similar to asteroid
+        rock), <strong>iron</strong> (dense and metallic, from the shattered cores of
+        differentiated asteroids), or <strong>stony-iron</strong> (a mix of both).
+      </p>
+      <p>
+        Most of this debris, like the planets themselves, formed from &mdash; and still roughly
+        orbits within &mdash; the same flattened plane as Earth's own orbit, the
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="ecliptic-plane" aria-label="What is the ecliptic plane?" aria-expanded="false">ecliptic plane</button>.
+        That's why the asteroid belt, the Kuiper Belt and short-period comets are usually found
+        close to it, while long-period comets from the roughly spherical Oort Cloud can arrive
+        from any angle at all. See
+        <a href="../sims/solar-system-observation.html">Retrograde Motion and Planetary
+        Alignments</a> for more on the ecliptic and the zodiacal band around it.
+      </p>
+      <span class="glossary-definition" data-term="ecliptic-plane" hidden></span>
+    </section>
+
+    <section class="notes-section" id="transits-of-venus">
+      <h2>Transits of Venus and measuring the AU</h2>
+      <p>
+        A transit of Venus is Venus passing directly across the Sun's disc, as seen from Earth
+        &mdash; rare, because Venus's orbit is tilted about 3.4&deg; to Earth's, so the two
+        usually miss each other from our point of view. Transits come in pairs eight years apart,
+        then nothing for over a century (roughly 105 or 121 years) before the next pair.
+      </p>
+      <p>
+        In the 18th century, the astronomer Edmond Halley proposed using a transit of Venus to
+        measure the Sun-Earth distance (the AU) for the first time. The idea rests on
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="parallax" aria-label="What is parallax?" aria-expanded="false">parallax</button>:
+        Venus, much closer to Earth than the Sun is, appears to shift slightly against the Sun's
+        disc depending on where on Earth you're observing from. Two observers at widely separated
+        latitudes see Venus trace very slightly different paths across the Sun, timed to start
+        and end at slightly different moments. That tiny measured difference, combined with the
+        precisely known distance between the two observers on Earth's surface, gives enough
+        geometry to triangulate the real Sun-Earth distance &mdash; exactly the way nearby and
+        distant objects shift against each other when you view them from two different places.
+      </p>
+      <span class="glossary-definition" data-term="parallax" hidden></span>
+      <p class="note">
+        Expeditions to observe the 1761 and 1769 transits (and later ones in 1874 and 1882) for
+        exactly this reason are a famous episode in the history of astronomy &mdash; this page
+        gives the principle only; the historical expeditions themselves aren't covered here yet.
+      </p>
+    </section>
+
+    <section class="notes-section" id="formation">
+      <h2>Formation theories (brief)</h2>
+      <p>
+        Two open questions about where things came from, covered only briefly here &mdash; both
+        are covered in full on the planetary-formation page (Topic 12, not yet built on this
+        site).
+      </p>
+      <h3>Why gas giants are gas giants</h3>
+      <p>
+        The leading theory, <strong>core accretion</strong>, has a solid core of ice and rock grow
+        large enough, far enough out for ices to survive the Sun's heat, to gravitationally pull
+        in a massive envelope of hydrogen and helium gas straight from the disc of material the
+        young Sun was still surrounded by.
+      </p>
+      <h3>Where Earth's water came from</h3>
+      <p>
+        Competing theories include water-rich asteroids colliding with the early Earth, icy
+        comets doing the same, and volcanic outgassing as Earth itself cooled. Current evidence
+        &mdash; particularly how closely the hydrogen isotope ratios in Earth's oceans match
+        water-rich asteroids &mdash; points to asteroids as the larger single contributor, though
+        this is still an active area of research.
+      </p>
+    </section>
+
+    <section class="notes-section" id="exam-tips">
+      <h2>Exam tips</h2>
+      <p class="exam-tip">
+        <strong>Common exam confusion:</strong> meteoroid, meteor and meteorite are the same kind
+        of object at three different stages, not three different kinds of object &mdash;
+        meteoroid in space, meteor while burning up as a streak of light, meteorite if a fragment
+        survives to reach the ground.
+        <a href="#meteoroids-ecliptic">Meteoroids, meteorites and the ecliptic plane &uarr;</a>
+      </p>
+      <p class="exam-tip">
+        <strong>Common exam confusion:</strong> a comet's tail points away from the Sun, not
+        behind the comet's direction of travel &mdash; a comet moving away from the Sun has its
+        tail out in front of it.
+        <a href="#comets">Comets &uarr;</a>
+      </p>
+      <p class="exam-tip">
+        <strong>Common exam link:</strong> short-period comets come from the (flattened,
+        ecliptic-plane) Kuiper Belt; long-period comets come from the (roughly spherical) Oort
+        Cloud, which is also why only long-period comets can arrive from any direction.
+        <a href="#comets">Comets &uarr;</a>
+      </p>
+    </section>
+
+    <section class="notes-section" id="related">
+      <h2>Related pages</h2>
+      <div class="page-card-list">
+        <a class="page-card" href="data-sheet.html">
+          <h3>Formulae and Data Sheet</h3>
+          <p class="page-card-description">The source for every column in this page's planet table except the draft atmosphere one.</p>
+        </a>
+        <a class="page-card" href="../sims/kepler.html">
+          <h3>Kepler's Laws of Planetary Motion</h3>
+          <p class="page-card-description">Try the Halley's, Encke's and long-period comet presets on a real orbit diagram.</p>
+        </a>
+        <a class="page-card" href="scale-of-the-solar-system.html">
+          <h3>The Scale of the Solar System</h3>
+          <p class="page-card-description">The interactive, logarithmic version of this page's own Kuiper Belt/Oort Cloud diagram.</p>
+        </a>
+        <a class="page-card" href="observing-techniques.html">
+          <h3>Observing Techniques</h3>
+          <p class="page-card-description">Meteor showers in full: Earth passing through a comet's own debris trail.</p>
+        </a>
+        <a class="page-card" href="../sims/solar-system-observation.html">
+          <h3>Retrograde Motion and Planetary Alignments</h3>
+          <p class="page-card-description">The ecliptic and the zodiacal band, and Mars's own retrograde loops.</p>
+        </a>
+      </div>
+    </section>
+
+    <section class="questions">
+      <h2>Practice questions</h2>
+      <div id="questions-list"></div>
+    </section>
+
+    <section class="progress">
+      <h2>Your progress</h2>
+      <ul id="progress-list"></ul>
+      <p class="note">Stored in this browser only (localStorage) &mdash; no account needed.</p>
+    </section>
+
+    <p class="coverage" id="coverage"></p>
+    <p class="next-page-link" id="next-page"></p>
+  </main>
+
+  <script src="../src/curriculum.js?v=202610071900"></script>
+  <script src="../src/pages.js?v=202610071900"></script>
+  <script src="../src/specData.js?v=202610051000"></script>
+  <script src="../src/solarSystemBodiesQuestions.js?v=202610071900"></script>
+  <script src="../glossary.js?v=202609221600"></script>
+  <script src="../quiz-ui.js?v=202609221100"></script>
+  <script src="solar-system-bodies.js?v=202610071900"></script>
+  <script src="../notesPage.js?v=202609252100"></script>
+  <script src="../nextPage.js?v=202609270100"></script>
+</body>
+</html>
