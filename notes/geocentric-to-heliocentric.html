@@ -76,21 +76,32 @@
           &nbsp; <span class="legend-dot" style="background:#c0392b"></span> Planet (on its epicycle)
         </p>
         <p class="eot-readout" id="motion-status"></p>
+        <p class="eot-readout" id="loop-status"></p>
       </div>
 
       <div class="control">
         <label for="epicycle-size-slider">Epicycle size: <span id="epicycle-size-label"></span></label>
-        <input type="range" id="epicycle-size-slider" min="0" max="0.4" step="0.01" value="0.1" />
+        <input type="range" id="epicycle-size-slider" min="0" max="0.9" step="0.01" value="0.3" list="loop-threshold" />
+        <datalist id="loop-threshold">
+          <option id="loop-threshold-option"></option>
+        </datalist>
+        <p class="note">
+          The loop switches on once the epicycle size passes
+          <strong id="loop-threshold-label"></strong> &mdash; marked with a tick on the slider.
+        </p>
       </div>
       <div class="control checkbox-control">
         <button type="button" id="epicycle-play-button" class="secondary-button" aria-pressed="false">&#9658; Animate</button>
       </div>
 
       <p class="note">
-        This is a schematic, simplified epicycle &mdash; real Ptolemaic models used different
-        size ratios and speeds for each planet, tuned individually to match its own observed
-        loops. The underlying idea is the same one shown here: a big enough second circle can
-        make an otherwise forward-moving path double back on itself.
+        This models an outer ("superior") planet &mdash; Mars &mdash; using its real orbital
+        period. Historically, Ptolemy gave each outer planet's epicycle a period of exactly one
+        year, matching the Sun's own apparent yearly motion, while the deferent took the planet's
+        own real period: here, Mars's 1.88 years. Only the epicycle's <em>size</em> is adjustable
+        below; real Ptolemaic models tuned a size for each planet individually to match its
+        observed loops, but the one-year epicycle period for outer planets was historically
+        consistent.
       </p>
       <p class="note">
         The real cause of retrograde motion is completely different, and far simpler: Earth and
@@ -230,9 +241,10 @@
   <script src="../src/curriculum.js?v=202610071400"></script>
   <script src="../src/pages.js?v=202610071400"></script>
   <script src="../src/geocentricHeliocentricQuestions.js?v=202610071400"></script>
+  <script src="../src/epicycleModel.js?v=202610051100"></script>
   <script src="../glossary.js?v=202609221600"></script>
   <script src="../quiz-ui.js?v=202609221100"></script>
-  <script src="geocentric-to-heliocentric.js?v=202610071400"></script>
+  <script src="geocentric-to-heliocentric.js?v=202610051100"></script>
   <script src="../notesPage.js?v=202609252100"></script>
   <script src="../nextPage.js?v=202609270100"></script>
 </body>

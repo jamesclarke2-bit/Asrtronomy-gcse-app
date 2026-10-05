@@ -1,34 +1,36 @@
 /**
  * notes/geocentric-to-heliocentric.html's epicycle diagram.
  *
- * Ptolemy's model: a planet rides on a small circle (the epicycle)
- * whose own centre rides on a larger circle (the deferent) around a
- * fixed Earth. With the deferent radius fixed at 1 unit, epicycle
- * radius s (the slider) and the epicycle completing EPICYCLE_RATIO
- * trips around its own centre for every one trip the deferent's centre
- * makes around Earth, the planet's actual position is the classic
- * epitrochoid:
- *
- *   x(t) = cos(t) + s*cos(EPICYCLE_RATIO*t)
- *   y(t) = sin(t) + s*sin(EPICYCLE_RATIO*t)
- *
- * No retrograde-detection logic is special-cased: a loop is simply
- * wherever this curve doubles back on itself, which is already visible
- * directly in the traced path. The live "currently retrograde" readout
- * during animation just checks the sign of the geocentric angle's own
- * rate of change, the same thing a real observer tracking the planet
- * against the fixed stars would be watching.
+ * Ptolemy's model for an outer ("superior") planet: a planet rides on a
+ * small circle (the epicycle) whose own centre rides on a larger circle
+ * (the deferent) around a fixed Earth. Historically, the epicycle for an
+ * outer planet reproduces Earth's own heliocentric motion — one full
+ * epicycle lap every year, matching the Sun's apparent yearly motion —
+ * while the deferent's lap matches the planet's own real orbital period.
+ * This page uses Mars's real period (1.881 years) for the deferent, with
+ * the slider controlling only the epicycle's size relative to the
+ * deferent. src/epicycleModel.js supplies the position function and the
+ * exact condition under which that produces a retrograde loop.
  */
 (function () {
   const CURRICULUM_UNITS = ['u3.1', 'u3.2', 'u3.6', 'u3.7', 'u3.15'];
 
-  const EPICYCLE_RATIO = 5; // epicycle laps per one deferent lap
+  const DEFERENT_RADIUS = 1; // normalised; epicycle size is a fraction of this
   const DEFERENT_RADIUS_PX = 140;
   const STAR_RING_RADIUS_PX = DEFERENT_RADIUS_PX + 35;
 
+  const EARTH_YEAR = 1; // the epicycle's period, matching the Sun's apparent motion
+  const MARS_YEAR = 1.881; // Mars's real sidereal orbital period, in years — the deferent's period
+  const DEFERENT_ANGULAR_SPEED = (2 * Math.PI) / MARS_YEAR;
+  const EPICYCLE_ANGULAR_SPEED = (2 * Math.PI) / EARTH_YEAR;
+  const RETROGRADE_THRESHOLD = EpicycleModel.retrogradeThreshold(DEFERENT_RADIUS, DEFERENT_ANGULAR_SPEED, EPICYCLE_ANGULAR_SPEED);
+
+  const ANIMATION_YEARS = MARS_YEAR; // one full deferent lap per animation loop
+  const ANIMATION_SECONDS = 12;
+
   const state = {
-    size: 0.1, // epicycle radius, as a fraction of the deferent radius
-    t: 0, // radians around the deferent, 0 = start
+    size: 0.3, // epicycle radius, as a fraction of the deferent radius
+    t: 0, // years since the start
   };
 
   const canvas = document.getElementById('epicycle-diagram');
@@ -36,28 +38,14 @@
   const sizeLabel = document.getElementById('epicycle-size-label');
   const playButton = document.getElementById('epicycle-play-button');
   const motionStatus = document.getElementById('motion-status');
+  const loopStatus = document.getElementById('loop-status');
 
   function position(t, s) {
-    return {
-      x: Math.cos(t) + s * Math.cos(EPICYCLE_RATIO * t),
-      y: Math.sin(t) + s * Math.sin(EPICYCLE_RATIO * t),
-    };
+    return EpicycleModel.position(t, DEFERENT_RADIUS, DEFERENT_ANGULAR_SPEED, s, EPICYCLE_ANGULAR_SPEED);
   }
 
   function deferentCentre(t) {
-    return { x: Math.cos(t), y: Math.sin(t) };
-  }
-
-  // Positive = the geocentric angle is increasing (prograde, the usual
-  // eastward drift against the stars); negative = retrograde.
-  function motionSign(t, s) {
-    const dt = 1e-3;
-    const a1 = Math.atan2(position(t, s).y, position(t, s).x);
-    const a2 = Math.atan2(position(t + dt, s).y, position(t + dt, s).x);
-    let delta = a2 - a1;
-    if (delta > Math.PI) delta -= 2 * Math.PI;
-    if (delta < -Math.PI) delta += 2 * Math.PI;
-    return delta;
+    return EpicycleModel.deferentCentre(t, DEFERENT_RADIUS, DEFERENT_ANGULAR_SPEED);
   }
 
   function toScreen(x, y, cx, cy) {
@@ -81,7 +69,7 @@
     ctx.beginPath();
     const steps = 720;
     for (let i = 0; i <= steps; i += 1) {
-      const t = (2 * Math.PI * i) / steps;
+      const t = (ANIMATION_YEARS * i) / steps;
       const p = position(t, s);
       const sp = toScreen(p.x, p.y, cx, cy);
       if (i === 0) ctx.moveTo(sp.x, sp.y);
@@ -149,13 +137,21 @@
     ctx.font = 'italic 11px sans-serif';
     ctx.textAlign = 'left';
     ctx.textBaseline = 'alphabetic';
-    ctx.fillText('Not to scale — a schematic, not a real planet’s epicycle', 8, canvas.height - 10);
+    ctx.fillText('Deferent = Mars’s period (1.88 yr), epicycle = 1 year', 8, canvas.height - 10);
   }
 
   function updateMotionStatus() {
-    const sign = motionSign(state.t, state.size);
-    motionStatus.textContent = sign < 0 ? 'Currently: RETROGRADE — looping backward against the stars' : 'Currently: prograde — the usual eastward drift';
-    motionStatus.classList.toggle('retrograde-active', sign < 0);
+    const numerator = EpicycleModel.angularVelocityNumerator(state.t, DEFERENT_RADIUS, DEFERENT_ANGULAR_SPEED, state.size, EPICYCLE_ANGULAR_SPEED);
+    motionStatus.textContent = numerator < 0 ? 'Currently: RETROGRADE — looping backward against the stars' : 'Currently: prograde — the usual eastward drift';
+    motionStatus.classList.toggle('retrograde-active', numerator < 0);
+  }
+
+  // Whether the loop appears anywhere in the cycle at the current slider
+  // size — independent of where the animation currently is.
+  function updateLoopStatus() {
+    const loops = EpicycleModel.showsRetrograde(DEFERENT_RADIUS, DEFERENT_ANGULAR_SPEED, state.size, EPICYCLE_ANGULAR_SPEED);
+    loopStatus.textContent = loops ? 'Loop: ON — this epicycle produces a retrograde loop' : 'Loop: OFF — too small to loop back on itself';
+    loopStatus.classList.toggle('retrograde-active', loops);
   }
 
   function updateSize() {
@@ -163,11 +159,11 @@
     sizeLabel.textContent = state.size.toFixed(2);
     render();
     updateMotionStatus();
+    updateLoopStatus();
   }
 
   sizeSlider.addEventListener('input', updateSize);
 
-  const ANIMATION_SECONDS = 12;
   let animationFrameId = null;
   let animationStart = null;
 
@@ -187,7 +183,7 @@
     function step(now) {
       if (animationStart === null) animationStart = now;
       const elapsed = (now - animationStart) / 1000;
-      state.t = ((elapsed / ANIMATION_SECONDS) % 1) * 2 * Math.PI;
+      state.t = ((elapsed / ANIMATION_SECONDS) % 1) * ANIMATION_YEARS;
       render();
       updateMotionStatus();
       animationFrameId = requestAnimationFrame(step);
@@ -212,9 +208,15 @@
     equant: 'Equant: an off-centre point Ptolemy placed near the deferent’s centre, about which a planet’s motion appeared uniform even though its distance from Earth changed.',
   };
 
+  const thresholdOption = document.getElementById('loop-threshold-option');
+  if (thresholdOption) thresholdOption.value = RETROGRADE_THRESHOLD.toFixed(2);
+  const thresholdLabel = document.getElementById('loop-threshold-label');
+  if (thresholdLabel) thresholdLabel.textContent = RETROGRADE_THRESHOLD.toFixed(2);
+
   sizeLabel.textContent = state.size.toFixed(2);
   render();
   updateMotionStatus();
+  updateLoopStatus();
   renderCoverage();
   Glossary.init(GLOSSARY);
   QuizUI.mount(GeocentricHeliocentricQuestions.makeQuestions());
