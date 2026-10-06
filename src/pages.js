@@ -175,6 +175,13 @@ const PAGES = [
     href: 'sims/gravitational-potential.html',
     units: ['u3.26', 'u3.27'],
   },
+  {
+    title: 'Gravitational Field Maps and Lagrange Points',
+    description:
+      "Beyond the GCSE spec: A-level extension. Drag two masses on a live field map — field arrows, equipotential contours and the zero-field point — with Earth-Moon, Sun-Earth (zoomed in near Earth) and equal-mass presets, plus a mass-ratio explorer where L4 and L5 flip between stable and unstable right before your eyes as the effective potential redraws.",
+    href: 'sims/gravity-field-map.html',
+    units: ['u3.28', 'u3.29'],
+  },
 ];
 
 /**

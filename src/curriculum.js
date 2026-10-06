@@ -614,6 +614,22 @@ const UNITS = [
         notes:
           'beyond the GCSE spec — a satellite’s kinetic, potential and total specific energy at any orbital radius; raising a circular orbit trades kinetic energy for potential energy (KE falls, PE and the total both rise — the total staying negative, less so the higher the orbit) rather than simply adding energy to both; escaping is the limit where total energy reaches exactly zero, the same condition escape speed (u2.26) is derived from',
       },
+      {
+        id: 'u3.28',
+        title: 'Gravitational field maps and the zero-field point',
+        depth: 'understand',
+        level: 'extension',
+        notes:
+          'beyond the GCSE spec — field arrows/lines and equipotential contours for two (or more) masses, superposed; the zero-field point between two bodies, where the two pulls cancel and a test mass feels no net gravitational force at that instant — not the same point as a Lagrange point (u3.29), since it ignores the frame rotating with the two bodies entirely',
+      },
+      {
+        id: 'u3.29',
+        title: 'Lagrange points and the effective potential',
+        depth: 'understand',
+        level: 'extension',
+        notes:
+          'beyond the GCSE spec — in a frame rotating with two orbiting bodies, the effective potential (ordinary potential minus the centrifugal term) has five equilibrium points: L1-L3 collinear with the bodies (saddle points) and L4/L5 forming equilateral triangles with them (local maxima, "hills"); L1-L3 are always unstable, while L4/L5 are only stable when the larger/smaller mass ratio exceeds about 25 (Routh\'s criterion) — true for the Earth-Moon system (ratio ≈ 81) and overwhelmingly true for the Sun-Earth system (ratio ≈ 333,000), which is why dust and small bodies really do collect near real L4/L5 points; a body held near a stable L4/L5 is kept there by the Coriolis force, not by sitting in a dip of the effective potential, which is a hill at that point, not a valley',
+      },
     ],
   },
   {

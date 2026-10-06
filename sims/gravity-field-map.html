@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gravitational Field Maps and Lagrange Points</title>
+  <link rel="stylesheet" href="../styles.css?v=202610072300" />
+</head>
+<body>
+  <main>
+    <p class="back-link"><a href="../index.html">&larr; Back to all tools</a></p>
+
+    <div class="extension-page-banner">
+      <span class="curiosity-badge">Beyond the GCSE spec</span>
+      <strong>A-level extension.</strong> Everything on this page goes past the GCSE Astronomy
+      specification &mdash; the two-dimensional shape of a gravitational field, and what changes
+      once that field is viewed from a frame rotating with two orbiting bodies. See
+      <a href="gravitational-potential.html">Gravitational Potential Energy and Orbital Energy</a>
+      for the one-dimensional (radius-only) version this builds on. Nothing here is needed for
+      the exam.
+    </div>
+
+    <h1>Gravitational Field Maps and Lagrange Points</h1>
+    <p class="subtitle">
+      Drag two masses around and watch their combined field, its equipotential contours, and the
+      point where their pulls cancel, redraw live &mdash; then switch to the frame rotating with
+      them, where that same two-body system turns out to have five points of balance altogether,
+      not one.
+    </p>
+
+    <section class="notes-section" id="zero-field-vs-l1">
+      <h2>The zero-field point is not L1</h2>
+      <p>
+        <strong>For GCSE:</strong> at the zero-field point between Earth and the Moon, the two
+        pulls exactly cancel, so a mass there feels no net force at that instant &mdash; but it
+        would not circle Earth in step with the Moon, and would simply drift away from the
+        Earth-Moon line.
+      </p>
+      <p>
+        <strong>For A-level:</strong> at L1, the Moon's pull only partly cancels Earth's, so the
+        net inward pull is smaller than Earth's alone &mdash; exactly small enough that it supplies
+        the centripetal force for an orbit with the Moon's own period, one lunar month. That net
+        pull being smaller (not zero) is what lets a body at L1 stay in line with the Moon, which
+        is exactly why L1 sits a little closer to Earth than the point of full cancellation.
+      </p>
+      <p class="note">
+        The map below marks both: a zero-field point (plain superposition of the two fields, no
+        rotation involved) and, when the effective-potential view is switched on, L1 itself
+        (found from the rotating frame). They're close, but never the same point unless the two
+        masses are equal.
+      </p>
+    </section>
+
+    <section class="notes-section" id="field-map">
+      <h2>1. The map</h2>
+      <p>
+        Drag either mass anywhere on the map. <strong>Gravitational field</strong> draws the
+        combined field's direction (arrows), a few equipotential contours, and the zero-field
+        point. <strong>Effective potential</strong> switches to the frame rotating with the two
+        masses, shading it from deep wells (dark) to the L4/L5 hills (light), and marks all five
+        Lagrange points &mdash; L1, L2 and L3 sit in saddles along the line through both masses;
+        L4 and L5 sit at the top of hills, forming an equilateral triangle with them.
+      </p>
+      <div class="preset-list" role="group" aria-label="Choose a system">
+        <button type="button" class="preset-button" data-map-preset="earth-moon">Earth-Moon system</button>
+        <button type="button" class="preset-button" data-map-preset="sun-earth">Sun-Earth system</button>
+        <button type="button" class="preset-button" data-map-preset="equal-masses">Two equal masses</button>
+      </div>
+      <div class="mode-toggle" role="group" aria-label="Choose what the map draws">
+        <button type="button" id="view-mode-field-button" class="mode-toggle-button" aria-pressed="false">Gravitational field</button>
+        <button type="button" id="view-mode-effective-button" class="mode-toggle-button" aria-pressed="true">Effective potential</button>
+      </div>
+      <div class="diagram">
+        <canvas
+          id="map-view"
+          width="640"
+          height="520"
+          aria-label="A draggable two-body gravitational field map, showing either field arrows and equipotential contours or, in the rotating frame, the effective potential shaded from deep wells to the L4/L5 hills, with the zero-field point and any Lagrange points marked"
+        ></canvas>
+      </div>
+      <p class="legend">
+        <span class="legend-dot" id="body-a-dot"></span> <span id="body-a-label"></span>
+        &nbsp; <span class="legend-dot" id="body-b-dot"></span> <span id="body-b-label"></span>
+        &nbsp; <span class="legend-dot" style="background:#c0392b"></span> Zero-field point
+      </p>
+      <div class="control checkbox-control">
+        <button type="button" id="zoom-toggle-button" class="secondary-button" aria-pressed="false">Zoom in near the smaller body (not to scale)</button>
+      </div>
+      <p class="note" id="zoom-note" hidden></p>
+      <dl class="readout">
+        <div class="readout-row">
+          <dt>Separation</dt>
+          <dd id="map-separation-readout"></dd>
+        </div>
+        <div class="readout-row">
+          <dt>Zero-field point, from <span id="map-zero-field-reference"></span></dt>
+          <dd id="map-zero-field-readout"></dd>
+        </div>
+        <div class="readout-row" id="map-lagrange-row" hidden>
+          <dt>L1, from <span id="map-l1-reference"></span></dt>
+          <dd id="map-l1-readout"></dd>
+        </div>
+      </dl>
+      <p class="note">
+        Positions here come from <code>src/gravityField.js</code>'s own
+        <code>zeroFieldPointBetween</code>, <code>collinearLagrangePoints</code> and
+        <code>equilateralLagrangePoints</code> &mdash; found by solving where the field (or the
+        rotating frame's net acceleration) is actually zero, not by quoting a textbook formula.
+      </p>
+    </section>
+
+    <section class="notes-section" id="mass-ratio-explorer">
+      <h2>2. Mass-ratio explorer: when are L4 and L5 stable?</h2>
+      <p>
+        L4 and L5 sit at the same geometric spot &mdash; an equilateral triangle with the two
+        masses &mdash; no matter what those two masses actually are. Whether a body sitting there
+        <em>stays</em> nearby is a different question, and it depends entirely on the mass ratio.
+        Drag the slider and watch the label flip.
+      </p>
+      <div class="control">
+        <label for="mass-ratio-slider">Mass ratio (larger &divide; smaller): <span id="mass-ratio-label"></span></label>
+        <input type="range" id="mass-ratio-slider" min="1" max="100" step="1" value="10" list="mass-ratio-marks" />
+        <datalist id="mass-ratio-marks">
+          <option id="mass-ratio-threshold-mark" value="25"></option>
+          <option value="81"></option>
+        </datalist>
+      </div>
+      <div class="diagram">
+        <canvas
+          id="ratio-view"
+          width="480"
+          height="380"
+          aria-label="The effective potential for two bodies at the current mass ratio, shaded from deep wells to the L4/L5 hills, with L1 through L5 marked and L4/L5 labelled stable or unstable"
+        ></canvas>
+      </div>
+      <dl class="readout">
+        <div class="readout-row">
+          <dt>Stability threshold (Routh's criterion)</dt>
+          <dd id="ratio-threshold-readout"></dd>
+        </div>
+        <div class="readout-row">
+          <dt>L4 / L5</dt>
+          <dd><span class="stability-badge" id="ratio-stability-badge"></span></dd>
+        </div>
+      </dl>
+      <p class="note">
+        Marked on the slider: the real Earth-Moon mass ratio (about 81, comfortably stable) and
+        the threshold itself (about 25, where the label flips). The real Sun-Earth ratio is about
+        333,000 &mdash; so far beyond this slider's range that it can't be marked on it at all.
+      </p>
+      <p class="note">
+        <strong>Why doesn't it just slide off the hill?</strong> The effective potential really is
+        a hill at a stable L4 or L5 &mdash; gravity and the rotating frame's own outward push would
+        slide a displaced mass away on their own. What saves it is the Coriolis force, which only
+        acts once something is moving in the rotating frame and always curves that motion
+        sideways rather than letting it coast downhill; above the mass-ratio threshold, that
+        curving is enough to turn a slide into a stable loop around the point instead.
+      </p>
+    </section>
+
+    <section class="questions">
+      <h2>Practice questions</h2>
+      <div id="questions-list"></div>
+    </section>
+
+    <section class="progress">
+      <h2>Your progress</h2>
+      <ul id="progress-list"></ul>
+      <p class="note">Stored in this browser only (localStorage) &mdash; no account needed.</p>
+    </section>
+
+    <p class="coverage" id="coverage"></p>
+    <p class="next-page-link" id="next-page"></p>
+  </main>
+
+  <script src="../src/curriculum.js?v=202610072300"></script>
+  <script src="../src/pages.js?v=202610072300"></script>
+  <script src="../src/orbitalMechanics.js?v=202610071000"></script>
+  <script src="../src/gravitySim.js?v=202610071000"></script>
+  <script src="../src/tides.js?v=202609260100"></script>
+  <script src="../src/gravityField.js?v=202610072200"></script>
+  <script src="../src/gravityFieldMapQuestions.js?v=202610072300"></script>
+  <script src="../quiz-ui.js?v=202609221100"></script>
+  <script src="gravity-field-map.js?v=202610072300"></script>
+  <script src="../nextPage.js?v=202609270100"></script>
+</body>
+</html>

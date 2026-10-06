@@ -1622,6 +1622,19 @@ canvas {
   background: #eaf2fb;
 }
 
+/* Which preset is currently loaded — sims/gravity-field-map.html, where
+   (unlike the one-shot presets elsewhere) the chosen system stays
+   selected and visible for as long as its map is on screen. */
+.preset-button-active {
+  background: #2a6bd6;
+  border-color: #2a6bd6;
+  color: #fff;
+}
+
+.preset-button-active:hover {
+  background: #1f5bb8;
+}
+
 .eclipse-indicator {
   border-radius: 8px;
   padding: 0.75rem 1rem;
@@ -2015,4 +2028,28 @@ canvas {
 
 .bar-compare-fill-mgh {
   background: #e8a23a;
+}
+
+/* sims/gravity-field-map.html — whether L4/L5 are predicted stable at
+   the current mass ratio, same colour language as .eclipse-indicator's
+   "possible"/"not possible" states. */
+.stability-badge {
+  display: inline-block;
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  border: 1px solid;
+}
+
+.stability-badge[data-stability='stable'] {
+  background: #e7f5ec;
+  border-color: #8fcaa3;
+  color: #1d5a33;
+}
+
+.stability-badge[data-stability='unstable'] {
+  background: #fbeaea;
+  border-color: #e0a79c;
+  color: #8a2d22;
 }
