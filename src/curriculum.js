@@ -28,7 +28,21 @@
  * against the Edexcel GCSE Astronomy (1AS0) specification. 7.1-7.4 and
  * 8.1-8.5 are confirmed directly; 7.5-7.6 and 8.6-8.9 are a best-effort
  * placement (content is solid, exact decimal numbering less certain)
- * pending a check against the primary spec PDF.
+ * pending a check against the primary spec PDF. Topic 11 ("The Solar
+ * System") is also fully tagged, across u3.3/u3.4 and u3.16-u3.25.
+ *
+ * Topics 1-6, 9 and 10 are tagged against src/specPoints.js, a
+ * standalone registry of those topics' own spec points (point code,
+ * topic, depth, paraphrased text) — unlike 7/8/11 above, which were
+ * hand-typed here with no central list to check them against. A
+ * subtopic's `spec` codes there were assigned by what it (and its
+ * page) actually teaches, not by title alone, and can span more than
+ * one topic (e.g. u3.5 covers both 7.1/7.2 and 3.6) or leave a
+ * subtopic untagged where its page simply doesn't cover a matching
+ * point (e.g. u2.15's atmospheric composition/layers, u2.18's
+ * perigee/apogee/supermoon content). See the spec-coverage report
+ * from that tagging pass for the full per-point breakdown, including
+ * the handful of spec points no page covers at all.
  *
  * A subtopic can also carry `level: 'extension'`, for content that goes
  * beyond the GCSE spec entirely (A-level-reaching material, e.g.
@@ -52,6 +66,7 @@ const UNITS = [
         id: 'u1.1',
         title: 'Naked-eye phenomena',
         depth: 'know',
+        spec: ['6.1', '6.21'],
         notes:
           "the Sun, Moon, stars (including double stars, two stars that appear close together or genuinely orbit each other, distinct from a constellation or asterism's unrelated pattern), star clusters, galaxies and nebulae (as their own category — a galaxy is a separate star system, a nebula a cloud of gas and dust within our own), planets, comets, meteors, aurorae, supernovae, artificial satellites and aircraft, what each looks like and how to tell them apart (planets shine more steadily than twinkling stars; satellites move steadily in a straight line over minutes with no flashing lights, unlike an aircraft, which blinks and often shows colour; meteors streak across in under a second; comets drift slowly against the stars over nights); the Milky Way as a faint, diffuse band, best seen from a dark site",
       },
@@ -59,6 +74,7 @@ const UNITS = [
         id: 'u1.2',
         title: 'Constellations and asterisms',
         depth: 'understand',
+        spec: ['6.2'],
         notes:
           'a constellation is one of the 88 official regions of the sky; an asterism is any other recognisable pattern, often part of a constellation or spanning several; recognise Cassiopeia, Cygnus, Orion, the Plough, the Southern Cross, the Summer Triangle and the Square of Pegasus',
       },
@@ -66,6 +82,7 @@ const UNITS = [
         id: 'u1.3',
         title: 'Pointer stars',
         depth: 'be able to',
+        spec: ['6.3'],
         notes:
           "using the Plough's Pointers, Merak and Dubhe, to find Polaris (about five times their separation beyond Dubhe) and so due north",
       },
@@ -73,12 +90,14 @@ const UNITS = [
         id: 'u1.4',
         title: 'Coordinate systems',
         depth: 'understand',
+        spec: ['6.7', '6.8', '6.9'],
         notes: 'horizontal (altitude/azimuth) and equatorial (right ascension/declination)',
       },
       {
         id: 'u1.5',
         title: 'Seeing conditions',
         depth: 'understand',
+        spec: ['6.6'],
         notes:
           'light pollution and skyglow (the orange background haze over urban areas, from sources like floodlighting, streetlamps and car park lighting), Dark Sky Parks, atmospheric seeing and transparency',
       },
@@ -86,18 +105,21 @@ const UNITS = [
         id: 'u1.6',
         title: 'Observational terminology',
         depth: 'know',
+        spec: ['6.13'],
         notes: 'cardinal points, meridian, zenith, culmination',
       },
       {
         id: 'u1.7',
         title: 'Local sidereal time',
         depth: 'be able to',
+        spec: ['6.11'],
         notes: 'calculating local sidereal time from date, time and longitude',
       },
       {
         id: 'u1.8',
         title: 'Hour angle',
         depth: 'be able to',
+        spec: ['6.11'],
         notes:
           'HA = LST - RA; negative HA = east of the meridian (not yet transited), positive HA = west (already transited)',
       },
@@ -111,12 +133,14 @@ const UNITS = [
         id: 'u1.10',
         title: 'Circumpolarity',
         depth: 'be able to',
+        spec: ['6.15', '6.16'],
         notes: "whether an object ever sets, from its declination and the observer's latitude",
       },
       {
         id: 'u1.11',
         title: 'Maximum altitude at upper transit',
         depth: 'be able to',
+        spec: ['6.10'],
         notes: 'altitude at transit = 90 - |latitude - declination|',
       },
       {
@@ -129,18 +153,21 @@ const UNITS = [
         id: 'u1.13',
         title: 'Finding latitude via Polaris',
         depth: 'be able to',
+        spec: ['6.18'],
         notes: "Polaris's altitude approximates the observer's latitude, since it lies close to the north celestial pole",
       },
       {
         id: 'u1.14',
         title: 'Diurnal motion',
         depth: 'understand',
+        spec: ['6.14'],
         notes: "the apparent daily rotation of the sky (rise, transit, set) caused by Earth's rotation",
       },
       {
         id: 'u1.15',
         title: 'Retrograde motion and planetary alignments',
         depth: 'understand',
+        spec: ['5.3', '5.5', '5.8'],
         notes:
           "apparent retrograde loops, caused by Earth overtaking an outer planet on a faster inner orbit; conjunction, opposition and elongation as the possible Sun-Earth-planet alignments",
       },
@@ -148,6 +175,7 @@ const UNITS = [
         id: 'u1.16',
         title: 'The ecliptic and the zodiacal band',
         depth: 'know',
+        spec: ['5.2', '5.4'],
         notes:
           "the ecliptic is the projection of Earth's orbital plane onto the sky; the Sun, Moon and planets are always found within the zodiacal band around it, home to the twelve zodiac constellations",
       },
@@ -155,6 +183,7 @@ const UNITS = [
         id: 'u1.17',
         title: 'Transit and occultation',
         depth: 'know',
+        spec: ['5.8'],
         notes:
           'transit: a nearer body crossing the disc of a farther one, e.g. Venus or Mercury crossing the Sun; occultation: a nearer body completely hiding a farther one, e.g. the Moon occulting a star or planet',
       },
@@ -162,6 +191,7 @@ const UNITS = [
         id: 'u1.18',
         title: 'Finding targets: star charts, planispheres and apps',
         depth: 'be able to',
+        spec: ['6.5'],
         notes:
           'using a star chart, a rotating planisphere set to the date and time, or a sky-mapping app to locate and identify targets before or during an observing session',
       },
@@ -169,6 +199,7 @@ const UNITS = [
         id: 'u1.19',
         title: 'Constellations across cultures',
         depth: 'understand',
+        spec: ['6.4'],
         notes:
           "the 88 IAU constellations are one, largely Greco-Roman, tradition among many; other cultures group and name the same stars differently, e.g. Aboriginal Australian, Chinese and Polynesian astronomy",
       },
@@ -176,6 +207,7 @@ const UNITS = [
         id: 'u1.20',
         title: 'Meteor showers and the radiant point',
         depth: 'understand',
+        spec: ['5.7'],
         notes:
           "caused by Earth passing through debris left by a comet (or occasionally an asteroid); meteors appear to radiate from one point (the radiant) as a perspective effect, and showers are named after the constellation containing it, e.g. the Perseids, Geminids and Orionids",
       },
@@ -183,6 +215,7 @@ const UNITS = [
         id: 'u1.21',
         title: 'Sidereal day vs solar day',
         depth: 'understand',
+        spec: ['4.1', '4.14', '5.6'],
         notes:
           "the sidereal day (~23h 56m 04s) is how long Earth takes to rotate once relative to the fixed stars; the solar day (24h 00m, what a clock tracks) is how long it takes for the Sun to return to the same position, about 4 minutes longer — the same cause as the sidereal/synodic month gap, on a much shorter timescale: Earth's own orbital motion means it has to keep turning a little further each day to bring the Sun back to the meridian, so a star transits about 4 minutes earlier every day than it did the day before",
       },
@@ -196,6 +229,7 @@ const UNITS = [
         id: 'u2.1',
         title: 'Earth structure',
         depth: 'know',
+        spec: ['1.1', '1.3', '1.4', '1.5'],
         notes:
           'an oblate spheroid (nearly spherical, slightly flattened at the poles), diameter ~12,742 km; internally layered into core (inner/outer, iron-nickel, drives the magnetic field), mantle (thickest layer, semi-solid rock that slowly flows) and crust (thin, cool, brittle outer shell); positions on the surface given by latitude (0-90° N or S of the equator, along parallels) and longitude (0-180° E or W of the Prime Meridian, along meridians); named reference lines and points: the equator, the Tropics of Cancer and Capricorn (~23.5° N/S, equal to the axial tilt), the Arctic and Antarctic Circles (~66.5° N/S), the Prime Meridian through Greenwich, and the North and South Poles',
       },
@@ -203,6 +237,7 @@ const UNITS = [
         id: 'u2.2',
         title: 'Moon structure',
         depth: 'know',
+        spec: ['2.1', '2.2', '2.3', '2.4'],
         notes:
           "a near-sphere, mean diameter ~3,500 km (3,475 km more precisely); surface features and their origins: craters (meteoroid impacts, of all sizes and ages), maria (dark, smooth lava that flooded low-lying impact basins), terrae/highlands (light, rugged, older and more heavily cratered), mountain ranges such as the Apennines (uplifted rims of large impact basins, not volcanoes), and rilles (narrow channels in the maria, thought to be collapsed lava tubes or lava channels); the far side looks more heavily cratered mainly because it has almost no maria to have buried older craters",
       },
@@ -210,6 +245,7 @@ const UNITS = [
         id: 'u2.3',
         title: 'Phases of the Moon',
         depth: 'understand',
+        spec: ['4.9'],
         notes:
           "caused by the Moon's changing position relative to the Sun as seen from Earth (and so how much of its permanently half-lit surface faces us), not by Earth's shadow — that's a lunar eclipse, a separate and much rarer event",
       },
@@ -217,12 +253,14 @@ const UNITS = [
         id: 'u2.4',
         title: 'Nuclear fusion',
         depth: 'know',
+        spec: ['10.3', '10.4'],
         notes: "hydrogen fusing to helium as the Sun's energy source",
       },
       {
         id: 'u2.5',
         title: 'Sunspots',
         depth: 'understand',
+        spec: ['10.6', '10.7', '10.8'],
         notes:
           "cooler, magnetically active regions; tracking a sunspot's position over successive days to estimate the Sun's (differential) rotation period, distinct from the ~11-year solar cycle of rising and falling sunspot number — a common exam confusion; the butterfly diagram, showing sunspot latitude drifting from around 35° toward the equator over each cycle",
       },
@@ -230,6 +268,7 @@ const UNITS = [
         id: 'u2.6',
         title: 'Historical sizes and distances',
         depth: 'understand',
+        spec: ['3.3'],
         notes:
           "Eratosthenes' measurement of the Earth: the Sun's noon shadow angle at two places due north-south of each other, at the same moment, differs by the angle between them at Earth's centre (the Sun's rays being parallel), so angle / 360° = distance / circumference, e.g. 7.2° and ~800 km give ~40,000 km; Aristarchus' methods for the Moon and Sun: the width of Earth's shadow on the Moon during a lunar eclipse (~2.6 Moon diameters, plus ~1 for the shadow narrowing) gives the Moon's size relative to Earth's (~0.27), and the angle between the Moon and Sun at first quarter, when the Sun-Moon-Earth angle is 90°, gives their relative distances (he measured 87°, giving ~19×; the true ~89.85° gives ~390×)",
       },
@@ -237,6 +276,7 @@ const UNITS = [
         id: 'u2.7',
         title: 'Tides',
         depth: 'understand',
+        spec: ['3.5'],
         notes:
           "the Moon's gravity pulls the near side of Earth more strongly than its centre, and its centre more than the far side, raising two tidal bulges, one facing the Moon and one opposite; Earth's rotation carries each place through both, giving two high and two low tides most days, about 12 h 25 min apart and ~50 min later each day; the Sun raises smaller bulges (its tidal effect is ~0.46 of the Moon's, despite a ~180× stronger overall pull, because tides depend on the difference in pull across Earth); spring tides at new and full Moon, when the Sun and Moon are in line, give the largest tidal range; neap tides at first and last quarter, when they are at right angles, give the smallest",
       },
@@ -244,18 +284,21 @@ const UNITS = [
         id: 'u2.8',
         title: 'Eclipses',
         depth: 'understand',
+        spec: ['3.8', '3.9'],
         notes: 'solar and lunar eclipses; umbra and penumbra',
       },
       {
         id: 'u2.9',
         title: 'Seasons',
         depth: 'understand',
+        spec: ['4.12', '4.13'],
         notes: 'caused by axial tilt, not distance from the Sun',
       },
       {
         id: 'u2.10',
         title: 'Time',
         depth: 'understand',
+        spec: ['4.2', '4.3', '4.4', '4.5', '4.6', '4.11', '4.15', '4.16', '4.17', '4.18'],
         notes:
           "Apparent Solar Time (AST, what a sundial reads) vs Mean Solar Time (MST, what a clock reads); the Equation of Time (AST - MST), caused by orbital eccentricity and axial tilt; Local Mean Time (LMT), mean solar time at a particular longitude, 4 minutes later for every degree west (LMT = GMT + longitude / 15 h), as each town kept before standard time; time zones, roughly 15° wide and usually whole hours from GMT, adopted once railways made local times unworkable; GMT/UT, mean solar time at Greenwich (longitude 0°), the reference for every zone; the annual variation in sunrise and sunset times, set by the Sun's changing declination, with the equation of time moving the earliest sunset and latest sunrise away from the winter solstice",
       },
@@ -263,6 +306,7 @@ const UNITS = [
         id: 'u2.11',
         title: "The Sun's structure",
         depth: 'know',
+        spec: ['10.2', '10.3', '10.5'],
         notes:
           'core, radiative zone and convective zone (energy transport outward from the core); photosphere, chromosphere and corona (the visible surface and outer atmosphere)',
       },
@@ -270,6 +314,7 @@ const UNITS = [
         id: 'u2.12',
         title: 'Solar wind',
         depth: 'understand',
+        spec: ['10.10', '10.11'],
         notes:
           'a continuous stream of charged particles (electrons, protons and alpha particles) escaping the corona at roughly 300-800 km/s; influences planetary magnetospheres, causes aurorae, shapes cometary ion tails, and can drive geomagnetic storms that disrupt satellites, aircraft and power grids',
       },
@@ -277,6 +322,7 @@ const UNITS = [
         id: 'u2.13',
         title: 'Van Allen belts',
         depth: 'know',
+        spec: ['10.12'],
         notes:
           "two doughnut-shaped regions of charged particles trapped by Earth's magnetic field: an inner belt (mostly protons) and an outer belt (mostly electrons); shield the surface from radiation but pose a risk to satellites and astronauts",
       },
@@ -284,6 +330,7 @@ const UNITS = [
         id: 'u2.14',
         title: 'The Maunder Minimum',
         depth: 'know',
+        spec: ['10.8'],
         notes:
           'a 1645-1715 dip in the solar cycle (under 50 sunspots recorded in 1672-99, against a normal 40,000-50,000); coincided with the Little Ice Age; confirmed independently via C-14 and Be-10 isotope data',
       },
@@ -305,6 +352,7 @@ const UNITS = [
         id: 'u2.17',
         title: 'Sidereal vs synodic month',
         depth: 'understand',
+        spec: ['4.10'],
         notes:
           'the sidereal month (~27.3 days) is how long the Moon takes to return to the same direction against the fixed stars; the synodic month (~29.53 days) is how long it takes to return to the same phase. The ~2.2-day gap exists because Earth also moves along its own orbit during that time, so the Moon needs a bit longer to catch back up to the same Sun-Earth-Moon alignment',
       },
@@ -319,6 +367,7 @@ const UNITS = [
         id: 'u2.19',
         title: "Eclipse conditions: the Moon's tilted orbit",
         depth: 'understand',
+        spec: ['3.10'],
         notes:
           "the Moon's orbit is tilted ~5.1° to the ecliptic, crossing it at two nodes; an eclipse is only possible when a new Moon (solar) or full Moon (lunar) falls within the ecliptic limit of a node — about 18.4° for at least a partial solar eclipse, 12.2° for a lunar one — so eclipses come in 'eclipse seasons' rather than every month",
       },
@@ -326,6 +375,7 @@ const UNITS = [
         id: 'u2.20',
         title: 'Named lunar surface features',
         depth: 'be able to',
+        spec: ['2.5'],
         notes:
           'identify on sight: the Sea of Tranquility, Ocean of Storms and Sea of Crises (maria), the craters Tycho, Copernicus and Kepler, and the Apennine mountain range',
       },
@@ -333,6 +383,7 @@ const UNITS = [
         id: 'u2.21',
         title: 'Synchronous rotation',
         depth: 'understand',
+        spec: ['2.6', '2.7'],
         notes:
           "the Moon's rotation period equals its orbital period (~27.3 days, the sidereal month), so the same face always points towards Earth",
       },
@@ -340,6 +391,7 @@ const UNITS = [
         id: 'u2.22',
         title: 'Libration',
         depth: 'understand',
+        spec: ['2.8'],
         notes:
           "small apparent rocking of the Moon that lets us see about 59% of its surface over time: in longitude (its orbital speed varies around its elliptical orbit while its rotation stays steady), in latitude (its axis is tilted relative to its orbital plane), and diurnal (parallax from the observer's position on Earth's surface)",
       },
@@ -347,6 +399,7 @@ const UNITS = [
         id: 'u2.23',
         title: "The Moon's internal structure",
         depth: 'know',
+        spec: ['9.1'],
         notes:
           "crust, mantle and core, like Earth; mean crust ~34-43 km (GRAIL; Wieczorek et al. 2013), proportionally much thicker than Earth's; a small core under 25% of the Moon's radius, offset ~2 km towards the near side",
       },
@@ -354,6 +407,7 @@ const UNITS = [
         id: 'u2.24',
         title: 'Near side and far side',
         depth: 'understand',
+        spec: ['9.2'],
         notes:
           "the near side has large dark maria; the far side is almost devoid of them because its thicker crust (up to ~60 km in the far-side highlands, per GRAIL) kept lava from reaching the surface",
       },
@@ -361,6 +415,7 @@ const UNITS = [
         id: 'u2.25',
         title: 'Exploring the far side',
         depth: 'know',
+        spec: ['9.3'],
         notes:
           'first photographed by Luna 3 in 1959, then mapped in more detail from orbit by the Lunar Orbiter program, Apollo orbital photography and modern missions such as LRO',
       },
@@ -368,6 +423,7 @@ const UNITS = [
         id: 'u2.26',
         title: 'Escape velocity and rockets',
         depth: 'understand',
+        spec: ['9.4'],
         notes:
           "reaching the Moon means reaching (nearly) Earth's escape velocity, ~11.2 km/s; only rockets can supply the sustained thrust to do this in a vacuum, because they carry their own oxidiser and push by throwing exhaust backwards rather than pushing on air",
       },
@@ -375,6 +431,7 @@ const UNITS = [
         id: 'u2.27',
         title: 'Origin of the Moon',
         depth: 'understand',
+        spec: ['9.5'],
         notes:
           "the Giant Impact Hypothesis (a Mars-sized body, Theia, struck the early Earth a glancing blow; the debris formed the Moon), supported by near-identical oxygen isotope ratios, the lack of water and volatiles in lunar samples, and KREEP-rich rocks in the Ocean of Storms and Sea of Showers; alternatives: Capture Theory and Co-accretion Theory",
       },
@@ -382,6 +439,7 @@ const UNITS = [
         id: 'u2.28',
         title: 'Sizes and distances in the Earth-Moon-Sun system',
         depth: 'know',
+        spec: ['1.2', '3.1', '3.2', '3.4'],
         notes:
           "the Sun's mean diameter is ~1.39 million km (Earth 12,742 km, Moon 3,475 km); the Moon is ~384,400 km away and the Sun ~149.6 million km (1 AU); the Sun is ~109× Earth's diameter and Earth ~3.7× the Moon's; the Sun is ~400× the Moon's diameter and ~400× as far away, so both appear ~0.5° across, the coincidence that makes total solar eclipses possible",
       },
@@ -389,6 +447,7 @@ const UNITS = [
         id: 'u2.29',
         title: 'Precession',
         depth: 'understand',
+        spec: ['3.6', '3.7'],
         notes:
           "the Sun's and Moon's pull on Earth's equatorial bulge makes the direction of its axis slowly trace a circle, taking ~26,000 years, while the tilt stays ~23.4°; the celestial pole circles the ecliptic pole, so the pole star changes: Thuban ~2800 BCE, Polaris now (closest in AD 2100), Vega ~AD 14,000",
       },
@@ -434,7 +493,7 @@ const UNITS = [
         id: 'u3.5',
         title: 'Archaeoastronomy',
         depth: 'understand',
-        spec: ['7.1', '7.2'],
+        spec: ['7.1', '7.2', '3.6'],
         notes:
           "ancient civilisations used detailed observations of solar and lunar cycles for (a) agriculture — timing planting and harvest to the seasons; (b) religion — festivals and rituals tied to solstices, equinoxes and lunar phases; (c) time and calendar systems — the day, the (lunar) month and the year itself; and (d) aligning monuments to risings and settings, e.g. Stonehenge's solstice-sunrise alignment and the Great Pyramid of Giza's star-aligned shafts. Axial precession (u2.29) — Earth's axis slowly tracing a ~26,000-year circle — means those original alignments have since drifted: Thuban, not Polaris, was the pole star the ancient Egyptians aligned shafts to",
       },
@@ -698,6 +757,7 @@ const UNITS = [
         id: 'u5.4',
         title: 'Solar observation methods',
         depth: 'know',
+        spec: ['5.1', '10.1', '10.9'],
         notes:
           'telescope projection (safe; reveals sunspots and rotation); H-alpha filters (front-mounted only, isolating the 656.28nm line to reveal prominences, filaments, plage and spicules); X-ray imaging (must be done from space, since the atmosphere absorbs X-rays; bright patches are active regions linked to flares)',
       },
