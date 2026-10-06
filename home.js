@@ -4,6 +4,8 @@
   const unitListEl = document.getElementById('unit-list');
   const extensionSectionEl = document.getElementById('extension-section');
   const extensionListEl = document.getElementById('extension-list');
+  const referenceSectionEl = document.getElementById('reference-section');
+  const referenceListEl = document.getElementById('reference-list');
 
   function pagesForUnit(unitId) {
     return Pages.PAGES.filter((page) => page.units.some((u) => u.startsWith(`${unitId}.`)));
@@ -94,6 +96,42 @@
       phaseSection.appendChild(stepsList);
       pathListEl.appendChild(phaseSection);
     });
+  }
+
+  // --- Reference pages ------------------------------------------------------
+  // Pages marked Pages.isReferencePage cut across every unit instead of
+  // teaching towards particular ones, so they sit in their own section —
+  // outside every unit group, the Recommended path (test/pages.test.js
+  // enforces that) and the scope note's coverage figures (their empty
+  // `units` means Pages.computeUnitCoverage already leaves them out).
+
+  function renderReferencePages() {
+    const referencePages = Pages.PAGES.filter((page) => Pages.isReferencePage(page));
+    if (referencePages.length === 0) return;
+
+    referenceSectionEl.hidden = false;
+    const list = document.createElement('div');
+    list.className = 'page-card-list';
+
+    referencePages.forEach((page) => {
+      const card = document.createElement('a');
+      card.className = 'page-card';
+      card.href = page.href;
+
+      const title = document.createElement('h4');
+      title.className = 'page-card-title';
+      title.textContent = page.title;
+      card.appendChild(title);
+
+      const description = document.createElement('p');
+      description.className = 'page-card-description';
+      description.textContent = page.description;
+      card.appendChild(description);
+
+      list.appendChild(card);
+    });
+
+    referenceListEl.appendChild(list);
   }
 
   // --- Beyond GCSE: A-level extension pages ---------------------------------
@@ -188,6 +226,7 @@
 
   renderScopeNote();
   renderPath();
+  renderReferencePages();
   renderExtensionPages();
   renderUnitReference();
 })();

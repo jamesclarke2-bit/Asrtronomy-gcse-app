@@ -8,6 +8,12 @@
  * so this stays a cheap, dependency-free listing.
  *
  * href is relative to the repo root (where index.html lives).
+ *
+ * `kind: 'reference'` marks a page that cuts across every unit instead
+ * of teaching towards particular ones — it carries `units: []` and is
+ * listed in its own "Reference" section on index.html, outside every
+ * unit group, the Recommended path, and spec-coverage accounting.
+ * Pages without a `kind` are ordinary unit-tagged pages.
  */
 
 const PAGES = [
@@ -119,12 +125,11 @@ const PAGES = [
     description:
       "The exam's own Appendix 2 data sheet, reproduced in full: all six given equations (linked to the page that uses each, where one exists), the constants, and the planet and dwarf-planet table every Kepler's-third-law question draws on.",
     href: 'notes/data-sheet.html',
-    // Only the units this page actually teaches towards, not every unit
-    // its "coming soon" equation rows merely name — distance modulus,
-    // redshift and Hubble's law (u4.2/u6.1/u6.2) aren't taught anywhere
-    // yet, so tagging this page with them would wrongly claim they're
-    // covered. Magnification now links to Telescopes (u5.2) instead.
-    units: ['u1.21', 'u2.28', 'u3.4', 'u3.11'],
+    // A reference page: it covers every unit's equations and constants
+    // at once, so it isn't tagged towards any particular one (see the
+    // `kind: 'reference'` note in the file header above).
+    kind: 'reference',
+    units: [],
   },
   {
     title: 'Moon Phases',
@@ -264,16 +269,12 @@ const RECOMMENDED_PATH = [
         why: "Kepler described the three laws; this is Newton explaining why they're true — simulating gravity itself, rather than assuming the ellipse Kepler's page draws.",
       },
       {
-        href: 'notes/data-sheet.html',
-        why: 'The reference page Kepler’s third law questions just started drawing on — worth bookmarking, since every exam question gives you these same equations and figures.',
-      },
-      {
         href: 'notes/scale-of-the-solar-system.html',
-        why: 'Puts that same data-sheet distance table to a different use: just how big the Solar System actually is, and why AU, light years and parsecs each earn their place.',
+        why: 'Puts the distance and period figures Kepler’s page just used to a different purpose: just how big the Solar System actually is, and why AU, light years and parsecs each earn their place.',
       },
       {
         href: 'notes/solar-system-bodies.html',
-        why: "Rounds out the Solar System itself: the same data-sheet planet table compared directly, then everything smaller — asteroids, comets, meteorites — plus how a transit of Venus first measured the AU just introduced.",
+        why: "Rounds out the Solar System itself: the same planet table compared directly, then everything smaller — asteroids, comets, meteorites — plus how a transit of Venus first measured the AU just introduced.",
       },
     ],
   },
@@ -356,8 +357,16 @@ function isExtensionPage(page, getSubtopic) {
   });
 }
 
+/**
+ * Whether a page is a cross-cutting reference page (see the `kind`
+ * note in the file header above), rather than unit-tagged content.
+ */
+function isReferencePage(page) {
+  return page.kind === 'reference';
+}
+
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { PAGES, RECOMMENDED_PATH, computeUnitCoverage, isExtensionPage };
+  module.exports = { PAGES, RECOMMENDED_PATH, computeUnitCoverage, isExtensionPage, isReferencePage };
 } else if (typeof window !== 'undefined') {
-  window.Pages = { PAGES, RECOMMENDED_PATH, computeUnitCoverage, isExtensionPage };
+  window.Pages = { PAGES, RECOMMENDED_PATH, computeUnitCoverage, isExtensionPage, isReferencePage };
 }

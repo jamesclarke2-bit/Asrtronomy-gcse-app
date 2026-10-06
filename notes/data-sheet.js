@@ -4,8 +4,6 @@
  * drift out of sync with the numbers every other page quotes.
  */
 (function () {
-  const CURRICULUM_UNITS = ['u1.21', 'u2.28', 'u3.4', 'u3.11'];
-
   const SUPERSCRIPT_DIGITS = { 0: '⁰', 1: '¹', 2: '²', 3: '³', 4: '⁴', 5: '⁵', 6: '⁶', 7: '⁷', 8: '⁸', 9: '⁹', '-': '⁻' };
 
   function toSuperscript(value) {
@@ -85,8 +83,7 @@
 
   function renderCoverage() {
     const coverageEl = document.getElementById('coverage');
-    const subtopics = CURRICULUM_UNITS.map(Curriculum.getSubtopic);
-    coverageEl.textContent = 'Covers: ' + subtopics.map((s) => `${s.id} ${s.title}`).join(', ');
+    coverageEl.textContent = 'A reference page: the equations and constants it reproduces are drawn on throughout every unit, not just one.';
   }
 
   const GLOSSARY = {

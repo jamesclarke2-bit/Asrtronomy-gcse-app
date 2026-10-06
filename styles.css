@@ -934,6 +934,20 @@ canvas {
   color: #8a5b00;
 }
 
+/* Pages that cut across every unit instead of teaching towards particular
+   ones (see src/pages.js's `kind: 'reference'` and Pages.isReferencePage) —
+   kept out of the Recommended path above and out of the scope note's
+   coverage figures, same reasoning as .extension-section below, but always
+   shown rather than collapsed since there's nothing optional about it. */
+.reference-section {
+  margin-top: 2rem;
+  max-width: 800px;
+}
+
+.reference-section .page-card-list {
+  margin-top: 1rem;
+}
+
 /* Collapsed by default (no "open" attribute) — A-level extension pages,
    kept out of the Recommended path above and out of the scope note's
    coverage figures (see src/curriculum.js's `level: 'extension'` and

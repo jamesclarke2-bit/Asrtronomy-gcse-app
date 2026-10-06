@@ -1,6 +1,6 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const { PAGES, RECOMMENDED_PATH, computeUnitCoverage, isExtensionPage } = require('../src/pages');
+const { PAGES, RECOMMENDED_PATH, computeUnitCoverage, isExtensionPage, isReferencePage } = require('../src/pages');
 const { getSubtopic, UNITS } = require('../src/curriculum');
 
 test('every page has a title, description and href', () => {
@@ -11,9 +11,14 @@ test('every page has a title, description and href', () => {
   });
 });
 
-test('every page has at least one curriculum unit', () => {
+test('every page has at least one curriculum unit, unless it is a reference page', () => {
   PAGES.forEach((page) => {
-    assert.ok(Array.isArray(page.units) && page.units.length > 0, `page has no units: ${page.title}`);
+    assert.ok(Array.isArray(page.units), `page.units is not an array: ${page.title}`);
+    if (isReferencePage(page)) {
+      assert.equal(page.units.length, 0, `reference page should have no units: ${page.title}`);
+    } else {
+      assert.ok(page.units.length > 0, `page has no units: ${page.title}`);
+    }
   });
 });
 
@@ -58,22 +63,34 @@ test('every RECOMMENDED_PATH step names a real page and gives a reason', () => {
   });
 });
 
-test('RECOMMENDED_PATH covers every non-extension page in PAGES exactly once — no page missing, none duplicated, and no extension page included', () => {
+test('RECOMMENDED_PATH covers every non-extension, non-reference page in PAGES exactly once — no page missing, none duplicated, and no extension or reference page included', () => {
   const pathHrefs = RECOMMENDED_PATH.flatMap((phase) => phase.steps.map((step) => step.href));
   assert.equal(new Set(pathHrefs).size, pathHrefs.length, 'a page appears more than once in RECOMMENDED_PATH');
 
   // Extension pages (beyond the GCSE spec) live in index.html's
   // collapsed "Beyond GCSE" section instead — see isExtensionPage below
-  // and home.js's own rendering.
-  const nonExtensionPages = PAGES.filter((page) => !isExtensionPage(page, getSubtopic));
-  const missing = nonExtensionPages.map((page) => page.href).filter((href) => !pathHrefs.includes(href));
-  assert.deepEqual(missing, [], 'non-extension pages missing from RECOMMENDED_PATH');
-  assert.equal(pathHrefs.length, nonExtensionPages.length, 'RECOMMENDED_PATH and non-extension PAGES should be the same length');
+  // and home.js's own rendering. Reference pages (isReferencePage) live
+  // in their own "Reference" section, outside the Recommended path too.
+  const pathEligiblePages = PAGES.filter((page) => !isExtensionPage(page, getSubtopic) && !isReferencePage(page));
+  const missing = pathEligiblePages.map((page) => page.href).filter((href) => !pathHrefs.includes(href));
+  assert.deepEqual(missing, [], 'pages missing from RECOMMENDED_PATH');
+  assert.equal(pathHrefs.length, pathEligiblePages.length, 'RECOMMENDED_PATH and path-eligible PAGES should be the same length');
 
   const extensionPages = PAGES.filter((page) => isExtensionPage(page, getSubtopic));
   extensionPages.forEach((page) => {
     assert.ok(!pathHrefs.includes(page.href), `extension page "${page.title}" should not be in RECOMMENDED_PATH`);
   });
+
+  const referencePages = PAGES.filter((page) => isReferencePage(page));
+  referencePages.forEach((page) => {
+    assert.ok(!pathHrefs.includes(page.href), `reference page "${page.title}" should not be in RECOMMENDED_PATH`);
+  });
+});
+
+test('isReferencePage: true only for pages marked kind: \'reference\'', () => {
+  assert.equal(isReferencePage({ kind: 'reference' }), true);
+  assert.equal(isReferencePage({ kind: 'extension' }), false);
+  assert.equal(isReferencePage({}), false);
 });
 
 test('isExtensionPage: true only when every declared unit is a level:\'extension\' subtopic', () => {
