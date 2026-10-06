@@ -1,7 +1,9 @@
 /**
  * Checks notes pages against notes/TEMPLATE.md. Only pages listed in
  * CONFORMING_PAGES are checked; the older notes pages join the list as
- * they're retrofitted.
+ * they're retrofitted. DIAGRAM_FIRST_PAGES (template section 6) is a
+ * separate, independent list for the same reason — see its own comment
+ * below.
  */
 const test = require('node:test');
 const assert = require('node:assert/strict');
@@ -27,6 +29,12 @@ const CONFORMING_PAGES = [
   'notes/solar-system-bodies.html',
 ];
 
+// Section 6 of the template ("Diagram-first"), checked only for pages
+// listed here. Starts empty: nothing has been rebuilt to this standard
+// yet, and (same as CONFORMING_PAGES above) this list is never meant to
+// fail a page that hasn't been — it grows one rebuilt page at a time.
+const DIAGRAM_FIRST_PAGES = [];
+
 function read(href) {
   return fs.readFileSync(path.join(ROOT, href), 'utf8');
 }
@@ -50,6 +58,24 @@ function sectionsOf(html) {
 
 function stripTags(s) {
   return s.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
+}
+
+// Same idea as stripTags, but for the diagram-first word counts below:
+// a `hidden` element (a glossary definition, or a page-specific hidden
+// panel) carries no visible words until revealed, so it shouldn't count
+// against either word limit — that's the whole point of pushing detail
+// into one. Non-greedy and not a real parser, like sectionsOf above; it
+// assumes a hidden block doesn't nest another element of the same tag
+// name, true of every hidden panel in this codebase today.
+function stripHiddenAndTags(s) {
+  const withoutHidden = s.replace(/<(\w+)[^>]*\bhidden\b[^>]*>[\s\S]*?<\/\1>/g, '');
+  return stripTags(withoutHidden);
+}
+
+// Position (character offset) of every <canvas> or <svg> opening tag —
+// "a visual" for the diagram-first rule — in document order.
+function visualPositions(html) {
+  return [...html.matchAll(/<canvas\b|<svg\b/g)].map((m) => m.index);
 }
 
 test('the contents list appears only on pages long enough to need one', () => {
@@ -157,5 +183,44 @@ CONFORMING_PAGES.forEach((href) => {
     assert.ok(scripts.includes('../glossary.js'));
     assert.equal(scripts.at(-2), '../notesPage.js');
     assert.equal(scripts.at(-1), '../nextPage.js');
+  });
+});
+
+// --- Section 6: Diagram-first (DIAGRAM_FIRST_PAGES only) -------------------
+
+const DIAGRAM_FIRST_BEFORE_FIRST_LIMIT = 150;
+const DIAGRAM_FIRST_BETWEEN_LIMIT = 250;
+
+DIAGRAM_FIRST_PAGES.forEach((href) => {
+  const html = read(href);
+  const main = /<main>([\s\S]*)<\/main>/.exec(html)[1];
+
+  test(`${href}: opens with its first diagram or simulation within ${DIAGRAM_FIRST_BEFORE_FIRST_LIMIT} words of the subtitle`, () => {
+    const overview = /<\/h1>\s*<p class="subtitle">[\s\S]*?<\/p>/.exec(main);
+    assert.ok(overview, 'h1 is followed directly by p.subtitle');
+    const afterSubtitle = overview.index + overview[0].length;
+
+    const visuals = visualPositions(main);
+    assert.ok(visuals.length > 0, 'at least one canvas or svg on the page');
+    assert.ok(visuals[0] >= afterSubtitle, 'first visual comes after the subtitle');
+
+    const before = main.slice(afterSubtitle, visuals[0]);
+    const words = NotesPage.countWords(stripHiddenAndTags(before));
+    assert.ok(
+      words <= DIAGRAM_FIRST_BEFORE_FIRST_LIMIT,
+      `${words} words before the first visual, over the ${DIAGRAM_FIRST_BEFORE_FIRST_LIMIT}-word limit`
+    );
+  });
+
+  test(`${href}: no more than ${DIAGRAM_FIRST_BETWEEN_LIMIT} words between any two visuals`, () => {
+    const visuals = visualPositions(main);
+    for (let i = 1; i < visuals.length; i += 1) {
+      const between = main.slice(visuals[i - 1], visuals[i]);
+      const words = NotesPage.countWords(stripHiddenAndTags(between));
+      assert.ok(
+        words <= DIAGRAM_FIRST_BETWEEN_LIMIT,
+        `${words} words between visual ${i} and visual ${i + 1}, over the ${DIAGRAM_FIRST_BETWEEN_LIMIT}-word limit`
+      );
+    }
   });
 });

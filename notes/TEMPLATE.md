@@ -199,6 +199,32 @@ Recommended path, it's exempt from the "every inline link must also be in Relate
 rule above — it isn't inline content, and it's regenerated from the same source
 `index.html` uses, not curated per page.
 
+## 6. Diagram-first
+
+A page should let a student *see* the thing before they read a page of prose about it.
+Checked automatically for every page listed in `DIAGRAM_FIRST_PAGES` in
+`test/notesTemplate.test.js` — that list starts empty and grows as pages are rebuilt to this
+standard, the same way `CONFORMING_PAGES` grows for the rest of this template; it never fails
+a page that hasn't been rebuilt yet.
+
+- **Opens with its central diagram or simulation.** The first thing after the subtitle is the
+  page's own main `canvas` or `svg` — not a run of explanatory paragraphs leading up to it.
+- **No more than about 150 words before that first visual.** Enough for the subtitle and a
+  one- or two-sentence lead-in; not enough for a full explanation.
+- **No more than about 250 words between any two visuals**, read in document order. If a
+  section needs more than that to make its point, the extra belongs behind a tap-to-reveal
+  toggle (section 3 above), not inline.
+- **Detail goes into tap-to-reveal panels**, not the flowing text. A definition, a derivation,
+  a caveat about one edge case — anything a student can read *after* looking at the diagram,
+  rather than needing *before* they can make sense of it — is exactly what
+  `.glossary-toggle`/`.glossary-definition` (or a page-specific hidden panel) is for. Since
+  hidden content carries no visible words until revealed, this is also what keeps the two word
+  limits above honest: push detail into a panel and the flowing word count drops with it.
+
+This doesn't replace section 1's part order (core content still runs core → exam tips →
+related) — it's a rule about *within* core content: how much reads before the student sees
+something, not which sections exist or what order they come in.
+
 ## Optional: flashcards
 
 A page with enough discrete facts worth drilling (names, short definitions, pointer routes)
@@ -348,5 +374,9 @@ last, in either order (one only ever touches the top of `<main>`, the other only
    a `pages.js` title.
 6. `#next-page` is the true last thing in `<main>`, straight after `#coverage`.
 7. `src/pages.js` is loaded, and `notesPage.js`/`nextPage.js` are the last two scripts.
-8. The page is in `src/pages.js`, in `Pages.RECOMMENDED_PATH`, and in `CONFORMING_PAGES` in
+8. Diagram-first (section 6): opens with its main diagram or simulation, no more than ~150
+   words before it and ~250 between any two visuals, with detail in tap-to-reveal panels. Add
+   the page to `DIAGRAM_FIRST_PAGES` in `test/notesTemplate.test.js` too, so it's actually
+   checked rather than just aimed for.
+9. The page is in `src/pages.js`, in `Pages.RECOMMENDED_PATH`, and in `CONFORMING_PAGES` in
    `test/notesTemplate.test.js`, and `npm test` passes.
