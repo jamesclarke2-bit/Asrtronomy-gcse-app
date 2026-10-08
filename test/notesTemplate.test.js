@@ -33,7 +33,7 @@ const CONFORMING_PAGES = [
 // listed here. Starts empty: nothing has been rebuilt to this standard
 // yet, and (same as CONFORMING_PAGES above) this list is never meant to
 // fail a page that hasn't been — it grows one rebuilt page at a time.
-const DIAGRAM_FIRST_PAGES = [];
+const DIAGRAM_FIRST_PAGES = ['notes/telescopes.html'];
 
 function read(href) {
   return fs.readFileSync(path.join(ROOT, href), 'utf8');

@@ -46,6 +46,18 @@ canvas {
   max-width: 420px;
 }
 
+.diagram-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+/* The telescope bench (notes/telescopes.html) needs more horizontal
+   room than the generic .diagram cap gives a schematic tube diagram. */
+.diagram.bench-diagram {
+  max-width: 760px;
+}
+
 .legend {
   font-size: 0.8rem;
   color: #555;

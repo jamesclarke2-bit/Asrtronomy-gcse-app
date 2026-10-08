@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Telescopes: Magnification, Light Grasp and Resolution</title>
-  <link rel="stylesheet" href="../styles.css?v=202610072301" />
+  <link rel="stylesheet" href="../styles.css?v=202610081200" />
 </head>
 <body>
   <main>
@@ -12,62 +12,82 @@
 
     <h1>Telescopes: Magnification, Light Grasp and Resolution</h1>
     <p class="subtitle">
-      Why a telescope sees more than your eye does, the three numbers that describe how well it
-      does it, the four classic designs behind nearly every telescope ever built, and why
-      reflectors took over from refractors for anything serious.
+      A telescope bench to build and test yourself: how a lens and a mirror each focus light, how
+      the four classic designs compare, what you'd actually see through the eyepiece, and the
+      resolution and light grasp a bigger aperture buys you.
     </p>
 
-    <section class="notes-section" id="eye-limits">
-      <h2>Why telescopes</h2>
+    <section class="notes-section" id="focusing">
+      <h2>How a lens and a mirror focus light</h2>
       <p>
-        The human eye is itself a small optical instrument, and a surprisingly capable one &mdash;
-        but it has two hard limits a telescope exists to beat. Its
-        <button type="button" class="glossary-toggle glossary-term-button" data-term="aperture" aria-label="What is aperture?" aria-expanded="false">aperture</button>
-        &mdash; the pupil &mdash; opens to only about 7&nbsp;mm across even fully dark-adapted, which
-        caps both how much light it can gather and how fine a detail it can resolve. And unlike a
-        camera, it can't build up a longer exposure: a faint object either produces enough signal
-        to register in under a second, or it simply never becomes visible, no matter how long you
-        stare.
+        Parallel light from a distant star meets at a single focal point &mdash; a lens bends it
+        there, a mirror reflects it there. Drag the sliders to see both respond the same way.
       </p>
+
+      <div class="diagram-row">
+        <div class="diagram">
+          <canvas
+            id="lens-focus-view"
+            width="320"
+            height="200"
+            aria-label="A glass lens bending parallel rays of light, drawn as moving pulses, to a single focal point"
+          ></canvas>
+          <p class="diagram-caption">Lens &mdash; light refracts to the focal point.</p>
+        </div>
+        <div class="diagram">
+          <canvas
+            id="mirror-focus-view"
+            width="320"
+            height="200"
+            aria-label="A concave mirror reflecting parallel rays of light, drawn as moving pulses, back to a single focal point in front of it"
+          ></canvas>
+          <p class="diagram-caption">Mirror &mdash; light reflects to the focal point.</p>
+        </div>
+      </div>
+
+      <div class="control">
+        <label for="focus-aperture-slider">
+          Aperture diameter: <span id="focus-aperture-label"></span>
+          <button type="button" class="glossary-toggle" data-term="aperture" aria-label="What is aperture?" aria-expanded="false">?</button>
+        </label>
+        <input type="range" id="focus-aperture-slider" min="20" max="200" step="5" value="80" />
+      </div>
       <span class="glossary-definition" data-term="aperture" hidden></span>
+      <div class="control">
+        <label for="focus-focal-length-slider">
+          Focal length: <span id="focus-focal-length-label"></span>
+          <button type="button" class="glossary-toggle" data-term="focal-length" aria-label="What is focal length?" aria-expanded="false">?</button>
+        </label>
+        <input type="range" id="focus-focal-length-slider" min="50" max="300" step="10" value="150" />
+      </div>
+      <span class="glossary-definition" data-term="focal-length" hidden></span>
+
       <p>
-        A telescope's objective &mdash; its main lens or mirror &mdash; is simply a much larger
-        aperture, feeding a magnified, brighter image to the eye behind the eyepiece. Everything
-        below follows from that one idea: a bigger aperture gathers more light and resolves finer
-        detail, and the ratio of two lenses' focal lengths sets how large the image appears.
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="why-telescopes" aria-label="Why bother with either?" aria-expanded="false">Why bother with either?</button>
       </p>
+      <span class="glossary-definition" data-term="why-telescopes" hidden></span>
     </section>
 
-    <section class="notes-section" id="optics">
-      <h2>Magnification, light grasp and resolution</h2>
-      <p>
-        Three numbers describe what a telescope actually does, and the exam gives you exact
-        formulas for all three. Magnification depends only on the two
-        <button type="button" class="glossary-toggle glossary-term-button" data-term="focal-length" aria-label="What is focal length?" aria-expanded="false">focal lengths</button>:
-      </p>
-      <span class="glossary-definition" data-term="focal-length" hidden></span>
-      <p class="formula">magnification = f<sub>objective</sub> / f<sub>eyepiece</sub></p>
-      <p>
-        <button type="button" class="glossary-toggle glossary-term-button" data-term="light-grasp" aria-label="What is light grasp?" aria-expanded="false">Light grasp</button>
-        and resolution, by contrast, depend only on the objective's diameter &mdash; its aperture
-        &mdash; not on either focal length. Light grasp is proportional to the square of the
-        diameter, so doubling the aperture gives four times the light grasp:
-      </p>
-      <span class="glossary-definition" data-term="light-grasp" hidden></span>
-      <p class="formula">light grasp &prop; diameter&sup2;</p>
-      <p>
-        <button type="button" class="glossary-toggle glossary-term-button" data-term="resolution" aria-label="What is angular resolution?" aria-expanded="false">Angular resolution</button>
-        improves with a larger objective diameter and gets worse at longer wavelengths. The
-        Rayleigh criterion gives the actual angle a telescope can just resolve:
-      </p>
-      <span class="glossary-definition" data-term="resolution" hidden></span>
-      <p class="formula">resolution (radians) = 1.22 &times; wavelength / diameter</p>
+    <section class="notes-section" id="bench">
+      <h2>The telescope bench</h2>
+      <p>Pick a design, then drag the sliders &mdash; the optics below resize and move to match.</p>
 
-      <p>
-        Drag the sliders below: the first two set magnification, the aperture and wavelength
-        sliders set light grasp and resolution, and the double star and star cluster views show
-        resolution and light grasp actually happening.
-      </p>
+      <div class="diagram bench-diagram">
+        <canvas
+          id="telescope-bench-view"
+          width="640"
+          height="280"
+          aria-label="A schematic telescope, built from the chosen design's lenses or mirrors, with two colour-coded ray bundles from a distant star — one on-axis, one slightly off-axis — showing magnification as the larger angle the off-axis bundle emerges at"
+        ></canvas>
+        <p class="diagram-caption">Not to scale; angles exaggerated.</p>
+      </div>
+
+      <div class="preset-list" role="group" aria-label="Choose a telescope design">
+        <button type="button" class="preset-button" data-design="galilean" aria-pressed="false">Galilean</button>
+        <button type="button" class="preset-button" data-design="keplerian" aria-pressed="false">Keplerian</button>
+        <button type="button" class="preset-button" data-design="newtonian" aria-pressed="false">Newtonian</button>
+        <button type="button" class="preset-button" data-design="cassegrain" aria-pressed="false">Cassegrain</button>
+      </div>
 
       <div class="control">
         <label for="objective-diameter-slider">Objective diameter: <span id="objective-diameter-label"></span></label>
@@ -78,24 +98,113 @@
         <input type="range" id="objective-focal-length-slider" min="200" max="3000" step="50" value="1000" />
       </div>
       <div class="control">
-        <label for="eyepiece-focal-length-slider">Eyepiece focal length: <span id="eyepiece-focal-length-label"></span></label>
-        <input type="range" id="eyepiece-focal-length-slider" min="4" max="40" step="1" value="25" />
+        <label for="eyepiece-focal-length-slider">
+          Eyepiece focal length: <span id="eyepiece-focal-length-label"></span>
+          <button type="button" class="glossary-toggle" data-term="eyepiece-separation" aria-label="How far apart do these sit?" aria-expanded="false">?</button>
+        </label>
+        <input type="range" id="eyepiece-focal-length-slider" min="4" max="50" step="1" value="25" />
       </div>
+      <span class="glossary-definition" data-term="eyepiece-separation" hidden></span>
+
+      <dl class="readout">
+        <div class="readout-row">
+          <dt>Magnification <button type="button" class="glossary-toggle" data-term="bench-magnification" aria-label="How is magnification worked out here?" aria-expanded="false">?</button></dt>
+          <dd id="bench-magnification-readout"></dd>
+        </div>
+        <div class="readout-row">
+          <dt>Effective focal length</dt>
+          <dd id="bench-focal-length-readout"></dd>
+        </div>
+        <div class="readout-row">
+          <dt>Tube length</dt>
+          <dd id="bench-tube-length-readout"></dd>
+        </div>
+        <div class="readout-row">
+          <dt>Image</dt>
+          <dd id="bench-orientation-readout"></dd>
+        </div>
+      </dl>
+      <span class="glossary-definition" data-term="bench-magnification" hidden></span>
+
+      <p>
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="four-designs" aria-label="What distinguishes the four designs?" aria-expanded="false">What distinguishes the four designs?</button>
+        &nbsp;&middot;&nbsp;
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="reflector-advantages" aria-label="Why do reflectors beat refractors?" aria-expanded="false">Why do reflectors beat refractors?</button>
+      </p>
+      <div class="glossary-definition" data-term="four-designs" hidden>
+        <div class="concept-grid">
+          <div class="concept-card">
+            <h3>Galilean refractor</h3>
+            <p>A diverging (concave) eyepiece lens, giving an upright image but a narrow field of view &mdash; what Galileo himself used in 1609.</p>
+          </div>
+          <div class="concept-card">
+            <h3>Keplerian refractor</h3>
+            <p>A converging (convex) eyepiece lens, giving a wider field of view but an inverted image &mdash; the layout almost all modern refractors use.</p>
+          </div>
+          <div class="concept-card">
+            <h3>Newtonian reflector</h3>
+            <p>A parabolic primary mirror reflects light back up to a flat secondary mirror, out to an eyepiece on the side of the tube.</p>
+          </div>
+          <div class="concept-card">
+            <h3>Cassegrain reflector</h3>
+            <p>A parabolic primary mirror reflects light up to a convex secondary, back down through a hole in the primary to an eyepiece behind it.</p>
+          </div>
+        </div>
+      </div>
+      <div class="glossary-definition" data-term="reflector-advantages" hidden>
+        <ul class="tip-list">
+          <li><strong>No <span class="glossary-toggle glossary-term-button" data-term="chromatic-aberration" tabindex="0" role="button" aria-expanded="false">chromatic aberration</span>.</strong> Reflection doesn't depend on wavelength, so there's no colour fringing to correct for.</li>
+          <li><strong>Much larger apertures.</strong> A mirror can be supported across its whole back; a lens can only be held at its rim.</li>
+          <li><strong>A long focal length in a short tube.</strong> Folding the light path back on itself &mdash; most dramatically in a Cassegrain &mdash; reaches a long effective focal length without a correspondingly long tube.</li>
+          <li><strong>Multiple mirrors can be combined.</strong> Several smaller segments can act together as one much larger effective aperture.</li>
+        </ul>
+        <p class="note">
+          Galileo's own telescope was a small Galilean refractor, with none of these advantages &mdash;
+          yet it was still enough to see
+          <a href="geocentric-to-heliocentric.html#galileo">Jupiter's four largest moons and the phases of Venus</a>
+          for the first time.
+        </p>
+      </div>
+      <span class="glossary-definition" data-term="chromatic-aberration" hidden></span>
+    </section>
+
+    <section class="notes-section" id="eyepiece-view">
+      <h2>Through the eyepiece</h2>
+      <p>What you'd actually see, at the bench's current magnification and the eyepiece's own field of view.</p>
+
+      <div class="diagram">
+        <canvas
+          id="eyepiece-circle-view"
+          width="320"
+          height="320"
+          aria-label="A circular eyepiece view showing the chosen target at its magnified apparent size, cropped at the edge of the field of view if it doesn't fit"
+        ></canvas>
+      </div>
+
+      <div class="preset-list" role="group" aria-label="Choose a target">
+        <button type="button" class="preset-button" data-target="moon" aria-pressed="false">The Moon</button>
+        <button type="button" class="preset-button" data-target="jupiter" aria-pressed="false">Jupiter</button>
+        <button type="button" class="preset-button" data-target="pleiades" aria-pressed="false">The Pleiades</button>
+        <button type="button" class="preset-button" data-target="albireo" aria-pressed="false">Albireo</button>
+      </div>
+
       <div class="control">
-        <label for="wavelength-slider">Observing wavelength: <span id="wavelength-label"></span></label>
-        <input type="range" id="wavelength-slider" min="400" max="700" step="10" value="550" />
+        <label for="apparent-field-slider">Eyepiece's own apparent field: <span id="apparent-field-label"></span></label>
+        <input type="range" id="apparent-field-slider" min="30" max="80" step="5" value="50" />
       </div>
 
-      <p class="eot-readout" id="magnification-readout"></p>
-      <p class="eot-readout" id="light-grasp-readout"></p>
-      <p class="eot-readout" id="resolution-readout"></p>
-
+      <p class="eot-readout" id="true-field-readout"></p>
+      <p class="eot-readout" id="eyepiece-fit-readout"></p>
       <p class="note">
-        Magnification depends only on the two focal lengths; light grasp and resolution depend
-        only on the objective diameter (and resolution on wavelength too). Changing the eyepiece
-        changes magnification without changing light grasp or resolution at all &mdash; a common
-        exam mix-up, since cranking up magnification on a small aperture just makes an already
-        blurry image bigger, not sharper.
+        Target sizes are approximate &mdash; a first draft, to be checked by the teacher.
+      </p>
+    </section>
+
+    <section class="notes-section" id="resolving-power">
+      <h2>Resolving power and light grasp</h2>
+      <p>
+        Aperture alone &mdash; not magnification &mdash; sets how much light a telescope gathers
+        and how fine a detail it can resolve.
       </p>
 
       <div class="diagram">
@@ -120,76 +229,30 @@
         <p class="eot-readout" id="cluster-status"></p>
       </div>
 
-      <p class="note">
-        Neither view is to scale or a real cluster &mdash; the blur radius is exaggerated so the
-        effect is visible across the slider's own range. The principle is real: both views use
-        exactly the resolution and light-grasp figures the readouts above show.
-      </p>
-    </section>
-
-    <section class="notes-section" id="designs">
-      <h2>Four telescope designs</h2>
-      <p>
-        Every telescope built since Galileo's time is some variation on four classic designs
-        &mdash; two refracting (using a lens as the objective), two reflecting (using a mirror).
-        Tap each name for its key elements; this page skips detailed ray diagrams on purpose, to
-        keep the focus on what actually distinguishes one design from another.
-      </p>
-      <div class="concept-grid">
-        <div class="concept-card">
-          <h3>
-            <button type="button" class="glossary-toggle glossary-term-button" data-term="galilean-refractor" aria-label="What are a Galilean refractor's key elements?" aria-expanded="false">Galilean refractor</button>
-          </h3>
-          <span class="glossary-definition" data-term="galilean-refractor" hidden></span>
-          <p>A refracting design, and the one Galileo himself used in 1609.</p>
-        </div>
-        <div class="concept-card">
-          <h3>
-            <button type="button" class="glossary-toggle glossary-term-button" data-term="keplerian-refractor" aria-label="What are a Keplerian refractor's key elements?" aria-expanded="false">Keplerian refractor</button>
-          </h3>
-          <span class="glossary-definition" data-term="keplerian-refractor" hidden></span>
-          <p>A refracting design, and the layout almost all modern refractors use.</p>
-        </div>
-        <div class="concept-card">
-          <h3>
-            <button type="button" class="glossary-toggle glossary-term-button" data-term="newtonian-reflector" aria-label="What are a Newtonian reflector's key elements?" aria-expanded="false">Newtonian reflector</button>
-          </h3>
-          <span class="glossary-definition" data-term="newtonian-reflector" hidden></span>
-          <p>A reflecting design, and the most common choice for a large amateur telescope.</p>
-        </div>
-        <div class="concept-card">
-          <h3>
-            <button type="button" class="glossary-toggle glossary-term-button" data-term="cassegrain-reflector" aria-label="What are a Cassegrain reflector's key elements?" aria-expanded="false">Cassegrain reflector</button>
-          </h3>
-          <span class="glossary-definition" data-term="cassegrain-reflector" hidden></span>
-          <p>A reflecting design built to fold a long focal length into a short tube.</p>
-        </div>
+      <div class="control">
+        <label for="wavelength-slider">Observing wavelength: <span id="wavelength-label"></span></label>
+        <input type="range" id="wavelength-slider" min="400" max="700" step="10" value="550" />
       </div>
-    </section>
 
-    <section class="notes-section" id="reflectors-vs-refractors">
-      <h2>Reflectors vs refractors</h2>
-      <p>
-        A refracting lens bends different wavelengths of light by slightly different amounts, so
-        they don't all focus at exactly the same point &mdash; the colour fringing around bright
-        objects called
-        <button type="button" class="glossary-toggle glossary-term-button" data-term="chromatic-aberration" aria-label="What is chromatic aberration?" aria-expanded="false">chromatic aberration</button>.
-        A mirror reflects every wavelength at the same angle, so a reflecting telescope has none
-        of it at all &mdash; one of several real advantages reflectors have over refractors:
+      <p class="eot-readout" id="magnification-readout"></p>
+      <p class="eot-readout" id="light-grasp-readout">
       </p>
-      <span class="glossary-definition" data-term="chromatic-aberration" hidden></span>
-      <ul class="tip-list">
-        <li><strong>No chromatic aberration.</strong> Reflection doesn't depend on wavelength, so there's no colour fringing to correct for.</li>
-        <li><strong>Much larger apertures.</strong> A mirror can be supported across its whole back; a lens can only be held at its rim, which limits how large (and how heavy) it can practically be made before it sags under its own weight.</li>
-        <li><strong>A long focal length in a short tube.</strong> Folding the light path back on itself &mdash; most dramatically in a Cassegrain &mdash; reaches a long effective focal length without needing a correspondingly long tube.</li>
-        <li><strong>Multiple mirrors can be combined.</strong> Several smaller mirror segments can act together as one much larger effective aperture, which isn't practical with a single lens.</li>
-      </ul>
+      <p class="eot-readout" id="resolution-readout"></p>
+
+      <p>
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="light-grasp" aria-label="What is light grasp?" aria-expanded="false">Light grasp</button>
+        and
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="resolution" aria-label="What is angular resolution?" aria-expanded="false">resolution</button>
+        depend only on the objective's own diameter, set on the bench above &mdash; not on either
+        focal length, and not on magnification.
+      </p>
+      <span class="glossary-definition" data-term="light-grasp" hidden></span>
+      <span class="glossary-definition" data-term="resolution" hidden></span>
+
       <p class="note">
-        Galileo's own telescope was a small Galilean refractor, with none of these advantages
-        &mdash; yet it was still enough to see Jupiter's four largest moons and the phases of
-        Venus for the first time. See
-        <a href="geocentric-to-heliocentric.html#galileo">Galileo's telescopic evidence</a>
-        for what those two observations showed.
+        Neither simulated view above is to scale or a real cluster &mdash; the blur radius is
+        exaggerated so the effect is visible across the slider's own range. The principle is real:
+        both use exactly the resolution and light-grasp figures the readouts above show.
       </p>
     </section>
 
@@ -197,24 +260,25 @@
       <h2>Exam tips</h2>
       <p class="exam-tip">
         <strong>Common exam confusion:</strong> magnification (f<sub>objective</sub> /
-        f<sub>eyepiece</sub>) depends only on the two focal lengths; light grasp and resolution
-        depend only on the objective's diameter. Swapping in a shorter eyepiece raises
-        magnification without improving resolution at all &mdash; it just magnifies the blur.
-        <a href="#optics">Magnification, light grasp and resolution &uarr;</a>
+        f<sub>eyepiece</sub>, or the effective focal length in its place for a folded reflector)
+        depends only on the two focal lengths; light grasp and resolution depend only on the
+        objective's diameter. Swapping in a shorter eyepiece raises magnification without
+        improving resolution at all &mdash; it just magnifies the blur.
+        <a href="#bench">The telescope bench &uarr;</a>
       </p>
       <p class="exam-tip">
         <strong>Common exam confusion:</strong> "resolution improves" means the resolvable angle
         gets <em>smaller</em> &mdash; a telescope that can separate two objects only 1 arcsecond
         apart has better resolution than one that needs 2 arcseconds, even though 1 is the
         smaller number.
-        <a href="#optics">Magnification, light grasp and resolution &uarr;</a>
+        <a href="#resolving-power">Resolving power and light grasp &uarr;</a>
       </p>
       <p class="exam-tip">
         <strong>Common exam link:</strong> don't mix up the four designs' key distinguishing
         features: Galilean (diverging eyepiece lens, upright image), Keplerian (converging
         eyepiece lens, inverted image), Newtonian (flat secondary mirror, eyepiece on the side),
         Cassegrain (convex secondary mirror, eyepiece behind a hole in the primary).
-        <a href="#designs">Four telescope designs &uarr;</a>
+        <a href="#bench">The telescope bench &uarr;</a>
       </p>
     </section>
 
@@ -252,12 +316,13 @@
   </main>
 
   <script src="../src/curriculum.js?v=202610072300"></script>
-  <script src="../src/pages.js?v=202610072301"></script>
+  <script src="../src/pages.js?v=202610081200"></script>
   <script src="../src/telescopeModel.js?v=202610071800"></script>
+  <script src="../src/rayOptics.js?v=202610081200"></script>
   <script src="../src/telescopeQuestions.js?v=202610071800"></script>
   <script src="../glossary.js?v=202609221600"></script>
   <script src="../quiz-ui.js?v=202609221100"></script>
-  <script src="telescopes.js?v=202610071800"></script>
+  <script src="telescopes.js?v=202610081200"></script>
   <script src="../notesPage.js?v=202609252100"></script>
   <script src="../nextPage.js?v=202609270100"></script>
 </body>

@@ -162,7 +162,7 @@ const PAGES = [
   {
     title: 'Telescopes: Magnification, Light Grasp and Resolution',
     description:
-      "Why a telescope beats the naked eye, live magnification/light-grasp/resolution readouts with a simulated double star and star cluster that sharpen as the aperture grows, the four classic telescope designs, and why reflectors took over from refractors.",
+      "A telescope bench to build: a lens and a mirror focusing light, four real designs (Galilean, Keplerian, Newtonian, Cassegrain) with sliders that resize and move the actual optics, what you'd see through the eyepiece, and a simulated double star and star cluster that sharpen as the aperture grows.",
     href: 'notes/telescopes.html',
     units: ['u5.1', 'u5.2'],
   },
