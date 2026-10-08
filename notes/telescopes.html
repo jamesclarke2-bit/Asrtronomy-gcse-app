@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Telescopes: Magnification, Light Grasp and Resolution</title>
-  <link rel="stylesheet" href="../styles.css?v=202610081800" />
+  <link rel="stylesheet" href="../styles.css?v=202610091200" />
 </head>
 <body>
   <main>
@@ -24,26 +24,43 @@
         there, a mirror reflects it there. Drag the sliders to see both respond the same way.
       </p>
 
+      <div class="control labels-mode-control">
+        <span class="labels-mode-caption">Labels:</span>
+        <div class="preset-list" role="group" aria-label="Choose how many labels to show">
+          <button type="button" class="preset-button" data-labels-mode="all" aria-pressed="true">All</button>
+          <button type="button" class="preset-button" data-labels-mode="key" aria-pressed="false">Key only</button>
+          <button type="button" class="preset-button" data-labels-mode="off" aria-pressed="false">Off</button>
+        </div>
+      </div>
+
       <div class="diagram-row">
         <div class="diagram">
-          <canvas
-            id="lens-focus-view"
-            width="320"
-            height="200"
-            aria-label="A glass lens bending parallel rays of light, drawn as moving pulses, to a single focal point"
-          ></canvas>
+          <div class="labelled-diagram-wrap" id="lens-label-wrap">
+            <canvas
+              id="lens-focus-view"
+              width="320"
+              height="360"
+              aria-label="A glass lens bending parallel rays of light, drawn as moving pulses, to a single focal point"
+            ></canvas>
+          </div>
           <p class="diagram-caption">Lens &mdash; light refracts to the focal point.</p>
         </div>
         <div class="diagram">
-          <canvas
-            id="mirror-focus-view"
-            width="320"
-            height="200"
-            aria-label="A concave mirror reflecting parallel rays of light, drawn as moving pulses, back to a single focal point in front of it"
-          ></canvas>
+          <div class="labelled-diagram-wrap" id="mirror-label-wrap">
+            <canvas
+              id="mirror-focus-view"
+              width="320"
+              height="360"
+              aria-label="A concave mirror reflecting parallel rays of light, drawn as moving pulses, back to a single focal point in front of it"
+            ></canvas>
+          </div>
           <p class="diagram-caption">Mirror &mdash; light reflects to the focal point.</p>
         </div>
       </div>
+      <p>
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="focus-all-labels" aria-label="Show every label on these two diagrams" aria-expanded="false">Show every label as text</button>
+      </p>
+      <div class="glossary-definition" data-term="focus-all-labels" hidden id="focus-labels-detail"></div>
 
       <div class="control">
         <label for="focus-aperture-slider">
@@ -73,14 +90,20 @@
       <p>Pick a design, then drag the sliders &mdash; the optics below resize and move to match.</p>
 
       <div class="diagram bench-diagram">
-        <canvas
-          id="telescope-bench-view"
-          width="640"
-          height="280"
-          aria-label="A schematic telescope, built from the chosen design's lenses or mirrors, with two colour-coded ray bundles from a distant star — one on-axis, one slightly off-axis — showing magnification as the larger angle the off-axis bundle emerges at"
-        ></canvas>
+        <div class="labelled-diagram-wrap" id="bench-label-wrap">
+          <canvas
+            id="telescope-bench-view"
+            width="640"
+            height="440"
+            aria-label="A schematic telescope, built from the chosen design's lenses or mirrors, with two colour-coded ray bundles from a distant star — one on-axis, one slightly off-axis — showing magnification as the larger angle the off-axis bundle emerges at"
+          ></canvas>
+        </div>
         <p class="diagram-caption">Not to scale; angles exaggerated.</p>
       </div>
+      <p>
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="bench-all-labels" aria-label="Show every label on this diagram" aria-expanded="false">Show every label as text</button>
+      </p>
+      <div class="glossary-definition" data-term="bench-all-labels" hidden id="bench-labels-detail"></div>
 
       <div class="preset-list" role="group" aria-label="Choose a telescope design">
         <button type="button" class="preset-button" data-design="galilean" aria-pressed="false">Galilean</button>
@@ -95,14 +118,14 @@
       </div>
       <div class="control">
         <label for="objective-focal-length-slider">Objective focal length: <span id="objective-focal-length-label"></span></label>
-        <input type="range" id="objective-focal-length-slider" min="200" max="3000" step="50" value="1000" />
+        <input type="range" id="objective-focal-length-slider" min="200" max="3000" step="50" value="500" />
       </div>
       <div class="control">
         <label for="eyepiece-focal-length-slider">
           Eyepiece focal length: <span id="eyepiece-focal-length-label"></span>
           <button type="button" class="glossary-toggle" data-term="eyepiece-separation" aria-label="How far apart do these sit?" aria-expanded="false">?</button>
         </label>
-        <input type="range" id="eyepiece-focal-length-slider" min="4" max="50" step="1" value="25" />
+        <input type="range" id="eyepiece-focal-length-slider" min="4" max="80" step="1" value="50" />
       </div>
       <span class="glossary-definition" data-term="eyepiece-separation" hidden></span>
 
@@ -168,17 +191,139 @@
       <span class="glossary-definition" data-term="chromatic-aberration" hidden></span>
     </section>
 
+    <section class="notes-section" id="galilean-keplerian">
+      <h2>Galilean or Keplerian? Swap the eyepiece.</h2>
+      <p>One objective, two possible eyepieces &mdash; see exactly where the picture changes.</p>
+
+      <div class="diagram bench-diagram">
+        <div class="labelled-diagram-wrap" id="compare-wrap">
+          <canvas
+            id="compare-view"
+            width="640"
+            height="460"
+            aria-label="A single objective lens with a swappable eyepiece: concave (Galilean) or convex (Keplerian), with rays traced live showing where a real image forms, or would have formed, at the objective's own focal point F"
+          ></canvas>
+        </div>
+        <p class="diagram-caption">Not to scale; angles exaggerated.</p>
+      </div>
+
+      <div class="mode-toggle" role="group" aria-label="Choose the eyepiece">
+        <button type="button" id="compare-galilean-button" class="mode-toggle-button" aria-pressed="false">Concave eyepiece (Galilean)</button>
+        <button type="button" id="compare-keplerian-button" class="mode-toggle-button" aria-pressed="true">Convex eyepiece (Keplerian)</button>
+      </div>
+
+      <div class="control">
+        <label for="compare-diameter-slider">Objective diameter: <span id="compare-diameter-label"></span></label>
+        <input type="range" id="compare-diameter-slider" min="20" max="200" step="5" value="100" />
+      </div>
+
+      <div class="diagram-row">
+        <div class="diagram">
+          <canvas
+            id="compare-object-view"
+            width="140"
+            height="140"
+            aria-label="An asymmetric object, a flag on a pole, as seen by the observer: upright for Galilean, inverted for Keplerian"
+          ></canvas>
+          <p class="diagram-caption" id="compare-object-caption"></p>
+        </div>
+        <div class="diagram">
+          <canvas
+            id="compare-fov-view"
+            width="140"
+            height="140"
+            aria-label="A schematic field-of-view circle: smaller (narrower) for Galilean, larger (wider) for Keplerian"
+          ></canvas>
+          <p class="diagram-caption" id="compare-fov-caption"></p>
+        </div>
+      </div>
+
+      <dl class="readout">
+        <div class="readout-row">
+          <dt>Tube length</dt>
+          <dd id="compare-tube-length-readout"></dd>
+        </div>
+        <div class="readout-row">
+          <dt>Magnification</dt>
+          <dd id="compare-magnification-readout"></dd>
+        </div>
+      </dl>
+      <p class="note">
+        Same size either way &mdash; magnification = f<sub>objective</sub> / f<sub>eyepiece</sub> in both.
+      </p>
+      <p>
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="compare-all-labels" aria-label="Show every label on this diagram" aria-expanded="false">Show every label as text</button>
+      </p>
+      <div class="glossary-definition" data-term="compare-all-labels" hidden id="compare-labels-detail"></div>
+
+      <table class="shower-table" id="compare-table">
+        <caption>Galilean vs Keplerian, at a glance</caption>
+        <thead>
+          <tr>
+            <th scope="col"></th>
+            <th scope="col">Galilean</th>
+            <th scope="col">Keplerian</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Eyepiece lens</th>
+            <td>Concave (diverging)</td>
+            <td>Convex (converging)</td>
+          </tr>
+          <tr>
+            <th scope="row">Eyepiece position vs. F</th>
+            <td>Before F</td>
+            <td>Beyond F</td>
+          </tr>
+          <tr>
+            <th scope="row">Real intermediate image?</th>
+            <td>No</td>
+            <td>Yes, at F</td>
+          </tr>
+          <tr>
+            <th scope="row">Image orientation</th>
+            <td>Upright</td>
+            <td>Inverted</td>
+          </tr>
+          <tr>
+            <th scope="row">Tube length</th>
+            <td>450 mm</td>
+            <td>550 mm</td>
+          </tr>
+          <tr>
+            <th scope="row">Field of view</th>
+            <td>Narrower</td>
+            <td>Wider</td>
+          </tr>
+          <tr>
+            <th scope="row">Typical use</th>
+            <td>Terrestrial viewing</td>
+            <td>Astronomy</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="note">
+        Astronomy doesn't mind an inverted image &mdash; there's no "upright" in space to compare it
+        against &mdash; so Keplerian's wider field and brighter view win out for telescopes; a
+        Galilean upright image matters more on the ground, where things really do have a right way
+        up.
+      </p>
+    </section>
+
     <section class="notes-section" id="eyepiece-view">
       <h2>Through the eyepiece</h2>
       <p>What you'd actually see, at the bench's current magnification and the eyepiece's own field of view.</p>
 
       <div class="diagram">
-        <canvas
-          id="eyepiece-circle-view"
-          width="320"
-          height="320"
-          aria-label="A circular eyepiece view showing the chosen target at its magnified apparent size, cropped at the edge of the field of view if it doesn't fit"
-        ></canvas>
+        <div class="labelled-diagram-wrap" id="eyepiece-label-wrap">
+          <canvas
+            id="eyepiece-circle-view"
+            width="320"
+            height="320"
+            aria-label="A circular eyepiece view showing the chosen target at its magnified apparent size, cropped at the edge of the field of view if it doesn't fit"
+          ></canvas>
+        </div>
       </div>
 
       <div class="preset-list" role="group" aria-label="Choose a target">
@@ -198,6 +343,10 @@
       <p class="note">
         Target sizes are approximate &mdash; a first draft, to be checked by the teacher.
       </p>
+      <p>
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="eyepiece-all-labels" aria-label="Show every label on this diagram" aria-expanded="false">Show every label as text</button>
+      </p>
+      <div class="glossary-definition" data-term="eyepiece-all-labels" hidden id="eyepiece-labels-detail"></div>
     </section>
 
     <section class="notes-section" id="resolving-power">
@@ -316,13 +465,14 @@
   </main>
 
   <script src="../src/curriculum.js?v=202610072300"></script>
-  <script src="../src/pages.js?v=202610081800"></script>
+  <script src="../src/pages.js?v=202610091200"></script>
   <script src="../src/telescopeModel.js?v=202610071800"></script>
-  <script src="../src/rayOptics.js?v=202610081200"></script>
-  <script src="../src/telescopeQuestions.js?v=202610071800"></script>
+  <script src="../src/rayOptics.js?v=202610091200"></script>
+  <script src="../src/telescopeQuestions.js?v=202610091200"></script>
+  <script src="telescopeLabels.js?v=202610091200"></script>
   <script src="../glossary.js?v=202609221600"></script>
   <script src="../quiz-ui.js?v=202609221100"></script>
-  <script src="telescopes.js?v=202610081200"></script>
+  <script src="telescopes.js?v=202610091200"></script>
   <script src="../notesPage.js?v=202609252100"></script>
   <script src="../nextPage.js?v=202609270100"></script>
 </body>

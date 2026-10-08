@@ -9,8 +9,13 @@
  * can never quote a figure the page itself would disagree with.
  */
 
-function makeQuestions(TelescopeModel) {
+function makeQuestions(TelescopeModel, RayOptics) {
   const EYE_MM = TelescopeModel.DARK_ADAPTED_EYE_PUPIL_MM;
+
+  const COMPARE_F_OBJECTIVE_MM = 500;
+  const COMPARE_F_EYEPIECE_MM = 50;
+  const keplerianCompare = RayOptics.refractorImageDescription(COMPARE_F_OBJECTIVE_MM, COMPARE_F_EYEPIECE_MM);
+  const galileanCompare = RayOptics.refractorImageDescription(COMPARE_F_OBJECTIVE_MM, -COMPARE_F_EYEPIECE_MM);
 
   const magnificationAnswer = TelescopeModel.magnification(1200, 20);
   const lightGraspAnswer = TelescopeModel.lightGraspRatio(150, 50);
@@ -142,6 +147,47 @@ function makeQuestions(TelescopeModel) {
           correct,
           message:
             "A Cassegrain folds its light path: the primary mirror reflects light forward to a convex secondary mirror, which reflects it straight back down through a hole in the primary to an eyepiece behind it. That doubles the light's travel distance inside a tube only about as long as the primary mirror's own mount, so a Cassegrain reaches a long effective focal length (and so high magnification) in a tube far shorter than a Newtonian or refractor would need for the same focal length — exactly the \"long focal length in a short tube\" advantage reflectors have.",
+        };
+      },
+    },
+    {
+      id: 'why-galilean-upright',
+      units: ['u5.1'],
+      type: 'choice',
+      prompt:
+        "A Galilean eyepiece sits closer to the objective than its focal point, so the converging rays never actually cross anywhere; a Keplerian eyepiece sits beyond that focal point, so they do cross, forming a real (but upside-down) image there first. Why does that difference leave the Galilean image upright, and why does the Keplerian's inverted image not matter for astronomy?",
+      options: [
+        "The diverging Galilean eyepiece catches the rays while they're still travelling the same way up as the object and bends them back out parallel before they'd have crossed, so nothing ever flips; the Keplerian's rays do cross, flipping the image once — but a star or planet has no agreed \"right way up\" to compare it against, so an inverted view loses nothing an astronomer needs",
+        'The Galilean lens flips the image twice, which cancels out, while the Keplerian only flips it once',
+        "Both designs actually produce an inverted image; the Galilean's eyepiece then optically re-inverts it a second time to make it upright again",
+        'Neither design truly inverts anything — it only looks upside down in a Keplerian because of how the eye interprets a magnified view',
+      ],
+      check(value) {
+        const correct =
+          value ===
+          "The diverging Galilean eyepiece catches the rays while they're still travelling the same way up as the object and bends them back out parallel before they'd have crossed, so nothing ever flips; the Keplerian's rays do cross, flipping the image once — but a star or planet has no agreed \"right way up\" to compare it against, so an inverted view loses nothing an astronomer needs";
+        return {
+          correct,
+          message:
+            "An image flips exactly when the rays forming it actually cross the axis. A Keplerian's converging eyepiece sits beyond the objective's focal point, so the rays cross there first (a real intermediate image, already upside down) before the eyepiece bends them out parallel again — one crossing, one flip, inverted. A Galilean's diverging eyepiece sits closer in than that focal point, intercepting the still-converging rays before they'd have crossed at all, and bends them straight back out parallel — zero crossings, zero flips, upright. On the ground, upright matters (a bird the right way up is easier to track than one upside down); pointed at the sky, there's no \"up\" built into a star field to get wrong, so Keplerian's wider field and brighter view are worth the inversion, which is exactly why it's the layout almost every astronomical telescope and binocular pair actually uses.",
+        };
+      },
+    },
+    {
+      id: 'compare-tube-length-magnification',
+      units: ['u5.1', 'u5.2'],
+      type: 'number',
+      unitLabel: 'mm',
+      prompt: `Using the exam's own magnification = f(objective) / f(eyepiece), and tube length = f(objective) + f(eyepiece) for an afocal refractor, take an objective focal length of ${COMPARE_F_OBJECTIVE_MM} mm and an eyepiece focal length of ${COMPARE_F_EYEPIECE_MM} mm. Calculate the Keplerian design's tube length.`,
+      check(value) {
+        const correct = Math.abs(value - keplerianCompare.eyepiecePositionMm) / keplerianCompare.eyepiecePositionMm < 0.02;
+        return {
+          correct,
+          message:
+            `Keplerian (converging eyepiece, f = +${COMPARE_F_EYEPIECE_MM} mm): tube length = f(objective) + f(eyepiece) = ${COMPARE_F_OBJECTIVE_MM} + ${COMPARE_F_EYEPIECE_MM} = ${keplerianCompare.eyepiecePositionMm.toFixed(0)} mm; ` +
+            `magnification = f(objective) / f(eyepiece) = ${COMPARE_F_OBJECTIVE_MM} / ${COMPARE_F_EYEPIECE_MM} = ${keplerianCompare.magnification.toFixed(0)}x (inverted). ` +
+            `Galilean (diverging eyepiece, f = -${COMPARE_F_EYEPIECE_MM} mm): tube length = ${COMPARE_F_OBJECTIVE_MM} + (-${COMPARE_F_EYEPIECE_MM}) = ${galileanCompare.eyepiecePositionMm.toFixed(0)} mm; ` +
+            `magnification = ${COMPARE_F_OBJECTIVE_MM} / (-${COMPARE_F_EYEPIECE_MM}) = ${galileanCompare.magnification.toFixed(0)}x (upright). Same formula both times — only the eyepiece focal length's sign changes.`,
         };
       },
     },

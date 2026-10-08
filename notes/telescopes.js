@@ -28,8 +28,8 @@
 
     design: 'keplerian',
     objectiveDiameterMm: 100,
-    objectiveFocalLengthMm: 1000,
-    eyepieceFocalLengthMm: 25,
+    objectiveFocalLengthMm: 500,
+    eyepieceFocalLengthMm: 50,
 
     wavelengthNm: 550,
 
@@ -109,6 +109,104 @@
     return SPECTRUM_BANDS.find((band) => nm <= band.max);
   }
 
+  // --- shared diagram colours --------------------------------------------
+  // The lens/mirror panel and the bench sit on the site's own light
+  // diagram background (the same pale blue the sun-path sky diagram
+  // shows through its canvas's default CSS background) rather than
+  // near-black, with dark outlines on the glass/mirror/tube shading and
+  // strong, WCAG-AA ray colours so they read clearly against it. The
+  // eyepiece view keeps a dark background (it's a night sky) but a deep
+  // blue-grey rather than pure black, with near-white label text.
+  const DIAGRAM_BG = '#eaf2fb';
+  const EYEPIECE_BG = '#1b2436';
+  const LABEL_DARK = '#1a1a1a';
+  const AXIS_COLOR = '#334155';
+  const ON_AXIS_RAY_COLOR = '#8a3d00';
+  const OFF_AXIS_RAY_COLOR = '#7d3c98';
+  const LENS_OUTLINE = '#2c4a6e';
+  const MIRROR_OUTLINE = '#3a4654';
+
+  // --- shared labels infrastructure ---------------------------------------
+  // "Labels: all / key only / off" (default 'all'), matching
+  // notes/moon-structure.html's "hide labels, test yourself" mode. On a
+  // narrow (phone-width) viewport, a wrap still at the default "all"
+  // renders as "key" instead — the control itself stays showing "All"
+  // selected, but the diagram itself only shows its key labels, with
+  // the rest reachable through that diagram's own "Show every label as
+  // text" tap-reveal.
+  const PHONE_WIDTH_PX = 600;
+  const labelsModeButtons = [...document.querySelectorAll('[data-labels-mode]')];
+  let labelsMode = 'all';
+  const labelWraps = [];
+
+  function effectiveLabelsMode() {
+    if (labelsMode === 'all' && window.innerWidth < PHONE_WIDTH_PX) return 'key';
+    return labelsMode;
+  }
+
+  // Renders `labels` (from notes/telescopeLabels.js) into `wrapId`'s
+  // .labelled-diagram-wrap, positioned at `anchors[label.id]` — plain
+  // canvas-pixel coordinates, converted to the percentage-of-canvas
+  // position the DOM overlay needs.
+  // Half of .labelled-diagram-label--wide's own 9.5rem width, plus a
+  // small margin, in actual rendered CSS pixels — clamping every
+  // anchor this far from each edge means a label can never clip off
+  // the canvas, whatever x an individual anchor asks for.
+  const LABEL_HALF_WIDTH_CSS_PX = 9.5 * 16 * 0.55;
+
+  function renderLabels(wrapId, canvas, labels, anchors, onDark) {
+    const wrap = document.getElementById(wrapId);
+    if (!wrap) return;
+    if (!labelWraps.includes(wrapId)) labelWraps.push(wrapId);
+    wrap.querySelectorAll('.labelled-diagram-label').forEach((el) => el.remove());
+    // The canvas's intrinsic pixel space (canvas.width) is what anchor
+    // coordinates and the left:% positioning are measured in, but the
+    // label box itself has a fixed CSS width that doesn't shrink when
+    // the canvas is scaled down to fit a narrow viewport. Converting
+    // the margin through the canvas's actual rendered width keeps the
+    // clamp correct at any screen size, not just at its intrinsic size.
+    const renderedWidth = canvas.getBoundingClientRect().width || canvas.width;
+    const labelHalfWidthPx = (LABEL_HALF_WIDTH_CSS_PX / renderedWidth) * canvas.width;
+    labels.forEach((label) => {
+      const anchor = anchors[label.id];
+      if (!anchor) return;
+      const clampedX = Math.min(canvas.width - labelHalfWidthPx, Math.max(labelHalfWidthPx, anchor.x));
+      const el = document.createElement('div');
+      el.className = `labelled-diagram-label labelled-diagram-label--wide${label.key ? ' label-key' : ''}${onDark ? ' labelled-diagram-label--on-dark' : ''}`;
+      el.style.left = `${(clampedX / canvas.width) * 100}%`;
+      el.style.top = `${(anchor.y / canvas.height) * 100}%`;
+      el.textContent = label.text;
+      wrap.appendChild(el);
+    });
+    wrap.setAttribute('data-labels-mode', effectiveLabelsMode());
+  }
+
+  function applyLabelsMode() {
+    labelWraps.forEach((wrapId) => {
+      const wrap = document.getElementById(wrapId);
+      if (wrap) wrap.setAttribute('data-labels-mode', effectiveLabelsMode());
+    });
+  }
+
+  function populateAllLabelsText(elementId, labels) {
+    const el = document.getElementById(elementId);
+    if (!el) return;
+    el.textContent = labels.map((l) => l.text).join(' · ');
+  }
+
+  labelsModeButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      labelsMode = button.dataset.labelsMode;
+      labelsModeButtons.forEach((b) => {
+        b.classList.toggle('preset-button-active', b.dataset.labelsMode === labelsMode);
+        b.setAttribute('aria-pressed', String(b.dataset.labelsMode === labelsMode));
+      });
+      applyLabelsMode();
+    });
+  });
+
+  window.addEventListener('resize', applyLabelsMode);
+
   // ===================================================================
   // Section 1: how a lens and a mirror focus light
   // ===================================================================
@@ -120,9 +218,9 @@
   function drawGlassLens(ctx, x, halfHeightPx, convex, y = 0) {
     const bulge = Math.max(6, halfHeightPx * 0.18) * (convex ? 1 : -1);
     const gradient = ctx.createLinearGradient(x - 10, y, x + 10, y);
-    gradient.addColorStop(0, 'rgba(180,210,240,0.35)');
-    gradient.addColorStop(0.5, 'rgba(220,240,255,0.75)');
-    gradient.addColorStop(1, 'rgba(180,210,240,0.35)');
+    gradient.addColorStop(0, 'rgba(150,185,220,0.55)');
+    gradient.addColorStop(0.5, 'rgba(235,245,255,0.9)');
+    gradient.addColorStop(1, 'rgba(150,185,220,0.55)');
     ctx.beginPath();
     ctx.moveTo(x, y - halfHeightPx);
     ctx.quadraticCurveTo(x + bulge, y, x, y + halfHeightPx);
@@ -130,17 +228,17 @@
     ctx.closePath();
     ctx.fillStyle = gradient;
     ctx.fill();
-    ctx.strokeStyle = '#5a7fa8';
-    ctx.lineWidth = 1.5;
+    ctx.strokeStyle = LENS_OUTLINE;
+    ctx.lineWidth = 1.75;
     ctx.stroke();
   }
 
   function drawMirrorSurface(ctx, x, halfHeightPx, concaveTowardsLeft, y = 0) {
     const bulge = Math.max(8, halfHeightPx * 0.22) * (concaveTowardsLeft ? 1 : -1);
     const gradient = ctx.createLinearGradient(x - 6, y - halfHeightPx, x - 6, y + halfHeightPx);
-    gradient.addColorStop(0, '#f4f7fb');
-    gradient.addColorStop(0.5, '#b9c6d6');
-    gradient.addColorStop(1, '#f4f7fb');
+    gradient.addColorStop(0, '#dde4ec');
+    gradient.addColorStop(0.5, '#9fb0c2');
+    gradient.addColorStop(1, '#dde4ec');
     ctx.beginPath();
     ctx.moveTo(x, y - halfHeightPx);
     ctx.quadraticCurveTo(x + bulge, y, x, y + halfHeightPx);
@@ -149,8 +247,8 @@
     ctx.closePath();
     ctx.fillStyle = gradient;
     ctx.fill();
-    ctx.strokeStyle = '#8a97a5';
-    ctx.lineWidth = 1;
+    ctx.strokeStyle = MIRROR_OUTLINE;
+    ctx.lineWidth = 1.75;
     ctx.stroke();
   }
 
@@ -202,7 +300,7 @@
     const w = canvas.width;
     const h = canvas.height;
     ctx.clearRect(0, 0, w, h);
-    ctx.fillStyle = '#060a16';
+    ctx.fillStyle = DIAGRAM_BG;
     ctx.fillRect(0, 0, w, h);
 
     ctx.save();
@@ -214,7 +312,7 @@
     const elementX = isMirror ? FOCUS_MIRROR_X : FOCUS_LENS_X;
 
     // Optical axis.
-    ctx.strokeStyle = 'rgba(255,255,255,0.25)';
+    ctx.strokeStyle = AXIS_COLOR;
     ctx.lineWidth = 1;
     ctx.setLineDash([4, 4]);
     ctx.beginPath();
@@ -227,7 +325,7 @@
     const rayPaths = rayHeightsPx.map((hp) => focusRayPoints(hp, focalLengthPx, elementX, w, isMirror));
 
     // Faint full ray paths, so the geometry is visible even where no pulse currently sits.
-    ctx.strokeStyle = 'rgba(255, 210, 110, 0.25)';
+    ctx.strokeStyle = 'rgba(138, 61, 0, 0.35)';
     ctx.lineWidth = 1;
     rayPaths.forEach((points) => {
       ctx.beginPath();
@@ -244,8 +342,8 @@
       const distance = (timeSec * speedPxPerSec + phase) % total;
       const p = pointAtDistance(points, distance);
       const glow = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, 5);
-      glow.addColorStop(0, 'rgba(255,235,180,1)');
-      glow.addColorStop(1, 'rgba(255,235,180,0)');
+      glow.addColorStop(0, 'rgba(255,106,0,1)');
+      glow.addColorStop(1, 'rgba(255,106,0,0)');
       ctx.fillStyle = glow;
       ctx.beginPath();
       ctx.arc(p.x, p.y, 5, 0, Math.PI * 2);
@@ -258,17 +356,62 @@
       drawGlassLens(ctx, elementX, halfAperturePx, true);
     }
 
-    // Focal point marker.
+    // Focal point marker (the "focal point" DOM label sits over this —
+    // see updateFocusLabels, called on slider change rather than every
+    // animation frame).
     const focusX = isMirror ? elementX - focalLengthPx : elementX + focalLengthPx;
-    ctx.fillStyle = '#ff5f5f';
+    ctx.fillStyle = '#c0392b';
     ctx.beginPath();
     ctx.arc(focusX, 0, 3, 0, Math.PI * 2);
     ctx.fill();
-    ctx.fillStyle = '#e8e8e0';
-    ctx.font = '11px sans-serif';
-    ctx.fillText('focal point', focusX - 28, 14);
 
     ctx.restore();
+  }
+
+  // Six distinct (x, y) slots, not just two lanes — a 320x280 canvas
+  // has room for three above the axis and three below, each labelling
+  // something at a different x, so no two labels ever share a spot
+  // regardless of where the slider puts the element or its focus.
+  // A short focal length can bring the focal point right next to the
+  // element itself, too close for x-position alone to keep two labels
+  // apart — so every label here gets its own lane (three above the
+  // axis, three below), never sharing one with another label, which
+  // means only same-lane *and* same-side labels could ever collide,
+  // and none are both.
+  function focusAnchors(isMirror) {
+    const halfAperturePx = (state.focusApertureMm / 2) * FOCUS_SCALE_PX_PER_MM;
+    const focalLengthPx = state.focusFocalLengthMm * FOCUS_SCALE_PX_PER_MM;
+    const elementX = isMirror ? FOCUS_MIRROR_X : FOCUS_LENS_X;
+    const focusX = isMirror ? elementX - focalLengthPx : elementX + focalLengthPx;
+    const midY = 180; // canvas height 360, centre at 180
+    // Kept at least half a (wide) label's width from either canvas
+    // edge (320px wide, label 9.5rem/152px) so neither clips off-screen.
+    const entryX = isMirror ? 235 : 85;
+    const axisX = isMirror ? 85 : 235;
+    const base = halfAperturePx + 30;
+    const lane = (n) => base + n * 36;
+    return {
+      'parallel-rays': { x: entryX, y: midY - lane(0) },
+      'element-type': { x: elementX, y: midY - lane(1) },
+      'focal-point': { x: focusX, y: midY - lane(2) },
+      aperture: { x: elementX, y: midY + lane(0) },
+      'focal-length': { x: (elementX + focusX) / 2, y: midY + lane(1) },
+      'principal-axis': { x: axisX, y: midY + lane(2) },
+    };
+  }
+
+  function updateFocusLabels() {
+    const lensLabels = TelescopeLabels.filterLabelsByMode(
+      TelescopeLabels.focusDiagramLabels(state.focusApertureMm, state.focusFocalLengthMm, false),
+      'all'
+    );
+    const mirrorLabels = TelescopeLabels.filterLabelsByMode(
+      TelescopeLabels.focusDiagramLabels(state.focusApertureMm, state.focusFocalLengthMm, true),
+      'all'
+    );
+    renderLabels('lens-label-wrap', lensCanvas, lensLabels, focusAnchors(false));
+    renderLabels('mirror-label-wrap', mirrorCanvas, mirrorLabels, focusAnchors(true));
+    populateAllLabelsText('focus-labels-detail', lensLabels.concat(mirrorLabels));
   }
 
   function startFocusAnimation() {
@@ -284,11 +427,13 @@
   focusApertureSlider.addEventListener('input', () => {
     state.focusApertureMm = Number(focusApertureSlider.value);
     focusApertureLabel.textContent = `${state.focusApertureMm} mm`;
+    updateFocusLabels();
   });
 
   focusFocalLengthSlider.addEventListener('input', () => {
     state.focusFocalLengthMm = Number(focusFocalLengthSlider.value);
     focusFocalLengthLabel.textContent = `${state.focusFocalLengthMm} mm`;
+    updateFocusLabels();
   });
 
   // ===================================================================
@@ -300,7 +445,7 @@
   const BENCH_TUBE_MIN_PX = 140;
   const BENCH_TUBE_MAX_PX = 520;
   const BENCH_TUBE_START_X = 70;
-  const BENCH_TUBE_CENTER_Y = 120;
+  const BENCH_TUBE_CENTER_Y = 220;
   const BENCH_ANGLE_EXAGGERATION = 5;
 
   // Secondary-mirror parameters for Newtonian/Cassegrain aren't on a
@@ -442,7 +587,7 @@
         { x: xEnd, y: hp * (eyepieceHalfPx / halfAperturePx) },
         { x: xEnd + 60, y: hp * (eyepieceHalfPx / halfAperturePx) },
       ]);
-      drawStraightRayBundle(ctx, onAxis, 'rgba(255, 221, 120, 0.85)');
+      drawStraightRayBundle(ctx, onAxis, ON_AXIS_RAY_COLOR);
 
       const offAxis = onAxisHeights.map((hp) => [
         { x: 0, y: hp - offAxisTiltPx },
@@ -450,7 +595,7 @@
         { x: xEnd, y: hp * 0.3 },
         { x: xEnd + 60, y: hp * 0.3 - exitAngleSign * exitSlopePx * 10 },
       ]);
-      drawStraightRayBundle(ctx, offAxis, 'rgba(120, 210, 255, 0.85)');
+      drawStraightRayBundle(ctx, offAxis, OFF_AXIS_RAY_COLOR);
       return;
     }
 
@@ -458,7 +603,7 @@
       drawMirrorSurface(ctx, xEnd, halfAperturePx, true);
       const diagonalX = xStart + tubePx * 0.78;
       // Flat diagonal: a short tilted stroke, folding the beam up and out of the tube.
-      ctx.strokeStyle = '#c9d3dd';
+      ctx.strokeStyle = MIRROR_OUTLINE;
       ctx.lineWidth = 3;
       ctx.beginPath();
       ctx.moveTo(diagonalX - 10, -10);
@@ -468,7 +613,7 @@
       drawGlassLens(ctx, diagonalX, 12, true, eyepieceY);
 
       onAxisHeights.forEach((hp) => {
-        ctx.strokeStyle = 'rgba(255, 221, 120, 0.85)';
+        ctx.strokeStyle = ON_AXIS_RAY_COLOR;
         ctx.lineWidth = 1.4;
         ctx.beginPath();
         ctx.moveTo(0, hp);
@@ -478,7 +623,7 @@
         ctx.stroke();
       });
       const offAxisTop = -halfAperturePx - offAxisTiltPx;
-      ctx.strokeStyle = 'rgba(120, 210, 255, 0.85)';
+      ctx.strokeStyle = OFF_AXIS_RAY_COLOR;
       ctx.lineWidth = 1.4;
       ctx.beginPath();
       ctx.moveTo(0, offAxisTop);
@@ -500,7 +645,7 @@
     drawGlassLens(ctx, eyepieceX, 12, true);
 
     onAxisHeights.forEach((hp) => {
-      ctx.strokeStyle = 'rgba(255, 221, 120, 0.85)';
+      ctx.strokeStyle = ON_AXIS_RAY_COLOR;
       ctx.lineWidth = 1.4;
       ctx.beginPath();
       ctx.moveTo(0, hp);
@@ -510,7 +655,7 @@
       ctx.lineTo(eyepieceX, hp * -0.08);
       ctx.stroke();
     });
-    ctx.strokeStyle = 'rgba(120, 210, 255, 0.85)';
+    ctx.strokeStyle = OFF_AXIS_RAY_COLOR;
     ctx.lineWidth = 1.4;
     ctx.beginPath();
     ctx.moveTo(0, -halfAperturePx - offAxisTiltPx);
@@ -521,13 +666,89 @@
     ctx.stroke();
   }
 
+  // Two clusters, each a purely vertical stack of labels at one fixed
+  // x — the objective's own x, and the secondary/eyepiece's — rather
+  // than spreading across x as well. Pure vertical stacking means two
+  // labels can only ever collide if they share both the same x *and*
+  // the same lane, which never happens here (each label gets its own
+  // lane); it also means a short tube (the minimum is still wider than
+  // one label) never crowds the two clusters into each other.
+  function benchAnchors(design, halfAperturePx, xStart, xEnd, tubePx) {
+    const base = halfAperturePx + 28;
+    const lane = (n) => base + n * 32; // n = 0, 1, 2, 3… outward from the aperture envelope
+
+    function leftCluster(x) {
+      return {
+        'objective-type': { x, y: -lane(0) },
+        'objective-f': { x, y: -lane(1) },
+        'angle-in': { x, y: -lane(2) },
+        'objective-diameter': { x, y: lane(0) },
+        'ray-entry': { x, y: lane(1) },
+        'ray-converge': { x, y: lane(2) },
+      };
+    }
+
+    function rightCluster(x, secondaryIds) {
+      const anchors = {
+        [secondaryIds.type]: { x, y: -lane(0) },
+        'angle-out': { x, y: -lane(2) },
+        'image-type': { x, y: lane(0) },
+        'image-orientation': { x, y: lane(1) },
+        'ray-exit': { x, y: lane(2) },
+        'virtual-image': { x, y: lane(3) },
+      };
+      if (secondaryIds.f) anchors[secondaryIds.f] = { x, y: -lane(1) };
+      if (secondaryIds.note) anchors[secondaryIds.note] = { x, y: lane(4) };
+      return anchors;
+    }
+
+    if (design === 'galilean' || design === 'keplerian') {
+      return { ...leftCluster(xStart), ...rightCluster(xEnd, { type: 'secondary-type', f: 'secondary-f' }) };
+    }
+    // Newtonian and Cassegrain fold the light path back on itself, so the
+    // primary mirror and the secondary/eyepiece sit close together near
+    // xEnd — too close for two separate label clusters there. Anchor the
+    // objective cluster at the tube's open front (xStart) instead, well
+    // clear of the secondary cluster pushed out past xEnd, the same
+    // maximal-separation trick that keeps the refractor clusters apart.
+    if (design === 'newtonian') {
+      return { ...leftCluster(xStart), ...rightCluster(xEnd + 80, { type: 'secondary-type', f: 'eyepiece-f', note: 'secondary-note' }) };
+    }
+    // Cassegrain.
+    const eyepieceX = xEnd + 40;
+    return {
+      ...leftCluster(xStart),
+      ...rightCluster(xEnd + 80, { type: 'secondary-type', f: 'eyepiece-f' }),
+      'hole-note': { x: xEnd, y: lane(4) },
+      'path-note': { x: xEnd, y: -lane(3) },
+    };
+  }
+
+  function updateBenchLabels(geometry) {
+    const { design, objectiveDiameterMm, objectiveFocalLengthMm, eyepieceFocalLengthMm } = state;
+    const halfAperturePx = (objectiveDiameterMm / 2) * BENCH_DIAMETER_SCALE_PX_PER_MM;
+    const rawTubePx = BENCH_TUBE_LENGTH_COMPRESSION * Math.sqrt(geometry.tubeLengthMm);
+    const tubePx = Math.min(BENCH_TUBE_MAX_PX, Math.max(BENCH_TUBE_MIN_PX, rawTubePx));
+    const xStart = BENCH_TUBE_START_X;
+    const xEnd = xStart + tubePx;
+
+    const labels = TelescopeLabels.benchLabels(design, objectiveDiameterMm, objectiveFocalLengthMm, eyepieceFocalLengthMm);
+    const localAnchors = benchAnchors(design, halfAperturePx, xStart, xEnd, tubePx);
+    const anchors = {};
+    Object.keys(localAnchors).forEach((id) => {
+      anchors[id] = { x: localAnchors[id].x + 40, y: localAnchors[id].y + BENCH_TUBE_CENTER_Y };
+    });
+    renderLabels('bench-label-wrap', benchCanvas, labels, anchors);
+    populateAllLabelsText('bench-labels-detail', labels);
+  }
+
   function drawBench() {
     const geometry = benchGeometry();
     const ctx = benchCanvas.getContext('2d');
     const w = benchCanvas.width;
     const h = benchCanvas.height;
     ctx.clearRect(0, 0, w, h);
-    ctx.fillStyle = '#0b1120';
+    ctx.fillStyle = DIAGRAM_BG;
     ctx.fillRect(0, 0, w, h);
     ctx.save();
     ctx.translate(40, BENCH_TUBE_CENTER_Y);
@@ -538,6 +759,8 @@
     benchTubeLengthReadout.textContent = `${geometry.tubeLengthMm.toFixed(0)} mm`;
     benchOrientationReadout.textContent = geometry.magnification < 0 ? 'inverted' : 'upright';
     benchFocalLengthReadout.textContent = `${geometry.effectiveFocalLengthMm.toFixed(0)} mm`;
+
+    updateBenchLabels(geometry);
 
     return geometry;
   }
@@ -574,6 +797,290 @@
   });
 
   // ===================================================================
+  // Section 2.5: Galilean or Keplerian? Swap the eyepiece.
+  // ===================================================================
+  // A matched, fixed-parameter pair (500 mm objective, |50 mm| eyepiece —
+  // see test/rayOptics.test.js's own matched-parameter tests) so only
+  // the eyepiece's type and position differ between them, never size.
+
+  const COMPARE_F_OBJECTIVE_MM = 500;
+  const COMPARE_F_EYEPIECE_MM = 50;
+  const COMPARE_SCALE_PX_PER_MM = 0.85;
+  const COMPARE_CENTER_Y = 230;
+  const COMPARE_DIAMETER_SCALE = 0.45;
+  const COMPARE_ANIM_MS = 500;
+
+  const compareWrap = document.getElementById('compare-wrap');
+  const compareCanvas = document.getElementById('compare-view');
+  const compareGalileanButton = document.getElementById('compare-galilean-button');
+  const compareKeplerianButton = document.getElementById('compare-keplerian-button');
+  const compareDiameterSlider = document.getElementById('compare-diameter-slider');
+  const compareDiameterLabel = document.getElementById('compare-diameter-label');
+  const compareObjectCanvas = document.getElementById('compare-object-view');
+  const compareObjectCaption = document.getElementById('compare-object-caption');
+  const compareFovCanvas = document.getElementById('compare-fov-view');
+  const compareFovCaption = document.getElementById('compare-fov-caption');
+  const compareTubeLengthReadout = document.getElementById('compare-tube-length-readout');
+  const compareMagnificationReadout = document.getElementById('compare-magnification-readout');
+
+  const compareState = {
+    mode: 'keplerian',
+    diameterMm: 100,
+    eyepieceAnimMm: 550,
+    animFrameId: null,
+  };
+
+  function compareXForMm(mm) {
+    return 60 + mm * COMPARE_SCALE_PX_PER_MM;
+  }
+
+  function drawCompareOptics() {
+    const ctx = compareCanvas.getContext('2d');
+    const w = compareCanvas.width;
+    const h = compareCanvas.height;
+    ctx.clearRect(0, 0, w, h);
+    ctx.fillStyle = DIAGRAM_BG;
+    ctx.fillRect(0, 0, w, h);
+    ctx.save();
+    ctx.translate(0, COMPARE_CENTER_Y);
+
+    const halfAperturePx = (compareState.diameterMm / 2) * COMPARE_DIAMETER_SCALE;
+    const apertureRadiusMm = compareState.diameterMm / 2;
+    const objX = compareXForMm(0);
+    const fX = compareXForMm(COMPARE_F_OBJECTIVE_MM);
+    const eyepiecePositionMm = compareState.eyepieceAnimMm;
+    const eyeX = compareXForMm(eyepiecePositionMm);
+    const exitX = eyeX + 90;
+    const fEyeSignedMm = compareState.mode === 'galilean' ? -COMPARE_F_EYEPIECE_MM : COMPARE_F_EYEPIECE_MM;
+
+    // Optical axis.
+    ctx.strokeStyle = AXIS_COLOR;
+    ctx.lineWidth = 1;
+    ctx.setLineDash([4, 4]);
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.lineTo(w, 0);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // F: the objective's own focal point, always at 500 mm regardless
+    // of where the eyepiece currently sits.
+    ctx.strokeStyle = '#334155';
+    ctx.setLineDash([3, 3]);
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(fX, -halfAperturePx - 10);
+    ctx.lineTo(fX, halfAperturePx + 10);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = LABEL_DARK;
+    ctx.font = 'bold 13px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('F', fX, -halfAperturePx - 16);
+
+    // Rays: traced from src/rayOptics.js directly, the same functions
+    // test/rayOptics.test.js checks, not a separate hand-drawn copy.
+    [-0.9, -0.5, 0.5, 0.9].forEach((fraction) => {
+      const hMm = fraction * apertureRadiusMm;
+      const afterObjective = RayOptics.refractRay({ height: hMm, angle: 0 }, COMPARE_F_OBJECTIVE_MM);
+      const atEyepiece = RayOptics.propagateRay(afterObjective, eyepiecePositionMm);
+      const afterEyepiece = RayOptics.refractRay(atEyepiece, fEyeSignedMm);
+      const exitPoint = RayOptics.propagateRay(afterEyepiece, 90);
+
+      ctx.strokeStyle = ON_AXIS_RAY_COLOR;
+      ctx.lineWidth = 1.4;
+      ctx.beginPath();
+      ctx.moveTo(objX, hMm * COMPARE_DIAMETER_SCALE);
+      ctx.lineTo(eyeX, atEyepiece.height * COMPARE_DIAMETER_SCALE);
+      ctx.lineTo(exitX, exitPoint.height * COMPARE_DIAMETER_SCALE);
+      ctx.stroke();
+
+      // Galilean: the eyepiece catches the rays before F — show the
+      // dashed continuation of their undeflected path on to F itself.
+      if (compareState.mode === 'galilean' && eyepiecePositionMm < COMPARE_F_OBJECTIVE_MM - 1) {
+        ctx.strokeStyle = 'rgba(138, 61, 0, 0.55)';
+        ctx.setLineDash([4, 3]);
+        ctx.lineWidth = 1.2;
+        ctx.beginPath();
+        ctx.moveTo(eyeX, atEyepiece.height * COMPARE_DIAMETER_SCALE);
+        ctx.lineTo(fX, 0);
+        ctx.stroke();
+        ctx.setLineDash([]);
+      }
+    });
+
+    drawGlassLens(ctx, objX, halfAperturePx, true);
+    drawGlassLens(ctx, eyeX, 16, compareState.mode === 'keplerian');
+
+    // Keplerian: the rays actually cross at F — a small inverted arrow
+    // marks the real image forming there.
+    if (compareState.mode === 'keplerian' && eyepiecePositionMm > COMPARE_F_OBJECTIVE_MM + 1) {
+      ctx.strokeStyle = ON_AXIS_RAY_COLOR;
+      ctx.fillStyle = ON_AXIS_RAY_COLOR;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(fX, -14);
+      ctx.lineTo(fX, 12);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(fX, 20);
+      ctx.lineTo(fX - 5, 10);
+      ctx.lineTo(fX + 5, 10);
+      ctx.closePath();
+      ctx.fill();
+    }
+
+    ctx.restore();
+  }
+
+  function drawCompareObjectView() {
+    const ctx = compareObjectCanvas.getContext('2d');
+    const w = compareObjectCanvas.width;
+    const h = compareObjectCanvas.height;
+    ctx.clearRect(0, 0, w, h);
+    ctx.fillStyle = DIAGRAM_BG;
+    ctx.fillRect(0, 0, w, h);
+
+    const inverted = compareState.mode === 'keplerian';
+    ctx.save();
+    ctx.translate(w / 2, h / 2 + (inverted ? 8 : -8));
+    if (inverted) ctx.scale(1, -1);
+    ctx.strokeStyle = LABEL_DARK;
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    ctx.moveTo(0, 36);
+    ctx.lineTo(0, -28);
+    ctx.stroke();
+    ctx.fillStyle = ON_AXIS_RAY_COLOR;
+    ctx.beginPath();
+    ctx.moveTo(0, -28);
+    ctx.lineTo(26, -19);
+    ctx.lineTo(0, -10);
+    ctx.closePath();
+    ctx.fill();
+    ctx.restore();
+
+    compareObjectCaption.textContent = inverted ? 'As seen: inverted' : 'As seen: upright';
+  }
+
+  function drawCompareFovView() {
+    const ctx = compareFovCanvas.getContext('2d');
+    const w = compareFovCanvas.width;
+    const h = compareFovCanvas.height;
+    ctx.clearRect(0, 0, w, h);
+    ctx.fillStyle = DIAGRAM_BG;
+    ctx.fillRect(0, 0, w, h);
+
+    const radius = compareState.mode === 'galilean' ? 26 : 55;
+    ctx.strokeStyle = '#334155';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.arc(w / 2, h / 2, radius, 0, Math.PI * 2);
+    ctx.stroke();
+
+    compareFovCaption.textContent = compareState.mode === 'galilean' ? 'Field of view: narrower' : 'Field of view: wider';
+  }
+
+  // F sits only 50 mm from the eyepiece either way — far too close for
+  // two separate horizontal clusters there to stay clear of each
+  // other at this canvas's scale. Instead, F's own labels stay
+  // strictly above the axis and the eyepiece's stay strictly below
+  // (objective and tube-length, both far enough from both to use
+  // either side safely) — two labels can then only ever collide if
+  // they share both a side *and* a lane, which none here do.
+  function compareAnchors() {
+    const halfAperturePx = (compareState.diameterMm / 2) * COMPARE_DIAMETER_SCALE;
+    const base = halfAperturePx + 26;
+    const lane = (n) => base + n * 32;
+    const objX = compareXForMm(0);
+    const fX = compareXForMm(COMPARE_F_OBJECTIVE_MM);
+    const eyeTargetMm = compareState.mode === 'galilean' ? 450 : 550;
+    const eyeX = compareXForMm(eyeTargetMm);
+    const exitX = eyeX + 90;
+    return {
+      'objective-type': { x: objX, y: COMPARE_CENTER_Y - lane(0) },
+      'objective-f': { x: objX, y: COMPARE_CENTER_Y - lane(1) },
+      'angle-in': { x: objX, y: COMPARE_CENTER_Y - lane(2) },
+      'tube-length': { x: objX, y: COMPARE_CENTER_Y + lane(0) },
+      'focal-point': { x: fX, y: COMPARE_CENTER_Y - lane(0) },
+      'image-type': { x: fX, y: COMPARE_CENTER_Y - lane(1) },
+      'image-orientation': { x: fX, y: COMPARE_CENTER_Y - lane(2) },
+      'secondary-type': { x: eyeX, y: COMPARE_CENTER_Y + lane(0) },
+      'secondary-f': { x: eyeX, y: COMPARE_CENTER_Y + lane(1) },
+      'field-of-view': { x: eyeX, y: COMPARE_CENTER_Y + lane(2) },
+      magnification: { x: eyeX, y: COMPARE_CENTER_Y + lane(3) },
+      'ray-exit': { x: exitX, y: COMPARE_CENTER_Y - lane(3) },
+      'angle-out': { x: exitX, y: COMPARE_CENTER_Y + lane(4) },
+    };
+  }
+
+  function updateCompareReadoutsAndLabels() {
+    const info = TelescopeLabels.compareLabels(compareState.mode, COMPARE_F_OBJECTIVE_MM, COMPARE_F_EYEPIECE_MM);
+    compareTubeLengthReadout.textContent = `${info.eyepiecePositionMm.toFixed(0)} mm`;
+    compareMagnificationReadout.textContent = `${info.magnification > 0 ? '+' : ''}${info.magnification.toFixed(0)}x`;
+    renderLabels('compare-wrap', compareCanvas, info.labels, compareAnchors());
+    populateAllLabelsText('compare-labels-detail', info.labels);
+  }
+
+  function stopCompareAnimation() {
+    if (compareState.animFrameId !== null) {
+      cancelAnimationFrame(compareState.animFrameId);
+      compareState.animFrameId = null;
+    }
+  }
+
+  function animateCompareEyepiece() {
+    stopCompareAnimation();
+    const targetMm = compareState.mode === 'galilean' ? 450 : 550;
+    const startMm = compareState.eyepieceAnimMm;
+    const startTime = performance.now();
+    function step(now) {
+      const t = Math.min(1, (now - startTime) / COMPARE_ANIM_MS);
+      const eased = 1 - Math.pow(1 - t, 3);
+      compareState.eyepieceAnimMm = startMm + (targetMm - startMm) * eased;
+      drawCompareOptics();
+      if (t < 1) {
+        compareState.animFrameId = requestAnimationFrame(step);
+      } else {
+        compareState.animFrameId = null;
+      }
+    }
+    compareState.animFrameId = requestAnimationFrame(step);
+  }
+
+  function setCompareMode(mode) {
+    compareState.mode = mode;
+    compareGalileanButton.setAttribute('aria-pressed', String(mode === 'galilean'));
+    compareKeplerianButton.setAttribute('aria-pressed', String(mode === 'keplerian'));
+    updateCompareReadoutsAndLabels();
+    drawCompareObjectView();
+    drawCompareFovView();
+    animateCompareEyepiece();
+  }
+
+  compareGalileanButton.addEventListener('click', () => {
+    if (compareState.mode !== 'galilean') setCompareMode('galilean');
+  });
+  compareKeplerianButton.addEventListener('click', () => {
+    if (compareState.mode !== 'keplerian') setCompareMode('keplerian');
+  });
+
+  compareDiameterSlider.addEventListener('input', () => {
+    compareState.diameterMm = Number(compareDiameterSlider.value);
+    compareDiameterLabel.textContent = `${compareState.diameterMm} mm`;
+    drawCompareOptics();
+    updateCompareReadoutsAndLabels();
+  });
+
+  function initCompare() {
+    compareDiameterLabel.textContent = `${compareState.diameterMm} mm`;
+    drawCompareOptics();
+    drawCompareObjectView();
+    drawCompareFovView();
+    updateCompareReadoutsAndLabels();
+  }
+
+  // ===================================================================
   // Section 3: through the eyepiece
   // ===================================================================
 
@@ -594,7 +1101,7 @@
     ctx.beginPath();
     ctx.arc(cx, cy, radiusPx, 0, Math.PI * 2);
     ctx.clip();
-    ctx.fillStyle = '#04060f';
+    ctx.fillStyle = EYEPIECE_BG;
     ctx.fillRect(0, 0, w, h);
 
     const magnification = currentMagnification();
@@ -644,6 +1151,32 @@
     eyepieceFitReadout.textContent = fits
       ? `${target.label} fits comfortably in the field of view.`
       : `${target.label} is larger than the field of view — cropped at the edges.`;
+
+    const labels = [
+      { id: 'target', key: true, text: `target: ${target.label}` },
+      {
+        id: 'apparent-size',
+        key: true,
+        text: `apparent size ≈ ${apparentSizeDeg < 1 ? `${(apparentSizeDeg * 60).toFixed(1)}′` : `${apparentSizeDeg.toFixed(1)}°`}`,
+      },
+      {
+        id: 'true-field-of-view',
+        key: true,
+        text: `true field of view ≈ ${trueFieldDeg >= 1 ? `${trueFieldDeg.toFixed(2)}°` : `${trueFieldArcmin.toFixed(1)}′`}`,
+      },
+    ];
+    renderLabels(
+      'eyepiece-label-wrap',
+      eyepieceViewCanvas,
+      labels,
+      {
+        target: { x: cx, y: cy - radiusPx * 0.55 },
+        'apparent-size': { x: cx, y: cy + radiusPx * 0.5 },
+        'true-field-of-view': { x: cx, y: cy + radiusPx * 0.72 },
+      },
+      true
+    );
+    populateAllLabelsText('eyepiece-labels-detail', labels);
   }
 
   function setEyepieceTarget(target) {
@@ -800,8 +1333,11 @@
   setDesign(state.design);
   setEyepieceTarget(state.eyepieceTarget);
   update();
+  updateFocusLabels();
+  initCompare();
+  applyLabelsMode();
   startFocusAnimation();
   renderCoverage();
   Glossary.init(GLOSSARY);
-  QuizUI.mount(TelescopeQuestions.makeQuestions(TelescopeModel));
+  QuizUI.mount(TelescopeQuestions.makeQuestions(TelescopeModel, RayOptics));
 })();

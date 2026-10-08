@@ -73,3 +73,71 @@ test('through the eyepiece: true field of view and whether a target fits', () =>
   assert.equal(RayOptics.trueFieldOfViewDeg(50, 25), 2.0);
   assert.ok(RayOptics.apparentSizeDeg(25, pleiadesTrueSizeDeg) < 50, 'the Pleiades fit at 25x, true field 2.0°');
 });
+
+// --- Galilean vs Keplerian, matched parameters (f_objective = 500 mm, |f_eyepiece| = 50 mm) --
+
+const MATCHED_F_OBJECTIVE_MM = 500;
+const MATCHED_F_EYEPIECE_MM = 50;
+
+test('Galilean separation 450 mm, Keplerian 550 mm', () => {
+  assert.equal(RayOptics.afocalSeparationMm(MATCHED_F_OBJECTIVE_MM, -MATCHED_F_EYEPIECE_MM), 450);
+  assert.equal(RayOptics.afocalSeparationMm(MATCHED_F_OBJECTIVE_MM, MATCHED_F_EYEPIECE_MM), 550);
+});
+
+test('angular magnification is +10 for Galilean and -10 for Keplerian', () => {
+  assert.equal(RayOptics.angularMagnification(MATCHED_F_OBJECTIVE_MM, -MATCHED_F_EYEPIECE_MM), 10);
+  assert.equal(RayOptics.angularMagnification(MATCHED_F_OBJECTIVE_MM, MATCHED_F_EYEPIECE_MM), -10);
+});
+
+test('the marginal ray from an on-axis star crosses the axis at 500 mm, the objective’s own focal point', () => {
+  const ray = { height: 10, angle: 0 };
+  const afterObjective = RayOptics.refractRay(ray, MATCHED_F_OBJECTIVE_MM);
+  assert.equal(RayOptics.focusDistanceMm(afterObjective), MATCHED_F_OBJECTIVE_MM);
+});
+
+test('for Keplerian the crossing is before the eyepiece (a real intermediate image); for Galilean it is beyond the eyepiece (no real image)', () => {
+  const keplerianPosition = RayOptics.afocalSeparationMm(MATCHED_F_OBJECTIVE_MM, MATCHED_F_EYEPIECE_MM);
+  const galileanPosition = RayOptics.afocalSeparationMm(MATCHED_F_OBJECTIVE_MM, -MATCHED_F_EYEPIECE_MM);
+
+  assert.equal(RayOptics.formsRealIntermediateImage(MATCHED_F_OBJECTIVE_MM, keplerianPosition), true);
+  assert.equal(RayOptics.formsRealIntermediateImage(MATCHED_F_OBJECTIVE_MM, galileanPosition), false);
+
+  const keplerian = RayOptics.refractorImageDescription(MATCHED_F_OBJECTIVE_MM, MATCHED_F_EYEPIECE_MM);
+  const galilean = RayOptics.refractorImageDescription(MATCHED_F_OBJECTIVE_MM, -MATCHED_F_EYEPIECE_MM);
+  assert.equal(keplerian.realImage, true);
+  assert.equal(galilean.realImage, false);
+});
+
+test('the emerging rays are parallel in both, and the beam is one tenth of the objective’s width', () => {
+  [MATCHED_F_EYEPIECE_MM, -MATCHED_F_EYEPIECE_MM].forEach((fEyepieceSignedMm) => {
+    const traced = RayOptics.traceAfocalSystem(MATCHED_F_OBJECTIVE_MM, fEyepieceSignedMm, 0, 10);
+    assert.ok(Math.abs(traced.emergingAngleRad) < 1e-9, `expected parallel emerging rays, got angle ${traced.emergingAngleRad}`);
+  });
+
+  const objectiveDiameterMm = 100;
+  const magnification = RayOptics.angularMagnification(MATCHED_F_OBJECTIVE_MM, MATCHED_F_EYEPIECE_MM);
+  assert.equal(Math.abs(magnification), 10);
+  assert.equal(RayOptics.exitBeamWidthMm(objectiveDiameterMm, magnification), objectiveDiameterMm / 10);
+});
+
+test('the Galilean eyepiece label contains "concave" and "diverging"; the Keplerian contains "convex" and "converging"', () => {
+  const galilean = RayOptics.eyepieceLensDescription(-MATCHED_F_EYEPIECE_MM);
+  assert.ok(galilean.label.includes('concave'));
+  assert.ok(galilean.label.includes('diverging'));
+  assert.equal(galilean.converging, false);
+
+  const keplerian = RayOptics.eyepieceLensDescription(MATCHED_F_EYEPIECE_MM);
+  assert.ok(keplerian.label.includes('convex'));
+  assert.ok(keplerian.label.includes('converging'));
+  assert.equal(keplerian.converging, true);
+});
+
+test('each design reports the correct image type — Keplerian: real, inverted; Galilean: no real image, upright', () => {
+  const keplerian = RayOptics.refractorImageDescription(MATCHED_F_OBJECTIVE_MM, MATCHED_F_EYEPIECE_MM);
+  assert.equal(keplerian.realImage, true);
+  assert.equal(keplerian.orientation, 'inverted');
+
+  const galilean = RayOptics.refractorImageDescription(MATCHED_F_OBJECTIVE_MM, -MATCHED_F_EYEPIECE_MM);
+  assert.equal(galilean.realImage, false);
+  assert.equal(galilean.orientation, 'upright');
+});

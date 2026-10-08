@@ -1346,8 +1346,17 @@ canvas {
   border: 1px solid #cdd7e1;
 }
 
+/* inline-block so the wrap always shrink-fits its own canvas/SVG
+   exactly — if the wrap stayed block-level (full container width) and
+   its content rendered narrower (true for any <canvas>, which has no
+   width: 100% of its own — only max-width: 100% — unlike the
+   width: 100% SVGs this class first shipped with), label positions set
+   as a percentage of the wrap would drift off the right-hand edge of
+   the canvas itself, worse the wider the gap between the two. */
 .labelled-diagram-wrap {
   position: relative;
+  display: inline-block;
+  max-width: 100%;
 }
 
 .labelled-diagram-label {
@@ -1360,6 +1369,48 @@ canvas {
   color: #555;
   line-height: 1.2;
   pointer-events: none;
+}
+
+/* notes/telescopes.html: longer phrases ("convex (converging) lens",
+   "parallel rays from a distant object") need more width than the
+   5.5rem default to avoid wrapping across enough lines to collide with
+   the lane above or below it. */
+.labelled-diagram-label--wide {
+  width: 9.5rem;
+}
+
+/* notes/telescopes.html: a diagram with a light background (the
+   lens/mirror panel, the bench, the Galilean/Keplerian comparison)
+   uses the default dark label text above; the eyepiece view keeps a
+   dark background, so its labels need light text instead. */
+.labelled-diagram-label--on-dark {
+  color: #eef2f8;
+}
+
+/* The "Labels: all / key only / off" control (notes/telescopes.html):
+   each .labelled-diagram-wrap carries its own effective mode (JS keeps
+   every wrap on the page in sync, except where the viewport forces
+   "key" regardless of the control — see telescopes.js). */
+.labelled-diagram-wrap[data-labels-mode='off'] .labelled-diagram-label {
+  display: none;
+}
+
+.labelled-diagram-wrap[data-labels-mode='key'] .labelled-diagram-label:not(.label-key) {
+  display: none;
+}
+
+.labels-mode-control {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 1rem 0;
+}
+
+.labels-mode-caption {
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: #444;
 }
 
 .layer-legend {

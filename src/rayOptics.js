@@ -135,6 +135,62 @@
     return magnification * trueAngularSizeDeg;
   }
 
+  // --- Galilean vs Keplerian: what actually differs between them -------
+
+  // The emerging beam (the "exit pupil") is narrower than the
+  // objective by exactly the magnification — the same beam of
+  // starlight, concentrated by the system down to a tenth of its
+  // entering width at 10x, say, which is also why a low-power eyepiece
+  // feels brighter to look through than a high-power one on the same
+  // telescope: all the light the objective gathered is packed into a
+  // smaller beam for the eye's own small pupil to catch.
+  function exitBeamWidthMm(objectiveDiameterMm, magnification) {
+    return objectiveDiameterMm / Math.abs(magnification);
+  }
+
+  // A thin lens's own shape and behaviour from its signed focal
+  // length: positive (converging) is convex, drawn thick in the
+  // middle; negative (diverging) is concave, drawn thin in the middle.
+  // The exam only ever gives focal lengths as positive numbers (the
+  // sign here is this engine's own bookkeeping for which way a lens
+  // bends light, not something to show a student as a minus sign).
+  function eyepieceLensDescription(focalLengthMm) {
+    const converging = focalLengthMm > 0;
+    return {
+      converging,
+      shape: converging ? 'convex' : 'concave',
+      behaviour: converging ? 'converging' : 'diverging',
+      label: converging ? 'convex (converging) lens' : 'concave (diverging) lens',
+    };
+  }
+
+  // Whether a real image forms at the objective's own focal point
+  // (distance fObjectiveMm from it, along the tube) — only if the
+  // eyepiece sits *beyond* that point, giving the converging rays room
+  // to actually cross before the eyepiece catches them. A Keplerian
+  // eyepiece (further out than the focal point) lets that crossing
+  // happen; a Galilean eyepiece (closer in than the focal point)
+  // intercepts the rays first, so they never actually cross anywhere —
+  // no real image forms at all, just the virtual one the eye sees.
+  function formsRealIntermediateImage(fObjectiveMm, eyepiecePositionMm) {
+    return eyepiecePositionMm > fObjectiveMm;
+  }
+
+  // Full description of a refractor's final image, straight from the
+  // same two numbers (fObjectiveMm, fEyepieceSignedMm) that place and
+  // size everything else about it — so this can never disagree with
+  // what the ray-traced diagram actually shows.
+  function refractorImageDescription(fObjectiveMm, fEyepieceSignedMm) {
+    const eyepiecePositionMm = afocalSeparationMm(fObjectiveMm, fEyepieceSignedMm);
+    const magnification = angularMagnification(fObjectiveMm, fEyepieceSignedMm);
+    return {
+      eyepiecePositionMm,
+      magnification,
+      realImage: formsRealIntermediateImage(fObjectiveMm, eyepiecePositionMm),
+      orientation: magnification < 0 ? 'inverted' : 'upright',
+    };
+  }
+
   const api = {
     propagateRay,
     refractRay,
@@ -148,6 +204,10 @@
     cassegrainSystem,
     trueFieldOfViewDeg,
     apparentSizeDeg,
+    exitBeamWidthMm,
+    eyepieceLensDescription,
+    formsRealIntermediateImage,
+    refractorImageDescription,
   };
 
   if (typeof module !== 'undefined' && module.exports) {
