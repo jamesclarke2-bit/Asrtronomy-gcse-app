@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Gravitational Potential Energy and Orbital Energy</title>
-  <link rel="stylesheet" href="../styles.css?v=202610081200" />
+  <link rel="stylesheet" href="../styles.css?v=202610081800" />
 </head>
 <body>
   <main>
@@ -28,52 +28,10 @@
       g(r) = GM/r&sup2; &mdash; worked through honestly rather than quoted.
     </p>
 
-    <section class="notes-section" id="definitions">
-      <h2>Defining gravitational potential energy</h2>
-      <p>
-        Start from the external agent, not the field, because that's the definition:
-        <strong>gravitational potential energy is the work an external agent does bringing a mass
-        in from infinity to some point, moving it at constant speed the whole way.</strong>
-        "Constant speed" matters &mdash; it means kinetic energy never changes during the move, so
-        every bit of work the agent does goes straight into potential energy, with nothing left
-        over to argue about.
-      </p>
-      <p>
-        <strong>Equivalently</strong>, since the field is conservative, that work is exactly minus
-        the work gravity itself does over the same move:
-      </p>
-      <p class="formula">&Delta;U = W<sub>agent</sub> = &minus;W<sub>field</sub></p>
-      <p>
-        <strong>Why the opposite sign?</strong> Gravity pulls the mass inward on its own, every
-        step of the way in from infinity. To keep the speed constant against that pull, the
-        agent has to push back &mdash; outward, opposite to the direction the mass is actually
-        moving &mdash; and a force applied opposite to motion is, by definition, negative work.
-        So the agent's work (potential energy) comes out negative precisely because gravity's own
-        work, over that same inward move, is positive. Flip the move around &mdash; haul the mass
-        back out to infinity &mdash; and every sign in that paragraph flips too.
-      </p>
-      <p>
-        That's also why V(r) = &minus;GM/r is negative everywhere and zero only at infinity: zero
-        is simply where the agent starts, before having done any work at all, and every step
-        closer costs (in the agent's bookkeeping) a bit more negative work.
-      </p>
-      <p class="note">
-        Every number on this page comes from <code>src/gravityField.js</code>'s
-        <code>workByField</code> and <code>workByExternalAgent</code> (and the functions built on
-        them) &mdash; the same engine throughout, never a separately hand-typed copy.
-      </p>
-    </section>
-
     <section class="notes-section" id="work-counters">
-      <h2>1. Two ways in: two work counters</h2>
-      <p>
-        A mass starts at rest at a release point you choose, somewhere between 2 and
-        1,000&nbsp;Earth radii out. What happens next depends on the mode below: <strong>let it
-        fall</strong> freely under gravity alone, with nothing else acting on it, or <strong>lower
-        it slowly</strong>, carried in by hand at constant speed the whole way. Every counter
-        below is measured <strong>from the release point</strong>, not from true infinity &mdash;
-        worth saying plainly, since nothing here is ever literally brought in from infinity.
-      </p>
+      <h2>1. Who does the work?</h2>
+      <p>A mass starts far away and moves in towards a planet. Who does the work, and is it positive or negative?</p>
+
       <div class="mode-toggle" role="group" aria-label="Choose how the mass gets in">
         <button type="button" id="fall-mode-fall-button" class="mode-toggle-button" aria-pressed="true">Let it fall</button>
         <button type="button" id="fall-mode-lower-button" class="mode-toggle-button" aria-pressed="false">Lower it slowly</button>
@@ -81,11 +39,19 @@
       <div class="diagram">
         <canvas
           id="fall-view"
-          width="200"
+          width="260"
           height="360"
-          aria-label="A schematic vertical line with a planet at the bottom and a mass above it, moving down as the slider or animation advances"
+          aria-label="A planet with a mass above it moving down, with labelled arrows for its displacement, the field's force, and, when lowered slowly, a hand's force holding it back"
         ></canvas>
+        <p class="diagram-caption" id="fall-diagram-caption"></p>
       </div>
+
+      <p class="note">
+        Work = force &times; displacement &mdash; positive when they point the same way, negative
+        when they point opposite ways. Colours above match: green for positive work, orange for
+        negative.
+      </p>
+
       <div class="control">
         <label for="release-distance-slider">Release distance: <span id="release-distance-label"></span></label>
         <input type="range" id="release-distance-slider" min="0" max="1000" step="1" value="550" />
@@ -150,6 +116,28 @@
         same number &mdash; they're not two separate facts that happen to agree, they're the same
         fact stated twice.
       </p>
+
+      <p>
+        <strong>Gravitational potential energy is defined as the work the hand does</strong>
+        bringing the mass in from infinity at constant speed &mdash; which is exactly why it's
+        negative.
+      </p>
+      <p>
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="opposite-sign" aria-label="Why the opposite sign?" aria-expanded="false">Why the opposite sign?</button>
+      </p>
+      <div class="glossary-definition" data-term="opposite-sign" hidden>
+        <p>
+          Gravity pulls the mass inward on its own, every step of the way in. To keep the speed
+          constant against that pull, the hand has to push back &mdash; outward, opposite to the
+          direction the mass is actually moving &mdash; and a force applied opposite to motion is,
+          by definition, negative work. So the hand's work (potential energy) comes out negative
+          precisely because gravity's own work, over that same inward move, is positive. Flip the
+          move around &mdash; haul the mass back out to infinity &mdash; and every sign flips too.
+          That's also why zero potential sits at infinity: it's simply where the hand starts,
+          before having done any work at all, and every step closer costs a bit more negative work.
+        </p>
+      </div>
+
       <div class="control" id="full-lower-panel" hidden>
         <p>
           Lowering all the way from the release point to the surface, the hand's total work
@@ -170,59 +158,120 @@
       </div>
     </section>
 
-    <section class="notes-section" id="potential-well">
-      <h2>2. The potential well, V(r) = &minus;GM/r</h2>
-      <p>
-        Plotting V(r) against r draws a "well": deepest (most negative) at the surface, rising
-        &mdash; getting less negative &mdash; as r grows, flattening out as it approaches zero.
-        Zero itself is a convention, not a special physical place: it's wherever the external
-        agent of section 1 would have started, which by definition is infinity. "Higher" on this
-        graph always means less negative, never positive &mdash; and escaping means climbing all
-        the way out, up to that zero line.
-      </p>
-      <p>
-        Drag the dot along the curve (or use the slider) to see how far out you'd have to climb,
-        and how much of the well's full depth that is.
-      </p>
-      <div class="diagram">
+    <section class="notes-section" id="equipotentials">
+      <h2>2. Equipotentials and energy cost</h2>
+      <p>Drag the mass between the rings. Each ring is an equipotential &mdash; moving along one costs nothing.</p>
+
+      <div class="diagram wide-diagram">
         <canvas
-          id="well-view"
+          id="equipotential-view"
+          width="480"
+          height="480"
+          aria-label="A planet with radial field lines pointing inward and concentric equipotential rings, each labelled with its negative potential, and a draggable mass"
+        ></canvas>
+        <p class="diagram-caption" id="equipotential-caption"></p>
+      </div>
+
+      <div class="mode-toggle" role="group" aria-label="Choose how the rings are spaced">
+        <button type="button" id="equi-mode-v-button" class="mode-toggle-button" aria-pressed="true">Equal steps in V</button>
+        <button type="button" id="equi-mode-r-button" class="mode-toggle-button" aria-pressed="false">Equal steps in r</button>
+      </div>
+      <div class="control checkbox-control">
+        <button type="button" id="equi-zigzag-button" class="secondary-button" aria-pressed="false">Show an equivalent zigzag path</button>
+      </div>
+      <div class="control checkbox-control">
+        <button type="button" id="equi-along-ring-button" class="secondary-button" aria-pressed="false">Move along this ring instead</button>
+      </div>
+
+      <dl class="readout">
+        <div class="readout-row">
+          <dt>Potential here, V</dt>
+          <dd id="equi-potential-readout"></dd>
+        </div>
+        <div class="readout-row">
+          <dt>Change in potential, &Delta;V, from the start</dt>
+          <dd id="equi-deltav-readout"></dd>
+        </div>
+        <div class="readout-row">
+          <dt>Energy cost, straight path</dt>
+          <dd id="equi-cost-straight-readout"></dd>
+        </div>
+        <div class="readout-row" id="equi-zigzag-row" hidden>
+          <dt>Energy cost, zigzag path</dt>
+          <dd id="equi-cost-zigzag-readout"></dd>
+        </div>
+      </dl>
+      <p class="note">
+        Positive going out, released coming in &mdash; and the cost never depends on which route
+        you take, only where you start and finish.
+      </p>
+    </section>
+
+    <section class="notes-section" id="four-graphs">
+      <h2>3. Four graphs, all below zero</h2>
+      <p>Force, field, potential and potential energy, all plotted against radius &mdash; every one of them negative.</p>
+
+      <div class="diagram wide-diagram">
+        <canvas
+          id="four-graphs-view"
           width="640"
-          height="300"
-          aria-label="Gravitational potential V(r) = -GM/r plotted against radius r, a negative curve rising towards a dashed zero line marked 'zero at infinity', with a draggable marker on the curve"
+          height="560"
+          aria-label="Four stacked graphs sharing one radius axis -- force, field, potential and potential energy -- each dipping below its own zero line, with a draggable radius marker"
         ></canvas>
       </div>
+
       <div class="control">
-        <label for="well-radius-slider">Radius: <span id="well-radius-label"></span></label>
-        <input type="range" id="well-radius-slider" min="0" max="1000" step="1" value="0" />
+        <label for="graphs-r-slider">Radius, r: <span id="graphs-r-label"></span></label>
+        <input type="range" id="graphs-r-slider" min="10" max="60" step="1" value="20" />
       </div>
       <dl class="readout">
         <div class="readout-row">
-          <dt>Radius</dt>
-          <dd id="well-radius-readout"></dd>
+          <dt>Force on a 2,000 kg test mass, F <span id="graphs-f-direction"></span></dt>
+          <dd id="graphs-f-readout"></dd>
         </div>
         <div class="readout-row">
-          <dt>Potential, V(r)</dt>
-          <dd id="well-potential-readout"></dd>
+          <dt>Field (force per unit mass), g <span id="graphs-g-direction"></span></dt>
+          <dd id="graphs-g-readout"></dd>
         </div>
         <div class="readout-row">
-          <dt>Climbed out of the well</dt>
-          <dd id="well-climbed-readout"></dd>
+          <dt>Potential, V</dt>
+          <dd id="graphs-v-readout"></dd>
+        </div>
+        <div class="readout-row">
+          <dt>Potential energy of the 2,000 kg test mass, U</dt>
+          <dd id="graphs-u-readout"></dd>
         </div>
       </dl>
+
+      <p>Shade the area between two radii on the g-r graph &mdash; it equals minus the change in potential.</p>
+      <div class="control">
+        <label for="graphs-r1-slider">Inner radius, r&#8321;: <span id="graphs-r1-label"></span></label>
+        <input type="range" id="graphs-r1-slider" min="10" max="60" step="1" value="15" />
+        <label for="graphs-r2-slider">Outer radius, r&#8322;: <span id="graphs-r2-label"></span></label>
+        <input type="range" id="graphs-r2-slider" min="10" max="60" step="1" value="45" />
+      </div>
+      <dl class="readout">
+        <div class="readout-row">
+          <dt>Shaded area (signed)</dt>
+          <dd id="graphs-area-readout"></dd>
+        </div>
+        <div class="readout-row">
+          <dt>&Delta;V = &minus;area</dt>
+          <dd id="graphs-deltav-readout"></dd>
+        </div>
+      </dl>
+
+      <p class="note">
+        r is measured outward, so the inward force and field are negative. Zero potential is set
+        at infinity, so a bound mass has negative potential and energy.
+      </p>
     </section>
 
     <section class="notes-section" id="mgh-vs-exact">
-      <h2>3. mgh vs the exact formula</h2>
+      <h2>4. mgh vs the exact formula</h2>
       <p>
-        mgh assumes g stays constant over the climb &mdash; true only close to a surface. The
-        exact potential energy gained climbing from radius R to R + h is
-      </p>
-      <p class="formula">&Delta;U = GMm(1/R &minus; 1/(R+h))</p>
-      <p>
-        Slide the height up from a few metres to thousands of kilometres and watch the exact
-        value and mgh pull apart &mdash; and the ratio between them drift away from 1 as h stops
-        being small compared with R.
+        mgh assumes g stays constant over the climb &mdash; only true close to a surface. The
+        exact energy gained climbing height h from radius R is &Delta;U = GMm(1/R &minus; 1/(R+h)).
       </p>
       <div class="control">
         <label for="height-slider">Height climbed, h: <span id="height-label"></span></label>
@@ -252,41 +301,17 @@
           <div class="bar-compare-track"><div class="bar-compare-fill bar-compare-fill-mgh" id="mgh-bar-fill"></div></div>
         </div>
       </div>
-      <p class="note">
-        At h = 50&nbsp;m the two are indistinguishable to several decimal places; by the time h is
-        a sizeable fraction of Earth's own radius (6,371&nbsp;km), mgh is overestimating by a
-        margin an exam-level calculation can't ignore.
-      </p>
-    </section>
-
-    <section class="notes-section" id="g-r-area">
-      <h2>4. The g-r graph: area as potential difference</h2>
       <p>
-        g = GM/r&sup2; falls off with distance. The area shaded under that curve between any two
-        radii is the potential difference between them &mdash; found here the same way the engine
-        finds it everywhere else on this page: numerically integrating g(r), not just evaluating
-        &minus;GM/r at each end and subtracting.
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="why-pull-apart" aria-label="Why do they pull apart?" aria-expanded="false">Why do they pull apart?</button>
       </p>
-      <div class="diagram">
-        <canvas
-          id="g-r-view"
-          width="640"
-          height="300"
-          aria-label="g against r, falling off with distance, with the area under the curve between two chosen radii shaded"
-        ></canvas>
+      <div class="glossary-definition" data-term="why-pull-apart" hidden>
+        <p>
+          At h = 50&nbsp;m the two are indistinguishable to several decimal places; by the time h
+          is a sizeable fraction of Earth's own radius (6,371&nbsp;km), mgh is overestimating by a
+          margin an exam-level calculation can't ignore &mdash; because g has measurably dropped
+          over such a large climb, and mgh assumes it hasn't moved at all.
+        </p>
       </div>
-      <div class="control">
-        <label for="r1-slider">Inner radius, r&#8321;: <span id="r1-label"></span></label>
-        <input type="range" id="r1-slider" min="10" max="60" step="1" value="10" />
-        <label for="r2-slider">Outer radius, r&#8322;: <span id="r2-label"></span></label>
-        <input type="range" id="r2-slider" min="10" max="60" step="1" value="40" />
-      </div>
-      <dl class="readout">
-        <div class="readout-row">
-          <dt>Shaded area (= V(r&#8322;) &minus; V(r&#8321;))</dt>
-          <dd id="g-r-area-readout"></dd>
-        </div>
-      </dl>
     </section>
 
     <section class="notes-section" id="satellite-energy">
@@ -400,14 +425,15 @@
   </main>
 
   <script src="../src/curriculum.js?v=202610072300"></script>
-  <script src="../src/pages.js?v=202610081200"></script>
+  <script src="../src/pages.js?v=202610081800"></script>
   <script src="../src/orbitalMechanics.js?v=202610071000"></script>
   <script src="../src/gravitySim.js?v=202610071000"></script>
   <script src="../src/tides.js?v=202609260100"></script>
-  <script src="../src/gravityField.js?v=202610072200"></script>
-  <script src="../src/gravitationalPotentialQuestions.js?v=202610072100"></script>
+  <script src="../src/gravityField.js?v=202610081800"></script>
+  <script src="../src/gravitationalPotentialQuestions.js?v=202610081800"></script>
+  <script src="../glossary.js?v=202609221600"></script>
   <script src="../quiz-ui.js?v=202609221100"></script>
-  <script src="gravitational-potential.js?v=202610072200"></script>
+  <script src="gravitational-potential.js?v=202610081800"></script>
   <script src="../nextPage.js?v=202609270100"></script>
 </body>
 </html>

@@ -58,6 +58,12 @@ canvas {
   max-width: 760px;
 }
 
+/* A data-dense diagram (several stacked graphs, a larger labelled map)
+   that needs more room than the generic .diagram cap gives. */
+.diagram.wide-diagram {
+  max-width: 700px;
+}
+
 .legend {
   font-size: 0.8rem;
   color: #555;

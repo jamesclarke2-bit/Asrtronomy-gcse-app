@@ -87,6 +87,107 @@ test('workByField and workByExternalAgent default to enough steps that a far-awa
   assert.ok(relativeErrorAgent < 1e-4, `workByExternalAgent with no steps argument: relative error ${relativeErrorAgent} should be under 1e-4`);
 });
 
+// --- Signed radial quantities (radialField, radialForce, equipotentialRadii, workAlongPath) --
+
+test('F, g, V and U are negative for every r > 0, and V and U approach zero from below as r grows', () => {
+  const radii = [EARTH_RADIUS_M, EARTH_RADIUS_M * 2, EARTH_RADIUS_M * 10, EARTH_RADIUS_M * 1000];
+  radii.forEach((r) => {
+    assert.ok(GravityField.radialField(EARTH_MASS_KG, r) < 0, `g(${r}) should be negative`);
+    assert.ok(GravityField.radialForce(EARTH_MASS_KG, 1, r) < 0, `F(${r}) should be negative`);
+    assert.ok(GravityField.potential(EARTH_MASS_KG, r) < 0, `V(${r}) should be negative`);
+    assert.ok(GravityField.potentialEnergy(EARTH_MASS_KG, 1, r) < 0, `U(${r}) should be negative`);
+  });
+
+  // Approaching zero from below: each further-out V (and U) is less
+  // negative than the last, never crossing to positive.
+  for (let i = 1; i < radii.length; i += 1) {
+    const vPrev = GravityField.potential(EARTH_MASS_KG, radii[i - 1]);
+    const vNext = GravityField.potential(EARTH_MASS_KG, radii[i]);
+    assert.ok(vNext > vPrev && vNext < 0, `V should rise towards zero but stay negative: ${vPrev} -> ${vNext}`);
+  }
+});
+
+test('the numerical derivative of V equals minus the signed g', () => {
+  const r = EARTH_RADIUS_M * 2;
+  const h = 1;
+  const dV = (GravityField.potential(EARTH_MASS_KG, r + h) - GravityField.potential(EARTH_MASS_KG, r - h)) / (2 * h);
+  const g = GravityField.radialField(EARTH_MASS_KG, r);
+  assert.ok(Math.abs(dV - -g) / Math.abs(g) < 1e-6, `expected dV/dr ≈ ${-g}, got ${dV}`);
+});
+
+test('V(r2) - V(r1) equals minus the integral of the signed g from r1 to r2', () => {
+  const r1 = EARTH_RADIUS_M;
+  const r2 = EARTH_RADIUS_M * 5;
+  const steps = 5000;
+  let integral = 0;
+  let prevR = r1;
+  let prevG = GravityField.radialField(EARTH_MASS_KG, r1);
+  for (let i = 1; i <= steps; i += 1) {
+    const r = r1 + ((r2 - r1) * i) / steps;
+    const g = GravityField.radialField(EARTH_MASS_KG, r);
+    integral += (0.5 * (g + prevG) * (r - prevR));
+    prevR = r;
+    prevG = g;
+  }
+  const deltaV = GravityField.potential(EARTH_MASS_KG, r2) - GravityField.potential(EARTH_MASS_KG, r1);
+  assert.ok(Math.abs(deltaV - -integral) / Math.abs(deltaV) < 1e-4, `expected ΔV ≈ ${-integral}, got ${deltaV}`);
+});
+
+test('equipotentialRadii: equal steps of V (V_i = -i*deltaV), with the matching radii', () => {
+  const steps = GravityField.equipotentialRadii(EARTH_MASS_KG, 10e6, 4);
+  assert.equal(steps.length, 4);
+  steps.forEach((s, i) => {
+    assert.equal(s.potential, -(i + 1) * 10e6);
+    const expectedRadius = (OrbitalMechanics.G * EARTH_MASS_KG) / ((i + 1) * 10e6);
+    assert.ok(Math.abs(s.radius - expectedRadius) / expectedRadius < 1e-9);
+    assert.ok(Math.abs(GravityField.potential(EARTH_MASS_KG, s.radius) - s.potential) / Math.abs(s.potential) < 1e-9);
+  });
+  // Deeper (more negative) steps sit at smaller radii.
+  assert.ok(steps[0].radius > steps[3].radius);
+});
+
+test('workAlongPath: moving outward costs positive work, moving inward releases it, matching workByExternalAgent', () => {
+  const r1 = EARTH_RADIUS_M * 2;
+  const r2 = EARTH_RADIUS_M * 6;
+
+  const outward = GravityField.workAlongPath(EARTH_MASS_KG, 1, [{ x: r1, y: 0 }, { x: r2, y: 0 }]);
+  assert.ok(outward > 0, `expected positive (outward) work, got ${outward}`);
+  const expectedOutward = GravityField.workByExternalAgent(EARTH_MASS_KG, r1, r2);
+  assert.ok(Math.abs(outward - expectedOutward) / expectedOutward < 1e-3, `expected ≈${expectedOutward}, got ${outward}`);
+
+  const inward = GravityField.workAlongPath(EARTH_MASS_KG, 1, [{ x: r2, y: 0 }, { x: r1, y: 0 }]);
+  assert.ok(inward < 0, `expected negative (inward) work, got ${inward}`);
+  assert.ok(Math.abs(inward - -outward) / Math.abs(outward) < 1e-3);
+});
+
+test('workAlongPath: work along an equipotential arc is zero', () => {
+  const r = EARTH_RADIUS_M * 3;
+  const arcPoints = [];
+  for (let i = 0; i <= 8; i += 1) {
+    const theta = (i / 8) * (Math.PI / 2);
+    arcPoints.push({ x: r * Math.cos(theta), y: r * Math.sin(theta) });
+  }
+  const work = GravityField.workAlongPath(EARTH_MASS_KG, 1, arcPoints);
+  const scale = Math.abs(GravityField.potential(EARTH_MASS_KG, r));
+  assert.ok(Math.abs(work) / scale < 1e-3, `expected ~0, got ${work}`);
+});
+
+test('workAlongPath: a radial path and a zigzag path between the same two radii cost the same (path independence, within 1e-3)', () => {
+  const r1 = EARTH_RADIUS_M * 2;
+  const r2 = EARTH_RADIUS_M * 8;
+
+  const radial = GravityField.workAlongPath(EARTH_MASS_KG, 1, [{ x: r1, y: 0 }, { x: r2, y: 0 }]);
+
+  const zigzag = GravityField.workAlongPath(EARTH_MASS_KG, 1, [
+    { x: r1, y: 0 },
+    { x: r1 * 1.5, y: r1 * 1.2 },
+    { x: r2 * 0.8, y: -r1 * 0.6 },
+    { x: r2, y: 0 },
+  ]);
+
+  assert.ok(Math.abs(zigzag - radial) / Math.abs(radial) < 1e-3, `expected ≈${radial}, got ${zigzag}`);
+});
+
 // --- Layer 2: superposition --------------------------------------------------
 
 test('two equal masses give zero field at the midpoint, and a potential of -4GM/d there', () => {

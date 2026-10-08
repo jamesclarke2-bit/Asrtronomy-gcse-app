@@ -124,7 +124,7 @@ function makeQuestions(GravityField, OrbitalMechanics) {
       units: ['u3.26'],
       type: 'number',
       unitLabel: 'J/kg',
-      prompt: `On the g-r graph, g = GM/r² is plotted against r. What is the area under that curve between r = R (Earth's surface) and r = 4R? (The engine finds this by numerically integrating g(r), the same way it finds any area under this curve.)`,
+      prompt: `On the g-r graph in "3. Four graphs, all below zero", the signed field g = -GM/r² is plotted against r (negative everywhere, since it points inward). What is V(4R) - V(R), given that it equals minus the shaded (signed, negative) area under that curve between r = R (Earth's surface) and r = 4R?`,
       check(value) {
         // 2%: this is a "read it off the graph and estimate the area"
         // question, not a plug-into-a-formula one, so the tolerance
@@ -134,7 +134,7 @@ function makeQuestions(GravityField, OrbitalMechanics) {
         const correct = Math.abs(value - areaUnderGR) / areaUnderGR < 0.02;
         return {
           correct,
-          message: `The shaded area between R and 4R is ∫g dr over that range ≈ ${(areaUnderGR / 1e6).toFixed(1)} MJ/kg — and that area is exactly the potential difference V(4R) - V(R), since dV/dr = g(r) by definition. "Area under the g-r graph" and "potential difference" are the same number, not just related ones.`,
+          message: `The shaded area is ∫g dr over that range ≈ ${(-areaUnderGR / 1e6).toFixed(1)} MJ/kg (negative, since g is negative) — and V(4R) - V(R) is minus that area, ≈ ${(areaUnderGR / 1e6).toFixed(1)} MJ/kg (positive: moving out to a less negative potential). "Area under the signed g-r graph" and "minus the potential difference" are the same number, not just related ones.`,
         };
       },
     },

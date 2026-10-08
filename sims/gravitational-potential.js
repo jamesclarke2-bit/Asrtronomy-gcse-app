@@ -10,14 +10,36 @@
   const MASS_COLOR = '#c0392b';
   const CURVE_COLOR = '#3a3f4d';
   const SHADE_COLOR = 'rgba(42, 107, 214, 0.22)';
+  const POSITIVE_COLOR = '#2fae4e';
+  const NEGATIVE_COLOR = '#e07b1f';
+  const NEUTRAL_COLOR = '#555';
 
-  // --- 1. Two ways in: two work counters ----------------------------------
+  function drawArrow(ctx, x1, y1, x2, y2, color) {
+    ctx.strokeStyle = color;
+    ctx.fillStyle = color;
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x2, y2);
+    ctx.stroke();
+    const angle = Math.atan2(y2 - y1, x2 - x1);
+    const headLen = 7;
+    ctx.beginPath();
+    ctx.moveTo(x2, y2);
+    ctx.lineTo(x2 - headLen * Math.cos(angle - Math.PI / 6), y2 - headLen * Math.sin(angle - Math.PI / 6));
+    ctx.lineTo(x2 - headLen * Math.cos(angle + Math.PI / 6), y2 - headLen * Math.sin(angle + Math.PI / 6));
+    ctx.closePath();
+    ctx.fill();
+  }
+
+  // --- 1. Who does the work? ------------------------------------------------
 
   const RELEASE_MIN_RADIUS = R * 2;
   const RELEASE_MAX_RADIUS = R * 1000;
 
   const fallCanvas = document.getElementById('fall-view');
   const fallCtx = fallCanvas.getContext('2d');
+  const fallDiagramCaption = document.getElementById('fall-diagram-caption');
   const releaseDistanceSlider = document.getElementById('release-distance-slider');
   const releaseDistanceLabel = document.getElementById('release-distance-label');
   const fallProgressSlider = document.getElementById('fall-progress-slider');
@@ -61,39 +83,81 @@
     const height = fallCanvas.height;
     fallCtx.clearRect(0, 0, width, height);
 
-    const topY = 20;
+    const topY = 80; // leaves room above the release point for the hand-force arrow, even at 0% fallen
     const planetY = height - 30;
     const planetRadius = 16;
+    const cx = width / 2;
 
     fallCtx.strokeStyle = '#cdd7e1';
     fallCtx.setLineDash([4, 4]);
     fallCtx.beginPath();
-    fallCtx.moveTo(width / 2, topY);
-    fallCtx.lineTo(width / 2, planetY);
+    fallCtx.moveTo(cx, topY);
+    fallCtx.lineTo(cx, planetY);
     fallCtx.stroke();
     fallCtx.setLineDash([]);
 
     fallCtx.fillStyle = '#888';
     fallCtx.font = '11px sans-serif';
     fallCtx.textAlign = 'center';
-    fallCtx.fillText('release point', width / 2, topY - 6);
+    fallCtx.fillText('release point', cx, topY - 6);
 
     fallCtx.beginPath();
-    fallCtx.arc(width / 2, planetY, planetRadius, 0, Math.PI * 2);
+    fallCtx.arc(cx, planetY, planetRadius, 0, Math.PI * 2);
     fallCtx.fillStyle = EARTH_COLOR;
     fallCtx.fill();
     fallCtx.fillStyle = '#fff';
     fallCtx.font = '10px sans-serif';
-    fallCtx.fillText('Earth', width / 2, planetY + 3);
+    fallCtx.fillText('planet', cx, planetY + 3);
 
-    const massY = topY + fraction * (planetY - planetRadius - 10 - topY);
+    const travelTop = topY;
+    const travelBottom = planetY - planetRadius - 10;
+    const massY = travelTop + fraction * (travelBottom - travelTop);
+
+    // A trail of ghost positions behind the mass — the two modes must
+    // look clearly different, not just read different numbers: bunched
+    // together then spreading out (speeding up) when it falls freely,
+    // evenly spaced (constant speed) when it's lowered by hand.
+    const trailOffsets = fallMode === 'fall' ? [0.015, 0.05, 0.11, 0.2] : [0.05, 0.1, 0.15, 0.2];
+    trailOffsets.forEach((d, i) => {
+      const f = Math.max(0, fraction - d);
+      const y = travelTop + f * (travelBottom - travelTop);
+      fallCtx.beginPath();
+      fallCtx.arc(cx, y, 5 - i, 0, Math.PI * 2);
+      fallCtx.fillStyle = `rgba(192,57,41,${0.32 - i * 0.06})`;
+      fallCtx.fill();
+    });
+
     fallCtx.beginPath();
-    fallCtx.arc(width / 2, massY, 7, 0, Math.PI * 2);
+    fallCtx.arc(cx, massY, 7, 0, Math.PI * 2);
     fallCtx.fillStyle = MASS_COLOR;
     fallCtx.fill();
     fallCtx.strokeStyle = '#7a2015';
     fallCtx.lineWidth = 1.5;
     fallCtx.stroke();
+
+    // Displacement (neutral) and field force (green — same direction,
+    // positive work) arrows, both inward/downward, every mode.
+    const armX = 26;
+    drawArrow(fallCtx, cx - armX, massY, cx - armX, massY + 30, NEUTRAL_COLOR);
+    fallCtx.fillStyle = NEUTRAL_COLOR;
+    fallCtx.font = '10px sans-serif';
+    fallCtx.textAlign = 'center';
+    fallCtx.fillText('displacement', cx - armX, massY + 44);
+
+    drawArrow(fallCtx, cx + armX, massY, cx + armX, massY + 30, POSITIVE_COLOR);
+    fallCtx.fillStyle = POSITIVE_COLOR;
+    fallCtx.fillText('field force', cx + armX, massY + 44);
+
+    // Hand force (orange — opposite direction, negative work): only in
+    // "lower it slowly" mode, the one visible difference a screenshot
+    // of each mode should show beyond the trail.
+    if (fallMode === 'lower') {
+      drawArrow(fallCtx, cx, massY - 16, cx, massY - 46, NEGATIVE_COLOR);
+      fallCtx.fillStyle = NEGATIVE_COLOR;
+      fallCtx.fillText('hand force', cx, massY - 54);
+      fallCtx.font = '16px sans-serif';
+      fallCtx.fillText('✋', cx, massY - 76);
+    }
   }
 
   function updateFullLowerPanel(r0) {
@@ -144,6 +208,11 @@
     const barFraction = Math.min(1, fieldWork / maxFieldWork);
     fallFieldBarFill.style.height = `${barFraction * 50}%`;
     fallAgentBarFill.style.height = `${barFraction * 50}%`;
+
+    fallDiagramCaption.textContent =
+      fallMode === 'fall'
+        ? 'Falling freely: speeding up — the trail bunches up, then spreads out.'
+        : 'Lowered by hand: constant speed — the trail stays evenly spaced.';
 
     drawFall(fraction);
   }
@@ -222,147 +291,402 @@
     else startFallAnimation();
   });
 
-  // --- 2. The potential well, V(r) = -GM/r --------------------------------
+  // --- 2. Equipotentials and energy cost ------------------------------------
 
-  const WELL_R_MAX = R * 15;
-  const WELL_MARGIN = { left: 60, right: 20, top: 30, bottom: 40 };
+  const EQUI_DELTA_V = 10e6; // 10 MJ/kg, the task's own default step
+  const EQUI_RING_COUNT = 6;
 
-  const wellCanvas = document.getElementById('well-view');
-  const wellCtx = wellCanvas.getContext('2d');
-  const wellRadiusSlider = document.getElementById('well-radius-slider');
-  const wellRadiusLabel = document.getElementById('well-radius-label');
-  const wellRadiusReadout = document.getElementById('well-radius-readout');
-  const wellPotentialReadout = document.getElementById('well-potential-readout');
-  const wellClimbedReadout = document.getElementById('well-climbed-readout');
+  const equiCanvas = document.getElementById('equipotential-view');
+  const equiCtx = equiCanvas.getContext('2d');
+  const equiCaption = document.getElementById('equipotential-caption');
+  const equiModeVButton = document.getElementById('equi-mode-v-button');
+  const equiModeRButton = document.getElementById('equi-mode-r-button');
+  const equiZigzagButton = document.getElementById('equi-zigzag-button');
+  const equiAlongRingButton = document.getElementById('equi-along-ring-button');
+  const equiPotentialReadout = document.getElementById('equi-potential-readout');
+  const equiDeltaVReadout = document.getElementById('equi-deltav-readout');
+  const equiCostStraightReadout = document.getElementById('equi-cost-straight-readout');
+  const equiZigzagRow = document.getElementById('equi-zigzag-row');
+  const equiCostZigzagReadout = document.getElementById('equi-cost-zigzag-readout');
 
-  const V_AT_SURFACE = GF.potential(M, R);
+  // i = 1..6 → V = -10, -20, ... -60 MJ/kg — deepest (most negative, i=6)
+  // sits at the smallest radius.
+  const equiVSteps = GF.equipotentialRadii(M, EQUI_DELTA_V, EQUI_RING_COUNT);
+  const EQUI_INNER_R = equiVSteps[equiVSteps.length - 1].radius;
+  const EQUI_OUTER_R = equiVSteps[0].radius;
 
-  function wellRadiusFromFraction(fraction) {
-    return R + fraction * (WELL_R_MAX - R);
-  }
+  let equiRingMode = 'v';
+  let equiShowZigzag = false;
+  const equiStart = { x: EQUI_INNER_R, y: 0 };
+  let equiCurrent = { x: 0, y: EQUI_OUTER_R * 0.6 };
 
-  function wellXForR(r) {
-    const plotWidth = wellCanvas.width - WELL_MARGIN.left - WELL_MARGIN.right;
-    return WELL_MARGIN.left + ((r - R) / (WELL_R_MAX - R)) * plotWidth;
-  }
+  const EQUI_PLOT_RADIUS_PX = Math.min(equiCanvas.width, equiCanvas.height) / 2 - 34;
+  const EQUI_PX_PER_M = EQUI_PLOT_RADIUS_PX / (EQUI_OUTER_R * 1.15);
 
-  // V_AT_SURFACE (most negative) sits at the bottom of the well; 0 (the
-  // zero-at-infinity convention) sits at the top — climbing "up" the
-  // well is literally climbing up the canvas, matching "higher means
-  // less negative" in the prose above.
-  function wellYForV(v) {
-    const plotHeight = wellCanvas.height - WELL_MARGIN.top - WELL_MARGIN.bottom;
-    const bottomY = wellCanvas.height - WELL_MARGIN.bottom;
-    const fraction = (v - V_AT_SURFACE) / (0 - V_AT_SURFACE);
-    return bottomY - fraction * plotHeight;
-  }
-
-  function drawWell(r) {
-    const width = wellCanvas.width;
-    const height = wellCanvas.height;
-    wellCtx.clearRect(0, 0, width, height);
-
-    // Zero line (the convention: zero at infinity)
-    const zeroY = wellYForV(0);
-    wellCtx.strokeStyle = '#999';
-    wellCtx.setLineDash([5, 4]);
-    wellCtx.beginPath();
-    wellCtx.moveTo(WELL_MARGIN.left, zeroY);
-    wellCtx.lineTo(width - WELL_MARGIN.right, zeroY);
-    wellCtx.stroke();
-    wellCtx.setLineDash([]);
-    wellCtx.fillStyle = '#777';
-    wellCtx.font = '11px sans-serif';
-    wellCtx.textAlign = 'left';
-    wellCtx.fillText('zero at infinity (convention)', WELL_MARGIN.left, zeroY - 6);
-
-    // The curve
-    wellCtx.beginPath();
-    const steps = 200;
-    for (let i = 0; i <= steps; i += 1) {
-      const rr = R + (i / steps) * (WELL_R_MAX - R);
-      const vv = GF.potential(M, rr);
-      const x = wellXForR(rr);
-      const y = wellYForV(vv);
-      if (i === 0) wellCtx.moveTo(x, y);
-      else wellCtx.lineTo(x, y);
+  function equiRingRadii() {
+    if (equiRingMode === 'v') {
+      return equiVSteps.map((s) => ({ radius: s.radius, potential: s.potential }));
     }
-    wellCtx.strokeStyle = CURVE_COLOR;
-    wellCtx.lineWidth = 2;
-    wellCtx.stroke();
-
-    // Axis labels
-    wellCtx.fillStyle = '#555';
-    wellCtx.textAlign = 'center';
-    wellCtx.fillText('Radius, r', width / 2, height - 8);
-    wellCtx.save();
-    wellCtx.translate(16, height / 2);
-    wellCtx.rotate(-Math.PI / 2);
-    wellCtx.fillText('V(r)', 0, 0);
-    wellCtx.restore();
-
-    // Draggable marker
-    const v = GF.potential(M, r);
-    const mx = wellXForR(r);
-    const my = wellYForV(v);
-    wellCtx.beginPath();
-    wellCtx.arc(mx, my, 7, 0, Math.PI * 2);
-    wellCtx.fillStyle = MASS_COLOR;
-    wellCtx.fill();
-    wellCtx.strokeStyle = '#7a2015';
-    wellCtx.lineWidth = 1.5;
-    wellCtx.stroke();
+    // Equal steps in r, spanning the same inner/outer boundary as the
+    // equal-V set above, so the two modes are directly comparable.
+    const steps = [];
+    for (let i = 0; i < EQUI_RING_COUNT; i += 1) {
+      const radius = EQUI_INNER_R + ((EQUI_OUTER_R - EQUI_INNER_R) * i) / (EQUI_RING_COUNT - 1);
+      steps.push({ radius, potential: GF.potential(M, radius) });
+    }
+    return steps;
   }
 
-  function updateWell() {
-    const fraction = Number(wellRadiusSlider.value) / 1000;
-    const r = wellRadiusFromFraction(fraction);
-    const v = GF.potential(M, r);
-    const climbedFraction = (v - V_AT_SURFACE) / (0 - V_AT_SURFACE);
-
-    wellRadiusLabel.textContent = `${(r / R).toFixed(1)} × Earth's radius`;
-    wellRadiusReadout.textContent = `${(r / 1000).toFixed(0)} km (${(r / R).toFixed(1)} × Earth's radius)`;
-    wellPotentialReadout.textContent = `${(v / 1e6).toFixed(2)} MJ/kg`;
-    wellClimbedReadout.textContent = `${(climbedFraction * 100).toFixed(1)}% of the way out of the well shown here`;
-
-    drawWell(r);
+  function equiToCanvas(p) {
+    return { x: equiCanvas.width / 2 + p.x * EQUI_PX_PER_M, y: equiCanvas.height / 2 + p.y * EQUI_PX_PER_M };
   }
 
-  wellRadiusSlider.addEventListener('input', updateWell);
-
-  function wellFractionFromPointerEvent(evt) {
-    const rect = wellCanvas.getBoundingClientRect();
-    const scaleX = wellCanvas.width / rect.width;
-    const x = (evt.clientX - rect.left) * scaleX;
-    const plotWidth = wellCanvas.width - WELL_MARGIN.left - WELL_MARGIN.right;
-    const frac = (x - WELL_MARGIN.left) / plotWidth;
-    return Math.max(0, Math.min(1, frac));
+  function equiFromCanvas(cx, cy) {
+    return { x: (cx - equiCanvas.width / 2) / EQUI_PX_PER_M, y: (cy - equiCanvas.height / 2) / EQUI_PX_PER_M };
   }
 
-  function applyWellDrag(evt) {
-    const fraction = wellFractionFromPointerEvent(evt);
-    wellRadiusSlider.value = Math.round(fraction * 1000);
-    updateWell();
+  function drawArrowHead(ctx, x, y, angle, color) {
+    const len = 6;
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    ctx.lineTo(x - len * Math.cos(angle - Math.PI / 7), y - len * Math.sin(angle - Math.PI / 7));
+    ctx.lineTo(x - len * Math.cos(angle + Math.PI / 7), y - len * Math.sin(angle + Math.PI / 7));
+    ctx.closePath();
+    ctx.fill();
   }
 
-  let wellDragging = false;
-  wellCanvas.addEventListener('pointerdown', (evt) => {
-    wellDragging = true;
-    wellCanvas.setPointerCapture(evt.pointerId);
-    applyWellDrag(evt);
+  function equiZigzagMidpoint() {
+    const mx = (equiStart.x + equiCurrent.x) / 2;
+    const my = (equiStart.y + equiCurrent.y) / 2;
+    const dx = equiCurrent.x - equiStart.x;
+    const dy = equiCurrent.y - equiStart.y;
+    const len = Math.hypot(dx, dy) || 1;
+    const offset = len * 0.35;
+    return { x: mx + (-dy / len) * offset, y: my + (dx / len) * offset };
+  }
+
+  function drawEquipotentialView() {
+    const ctx = equiCtx;
+    const center = { x: equiCanvas.width / 2, y: equiCanvas.height / 2 };
+    ctx.clearRect(0, 0, equiCanvas.width, equiCanvas.height);
+
+    // Radial field lines, arrowheads pointing inward (the field always
+    // pulls towards the planet).
+    const lineCount = 8;
+    for (let i = 0; i < lineCount; i += 1) {
+      const theta = (i / lineCount) * Math.PI * 2;
+      const outer = { x: center.x + Math.cos(theta) * EQUI_PLOT_RADIUS_PX, y: center.y + Math.sin(theta) * EQUI_PLOT_RADIUS_PX };
+      const inner = { x: center.x + Math.cos(theta) * 18, y: center.y + Math.sin(theta) * 18 };
+      ctx.strokeStyle = 'rgba(42,107,214,0.35)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(outer.x, outer.y);
+      ctx.lineTo(inner.x, inner.y);
+      ctx.stroke();
+      const t = 0.55;
+      drawArrowHead(ctx, outer.x + (inner.x - outer.x) * t, outer.y + (inner.y - outer.y) * t, Math.atan2(inner.y - outer.y, inner.x - outer.x), 'rgba(42,107,214,0.65)');
+    }
+
+    // Equipotential rings, each labelled with its (negative) potential —
+    // labels fan out at a slightly different angle per ring so the
+    // closely-spaced inner rings' labels don't overlap each other.
+    equiRingRadii().forEach((ring, i) => {
+      const rPx = ring.radius * EQUI_PX_PER_M;
+      ctx.beginPath();
+      ctx.arc(center.x, center.y, rPx, 0, Math.PI * 2);
+      ctx.strokeStyle = '#8a97a5';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+      const labelAngle = -Math.PI / 2 + i * 0.38;
+      const labelX = center.x + Math.cos(labelAngle) * rPx;
+      const labelY = center.y + Math.sin(labelAngle) * rPx - 4;
+      ctx.fillStyle = '#555';
+      ctx.font = '10px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(`${(ring.potential / 1e6).toFixed(0)} MJ/kg`, labelX, labelY);
+    });
+
+    // Planet.
+    ctx.beginPath();
+    ctx.arc(center.x, center.y, 12, 0, Math.PI * 2);
+    ctx.fillStyle = EARTH_COLOR;
+    ctx.fill();
+
+    // Fixed start point.
+    const startPx = equiToCanvas(equiStart);
+    ctx.beginPath();
+    ctx.arc(startPx.x, startPx.y, 5, 0, Math.PI * 2);
+    ctx.fillStyle = '#8a97a5';
+    ctx.fill();
+    ctx.fillStyle = '#555';
+    ctx.font = '10px sans-serif';
+    ctx.textAlign = 'left';
+    ctx.fillText('start', startPx.x + 8, startPx.y + 3);
+
+    // The path actually being costed: straight by default, zigzag when toggled on.
+    if (equiShowZigzag) {
+      const mid = equiZigzagMidpoint();
+      [equiStart, mid, equiCurrent].forEach((p, i, arr) => {
+        if (i === 0) return;
+        const a = equiToCanvas(arr[i - 1]);
+        const b = equiToCanvas(p);
+        ctx.strokeStyle = '#7b2ff7';
+        ctx.lineWidth = 1.5;
+        ctx.setLineDash([5, 4]);
+        ctx.beginPath();
+        ctx.moveTo(a.x, a.y);
+        ctx.lineTo(b.x, b.y);
+        ctx.stroke();
+        ctx.setLineDash([]);
+      });
+    } else {
+      const a = equiToCanvas(equiStart);
+      const b = equiToCanvas(equiCurrent);
+      ctx.strokeStyle = '#c0392b';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(a.x, a.y);
+      ctx.lineTo(b.x, b.y);
+      ctx.stroke();
+    }
+
+    // The draggable mass.
+    const curPx = equiToCanvas(equiCurrent);
+    ctx.beginPath();
+    ctx.arc(curPx.x, curPx.y, 7, 0, Math.PI * 2);
+    ctx.fillStyle = MASS_COLOR;
+    ctx.fill();
+    ctx.strokeStyle = '#7a2015';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+  }
+
+  function equiClampPoint(p) {
+    const r = Math.hypot(p.x, p.y) || 1;
+    const minR = EQUI_INNER_R * 0.9;
+    const maxR = EQUI_OUTER_R * 1.3;
+    const clampedR = Math.min(maxR, Math.max(minR, r));
+    const scale = clampedR / r;
+    return { x: p.x * scale, y: p.y * scale };
+  }
+
+  function updateEquipotentialReadouts() {
+    const rCurrent = Math.hypot(equiCurrent.x, equiCurrent.y);
+    const rStart = Math.hypot(equiStart.x, equiStart.y);
+    const vCurrent = GF.potential(M, rCurrent);
+    const vStart = GF.potential(M, rStart);
+    const deltaV = vCurrent - vStart;
+    const costStraight = GF.workAlongPath(M, 1, [equiStart, equiCurrent]);
+
+    equiPotentialReadout.textContent = `${(vCurrent / 1e6).toFixed(2)} MJ/kg`;
+    equiDeltaVReadout.textContent = `${(deltaV / 1e6).toFixed(2)} MJ/kg`;
+    equiCostStraightReadout.textContent = `${(costStraight / 1e6).toFixed(2)} MJ/kg`;
+
+    if (equiShowZigzag) {
+      const mid = equiZigzagMidpoint();
+      const costZigzag = GF.workAlongPath(M, 1, [equiStart, mid, equiCurrent]);
+      equiCostZigzagReadout.textContent = `${(costZigzag / 1e6).toFixed(2)} MJ/kg`;
+    }
+
+    drawEquipotentialView();
+  }
+
+  equiModeVButton.addEventListener('click', () => {
+    equiRingMode = 'v';
+    equiModeVButton.setAttribute('aria-pressed', 'true');
+    equiModeRButton.setAttribute('aria-pressed', 'false');
+    drawEquipotentialView();
   });
-  wellCanvas.addEventListener('pointermove', (evt) => {
-    if (!wellDragging) return;
-    applyWellDrag(evt);
-  });
-  wellCanvas.addEventListener('pointerup', () => {
-    wellDragging = false;
-  });
-  wellCanvas.addEventListener('pointercancel', () => {
-    wellDragging = false;
+  equiModeRButton.addEventListener('click', () => {
+    equiRingMode = 'r';
+    equiModeVButton.setAttribute('aria-pressed', 'false');
+    equiModeRButton.setAttribute('aria-pressed', 'true');
+    drawEquipotentialView();
   });
 
-  // --- 3. mgh vs the exact formula -----------------------------------------
+  equiZigzagButton.addEventListener('click', () => {
+    equiShowZigzag = !equiShowZigzag;
+    equiZigzagButton.setAttribute('aria-pressed', String(equiShowZigzag));
+    equiZigzagRow.hidden = !equiShowZigzag;
+    updateEquipotentialReadouts();
+  });
+
+  equiAlongRingButton.addEventListener('click', () => {
+    const r = Math.hypot(equiCurrent.x, equiCurrent.y);
+    const theta = Math.atan2(equiCurrent.y, equiCurrent.x) + Math.PI * (50 / 180);
+    equiCurrent = { x: r * Math.cos(theta), y: r * Math.sin(theta) };
+    updateEquipotentialReadouts();
+  });
+
+  let equiDragging = false;
+  function equiApplyPointer(evt) {
+    const rect = equiCanvas.getBoundingClientRect();
+    const scaleX = equiCanvas.width / rect.width;
+    const scaleY = equiCanvas.height / rect.height;
+    const cx = (evt.clientX - rect.left) * scaleX;
+    const cy = (evt.clientY - rect.top) * scaleY;
+    equiCurrent = equiClampPoint(equiFromCanvas(cx, cy));
+    updateEquipotentialReadouts();
+  }
+  equiCanvas.addEventListener('pointerdown', (evt) => {
+    equiDragging = true;
+    equiCanvas.setPointerCapture(evt.pointerId);
+    equiApplyPointer(evt);
+  });
+  equiCanvas.addEventListener('pointermove', (evt) => {
+    if (!equiDragging) return;
+    equiApplyPointer(evt);
+  });
+  equiCanvas.addEventListener('pointerup', () => {
+    equiDragging = false;
+  });
+  equiCanvas.addEventListener('pointercancel', () => {
+    equiDragging = false;
+  });
+
+  equiCaption.textContent = 'Drag the red mass between the rings.';
+
+  // --- 3. Four graphs, all below zero ---------------------------------------
+
+  const GRAPHS_TEST_MASS = 2000; // kg — F and U are shown for this test mass; g and V are per-unit-mass
+  const GRAPHS_R_MIN = R;
+  const GRAPHS_R_MAX = R * 6;
+  const GRAPHS_MARGIN = { left: 70, right: 20 };
+  const GRAPHS_BAND_HEIGHT = 115;
+  const GRAPHS_BAND_GAP = 20;
+
+  const fourGraphsCanvas = document.getElementById('four-graphs-view');
+  const fourGraphsCtx = fourGraphsCanvas.getContext('2d');
+  const graphsRSlider = document.getElementById('graphs-r-slider');
+  const graphsRLabel = document.getElementById('graphs-r-label');
+  const graphsFReadout = document.getElementById('graphs-f-readout');
+  const graphsGReadout = document.getElementById('graphs-g-readout');
+  const graphsVReadout = document.getElementById('graphs-v-readout');
+  const graphsUReadout = document.getElementById('graphs-u-readout');
+  const graphsFDirection = document.getElementById('graphs-f-direction');
+  const graphsGDirection = document.getElementById('graphs-g-direction');
+  const graphsR1Slider = document.getElementById('graphs-r1-slider');
+  const graphsR2Slider = document.getElementById('graphs-r2-slider');
+  const graphsR1Label = document.getElementById('graphs-r1-label');
+  const graphsR2Label = document.getElementById('graphs-r2-label');
+  const graphsAreaReadout = document.getElementById('graphs-area-readout');
+  const graphsDeltaVReadout = document.getElementById('graphs-deltav-readout');
+
+  const GRAPH_BANDS = [
+    { key: 'f', label: 'F (kN)', fn: (r) => GF.radialForce(M, GRAPHS_TEST_MASS, r) },
+    { key: 'g', label: 'g (m/s²)', fn: (r) => GF.radialField(M, r) },
+    { key: 'v', label: 'V (MJ/kg)', fn: (r) => GF.potential(M, r) },
+    { key: 'u', label: 'U (GJ)', fn: (r) => GF.potentialEnergy(M, GRAPHS_TEST_MASS, r) },
+  ];
+
+  function rFromGraphsSlider(value) {
+    return (Number(value) / 10) * R;
+  }
+
+  function graphsXForR(r) {
+    const plotWidth = fourGraphsCanvas.width - GRAPHS_MARGIN.left - GRAPHS_MARGIN.right;
+    return GRAPHS_MARGIN.left + ((r - GRAPHS_R_MIN) / (GRAPHS_R_MAX - GRAPHS_R_MIN)) * plotWidth;
+  }
+
+  function drawFourGraphs(r, r1, r2) {
+    const ctx = fourGraphsCtx;
+    ctx.clearRect(0, 0, fourGraphsCanvas.width, fourGraphsCanvas.height);
+
+    GRAPH_BANDS.forEach((band, bandIndex) => {
+      const top = 10 + bandIndex * (GRAPHS_BAND_HEIGHT + GRAPHS_BAND_GAP);
+      const minVal = band.fn(GRAPHS_R_MIN); // most negative, at the smallest radius
+      const yForValue = (v) => top + (v / minVal) * (GRAPHS_BAND_HEIGHT - 10);
+
+      ctx.strokeStyle = '#999';
+      ctx.setLineDash([4, 4]);
+      ctx.beginPath();
+      ctx.moveTo(GRAPHS_MARGIN.left, top);
+      ctx.lineTo(fourGraphsCanvas.width - GRAPHS_MARGIN.right, top);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // The g band also shows the shaded (signed) area between r1 and r2.
+      if (band.key === 'g') {
+        const lo = Math.min(r1, r2);
+        const hi = Math.max(r1, r2);
+        ctx.beginPath();
+        ctx.moveTo(graphsXForR(lo), top);
+        const shadeSteps = 60;
+        for (let s = 0; s <= shadeSteps; s += 1) {
+          const rr = lo + ((hi - lo) * s) / shadeSteps;
+          ctx.lineTo(graphsXForR(rr), yForValue(band.fn(rr)));
+        }
+        ctx.lineTo(graphsXForR(hi), top);
+        ctx.closePath();
+        ctx.fillStyle = SHADE_COLOR;
+        ctx.fill();
+      }
+
+      ctx.beginPath();
+      const steps = 120;
+      for (let s = 0; s <= steps; s += 1) {
+        const rr = GRAPHS_R_MIN + ((GRAPHS_R_MAX - GRAPHS_R_MIN) * s) / steps;
+        const x = graphsXForR(rr);
+        const y = yForValue(band.fn(rr));
+        if (s === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.strokeStyle = CURVE_COLOR;
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      const mx = graphsXForR(r);
+      const my = yForValue(band.fn(r));
+      ctx.beginPath();
+      ctx.arc(mx, my, 5, 0, Math.PI * 2);
+      ctx.fillStyle = MASS_COLOR;
+      ctx.fill();
+
+      ctx.fillStyle = '#555';
+      ctx.font = '12px sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillText(band.label, 6, top + 10);
+    });
+
+    ctx.fillStyle = '#555';
+    ctx.textAlign = 'center';
+    ctx.font = '11px sans-serif';
+    ctx.fillText('Radius, r (all four graphs share this axis)', fourGraphsCanvas.width / 2, fourGraphsCanvas.height - 4);
+  }
+
+  function updateFourGraphs() {
+    const r = rFromGraphsSlider(graphsRSlider.value);
+    const r1 = rFromGraphsSlider(graphsR1Slider.value);
+    const r2 = rFromGraphsSlider(graphsR2Slider.value);
+    const lo = Math.min(r1, r2);
+    const hi = Math.max(r1, r2);
+
+    graphsRLabel.textContent = `${(r / R).toFixed(1)} × R`;
+    graphsR1Label.textContent = `${(r1 / R).toFixed(1)} × R`;
+    graphsR2Label.textContent = `${(r2 / R).toFixed(1)} × R`;
+
+    graphsFReadout.textContent = `${(GF.radialForce(M, GRAPHS_TEST_MASS, r) / 1e3).toFixed(2)} kN`;
+    graphsGReadout.textContent = `${GF.radialField(M, r).toFixed(2)} m/s²`;
+    graphsVReadout.textContent = `${(GF.potential(M, r) / 1e6).toFixed(2)} MJ/kg`;
+    graphsUReadout.textContent = `${(GF.potentialEnergy(M, GRAPHS_TEST_MASS, r) / 1e9).toFixed(2)} GJ`;
+    graphsFDirection.textContent = '(points inward)';
+    graphsGDirection.textContent = '(points inward)';
+
+    // ΔV from the engine directly; the shaded area is that same number,
+    // sign-flipped — area = ∫g dr = -(V(r2) - V(r1)), the identity
+    // test/gravityField.test.js checks directly.
+    const deltaV = GF.potentialDifferenceNumerical(M, lo, hi);
+    const area = -deltaV;
+    graphsAreaReadout.textContent = `${(area / 1e6).toFixed(2)} MJ/kg`;
+    graphsDeltaVReadout.textContent = `${(deltaV / 1e6).toFixed(2)} MJ/kg`;
+
+    drawFourGraphs(r, r1, r2);
+  }
+
+  [graphsRSlider, graphsR1Slider, graphsR2Slider].forEach((el) => el.addEventListener('input', updateFourGraphs));
+
+  // --- 4. mgh vs the exact formula -------------------------------------------
 
   const heightSlider = document.getElementById('height-slider');
   const heightLabel = document.getElementById('height-label');
@@ -391,111 +715,6 @@
   }
 
   heightSlider.addEventListener('input', updateMghComparison);
-
-  // --- 4. The g-r graph: area as potential difference ----------------------
-
-  const G_R_MAX_FACTOR = 6; // slider domain, in multiples of R
-  const G_R_MARGIN = { left: 60, right: 20, top: 20, bottom: 40 };
-
-  const gRCanvas = document.getElementById('g-r-view');
-  const gRCtx = gRCanvas.getContext('2d');
-  const r1Slider = document.getElementById('r1-slider');
-  const r2Slider = document.getElementById('r2-slider');
-  const r1Label = document.getElementById('r1-label');
-  const r2Label = document.getElementById('r2-label');
-  const gRAreaReadout = document.getElementById('g-r-area-readout');
-
-  const G_AT_R = GF.fieldMagnitude(M, R);
-
-  function rFromGRSlider(value) {
-    return (Number(value) / 10) * R;
-  }
-
-  function gRXForR(r) {
-    const plotWidth = gRCanvas.width - G_R_MARGIN.left - G_R_MARGIN.right;
-    return G_R_MARGIN.left + ((r - R) / (R * G_R_MAX_FACTOR - R)) * plotWidth;
-  }
-
-  function gRYForG(g) {
-    const plotHeight = gRCanvas.height - G_R_MARGIN.top - G_R_MARGIN.bottom;
-    return G_R_MARGIN.top + (1 - g / G_AT_R) * plotHeight;
-  }
-
-  function drawGR(r1, r2) {
-    const width = gRCanvas.width;
-    const height = gRCanvas.height;
-    gRCtx.clearRect(0, 0, width, height);
-
-    const lo = Math.min(r1, r2);
-    const hi = Math.max(r1, r2);
-
-    // Shaded area under the curve between lo and hi
-    gRCtx.beginPath();
-    gRCtx.moveTo(gRXForR(lo), gRYForG(0));
-    const shadeSteps = 100;
-    for (let i = 0; i <= shadeSteps; i += 1) {
-      const rr = lo + (i / shadeSteps) * (hi - lo);
-      gRCtx.lineTo(gRXForR(rr), gRYForG(GF.fieldMagnitude(M, rr)));
-    }
-    gRCtx.lineTo(gRXForR(hi), gRYForG(0));
-    gRCtx.closePath();
-    gRCtx.fillStyle = SHADE_COLOR;
-    gRCtx.fill();
-
-    // The g(r) curve
-    gRCtx.beginPath();
-    const steps = 200;
-    for (let i = 0; i <= steps; i += 1) {
-      const rr = R + (i / steps) * (R * G_R_MAX_FACTOR - R);
-      const gg = GF.fieldMagnitude(M, rr);
-      const x = gRXForR(rr);
-      const y = gRYForG(gg);
-      if (i === 0) gRCtx.moveTo(x, y);
-      else gRCtx.lineTo(x, y);
-    }
-    gRCtx.strokeStyle = CURVE_COLOR;
-    gRCtx.lineWidth = 2;
-    gRCtx.stroke();
-
-    // r1/r2 markers
-    [lo, hi].forEach((r) => {
-      const x = gRXForR(r);
-      gRCtx.strokeStyle = '#888';
-      gRCtx.setLineDash([3, 3]);
-      gRCtx.beginPath();
-      gRCtx.moveTo(x, G_R_MARGIN.top);
-      gRCtx.lineTo(x, height - G_R_MARGIN.bottom);
-      gRCtx.stroke();
-      gRCtx.setLineDash([]);
-    });
-
-    gRCtx.fillStyle = '#555';
-    gRCtx.textAlign = 'center';
-    gRCtx.font = '11px sans-serif';
-    gRCtx.fillText('Radius, r', width / 2, height - 8);
-    gRCtx.save();
-    gRCtx.translate(16, height / 2);
-    gRCtx.rotate(-Math.PI / 2);
-    gRCtx.fillText('g(r)', 0, 0);
-    gRCtx.restore();
-  }
-
-  function updateGR() {
-    const r1 = rFromGRSlider(r1Slider.value);
-    const r2 = rFromGRSlider(r2Slider.value);
-    const lo = Math.min(r1, r2);
-    const hi = Math.max(r1, r2);
-    const area = GF.potentialDifferenceNumerical(M, lo, hi);
-
-    r1Label.textContent = `${(r1 / R).toFixed(1)} × R`;
-    r2Label.textContent = `${(r2 / R).toFixed(1)} × R`;
-    gRAreaReadout.textContent = `${(area / 1e6).toFixed(2)} MJ/kg`;
-
-    drawGR(r1, r2);
-  }
-
-  r1Slider.addEventListener('input', updateGR);
-  r2Slider.addEventListener('input', updateGR);
 
   // --- 5. A satellite's energy budget --------------------------------------
 
@@ -580,11 +799,12 @@
   }
 
   setFallMode('fall');
-  updateWell();
+  updateEquipotentialReadouts();
+  updateFourGraphs();
   updateMghComparison();
-  updateGR();
   updateOrbit();
   updateEscape();
   renderCoverage();
+  Glossary.init({});
   QuizUI.mount(GravitationalPotentialQuestions.makeQuestions(GF, OM));
 })();

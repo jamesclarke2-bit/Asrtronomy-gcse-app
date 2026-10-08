@@ -103,6 +103,38 @@ function makeGravityField(OrbitalMechanics, GravitySim, Tides) {
     return testMass * potentialDifferenceNumerical(mass, r1, r2, steps);
   }
 
+  // The field's own signed radial value: negative everywhere, since r is
+  // measured outward and gravity always pulls inward. Same magnitude as
+  // fieldMagnitude above — this is that number with its sign restored,
+  // for anywhere a page needs to show (and a student needs to read) the
+  // minus sign explicitly, rather than a magnitude plus a word like
+  // "inward".
+  function radialField(mass, r) {
+    return -(G * mass) / (r * r);
+  }
+
+  // Same idea for force: negative (inward), and proportional to the
+  // test mass like any force is.
+  function radialForce(mass, testMass, r) {
+    return testMass * radialField(mass, r);
+  }
+
+  // Radii at n equally-spaced steps of potential, starting one step
+  // below zero (the convention: V = 0 only at infinity) and getting
+  // deeper by exactly deltaV each step: V_i = -i * deltaV, so
+  // r_i = GM / (i * deltaV), from V = -GM/r. Used for drawing
+  // concentric equipotential circles at equal energy cost between any
+  // two neighbours, rather than equal steps in r (where the energy
+  // cost between neighbours shrinks the further out you go).
+  function equipotentialRadii(mass, deltaV, n) {
+    const steps = [];
+    for (let i = 1; i <= n; i += 1) {
+      const potentialValue = -i * deltaV;
+      steps.push({ step: i, potential: potentialValue, radius: (G * mass) / (i * deltaV) });
+    }
+    return steps;
+  }
+
   // The work gravity itself does on a unit mass moving from r1 to r2 —
   // built from the same numerical integration of g(r) as
   // potentialDifferenceNumerical above, since work done by the field =
@@ -130,6 +162,47 @@ function makeGravityField(OrbitalMechanics, GravitySim, Tides) {
   // Inherits workByField's own 2000-step default for the same reason.
   function workByExternalAgent(mass, r1, r2, steps) {
     return -workByField(mass, r1, r2, steps);
+  }
+
+  // The work an external agent does moving a mass of testMass along an
+  // arbitrary 2D polyline (points, each {x, y}, relative to a mass
+  // sitting at the origin), at constant speed throughout — the general,
+  // non-radial version of workByExternalAgent above, found the direct
+  // way: numerically walking each segment and summing (agent force) ·
+  // (displacement) along it, rather than taking a shortcut through the
+  // closed-form potential. Confirms, rather than assumes, that gravity
+  // is conservative: a straight path and a zigzag one between the same
+  // two endpoints come out equal (see test/gravityField.test.js), and
+  // a path that stays on one equipotential (constant distance from the
+  // origin) comes out at zero.
+  //
+  // At each sampled point, the field pulls the mass inward (fieldVector
+  // above); the external agent, holding it at constant speed, supplies
+  // exactly the opposite force. Positive work means the agent is
+  // pushing the mass further from the origin than it would otherwise
+  // go (net outward motion); negative means gravity is doing the work
+  // instead, and the agent is only holding it back.
+  function workAlongPath(mass, testMass, points, stepsPerSegment) {
+    const steps = stepsPerSegment || 200;
+    let work = 0;
+    for (let seg = 1; seg < points.length; seg += 1) {
+      const a = points[seg - 1];
+      const b = points[seg];
+      const dx = b.x - a.x;
+      const dy = b.y - a.y;
+      if (dx === 0 && dy === 0) continue;
+      for (let s = 0; s < steps; s += 1) {
+        const t0 = s / steps;
+        const t1 = (s + 1) / steps;
+        const midX = a.x + dx * (t0 + t1) / 2;
+        const midY = a.y + dy * (t0 + t1) / 2;
+        const field = fieldVector(mass, midX, midY);
+        const agentForceX = -testMass * field.x;
+        const agentForceY = -testMass * field.y;
+        work += agentForceX * (dx / steps) + agentForceY * (dy / steps);
+      }
+    }
+    return work;
   }
 
   // ∫[r0, ∞) g(r) dr = GM/r0 exactly, for a true inverse-square field —
@@ -542,12 +615,16 @@ function makeGravityField(OrbitalMechanics, GravitySim, Tides) {
     // Layer 1
     fieldMagnitude,
     fieldVector,
+    radialField,
+    radialForce,
     potential,
     potentialEnergy,
+    equipotentialRadii,
     potentialDifferenceNumerical,
     potentialEnergyDifferenceNumerical,
     workByField,
     workByExternalAgent,
+    workAlongPath,
     integrateFieldToInfinity,
     // Layer 2
     fieldVectorAt,
