@@ -145,7 +145,7 @@ test('synodic periods: Venus about 584 days, Mercury about 116 days, Mars about 
 // — see the module's own precomputed-curve approach in
 // sims/solar-system-observation.js for the same technique.
 const MARS_OPPOSITION_DAY = 2892; // shared with the existing tests above
-const VENUS_INFERIOR_CONJUNCTION_DAY = 451;
+const VENUS_INFERIOR_CONJUNCTION_DAY = 452;
 const MERCURY_INFERIOR_CONJUNCTION_DAY = 415;
 
 test('an outer planet at opposition has elongation 180° and is at its closest (distance = a - 1)', () => {
@@ -195,7 +195,7 @@ test('transits can only happen at inferior conjunction: the planet is nearer Ear
   // The nearest superior conjunction (see the local-minimum scan this
   // day was found from): the planet is on the far side of the Sun, so
   // it can never cross in front of it.
-  const superiorDate = dayDate(743);
+  const superiorDate = dayDate(744);
   assert.equal(PlanetaryMotion.configurationName('venus', superiorDate), 'superior conjunction');
   assert.ok(distanceRatio('venus', superiorDate) > 1, 'at superior conjunction, Venus is behind the Sun — no transit is possible');
 });
@@ -226,13 +226,13 @@ test('retrograde motion is centred on opposition for Mars, and on inferior conju
 
 test('configurationName names every stage for an inner planet: inferior/superior conjunction, greatest eastern/western elongation, between', () => {
   assert.equal(PlanetaryMotion.configurationName('venus', dayDate(VENUS_INFERIOR_CONJUNCTION_DAY)), 'inferior conjunction');
-  assert.equal(PlanetaryMotion.configurationName('venus', dayDate(743)), 'superior conjunction');
+  assert.equal(PlanetaryMotion.configurationName('venus', dayDate(744)), 'superior conjunction');
 
   // Greatest elongation reference days, found the same way as the
   // conjunction days above: scanning signedElongationDeg for its own
-  // local extrema near the inferior conjunction at day 451.
-  const greatestEasternDay = 381; // signed elongation ≈ +46.3°, before the day-451 inferior conjunction
-  const greatestWesternDay = 522; // signed elongation ≈ -46.3°, after it
+  // local extrema near the inferior conjunction at day 452.
+  const greatestEasternDay = 381; // signed elongation ≈ +46.3°, before the day-452 inferior conjunction
+  const greatestWesternDay = 523; // signed elongation ≈ -46.3°, after it
   assert.equal(PlanetaryMotion.configurationName('venus', dayDate(greatestEasternDay)), 'greatest eastern elongation');
   assert.ok(PlanetaryMotion.signedElongationDeg('venus', dayDate(greatestEasternDay)) > 0);
   assert.equal(PlanetaryMotion.configurationName('venus', dayDate(greatestWesternDay)), 'greatest western elongation');
@@ -262,10 +262,10 @@ test('bestSeen: all night at opposition, lost in glare at any conjunction, eveni
   assert.equal(PlanetaryMotion.bestSeen('mars', dayDate(MARS_OPPOSITION_DAY)), 'all night');
   assert.equal(PlanetaryMotion.bestSeen('mars', dayDate(MARS_OPPOSITION_DAY + 390)), "lost in the Sun's glare");
   assert.equal(PlanetaryMotion.bestSeen('venus', dayDate(VENUS_INFERIOR_CONJUNCTION_DAY)), "lost in the Sun's glare");
-  assert.equal(PlanetaryMotion.bestSeen('venus', dayDate(743)), "lost in the Sun's glare");
+  assert.equal(PlanetaryMotion.bestSeen('venus', dayDate(744)), "lost in the Sun's glare");
 
   const eveningDay = 381; // Venus's own greatest eastern elongation — positive signed elongation
-  const morningDay = 522; // greatest western — negative
+  const morningDay = 523; // greatest western — negative
   assert.equal(PlanetaryMotion.bestSeen('venus', dayDate(eveningDay)), 'evening sky');
   assert.equal(PlanetaryMotion.bestSeen('venus', dayDate(morningDay)), 'morning sky');
   assert.ok(PlanetaryMotion.signedElongationDeg('venus', dayDate(eveningDay)) > 0);
@@ -277,19 +277,24 @@ test('bestSeen: all night at opposition, lost in glare at any conjunction, eveni
 // Checked against well-known, widely-published apparition dates for
 // Venus's 2021-2022 evening/morning apparition and Mars's 2020 and 2022
 // oppositions. Mars lands well inside its 30-day tolerance (19 and 25
-// days). Venus does not land inside the 5-day tolerance the task asked
-// for: scanning this circular model directly finds its three 2021-2022
-// events on 23 Oct 2021 (6 days early), 1 Jan 2022 (7 days early) and 13
-// Mar 2022 (7 days early) — and checking further Venus apparitions back
-// to 2017 and forward to 2025 shows the same 3-10 day early bias every
-// time, not a one-off. This is reported here rather than silently
-// loosened: a circular model leaves out Earth's own orbital eccentricity
-// (e ≈ 0.0167), which shifts timing by a few days depending on time of
-// year, and Venus's short ~584-day synodic period makes that a bigger
-// fraction of its cycle than it is for Mars's much longer ~780-day one.
-// The tolerance below (10 days) is the one actually verified against
-// real dates, not the 5 days first estimated.
-const VENUS_REAL_DATE_TOLERANCE_DAYS = 10;
+// days) — that gap is orbital eccentricity (both Earth's and Mars's real
+// orbits are elliptical; this model's are circular), which a 30-day
+// tolerance already accounts for.
+//
+// Venus originally missed a 5-day tolerance by 6-7 days, and checking
+// further apparitions (back to 2004, forward to 2022) showed the error
+// growing steadily with time since J2000 — from -1 day at 4.4 years out
+// to -8 days at 22 years, close to the ~0.33 day/year drift predicted by
+// the gap between this model's old rounded orbital periods (Venus
+// 0.615 x 365.25 = 224.629 days, Mercury 0.241 x 365.25 = 88.105 days)
+// and their precise sidereal values (224.701 and 87.969 days): a synodic
+// period is the small difference between two close rates, so a tenth of
+// a day of error in one orbital period becomes several days of error in
+// the synodic period, compounding every cycle. Switching the engine to
+// the precise periods (see src/planetaryMotion.js) removed the drift —
+// the same three 2021-2022 dates now land exactly on their published
+// dates — so the tolerance below is the 5 days originally estimated.
+const VENUS_REAL_DATE_TOLERANCE_DAYS = 5;
 const MARS_REAL_DATE_TOLERANCE_DAYS = 30;
 
 function daysBetween(a, b) {

@@ -3,6 +3,17 @@
   font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
 }
 
+/* An author-stylesheet display rule (grid, flex, contents, block...) beats
+   the browser's default [hidden] { display: none } rule regardless of
+   selector specificity or order, because author origin always outranks
+   user-agent origin in the cascade — so any element toggled via the
+   hidden attribute needs this to actually disappear. !important forces
+   it to win instead, so no element's own display rule needs its own
+   one-off [hidden] override. */
+[hidden] {
+  display: none !important;
+}
+
 body {
   margin: 0;
   padding: 2rem 1rem;
@@ -519,14 +530,6 @@ canvas {
   margin-top: 1rem;
 }
 
-/* Same equal-specificity trap as .readout-row[hidden] above: display: grid
-   would otherwise beat the browser's default [hidden] rule — used by
-   sims/solar-system-observation.html to show only the inner- or
-   outer-planet set of configuration cards for the selected planet. */
-.concept-grid[hidden] {
-  display: none;
-}
-
 /* The inner-planet config cards are plain buttons styled as cards (so
    "click a configuration" is keyboard/screen-reader accessible for
    free), unlike the Transit/occultation section's plain, non-interactive
@@ -745,22 +748,8 @@ canvas {
   color: #444;
 }
 
-/* .glossary-definition's own `display: block` has equal specificity to the
-   browser default for [hidden] and would otherwise always win, permanently
-   showing the definition regardless of the hidden attribute the JS toggles. */
-.glossary-definition[hidden] {
-  display: none;
-}
-
 .readout-row {
   display: contents;
-}
-
-/* Same equal-specificity trap as .glossary-definition above: display: contents
-   on .readout-row would otherwise beat the browser's default [hidden] rule and
-   keep a "hidden" row's cells laid out in the grid. */
-.readout-row[hidden] {
-  display: none;
 }
 
 .readout .glossary-definition-row {

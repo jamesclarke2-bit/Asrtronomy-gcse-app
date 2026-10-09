@@ -8,6 +8,19 @@
  * geometry, which falls out of the relative angular speeds and
  * distances alone, not the fine detail of elliptical orbits.
  *
+ * Orbital periods here are the precise sidereal values (Mercury
+ * 87.969 days, Venus 224.701 days, Mars 686.98 days) rather than the
+ * exam data sheet's rounded years (0.24, 0.62, 1.9 — see
+ * src/specData.js, which is what students are shown). That rounding
+ * matters here: a synodic period is the small difference between two
+ * close rates, so a 0.1-day error in a single orbital period becomes a
+ * multi-day error in the synodic period, and that error then
+ * accumulates every cycle — checked against published apparition dates
+ * from 2004 to 2022, the rounded-period version was found to drift
+ * about a third of a day further off per year since J2000, exceeding a
+ * 5-day tolerance by 2021. The precise periods remove that drift; see
+ * test/planetaryMotion.test.js's real-date checks.
+ *
  * Reference epoch is J2000.0 (2000-01-01 12:00 UTC). Earth's mean
  * longitude there is derived from the same 280.46646 degree constant
  * solarPosition.js's L0 already uses (the Sun's own mean geometric
@@ -25,13 +38,13 @@ const PLANETS = {
   mercury: {
     name: 'Mercury',
     orbitalRadiusAU: 0.387,
-    orbitalPeriodDays: 0.241 * 365.25, // ~88.1 days
+    orbitalPeriodDays: 87.969, // precise sidereal period; exam data sheet rounds this to 0.24 years
     meanLongitudeAtJ2000Deg: 252.25,
   },
   venus: {
     name: 'Venus',
     orbitalRadiusAU: 0.723,
-    orbitalPeriodDays: 0.615 * 365.25, // ~224.6 days
+    orbitalPeriodDays: 224.701, // precise sidereal period; exam data sheet rounds this to 0.62 years
     meanLongitudeAtJ2000Deg: 181.98,
   },
   earth: {
