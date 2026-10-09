@@ -278,7 +278,7 @@
     orbitAssumption.textContent =
       `Distance, speed and period above assume a semi-major axis of ${formatSemiMajorAxis(state.semiMajorAxisAU)} ` +
       `around the Sun (1 solar mass), at the eccentricity set by the slider (e = ${state.eccentricity.toFixed(3)}) — ` +
-      `from the vis-viva equation, checked against known perihelion/aphelion speed ratios in test/orbitalMechanics.test.js.`;
+      `from the vis-viva equation, which reproduces the known perihelion/aphelion speed ratios for an elliptical orbit.`;
   }
 
   function drawSecondLaw() {
@@ -572,7 +572,7 @@
     ctx.restore();
 
     slopeReadout.textContent =
-      `Line through the real planets (exam data sheet values): slope ≈ 1.00 years²/AU³ — T²/r³ for every planet is close to 1, within the data sheet's own rounding (test/specData.test.js checks this against the engine's precise figures too). ` +
+      `Line through the real planets (exam data sheet values): slope ≈ 1.00 years²/AU³ — T²/r³ for every planet is close to 1, within the data sheet's own rounding. ` +
       `Halley's and Encke's comets (purple, not on the exam data sheet) fall on the same line — Kepler's third law doesn't care whether an orbiting body is a planet or a comet.` +
       (multiplier !== 1
         ? ` Dashed line: the same r³ values around a ${multiplier}×-solar-mass star instead — slope ≈ ${(1 / multiplier).toFixed(2)}.`

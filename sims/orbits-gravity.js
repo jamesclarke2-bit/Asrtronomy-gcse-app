@@ -50,9 +50,12 @@
   const exampleDistanceNote = document.getElementById('example-distance-note');
   const exampleMassNote = document.getElementById('example-mass-note');
 
-  const validationCircular = document.getElementById('validation-circular');
-  const validationEscape = document.getElementById('validation-escape');
-  const validationPeriod = document.getElementById('validation-period');
+  const realworldCircularCanvas = document.getElementById('realworld-circular-view');
+  const realworldEscapeCanvas = document.getElementById('realworld-escape-view');
+  const realworldIssCanvas = document.getElementById('realworld-iss-view');
+  const realworldCircularValue = document.getElementById('realworld-circular-value');
+  const realworldEscapeValue = document.getElementById('realworld-escape-value');
+  const realworldPeriodValue = document.getElementById('realworld-period-value');
 
   // --- Newton's cannon: simulate, classify, draw -------------------------
 
@@ -470,15 +473,146 @@
     exampleMassNote.textContent = `Three times the mass, separation unchanged: ${ratioPhrase(massRatio)}.`;
   }
 
-  // --- Validation readouts (live, matching test/orbitalMechanics.test.js) --
+  // --- Real-world check: three figures, each with a small picture ----------
 
-  function renderValidation() {
-    validationCircular.textContent = `${(V_CIRCULAR_SURFACE / 1000).toFixed(2)} km/s`;
-    validationEscape.textContent = `${(V_ESCAPE_SURFACE / 1000).toFixed(2)} km/s (= √2 × circular speed)`;
+  function drawRealWorldCircular() {
+    const ctx = realworldCircularCanvas.getContext('2d');
+    const w = realworldCircularCanvas.width;
+    const h = realworldCircularCanvas.height;
+    const cx = w / 2;
+    const cy = h / 2;
+    const earthR = 45;
+    const pathR = earthR + 8;
+    ctx.clearRect(0, 0, w, h);
+
+    ctx.beginPath();
+    ctx.arc(cx, cy, earthR, 0, Math.PI * 2);
+    ctx.fillStyle = EARTH_COLOR;
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.setLineDash([4, 4]);
+    ctx.arc(cx, cy, pathR, 0, Math.PI * 2);
+    ctx.strokeStyle = PATH_COLOR;
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    const markerAngle = -Math.PI / 2;
+    const markerX = cx + pathR * Math.cos(markerAngle);
+    const markerY = cy + pathR * Math.sin(markerAngle);
+    ctx.beginPath();
+    ctx.arc(markerX, markerY, 5, 0, Math.PI * 2);
+    ctx.fillStyle = MARKER_COLOR;
+    ctx.fill();
+
+    drawArrowhead(ctx, markerX + 18, markerY - 2, markerX + 30, markerY - 2, MARKER_COLOR);
+  }
+
+  function drawRealWorldEscape() {
+    const ctx = realworldEscapeCanvas.getContext('2d');
+    const w = realworldEscapeCanvas.width;
+    const h = realworldEscapeCanvas.height;
+    const earthCx = 36;
+    const earthCy = h - 36;
+    const earthR = 32;
+    ctx.clearRect(0, 0, w, h);
+
+    ctx.beginPath();
+    ctx.arc(earthCx, earthCy, earthR, 0, Math.PI * 2);
+    ctx.fillStyle = EARTH_COLOR;
+    ctx.fill();
+
+    const startAngle = -Math.PI / 5;
+    const startX = earthCx + earthR * Math.cos(startAngle);
+    const startY = earthCy + earthR * Math.sin(startAngle);
+    const endX = w - 10;
+    const endY = 14;
+    const controlX = earthCx + 70;
+    const controlY = earthCy - 20;
+
+    ctx.beginPath();
+    ctx.moveTo(startX, startY);
+    ctx.quadraticCurveTo(controlX, controlY, endX, endY);
+    ctx.strokeStyle = PATH_COLOR;
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.arc(startX, startY, 5, 0, Math.PI * 2);
+    ctx.fillStyle = MARKER_COLOR;
+    ctx.fill();
+
+    drawArrowhead(ctx, endX - 14, endY + 9, endX, endY, MARKER_COLOR);
+  }
+
+  function drawRealWorldIss() {
+    const ctx = realworldIssCanvas.getContext('2d');
+    const w = realworldIssCanvas.width;
+    const h = realworldIssCanvas.height;
+    const cx = w / 2;
+    const cy = h / 2;
+    const earthR = 32;
+    const pathR = earthR + 22; // altitude exaggerated well past true scale so it reads clearly
+    ctx.clearRect(0, 0, w, h);
+
+    ctx.beginPath();
+    ctx.arc(cx, cy, earthR, 0, Math.PI * 2);
+    ctx.fillStyle = EARTH_COLOR;
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.setLineDash([4, 4]);
+    ctx.arc(cx, cy, pathR, 0, Math.PI * 2);
+    ctx.strokeStyle = PATH_COLOR;
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    const markerAngle = -Math.PI / 3;
+    const markerX = cx + pathR * Math.cos(markerAngle);
+    const markerY = cy + pathR * Math.sin(markerAngle);
+    ctx.beginPath();
+    ctx.arc(markerX, markerY, 5, 0, Math.PI * 2);
+    ctx.fillStyle = MARKER_COLOR;
+    ctx.fill();
+    ctx.fillStyle = '#444';
+    ctx.font = '10px sans-serif';
+    ctx.textAlign = 'left';
+    ctx.fillText('ISS', markerX + 8, markerY - 6);
+  }
+
+  function drawArrowhead(ctx, x1, y1, x2, y2, color) {
+    ctx.strokeStyle = color;
+    ctx.fillStyle = color;
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x2, y2);
+    ctx.stroke();
+    const angle = Math.atan2(y2 - y1, x2 - x1);
+    const headLen = 7;
+    ctx.beginPath();
+    ctx.moveTo(x2, y2);
+    ctx.lineTo(x2 - headLen * Math.cos(angle - Math.PI / 6), y2 - headLen * Math.sin(angle - Math.PI / 6));
+    ctx.lineTo(x2 - headLen * Math.cos(angle + Math.PI / 6), y2 - headLen * Math.sin(angle + Math.PI / 6));
+    ctx.closePath();
+    ctx.fill();
+  }
+
+  function renderRealWorldCheck() {
+    realworldCircularValue.textContent = `≈ ${(V_CIRCULAR_SURFACE / 1000).toFixed(1)} km/s`;
+    realworldEscapeValue.textContent = `≈ ${(V_ESCAPE_SURFACE / 1000).toFixed(1)} km/s (= √2 × circular speed)`;
     const period400 = OM.periodFromSemiMajorAxis(R + 400000, OM.EARTH_MASS_KG);
-    validationPeriod.textContent = `${(period400 / 60).toFixed(1)} minutes`;
+    const orbitsPerDay = (24 * 3600) / period400;
+    realworldPeriodValue.textContent = `≈ ${(period400 / 60).toFixed(0)} minutes (≈ ${orbitsPerDay.toFixed(1)} orbits a day)`;
+
     circularSpeedValueEl.textContent = `${(V_CIRCULAR_SURFACE / 1000).toFixed(1)} km/s`;
     escapeSpeedValueEl.textContent = `${(V_ESCAPE_SURFACE / 1000).toFixed(1)} km/s`;
+
+    drawRealWorldCircular();
+    drawRealWorldEscape();
+    drawRealWorldIss();
   }
 
   // --- Coverage, glossary, questions --------------------------------------
@@ -498,7 +632,7 @@
   updateCannon(V_CIRCULAR_LAUNCH / 1000);
   updateInverseSquare();
   renderStaticExamples();
-  renderValidation();
+  renderRealWorldCheck();
   renderCoverage();
   Glossary.init(GLOSSARY);
   QuizUI.mount(OrbitsGravityQuestions.makeQuestions(OM));

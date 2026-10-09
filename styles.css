@@ -324,6 +324,33 @@ canvas {
   text-decoration: underline;
 }
 
+/* A short in-page table of contents, sitting above the title on a long
+   page (sims/gravitational-potential.html) — distinct from .back-link
+   (leaves the page) and from NotesPage's own auto-generated contents
+   list (notes/ pages only, placed after the subtitle instead). */
+.jump-to {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.6rem;
+  margin: 0 0 1.25rem;
+  font-size: 0.82rem;
+}
+
+.jump-to a {
+  padding: 0.2rem 0.6rem;
+  border: 1px solid #cdd7e1;
+  border-radius: 999px;
+  background: #fff;
+  color: #2a6bd6;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.jump-to a:hover {
+  background: #eaf2fb;
+  text-decoration: underline;
+}
+
 .formula {
   background: #fff;
   border: 1px solid #e0e0e0;

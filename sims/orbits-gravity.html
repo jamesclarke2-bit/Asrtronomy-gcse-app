@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Orbits and Gravity</title>
-  <link rel="stylesheet" href="../styles.css?v=202610091200" />
+  <link rel="stylesheet" href="../styles.css?v=202610092200" />
 </head>
 <body>
   <main>
@@ -141,29 +141,39 @@
       </div>
     </div>
 
-    <section class="notes-section" id="validation">
-      <h2>Checking against known values</h2>
-      <p>
-        These come straight from the same functions driving the diagrams above, not a separate
-        hand-typed copy &mdash; <code>test/orbitalMechanics.test.js</code> checks them against the
-        values below on every test run, and <code>test/gravitySim.test.js</code> checks that the
-        numerical integrator itself conserves energy and angular momentum over many simulated
-        orbits, both circular and eccentric.
-      </p>
-      <dl class="readout">
-        <div class="readout-row">
-          <dt>Circular orbit speed at Earth's surface</dt>
-          <dd id="validation-circular"></dd>
+    <section class="notes-section" id="real-world-check">
+      <h2>Real-world check</h2>
+      <p>Three numbers a real launch or a real satellite actually needs, each with a small picture.</p>
+
+      <div class="diagram-row">
+        <div class="diagram">
+          <canvas
+            id="realworld-circular-view"
+            width="140"
+            height="140"
+            aria-label="A small dashed circular path hugging Earth's surface, with a satellite marker and an arrow showing its direction of travel, for circular orbit speed"
+          ></canvas>
+          <p class="diagram-caption">Circular orbit speed, at the surface<br /><strong id="realworld-circular-value"></strong></p>
         </div>
-        <div class="readout-row">
-          <dt>Escape speed at Earth's surface</dt>
-          <dd id="validation-escape"></dd>
+        <div class="diagram">
+          <canvas
+            id="realworld-escape-view"
+            width="140"
+            height="140"
+            aria-label="A path leaving Earth's surface and curving away without ever turning back, for escape speed"
+          ></canvas>
+          <p class="diagram-caption">Escape speed, at the surface<br /><strong id="realworld-escape-value"></strong></p>
         </div>
-        <div class="readout-row">
-          <dt>Period of a circular orbit at 400&nbsp;km altitude (ISS-like)</dt>
-          <dd id="validation-period"></dd>
+        <div class="diagram">
+          <canvas
+            id="realworld-iss-view"
+            width="140"
+            height="140"
+            aria-label="An ISS-style circular orbit at 400 km altitude, drawn larger than true scale so it's visible next to Earth"
+          ></canvas>
+          <p class="diagram-caption">Orbit period, 400&nbsp;km altitude (ISS-style)<br /><strong id="realworld-period-value"></strong></p>
         </div>
-      </dl>
+      </div>
     </section>
 
     <section class="questions">
@@ -189,7 +199,7 @@
   <script src="../src/orbitsGravityQuestions.js?v=202610071000"></script>
   <script src="../glossary.js?v=202609221600"></script>
   <script src="../quiz-ui.js?v=202609221100"></script>
-  <script src="orbits-gravity.js?v=202610072200"></script>
+  <script src="orbits-gravity.js?v=202610092200"></script>
   <script src="../nextPage.js?v=202609270100"></script>
 </body>
 </html>

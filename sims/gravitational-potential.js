@@ -1161,6 +1161,7 @@
   const escapeClassification = document.getElementById('escape-classification');
   const escapeSpeedMark = document.getElementById('escape-speed-mark');
   const escapeSpeedValueEl = document.getElementById('escape-speed-value');
+  const escapeSetExactButton = document.getElementById('escape-set-exact-button');
 
   const ESCAPE_SPEED = GF.escapeSpeedFromEnergy(M, R);
   const ESCAPE_POTENTIAL = GF.potentialEnergyPerMass(M, R);
@@ -1306,6 +1307,16 @@
   }
 
   escapeSpeedSlider.addEventListener('input', updateEscape);
+
+  // Sets the slider to the exact escape speed, bypassing its own step="10"
+  // grid (10 m/s steps are far coarser than the tolerance classifyOrbit
+  // needs to read "parabolic" — see ESCAPE_SPEED's own definition), so a
+  // student can actually see the marginal case rather than only ever
+  // landing just short of or just past it.
+  escapeSetExactButton.addEventListener('click', () => {
+    escapeSpeedSlider.value = ESCAPE_SPEED;
+    updateEscape();
+  });
 
   escapeSpeedMark.value = Math.round(ESCAPE_SPEED);
   escapeSpeedValueEl.textContent = `${(ESCAPE_SPEED / 1000).toFixed(2)} km/s`;

@@ -340,6 +340,26 @@ test('classifyOrbit, given a potential-energy reference, classifies a real escap
   assert.equal(GravityField.classifyOrbit(aboveEscape, potentialEnergy), 'hyperbolic');
 });
 
+// This is exactly the "Escape" panel's own launch-from-the-surface case
+// (sims/gravitational-potential.html's "Set to escape speed" button sets
+// its slider to this same escapeSpeedFromEnergy value): 11.19 km/s is
+// the rounded figure a student reads off the page, but the slider needs
+// the unrounded one to land inside classifyOrbit's tolerance window.
+test('at Earth\'s surface, the exact escape speed (≈11.19 km/s) classifies as parabolic, not hyperbolic', () => {
+  const escapeSpeed = GravityField.escapeSpeedFromEnergy(EARTH_MASS_KG, EARTH_RADIUS_M);
+  assert.ok(Math.abs(escapeSpeed / 1000 - 11.19) < 0.01, `expected ≈11.19 km/s, got ${escapeSpeed / 1000}`);
+
+  const potentialEnergy = GravityField.potentialEnergyPerMass(EARTH_MASS_KG, EARTH_RADIUS_M);
+  const atEscape = GravityField.totalEnergyPerMass(EARTH_MASS_KG, EARTH_RADIUS_M, escapeSpeed);
+  assert.equal(GravityField.classifyOrbit(atEscape, potentialEnergy), 'parabolic');
+
+  // The rounded, student-facing figure (11.2 km/s, what the slider's own
+  // step lands on) is already just past the exact value, and correctly
+  // reads as hyperbolic rather than parabolic.
+  const atRoundedMark = GravityField.totalEnergyPerMass(EARTH_MASS_KG, EARTH_RADIUS_M, 11200);
+  assert.equal(GravityField.classifyOrbit(atRoundedMark, potentialEnergy), 'hyperbolic');
+});
+
 test('energy is conserved along an RK4 path, for both a circular and an eccentric orbit', () => {
   const r0 = EARTH_RADIUS_M + 400000;
   const vCircular = OrbitalMechanics.circularOrbitSpeed(r0, EARTH_MASS_KG);

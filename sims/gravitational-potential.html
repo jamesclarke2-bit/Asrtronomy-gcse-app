@@ -4,11 +4,21 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Gravitational Potential Energy and Orbital Energy</title>
-  <link rel="stylesheet" href="../styles.css?v=202610091200" />
+  <link rel="stylesheet" href="../styles.css?v=202610092200" />
 </head>
 <body>
   <main>
     <p class="back-link"><a href="../index.html">&larr; Back to all tools</a></p>
+
+    <nav class="jump-to" aria-label="Jump to a section">
+      <a href="#work-counters">Who does the work?</a>
+      <a href="#equipotentials">Equipotentials and energy cost</a>
+      <a href="#four-graphs">Four graphs, all below zero</a>
+      <a href="#mgh-vs-exact">mgh vs the exact formula</a>
+      <a href="#earth-moon-line">Between the Earth and the Moon</a>
+      <a href="#moving-between-orbits">Moving between orbits</a>
+      <a href="#escape">Escape</a>
+    </nav>
 
     <div class="extension-page-banner">
       <span class="curiosity-badge">Beyond the GCSE spec</span>
@@ -513,11 +523,14 @@
 
       <div class="control">
         <label for="escape-speed-slider">Launch speed, at the surface: <span id="escape-speed-label"></span></label>
-        <input type="range" id="escape-speed-slider" min="0" max="13000" step="10" value="7900" list="escape-speed-marks" />
+        <input type="range" id="escape-speed-slider" min="0" max="13000" step="any" value="7900" list="escape-speed-marks" />
         <datalist id="escape-speed-marks">
           <option value="7900"></option>
           <option id="escape-speed-mark" value="11200"></option>
         </datalist>
+      </div>
+      <div class="control checkbox-control">
+        <button type="button" id="escape-set-exact-button" class="secondary-button">Set to escape speed</button>
       </div>
       <dl class="readout">
         <div class="readout-row">
@@ -540,10 +553,13 @@
       <p class="note">
         Where the line meets the curve is the highest point reached, for a bound (negative-energy)
         launch. At exactly zero total energy it just escapes, arriving at infinity with nothing
-        left &mdash; <code>classifyOrbit</code> reads this "parabolic" case even when a real speed
-        lands only a tiny fraction away from the exact value, the same way a real launch never
-        lands on exactly zero total energy in floating point either. Above zero it escapes with
-        speed to spare.
+        left &mdash; this reads as the "parabolic" case even when a real speed lands only a tiny
+        fraction away from the exact value, the same way a real launch never lands on exactly zero
+        total energy in floating point either. Above zero it escapes with speed to spare.
+      </p>
+      <p class="note">
+        The exact value is 11.19&nbsp;km/s; anything above it escapes with speed to spare &mdash;
+        including the slider's own nearest step, 11.2&nbsp;km/s, which is already just past it.
       </p>
       <p class="note">
         Marked on the slider: a typical low-orbit speed (7.9&nbsp;km/s) and escape speed itself
@@ -580,7 +596,7 @@
   <script src="../src/gravitationalPotentialQuestions.js?v=202610092000"></script>
   <script src="../glossary.js?v=202609221600"></script>
   <script src="../quiz-ui.js?v=202609221100"></script>
-  <script src="gravitational-potential.js?v=202610092000"></script>
+  <script src="gravitational-potential.js?v=202610092200"></script>
   <script src="../nextPage.js?v=202609270100"></script>
 </body>
 </html>
