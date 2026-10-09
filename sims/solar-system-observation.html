@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Retrograde Motion and Planetary Alignments</title>
-  <link rel="stylesheet" href="../styles.css?v=202610100900" />
+  <link rel="stylesheet" href="../styles.css?v=202610101300" />
 </head>
 <body>
   <main>
@@ -12,10 +12,10 @@
 
     <h1>Retrograde Motion and Planetary Alignments</h1>
     <p class="subtitle">
-      Mars orbits the Sun more slowly than Earth does — so roughly every 26 months, Earth
-      "overtakes" it on the inside track, and Mars briefly appears to move backwards against the
-      background stars. Watch it happen below, and see how conjunction, opposition and elongation
-      are just different stages of the same repeating cycle.
+      Mercury, Venus and Mars each trace their own circle around the Sun, but Earth is doing the
+      same, and that relative motion is what actually decides what we see: Mars briefly looping
+      backwards against the stars, Venus never straying far from the Sun, Mercury all but lost in
+      its glare. Pick a planet below and watch its whole cycle play out.
     </p>
 
     <div class="layout tool-layout">
@@ -26,30 +26,177 @@
             id="solar-system"
             width="380"
             height="380"
-            aria-label="Top-down schematic of Earth's and Mars's circular orbits around the Sun, with a sightline from Earth to Mars showing its direction against the background stars"
+            aria-label="Top-down schematic of Earth's and the selected planet's circular orbits around the Sun, with a sightline from Earth to the planet, a sightline from Earth to the Sun, and an arc marking the elongation angle between them"
           ></canvas>
           <p class="legend">
             <span class="legend-swatch legend-earth-orbit"></span> Earth's orbit
-            &nbsp; <span class="legend-swatch legend-mars-orbit"></span> Mars's orbit
+            &nbsp; <span class="legend-swatch" id="planet-orbit-swatch"></span> <span id="planet-orbit-legend-label"></span>
           </p>
         </div>
 
-        <section class="retrograde-section">
-          <h2>Mars's apparent position over time</h2>
+        <section class="notes-section" id="inner-outer">
+          <h2>1. Inner and outer planets</h2>
           <p>
-            Mars's apparent position lies along the
+            Mercury and Venus orbit closer to the Sun than Earth does — the
+            <button type="button" class="glossary-toggle glossary-term-button" data-term="inferior-planet" aria-label="What is an inferior planet?" aria-expanded="false">inferior planets</button>.
+            Mars and everything farther out orbit beyond Earth — the
+            <button type="button" class="glossary-toggle glossary-term-button" data-term="superior-planet" aria-label="What is a superior planet?" aria-expanded="false">superior planets</button>.
+            An inferior planet's whole orbit sits inside Earth's, so it can never be on the far
+            side of the Sun from Earth the way opposition needs — it only ever appears close to
+            the Sun in our sky, swinging between an evening and a morning view either side of it.
+          </p>
+          <span class="glossary-definition" data-term="inferior-planet" hidden></span>
+          <span class="glossary-definition" data-term="superior-planet" hidden></span>
+        </section>
+
+        <section class="notes-section" id="alignments">
+          <h2>2. Alignments</h2>
+          <p>Every stage of the cycle has a name. Click one to jump the slider to the next time it happens.</p>
+
+          <div class="concept-grid" id="inferior-configs">
+            <button type="button" class="concept-card concept-card-button" data-jump="inferior conjunction">
+              <svg viewBox="0 0 220 160" role="img" aria-label="Diagram of inferior conjunction: the planet directly between Earth and the Sun">
+                <circle cx="190" cy="80" r="26" fill="#f5a623" stroke="#c9820a" stroke-width="2" />
+                <circle cx="120" cy="80" r="6" fill="#8a5b00" />
+                <circle cx="30" cy="80" r="9" fill="#2a6bd6" stroke="#173d75" stroke-width="1.5" />
+                <line x1="30" y1="80" x2="190" y2="80" stroke="#8a97a5" stroke-width="1.5" stroke-dasharray="3,3" />
+              </svg>
+              <p class="diagram-caption">Planet directly between Earth and the Sun</p>
+              <h3>Inferior conjunction</h3>
+              <p>Elongation 0°, the planet nearest Earth in its whole orbit — lost in the Sun's glare, and the only time a transit can happen.</p>
+            </button>
+            <button type="button" class="concept-card concept-card-button" data-jump="superior conjunction">
+              <svg viewBox="0 0 220 160" role="img" aria-label="Diagram of superior conjunction: the planet directly behind the Sun, as seen from Earth">
+                <circle cx="120" cy="80" r="26" fill="#f5a623" stroke="#c9820a" stroke-width="2" />
+                <circle cx="190" cy="80" r="6" fill="#8a5b00" />
+                <circle cx="30" cy="80" r="9" fill="#2a6bd6" stroke="#173d75" stroke-width="1.5" />
+                <line x1="30" y1="80" x2="190" y2="80" stroke="#8a97a5" stroke-width="1.5" stroke-dasharray="3,3" />
+              </svg>
+              <p class="diagram-caption">Planet directly behind the Sun, as seen from Earth</p>
+              <h3>Superior conjunction</h3>
+              <p>Elongation 0°, but the planet is on the far side of the Sun — also lost in its glare, and never a transit.</p>
+            </button>
+            <button type="button" class="concept-card concept-card-button" data-jump="greatest eastern elongation">
+              <svg viewBox="0 0 220 160" role="img" aria-label="Diagram of greatest eastern elongation: the planet at its furthest angle east of the Sun, as seen from Earth">
+                <circle cx="120" cy="80" r="26" fill="#f5a623" stroke="#c9820a" stroke-width="2" />
+                <circle cx="150" cy="35" r="6" fill="#8a5b00" />
+                <circle cx="30" cy="80" r="9" fill="#2a6bd6" stroke="#173d75" stroke-width="1.5" />
+                <line x1="30" y1="80" x2="120" y2="80" stroke="#d6c26a" stroke-width="1.5" stroke-dasharray="2,3" />
+                <line x1="30" y1="80" x2="150" y2="35" stroke="#8a97a5" stroke-width="1.5" />
+              </svg>
+              <p class="diagram-caption">Planet at its furthest angle east of the Sun</p>
+              <h3>Greatest eastern elongation</h3>
+              <p>The widest angle this planet can reach on the evening side — best seen low in the west just after sunset.</p>
+            </button>
+            <button type="button" class="concept-card concept-card-button" data-jump="greatest western elongation">
+              <svg viewBox="0 0 220 160" role="img" aria-label="Diagram of greatest western elongation: the planet at its furthest angle west of the Sun, as seen from Earth">
+                <circle cx="120" cy="80" r="26" fill="#f5a623" stroke="#c9820a" stroke-width="2" />
+                <circle cx="150" cy="125" r="6" fill="#8a5b00" />
+                <circle cx="30" cy="80" r="9" fill="#2a6bd6" stroke="#173d75" stroke-width="1.5" />
+                <line x1="30" y1="80" x2="120" y2="80" stroke="#d6c26a" stroke-width="1.5" stroke-dasharray="2,3" />
+                <line x1="30" y1="80" x2="150" y2="125" stroke="#8a97a5" stroke-width="1.5" />
+              </svg>
+              <p class="diagram-caption">Planet at its furthest angle west of the Sun</p>
+              <h3>Greatest western elongation</h3>
+              <p>The widest angle this planet can reach on the morning side — best seen low in the east just before sunrise.</p>
+            </button>
+          </div>
+
+          <div class="concept-grid" id="superior-configs">
+            <button type="button" class="concept-card concept-card-button" data-jump="conjunction">
+              <svg viewBox="0 0 220 160" role="img" aria-label="Diagram of conjunction: the planet directly behind the Sun, as seen from Earth">
+                <circle cx="120" cy="80" r="26" fill="#f5a623" stroke="#c9820a" stroke-width="2" />
+                <circle cx="190" cy="80" r="7" fill="#c0392b" stroke="#7b2a1c" stroke-width="1.5" />
+                <circle cx="30" cy="80" r="9" fill="#2a6bd6" stroke="#173d75" stroke-width="1.5" />
+                <line x1="30" y1="80" x2="190" y2="80" stroke="#8a97a5" stroke-width="1.5" stroke-dasharray="3,3" />
+              </svg>
+              <p class="diagram-caption">Planet directly behind the Sun, as seen from Earth</p>
+              <h3>Conjunction</h3>
+              <p>Elongation 0° — the planet is lost in the Sun's glare, and at its farthest from Earth.</p>
+            </button>
+            <button type="button" class="concept-card concept-card-button" data-jump="opposition">
+              <svg viewBox="0 0 220 160" role="img" aria-label="Diagram of opposition: the planet directly opposite the Sun, as seen from Earth">
+                <circle cx="50" cy="80" r="22" fill="#f5a623" stroke="#c9820a" stroke-width="2" />
+                <circle cx="190" cy="80" r="7" fill="#c0392b" stroke="#7b2a1c" stroke-width="1.5" />
+                <circle cx="120" cy="80" r="9" fill="#2a6bd6" stroke="#173d75" stroke-width="1.5" />
+                <line x1="50" y1="80" x2="190" y2="80" stroke="#8a97a5" stroke-width="1.5" stroke-dasharray="3,3" />
+              </svg>
+              <p class="diagram-caption">Planet directly opposite the Sun, as seen from Earth</p>
+              <h3>Opposition</h3>
+              <p>Elongation 180° — the planet is at its closest to Earth, brightest, and up all night.</p>
+            </button>
+          </div>
+
+          <div class="notes-section" id="alignment-revision">
+            <p class="panel-note">
+              <strong>Conjunction:</strong> planet and Sun in the same direction from Earth — inferior
+              (the planet passes between Earth and the Sun) or superior (behind the Sun).
+              <strong>Opposition:</strong> planet opposite the Sun — closest, brightest, rises as the
+              Sun sets.
+            </p>
+          </div>
+
+          <p class="note">
+            Transits — the planet crossing the Sun's own disc — can only happen at inferior
+            conjunction, and even then they're rare: Mercury's and Venus's orbits are tilted
+            slightly relative to Earth's, so most inferior conjunctions pass above or below the
+            Sun rather than across it.
+          </p>
+        </section>
+
+        <section class="notes-section" id="when-to-view">
+          <h2>3. When to view</h2>
+          <p>Where the Sun and the selected planet sit at sunset, midnight and sunrise, for the date on the slider.</p>
+
+          <canvas
+            id="horizon-strip"
+            width="640"
+            height="170"
+            aria-label="Three horizon panels — sunset, midnight and sunrise — each showing whether the Sun and the selected planet are above or below the horizon at that moment, for the currently selected date"
+          ></canvas>
+
+          <p class="eot-readout" id="viewing-sentence"></p>
+
+          <table class="shower-table">
+            <caption>Best viewing times</caption>
+            <thead>
+              <tr>
+                <th scope="col">Configuration</th>
+                <th scope="col">When</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">Inferior planet, greatest eastern elongation</th>
+                <td>Evening — look west after sunset</td>
+              </tr>
+              <tr>
+                <th scope="row">Inferior planet, greatest western elongation</th>
+                <td>Morning — look east before sunrise</td>
+              </tr>
+              <tr>
+                <th scope="row">Superior planet, near opposition</th>
+                <td>All night — rises at sunset, highest around midnight</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="retrograde-section" id="apparent-motion">
+          <h2>4. Apparent position over time</h2>
+          <p>
+            The planet's apparent position lies along the
             <button type="button" class="glossary-toggle glossary-term-button" data-term="ecliptic" aria-label="What is the ecliptic?" aria-expanded="false">ecliptic</button>
             — the strip of sky also known as the
             <button type="button" class="glossary-toggle glossary-term-button" data-term="zodiac" aria-label="What is the zodiacal band?" aria-expanded="false">zodiacal band</button>,
             shown below with the currently-selected date's position marked. The graph underneath plots
             that same position over the whole date range above: the line climbs steadily most of the
-            time (Mars drifting eastward through the stars, as expected) but briefly bends backwards
-            around each
-            <button type="button" class="glossary-toggle glossary-term-button" data-term="opposition" aria-label="What is opposition?" aria-expanded="false">opposition</button>
-            — that backward-curving stretch is the retrograde loop. It repeats once every
-            <button type="button" class="glossary-toggle glossary-term-button" data-term="synodic" aria-label="What is a synodic period?" aria-expanded="false">synodic period</button>
-            (about 780 days, roughly 26 months) — this graph spans exactly two of them, so you can see
-            the pattern repeat.
+            time (the planet drifting eastward through the stars, as expected) but — for a superior
+            planet, around each
+            <button type="button" class="glossary-toggle glossary-term-button" data-term="opposition" aria-label="What is opposition?" aria-expanded="false">opposition</button>;
+            for an inferior planet, around each inferior conjunction — briefly bends backwards. That
+            backward-curving stretch is the retrograde loop, and it repeats once every
+            <button type="button" class="glossary-toggle glossary-term-button" data-term="synodic" aria-label="What is a synodic period?" aria-expanded="false">synodic period</button>.
           </p>
           <span class="glossary-definition" data-term="ecliptic" hidden></span>
           <span class="glossary-definition" data-term="zodiac" hidden></span>
@@ -60,18 +207,27 @@
             width="700"
             height="46"
             class="zodiac-strip"
-            aria-label="A strip showing the 12 zodiac constellations along the ecliptic, with a marker showing Mars's current apparent position among them"
+            aria-label="A strip showing the 12 zodiac constellations along the ecliptic, with a marker showing the selected planet's current apparent position among them"
           ></canvas>
           <canvas
             id="retrograde-graph"
             width="700"
             height="320"
-            aria-label="Graph of Mars's apparent ecliptic longitude against date, showing the backward-curving retrograde loop around each opposition, with a marker at the currently-selected date"
+            aria-label="Graph of the selected planet's apparent ecliptic longitude against date, showing the backward-curving retrograde loop, with a marker at the currently-selected date"
           ></canvas>
         </section>
       </div>
 
       <div class="controls">
+        <div class="control">
+          <p>Planet</p>
+          <div class="preset-list" role="group" aria-label="Choose a planet" id="planet-selector">
+            <button type="button" class="preset-button" data-planet="mercury">Mercury</button>
+            <button type="button" class="preset-button" data-planet="venus">Venus</button>
+            <button type="button" class="preset-button" data-planet="mars" aria-pressed="true">Mars</button>
+          </div>
+        </div>
+
         <div class="control">
           <label for="date-slider">Date: <span id="date-label"></span></label>
           <input type="range" id="date-slider" min="0" max="1560" step="1" value="0" />
@@ -83,7 +239,7 @@
 
         <p class="eot-readout" id="alignment-readout"></p>
 
-        <dl class="readout">
+        <dl class="readout pinned-readout">
           <div class="readout-row">
             <dt>
               Elongation
@@ -93,21 +249,22 @@
             <span class="glossary-definition glossary-definition-row" data-term="elongation" hidden></span>
           </div>
           <div class="readout-row">
-            <dt>
-              Alignment
-              <button type="button" class="glossary-toggle" data-term="alignment" aria-label="What do conjunction, opposition and elongation mean?" aria-expanded="false">?</button>
-            </dt>
+            <dt>Alignment</dt>
             <dd id="alignment-value"></dd>
-            <span class="glossary-definition glossary-definition-row" data-term="alignment" hidden></span>
+          </div>
+          <div class="readout-row">
+            <dt>Best seen</dt>
+            <dd id="best-seen-value"></dd>
           </div>
         </dl>
 
         <p class="note">
-          Both orbits are drawn as circles, to scale with each other, and both planets move at
-          constant speed — real orbits are slightly elliptical, but that doesn't change the basic
-          shape of
+          Every orbit here is drawn as a circle, to scale with each other, and every planet moves
+          at constant speed — real orbits are slightly elliptical, but that doesn't change the
+          basic shape of
           <button type="button" class="glossary-toggle glossary-term-button" data-term="retrograde" aria-label="What is retrograde motion?" aria-expanded="false">retrograde motion</button>
-          or when conjunction/opposition happen, which come from the two orbital periods alone.
+          or when conjunction/opposition/elongation happen, which come from the orbital periods and
+          radii alone.
         </p>
         <span class="glossary-definition" data-term="retrograde" hidden></span>
 
@@ -158,7 +315,7 @@
     </section>
 
     <p class="eot-link">
-      <a href="coordinates.html">Reuses the same sky-position toolkit as the stars &mdash; see Star Coordinates &rarr;</a>
+      <a href="coordinates.html">Reuses the same sky-position toolkit as the stars &rarr; see Star Coordinates &rarr;</a>
     </p>
 
     <section class="questions">
@@ -177,11 +334,11 @@
 
   <script src="../src/curriculum.js?v=202610072300"></script>
   <script src="../src/pages.js?v=202610091200"></script>
-  <script src="../src/planetaryMotion.js?v=202609221100"></script>
-  <script src="../src/planetaryMotionQuestions.js?v=202609221100"></script>
+  <script src="../src/planetaryMotion.js?v=202610101200"></script>
+  <script src="../src/planetaryMotionQuestions.js?v=202610101200"></script>
   <script src="../glossary.js?v=202609221600"></script>
   <script src="../quiz-ui.js?v=202609221100"></script>
-  <script src="solar-system-observation.js?v=202609221100"></script>
+  <script src="solar-system-observation.js?v=202610101200"></script>
   <script src="../nextPage.js?v=202609270100"></script>
 </body>
 </html>

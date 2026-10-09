@@ -9,24 +9,19 @@ function findQuestion(questions, id) {
   return q;
 }
 
-// Reference values cross-checked directly against PlanetaryMotion (the
-// same module the app itself uses): scanning day 30-1530 from
-// 2026-01-01 finds opposition on 2029-04-10 (elongation ~179.9°) and
-// conjunction on 2028-03-16 (elongation ~0.0°).
-
-test('retrograde-cause: correctly identifies Earth overtaking Mars as the cause', () => {
+test('retrograde-cause: correctly identifies Earth and the planet changing places as the cause', () => {
   const questions = makeQuestions(PlanetaryMotion);
   const q = findQuestion(questions, 'retrograde-cause');
-  assert.ok(q.check('Earth, on a faster inner orbit, overtaking Mars around opposition').correct);
-  assert.equal(q.check('Mars briefly reversing its real direction of travel around the Sun').correct, false);
+  assert.ok(q.check('Earth and the planet changing places relative to each other, as the faster inner orbit overtakes (or is overtaken by) the slower outer one').correct);
+  assert.equal(q.check('The planet briefly reversing its real direction of travel around the Sun').correct, false);
 });
 
-test('retrograde-timing: retrograde motion happens around opposition, not conjunction or elongation', () => {
+test('retrograde-timing: retrograde motion happens around opposition, not conjunction or greatest elongation', () => {
   const questions = makeQuestions(PlanetaryMotion);
   const q = findQuestion(questions, 'retrograde-timing');
   assert.ok(q.check('Opposition').correct);
   assert.equal(q.check('Conjunction').correct, false);
-  assert.equal(q.check('Elongation').correct, false);
+  assert.equal(q.check('Greatest elongation').correct, false);
 });
 
 test('synodic-period: accepts the real ~780-day Mars synodic period, rejects a wrong guess', () => {
@@ -37,41 +32,47 @@ test('synodic-period: accepts the real ~780-day Mars synodic period, rejects a w
   assert.equal(q.check(365).correct, false);
 });
 
-test('classify-opposition-date: the found reference date is correctly classified as opposition', () => {
+test('which-planets-can-oppose: only superior planets is the correct option', () => {
   const questions = makeQuestions(PlanetaryMotion);
-  const q = findQuestion(questions, 'classify-opposition-date');
-  assert.ok(q.prompt.includes('10 April 2029'));
-  assert.ok(q.check('Opposition').correct);
-  assert.equal(q.check('Conjunction').correct, false);
-  assert.equal(q.check('Elongation').correct, false);
+  const q = findQuestion(questions, 'which-planets-can-oppose');
+  assert.ok(q.check('Only the superior planets — Mars and anything farther from the Sun than Earth').correct);
+  assert.equal(q.check('Any planet — Mercury, Venus, Mars and beyond').correct, false);
+  assert.equal(q.check('Only the inferior planets — Mercury and Venus').correct, false);
 });
 
-test('classify-conjunction-date: the found reference date is correctly classified as conjunction', () => {
+test("venus-never-midnight: the greatest-elongation-cap option is correct, and states Venus's own figure", () => {
   const questions = makeQuestions(PlanetaryMotion);
-  const q = findQuestion(questions, 'classify-conjunction-date');
-  assert.ok(q.prompt.includes('16 March 2028'));
-  assert.ok(q.check('Conjunction').correct);
-  assert.equal(q.check('Opposition').correct, false);
-  assert.equal(q.check('Elongation').correct, false);
+  const q = findQuestion(questions, 'venus-never-midnight');
+  const venusMax = PlanetaryMotion.greatestElongationDeg('venus');
+  const correctOption = q.options.find((o) => o.startsWith("Venus's elongation from the Sun can never exceed"));
+  assert.ok(correctOption, 'expected an option starting with the greatest-elongation explanation');
+  assert.ok(correctOption.includes(venusMax.toFixed(0)), 'option should state the live greatest-elongation figure');
+  assert.ok(q.check(correctOption).correct);
+  assert.equal(q.check("Venus is too faint to see at midnight, even though it's in the sky then").correct, false);
 });
 
-test('classify-elongation-date: the midpoint date has a moderate elongation, neither ~0 nor ~180', () => {
+test('greatest-elongation-meaning: the widest-angle definition is correct', () => {
   const questions = makeQuestions(PlanetaryMotion);
-  const q = findQuestion(questions, 'classify-elongation-date');
-  const result = q.check(56.7);
-  assert.ok(result.correct);
-  assert.ok(!q.check(0).correct);
-  assert.ok(!q.check(180).correct);
+  const q = findQuestion(questions, 'greatest-elongation-meaning');
+  const correctOption = q.options.find((o) => o.startsWith('The widest angle from the Sun'));
+  assert.ok(q.check(correctOption).correct);
+  assert.equal(q.check('The date it is closest to Earth').correct, false);
 });
 
-test('every question re-derives its answer live from PlanetaryMotion, not a hardcoded number', () => {
-  // Sanity: classifyAlignment's own thresholds agree with what each
-  // date-specific question's check() reports as correct.
+test('mars-brightest-at-opposition: the closest-and-fully-lit explanation is correct', () => {
   const questions = makeQuestions(PlanetaryMotion);
-  const oppositionDate = new Date(Date.UTC(2029, 3, 10));
-  const conjunctionDate = new Date(Date.UTC(2028, 2, 16));
-  assert.equal(PlanetaryMotion.classifyAlignment('mars', oppositionDate).type, 'opposition');
-  assert.equal(PlanetaryMotion.classifyAlignment('mars', conjunctionDate).type, 'conjunction');
-  assert.ok(findQuestion(questions, 'classify-opposition-date').check('Opposition').correct);
-  assert.ok(findQuestion(questions, 'classify-conjunction-date').check('Conjunction').correct);
+  const q = findQuestion(questions, 'mars-brightest-at-opposition');
+  const correctOption = q.options.find((o) => o.startsWith('Mars is at its closest to Earth then'));
+  assert.ok(q.check(correctOption).correct);
+  assert.equal(q.check("Mars's own surface changes colour and reflectivity at that time").correct, false);
+});
+
+test('every question only tags u1.x ids that actually exist in curriculum.js', () => {
+  const Curriculum = require('../src/curriculum');
+  const questions = makeQuestions(PlanetaryMotion);
+  questions.forEach((q) => {
+    q.units.forEach((id) => {
+      assert.ok(Curriculum.getSubtopic(id), `${q.id} references missing subtopic "${id}"`);
+    });
+  });
 });

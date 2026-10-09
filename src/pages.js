@@ -46,7 +46,7 @@ const PAGES = [
   },
   {
     title: 'Retrograde Motion and Planetary Alignments',
-    description: 'Watch Mars loop backwards against the stars as Earth overtakes it, and see conjunction, opposition and elongation as one repeating cycle.',
+    description: 'Pick Mercury, Venus or Mars and watch its whole cycle: retrograde loops, every conjunction and elongation, and when (or whether) it can be seen.',
     href: 'sims/solar-system-observation.html',
     units: ['u1.15', 'u1.16', 'u1.17'],
   },

@@ -169,7 +169,7 @@ const UNITS = [
         depth: 'understand',
         spec: ['5.3', '5.5', '5.8'],
         notes:
-          "apparent retrograde loops, caused by Earth overtaking an outer planet on a faster inner orbit; conjunction, opposition and elongation as the possible Sun-Earth-planet alignments",
+          "apparent retrograde loops, caused by Earth and a planet changing places on their different orbits — Earth overtaking an outer (superior) planet around its opposition, or being overtaken by an inner (inferior) planet around that planet's own inferior conjunction; the full set of Sun-Earth-planet alignments — inferior conjunction, superior conjunction and greatest eastern/western elongation for an inferior planet (Mercury, Venus), conjunction and opposition for a superior one (Mars and beyond) — and what each means for when and whether the planet can be seen (evening sky, morning sky, all night, or lost in the Sun's glare)",
       },
       {
         id: 'u1.16',
@@ -185,7 +185,7 @@ const UNITS = [
         depth: 'know',
         spec: ['5.8'],
         notes:
-          'transit: a nearer body crossing the disc of a farther one, e.g. Venus or Mercury crossing the Sun; occultation: a nearer body completely hiding a farther one, e.g. the Moon occulting a star or planet',
+          'transit: a nearer body crossing the disc of a farther one, e.g. Venus or Mercury crossing the Sun; occultation: a nearer body completely hiding a farther one, e.g. the Moon occulting a star or planet; a transit can only happen at inferior conjunction, and even then it is rare, since Mercury\'s and Venus\'s orbits are tilted slightly relative to Earth\'s, so most inferior conjunctions pass above or below the Sun rather than across it',
       },
       {
         id: 'u1.18',

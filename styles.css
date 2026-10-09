@@ -519,6 +519,31 @@ canvas {
   margin-top: 1rem;
 }
 
+/* Same equal-specificity trap as .readout-row[hidden] above: display: grid
+   would otherwise beat the browser's default [hidden] rule — used by
+   sims/solar-system-observation.html to show only the inner- or
+   outer-planet set of configuration cards for the selected planet. */
+.concept-grid[hidden] {
+  display: none;
+}
+
+/* The inner-planet config cards are plain buttons styled as cards (so
+   "click a configuration" is keyboard/screen-reader accessible for
+   free), unlike the Transit/occultation section's plain, non-interactive
+   .concept-cards — reset the button defaults back to that same look. */
+.concept-card-button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  font: inherit;
+  cursor: pointer;
+}
+
+.concept-card-button:hover,
+.concept-card-button:focus-visible {
+  border-color: #2a6bd6;
+}
+
 .concept-card {
   background: #fff;
   border: 1px solid #e0e0e0;
