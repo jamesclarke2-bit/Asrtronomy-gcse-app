@@ -141,7 +141,7 @@ function makeQuestions(GravityField, OrbitalMechanics, Tides) {
         const correct = value === 'Yes — 81 is comfortably above the ≈25 threshold, so L4 and L5 are stable';
         return {
           correct,
-          message: `isEquilateralPointStable(Earth's mass, the Moon's mass) returns true: the real ratio, about ${earthMoonRatio.toFixed(0)}, clears the ≈25 threshold with room to spare — consistent with real dust and small trojan objects actually being found near the Earth-Moon L4 and L5 points.`,
+          message: `Yes — the real ratio, about ${earthMoonRatio.toFixed(0)}, clears the ≈25 threshold with room to spare, so the Earth-Moon L4 and L5 points are predicted stable — consistent with real dust and small trojan objects actually being found near them.`,
         };
       },
     },
@@ -176,17 +176,17 @@ function makeQuestions(GravityField, OrbitalMechanics, Tides) {
         'A test mass sits momentarily at rest right at the Earth-Moon zero-field point, where the net gravitational force on it is exactly zero. Is it gravitationally bound to the Earth-Moon pair, or could it escape to interstellar space from there?',
       options: [
         'Escaping — zero net force means zero net energy too, so it is exactly on the boundary between bound and unbound',
-        "Bound — the net force happens to be zero there, but its total energy (zero kinetic energy, plus negative potential energy from both Earth and the Moon) is still negative, so GravityField's own classifyOrbit calls it bound, even though it won't stay at that unstable balance point for long",
+        "Bound — the net force happens to be zero there, but its total specific energy (zero kinetic energy, plus negative potential energy from both Earth and the Moon) is still negative, which counts as bound even though it won't stay at that unstable balance point for long",
         "There is no way to tell without knowing which direction it is nudged",
         'Bound to the Moon only, since it is on the Moon\'s side of the zero-field point',
       ],
       check(value) {
         const correct =
           value ===
-          "Bound — the net force happens to be zero there, but its total energy (zero kinetic energy, plus negative potential energy from both Earth and the Moon) is still negative, so GravityField's own classifyOrbit calls it bound, even though it won't stay at that unstable balance point for long";
+          "Bound — the net force happens to be zero there, but its total specific energy (zero kinetic energy, plus negative potential energy from both Earth and the Moon) is still negative, which counts as bound even though it won't stay at that unstable balance point for long";
         return {
           correct,
-          message: `Zero net force and zero (or negative) total energy are different conditions. At the zero-field point here, potential energy from Earth and the Moon together is about ${(potentialAtZero / 1e6).toFixed(2)} MJ/kg — negative — so with zero kinetic energy the total is the same negative number, and classifyOrbit(total, potential) returns '${zeroPointClassification}'. It would take real added energy (a push) to escape from there, even though no force is needed just to stay put for an instant.`,
+          message: `Zero net force and zero (or negative) total energy are different conditions. At the zero-field point here, potential energy (a signed value) from Earth and the Moon together is about ${(potentialAtZero / 1e6).toFixed(2)} MJ/kg — negative — so with zero kinetic energy the total specific energy is that same negative number, which classifies as "${zeroPointClassification}". It would take real added energy (a push) to escape from there, even though no force is needed just to stay put for an instant.`,
         };
       },
     },

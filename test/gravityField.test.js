@@ -234,6 +234,54 @@ test('the Earth-Moon zero-field point is about 346,000 km from Earth, which is N
   assert.ok(Math.abs(zeroFieldKm - l1Km) > 10000, `zero-field point (${zeroFieldKm} km) should clearly differ from L1 (${l1Km} km)`);
 });
 
+test('fieldAlongLine for Earth and Moon is negative near Earth, positive near the Moon, and crosses zero at about 346,000 km from Earth (matching zeroFieldPointBetween)', () => {
+  const earth = { mass: EARTH_MASS_KG, x: 0, y: 0 };
+  const moon = { mass: Tides.MOON_MASS_KG, x: Tides.MOON_DISTANCE_KM * 1000, y: 0 };
+  const bodies = [earth, moon];
+
+  const nearEarth = GravityField.fieldAlongLine(bodies, [20000e3])[0];
+  const nearMoon = GravityField.fieldAlongLine(bodies, [moon.x - 20000e3])[0];
+  assert.ok(nearEarth < 0, `expected negative close to Earth, got ${nearEarth}`);
+  assert.ok(nearMoon > 0, `expected positive close to the Moon, got ${nearMoon}`);
+
+  // Bisect fieldAlongLine itself for its own zero crossing, rather than
+  // trusting it agrees with zeroFieldPointBetween without checking.
+  let lo = 1000e3;
+  let hi = moon.x - 1000e3;
+  for (let i = 0; i < 60; i += 1) {
+    const mid = (lo + hi) / 2;
+    const g = GravityField.fieldAlongLine(bodies, [mid])[0];
+    if (g < 0) lo = mid;
+    else hi = mid;
+  }
+  const crossingKm = (lo + hi) / 2 / 1000;
+  assert.ok(Math.abs(crossingKm - 346000) < 3000, `expected crossing ~346,000 km, got ${crossingKm}`);
+
+  const exact = GravityField.zeroFieldPointBetween(earth, moon);
+  assert.ok(Math.abs(crossingKm - exact.distanceFromA / 1000) < 1, `fieldAlongLine's own crossing should match zeroFieldPointBetween exactly, got ${crossingKm} vs ${exact.distanceFromA / 1000}`);
+});
+
+test('potentialAlongLine for Earth and Moon is negative everywhere on the line, with a maximum (least negative — a hill, an unstable equilibrium) exactly at the zero-field point', () => {
+  const earth = { mass: EARTH_MASS_KG, x: 0, y: 0 };
+  const moon = { mass: Tides.MOON_MASS_KG, x: Tides.MOON_DISTANCE_KM * 1000, y: 0 };
+  const bodies = [earth, moon];
+  const zeroField = GravityField.zeroFieldPointBetween(earth, moon);
+
+  const positions = [];
+  for (let i = 1; i < 200; i += 1) positions.push((moon.x * i) / 200);
+  const potentials = GravityField.potentialAlongLine(bodies, positions);
+
+  potentials.forEach((v, i) => assert.ok(v < 0, `expected V < 0 everywhere, got ${v} at x=${positions[i]}`));
+
+  const maxIndex = potentials.reduce((best, v, i) => (v > potentials[best] ? i : best), 0);
+  const maxX = positions[maxIndex];
+  assert.ok(Math.abs(maxX - zeroField.x) / zeroField.x < 0.02, `expected V's maximum near the zero-field point (${zeroField.x}), got ${maxX}`);
+
+  // A hill, not just a local wiggle: V falls away on both sides of it.
+  const vAtPeak = potentials[maxIndex];
+  assert.ok(potentials[0] < vAtPeak && potentials[potentials.length - 1] < vAtPeak, 'V should be lower at both ends of the line than at the peak');
+});
+
 // --- Layer 3: orbital energetics ---------------------------------------------
 
 test('for a circular orbit, KE = -1/2 PE and total energy = -GMm/2r (per unit mass, -GM/2r)', () => {
@@ -244,11 +292,18 @@ test('for a circular orbit, KE = -1/2 PE and total energy = -GMm/2r (per unit ma
   assert.ok(Math.abs((total - expectedTotal) / expectedTotal) < 1e-9, `expected total ${expectedTotal}, got ${total}`);
 });
 
-test('moving from a 400 km orbit to geostationary (r ~42,164 km) changes the total orbital energy by about 24.7 MJ/kg', () => {
+test('moving from a 400 km orbit to geostationary (r ~42,164 km) changes the total orbital energy by about +24.7 MJ/kg, with kinetic energy falling and total energy rising', () => {
   const r1 = EARTH_RADIUS_M + 400000;
   const r2 = 42164000;
   const deltaE = GravityField.orbitalEnergyChange(EARTH_MASS_KG, r1, r2);
   assert.ok(Math.abs(deltaE / 1e6 - 24.7) < 0.3, `expected ~24.7 MJ/kg, got ${deltaE / 1e6}`);
+  assert.ok(deltaE > 0, `expected the total energy change to be positive, got ${deltaE}`);
+
+  const low = GravityField.circularOrbitEnergetics(EARTH_MASS_KG, r1);
+  const geo = GravityField.circularOrbitEnergetics(EARTH_MASS_KG, r2);
+  assert.ok(geo.kinetic < low.kinetic, `expected kinetic energy to fall moving up, got ${low.kinetic} -> ${geo.kinetic}`);
+  assert.ok(geo.total > low.total, `expected total energy to rise moving up, got ${low.total} -> ${geo.total}`);
+  assert.ok(Math.abs(geo.total - low.total - deltaE) / deltaE < 1e-9, 'orbitalEnergyChange should equal the difference of the two totals');
 });
 
 test('escape speed from the energy balance matches OrbitalMechanics.escapeSpeed(), and total energy is zero at escape speed', () => {

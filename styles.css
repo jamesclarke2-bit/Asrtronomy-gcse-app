@@ -2010,6 +2010,15 @@ canvas {
   margin: 1.25rem 0;
 }
 
+/* sims/gravitational-potential.html's "Moving between orbits" panel:
+   two .energy-bar-pair groups, one per orbit, each needing its own
+   short heading so a reader can tell which three bars belong together. */
+.energy-bar-group-label {
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin: 1rem 0 -0.5rem;
+}
+
 .energy-bar {
   display: flex;
   flex-direction: column;

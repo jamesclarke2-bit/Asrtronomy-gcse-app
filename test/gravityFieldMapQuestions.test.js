@@ -113,11 +113,11 @@ test('coriolis-role: the Coriolis-force explanation is the only correct option',
   assert.equal(q.check('Friction with the thin interplanetary medium slows it down before it can slide far').correct, false);
 });
 
-test('zero-field-bound-or-escaping: "bound, via classifyOrbit" is the only correct option, and matches the engine', () => {
+test('zero-field-bound-or-escaping: "bound, since total energy is negative" is the only correct option, and matches the engine', () => {
   const q = findQuestion(makeQuestions(GravityField, OrbitalMechanics, Tides), 'zero-field-bound-or-escaping');
   assert.ok(
     q.check(
-      "Bound — the net force happens to be zero there, but its total energy (zero kinetic energy, plus negative potential energy from both Earth and the Moon) is still negative, so GravityField's own classifyOrbit calls it bound, even though it won't stay at that unstable balance point for long"
+      "Bound — the net force happens to be zero there, but its total specific energy (zero kinetic energy, plus negative potential energy from both Earth and the Moon) is still negative, which counts as bound even though it won't stay at that unstable balance point for long"
     ).correct
   );
   assert.equal(

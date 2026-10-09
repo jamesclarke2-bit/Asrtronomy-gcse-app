@@ -247,6 +247,31 @@ function makeGravityField(OrbitalMechanics, GravitySim, Tides) {
     }, 0);
   }
 
+  // The field's own component along the straight line through two (or
+  // more) bodies already placed on that line (y = 0 for every body),
+  // sampled at each of positions — plain x-values in that same frame,
+  // measured from the first body towards the second (so callers place
+  // bodies[0] at x = 0 and bodies[1] at x = separation). Not the full 2D
+  // field vector (fieldVectorAt above): just its x-component, which is
+  // exactly the signed quantity worth plotting against x — negative
+  // near the first body (net pull back towards it), positive near the
+  // second (net pull towards it instead), crossing zero somewhere
+  // between them. Same idea as radialField's restored sign, but for two
+  // bodies on a line rather than one body at the origin.
+  function fieldAlongLine(bodies, positions) {
+    return positions.map((x) => fieldVectorAt(bodies, { x, y: 0 }).x);
+  }
+
+  // The ordinary superposed potential (potentialAt above — no direction
+  // to sign, unlike the field) sampled along that same line. Negative
+  // everywhere near two attracting bodies, but not monotonic: it has a
+  // local maximum (least negative — a "hill" along the line) exactly
+  // where fieldAlongLine crosses zero, since dV/dx = -g there and a
+  // sign change in g is exactly a turning point in V.
+  function potentialAlongLine(bodies, positions) {
+    return positions.map((x) => potentialAt(bodies, { x, y: 0 }));
+  }
+
   // Follows the field's own direction from a starting point — the path
   // a free particle's *acceleration* points along at each point, not a
   // simulated trajectory (no velocity/momentum here, see
@@ -629,6 +654,8 @@ function makeGravityField(OrbitalMechanics, GravitySim, Tides) {
     // Layer 2
     fieldVectorAt,
     potentialAt,
+    fieldAlongLine,
+    potentialAlongLine,
     traceFieldLine,
     zeroFieldPointBetween,
     findFieldZero,

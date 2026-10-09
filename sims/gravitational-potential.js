@@ -8,6 +8,7 @@
 
   const EARTH_COLOR = '#2a6bd6';
   const MASS_COLOR = '#c0392b';
+  const MOON_COLOR = '#8a97a5';
   const CURVE_COLOR = '#3a3f4d';
   const SHADE_COLOR = 'rgba(42, 107, 214, 0.22)';
   const POSITIVE_COLOR = '#2fae4e';
@@ -716,73 +717,592 @@
 
   heightSlider.addEventListener('input', updateMghComparison);
 
-  // --- 5. A satellite's energy budget --------------------------------------
+  // --- 5. Between the Earth and the Moon ------------------------------------
 
-  const orbitAltitudeSlider = document.getElementById('orbit-altitude-slider');
-  const orbitAltitudeLabel = document.getElementById('orbit-altitude-label');
-  const orbitRadiusReadout = document.getElementById('orbit-radius-readout');
-  const orbitSpeedReadout = document.getElementById('orbit-speed-readout');
-  const orbitKeReadout = document.getElementById('orbit-ke-readout');
-  const orbitPeReadout = document.getElementById('orbit-pe-readout');
-  const orbitTotalReadout = document.getElementById('orbit-total-readout');
-  const orbitKeBarFill = document.getElementById('orbit-ke-bar-fill');
-  const orbitPeBarFill = document.getElementById('orbit-pe-bar-fill');
-  const orbitTotalBarFill = document.getElementById('orbit-total-bar-fill');
-  const orbitTotalSign = document.getElementById('orbit-total-sign');
+  const EM_MOON_MASS = Tides.MOON_MASS_KG;
+  const EM_SEPARATION_M = Tides.MOON_DISTANCE_KM * 1000;
+  const EM_EARTH = { mass: M, x: 0, y: 0 };
+  const EM_MOON = { mass: EM_MOON_MASS, x: EM_SEPARATION_M, y: 0 };
+  const EM_BODIES = [EM_EARTH, EM_MOON];
+  const EM_ZERO_FIELD = GF.zeroFieldPointBetween(EM_EARTH, EM_MOON);
 
-  const ORBIT_MIN_ALTITUDE = Number(orbitAltitudeSlider.min);
-  const ORBIT_ENERGETICS_AT_MIN = GF.circularOrbitEnergetics(M, R + ORBIT_MIN_ALTITUDE);
+  const emCanvas = document.getElementById('em-line-view');
+  const emCtx = emCanvas.getContext('2d');
+  const emDistanceReadout = document.getElementById('em-distance-readout');
+  const emGEarthReadout = document.getElementById('em-g-earth-readout');
+  const emGMoonReadout = document.getElementById('em-g-moon-readout');
+  const emGTotalReadout = document.getElementById('em-g-total-readout');
+  const emVReadout = document.getElementById('em-v-readout');
+  const emFallsReadout = document.getElementById('em-falls-readout');
+
+  // Earth's pull dominates almost the whole 384,400 km line (its mass is
+  // about 81× the Moon's), so the crossing sits only in the outer ~10%
+  // of the true distance — plotting the full span would squash the
+  // interesting region to a sliver. All three bands instead share one
+  // zoomed window around the crossing, with the strip showing Earth and
+  // the Moon as off-screen directions rather than true-scale icons.
+  const EM_X_MIN = 150000e3;
+  const EM_X_MAX = 370000e3;
+  let emX = EM_ZERO_FIELD.x; // starts balanced, right at the zero-field point
+
+  const EM_PLOT_LEFT = 52;
+  const EM_PLOT_RIGHT = 20;
+  const EM_PLOT_WIDTH = emCanvas.width - EM_PLOT_LEFT - EM_PLOT_RIGHT;
+  const EM_STRIP_TOP = 14;
+  const EM_STRIP_HEIGHT = 60;
+  const EM_G_TOP = EM_STRIP_TOP + EM_STRIP_HEIGHT + 34;
+  const EM_G_HEIGHT = 190;
+  const EM_V_TOP = EM_G_TOP + EM_G_HEIGHT + 44;
+  const EM_V_HEIGHT = 190;
+  const EM_G_CLIP = 0.025; // m/s² — display clip either side of zero
+  const EM_V_CLIP_FLOOR = -3e6; // J/kg — display clip, deepest shown
+  const EM_V_CLIP_CEIL = -0.6e6; // J/kg — display clip, shallowest shown
+
+  function emXForM(xMeters) {
+    return EM_PLOT_LEFT + ((xMeters - EM_X_MIN) / (EM_X_MAX - EM_X_MIN)) * EM_PLOT_WIDTH;
+  }
+  function emMFromPx(px) {
+    return EM_X_MIN + ((px - EM_PLOT_LEFT) / EM_PLOT_WIDTH) * (EM_X_MAX - EM_X_MIN);
+  }
+  function emGToY(g) {
+    const clipped = Math.max(-EM_G_CLIP, Math.min(EM_G_CLIP, g));
+    return EM_G_TOP + EM_G_HEIGHT / 2 - (clipped / EM_G_CLIP) * (EM_G_HEIGHT / 2 - 8);
+  }
+  function emVToY(v) {
+    const clipped = Math.max(EM_V_CLIP_FLOOR, Math.min(EM_V_CLIP_CEIL, v));
+    const t = (clipped - EM_V_CLIP_FLOOR) / (EM_V_CLIP_CEIL - EM_V_CLIP_FLOOR);
+    return EM_V_TOP + EM_V_HEIGHT - 8 - t * (EM_V_HEIGHT - 16);
+  }
+
+  function drawEmLine() {
+    const ctx = emCtx;
+    ctx.clearRect(0, 0, emCanvas.width, emCanvas.height);
+
+    const stripY = EM_STRIP_TOP + EM_STRIP_HEIGHT / 2;
+    const leftEdge = emXForM(EM_X_MIN);
+    const rightEdge = emXForM(EM_X_MAX);
+    ctx.strokeStyle = '#cdd7e1';
+    ctx.beginPath();
+    ctx.moveTo(leftEdge, stripY);
+    ctx.lineTo(rightEdge, stripY);
+    ctx.stroke();
+
+    // Earth and the Moon sit off-screen in this zoomed window — shown as
+    // directions, with their true distance from the window's edge.
+    ctx.fillStyle = '#555';
+    ctx.font = '11px sans-serif';
+    ctx.textAlign = 'left';
+    ctx.fillText(`← Earth, ${(EM_X_MIN / 1000).toLocaleString()} km this way`, leftEdge, stripY - 14);
+    ctx.textAlign = 'right';
+    ctx.fillText(`Moon, ${((EM_SEPARATION_M - EM_X_MAX) / 1000).toLocaleString()} km this way →`, rightEdge, stripY - 14);
+    drawArrow(ctx, leftEdge + 30, stripY, leftEdge + 4, stripY, EARTH_COLOR);
+    drawArrow(ctx, rightEdge - 30, stripY, rightEdge - 4, stripY, MOON_COLOR);
+
+    const massPx = emXForM(emX);
+    const crossPx = emXForM(EM_ZERO_FIELD.x);
+
+    ctx.strokeStyle = '#bbb';
+    ctx.setLineDash([3, 3]);
+    ctx.beginPath();
+    ctx.moveTo(crossPx, EM_STRIP_TOP);
+    ctx.lineTo(crossPx, EM_V_TOP + EM_V_HEIGHT);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    ctx.beginPath();
+    ctx.arc(massPx, stripY, 6, 0, Math.PI * 2);
+    ctx.fillStyle = MASS_COLOR;
+    ctx.fill();
+    ctx.strokeStyle = '#7a2015';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+
+    // --- g band: Earth's own pull, the Moon's own pull, and the total ---
+    ctx.fillStyle = '#555';
+    ctx.font = '12px sans-serif';
+    ctx.textAlign = 'left';
+    ctx.fillText('g along the line (mm/s²)', EM_PLOT_LEFT, EM_G_TOP - 10);
+
+    const zeroGY = emGToY(0);
+    ctx.strokeStyle = '#999';
+    ctx.setLineDash([4, 4]);
+    ctx.beginPath();
+    ctx.moveTo(EM_PLOT_LEFT, zeroGY);
+    ctx.lineTo(emCanvas.width - EM_PLOT_RIGHT, zeroGY);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    function strokeCurve(fn, toY, color) {
+      ctx.beginPath();
+      const steps = 150;
+      for (let s = 0; s <= steps; s += 1) {
+        const x = EM_X_MIN + ((EM_X_MAX - EM_X_MIN) * s) / steps;
+        const px = emXForM(x);
+        const py = toY(fn(x));
+        if (s === 0) ctx.moveTo(px, py);
+        else ctx.lineTo(px, py);
+      }
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 1.6;
+      ctx.stroke();
+    }
+    strokeCurve((x) => GF.fieldVectorAt([EM_EARTH], { x, y: 0 }).x, emGToY, EARTH_COLOR);
+    strokeCurve((x) => GF.fieldVectorAt([EM_MOON], { x, y: 0 }).x, emGToY, MOON_COLOR);
+    strokeCurve((x) => GF.fieldAlongLine(EM_BODIES, [x])[0], emGToY, CURVE_COLOR);
+
+    ctx.beginPath();
+    ctx.arc(massPx, emGToY(GF.fieldAlongLine(EM_BODIES, [emX])[0]), 5, 0, Math.PI * 2);
+    ctx.fillStyle = MASS_COLOR;
+    ctx.fill();
+
+    // --- V band: the potential, always negative, peaking at the crossing ---
+    ctx.fillStyle = '#555';
+    ctx.textAlign = 'left';
+    ctx.fillText('V along the line (MJ/kg)', EM_PLOT_LEFT, EM_V_TOP - 10);
+
+    strokeCurve((x) => GF.potentialAlongLine(EM_BODIES, [x])[0], emVToY, CURVE_COLOR);
+
+    const peakV = GF.potentialAlongLine(EM_BODIES, [EM_ZERO_FIELD.x])[0];
+    const peakY = emVToY(peakV);
+    ctx.fillStyle = '#555';
+    ctx.font = '10px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('unstable equilibrium', crossPx, peakY - 10);
+
+    ctx.beginPath();
+    ctx.arc(massPx, emVToY(GF.potentialAlongLine(EM_BODIES, [emX])[0]), 5, 0, Math.PI * 2);
+    ctx.fillStyle = MASS_COLOR;
+    ctx.fill();
+  }
+
+  function updateEmLine() {
+    const gEarth = GF.fieldVectorAt([EM_EARTH], { x: emX, y: 0 }).x;
+    const gMoon = GF.fieldVectorAt([EM_MOON], { x: emX, y: 0 }).x;
+    const gTotal = GF.fieldAlongLine(EM_BODIES, [emX])[0];
+    const v = GF.potentialAlongLine(EM_BODIES, [emX])[0];
+
+    emDistanceReadout.textContent = `${(emX / 1000).toFixed(0)} km`;
+    emGEarthReadout.textContent = `${(gEarth * 1000).toFixed(2)} mm/s²`;
+    emGMoonReadout.textContent = `${(gMoon * 1000).toFixed(2)} mm/s²`;
+    emGTotalReadout.textContent = `${(gTotal * 1000).toFixed(3)} mm/s²`;
+    emVReadout.textContent = `${(v / 1e6).toFixed(3)} MJ/kg`;
+
+    const EM_BALANCE_TOLERANCE = 1e-5; // m/s² — effectively zero, for the "falls towards" readout
+    if (Math.abs(gTotal) < EM_BALANCE_TOLERANCE) {
+      emFallsReadout.textContent = 'neither — balanced here, but any nudge decides which way (unstable)';
+    } else if (gTotal < 0) {
+      emFallsReadout.textContent = 'Earth (total field here is negative — points towards Earth)';
+    } else {
+      emFallsReadout.textContent = 'the Moon (total field here is positive — points towards the Moon)';
+    }
+
+    drawEmLine();
+  }
+
+  let emDragging = false;
+  function emApplyPointer(evt) {
+    const rect = emCanvas.getBoundingClientRect();
+    const scaleX = emCanvas.width / rect.width;
+    const px = (evt.clientX - rect.left) * scaleX;
+    const xMeters = emMFromPx(px);
+    emX = Math.min(EM_X_MAX, Math.max(EM_X_MIN, xMeters));
+    updateEmLine();
+  }
+  emCanvas.addEventListener('pointerdown', (evt) => {
+    emDragging = true;
+    emCanvas.setPointerCapture(evt.pointerId);
+    emApplyPointer(evt);
+  });
+  emCanvas.addEventListener('pointermove', (evt) => {
+    if (!emDragging) return;
+    emApplyPointer(evt);
+  });
+  emCanvas.addEventListener('pointerup', () => {
+    emDragging = false;
+  });
+  emCanvas.addEventListener('pointercancel', () => {
+    emDragging = false;
+  });
+
+  // --- 6. Moving between orbits ----------------------------------------------
+
+  const ORBIT_LOW_ALT_M = 400000;
+  const ORBIT_GEO_RADIUS_M = 42164000;
+  const ORBIT_GEO_ALT_M = ORBIT_GEO_RADIUS_M - R;
+  const ORBIT_MIN_ALT_M = 200000;
+  const ORBIT_MAX_ALT_M = 50000000; // 50,000 km — comfortably past geostationary
+  const ORBIT1_COLOR = EARTH_COLOR;
+  const ORBIT2_COLOR = MASS_COLOR;
+
+  const orbitsCanvas = document.getElementById('orbits-view');
+  const orbitsCtx = orbitsCanvas.getContext('2d');
+  const orbitsVrCanvas = document.getElementById('orbits-vr-view');
+  const orbitsVrCtx = orbitsVrCanvas.getContext('2d');
+  const orbit1Slider = document.getElementById('orbit1-altitude-slider');
+  const orbit2Slider = document.getElementById('orbit2-altitude-slider');
+  const orbit1Label = document.getElementById('orbit1-altitude-label');
+  const orbit2Label = document.getElementById('orbit2-altitude-label');
+  const orbit1RadiusSpeedReadout = document.getElementById('orbit1-radius-speed-readout');
+  const orbit2RadiusSpeedReadout = document.getElementById('orbit2-radius-speed-readout');
+  const orbit1KeReadout = document.getElementById('orbit1-ke-readout');
+  const orbit1PeReadout = document.getElementById('orbit1-pe-readout');
+  const orbit1TotalReadout = document.getElementById('orbit1-total-readout');
+  const orbit2KeReadout = document.getElementById('orbit2-ke-readout');
+  const orbit2PeReadout = document.getElementById('orbit2-pe-readout');
+  const orbit2TotalReadout = document.getElementById('orbit2-total-readout');
+  const orbit1KeBarFill = document.getElementById('orbit1-ke-bar-fill');
+  const orbit1PeBarFill = document.getElementById('orbit1-pe-bar-fill');
+  const orbit1TotalBarFill = document.getElementById('orbit1-total-bar-fill');
+  const orbit2KeBarFill = document.getElementById('orbit2-ke-bar-fill');
+  const orbit2PeBarFill = document.getElementById('orbit2-pe-bar-fill');
+  const orbit2TotalBarFill = document.getElementById('orbit2-total-bar-fill');
+  const orbitChangeReadout = document.getElementById('orbit-change-readout');
+  const orbitPresetButtons = document.querySelectorAll('[data-orbit][data-preset]');
+
+  const ORBIT_SLIDER_STEPS = 10000; // fine enough that the presets land within a few km of their target
+  function orbitAltitudeFromSlider(sliderEl) {
+    const fraction = Number(sliderEl.value) / ORBIT_SLIDER_STEPS;
+    return ORBIT_MIN_ALT_M * Math.pow(ORBIT_MAX_ALT_M / ORBIT_MIN_ALT_M, fraction);
+  }
+  function orbitSliderValueForAltitude(altitudeM) {
+    const fraction = Math.log(altitudeM / ORBIT_MIN_ALT_M) / Math.log(ORBIT_MAX_ALT_M / ORBIT_MIN_ALT_M);
+    return Math.round(Math.min(ORBIT_SLIDER_STEPS, Math.max(0, fraction * ORBIT_SLIDER_STEPS)));
+  }
+
+  const ORBIT_ENERGETICS_AT_MIN = GF.circularOrbitEnergetics(M, R + ORBIT_MIN_ALT_M);
   const ORBIT_KE_SCALE = ORBIT_ENERGETICS_AT_MIN.kinetic;
   const ORBIT_PE_SCALE = Math.abs(ORBIT_ENERGETICS_AT_MIN.potential);
   const ORBIT_TOTAL_SCALE = Math.abs(ORBIT_ENERGETICS_AT_MIN.total);
 
-  function updateOrbit() {
-    const altitude = Number(orbitAltitudeSlider.value);
-    const r = R + altitude;
-    const energetics = GF.circularOrbitEnergetics(M, r);
+  const ORBITS_PLOT_RADIUS_PX = Math.min(orbitsCanvas.width, orbitsCanvas.height) / 2 - 20;
 
-    orbitAltitudeLabel.textContent = `${(altitude / 1000).toFixed(0)} km`;
-    orbitRadiusReadout.textContent = `${(r / 1000).toFixed(0)} km (${(r / R).toFixed(2)} × Earth's radius)`;
-    orbitSpeedReadout.textContent = `${(energetics.speed / 1000).toFixed(2)} km/s`;
-    orbitKeReadout.textContent = `${(energetics.kinetic / 1e6).toFixed(2)} MJ/kg`;
-    orbitPeReadout.textContent = `${(energetics.potential / 1e6).toFixed(2)} MJ/kg`;
-    orbitTotalReadout.textContent = `${(energetics.total / 1e6).toFixed(2)} MJ/kg`;
+  function drawOrbitsDiagram(r1, r2) {
+    const ctx = orbitsCtx;
+    const cx = orbitsCanvas.width / 2;
+    const cy = orbitsCanvas.height / 2;
+    ctx.clearRect(0, 0, orbitsCanvas.width, orbitsCanvas.height);
 
-    orbitKeBarFill.style.height = `${Math.min(1, energetics.kinetic / ORBIT_KE_SCALE) * 50}%`;
-    orbitPeBarFill.style.height = `${Math.min(1, Math.abs(energetics.potential) / ORBIT_PE_SCALE) * 50}%`;
-    orbitTotalBarFill.style.height = `${Math.min(1, Math.abs(energetics.total) / ORBIT_TOTAL_SCALE) * 50}%`;
+    const pxPerM = ORBITS_PLOT_RADIUS_PX / (Math.max(r1, r2) * 1.1);
 
-    orbitTotalSign.textContent = energetics.total < 0 ? '(negative — bound)' : energetics.total > 0 ? '(positive — unbound)' : '(zero)';
+    // Earth is drawn at a fixed schematic size, not true scale — a true-
+    // scale Earth would sit only ~1px inside a 400 km low orbit at this
+    // zoomed-out, geostationary-spanning scale, making the low orbit's
+    // own ring indistinguishable from Earth's own disk.
+    const EARTH_DRAW_RADIUS_PX = 10;
+    ctx.beginPath();
+    ctx.arc(cx, cy, EARTH_DRAW_RADIUS_PX, 0, Math.PI * 2);
+    ctx.fillStyle = EARTH_COLOR;
+    ctx.fill();
+
+    [
+      [r1, ORBIT1_COLOR, 'Orbit 1'],
+      [r2, ORBIT2_COLOR, 'Orbit 2'],
+    ].forEach(([r, color, label]) => {
+      const rPx = r * pxPerM;
+      ctx.beginPath();
+      ctx.arc(cx, cy, rPx, 0, Math.PI * 2);
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      const markerX = cx + rPx;
+      ctx.beginPath();
+      ctx.arc(markerX, cy, 5, 0, Math.PI * 2);
+      ctx.fillStyle = color;
+      ctx.fill();
+      ctx.fillStyle = '#444';
+      ctx.font = '10px sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillText(label, markerX + 8, cy + 3);
+    });
   }
 
-  orbitAltitudeSlider.addEventListener('input', updateOrbit);
+  const ORBITS_VR_MARGIN = { left: 55, right: 15, top: 15, bottom: 28 };
+  const ORBITS_VR_R_MIN = R;
+  const ORBITS_VR_R_MAX = ORBIT_GEO_RADIUS_M * 1.15;
+  const ORBITS_VR_V_MIN = GF.potential(M, ORBITS_VR_R_MIN);
 
-  // --- 6. Escaping: total energy reaching zero ------------------------------
+  function orbitsVrXForR(r) {
+    const plotWidth = orbitsVrCanvas.width - ORBITS_VR_MARGIN.left - ORBITS_VR_MARGIN.right;
+    return ORBITS_VR_MARGIN.left + ((r - ORBITS_VR_R_MIN) / (ORBITS_VR_R_MAX - ORBITS_VR_R_MIN)) * plotWidth;
+  }
+  function orbitsVrYForV(v) {
+    const plotHeight = orbitsVrCanvas.height - ORBITS_VR_MARGIN.top - ORBITS_VR_MARGIN.bottom;
+    return ORBITS_VR_MARGIN.top + (1 - v / ORBITS_VR_V_MIN) * plotHeight;
+  }
 
+  function drawOrbitsVr(r1, r2) {
+    const ctx = orbitsVrCtx;
+    ctx.clearRect(0, 0, orbitsVrCanvas.width, orbitsVrCanvas.height);
+
+    const zeroY = orbitsVrYForV(0);
+    ctx.strokeStyle = '#999';
+    ctx.setLineDash([4, 4]);
+    ctx.beginPath();
+    ctx.moveTo(ORBITS_VR_MARGIN.left, zeroY);
+    ctx.lineTo(orbitsVrCanvas.width - ORBITS_VR_MARGIN.right, zeroY);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    ctx.beginPath();
+    const steps = 120;
+    for (let s = 0; s <= steps; s += 1) {
+      const r = ORBITS_VR_R_MIN + ((ORBITS_VR_R_MAX - ORBITS_VR_R_MIN) * s) / steps;
+      const x = orbitsVrXForR(r);
+      const y = orbitsVrYForV(GF.potential(M, r));
+      if (s === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    }
+    ctx.strokeStyle = CURVE_COLOR;
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    [
+      [r1, ORBIT1_COLOR],
+      [r2, ORBIT2_COLOR],
+    ].forEach(([r, color]) => {
+      const v = GF.potential(M, r);
+      const total = (-OM.G * M) / (2 * r);
+      const px = orbitsVrXForR(r);
+      const vy = orbitsVrYForV(v);
+      const ey = orbitsVrYForV(total);
+
+      ctx.strokeStyle = color;
+      ctx.setLineDash([5, 3]);
+      ctx.lineWidth = 1.3;
+      ctx.beginPath();
+      ctx.moveTo(ORBITS_VR_MARGIN.left, ey);
+      ctx.lineTo(px, ey);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // The gap between the point (V, this orbit's potential energy) and
+      // its horizontal total-energy line is exactly that orbit's kinetic
+      // energy — the same idiom the escape well below uses.
+      ctx.beginPath();
+      ctx.moveTo(px, vy);
+      ctx.lineTo(px, ey);
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 2.5;
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.arc(px, vy, 4, 0, Math.PI * 2);
+      ctx.fillStyle = color;
+      ctx.fill();
+    });
+
+    ctx.fillStyle = '#555';
+    ctx.font = '10px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('r', orbitsVrCanvas.width / 2, orbitsVrCanvas.height - 6);
+  }
+
+  function updateOrbits() {
+    const alt1 = orbitAltitudeFromSlider(orbit1Slider);
+    const alt2 = orbitAltitudeFromSlider(orbit2Slider);
+    const r1 = R + alt1;
+    const r2 = R + alt2;
+    const e1 = GF.circularOrbitEnergetics(M, r1);
+    const e2 = GF.circularOrbitEnergetics(M, r2);
+
+    orbit1Label.textContent = `${(alt1 / 1000).toFixed(0)} km`;
+    orbit2Label.textContent = `${(alt2 / 1000).toFixed(0)} km`;
+    orbit1RadiusSpeedReadout.textContent = `${(r1 / 1000).toFixed(0)} km, ${(e1.speed / 1000).toFixed(2)} km/s`;
+    orbit2RadiusSpeedReadout.textContent = `${(r2 / 1000).toFixed(0)} km, ${(e2.speed / 1000).toFixed(2)} km/s`;
+
+    orbit1KeReadout.textContent = `${(e1.kinetic / 1e6).toFixed(2)} MJ/kg`;
+    orbit1PeReadout.textContent = `${(e1.potential / 1e6).toFixed(2)} MJ/kg`;
+    orbit1TotalReadout.textContent = `${(e1.total / 1e6).toFixed(2)} MJ/kg`;
+    orbit2KeReadout.textContent = `${(e2.kinetic / 1e6).toFixed(2)} MJ/kg`;
+    orbit2PeReadout.textContent = `${(e2.potential / 1e6).toFixed(2)} MJ/kg`;
+    orbit2TotalReadout.textContent = `${(e2.total / 1e6).toFixed(2)} MJ/kg`;
+
+    orbit1KeBarFill.style.height = `${Math.min(1, e1.kinetic / ORBIT_KE_SCALE) * 50}%`;
+    orbit1PeBarFill.style.height = `${Math.min(1, Math.abs(e1.potential) / ORBIT_PE_SCALE) * 50}%`;
+    orbit1TotalBarFill.style.height = `${Math.min(1, Math.abs(e1.total) / ORBIT_TOTAL_SCALE) * 50}%`;
+    orbit2KeBarFill.style.height = `${Math.min(1, e2.kinetic / ORBIT_KE_SCALE) * 50}%`;
+    orbit2PeBarFill.style.height = `${Math.min(1, Math.abs(e2.potential) / ORBIT_PE_SCALE) * 50}%`;
+    orbit2TotalBarFill.style.height = `${Math.min(1, Math.abs(e2.total) / ORBIT_TOTAL_SCALE) * 50}%`;
+
+    const deltaKe = e2.kinetic - e1.kinetic;
+    const deltaPe = e2.potential - e1.potential;
+    const deltaTotal = e2.total - e1.total;
+    const sign = (v) => (v >= 0 ? '+' : '');
+    orbitChangeReadout.textContent = `${sign(deltaKe)}${(deltaKe / 1e6).toFixed(2)} MJ/kg, ${sign(deltaPe)}${(deltaPe / 1e6).toFixed(2)} MJ/kg, ${sign(deltaTotal)}${(deltaTotal / 1e6).toFixed(2)} MJ/kg`;
+
+    drawOrbitsDiagram(r1, r2);
+    drawOrbitsVr(r1, r2);
+  }
+
+  [orbit1Slider, orbit2Slider].forEach((el) => el.addEventListener('input', updateOrbits));
+
+  orbitPresetButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      const slider = button.dataset.orbit === '1' ? orbit1Slider : orbit2Slider;
+      const altitude = button.dataset.preset === 'low' ? ORBIT_LOW_ALT_M : ORBIT_GEO_ALT_M;
+      slider.value = orbitSliderValueForAltitude(altitude);
+      updateOrbits();
+    });
+  });
+
+  // --- 7. Escape ---------------------------------------------------------
+
+  const ESCAPE_R_MIN = R;
+  const ESCAPE_R_MAX = R * 80;
+
+  const escapeCanvas = document.getElementById('escape-well-view');
+  const escapeCtx = escapeCanvas.getContext('2d');
   const escapeSpeedSlider = document.getElementById('escape-speed-slider');
   const escapeSpeedLabel = document.getElementById('escape-speed-label');
+  const escapeKeReadout = document.getElementById('escape-ke-readout');
   const escapeTotalReadout = document.getElementById('escape-total-readout');
+  const escapeTurningPointReadout = document.getElementById('escape-turning-point-readout');
   const escapeClassification = document.getElementById('escape-classification');
   const escapeSpeedMark = document.getElementById('escape-speed-mark');
   const escapeSpeedValueEl = document.getElementById('escape-speed-value');
 
   const ESCAPE_SPEED = GF.escapeSpeedFromEnergy(M, R);
   const ESCAPE_POTENTIAL = GF.potentialEnergyPerMass(M, R);
+  const ESCAPE_SPEED_MAX = Number(escapeSpeedSlider.max);
+  const ESCAPE_Y_MIN = ESCAPE_POTENTIAL * 1.08;
+  const ESCAPE_Y_MAX = GF.totalEnergyPerMass(M, R, ESCAPE_SPEED_MAX) * 1.15;
 
   const CLASSIFICATION_TEXT = {
-    bound: 'Bound — falls back or settles into an orbit (total energy negative)',
+    bound: 'Bound — falls back (total energy negative)',
     parabolic: 'Just escaping — the marginal case (total energy ≈ zero)',
     hyperbolic: 'Escapes with speed to spare (total energy positive)',
   };
+
+  const ESCAPE_MARGIN = { left: 58, right: 20, top: 15, bottom: 30 };
+
+  function escapeXForR(r) {
+    const plotWidth = escapeCanvas.width - ESCAPE_MARGIN.left - ESCAPE_MARGIN.right;
+    const t = Math.log(r / ESCAPE_R_MIN) / Math.log(ESCAPE_R_MAX / ESCAPE_R_MIN);
+    return ESCAPE_MARGIN.left + t * plotWidth;
+  }
+  function escapeYForEnergy(e) {
+    const plotHeight = escapeCanvas.height - ESCAPE_MARGIN.top - ESCAPE_MARGIN.bottom;
+    const t = (e - ESCAPE_Y_MIN) / (ESCAPE_Y_MAX - ESCAPE_Y_MIN);
+    return ESCAPE_MARGIN.top + (1 - t) * plotHeight;
+  }
+
+  function drawEscapeWell(speed) {
+    const ctx = escapeCtx;
+    ctx.clearRect(0, 0, escapeCanvas.width, escapeCanvas.height);
+
+    const zeroY = escapeYForEnergy(0);
+    ctx.strokeStyle = '#999';
+    ctx.setLineDash([4, 4]);
+    ctx.beginPath();
+    ctx.moveTo(ESCAPE_MARGIN.left, zeroY);
+    ctx.lineTo(escapeCanvas.width - ESCAPE_MARGIN.right, zeroY);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = '#999';
+    ctx.font = '10px sans-serif';
+    ctx.textAlign = 'left';
+    ctx.fillText('E = 0 — just escapes', ESCAPE_MARGIN.left + 4, zeroY - 4);
+
+    ctx.beginPath();
+    const steps = 150;
+    for (let s = 0; s <= steps; s += 1) {
+      const t = s / steps;
+      const r = ESCAPE_R_MIN * Math.pow(ESCAPE_R_MAX / ESCAPE_R_MIN, t);
+      const x = escapeXForR(r);
+      const y = escapeYForEnergy(GF.potential(M, r));
+      if (s === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    }
+    ctx.strokeStyle = CURVE_COLOR;
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    const total = GF.totalEnergyPerMass(M, R, speed);
+    const classification = GF.classifyOrbit(total, ESCAPE_POTENTIAL);
+    const lineColor = classification === 'bound' ? NEGATIVE_COLOR : classification === 'hyperbolic' ? POSITIVE_COLOR : NEUTRAL_COLOR;
+    const rTurnExact = classification === 'bound' ? (-OM.G * M) / total : null;
+    const turningPointOffChart = classification === 'bound' && rTurnExact > ESCAPE_R_MAX;
+
+    const surfaceX = escapeXForR(R);
+    const surfaceVY = escapeYForEnergy(GF.potential(M, R));
+    const lineY = escapeYForEnergy(total);
+    const endX = classification === 'bound' && !turningPointOffChart ? escapeXForR(rTurnExact) : escapeCanvas.width - ESCAPE_MARGIN.right;
+
+    ctx.strokeStyle = lineColor;
+    ctx.setLineDash([5, 3]);
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(surfaceX, lineY);
+    ctx.lineTo(endX, lineY);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // KE gap at the surface — the vertical distance between the well
+    // (potential energy) and the total-energy line.
+    ctx.strokeStyle = lineColor;
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    ctx.moveTo(surfaceX, surfaceVY);
+    ctx.lineTo(surfaceX, lineY);
+    ctx.stroke();
+
+    ctx.font = '10px sans-serif';
+    if (classification === 'bound' && !turningPointOffChart) {
+      ctx.beginPath();
+      ctx.arc(endX, lineY, 5, 0, Math.PI * 2);
+      ctx.fillStyle = lineColor;
+      ctx.fill();
+      ctx.fillStyle = '#444';
+      ctx.textAlign = 'center';
+      ctx.fillText('highest point reached', endX, lineY - 10);
+    } else if (classification === 'bound' && turningPointOffChart) {
+      ctx.fillStyle = '#444';
+      ctx.textAlign = 'right';
+      ctx.fillText('turning point beyond this chart', escapeCanvas.width - ESCAPE_MARGIN.right, lineY - 8);
+    } else {
+      ctx.beginPath();
+      ctx.moveTo(endX - 10, lineY - 6);
+      ctx.lineTo(endX, lineY);
+      ctx.lineTo(endX - 10, lineY + 6);
+      ctx.strokeStyle = lineColor;
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      ctx.fillStyle = '#444';
+      ctx.textAlign = 'right';
+      ctx.fillText('escapes →', endX - 2, lineY - 10);
+    }
+
+    ctx.beginPath();
+    ctx.arc(surfaceX, surfaceVY, 5, 0, Math.PI * 2);
+    ctx.fillStyle = MASS_COLOR;
+    ctx.fill();
+
+    ctx.fillStyle = '#555';
+    ctx.textAlign = 'center';
+    ctx.fillText('r (log scale)', escapeCanvas.width / 2, escapeCanvas.height - 6);
+  }
 
   function updateEscape() {
     const speed = Number(escapeSpeedSlider.value);
     const total = GF.totalEnergyPerMass(M, R, speed);
     const classification = GF.classifyOrbit(total, ESCAPE_POTENTIAL);
+    const ke = GF.kineticEnergyPerMass(speed);
 
     escapeSpeedLabel.textContent = `${(speed / 1000).toFixed(2)} km/s`;
+    escapeKeReadout.textContent = `${(ke / 1e6).toFixed(2)} MJ/kg`;
     escapeTotalReadout.textContent = `${(total / 1e6).toFixed(2)} MJ/kg`;
     escapeClassification.textContent = CLASSIFICATION_TEXT[classification];
+
+    if (classification === 'bound') {
+      const rTurn = (-OM.G * M) / total;
+      const altitude = rTurn - R;
+      escapeTurningPointReadout.textContent = `${(altitude / 1000).toFixed(0)} km altitude (${(rTurn / 1000).toFixed(0)} km from the centre)`;
+    } else {
+      escapeTurningPointReadout.textContent = 'none — it never turns back';
+    }
+
+    drawEscapeWell(speed);
   }
 
   escapeSpeedSlider.addEventListener('input', updateEscape);
@@ -802,7 +1322,10 @@
   updateEquipotentialReadouts();
   updateFourGraphs();
   updateMghComparison();
-  updateOrbit();
+  updateEmLine();
+  orbit1Slider.value = orbitSliderValueForAltitude(ORBIT_LOW_ALT_M);
+  orbit2Slider.value = orbitSliderValueForAltitude(ORBIT_GEO_ALT_M);
+  updateOrbits();
   updateEscape();
   renderCoverage();
   Glossary.init({});

@@ -314,73 +314,203 @@
       </div>
     </section>
 
-    <section class="notes-section" id="satellite-energy">
-      <h2>5. A satellite's energy budget</h2>
+    <section class="notes-section" id="earth-moon-line">
+      <h2>5. Between the Earth and the Moon</h2>
       <p>
-        A circular orbit has kinetic energy (&half;v&sup2;, from v = &radic;(GM/r)), potential
-        energy (&minus;GM/r) and their sum, the total. Raise the orbit radius and watch kinetic
-        energy fall &mdash; a higher orbit is a slower one &mdash; while potential energy rises
-        faster than kinetic energy falls, so the total rises too (becomes less negative), even
-        though the satellite is moving slower, not faster.
+        Drag the test mass along the line between Earth and the Moon. Where their pulls exactly
+        cancel, something odd happens to the potential too.
       </p>
-      <div class="control">
-        <label for="orbit-altitude-slider">Altitude above the surface: <span id="orbit-altitude-label"></span></label>
-        <input type="range" id="orbit-altitude-slider" min="200000" max="10000000" step="50000" value="400000" />
+
+      <div class="diagram wide-diagram">
+        <canvas
+          id="em-line-view"
+          width="640"
+          height="560"
+          aria-label="A strip showing Earth, the Moon and a draggable test mass, above a graph of the signed field from Earth, from the Moon and their total along the line, above a graph of the potential along the same line, which peaks where the field crosses zero"
+        ></canvas>
+        <p class="diagram-caption">Drag the red mass. Not to scale; the field and potential graphs are zoomed in around the crossing point, not drawn to the same scale as the strip above them.</p>
       </div>
+
       <dl class="readout">
         <div class="readout-row">
-          <dt>Orbital radius</dt>
-          <dd id="orbit-radius-readout"></dd>
+          <dt>Distance from Earth</dt>
+          <dd id="em-distance-readout"></dd>
         </div>
         <div class="readout-row">
-          <dt>Orbital speed</dt>
-          <dd id="orbit-speed-readout"></dd>
+          <dt>Field from Earth, g<sub>Earth</sub> (signed)</dt>
+          <dd id="em-g-earth-readout"></dd>
+        </div>
+        <div class="readout-row">
+          <dt>Field from the Moon, g<sub>Moon</sub> (signed)</dt>
+          <dd id="em-g-moon-readout"></dd>
+        </div>
+        <div class="readout-row">
+          <dt>Total field, g (signed)</dt>
+          <dd id="em-g-total-readout"></dd>
+        </div>
+        <div class="readout-row">
+          <dt>Potential here, V</dt>
+          <dd id="em-v-readout"></dd>
+        </div>
+        <div class="readout-row">
+          <dt>Released from rest here, it falls towards</dt>
+          <dd id="em-falls-readout"></dd>
         </div>
       </dl>
+
+      <p class="note">
+        The pulls cancel at about 346,000 km from Earth &mdash; but this is an
+        <strong>unstable</strong> equilibrium along the line: nudge the mass either way and it
+        falls that way, rather than springing back, because that point is a peak (a "hill") in
+        the potential, not a dip. See
+        <a href="gravity-field-map.html#zero-field-vs-l1">why this isn't the L1 point</a>, a
+        genuinely different balance found only in the frame rotating with the Moon.
+      </p>
+      <p class="note">
+        This panel uses the precise Earth-Moon distance, 384,400 km &mdash; the exam data sheet
+        rounds it to 380,000 km.
+      </p>
+    </section>
+
+    <section class="notes-section" id="moving-between-orbits">
+      <h2>6. Moving between orbits</h2>
+      <p>Compare two circular orbits directly: their place on the V(r) curve, and their energy budgets side by side.</p>
+
+      <div class="diagram-row">
+        <div class="diagram">
+          <canvas
+            id="orbits-view"
+            width="300"
+            height="300"
+            aria-label="Earth with two concentric circular orbits, each at an adjustable radius, with a marker showing the satellite on each"
+          ></canvas>
+          <p class="diagram-caption">Not to scale &mdash; Earth is drawn smaller than the orbits so both stay visible.</p>
+        </div>
+        <div class="diagram">
+          <canvas
+            id="orbits-vr-view"
+            width="340"
+            height="300"
+            aria-label="A V(r) curve with a point marking each orbit's potential energy, and a horizontal line at each orbit's total energy, with the gap between the line and the curve being that orbit's kinetic energy"
+          ></canvas>
+        </div>
+      </div>
+
+      <div class="control">
+        <label for="orbit1-altitude-slider">Orbit 1 altitude: <span id="orbit1-altitude-label"></span></label>
+        <input type="range" id="orbit1-altitude-slider" min="0" max="10000" step="1" value="0" />
+        <div class="preset-list" role="group" aria-label="Orbit 1 presets">
+          <button type="button" class="preset-button" data-orbit="1" data-preset="low">Low orbit (400 km)</button>
+          <button type="button" class="preset-button" data-orbit="1" data-preset="geo">Geostationary</button>
+        </div>
+      </div>
+      <div class="control">
+        <label for="orbit2-altitude-slider">Orbit 2 altitude: <span id="orbit2-altitude-label"></span></label>
+        <input type="range" id="orbit2-altitude-slider" min="0" max="10000" step="1" value="10000" />
+        <div class="preset-list" role="group" aria-label="Orbit 2 presets">
+          <button type="button" class="preset-button" data-orbit="2" data-preset="low">Low orbit (400 km)</button>
+          <button type="button" class="preset-button" data-orbit="2" data-preset="geo">Geostationary</button>
+        </div>
+      </div>
+
+      <dl class="readout">
+        <div class="readout-row">
+          <dt>Orbit 1: radius, speed</dt>
+          <dd id="orbit1-radius-speed-readout"></dd>
+        </div>
+        <div class="readout-row">
+          <dt>Orbit 2: radius, speed</dt>
+          <dd id="orbit2-radius-speed-readout"></dd>
+        </div>
+      </dl>
+
+      <p class="energy-bar-group-label">Orbit 1</p>
       <div class="energy-bar-pair">
         <div class="energy-bar">
           <p class="energy-bar-label">Kinetic energy</p>
           <div class="energy-bar-track">
             <div class="energy-bar-zero-line"></div>
-            <div class="energy-bar-fill energy-bar-fill-positive" id="orbit-ke-bar-fill"></div>
+            <div class="energy-bar-fill energy-bar-fill-positive" id="orbit1-ke-bar-fill"></div>
           </div>
-          <p class="energy-bar-value" id="orbit-ke-readout"></p>
+          <p class="energy-bar-value" id="orbit1-ke-readout"></p>
         </div>
         <div class="energy-bar">
-          <p class="energy-bar-label">Potential energy</p>
+          <p class="energy-bar-label">Potential energy (signed)</p>
           <div class="energy-bar-track">
             <div class="energy-bar-zero-line"></div>
-            <div class="energy-bar-fill energy-bar-fill-negative" id="orbit-pe-bar-fill"></div>
+            <div class="energy-bar-fill energy-bar-fill-negative" id="orbit1-pe-bar-fill"></div>
           </div>
-          <p class="energy-bar-value" id="orbit-pe-readout"></p>
+          <p class="energy-bar-value" id="orbit1-pe-readout"></p>
         </div>
         <div class="energy-bar">
-          <p class="energy-bar-label">Total energy <span id="orbit-total-sign"></span></p>
+          <p class="energy-bar-label">Total energy (signed)</p>
           <div class="energy-bar-track">
             <div class="energy-bar-zero-line"></div>
-            <div class="energy-bar-fill energy-bar-fill-negative" id="orbit-total-bar-fill"></div>
+            <div class="energy-bar-fill energy-bar-fill-negative" id="orbit1-total-bar-fill"></div>
           </div>
-          <p class="energy-bar-value" id="orbit-total-readout"></p>
+          <p class="energy-bar-value" id="orbit1-total-readout"></p>
         </div>
       </div>
+
+      <p class="energy-bar-group-label">Orbit 2</p>
+      <div class="energy-bar-pair">
+        <div class="energy-bar">
+          <p class="energy-bar-label">Kinetic energy</p>
+          <div class="energy-bar-track">
+            <div class="energy-bar-zero-line"></div>
+            <div class="energy-bar-fill energy-bar-fill-positive" id="orbit2-ke-bar-fill"></div>
+          </div>
+          <p class="energy-bar-value" id="orbit2-ke-readout"></p>
+        </div>
+        <div class="energy-bar">
+          <p class="energy-bar-label">Potential energy (signed)</p>
+          <div class="energy-bar-track">
+            <div class="energy-bar-zero-line"></div>
+            <div class="energy-bar-fill energy-bar-fill-negative" id="orbit2-pe-bar-fill"></div>
+          </div>
+          <p class="energy-bar-value" id="orbit2-pe-readout"></p>
+        </div>
+        <div class="energy-bar">
+          <p class="energy-bar-label">Total energy (signed)</p>
+          <div class="energy-bar-track">
+            <div class="energy-bar-zero-line"></div>
+            <div class="energy-bar-fill energy-bar-fill-negative" id="orbit2-total-bar-fill"></div>
+          </div>
+          <p class="energy-bar-value" id="orbit2-total-readout"></p>
+        </div>
+      </div>
+
+      <dl class="readout">
+        <div class="readout-row">
+          <dt>Orbit 1 &rarr; Orbit 2: &Delta;KE, &Delta;PE, &Delta;total (all signed)</dt>
+          <dd id="orbit-change-readout"></dd>
+        </div>
+      </dl>
+      <p class="note">
+        Moving up: kinetic energy falls (a higher orbit is a slower one) while potential energy
+        rises faster than kinetic energy falls, so the total rises too (becomes less negative),
+        even though the satellite is moving slower, not faster.
+      </p>
+      <p class="note">A real transfer between these orbits needs two engine burns, not one, and isn't shown here.</p>
     </section>
 
     <section class="notes-section" id="escape">
-      <h2>6. Escaping: total energy reaching zero</h2>
+      <h2>7. Escape</h2>
       <p>
-        Total specific energy (kinetic + potential) is conserved, so its sign at launch decides
-        the outcome everywhere along the path: negative and it can never reach infinity (bound
-        &mdash; it falls back or settles into an orbit); exactly zero and it just barely reaches
-        infinity, arriving with nothing left (this is exactly where escape speed comes from, and
-        the same thing <a href="../notes/moon-structure.html#escape-velocity">escape velocity</a>
-        on The Moon: Structure, Surface and Origin derives from); positive and it's unbound with
-        speed to spare.
+        Launch straight up at a chosen speed. The horizontal line is the total energy that speed
+        buys &mdash; conserved all the way up &mdash; and the gap between it and the well below is
+        kinetic energy, spent climbing.
       </p>
-      <p>
-        <code>classifyOrbit</code> below is tolerance-aware: a speed only a tiny fraction away
-        from exact escape speed still reads as "parabolic (just escaping)", the same way a real
-        launch never lands on exactly zero total energy in floating point either.
-      </p>
+
+      <div class="diagram wide-diagram">
+        <canvas
+          id="escape-well-view"
+          width="640"
+          height="380"
+          aria-label="The gravitational potential well V(r), with a horizontal total-energy line set by a launch-speed slider; the gap between the line and the well is kinetic energy, and where the line meets the well again is the highest point reached"
+        ></canvas>
+      </div>
+
       <div class="control">
         <label for="escape-speed-slider">Launch speed, at the surface: <span id="escape-speed-label"></span></label>
         <input type="range" id="escape-speed-slider" min="0" max="13000" step="10" value="7900" list="escape-speed-marks" />
@@ -391,8 +521,16 @@
       </div>
       <dl class="readout">
         <div class="readout-row">
-          <dt>Total specific energy</dt>
+          <dt>Kinetic energy at launch</dt>
+          <dd id="escape-ke-readout"></dd>
+        </div>
+        <div class="readout-row">
+          <dt>Total specific energy (signed)</dt>
           <dd id="escape-total-readout"></dd>
+        </div>
+        <div class="readout-row">
+          <dt>Highest point reached</dt>
+          <dd id="escape-turning-point-readout"></dd>
         </div>
         <div class="readout-row">
           <dt>Classification</dt>
@@ -400,12 +538,21 @@
         </div>
       </dl>
       <p class="note">
+        Where the line meets the curve is the highest point reached, for a bound (negative-energy)
+        launch. At exactly zero total energy it just escapes, arriving at infinity with nothing
+        left &mdash; <code>classifyOrbit</code> reads this "parabolic" case even when a real speed
+        lands only a tiny fraction away from the exact value, the same way a real launch never
+        lands on exactly zero total energy in floating point either. Above zero it escapes with
+        speed to spare.
+      </p>
+      <p class="note">
         Marked on the slider: a typical low-orbit speed (7.9&nbsp;km/s) and escape speed itself
         (<strong id="escape-speed-value"></strong>). See
-        <a href="orbits-gravity.html">Orbits and Gravity</a> for the same escape speed reached by
-        firing Newton's cannon fast enough to never come back &mdash; this page's "total energy
-        zero" and that page's "the path never turns back" are the same boundary, described two
-        different ways.
+        <a href="../notes/moon-structure.html#escape-velocity">escape velocity</a> on The Moon:
+        Structure, Surface and Origin, and <a href="orbits-gravity.html">Orbits and Gravity</a>
+        for the same boundary reached by firing Newton's cannon fast enough to never come back
+        &mdash; this page's "total energy zero" and that page's "the path never turns back" are
+        the same boundary, described two different ways.
       </p>
     </section>
 
@@ -429,11 +576,11 @@
   <script src="../src/orbitalMechanics.js?v=202610071000"></script>
   <script src="../src/gravitySim.js?v=202610071000"></script>
   <script src="../src/tides.js?v=202609260100"></script>
-  <script src="../src/gravityField.js?v=202610081800"></script>
-  <script src="../src/gravitationalPotentialQuestions.js?v=202610081800"></script>
+  <script src="../src/gravityField.js?v=202610092000"></script>
+  <script src="../src/gravitationalPotentialQuestions.js?v=202610092000"></script>
   <script src="../glossary.js?v=202609221600"></script>
   <script src="../quiz-ui.js?v=202609221100"></script>
-  <script src="gravitational-potential.js?v=202610081800"></script>
+  <script src="gravitational-potential.js?v=202610092000"></script>
   <script src="../nextPage.js?v=202609270100"></script>
 </body>
 </html>

@@ -76,21 +76,23 @@ test('g-r-area-meaning: accepts the engine\'s own numerically integrated area be
   assert.equal(q.check(0).correct, false);
 });
 
-test('satellite-ke-higher-orbit: "KE falls, total rises" is the only correct option', () => {
+test('satellite-ke-higher-orbit: "KE falls, total rises" is the only correct option, and the worked answer shows every sign', () => {
   const q = findQuestion(makeQuestions(GravityField, OrbitalMechanics), 'satellite-ke-higher-orbit');
-  assert.ok(
-    q.check('Kinetic energy falls (it moves slower, further out); total energy rises — becomes less negative, since it is now closer to escaping').correct
+  const result = q.check(
+    'Kinetic energy falls (smaller positive number — it moves slower, further out); total energy rises (smaller negative number — it becomes less negative, since it is now closer to escaping)'
   );
-  assert.equal(q.check('Both increase — a higher orbit needs more energy, so everything about it goes up').correct, false);
+  assert.ok(result.correct);
+  assert.match(result.message, /\+\d/, 'message should show an explicit positive sign for kinetic energy');
+  assert.equal(q.check('Both rise — a higher orbit needs more energy, so every energy here goes up').correct, false);
 });
 
-test('escape-is-zero-total-energy: "total energy exactly zero" is the only correct option', () => {
+test('escape-is-zero-total-energy: "total energy exactly zero" is the only correct option, and the worked answer shows every sign', () => {
   const q = findQuestion(makeQuestions(GravityField, OrbitalMechanics), 'escape-is-zero-total-energy');
-  assert.ok(
-    q.check(
-      'Total energy exactly zero — negative is bound (falls back or stays in orbit), zero is the marginal "just escaping" case, positive is unbound with speed left over'
-    ).correct
+  const result = q.check(
+    'Total energy exactly zero — negative (the line sits below zero) is bound, meeting the well again at a finite highest point; zero is the marginal "just escaping" case; positive (the line stays above zero) escapes with speed to spare'
   );
+  assert.ok(result.correct);
+  assert.match(result.message, /highest point reached/, 'message should tie back to the diagram');
   assert.equal(q.check('There is no such boundary — escaping only depends on direction, not speed').correct, false);
 });
 
