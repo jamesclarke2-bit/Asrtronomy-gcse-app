@@ -106,6 +106,23 @@ test('orbital speed at 1 AU around the Sun: absolute perihelion/aphelion km/s fo
   });
 });
 
+test('orbitExtremes (sims/kepler.html\'s "At the closest and furthest points" table) matches vis-viva at 1 AU for e=0.3 and e=0.5', () => {
+  const a = OM.AU_M;
+  const expected = {
+    0.3: { periDistanceAU: 0.7, apoDistanceAU: 1.3, periSpeed: 40.6, apoSpeed: 21.9 },
+    0.5: { periDistanceAU: 0.5, apoDistanceAU: 1.5, periSpeed: 51.6, apoSpeed: 17.2 },
+  };
+  Object.entries(expected).forEach(([eStr, want]) => {
+    const e = Number(eStr);
+    const extremes = OM.orbitExtremes(a, e, OM.SOLAR_MASS_KG);
+    assert.ok(Math.abs(extremes.periDistance / OM.AU_M - want.periDistanceAU) < 1e-6, `e=${e} perihelion distance`);
+    assert.ok(Math.abs(extremes.apoDistance / OM.AU_M - want.apoDistanceAU) < 1e-6, `e=${e} aphelion distance`);
+    assert.ok(Math.abs(extremes.periSpeed / 1000 - want.periSpeed) < 0.1, `e=${e} perihelion speed: got ${(extremes.periSpeed / 1000).toFixed(2)} km/s`);
+    assert.ok(Math.abs(extremes.apoSpeed / 1000 - want.apoSpeed) < 0.1, `e=${e} aphelion speed: got ${(extremes.apoSpeed / 1000).toFixed(2)} km/s`);
+    assert.ok(extremes.periSpeed > extremes.apoSpeed, 'faster at perihelion than aphelion');
+  });
+});
+
 test("sims/kepler.html's comet presets (Halley's and Encke's) satisfy Kepler's third law, T²/r³ ≈ 1", () => {
   // Mirrors the COMETS constant plotted on kepler.html's Third Law
   // graph and the Halley/Encke preset figures — approximate, not from

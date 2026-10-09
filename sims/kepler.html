@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Kepler's Laws of Planetary Motion</title>
-  <link rel="stylesheet" href="../styles.css?v=202610092200" />
+  <link rel="stylesheet" href="../styles.css?v=202610100900" />
 </head>
 <body>
   <main>
@@ -34,6 +34,28 @@
             &nbsp; <span class="legend-dot" style="background:#2a6bd6"></span> Planet
             &nbsp; <span class="legend-dot" style="background:#e8eef5;border:1px solid #6b7684"></span> Comet
           </p>
+          <table class="shower-table" id="extremes-table">
+            <caption>At the closest and furthest points</caption>
+            <thead>
+              <tr>
+                <th scope="col"></th>
+                <th scope="col">Distance</th>
+                <th scope="col">Speed</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">Perihelion</th>
+                <td id="perihelion-distance-value"></td>
+                <td id="perihelion-speed-value"></td>
+              </tr>
+              <tr>
+                <th scope="row">Aphelion</th>
+                <td id="aphelion-distance-value"></td>
+                <td id="aphelion-speed-value"></td>
+              </tr>
+            </tbody>
+          </table>
           <p class="note">
             <button type="button" class="glossary-toggle glossary-term-button" data-term="perihelion" aria-label="What is perihelion?" aria-expanded="false">Perihelion</button>
             and
@@ -61,6 +83,7 @@
             height="300"
             aria-label="The same orbit, divided into twelve wedges of equal area swept out in equal time intervals, with the planet animated around it"
           ></canvas>
+          <p class="energy-bar-group-label">Right now</p>
           <dl class="readout pinned-readout">
             <div class="readout-row">
               <dt>Distance from Sun</dt>
@@ -182,12 +205,12 @@
 
   <script src="../src/curriculum.js?v=202610072300"></script>
   <script src="../src/pages.js?v=202610091200"></script>
-  <script src="../src/orbitalMechanics.js?v=202610071000"></script>
+  <script src="../src/orbitalMechanics.js?v=202610100900"></script>
   <script src="../src/specData.js?v=202610051000"></script>
   <script src="../src/keplerQuestions.js?v=202610051000"></script>
   <script src="../glossary.js?v=202609221600"></script>
   <script src="../quiz-ui.js?v=202609221100"></script>
-  <script src="kepler.js?v=202610092200"></script>
+  <script src="kepler.js?v=202610100900"></script>
   <script src="../nextPage.js?v=202609270100"></script>
 </body>
 </html>

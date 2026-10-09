@@ -38,6 +38,10 @@
   const distanceValue = document.getElementById('distance-value');
   const speedValue = document.getElementById('speed-value');
   const periodValue = document.getElementById('period-value');
+  const perihelionDistanceValue = document.getElementById('perihelion-distance-value');
+  const perihelionSpeedValue = document.getElementById('perihelion-speed-value');
+  const aphelionDistanceValue = document.getElementById('aphelion-distance-value');
+  const aphelionSpeedValue = document.getElementById('aphelion-speed-value');
   const massSelect = document.getElementById('mass-select');
   const massReadout = document.getElementById('mass-readout');
   const orbitAssumption = document.getElementById('orbit-assumption');
@@ -195,10 +199,16 @@
     drawEllipseOutline(ctx, view);
     drawSun(ctx, view);
 
-    const peri = OM.perihelionDistance(state.semiMajorAxisAU, state.eccentricity);
-    const apo = OM.aphelionDistance(state.semiMajorAxisAU, state.eccentricity);
+    const extremes = OM.orbitExtremes(state.semiMajorAxisAU * OM.AU_M, state.eccentricity, OM.SOLAR_MASS_KG);
+    const peri = extremes.periDistance / OM.AU_M;
+    const apo = extremes.apoDistance / OM.AU_M;
     drawApsisMarker(ctx, view, peri, 0, 'Perihelion', 'right');
     drawApsisMarker(ctx, view, -apo, 0, 'Aphelion', 'left');
+
+    perihelionDistanceValue.textContent = formatDistanceAU(peri);
+    perihelionSpeedValue.textContent = formatSpeed(extremes.periSpeed / 1000);
+    aphelionDistanceValue.textContent = formatDistanceAU(apo);
+    aphelionSpeedValue.textContent = formatSpeed(extremes.apoSpeed / 1000);
 
     drawBody(ctx, view);
 

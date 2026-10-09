@@ -159,6 +159,22 @@
     return orbitalSpeed(distance, Infinity, centralMassKg);
   }
 
+  // The four numbers an elliptical orbit's two turning points give a
+  // student side by side: distance and vis-viva speed at each. All
+  // three inputs and all four outputs are SI (metres, kg) — a caller
+  // working in AU (e.g. sims/kepler.html's own state) converts at the
+  // edges, the same as orbitalSpeed above already requires of it.
+  function orbitExtremes(semiMajorAxis, eccentricity, centralMassKg) {
+    const periDistance = perihelionDistance(semiMajorAxis, eccentricity);
+    const apoDistance = aphelionDistance(semiMajorAxis, eccentricity);
+    return {
+      periDistance,
+      apoDistance,
+      periSpeed: orbitalSpeed(periDistance, semiMajorAxis, centralMassKg),
+      apoSpeed: orbitalSpeed(apoDistance, semiMajorAxis, centralMassKg),
+    };
+  }
+
   // --- Newton's law of gravitation: the inverse-square force ratio ---------
   //
   // F = Gm₁m₂/r², so scaling either mass by a factor or the separation
@@ -232,6 +248,7 @@
     orbitalSpeed,
     circularOrbitSpeed,
     escapeSpeed,
+    orbitExtremes,
     gravitationalForceRatio,
   };
 
