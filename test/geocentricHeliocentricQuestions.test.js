@@ -8,6 +8,13 @@ function findQuestion(questions, id) {
   return q;
 }
 
+test('retrograde-motion-definition: "moves backwards against the stars" is the only correct option', () => {
+  const questions = makeQuestions();
+  const q = findQuestion(questions, 'retrograde-motion-definition');
+  assert.ok(q.check('A planet appears to move backwards (westward) against the stars for a few weeks').correct);
+  assert.equal(q.check('A planet is unusually bright for a few weeks').correct, false);
+});
+
 test('why-epicycles: explaining retrograde motion and brightness changes is the only correct option', () => {
   const questions = makeQuestions();
   const q = findQuestion(questions, 'why-epicycles');

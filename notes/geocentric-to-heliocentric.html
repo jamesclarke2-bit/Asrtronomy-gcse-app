@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>From Earth-Centred to Sun-Centred</title>
-  <link rel="stylesheet" href="../styles.css?v=202610101400" />
+  <link rel="stylesheet" href="../styles.css?v=202610101600" />
 </head>
 <body>
   <main>
@@ -13,56 +13,29 @@
     <h1>From Earth-Centred to Sun-Centred</h1>
     <p class="subtitle">
       For over a thousand years, astronomy put Earth at the centre of everything. This page
-      follows how that changed: the geocentric model and the epicycles bolted onto it to make it
-      fit the sky, Tycho Brahe's unprecedented naked-eye precision, Kepler finding ellipses in
-      Brahe's own data, and the two telescope observations Galileo made that the old model simply
-      couldn't explain.
+      follows how that changed, diagram by diagram: epicycles, two rival models of the same sky,
+      a timeline, Venus's phases, Galileo's telescope, and Kepler's ellipse.
     </p>
-
-    <section class="notes-section" id="geocentric-models">
-      <h2>Early geocentric models</h2>
-      <p>
-        The earliest systematic models of the universe placed
-        <button type="button" class="glossary-toggle glossary-term-button" data-term="geocentric" aria-label="What does geocentric mean?" aria-expanded="false">Earth at the centre</button>,
-        with the Moon, Sun, planets and stars all moving around it. This matched how the sky
-        actually looks from the ground &mdash; everything does appear to circle overhead &mdash;
-        and it stayed the accepted picture for well over a thousand years.
-      </p>
-      <span class="glossary-definition" data-term="geocentric" hidden></span>
-      <p>
-        The most complete version was Ptolemy's, from around AD 150. Each planet travelled on a
-        <button type="button" class="glossary-toggle glossary-term-button" data-term="deferent" aria-label="What is a deferent?" aria-expanded="false">deferent</button>
-        &mdash; its main circular path around Earth &mdash; but Ptolemy didn't centre that circle
-        exactly on Earth, and didn't even make the planet move at a constant rate around it.
-        Instead he measured the planet's motion as uniform around a separate, nearby point called
-        the
-        <button type="button" class="glossary-toggle glossary-term-button" data-term="equant" aria-label="What is an equant?" aria-expanded="false">equant</button>.
-        It was a deliberately engineered fit to the observed sky, not a physical explanation of
-        why the planets moved that way.
-      </p>
-      <span class="glossary-definition" data-term="deferent" hidden></span>
-      <span class="glossary-definition" data-term="equant" hidden></span>
-    </section>
 
     <section class="notes-section" id="epicycles">
       <h2>Ptolemy's epicycles</h2>
       <p>
-        A planet on a single, simple circle around Earth would just drift one way across the sky
-        at a steady brightness. Real planets don't: they periodically loop backwards for a few
-        weeks or months &mdash;
-        <button type="button" class="glossary-toggle glossary-term-button" data-term="retrograde" aria-label="What is retrograde motion?" aria-expanded="false">retrograde motion</button>
-        &mdash; and visibly brighten and dim as they do. To reproduce both effects, Ptolemy gave
-        each planet a second, smaller circle: the
-        <button type="button" class="glossary-toggle glossary-term-button" data-term="epicycle" aria-label="What is an epicycle?" aria-expanded="false">epicycle</button>.
-        The planet rides on the epicycle, and the epicycle's own centre rides on the deferent.
+        The earliest systematic model put
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="geocentric" aria-label="What does geocentric mean?" aria-expanded="false">Earth at the centre</button>,
+        with the Sun and planets circling it on a
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="deferent" aria-label="What is a deferent?" aria-expanded="false">deferent</button>
+        &mdash; but a single circle alone couldn't reproduce a planet's periodic backward loop or
+        its brightness changes, so Ptolemy added a smaller
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="epicycle" aria-label="What is an epicycle?" aria-expanded="false">epicycle</button>,
+        measured uniform about a nearby
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="equant" aria-label="What is an equant?" aria-expanded="false">equant</button>
+        instead of Earth itself.
       </p>
-      <span class="glossary-definition" data-term="retrograde" hidden></span>
+      <span class="glossary-definition" data-term="geocentric" hidden></span>
+      <span class="glossary-definition" data-term="deferent" hidden></span>
       <span class="glossary-definition" data-term="epicycle" hidden></span>
-      <p>
-        Try it below: drag the epicycle size up from small, and watch a backward loop suddenly
-        appear in the path once the epicycle is large enough relative to the deferent &mdash;
-        exactly the advantage epicycles gave Ptolemy's model.
-      </p>
+      <span class="glossary-definition" data-term="equant" hidden></span>
+      <p class="note">Drag the epicycle size up to see the backward loop appear.</p>
 
       <div class="diagram">
         <canvas
@@ -79,6 +52,11 @@
         <p class="eot-readout" id="loop-status"></p>
       </div>
 
+      <p class="diagram-caption">
+        <a href="../sims/solar-system-observation.html">Retrograde motion</a>: a planet appears to
+        move backwards (westward) against the stars for a few weeks.
+      </p>
+
       <div class="control">
         <label for="epicycle-size-slider">Epicycle size: <span id="epicycle-size-label"></span></label>
         <input type="range" id="epicycle-size-slider" min="0" max="0.9" step="0.01" value="0.3" list="loop-threshold" />
@@ -94,104 +72,160 @@
         <button type="button" id="epicycle-play-button" class="secondary-button" aria-pressed="false">&#9658; Animate</button>
       </div>
 
-      <p class="note">
-        This models an outer ("superior") planet &mdash; Mars &mdash; using its real orbital
-        period. Historically, Ptolemy gave each outer planet's epicycle a period of exactly one
-        year, matching the Sun's own apparent yearly motion, while the deferent took the planet's
-        own real period: here, Mars's 1.88 years. Only the epicycle's <em>size</em> is adjustable
-        below; real Ptolemaic models tuned a size for each planet individually to match its
-        observed loops, but the one-year epicycle period for outer planets was historically
-        consistent.
+      <p>
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="epicycle-model-details" aria-label="More about this simplified model" aria-expanded="false">More about this simplified model</button>
       </p>
-      <p class="note">
-        This is also a simplified epicycle: Ptolemy's real model additionally offset the
-        deferent's centre away from Earth and measured each planet's motion as uniform around a
-        separate equant point, not around Earth itself. Only the epicycle is shown here, to
-        demonstrate that one principle on its own.
+      <span class="glossary-definition" data-term="epicycle-model-details" hidden></span>
+      <p>
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="epicycle-coincidence" aria-label="Why does every outer planet need a one-year epicycle?" aria-expanded="false">Why does every outer planet need a one-year epicycle?</button>
       </p>
-      <p class="note">
-        Every outer planet needs an epicycle with exactly this one-year period, matching the
-        Sun's own yearly cycle around the sky. In Ptolemy's Earth-centred model, that's an
-        unexplained coincidence, repeated separately for every single outer planet. In
-        Copernicus's Sun-centred model it isn't a coincidence at all: that shared "epicycle" is
-        just Earth's own orbit, which is why the retrograde loops appear in the first place. See
-        <a href="#copernicus-kepler">Copernicus and Kepler</a> below.
+      <span class="glossary-definition" data-term="epicycle-coincidence" hidden></span>
+    </section>
+
+    <section class="notes-section" id="two-models">
+      <h2>Two models</h2>
+      <p>
+        The same real positions, drawn two ways: Ptolemy and Copernicus agreed on what the sky
+        showed, but disagreed about what sat still at the centre.
       </p>
-      <p class="note">
-        The real cause of retrograde motion is completely different, and far simpler: Earth and
-        the other planets orbit the Sun at different speeds, so Earth periodically "overtakes" an
-        outer planet, which briefly appears to move backwards against the stars as it does. See
-        <a href="../sims/solar-system-observation.html">Retrograde Motion and Planetary Alignments</a>
-        for that Sun-centred explanation of the very same effect this epicycle is reproducing
-        geometrically, without explaining it.
+
+      <div class="diagram-row">
+        <div class="diagram diagram-pair">
+          <canvas
+            id="two-models-geocentric"
+            width="260"
+            height="260"
+            aria-label="Earth fixed at the centre, with the Sun and Mars drawn at their apparent positions around it"
+          ></canvas>
+          <p class="diagram-caption">Earth-centred: Earth fixed, the Sun and Mars positioned around it.</p>
+          <p>
+            <button type="button" class="glossary-toggle glossary-term-button" data-term="two-models-geocentric-caption" aria-label="Why does this look like this?" aria-expanded="false">Why does this look like this?</button>
+          </p>
+          <span class="glossary-definition" data-term="two-models-geocentric-caption" hidden></span>
+        </div>
+        <div class="diagram diagram-pair">
+          <canvas
+            id="two-models-heliocentric"
+            width="260"
+            height="260"
+            aria-label="The Sun fixed at the centre, with Earth and Mars drawn at their real orbital positions around it"
+          ></canvas>
+          <p class="diagram-caption">Sun-centred: the Sun fixed, Earth and Mars on their real orbits.</p>
+          <p>
+            <button type="button" class="glossary-toggle glossary-term-button" data-term="two-models-heliocentric-caption" aria-label="Why does this look like this?" aria-expanded="false">Why does this look like this?</button>
+          </p>
+          <span class="glossary-definition" data-term="two-models-heliocentric-caption" hidden></span>
+        </div>
+      </div>
+    </section>
+
+    <section class="notes-section" id="timeline">
+      <h2>A timeline</h2>
+      <p>How the model changed, roughly a century at a time.</p>
+      <div class="concept-grid">
+        <div class="concept-card">
+          <h3>Ptolemy</h3>
+          <p>About 150 CE &mdash; the deferent-and-epicycle model</p>
+        </div>
+        <div class="concept-card">
+          <h3>Copernicus</h3>
+          <p>1543 &mdash; a Sun-centred model, still circular orbits</p>
+        </div>
+        <div class="concept-card">
+          <h3>Brahe's observations</h3>
+          <p>1570s&ndash;1590s &mdash; naked-eye precision on Mars</p>
+        </div>
+        <div class="concept-card">
+          <h3>Galileo</h3>
+          <p>1610 &mdash; Jupiter's moons and Venus's phases</p>
+        </div>
+        <div class="concept-card">
+          <h3>Kepler</h3>
+          <p>1609 and 1619 &mdash; three laws, orbits as ellipses</p>
+        </div>
+      </div>
+      <p class="note">Dates are a first draft, to be checked by the teacher.</p>
+    </section>
+
+    <section class="notes-section" id="venus-test">
+      <h2>Venus: the test</h2>
+      <p>Two predictions for the same planet &mdash; only one survived a telescope.</p>
+
+      <div class="diagram-row">
+        <div class="diagram diagram-pair">
+          <canvas
+            id="venus-phases-geocentric"
+            width="260"
+            height="110"
+            aria-label="Venus kept near the Earth-Sun line, so from Earth it can only ever show a thin crescent, however fat or thin"
+          ></canvas>
+          <p class="diagram-caption">Earth-centred model predicts: never more than a crescent.</p>
+        </div>
+        <div class="diagram diagram-pair">
+          <canvas
+            id="venus-phases-heliocentric"
+            width="260"
+            height="110"
+            aria-label="Venus orbiting the Sun, so from Earth it shows a full range of phases from crescent through to nearly full, exactly what Galileo observed"
+          ></canvas>
+          <p class="diagram-caption">Sun-centred model &mdash; and what Galileo saw: the full set of phases.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="notes-section" id="galileo-jupiter">
+      <h2>Galileo and Jupiter</h2>
+      <p>Four points of light, swapping sides around Jupiter night after night.</p>
+
+      <div class="diagram">
+        <canvas
+          id="jupiter-moons-strip"
+          width="420"
+          height="200"
+          aria-label="Jupiter with its four largest moons, Io, Europa, Ganymede and Callisto, each swinging from side to side as the animation steps forward night by night"
+        ></canvas>
+        <p class="eot-readout" id="jupiter-night-readout"></p>
+      </div>
+      <div class="control checkbox-control">
+        <button type="button" id="jupiter-play-button" class="secondary-button" aria-pressed="false">&#9658; Animate</button>
+      </div>
+      <p class="diagram-caption">
+        Four moons, clearly circling Jupiter &mdash; not everything orbits Earth.
       </p>
     </section>
 
-    <section class="notes-section" id="brahe">
-      <h2>Tycho Brahe's observations</h2>
+    <section class="notes-section" id="brahe-kepler">
+      <h2>Brahe to Kepler</h2>
       <p>
-        Tycho Brahe didn't propose a new model himself &mdash; his own compromise cosmology still
-        kept Earth at the centre. His real contribution was observational: for decades, working
-        entirely before the telescope existed, he measured the positions of the planets, Mars
-        especially, with a precision no one had achieved before. His naked-eye measurements were
-        accurate to about one arcminute, a small fraction of the Moon's width in the sky.
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="brahe-precision" aria-label="How precise was Brahe's data?" aria-expanded="false">Brahe's</button>
+        measured positions for Mars, fitted by an ellipse, not a circle.
       </p>
-      <p>
-        That precision is what mattered. A model that's only roughly right can look fine against
-        rough data. Brahe's data was good enough to show up small, real discrepancies between
-        where Mars actually was and where a circular orbit predicted it should be &mdash; exactly
-        the discrepancies Kepler would later need.
-      </p>
-    </section>
+      <span class="glossary-definition" data-term="brahe-precision" hidden></span>
 
-    <section class="notes-section" id="copernicus-kepler">
-      <h2>Copernicus and Kepler</h2>
-      <p>
-        In 1543, Copernicus proposed a Sun-centred mathematical model: the planets, including
-        Earth, orbiting the Sun. It was a genuine break from a geocentric universe, but Copernicus
-        still used circular orbits, so his model needed epicycles of its own to fit the observed
-        sky closely &mdash; it wasn't yet simpler than Ptolemy's, just differently centred.
+      <div class="diagram">
+        <canvas
+          id="mars-ellipse-fit"
+          width="380"
+          height="300"
+          aria-label="Several measured Mars positions, all lying on an ellipse with the Sun at one focus, rather than on a circle"
+        ></canvas>
+        <p class="legend">
+          <span class="legend-dot" style="background:#f5a623"></span> Sun (at one focus)
+          &nbsp; <span class="legend-dot" style="background:#c0392b"></span> Mars, at measured points
+        </p>
+      </div>
+      <p class="note">
+        Eccentricity exaggerated for clarity &mdash; Mars's real orbit (e &asymp; 0.093) is far
+        closer to a circle than this.
+      </p>
+      <p class="diagram-caption">
+        See <a href="../sims/kepler.html">Kepler's Laws of Planetary Motion</a> for all three laws,
+        with an interactive diagram.
       </p>
       <p>
-        Kepler, working after Brahe's death with Brahe's own precise Mars data, spent years trying
-        to make that data fit a circular orbit and consistently failed by a small but real margin.
-        Allowing the orbit to be an <strong>ellipse</strong> instead removed the discrepancy
-        completely. That became the first of Kepler's three laws of planetary motion, and finally
-        gave the heliocentric model a mathematical shape that fit the sky better than Ptolemy's
-        ever had. See
-        <a href="../sims/kepler.html">Kepler's Laws of Planetary Motion</a> for all three laws in
-        full, with an interactive diagram.
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="kepler-struggle" aria-label="Why did circles keep failing?" aria-expanded="false">Why did circles keep failing?</button>
       </p>
-    </section>
-
-    <section class="notes-section" id="galileo">
-      <h2>Galileo's telescopic evidence</h2>
-      <p>
-        Everything so far was mathematical: better and better ways of fitting a model to
-        positions measured by eye. Galileo, observing with one of the first astronomical
-        telescopes in 1609&ndash;1610, added something genuinely new &mdash; direct visual
-        evidence the old model couldn't explain at all.
-      </p>
-      <ul class="tip-list">
-        <li>
-          <strong>Jupiter's four largest moons.</strong> Galileo watched four points of light
-          change position around Jupiter night after night, clearly orbiting Jupiter itself, not
-          Earth. That didn't prove the Sun-centred model, but it broke the geocentric model's core
-          assumption that everything in the universe orbits Earth.
-        </li>
-        <li>
-          <strong>The phases of Venus.</strong> Galileo observed Venus passing through a
-          <em>full</em> set of phases, from a thin crescent through to nearly full, exactly like
-          the Moon. In a strict Earth-centred model, Venus stays roughly between Earth and the
-          Sun at all times, so the Sun can only ever light the side facing away from Earth &mdash;
-          at most a crescent. A full range of phases is only possible if Venus orbits the Sun, and
-          sometimes sits on the far side of it from Earth, fully lit.
-        </li>
-      </ul>
-      <p>
-        Unlike Brahe's and Kepler's work, this wasn't about fitting numbers more closely &mdash;
-        it was direct observation ruling an entire class of models out.
-      </p>
+      <span class="glossary-definition" data-term="kepler-struggle" hidden></span>
     </section>
 
     <section class="notes-section" id="exam-tips">
@@ -202,20 +236,25 @@
         the main circle; the equant is an off-centre point used to make motion around the
         deferent appear uniform; the epicycle is the separate small circle added specifically to
         produce retrograde loops and brightness changes.
-        <a href="#geocentric-models">Early geocentric models &uarr;</a>
+        <a href="#epicycles">Ptolemy's epicycles &uarr;</a>
       </p>
       <p class="exam-tip">
         <strong>Common exam confusion:</strong> Brahe didn't propose the heliocentric model, and
         didn't use a telescope &mdash; it didn't exist yet. His contribution was the precision of
         his naked-eye observational data, which Kepler used after Brahe's death.
-        <a href="#brahe">Tycho Brahe's observations &uarr;</a>
+        <a href="#brahe-kepler">Brahe to Kepler &uarr;</a>
       </p>
       <p class="exam-tip">
-        <strong>Common exam confusion:</strong> don't mix up Galileo's two pieces of evidence.
-        Jupiter's moons showed that <em>not everything</em> orbits Earth, a general point against
-        geocentrism. Venus's full set of phases is the more specific, direct argument: it's only
-        geometrically possible if Venus orbits the Sun.
-        <a href="#galileo">Galileo's telescopic evidence &uarr;</a>
+        <strong>Common exam confusion:</strong> Jupiter's moons showed that <em>not everything</em>
+        orbits Earth, a general point against geocentrism. It didn't by itself prove the Sun-centred
+        model.
+        <a href="#galileo-jupiter">Galileo and Jupiter &uarr;</a>
+      </p>
+      <p class="exam-tip">
+        <strong>Common exam confusion:</strong> Venus's phases are the more specific, direct
+        argument against geocentrism: a full range of phases is only geometrically possible if
+        Venus orbits the Sun, not Earth.
+        <a href="#venus-test">Venus: the test &uarr;</a>
       </p>
     </section>
 
@@ -258,11 +297,14 @@
 
   <script src="../src/curriculum.js?v=202610072300"></script>
   <script src="../src/pages.js?v=202610091200"></script>
-  <script src="../src/geocentricHeliocentricQuestions.js?v=202610071600"></script>
+  <script src="../src/geocentricHeliocentricQuestions.js?v=202610101500"></script>
   <script src="../src/epicycleModel.js?v=202610051100"></script>
+  <script src="../src/planetaryMotion.js?v=202610101500"></script>
+  <script src="../src/orbitalMechanics.js?v=202610101500"></script>
+  <script src="../src/galileanMoons.js?v=202610101500"></script>
   <script src="../glossary.js?v=202609221600"></script>
   <script src="../quiz-ui.js?v=202609221100"></script>
-  <script src="geocentric-to-heliocentric.js?v=202610051100"></script>
+  <script src="geocentric-to-heliocentric.js?v=202610101500"></script>
   <script src="../notesPage.js?v=202609252100"></script>
   <script src="../nextPage.js?v=202609270100"></script>
 </body>

@@ -69,6 +69,17 @@ canvas {
   max-width: 760px;
 }
 
+/* Two diagrams sharing a 700px .notes-section (narrower than a
+   .tool-layout page's main column) need a narrower per-diagram cap than
+   the generic 420px, or a long caption line pushes each one toward that
+   full cap and the pair's combined width no longer fits — wrapping to
+   one-per-row despite .diagram-row's flex. First needed by
+   notes/geocentric-to-heliocentric.html's paired Earth/Sun-centred and
+   Venus-phase diagrams. */
+.diagram.diagram-pair {
+  max-width: 320px;
+}
+
 /* A data-dense diagram (several stacked graphs, a larger labelled map)
    that needs more room than the generic .diagram cap gives. */
 .diagram.wide-diagram {

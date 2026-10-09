@@ -11,6 +11,26 @@
 function makeQuestions() {
   return [
     {
+      id: 'retrograde-motion-definition',
+      units: ['u3.2'],
+      type: 'choice',
+      prompt: 'What does "retrograde motion" mean?',
+      options: [
+        'A planet appears to move backwards (westward) against the stars for a few weeks',
+        'A planet is unusually bright for a few weeks',
+        'A planet disappears behind the Sun for a few weeks',
+        "A planet's orbit itself reverses direction permanently",
+      ],
+      check(value) {
+        const correct = value === 'A planet appears to move backwards (westward) against the stars for a few weeks';
+        return {
+          correct,
+          message:
+            "Retrograde motion is an apparent effect, not a real one: the planet never actually reverses its own orbit. For a few weeks, it drifts westward against the background stars instead of its usual eastward drift, caused by Earth and the planet changing places as they orbit the Sun at different speeds — see Retrograde Motion and Planetary Alignments for the full, Sun-centred explanation Ptolemy's epicycles were built to reproduce without ever explaining it.",
+        };
+      },
+    },
+    {
       id: 'why-epicycles',
       units: ['u3.2'],
       type: 'choice',
