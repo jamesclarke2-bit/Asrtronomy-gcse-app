@@ -51,4 +51,7 @@ Static HTML/CSS/JS with no build step. Pages live in `sims/` (interactive) and `
     `notes/telescopes.html`'s eyepiece target sizes.
 11. **Merge when green:** once `npm test` passes, merge the feature branch into `main` with a
     fast-forward merge and push `main`, unless the prompt says otherwise, then report the commit
-    hash.
+    hash. If the designated feature branch had already been merged and was restarted from `main`
+    (carrying only its own new commits on top), still fast-forward `main` to include those commits
+    and push it once green — the site only shows what's on `main`, so a build that stops on the
+    feature branch isn't live.
