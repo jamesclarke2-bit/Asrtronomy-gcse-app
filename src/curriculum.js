@@ -219,6 +219,14 @@ const UNITS = [
         notes:
           "the sidereal day (~23h 56m 04s) is how long Earth takes to rotate once relative to the fixed stars; the solar day (24h 00m, what a clock tracks) is how long it takes for the Sun to return to the same position, about 4 minutes longer — the same cause as the sidereal/synodic month gap, on a much shorter timescale: Earth's own orbital motion means it has to keep turning a little further each day to bring the Sun back to the meridian, so a star transits about 4 minutes earlier every day than it did the day before",
       },
+      {
+        id: 'u1.22',
+        title: 'Dark adaptation and averted vision',
+        depth: 'understand',
+        spec: ['6.19'],
+        notes:
+          "dark adaptation: rod cells build up the light-sensitive pigment rhodopsin over about 20-30 minutes, bleached almost instantly by white light but barely absorbed by dim red light, which is why a red torch is used once adapted; averted vision: looking slightly to one side of a faint object shifts its image onto the rod-rich peripheral retina (rods respond to far lower light levels than the cone-packed fovea at the centre), often revealing something a direct look shows nothing of",
+      },
     ],
   },
   {

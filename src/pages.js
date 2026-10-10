@@ -55,7 +55,7 @@ const PAGES = [
     description:
       'A planning reference for an observing session: dark adaptation and averted vision, finding targets with charts and apps, constellations across cultures, and meteor showers.',
     href: 'notes/observing-techniques.html',
-    units: ['u1.5', 'u1.18', 'u1.19', 'u1.20'],
+    units: ['u1.5', 'u1.18', 'u1.19', 'u1.20', 'u1.22'],
   },
   {
     title: 'The Naked-Eye Sky',

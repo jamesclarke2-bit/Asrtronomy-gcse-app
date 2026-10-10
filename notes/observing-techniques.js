@@ -1,5 +1,5 @@
 (function () {
-  const CURRICULUM_UNITS = ['u1.5', 'u1.18', 'u1.19', 'u1.20'];
+  const CURRICULUM_UNITS = ['u1.5', 'u1.18', 'u1.19', 'u1.20', 'u1.22'];
 
   function renderCoverage() {
     const coverageEl = document.getElementById('coverage');
