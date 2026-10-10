@@ -5,7 +5,11 @@
   "description": "GCSE astronomy teaching app",
   "main": "src/solarPosition.js",
   "scripts": {
-    "test": "node --test test/*.test.js"
+    "test": "node --test test/*.test.js",
+    "screenshots": "node scripts/screenshots.js"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "playwright": "^1.56.1"
+  }
 }
