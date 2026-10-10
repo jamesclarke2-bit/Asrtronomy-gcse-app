@@ -459,6 +459,30 @@ const UNITS = [
         notes:
           "the Sun's and Moon's pull on Earth's equatorial bulge makes the direction of its axis slowly trace a circle, taking ~26,000 years, while the tilt stays ~23.4°; the celestial pole circles the ecliptic pole, so the pole star changes: Thuban ~2800 BCE, Polaris now (closest in AD 2100), Vega ~AD 14,000",
       },
+      {
+        id: 'u2.30',
+        title: 'Finding local noon with a shadow stick',
+        depth: 'understand',
+        spec: ['4.7'],
+        notes:
+          'a vertical stick\'s shadow is shortest, and points along the exact north-south line, at local apparent noon — the Sun\'s own highest point that day; without timing the minimum directly, marking two shadow tips of equal length either side of noon and bisecting the line between them finds the same north-south line, since shadow length is symmetric in time about apparent noon for a fixed declination',
+      },
+      {
+        id: 'u2.31',
+        title: 'Sundials',
+        depth: 'understand',
+        spec: ['4.8'],
+        notes:
+          "a horizontal sundial's gnomon is tilted to the observer's own latitude, parallel to Earth's axis, so its shadow sweeps at the Sun's own steady 15°/hour rate; the hour lines on the dial plate are not evenly spaced (tan(hour-line angle) = sin(latitude) × tan(15° × hours from noon)), equally spaced only at the poles; a sundial reads apparent solar time directly, so it differs from clock (zone) time by a longitude correction, the equation of time, and the time-zone's own offset from GMT, combined",
+      },
+      {
+        id: 'u2.32',
+        title: 'Finding longitude from a shadow stick and the equation of time',
+        depth: 'be able to',
+        spec: ['4.19'],
+        notes:
+          'timing local apparent noon (u2.30) gives its UT clock time; combined with that date\'s equation of time (u2.10), the observer\'s longitude follows from UT of local noon = 12:00 − equation of time − longitude/15 hours (east positive), rearranged to longitude = 15 × (12:00 − equation of time − UT of noon) — the same relationship src/solarPosition.js already uses to find a solar-noon time from a known longitude, solved the other way round',
+      },
     ],
   },
   {

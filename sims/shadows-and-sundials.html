@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shadows and Sundials</title>
+  <link rel="stylesheet" href="../styles.css?v=202610101700" />
+</head>
+<body>
+  <main>
+    <p class="back-link"><a href="../index.html">&larr; Back to all tools</a></p>
+
+    <h1>Shadows and Sundials</h1>
+    <p class="subtitle">
+      A shadow stick finds true north and local noon from its own shortest shadow, a sundial reads
+      the time directly from that same shadow, and the Equation of Time turns a noon reading into
+      your own longitude.
+    </p>
+
+    <div class="layout tool-layout">
+      <div class="diagrams-column">
+        <div class="diagram">
+          <h2>1. Shadow stick: finding true north and local noon</h2>
+          <canvas
+            id="shadow-canvas"
+            width="380"
+            height="380"
+            aria-label="Top-down view of a vertical stick's shadow tip traced across the day, with the current shadow highlighted and the shortest (local noon) shadow marked"
+          ></canvas>
+          <p class="legend">
+            <span class="legend-swatch legend-eccentricity"></span> Shadow tip across the day
+            &nbsp; <span class="legend-swatch legend-sunset"></span> Current shadow
+            &nbsp; <span class="legend-swatch legend-total"></span> Shortest shadow (local noon)
+          </p>
+          <p class="eot-readout" id="shadow-noon-summary"></p>
+        </div>
+
+        <section class="notes-section" id="shadow-stick-method">
+          <h2>Reading true north from a shadow</h2>
+          <p>
+            The shadow is shortest exactly when the Sun is highest for the day &mdash;
+            <strong>local apparent noon</strong>. North of the Sun's declination the shadow then
+            points due north; south of it, due south (the dashed curve above traces every shadow
+            tip through the day, and the ringed marker shows that shortest point). Tick
+            <strong>"Show equal-shadow-length construction"</strong> to find the same north-south
+            line without timing the exact minimum: move the time slider to any moment before noon,
+            and its mirror-image moment after noon casts an equally long shadow, since shadow
+            length depends only on how far from noon you are, not which side &mdash; the
+            perpendicular bisector of the line joining those two tips passes exactly through true
+            north-south.
+          </p>
+        </section>
+
+        <div class="diagram">
+          <h2>2. Challenge: find your longitude</h2>
+          <canvas
+            id="challenge-canvas"
+            width="380"
+            height="380"
+            aria-label="Top-down view of a shadow stick's traced shadow at a hidden longitude; scrub the time slider to find the shortest shadow and read off its UT time"
+          ></canvas>
+          <p class="legend">
+            <span class="legend-swatch legend-eccentricity"></span> Shadow tip across the day
+            &nbsp; <span class="legend-swatch legend-sunset"></span> Current shadow
+          </p>
+          <p class="eot-readout" id="challenge-date-value"></p>
+          <p class="eot-readout" id="challenge-eot-value"></p>
+          <p class="eot-readout" id="challenge-shadow-value"></p>
+        </div>
+
+        <section class="notes-section" id="longitude-method">
+          <h2>From a noon time to a longitude</h2>
+          <p>
+            The equation of time shown above only depends on the date, not on where you are &mdash;
+            it's the same quantity the <a href="equation-of-time.html">Equation of Time</a> page
+            calculates. Scrub the challenge time slider until the shadow is as short as it gets:
+            that moment's UT clock time is the UT of local apparent noon.
+          </p>
+          <p class="formula">UT of local noon = 12:00 &minus; equation of time &minus; longitude &divide; 15 hours</p>
+          <p>Rearranged for longitude (east positive, so a negative answer is west):</p>
+          <p class="formula">longitude = 15 &times; (12:00 &minus; equation of time &minus; UT of local noon)</p>
+          <div class="control">
+            <label for="longitude-guess">Your longitude (&deg;, negative for west):</label>
+            <input type="number" id="longitude-guess" step="0.1" />
+            <button type="button" id="check-longitude" class="secondary-button">Check</button>
+          </div>
+          <p class="question-feedback" id="longitude-feedback"></p>
+        </section>
+
+        <div class="diagram">
+          <h2>3. Sundial</h2>
+          <canvas
+            id="sundial-canvas"
+            width="380"
+            height="380"
+            aria-label="A horizontal sundial's dial plate seen from above, with its unevenly-spaced hour lines, its gnomon tilted to the observer's latitude, and its current shadow"
+          ></canvas>
+          <p class="legend">
+            <span class="legend-swatch legend-obliquity"></span> Hour lines
+            &nbsp; <span class="legend-swatch legend-sunset"></span> Gnomon's shadow now
+          </p>
+        </div>
+
+        <section class="notes-section" id="sundial-hour-lines">
+          <h2>Why the hour lines aren't evenly spaced</h2>
+          <p>
+            The gnomon &mdash; the dial's raised, triangular edge &mdash; is tilted to the
+            observer's own latitude and points at the celestial pole, so its shadow sweeps round at
+            the Sun's own steady 15&deg;/hour rate. Projected
+            onto the <em>flat</em> dial plate, though, that steady sweep bunches up near noon and
+            spreads out near sunrise and sunset:
+          </p>
+          <p class="formula">tan(hour-line angle) = sin(latitude) &times; tan(15&deg; &times; hours from noon)</p>
+          <p>
+            Only at latitude 90&deg; (a pole) does sin(latitude) = 1 leave the hour lines evenly
+            spaced, exactly 15&deg; apart. A sundial reads <strong>apparent solar time</strong>
+            directly &mdash; exactly what a shadow stick measures &mdash; which is <em>not</em>
+            what a clock shows. See the <a href="equation-of-time.html">Equation of Time</a> page
+            for one of the three reasons why; toggle the readout below for all three together.
+          </p>
+          <div class="control checkbox-control">
+            <label><input type="checkbox" id="clock-time-toggle" /> Show clock time instead of sundial time</label>
+          </div>
+          <p class="eot-readout" id="sundial-time-value"></p>
+        </section>
+
+        <div class="diagram">
+          <h3>How sundial time and clock time differ</h3>
+          <svg
+            id="offset-breakdown"
+            viewBox="0 0 440 110"
+            width="440"
+            height="110"
+            role="img"
+            aria-label="Bar chart showing how the longitude correction, the equation of time and the time zone's own offset from GMT add together to give the difference between sundial time and clock time"
+          ></svg>
+          <p class="panel-note" id="offset-breakdown-caption"></p>
+        </div>
+
+        <p class="note">
+          Comparing a homemade sundial's reading against a known clock time, corrected this way, is
+          also a recognised way to check a sundial's own accuracy &mdash;
+          <strong>observation task A10</strong> on the specification.
+        </p>
+      </div>
+
+      <div class="controls">
+        <p class="controls-intro">
+          <strong>Start here:</strong> your own location, the date and the time drive the
+          shadow-stick and sundial diagrams.
+        </p>
+
+        <div class="control-panel star-panel">
+          <h3 class="panel-title">Date, location and stick</h3>
+
+          <div class="control">
+            <label for="date-slider">Date: <span id="date-label"></span></label>
+            <input type="range" id="date-slider" min="0" max="364" value="78" />
+          </div>
+
+          <div class="control">
+            <label for="lat-slider">Latitude: <span id="lat-label"></span></label>
+            <input type="range" id="lat-slider" min="-66" max="66" step="0.5" value="51.5" />
+          </div>
+
+          <div class="control">
+            <label for="lon-slider">Longitude: <span id="lon-label"></span></label>
+            <input type="range" id="lon-slider" min="-180" max="180" step="0.1" value="0" />
+          </div>
+
+          <div class="control">
+            <label for="time-slider">Time (UT): <span id="time-label"></span></label>
+            <input type="range" id="time-slider" min="0" max="1439" value="720" />
+          </div>
+
+          <div class="control">
+            <label for="height-slider">Stick height: <span id="height-label"></span></label>
+            <input type="range" id="height-slider" min="0.2" max="2" step="0.1" value="1" />
+          </div>
+
+          <div class="control checkbox-control">
+            <label><input type="checkbox" id="equal-shadow-toggle" /> Show equal-shadow-length construction</label>
+          </div>
+        </div>
+
+        <dl class="readout pinned-readout">
+          <div class="readout-row">
+            <dt>Shadow length now</dt>
+            <dd id="shadow-length-value"></dd>
+          </div>
+          <div class="readout-row">
+            <dt>Shadow direction now</dt>
+            <dd id="shadow-direction-value"></dd>
+          </div>
+        </dl>
+
+        <div class="control-panel observer-panel">
+          <h3 class="panel-title">Longitude challenge</h3>
+
+          <div class="control">
+            <button type="button" id="new-challenge-button" class="secondary-button">New challenge</button>
+          </div>
+
+          <div class="control">
+            <label for="challenge-time-slider">UT time: <span id="challenge-time-label"></span></label>
+            <input type="range" id="challenge-time-slider" min="0" max="1439" value="600" />
+          </div>
+
+          <p class="panel-note">The date and longitude are hidden &mdash; find your longitude from the equation of time and the shadow alone.</p>
+        </div>
+
+        <p class="coverage" id="coverage"></p>
+      </div>
+    </div>
+
+    <section class="questions">
+      <h2>Practice questions</h2>
+      <div id="questions-list"></div>
+    </section>
+
+    <section class="progress">
+      <h2>Your progress</h2>
+      <ul id="progress-list"></ul>
+      <p class="note">Stored in this browser only (localStorage) &mdash; no account needed.</p>
+    </section>
+
+    <p class="next-page-link" id="next-page"></p>
+  </main>
+
+  <script src="../src/curriculum.js?v=202610072300"></script>
+  <script src="../src/pages.js?v=202610091200"></script>
+  <script src="../src/solarPosition.js?v=202609260300"></script>
+  <script src="../src/shadowGeometry.js?v=202610101700"></script>
+  <script src="../src/shadowsAndSundialsQuestions.js?v=202610101700"></script>
+  <script src="../quiz-ui.js?v=202609212100"></script>
+  <script src="shadows-and-sundials.js?v=202610101700"></script>
+  <script src="../nextPage.js?v=202609270100"></script>
+</body>
+</html>

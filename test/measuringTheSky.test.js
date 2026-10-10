@@ -112,5 +112,8 @@ test('the new subtopics follow on from the last u2 id', () => {
   assert.ok(getSubtopic('u2.27'));
   assert.equal(getSubtopic('u2.28').title, 'Sizes and distances in the Earth-Moon-Sun system');
   assert.equal(getSubtopic('u2.29').title, 'Precession');
-  assert.equal(getSubtopic('u2.30'), undefined);
+  assert.equal(getSubtopic('u2.30').title, 'Finding local noon with a shadow stick');
+  assert.equal(getSubtopic('u2.31').title, 'Sundials');
+  assert.equal(getSubtopic('u2.32').title, 'Finding longitude from a shadow stick and the equation of time');
+  assert.equal(getSubtopic('u2.33'), undefined);
 });

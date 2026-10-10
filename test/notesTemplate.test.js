@@ -39,6 +39,7 @@ const DIAGRAM_FIRST_PAGES = [
   'sims/solar-system-observation.html',
   'notes/geocentric-to-heliocentric.html',
   'notes/solar-system-bodies.html',
+  'sims/shadows-and-sundials.html',
 ];
 
 function read(href) {

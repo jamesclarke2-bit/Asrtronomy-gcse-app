@@ -31,6 +31,13 @@ const PAGES = [
     units: ['u2.10'],
   },
   {
+    title: 'Shadows and Sundials',
+    description:
+      "A shadow stick's traced path across the day, finding true north from its shortest shadow or from two equal-length tips either side of noon, a longitude-finding challenge using the Equation of Time, and a horizontal sundial's own unevenly-spaced hour lines.",
+    href: 'sims/shadows-and-sundials.html',
+    units: ['u2.30', 'u2.31', 'u2.32'],
+  },
+  {
     title: 'Star Coordinates',
     description:
       'Right ascension, declination, hour angle and sidereal time — pick a star and watch how they all relate, and see why a sidereal day is about 4 minutes shorter than a solar one.',
@@ -230,6 +237,10 @@ const RECOMMENDED_PATH = [
       {
         href: 'sims/equation-of-time.html',
         why: 'Goes deeper into the time ideas Sun Path just raised — why a sundial and a clock disagree.',
+      },
+      {
+        href: 'sims/shadows-and-sundials.html',
+        why: "Puts the equation of time to practical use: finding true north and your own longitude from a shadow's own shortest length, and why a sundial reads differently from a watch.",
       },
       {
         href: 'sims/sun-declination.html',
