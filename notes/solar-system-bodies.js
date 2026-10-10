@@ -9,9 +9,17 @@
  * clearly labelled as a draft everywhere they appear (see the page's
  * own intro note). The comet-orbit and Kuiper Belt/Oort Cloud diagrams
  * are schematic illustrations of a real idea, not real measured orbits.
+ *
+ * MOON_GROUPS' diameters are first-draft too, except the Moon's own
+ * (SpecData.CONSTANTS.meanDiameterKm.moon, the data sheet's own
+ * figure) — see MOON_GROUPS' own comment. The tidal-heating diagram is
+ * src/tidalHeatingDiagram.js, a reusable module (not page-specific
+ * code), and the Io/Europa/Ganymede resonance strip reuses
+ * src/galileanMoons.js's real orbital periods, already used by
+ * notes/geocentric-to-heliocentric.html.
  */
 (function () {
-  const CURRICULUM_UNITS = ['u3.16', 'u3.17', 'u3.18', 'u3.19', 'u3.20', 'u3.21', 'u3.22', 'u3.23', 'u3.24', 'u3.25'];
+  const CURRICULUM_UNITS = ['u3.16', 'u3.17', 'u3.18', 'u3.19', 'u3.20', 'u3.21', 'u3.22', 'u3.23', 'u3.24', 'u3.25', 'u3.30'];
 
   const SUPERSCRIPT_DIGITS = { 0: '⁰', 1: '¹', 2: '²', 3: '³', 4: '⁴', 5: '⁵', 6: '⁶', 7: '⁷', 8: '⁸', 9: '⁹', '-': '⁻', '+': '' };
 
@@ -61,6 +69,58 @@
     haumea: 'An unusually elongated, fast-spinning dwarf planet, stretched into a rugby-ball shape by its own rapid rotation.',
     eris: "Similar in size to Pluto — its discovery directly triggered the 2006 redefinition of 'planet' that demoted Pluto.",
   };
+
+  // The larger moons named on the exam data sheet's own "Moons" column
+  // (src/specData.js), grouped by planet. Every diameter is first draft
+  // except the Moon's own (SpecData.CONSTANTS.meanDiameterKm.moon, the
+  // data sheet's own figure) — the rest are separately sourced (real,
+  // well-known values, not yet checked against a second source) and
+  // labelled as such wherever they appear, same convention as
+  // ATMOSPHERE_DRAFT above.
+  const MOON_GROUPS = [
+    {
+      planet: 'Earth',
+      moons: [{ name: 'the Moon', slug: 'moon-the-moon', diameterKm: SpecData.CONSTANTS.meanDiameterKm.moon, onDataSheet: true, note: 'Earth’s only natural satellite, large enough relative to Earth that the two are sometimes called a double planet.' }],
+    },
+    {
+      planet: 'Mars',
+      moons: [
+        { name: 'Phobos', slug: 'moon-phobos', diameterKm: 22.2, note: 'The larger and closer of Mars’s two small moons, likely a captured asteroid — it orbits so close and fast that it rises in the west and sets in the east.' },
+        { name: 'Deimos', slug: 'moon-deimos', diameterKm: 12.4, note: 'Mars’s smaller, more distant moon, also a likely captured asteroid.' },
+      ],
+    },
+    {
+      planet: 'Jupiter',
+      moons: [
+        { name: 'Io', slug: 'moon-io', diameterKm: 3643, note: 'The most volcanically active body in the Solar System — see Tidal heating below.' },
+        { name: 'Europa', slug: 'moon-europa', diameterKm: 3122, note: 'An icy shell over a liquid-water ocean, kept liquid by the same tidal heating as Io — a leading place to look for life.' },
+        { name: 'Ganymede', slug: 'moon-ganymede', diameterKm: 5268, note: 'The largest moon in the Solar System — bigger than the planet Mercury, though less massive.' },
+        { name: 'Callisto', slug: 'moon-callisto', diameterKm: 4821, note: 'The most heavily cratered body known, essentially unchanged since the early Solar System.' },
+      ],
+    },
+    {
+      planet: 'Saturn',
+      moons: [
+        { name: 'Titan', slug: 'moon-titan', diameterKm: 5150, note: 'The only moon with a substantial atmosphere, and the only body besides Earth known to have stable liquid (methane and ethane lakes) on its surface.' },
+        { name: 'Iapetus', slug: 'moon-iapetus', diameterKm: 1469, note: 'Strikingly two-toned — one hemisphere far darker than the other.' },
+      ],
+    },
+    {
+      planet: 'Uranus',
+      moons: [
+        { name: 'Titania', slug: 'moon-titania', diameterKm: 1578, note: 'Uranus’s largest moon, with canyons several kilometres deep.' },
+        { name: 'Oberon', slug: 'moon-oberon', diameterKm: 1523, note: 'Uranus’s outermost large moon, heavily cratered.' },
+      ],
+    },
+    {
+      planet: 'Neptune',
+      moons: [{ name: 'Triton', slug: 'moon-triton', diameterKm: 2707, note: 'Orbits Neptune backwards (retrograde) relative to Neptune’s own spin, strong evidence it’s a captured world rather than one that formed there.' }],
+    },
+    {
+      planet: 'Pluto',
+      moons: [{ name: 'Charon', slug: 'moon-charon', diameterKm: 1212, note: 'Over half Pluto’s own diameter — the largest moon relative to its planet in the Solar System, which is why some call Pluto-Charon a double dwarf planet.' }],
+    },
+  ];
 
   const BODIES = SpecData.PLANETARY_DATA.map((body) => ({
     name: body.name,
@@ -233,6 +293,282 @@
     });
   }
 
+  // --- Size line-up: every body drawn to true (linear) scale ----------
+  // Unlike the bar chart above (bar length = value, for easy reading),
+  // this draws each body's actual relative diameter as a circle's own
+  // diameter — so Jupiter genuinely dwarfs Ceres on screen the way it
+  // does in reality, at the cost of the smallest bodies barely showing
+  // up at all. A small minimum radius keeps every body at least visible
+  // as a dot; the caption says so.
+  const SIZE_SCALE_MIN_RADIUS_PX = 2;
+
+  function drawSizeScaleDiagram() {
+    const canvas = document.getElementById('size-scale-diagram');
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    const sorted = [...BODIES].sort((a, b) => b.relativeSize - a.relativeSize);
+    const maxRadius = canvas.height / 2 - 30; // the largest body (Jupiter) at this screen radius
+    const pxPerEarthRadius = maxRadius / (sorted[0].relativeSize / 2);
+
+    const baselineY = canvas.height - 24;
+    let x = 20;
+    ctx.font = '10px sans-serif';
+    ctx.textAlign = 'center';
+    sorted.forEach((body) => {
+      const r = Math.max((body.relativeSize / 2) * pxPerEarthRadius, SIZE_SCALE_MIN_RADIUS_PX);
+      const cx = x + r;
+      ctx.beginPath();
+      ctx.arc(cx, baselineY - r, r, 0, Math.PI * 2);
+      ctx.fillStyle = body.type === 'Planet' ? '#2a6bd6' : '#c0392b';
+      ctx.fill();
+      ctx.fillStyle = '#555';
+      ctx.fillText(body.name, cx, baselineY + 12);
+      x = cx + r + 14;
+    });
+
+    ctx.strokeStyle = '#cdd7e1';
+    ctx.beginPath();
+    ctx.moveTo(10, baselineY);
+    ctx.lineTo(Math.max(x, canvas.width - 10), baselineY);
+    ctx.stroke();
+  }
+
+  // --- Moons: the larger named moons, grouped by planet, to scale -----
+
+  function drawMoonsDiagram() {
+    const canvas = document.getElementById('moons-diagram');
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    const allMoons = MOON_GROUPS.flatMap((g) => g.moons);
+    const maxDiameter = Math.max(...allMoons.map((m) => m.diameterKm));
+    const maxRadiusPx = 32; // the largest moon (Ganymede) at this screen radius — stays
+    // comfortably inside its own row (rowHeight below), including its label underneath,
+    // rather than bleeding into the row above or below it.
+    const pxPerKm = maxRadiusPx / (maxDiameter / 2);
+    const rowHeight = canvas.height / MOON_GROUPS.length;
+    const labelWidth = 70;
+    // A tiny moon (Phobos, Deimos: a couple of px radius) still needs
+    // roughly this much horizontal room for its own name underneath, or
+    // two tiny moons side by side get spacing far narrower than their
+    // labels — so spacing never shrinks below this regardless of r.
+    const MIN_SPACING_RADIUS_PX = 20;
+
+    ctx.font = '12px sans-serif';
+    MOON_GROUPS.forEach((group, i) => {
+      const rowCy = rowHeight * i + rowHeight / 2;
+
+      ctx.fillStyle = '#1b3a63';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'middle';
+      ctx.font = 'bold 12px sans-serif';
+      ctx.fillText(group.planet, 10, rowCy);
+
+      let x = labelWidth;
+      group.moons.forEach((moon) => {
+        const r = Math.max((moon.diameterKm / 2) * pxPerKm, 2);
+        const spacingR = Math.max(r, MIN_SPACING_RADIUS_PX);
+        const cx = x + spacingR;
+        ctx.beginPath();
+        ctx.arc(cx, rowCy, r, 0, Math.PI * 2);
+        ctx.fillStyle = moon.onDataSheet ? '#2a6bd6' : '#8a97a5';
+        ctx.fill();
+        ctx.strokeStyle = '#555';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+
+        ctx.fillStyle = '#555';
+        ctx.font = '10px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(moon.name, cx, rowCy + r + 11);
+        ctx.font = '12px sans-serif';
+
+        x = cx + spacingR + 16;
+      });
+    });
+  }
+
+  // --- Tidal heating: Io's flexing orbit (reusable module) ------------
+  // Drawing itself lives in src/tidalHeatingDiagram.js, reusable by any
+  // future page — this just owns the slider/animation state and wires
+  // it to that module's draw() and heatingFraction().
+
+  const tidalCanvas = document.getElementById('tidal-heating-diagram');
+  const tidalEccentricitySlider = document.getElementById('tidal-eccentricity-slider');
+  const tidalEccentricityLabel = document.getElementById('tidal-eccentricity-label');
+  const tidalHeatingReadout = document.getElementById('tidal-heating-readout');
+  const tidalPlayButton = document.getElementById('tidal-play-button');
+
+  const tidalState = { eccentricity: 0.25, trueAnomalyRad: 0 };
+
+  function renderHeatingBar(fraction) {
+    const filled = Math.round(fraction * 5);
+    return '●'.repeat(filled) + '○'.repeat(5 - filled);
+  }
+
+  function updateTidal() {
+    if (!tidalCanvas) return;
+    TidalHeatingDiagram.draw(tidalCanvas, tidalState);
+    const heat = TidalHeatingDiagram.heatingFraction(tidalState.trueAnomalyRad, tidalState.eccentricity);
+    if (tidalHeatingReadout) tidalHeatingReadout.textContent = `Tidal heating: ${renderHeatingBar(heat)}`;
+  }
+
+  if (tidalEccentricitySlider) {
+    tidalEccentricitySlider.addEventListener('input', () => {
+      tidalState.eccentricity = Number(tidalEccentricitySlider.value);
+      tidalEccentricityLabel.textContent = tidalState.eccentricity.toFixed(2);
+      updateTidal();
+    });
+  }
+
+  let tidalAnimationId = null;
+
+  function stopTidalAnimation() {
+    if (tidalAnimationId !== null) {
+      cancelAnimationFrame(tidalAnimationId);
+      tidalAnimationId = null;
+    }
+    if (tidalPlayButton) {
+      tidalPlayButton.textContent = '▶ Animate';
+      tidalPlayButton.setAttribute('aria-pressed', 'false');
+    }
+  }
+
+  function startTidalAnimation() {
+    if (!tidalPlayButton) return;
+    tidalPlayButton.textContent = '❚❚ Pause';
+    tidalPlayButton.setAttribute('aria-pressed', 'true');
+    const ORBIT_SECONDS = 8;
+    let lastTime = null;
+    function step(now) {
+      if (lastTime === null) lastTime = now;
+      const elapsedSeconds = (now - lastTime) / 1000;
+      lastTime = now;
+      tidalState.trueAnomalyRad = (tidalState.trueAnomalyRad + (elapsedSeconds / ORBIT_SECONDS) * 2 * Math.PI) % (2 * Math.PI);
+      updateTidal();
+      tidalAnimationId = requestAnimationFrame(step);
+    }
+    tidalAnimationId = requestAnimationFrame(step);
+  }
+
+  if (tidalPlayButton) {
+    tidalPlayButton.addEventListener('click', () => {
+      if (tidalAnimationId !== null) stopTidalAnimation();
+      else startTidalAnimation();
+    });
+  }
+
+  // --- Resonance strip: Io, Europa and Ganymede's real periods --------
+  // Reuses src/galileanMoons.js's real orbital periods (already used by
+  // notes/geocentric-to-heliocentric.html), not a second copy of them.
+
+  function drawResonanceStrip() {
+    const canvas = document.getElementById('moon-resonance-strip');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    const names = ['Io', 'Europa', 'Ganymede'];
+    const moons = names.map((name) => GalileanMoons.MOONS.find((m) => m.name === name));
+    const ioPeriod = moons[0].periodDays;
+    const maxBarWidth = canvas.width - 220; // leaves room for the "N.N days (N×)" label past the longest bar
+    const rowHeight = canvas.height / moons.length;
+
+    ctx.font = '12px sans-serif';
+    moons.forEach((moon, i) => {
+      const y = rowHeight * i + rowHeight / 2;
+      const ratio = moon.periodDays / ioPeriod;
+      const barWidth = (moon.periodDays / moons[moons.length - 1].periodDays) * maxBarWidth;
+
+      ctx.fillStyle = '#1b3a63';
+      ctx.textAlign = 'right';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(moon.name, 70, y);
+
+      ctx.fillStyle = '#c0392b';
+      ctx.fillRect(80, y - rowHeight * 0.22, barWidth, rowHeight * 0.44);
+
+      ctx.fillStyle = '#555';
+      ctx.textAlign = 'left';
+      ctx.fillText(`${moon.periodDays.toFixed(1)} days (${ratio.toFixed(0)}×)`, 80 + barWidth + 8, y);
+    });
+  }
+
+  // --- Temperature against distance ------------------------------------
+
+  function drawTemperatureChart() {
+    const canvas = document.getElementById('temperature-distance-chart');
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    const margin = { left: 55, right: 20, top: 15, bottom: 35 };
+    const plotWidth = canvas.width - margin.left - margin.right;
+    const plotHeight = canvas.height - margin.top - margin.bottom;
+
+    const distances = SpecData.PLANETARY_DATA.map((b) => b.distanceAU);
+    const temps = SpecData.PLANETARY_DATA.map((b) => b.meanTemperatureC);
+    const logMin = Math.log10(Math.min(...distances));
+    const logMax = Math.log10(Math.max(...distances));
+    const tempMin = Math.min(...temps);
+    const tempMax = Math.max(...temps);
+
+    const xFor = (au) => margin.left + ((Math.log10(au) - logMin) / (logMax - logMin)) * plotWidth;
+    const yFor = (c) => margin.top + plotHeight - ((c - tempMin) / (tempMax - tempMin)) * plotHeight;
+
+    // Axes.
+    ctx.strokeStyle = '#cdd7e1';
+    ctx.beginPath();
+    ctx.moveTo(margin.left, margin.top);
+    ctx.lineTo(margin.left, margin.top + plotHeight);
+    ctx.lineTo(margin.left + plotWidth, margin.top + plotHeight);
+    ctx.stroke();
+
+    ctx.font = '11px sans-serif';
+    ctx.fillStyle = '#8a97a5';
+    ctx.textAlign = 'right';
+    ctx.textBaseline = 'middle';
+    [tempMin, 0, tempMax].forEach((t) => {
+      const y = yFor(t);
+      ctx.fillText(`${Math.round(t)}°C`, margin.left - 6, y);
+      ctx.strokeStyle = '#eee';
+      ctx.beginPath();
+      ctx.moveTo(margin.left, y);
+      ctx.lineTo(margin.left + plotWidth, y);
+      ctx.stroke();
+    });
+
+    // The outer dwarf planets (Pluto, Haumea, Eris) sit close enough
+    // together on the log-distance axis that their labels would
+    // otherwise collide — alternate above/below whenever a point lands
+    // within LABEL_COLLISION_PX of the previous one (PLANETARY_DATA is
+    // already in increasing-distance, so increasing-x, order).
+    const LABEL_COLLISION_PX = 30;
+    let lastX = -Infinity;
+    let labelBelow = false;
+    SpecData.PLANETARY_DATA.forEach((body) => {
+      const x = xFor(body.distanceAU);
+      const y = yFor(body.meanTemperatureC);
+      ctx.beginPath();
+      ctx.arc(x, y, body.name === 'Venus' ? 6 : 4, 0, Math.PI * 2);
+      ctx.fillStyle = body.name === 'Venus' ? '#c0392b' : body.type === 'planet' ? '#2a6bd6' : '#8a97a5';
+      ctx.fill();
+
+      labelBelow = x - lastX < LABEL_COLLISION_PX ? !labelBelow : false;
+      lastX = x;
+
+      ctx.fillStyle = '#555';
+      ctx.font = '10px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(body.name, x, labelBelow ? y + 15 : y - 10);
+    });
+
+    ctx.fillStyle = '#8a97a5';
+    ctx.font = 'italic 11px sans-serif';
+    ctx.textAlign = 'left';
+    ctx.fillText('Distance from the Sun (AU, logarithmic) →', margin.left, canvas.height - 6);
+  }
+
   // --- Comet diagram: a schematic orbit, tails always away from the Sun ---
 
   function drawCometDiagram() {
@@ -400,6 +736,18 @@
     coverageEl.textContent = 'Covers: ' + subtopics.map((s) => `${s.id} ${s.title}`).join(', ');
   }
 
+  // One toggle definition per moon, built from MOON_GROUPS rather than
+  // hand-duplicated here — first-draft flagged per moon (see
+  // MOON_GROUPS' own comment), except the Moon's own entry.
+  const MOON_GLOSSARY = Object.fromEntries(
+    MOON_GROUPS.flatMap((group) =>
+      group.moons.map((moon) => [
+        moon.slug,
+        `${moon.name} (${group.planet}): ${moon.note}${moon.onDataSheet ? '' : ' First draft — this diameter is separately sourced, not from the data sheet.'}`,
+      ])
+    )
+  );
+
   // Only the static prose toggles (nucleus, coma, ...) go through
   // Glossary.init — the table's per-body toggles are wired directly in
   // renderTableBody, see the comment there.
@@ -411,12 +759,20 @@
     'oort-cloud': 'Oort Cloud: a far more distant, roughly spherical shell of icy bodies, thought to extend from a few thousand AU out to perhaps 100,000 AU — the thought source of long-period comets.',
     'ecliptic-plane': 'Ecliptic plane: the plane of Earth’s own orbit around the Sun — most Solar System material formed in, and still roughly orbits within, this same flattened plane.',
     parallax: 'Parallax: the apparent shift of a nearer object against a more distant background when viewed from two different places — the principle behind measuring the AU from a transit of Venus.',
+    'tidal-resonance': 'Orbital resonance: Io, Europa and Ganymede’s orbital periods sit close to a 1:2:4 ratio (about 1.77, 3.55 and 7.15 days), so the three moons keep returning to the same relative arrangement and reinforcing each other’s gravitational tug, rather than it averaging out over time. That’s what keeps Io’s own orbit measurably non-circular despite Jupiter’s tides constantly trying to circularise it — without the resonance, the flexing (and Io’s volcanoes) would eventually stop.',
+    'tidal-life-search': 'Europa (an icy shell over a liquid ocean) and Saturn’s moon Enceladus are heated by the same tidal flexing as Io, keeping their interior oceans liquid despite being far from the Sun’s warmth — which is exactly why both are considered promising places to search for life.',
+    ...MOON_GLOSSARY,
   };
 
   createBodySummaryDefinitions();
   renderTableHead();
   renderTableBody();
   drawSizeBarChart();
+  drawSizeScaleDiagram();
+  drawMoonsDiagram();
+  updateTidal();
+  drawResonanceStrip();
+  drawTemperatureChart();
   drawCometDiagram();
   drawKuiperOortDiagram();
   renderCoverage();

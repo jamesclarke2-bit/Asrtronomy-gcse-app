@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Bodies of the Solar System</title>
-  <link rel="stylesheet" href="../styles.css?v=202610101600" />
+  <link rel="stylesheet" href="../styles.css?v=202610101700" />
 </head>
 <body>
   <main>
@@ -12,31 +12,41 @@
 
     <h1>Bodies of the Solar System</h1>
     <p class="subtitle">
-      The planets and dwarf planets compared side by side, the smaller debris between and beyond
-      them &mdash; asteroids, meteoroids and comets &mdash; and two historical questions: how a
-      transit of Venus first measured the Sun-Earth distance, and where Earth's water came from.
+      The planets and dwarf planets, compared to scale and by temperature, their larger moons,
+      and what actually makes something a dwarf planet rather than a planet. Then the smaller
+      debris between and beyond them &mdash; asteroids, meteoroids and comets &mdash; plus two
+      historical questions: measuring the AU from a transit of Venus, and where Earth's water
+      came from.
     </p>
 
     <section class="notes-section" id="planet-data">
       <h2>Planets and dwarf planets: comparing key data</h2>
+      <p>Every planet and dwarf planet on the exam data sheet, compared by eye first.</p>
+
+      <canvas
+        id="size-bar-chart"
+        width="700"
+        height="380"
+        aria-label="A horizontal bar chart of each planet and dwarf planet's diameter relative to Earth's, from the exam data sheet, sorted largest to smallest"
+      ></canvas>
+      <p class="diagram-caption">Relative size (diameter, &times; Earth) &mdash; not to scale for mass or distance</p>
+
+      <p class="note">The same bodies, this time drawn to true scale against Earth:</p>
+      <canvas
+        id="size-scale-diagram"
+        width="700"
+        height="200"
+        aria-label="Every planet and dwarf planet drawn as a circle sized to its true relative diameter, Jupiter and Saturn towering over the smaller dwarf planets, which appear as tiny dots"
+      ></canvas>
+      <p class="diagram-caption">To scale by diameter &mdash; the smallest bodies are shown as a minimum-size dot so they're visible at all</p>
+
       <p class="note">
-        <strong>First draft.</strong> This page is a first pass through Topic 11's content on the
-        Solar System's bodies, for a teacher to check before students rely on it. Every fact is
-        marked as either from the exam data sheet (<a href="data-sheet.html">Formulae and Data
-        Sheet</a>) or, where the data sheet doesn't cover something, a separately sourced figure
-        that still needs verifying.
-      </p>
-      <p>
-        Every column below except <strong>Atmosphere</strong> comes directly from the exam data
-        sheet (<a href="data-sheet.html">Formulae and Data Sheet</a>). Relative size and relative
-        mass are both given as multiples of Earth's own, so Jupiter's "11.2" in the size column
-        means 11.2&times; Earth's diameter. Tap a body's name for a one-line summary, and click a
-        column heading to sort by it.
+        <strong>First draft:</strong> this page is a first pass through Topic 11's content, for a
+        teacher to check. Tap a body's name for a summary; click a column heading to sort.
       </p>
       <p class="note">
-        <strong>Atmosphere is a first draft, not from the data sheet.</strong> The exam data sheet
-        doesn't give atmospheric composition at all &mdash; every figure in that column is
-        separately sourced and needs checking before use.
+        <strong>Atmosphere is a first draft, not from the data sheet</strong> &mdash; every other
+        column comes directly from it.
       </p>
       <div class="table-scroll">
         <table class="shower-table" id="planet-table">
@@ -47,14 +57,172 @@
         </table>
       </div>
       <div id="planet-table-definitions"></div>
+    </section>
+
+    <section class="notes-section" id="moons">
+      <h2>Moons</h2>
+      <p>
+        The larger moons named on the exam data sheet, drawn to the same scale as each other.
+        Tap a name for a one-line note.
+      </p>
 
       <canvas
-        id="size-bar-chart"
+        id="moons-diagram"
         width="700"
-        height="380"
-        aria-label="A horizontal bar chart of each planet and dwarf planet's diameter relative to Earth's, from the exam data sheet, sorted largest to smallest"
+        height="630"
+        aria-label="The larger moons of Earth, Mars, Jupiter, Saturn, Uranus, Neptune and Pluto, grouped by planet and drawn to the same scale, showing Ganymede as the largest moon in the Solar System"
       ></canvas>
-      <p class="diagram-caption">Relative size (diameter, &times; Earth) &mdash; not to scale for mass or distance</p>
+      <p class="diagram-caption">To scale by diameter &mdash; blue is the Moon (the only one on the data sheet with a given diameter); grey moons are first draft</p>
+
+      <p>
+        <strong>Earth:</strong>
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="moon-the-moon" aria-label="What is the Moon?" aria-expanded="false">the Moon</button>
+      </p>
+      <span class="glossary-definition" data-term="moon-the-moon" hidden></span>
+      <p>
+        <strong>Mars:</strong>
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="moon-phobos" aria-label="What is Phobos?" aria-expanded="false">Phobos</button>,
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="moon-deimos" aria-label="What is Deimos?" aria-expanded="false">Deimos</button>
+      </p>
+      <span class="glossary-definition" data-term="moon-phobos" hidden></span>
+      <span class="glossary-definition" data-term="moon-deimos" hidden></span>
+      <p>
+        <strong>Jupiter:</strong>
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="moon-io" aria-label="What is Io?" aria-expanded="false">Io</button>,
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="moon-europa" aria-label="What is Europa?" aria-expanded="false">Europa</button>,
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="moon-ganymede" aria-label="What is Ganymede?" aria-expanded="false">Ganymede</button>,
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="moon-callisto" aria-label="What is Callisto?" aria-expanded="false">Callisto</button>
+      </p>
+      <span class="glossary-definition" data-term="moon-io" hidden></span>
+      <span class="glossary-definition" data-term="moon-europa" hidden></span>
+      <span class="glossary-definition" data-term="moon-ganymede" hidden></span>
+      <span class="glossary-definition" data-term="moon-callisto" hidden></span>
+      <p>
+        <strong>Saturn:</strong>
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="moon-titan" aria-label="What is Titan?" aria-expanded="false">Titan</button>,
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="moon-iapetus" aria-label="What is Iapetus?" aria-expanded="false">Iapetus</button>
+      </p>
+      <span class="glossary-definition" data-term="moon-titan" hidden></span>
+      <span class="glossary-definition" data-term="moon-iapetus" hidden></span>
+      <p>
+        <strong>Uranus:</strong>
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="moon-titania" aria-label="What is Titania?" aria-expanded="false">Titania</button>,
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="moon-oberon" aria-label="What is Oberon?" aria-expanded="false">Oberon</button>
+      </p>
+      <span class="glossary-definition" data-term="moon-titania" hidden></span>
+      <span class="glossary-definition" data-term="moon-oberon" hidden></span>
+      <p>
+        <strong>Neptune:</strong>
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="moon-triton" aria-label="What is Triton?" aria-expanded="false">Triton</button>
+      </p>
+      <span class="glossary-definition" data-term="moon-triton" hidden></span>
+      <p>
+        <strong>Pluto:</strong>
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="moon-charon" aria-label="What is Charon?" aria-expanded="false">Charon</button>
+      </p>
+      <span class="glossary-definition" data-term="moon-charon" hidden></span>
+    </section>
+
+    <section class="notes-section" id="tidal-heating">
+      <h2>Tidal heating</h2>
+      <p>
+        Io's orbit around Jupiter isn't quite circular &mdash; kept that way by a gravitational
+        tug-of-war with two neighbouring moons.
+      </p>
+
+      <div class="diagram">
+        <canvas
+          id="tidal-heating-diagram"
+          width="380"
+          height="300"
+          aria-label="Io on an elliptical orbit around Jupiter, drawn visibly flexed and glowing hotter when closest to Jupiter, and rounder and cooler when furthest away"
+        ></canvas>
+        <p class="eot-readout" id="tidal-heating-readout"></p>
+      </div>
+      <div class="control">
+        <label for="tidal-eccentricity-slider">Eccentricity (exaggerated): <span id="tidal-eccentricity-label"></span></label>
+        <input type="range" id="tidal-eccentricity-slider" min="0" max="0.45" step="0.01" value="0.25" />
+      </div>
+      <div class="control checkbox-control">
+        <button type="button" id="tidal-play-button" class="secondary-button" aria-pressed="false">&#9658; Animate</button>
+      </div>
+      <p class="note">
+        Exaggerated for clarity &mdash; Io's real eccentricity is only about 0.004. Closer to
+        Jupiter means a stronger pull on the near side than the far side, flexing Io's interior;
+        that flexing heats it by friction, driving Io's volcanoes.
+      </p>
+
+      <canvas
+        id="moon-resonance-strip"
+        width="500"
+        height="110"
+        aria-label="A bar chart of Io, Europa and Ganymede's real orbital periods, showing they sit in close to a 1:2:4 ratio"
+      ></canvas>
+      <p class="diagram-caption">Real orbital periods &mdash; close to a 1:2:4 ratio</p>
+
+      <p>
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="tidal-resonance" aria-label="Why does the 1:2:4 ratio keep Io's orbit elliptical?" aria-expanded="false">Why does the 1:2:4 ratio keep Io's orbit elliptical?</button>
+      </p>
+      <span class="glossary-definition" data-term="tidal-resonance" hidden></span>
+      <p>
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="tidal-life-search" aria-label="Why does this make Europa and Enceladus places to look for life?" aria-expanded="false">Why does this make Europa and Enceladus places to look for life?</button>
+      </p>
+      <span class="glossary-definition" data-term="tidal-life-search" hidden></span>
+    </section>
+
+    <section class="notes-section" id="temperature">
+      <h2>Temperature against distance</h2>
+      <p>Further from the Sun generally means colder &mdash; except where it doesn't.</p>
+
+      <canvas
+        id="temperature-distance-chart"
+        width="700"
+        height="320"
+        aria-label="A scatter chart of each planet and dwarf planet's mean temperature against its distance from the Sun on a logarithmic scale, with Venus standing out as hotter than its distance alone would suggest"
+      ></canvas>
+      <p class="diagram-caption">
+        Venus (470&deg;C) is hotter than Mercury despite being further from the Sun &mdash; its
+        thick CO&#8322; atmosphere traps heat.
+      </p>
+    </section>
+
+    <section class="notes-section" id="dwarf-planet">
+      <h2>What makes a dwarf planet?</h2>
+      <p>Three questions, asked in order, give the IAU's own dividing line.</p>
+
+      <div class="diagram decision-flow" id="dwarf-planet-diagram">
+        <div class="concept-card">
+          <p>Does it orbit the Sun?</p>
+          <p class="note">No &rarr; a moon, or a small Solar System body</p>
+        </div>
+        <svg class="decision-arrow" width="20" height="26" viewBox="0 0 20 26" aria-hidden="true">
+          <line x1="10" y1="0" x2="10" y2="18" stroke="#8a97a5" stroke-width="2" />
+          <polygon points="4,16 16,16 10,25" fill="#8a97a5" />
+        </svg>
+        <div class="concept-card">
+          <p>Is it nearly round (in hydrostatic equilibrium)?</p>
+          <p class="note">No &rarr; a moon, or a small Solar System body</p>
+        </div>
+        <svg class="decision-arrow" width="20" height="26" viewBox="0 0 20 26" aria-hidden="true">
+          <line x1="10" y1="0" x2="10" y2="18" stroke="#8a97a5" stroke-width="2" />
+          <polygon points="4,16 16,16 10,25" fill="#8a97a5" />
+        </svg>
+        <div class="concept-card">
+          <p>Has it cleared its orbit of other debris?</p>
+          <p class="note">No &rarr; dwarf planet</p>
+        </div>
+        <svg class="decision-arrow" width="20" height="26" viewBox="0 0 20 26" aria-hidden="true">
+          <line x1="10" y1="0" x2="10" y2="18" stroke="#8a97a5" stroke-width="2" />
+          <polygon points="4,16 16,16 10,25" fill="#8a97a5" />
+        </svg>
+        <div class="concept-card">
+          <p><strong>Yes to all three &rarr; planet</strong></p>
+        </div>
+      </div>
+      <p class="diagram-caption">
+        E.g. Ceres and Pluto: round, but share their orbit with other debris &mdash; dwarf
+        planets, not planets.
+      </p>
     </section>
 
     <section class="notes-section" id="small-bodies">
@@ -230,6 +398,13 @@
     <section class="notes-section" id="exam-tips">
       <h2>Exam tips</h2>
       <p class="exam-tip">
+        <strong>Common exam confusion:</strong> a dwarf planet (e.g. Pluto, Ceres) fails only the
+        third IAU test &mdash; it orbits the Sun and is round, but hasn't cleared its orbit of
+        other debris. It's still round and still orbits the Sun; what makes it "dwarf" is sharing
+        its neighbourhood with other bodies.
+        <a href="#dwarf-planet">What makes a dwarf planet? &uarr;</a>
+      </p>
+      <p class="exam-tip">
         <strong>Common exam confusion:</strong> meteoroid, meteor and meteorite are the same kind
         of object at three different stages, not three different kinds of object &mdash;
         meteoroid in space, meteor while burning up as a streak of light, meteorite if a fragment
@@ -273,6 +448,10 @@
           <h3>Retrograde Motion and Planetary Alignments</h3>
           <p class="page-card-description">The ecliptic and the zodiacal band, and Mars's own retrograde loops.</p>
         </a>
+        <a class="page-card" href="geocentric-to-heliocentric.html">
+          <h3>From Earth-Centred to Sun-Centred</h3>
+          <p class="page-card-description">Galileo's telescope and Jupiter's own four largest moons, the same ones this page's resonance strip uses.</p>
+        </a>
       </div>
     </section>
 
@@ -294,10 +473,13 @@
   <script src="../src/curriculum.js?v=202610072300"></script>
   <script src="../src/pages.js?v=202610091200"></script>
   <script src="../src/specData.js?v=202610051000"></script>
+  <script src="../src/orbitalMechanics.js?v=202610101700"></script>
+  <script src="../src/tidalHeatingDiagram.js?v=202610101700"></script>
+  <script src="../src/galileanMoons.js?v=202610101700"></script>
   <script src="../src/solarSystemBodiesQuestions.js?v=202610071900"></script>
   <script src="../glossary.js?v=202609221600"></script>
   <script src="../quiz-ui.js?v=202609221100"></script>
-  <script src="solar-system-bodies.js?v=202610071900"></script>
+  <script src="solar-system-bodies.js?v=202610101700"></script>
   <script src="../notesPage.js?v=202609252100"></script>
   <script src="../nextPage.js?v=202609270100"></script>
 </body>

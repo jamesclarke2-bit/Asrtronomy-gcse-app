@@ -38,6 +38,7 @@ const DIAGRAM_FIRST_PAGES = [
   'sims/gravitational-potential.html',
   'sims/solar-system-observation.html',
   'notes/geocentric-to-heliocentric.html',
+  'notes/solar-system-bodies.html',
 ];
 
 function read(href) {

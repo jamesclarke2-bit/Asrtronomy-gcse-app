@@ -169,9 +169,9 @@ const PAGES = [
   {
     title: 'Bodies of the Solar System',
     description:
-      "A sortable table and bar chart comparing the planets and dwarf planets, asteroids/meteoroids/comets, a comet-tail diagram and the Kuiper Belt/Oort Cloud on a logarithmic scale, meteorites, the ecliptic plane, transits of Venus and measuring the AU, and brief formation theories — a first draft pending teacher review.",
+      "A to-scale size line-up and bar chart of the planets and dwarf planets, the larger named moons by planet, Io's tidal heating (reusable diagram) from its 1:2:4 resonance with Europa and Ganymede, a temperature-against-distance chart, a planet-vs-dwarf-planet decision diagram, asteroids/meteoroids/comets, a comet-tail diagram and the Kuiper Belt/Oort Cloud on a logarithmic scale, transits of Venus and measuring the AU, and brief formation theories — a first draft pending teacher review.",
     href: 'notes/solar-system-bodies.html',
-    units: ['u3.16', 'u3.17', 'u3.18', 'u3.19', 'u3.20', 'u3.21', 'u3.22', 'u3.23', 'u3.24', 'u3.25'],
+    units: ['u3.16', 'u3.17', 'u3.18', 'u3.19', 'u3.20', 'u3.21', 'u3.22', 'u3.23', 'u3.24', 'u3.25', 'u3.30'],
   },
   {
     title: 'Gravitational Potential Energy and Orbital Energy',

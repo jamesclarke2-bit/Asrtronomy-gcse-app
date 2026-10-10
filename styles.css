@@ -572,6 +572,28 @@ canvas {
   border-radius: 8px;
 }
 
+/* A sequence of yes/no question cards (notes/solar-system-bodies.html's
+   "What makes a dwarf planet?" diagram), each .concept-card stacked with
+   a small connecting arrow between — reuses .concept-card's own box
+   style rather than a second one, just centred and width-capped so it
+   doesn't stretch across the whole .notes-section column. */
+.decision-flow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  max-width: 420px;
+}
+
+.decision-flow .concept-card {
+  width: 100%;
+  text-align: center;
+}
+
+.decision-arrow {
+  display: block;
+}
+
 .diagram-caption {
   margin: 0.5rem 0 0;
   font-size: 0.8rem;

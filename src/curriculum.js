@@ -583,7 +583,7 @@ const UNITS = [
         depth: 'be able to',
         spec: ['11.1', '11.6'],
         notes:
-          'use given data — the exam data sheet’s own table (src/specData.js) — to compare the planets and dwarf planets by relative size, relative mass, temperature, moons and rings',
+          'use given data — the exam data sheet’s own table (src/specData.js) — to compare the planets and dwarf planets by relative size, relative mass, temperature, moons and rings; a to-scale size line-up and a temperature-against-distance chart (both built from that same data) make the size and temperature trends visible at a glance, including Venus sitting far hotter than its distance alone would suggest, because of its thick CO₂ atmosphere; a three-question decision diagram (does it orbit the Sun? is it nearly round? has it cleared its orbit?) gives the IAU’s own criteria separating a planet from a dwarf planet and from everything smaller',
       },
       {
         id: 'u3.17',
@@ -688,6 +688,14 @@ const UNITS = [
         level: 'extension',
         notes:
           'beyond the GCSE spec — in a frame rotating with two orbiting bodies, the effective potential (ordinary potential minus the centrifugal term) has five equilibrium points: L1-L3 collinear with the bodies (saddle points) and L4/L5 forming equilateral triangles with them (local maxima, "hills"); L1-L3 are always unstable, while L4/L5 are only stable when the larger/smaller mass ratio exceeds about 25 (Routh\'s criterion) — true for the Earth-Moon system (ratio ≈ 81) and overwhelmingly true for the Sun-Earth system (ratio ≈ 333,000), which is why dust and small bodies really do collect near real L4/L5 points; a body held near a stable L4/L5 is kept there by the Coriolis force, not by sitting in a dip of the effective potential, which is a hill at that point, not a valley',
+      },
+      {
+        id: 'u3.30',
+        title: 'Tidal heating',
+        depth: 'understand',
+        spec: ['12.5'],
+        notes:
+          'Io’s orbit around Jupiter is kept measurably non-circular by orbital resonance with Europa and Ganymede (periods in a 1:2:4 ratio, so the three moons repeatedly line up and reinforce each other’s gravitational tug — see src/galileanMoons.js); that non-zero eccentricity means Io’s distance from Jupiter, and so the strength of Jupiter’s tidal pull on it, changes around every orbit, flexing its interior and heating it by friction — the direct cause of Io’s volcanoes; Europa and Saturn’s moon Enceladus are heated the same way, by their own orbital resonances, which is why both are considered promising places to look for life despite being far from the Sun',
       },
     ],
   },

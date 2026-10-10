@@ -40,6 +40,15 @@ test('each moon switches sides (crosses in front of or behind Jupiter) twice per
   });
 });
 
+test("Io, Europa and Ganymede's real periods are in a 1:2:4 Laplace resonance, to within a couple of percent", () => {
+  const { MOONS } = GalileanMoons;
+  const io = MOONS.find((m) => m.name === 'Io');
+  const europa = MOONS.find((m) => m.name === 'Europa');
+  const ganymede = MOONS.find((m) => m.name === 'Ganymede');
+  assert.ok(Math.abs(europa.periodDays / io.periodDays - 2) < 0.01, `Europa:Io should be ~2:1, got ${europa.periodDays / io.periodDays}`);
+  assert.ok(Math.abs(ganymede.periodDays / io.periodDays - 4) < 0.05, `Ganymede:Io should be ~4:1, got ${ganymede.periodDays / io.periodDays}`);
+});
+
 test('a moon never swings further from Jupiter than its own orbital distance', () => {
   GalileanMoons.MOONS.forEach((moon) => {
     for (let days = 0; days <= moon.periodDays * 2; days += moon.periodDays / 11) {
