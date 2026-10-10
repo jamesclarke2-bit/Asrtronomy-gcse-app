@@ -653,7 +653,7 @@ const UNITS = [
         id: 'u3.21',
         title: 'Formation of gas giants',
         depth: 'know',
-        spec: ['11.7'],
+        spec: ['11.7', '12.3'],
         notes:
           'brief overview only — covered in depth on the Topic 12 formation-of-planetary-systems page (not yet built): the leading model, core accretion, has a solid core of ice and rock grow large enough, far enough from the young Sun for ices to survive, to gravitationally capture a massive envelope of hydrogen and helium gas directly from the surrounding protoplanetary disc',
       },
@@ -769,13 +769,16 @@ const UNITS = [
         id: 'u5.1',
         title: 'Telescopes',
         depth: 'know',
-        // Best-effort placement, like 7.5-7.6 and 8.6-8.9 above: the
-        // content is solid, but the exact spec numbering within
-        // 11.19-11.25 is inferred from sequence (11.24 is already
-        // confirmed elsewhere as Galileo's telescopic evidence, u3.15,
-        // which this page only links to rather than re-teaching), not
-        // checked against the primary spec PDF.
-        spec: ['11.19', '11.20', '11.21', '11.22', '11.23', '11.25'],
+        // Checked against the page itself (notes/telescopes.html), not
+        // just this subtopic's own paraphrase: the structural half of
+        // the page — how a lens/mirror focuses light at all (11.16),
+        // the "why bother with both an objective and an eyepiece"
+        // framing and the live bench combining them (11.15, 11.17),
+        // the four named designs (11.18), and reflectors' advantages
+        // (11.25). The calculation/skill half of the page (light
+        // grasp, aperture, field of view, resolution, magnification)
+        // is u5.2's, not this subtopic's — see its own comment.
+        spec: ['11.15', '11.16', '11.17', '11.18', '11.25'],
         notes:
           "refracting designs (Galilean: a diverging eyepiece lens, giving an upright image but a narrow field of view — what Galileo himself used; Keplerian: a converging eyepiece lens, giving a wider field of view but an inverted image — the layout almost all modern refractors use) and reflecting designs (Newtonian: a parabolic primary mirror reflects light back up to a flat secondary mirror, out to an eyepiece on the side of the tube; Cassegrain: a parabolic primary mirror reflects light up to a convex secondary, back down through a hole in the primary to an eyepiece behind it); reflectors' advantages over refractors: no chromatic aberration (mirrors reflect every wavelength the same way, with nothing to focus differently by colour), mirrors can be made far larger than lenses (supported across their whole back, not just gripped at the rim), a long focal length folds into a short tube (most dramatically in the Cassegrain), and multiple mirrors can be combined",
       },
@@ -783,7 +786,14 @@ const UNITS = [
         id: 'u5.2',
         title: 'Magnification and resolution',
         depth: 'be able to',
-        spec: ['11.14', '11.15', '11.16', '11.17', '11.18'],
+        // Checked against the page itself: the "through the eyepiece"
+        // field-of-view readout (11.21, in degrees/arcminutes) and the
+        // aperture-diameter glossary definition (11.20) are both live
+        // on the page even though this subtopic's own paraphrase below
+        // doesn't spell them out by name. u5.1 above carries the
+        // page's structural half (lens/mirror basics, the four designs,
+        // reflector advantages).
+        spec: ['11.14', '11.19', '11.20', '11.21', '11.22', '11.23'],
         notes:
           "magnification = f(objective) / f(eyepiece); light grasp (how much light a telescope collects) is proportional to the square of the objective diameter, so doubling the aperture gives 4x the light grasp; angular resolution improves with a larger objective diameter and is worse at longer wavelengths (the Rayleigh criterion, 1.22 x wavelength / diameter, gives the actual angle); the human eye's own limits — a small aperture (a fully dark-adapted pupil is only about 7mm) and poor low-light sensitivity — are the baseline every telescope improves on, e.g. a 100mm telescope collects roughly 200x the light of a dark-adapted eye",
       },

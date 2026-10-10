@@ -1,12 +1,10 @@
 /**
- * Pearson Edexcel GCSE Astronomy (1AS0) specification points, Topics 1-6,
- * 9 and 10 — a registry separate from src/curriculum.js's own unit/
- * subtopic structure (u1-u6), which predates this file and was never
- * built topic-by-topic against the real spec. This file exists so that
+ * Pearson Edexcel GCSE Astronomy (1AS0) specification points, Topics 1-12
+ * — a registry separate from src/curriculum.js's own unit/subtopic
+ * structure (u1-u6), which predates this file and was never built
+ * topic-by-topic against the real spec. This file exists so that
  * curriculum.js's own `spec` field (see its header comment) has a real
- * target to point at and be checked against for these topics, the same
- * way Topics 7, 8 and 11 already point at spec ids that happen to be
- * hand-typed there without a central list.
+ * target to point at and be checked against.
  *
  * The wording in `text` below is paraphrased, not a verbatim quote of
  * the spec document; `code` and `depth` are taken from the spec as
@@ -14,12 +12,10 @@
  * subtopics ('know', 'understand', 'be able to') — not difficulty, see
  * that file's header.
  *
- * Topics 7, 8, 11-16 are out of scope for this file (7/8/11 already
- * have hand-typed spec ids in curriculum.js with no central registry;
- * 12-16 have no spec-tagged content yet at all — see the site inventory
- * report). Adding those as their own topics' worth of SPEC_POINTS,
- * the same way this file does for 1-6/9/10, is future work, not done
- * here.
+ * Topics 13-16 are out of scope for this file (no spec-tagged content
+ * yet at all — see the site inventory report). Adding those as their
+ * own topics' worth of SPEC_POINTS, the same way this file does for
+ * 1-12, is future work, not done here.
  */
 
 const SPEC_POINTS = [
@@ -149,6 +145,140 @@ const SPEC_POINTS = [
     text: 'effects of the solar wind (aurorae, comet tails, geomagnetic storms, satellites, aircraft, manned missions)',
   },
   { code: '10.12', topic: 10, depth: 'know', text: 'shape and position of the magnetosphere, including Van Allen belts' },
+
+  // --- Topic 7: Early models of the Solar System ------------------------------
+  {
+    code: '7.1',
+    topic: 7,
+    depth: 'understand',
+    text: 'ancient civilisations used observations of solar and lunar cycles for agriculture, religion, time and calendars, and aligning monuments',
+  },
+  { code: '7.2', topic: 7, depth: 'understand', text: "monuments' present alignments differ from the original because of precession" },
+  { code: '7.3', topic: 7, depth: 'understand', text: 'early geocentric models' },
+  { code: '7.4', topic: 7, depth: 'understand', text: 'the advantage of epicycles (Ptolemy)' },
+  { code: '7.5', topic: 7, depth: 'be able to', text: 'use information about the scale of the Solar System' },
+  { code: '7.6', topic: 7, depth: 'be able to', text: 'use the astronomical unit (1 AU = 1.5 x 10^8 km), light year and parsec' },
+
+  // --- Topic 8: Planetary motion and gravity ----------------------------------
+  { code: '8.1', topic: 8, depth: 'understand', text: "Brahe's observational work in the move from geocentric to heliocentric models" },
+  { code: '8.2', topic: 8, depth: 'understand', text: 'the mathematical modelling of Copernicus and Kepler in that move' },
+  { code: '8.3', topic: 8, depth: 'understand', text: 'gravity creating stable elliptical orbits' },
+  { code: '8.4', topic: 8, depth: 'understand', text: "Kepler's laws" },
+  { code: '8.5', topic: 8, depth: 'understand', text: 'aphelion, perihelion, apogee and perigee' },
+  { code: '8.6', topic: 8, depth: 'be able to', text: "use Kepler's third law (T squared over r cubed is constant)" },
+  { code: '8.7', topic: 8, depth: 'understand', text: 'the constant depends inversely on the mass of the central body' },
+  { code: '8.8', topic: 8, depth: 'know', text: "Newton explained Kepler's laws with his law of universal gravitation" },
+  {
+    code: '8.9',
+    topic: 8,
+    depth: 'understand',
+    text: 'gravitational force is proportional to the product of the masses and inversely proportional to the square of the separation',
+  },
+
+  // --- Topic 11: Exploring the Solar System -----------------------------------
+  {
+    code: '11.1',
+    topic: 11,
+    depth: 'be able to',
+    text: 'use data on the names and relative locations of planets, dwarf planets and small Solar System objects',
+  },
+  { code: '11.2', topic: 11, depth: 'understand', text: 'comet structure (nucleus, coma, tails)' },
+  { code: '11.3', topic: 11, depth: 'understand', text: 'short-period comet orbits and their origin in the Kuiper Belt' },
+  { code: '11.4', topic: 11, depth: 'understand', text: 'long-period comet orbits and their origin in the Oort Cloud' },
+  { code: '11.5', topic: 11, depth: 'understand', text: 'location and nature of the Kuiper Belt, Oort Cloud and heliosphere' },
+  {
+    code: '11.6',
+    topic: 11,
+    depth: 'understand',
+    text: "planets' principal characteristics (relative size, relative mass, surface temperature, atmospheric composition, satellites, rings)",
+  },
+  { code: '11.7', topic: 11, depth: 'understand', text: 'main theories for the formation and position of the gas giants' },
+  { code: '11.8', topic: 11, depth: 'be able to', text: 'use information about the size of the Solar System' },
+  { code: '11.9', topic: 11, depth: 'be able to', text: 'use the AU, light year and parsec' },
+  { code: '11.10', topic: 11, depth: 'understand', text: 'origin and structure of meteoroids and meteorites' },
+  { code: '11.11', topic: 11, depth: 'know', text: "most bodies orbit in or near the ecliptic plane" },
+  { code: '11.12', topic: 11, depth: 'understand', text: 'transits of Venus (Halley) used to find the AU' },
+  { code: '11.13', topic: 11, depth: 'understand', text: "main theories for the origin of water on Earth" },
+  { code: '11.14', topic: 11, depth: 'know', text: 'the eye is limited by its small aperture and poor low-light sensitivity' },
+  {
+    code: '11.15',
+    topic: 11,
+    depth: 'understand',
+    text: 'the objective captures and focuses light, and the eyepiece magnifies the image',
+  },
+  { code: '11.16', topic: 11, depth: 'know', text: 'convex lenses and concave mirrors collect and focus light' },
+  { code: '11.17', topic: 11, depth: 'understand', text: 'simple telescopes combine an objective with an eyepiece' },
+  {
+    code: '11.18',
+    topic: 11,
+    depth: 'understand',
+    text: 'basic design of Galilean, Keplerian, Newtonian and Cassegrain telescopes (no detailed ray diagrams)',
+  },
+  { code: '11.19', topic: 11, depth: 'understand', text: "light grasp is proportional to the area of the objective, so the square of its diameter" },
+  { code: '11.20', topic: 11, depth: 'know', text: 'aperture is related to the diameter of the objective' },
+  {
+    code: '11.21',
+    topic: 11,
+    depth: 'know',
+    text: 'field of view is the circle of sky seen through the eyepiece, in degrees or arcminutes',
+  },
+  {
+    code: '11.22',
+    topic: 11,
+    depth: 'understand',
+    text: "resolution depends on the objective's diameter and is reduced at a longer observing wavelength",
+  },
+  { code: '11.23', topic: 11, depth: 'be able to', text: 'use magnification = focal length of objective / focal length of eyepiece' },
+  { code: '11.24', topic: 11, depth: 'understand', text: "Galileo's early telescopic observations and the Sun-centred model" },
+  {
+    code: '11.25',
+    topic: 11,
+    depth: 'understand',
+    text: 'advantages of reflectors over refractors (chromatic aberration, very long focal lengths, large apertures, multiple mirrors)',
+  },
+  {
+    code: '11.26',
+    topic: 11,
+    depth: 'understand',
+    text: 'advantages and disadvantages of fly-by, orbiter, impactor and lander probes',
+  },
+  {
+    code: '11.27',
+    topic: 11,
+    depth: 'know',
+    text: 'an example of each (New Horizons; Juno or Dawn; Deep Impact; Philae) with target and major discoveries',
+  },
+  { code: '11.28', topic: 11, depth: 'understand', text: 'a probe must reach escape velocity, which needs rockets' },
+  { code: '11.29', topic: 11, depth: 'understand', text: 'advantages and disadvantages of manned missions' },
+  { code: '11.30', topic: 11, depth: 'understand', text: 'main features of the Apollo programme' },
+
+  // --- Topic 12: Formation of planetary systems -------------------------------
+  {
+    code: '12.1',
+    topic: 12,
+    depth: 'be able to',
+    text:
+      "identify gravity's operation in the Solar System: (a) regular motion, (b) tidal forces (rings, asteroid belts, internal heating), " +
+      '(c) multi-body interactions (shifting orbits, chaos, resonances, Lagrange points), (d) collisions, (e) the solar wind\'s effects',
+  },
+  {
+    code: '12.2',
+    topic: 12,
+    depth: 'be able to',
+    text:
+      'identify interactions in forming planets and moons: (a) the Roche limit, (b) round or irregular shape, (c) holding an atmosphere',
+  },
+  { code: '12.3', topic: 12, depth: 'understand', text: 'main theories for the formation of gas giants' },
+  { code: '12.4', topic: 12, depth: 'understand', text: 'exoplanet detection methods (transit, astrometry, radial velocity)' },
+  {
+    code: '12.5',
+    topic: 12,
+    depth: 'understand',
+    text: 'the requirements for life, and life on Titan, Europa, Enceladus and outside the Solar System',
+  },
+  { code: '12.6', topic: 12, depth: 'understand', text: 'Goldilocks (habitable) zones' },
+  { code: '12.7', topic: 12, depth: 'understand', text: 'the Drake equation' },
+  { code: '12.8', topic: 12, depth: 'understand', text: 'SETI by radio, and the benefits and dangers of finding extraterrestrial life' },
 ];
 
 function getSpecPoint(code) {

@@ -6,11 +6,10 @@ const { QUESTIONS } = require('../src/questions');
 const { QUESTIONS: EOT_QUESTIONS } = require('../src/eotQuestions');
 const { getSpecPoint } = require('../src/specPoints');
 
-// Topics with their own registry in src/specPoints.js. A curriculum
-// `spec` code for any other topic (7, 8, 11 today) is hand-typed with
-// no central list to check it against — see that file's own header —
-// so it's out of scope for the "exists in the registry" check below.
-const REGISTERED_TOPICS = ['1', '2', '3', '4', '5', '6', '9', '10'];
+// Topics with their own registry in src/specPoints.js, checked against
+// below. Topics 13-16 have no spec-tagged curriculum content yet, so
+// they're not here — see that file's own header.
+const REGISTERED_TOPICS = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'];
 
 const VALID_DEPTHS = ['know', 'understand', 'be able to'];
 
@@ -80,12 +79,12 @@ test('u3\'s Topic 7 and Topic 8 entries (u3.1-u3.14) are all tagged with a spec 
   topic78.forEach((s) => assert.ok(s.spec && s.spec.length > 0, `${s.id} (${s.title}) has no spec field`));
 });
 
-test('every curriculum spec code for a topic with a src/specPoints.js registry (1-6, 9, 10) actually exists in that registry', () => {
+test('every curriculum spec code for a topic with a src/specPoints.js registry (1-12) actually exists in that registry', () => {
   UNITS.forEach((unit) => {
     unit.subtopics.forEach((subtopic) => {
       (subtopic.spec || []).forEach((code) => {
         const topic = code.split('.')[0];
-        if (!REGISTERED_TOPICS.includes(topic)) return; // 7/8/11 etc. — no registry to check against yet
+        if (!REGISTERED_TOPICS.includes(topic)) return; // Topics 13-16 — no registry to check against yet
         assert.ok(getSpecPoint(code), `${subtopic.id} tags spec "${code}", which doesn't exist in src/specPoints.js`);
       });
     });

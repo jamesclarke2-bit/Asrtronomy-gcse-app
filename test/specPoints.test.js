@@ -3,7 +3,7 @@ const assert = require('node:assert/strict');
 const { SPEC_POINTS, SPEC_POINT_CODES, getSpecPoint } = require('../src/specPoints');
 
 const VALID_DEPTHS = ['know', 'understand', 'be able to'];
-const REGISTERED_TOPICS = [1, 2, 3, 4, 5, 6, 9, 10];
+const REGISTERED_TOPICS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
 test('all codes in specPoints.js are unique', () => {
   assert.equal(new Set(SPEC_POINT_CODES).size, SPEC_POINT_CODES.length);
@@ -30,10 +30,20 @@ test("every point's code starts with its own topic number", () => {
 test('getSpecPoint resolves a known code and returns undefined for an unknown one', () => {
   assert.deepEqual(getSpecPoint('4.4'), { code: '4.4', topic: 4, depth: 'be able to', text: 'use Equation of Time = AST - MST' });
   assert.equal(getSpecPoint('99.9'), undefined);
-  assert.equal(getSpecPoint('7.1'), undefined, 'Topic 7 is not in this registry (see curriculum.js\'s hand-typed spec ids)');
+  assert.deepEqual(getSpecPoint('7.1'), {
+    code: '7.1',
+    topic: 7,
+    depth: 'understand',
+    text: 'ancient civilisations used observations of solar and lunar cycles for agriculture, religion, time and calendars, and aligning monuments',
+  });
 });
 
-test('Topics 1-6, 9 and 10 are each present, with no gaps or extras in scope', () => {
+test('Topics 1-12 are each present, with no gaps or extras in scope', () => {
   const topics = [...new Set(SPEC_POINTS.map((p) => p.topic))].sort((a, b) => a - b);
   assert.deepEqual(topics, REGISTERED_TOPICS);
+});
+
+test("every 'be able to' point in Topics 7, 8, 11 and 12 is exactly the expected set", () => {
+  const beAbleTo = SPEC_POINTS.filter((p) => [7, 8, 11, 12].includes(p.topic) && p.depth === 'be able to').map((p) => p.code);
+  assert.deepEqual(beAbleTo, ['7.5', '7.6', '8.6', '11.1', '11.8', '11.9', '11.23', '12.1', '12.2']);
 });
