@@ -693,7 +693,7 @@ const UNITS = [
         id: 'u3.30',
         title: 'Tidal heating',
         depth: 'understand',
-        spec: ['12.5'],
+        spec: ['12.1', '12.5'],
         notes:
           'Io’s orbit around Jupiter is kept measurably non-circular by orbital resonance with Europa and Ganymede (periods in a 1:2:4 ratio, so the three moons repeatedly line up and reinforce each other’s gravitational tug — see src/galileanMoons.js); that non-zero eccentricity means Io’s distance from Jupiter, and so the strength of Jupiter’s tidal pull on it, changes around every orbit, flexing its interior and heating it by friction — the direct cause of Io’s volcanoes; Europa and Saturn’s moon Enceladus are heated the same way, by their own orbital resonances, which is why both are considered promising places to look for life despite being far from the Sun',
       },
