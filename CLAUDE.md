@@ -55,3 +55,8 @@ Static HTML/CSS/JS with no build step. Pages live in `sims/` (interactive) and `
     (carrying only its own new commits on top), still fast-forward `main` to include those commits
     and push it once green — the site only shows what's on `main`, so a build that stops on the
     feature branch isn't live.
+12. **A script-set range input value must land on the step grid:** when JS sets `input.value` on a
+    `type="range"` element, its `step` must divide that value exactly, or the browser silently
+    snaps the value to the nearest step-aligned value instead (`step="any"` sidesteps this
+    entirely). This has already caused bugs on three pages — check it explicitly (e.g. by reading
+    the value back) whenever a script, not just a drag, sets a range input's value.
