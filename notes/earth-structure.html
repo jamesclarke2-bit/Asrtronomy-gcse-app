@@ -119,22 +119,22 @@
               <line x1="250" y1="445" x2="250" y2="470" />
               <line x1="42" y1="250" x2="60" y2="250" />
             </g>
-            <circle cx="250" cy="250" r="208" fill="#5b7c99" stroke="#3f5a70" stroke-width="2" />
-            <circle cx="250" cy="250" r="195" fill="#c17a4a" />
-            <circle cx="250" cy="250" r="110" fill="#e8631a" />
-            <circle cx="250" cy="250" r="45" fill="#fff2c4" />
+            <circle cx="250" cy="250" r="208" fill="#5b7c99" stroke="#3f5a70" stroke-width="2" class="earth-layer-region" data-layer="crust" />
+            <circle cx="250" cy="250" r="195" fill="#c17a4a" class="earth-layer-region" data-layer="mantle" />
+            <circle cx="250" cy="250" r="110" fill="#e8631a" class="earth-layer-region" data-layer="outer-core" />
+            <circle cx="250" cy="250" r="45" fill="#fff2c4" class="earth-layer-region" data-layer="inner-core" />
           </svg>
-          <span class="labelled-diagram-label" style="left: 50%; top: 6%;">Inner core</span>
-          <span class="labelled-diagram-label" style="left: 88%; top: 50%;">Outer core</span>
-          <span class="labelled-diagram-label" style="left: 50%; top: 94%;">Mantle</span>
-          <span class="labelled-diagram-label" style="left: 12%; top: 50%;">Crust</span>
+          <span class="labelled-diagram-label earth-layer-label" data-layer="inner-core" tabindex="0" role="button" aria-label="Inner core: show its description" style="left: 50%; top: 6%;">Inner core</span>
+          <span class="labelled-diagram-label earth-layer-label" data-layer="outer-core" tabindex="0" role="button" aria-label="Outer core: show its description" style="left: 88%; top: 50%;">Outer core</span>
+          <span class="labelled-diagram-label earth-layer-label" data-layer="mantle" tabindex="0" role="button" aria-label="Mantle: show its description" style="left: 50%; top: 94%;">Mantle</span>
+          <span class="labelled-diagram-label earth-layer-label" data-layer="crust" tabindex="0" role="button" aria-label="Crust: show its description" style="left: 12%; top: 50%;">Crust</span>
         </div>
       </div>
       <ul class="legend layer-legend">
-        <li><span class="legend-dot layer-dot-crust"></span><strong>Crust</strong> &mdash; thin, cool and brittle; the outer shell continents and oceans sit on.</li>
-        <li><span class="legend-dot layer-dot-mantle"></span><strong>Mantle</strong> &mdash; by far the thickest layer; semi-solid rock that flows extremely slowly over long timescales.</li>
-        <li><span class="legend-dot layer-dot-outer-core"></span><strong>Outer core</strong> &mdash; molten iron-nickel; its churning motion generates Earth's magnetic field.</li>
-        <li><span class="legend-dot layer-dot-inner-core"></span><strong>Inner core</strong> &mdash; solid iron-nickel, despite being the hottest layer, kept solid by immense pressure.</li>
+        <li data-layer="crust"><span class="legend-dot layer-dot-crust"></span><strong>Crust</strong> &mdash; thin, cool and brittle; the outer shell continents and oceans sit on.</li>
+        <li data-layer="mantle"><span class="legend-dot layer-dot-mantle"></span><strong>Mantle</strong> &mdash; by far the thickest layer; semi-solid rock that flows extremely slowly over long timescales.</li>
+        <li data-layer="outer-core"><span class="legend-dot layer-dot-outer-core"></span><strong>Outer core</strong> &mdash; molten iron-nickel; its churning motion generates Earth's magnetic field.</li>
+        <li data-layer="inner-core"><span class="legend-dot layer-dot-inner-core"></span><strong>Inner core</strong> &mdash; solid iron-nickel, despite being the hottest layer, kept solid by immense pressure.</li>
       </ul>
       <p class="note">Layer thicknesses in the diagram are schematic, not to scale.</p>
     </section>

@@ -159,6 +159,31 @@
     coverageEl.textContent = 'Covers: ' + subtopics.map((s) => `${s.id} ${s.title}`).join(', ');
   }
 
+  // --- "Inside the Earth" labels: highlight the matching ring and ------
+  // scroll to the matching legend entry, each other's match by the same
+  // data-layer value (crust / mantle / outer-core / inner-core).
+
+  function highlightEarthLayer(layer) {
+    document.querySelectorAll('.earth-layer-region').forEach((region) => {
+      region.classList.toggle('earth-layer-region--active', region.dataset.layer === layer);
+    });
+    const li = document.querySelector(`.layer-legend li[data-layer="${layer}"]`);
+    document.querySelectorAll('.layer-legend li[data-layer]').forEach((item) => {
+      item.classList.toggle('layer-legend-active', item === li);
+    });
+    if (li) li.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  document.querySelectorAll('.earth-layer-label').forEach((label) => {
+    label.addEventListener('click', () => highlightEarthLayer(label.dataset.layer));
+    label.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        highlightEarthLayer(label.dataset.layer);
+      }
+    });
+  });
+
   const GLOSSARY = {
     oblateSpheroid:
       "Oblate spheroid: a sphere very slightly flattened at the poles and bulging at the equator, caused by a planet's own rotation. Earth's equatorial diameter is only about 43 km more than its polar diameter.",

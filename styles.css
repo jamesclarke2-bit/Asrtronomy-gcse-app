@@ -1497,6 +1497,46 @@ canvas {
 
 .layer-legend li {
   margin-bottom: 0.5rem;
+  transition: background 0.2s ease;
+}
+
+/* notes/earth-structure.html's "Inside the Earth" labels: unlike every
+   other .labelled-diagram-label on the site, these ARE themselves the
+   click target — there's no separately-drawn region reliable to hit on
+   a ring as thin as the crust's, so pointer events are switched back on
+   just for them (the base rule below sets pointer-events: none
+   site-wide). Clicking (or activating via keyboard) one scrolls to and
+   highlights its own entry in .layer-legend, and highlights the
+   matching ring in the diagram — see notes/earth-structure.js. */
+.earth-layer-label {
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.earth-layer-label:hover,
+.earth-layer-label:focus-visible {
+  text-decoration: underline;
+}
+
+.earth-layer-label:focus-visible {
+  outline: 2px solid #173d75;
+  outline-offset: 2px;
+}
+
+.earth-layer-region {
+  transition: stroke 0.2s ease, stroke-width 0.2s ease;
+}
+
+.earth-layer-region--active {
+  stroke: #173d75;
+  stroke-width: 5;
+}
+
+.layer-legend li[data-layer].layer-legend-active {
+  background: #eaf2fb;
+  border-radius: 6px;
+  padding: 0.4rem 0.6rem;
+  margin: 0 -0.6rem 0.5rem;
 }
 
 .layer-dot-core {
