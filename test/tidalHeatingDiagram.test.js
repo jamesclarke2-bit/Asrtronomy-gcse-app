@@ -47,3 +47,10 @@ test('a bigger eccentricity flexes Io more at closest approach but not at the fa
   const large = TidalHeatingDiagram.heatingFraction(quarterOrbit, 0.4);
   assert.ok(large > small, `expected a larger eccentricity to heat more away from the extremes, got ${small} vs ${large}`);
 });
+
+test("IO_REAL_ECCENTRICITY — what the host page's \"Set to Io's real eccentricity\" button applies — is Io's real eccentricity, about 0.004, within rounding", () => {
+  assert.equal(Math.round(TidalHeatingDiagram.IO_REAL_ECCENTRICITY * 1000) / 1000, 0.004);
+  // Also within the slider's own exaggerated range (0-0.45), so setting
+  // the slider's value to it is always valid, not just the label text.
+  assert.ok(TidalHeatingDiagram.IO_REAL_ECCENTRICITY >= 0 && TidalHeatingDiagram.IO_REAL_ECCENTRICITY <= 0.45);
+});

@@ -399,6 +399,7 @@
   const tidalEccentricityLabel = document.getElementById('tidal-eccentricity-label');
   const tidalHeatingReadout = document.getElementById('tidal-heating-readout');
   const tidalPlayButton = document.getElementById('tidal-play-button');
+  const tidalIoRealButton = document.getElementById('tidal-io-real-button');
 
   const tidalState = { eccentricity: 0.25, trueAnomalyRad: 0 };
 
@@ -414,11 +415,29 @@
     if (tidalHeatingReadout) tidalHeatingReadout.textContent = `Tidal heating: ${renderHeatingBar(heat)}`;
   }
 
+  // A value below the slider's own 0.01 step (i.e. one only the button
+  // can reach) needs a third decimal place, or it would round to the
+  // misleading "0.00" — read as a perfectly circular orbit.
+  function formatEccentricity(value) {
+    return value < 0.01 ? value.toFixed(3) : value.toFixed(2);
+  }
+
+  function setTidalEccentricity(value) {
+    tidalState.eccentricity = value;
+    if (tidalEccentricitySlider) tidalEccentricitySlider.value = String(value);
+    if (tidalEccentricityLabel) tidalEccentricityLabel.textContent = formatEccentricity(value);
+    updateTidal();
+  }
+
   if (tidalEccentricitySlider) {
     tidalEccentricitySlider.addEventListener('input', () => {
-      tidalState.eccentricity = Number(tidalEccentricitySlider.value);
-      tidalEccentricityLabel.textContent = tidalState.eccentricity.toFixed(2);
-      updateTidal();
+      setTidalEccentricity(Number(tidalEccentricitySlider.value));
+    });
+  }
+
+  if (tidalIoRealButton) {
+    tidalIoRealButton.addEventListener('click', () => {
+      setTidalEccentricity(TidalHeatingDiagram.IO_REAL_ECCENTRICITY);
     });
   }
 

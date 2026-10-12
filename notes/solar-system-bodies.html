@@ -141,15 +141,32 @@
       </div>
       <div class="control">
         <label for="tidal-eccentricity-slider">Eccentricity (exaggerated): <span id="tidal-eccentricity-label"></span></label>
-        <input type="range" id="tidal-eccentricity-slider" min="0" max="0.45" step="0.01" value="0.25" />
+        <input
+          type="range"
+          id="tidal-eccentricity-slider"
+          min="0"
+          max="0.45"
+          step="0.002"
+          value="0.25"
+          list="tidal-eccentricity-ticks"
+        />
+        <datalist id="tidal-eccentricity-ticks">
+          <option value="0.004" label="Io's real value"></option>
+        </datalist>
       </div>
       <div class="control checkbox-control">
         <button type="button" id="tidal-play-button" class="secondary-button" aria-pressed="false">&#9658; Animate</button>
+        <button type="button" id="tidal-io-real-button" class="secondary-button">Set to Io's real eccentricity</button>
       </div>
       <p class="note">
         Exaggerated for clarity &mdash; Io's real eccentricity is only about 0.004. Closer to
         Jupiter means a stronger pull on the near side than the far side, flexing Io's interior;
         that flexing heats it by friction, driving Io's volcanoes.
+      </p>
+      <p class="note">
+        The tick on the slider marks Io's real value. At that value the orbit's own path is
+        almost a perfect circle &mdash; but the diagram still exaggerates how much Io's own
+        shape flexes, otherwise the flexing would be far too small to see at all.
       </p>
 
       <canvas

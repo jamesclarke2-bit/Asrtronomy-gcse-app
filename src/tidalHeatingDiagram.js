@@ -23,6 +23,11 @@
  * modelled here (this diagram only draws one orbit), just explained in
  * the host page's own text.
  */
+// Io's own real eccentricity (not exaggerated) — a plain constant, not
+// a function of OM, so any host page's "set to the real value" control
+// reads it from here rather than hand-typing the figure a second time.
+const IO_REAL_ECCENTRICITY = 0.004;
+
 function makeTidalHeatingDiagram(OM) {
   const SEMI_MAJOR_AXIS = 1; // normalised; draw() alone maps this to pixels
 
@@ -129,7 +134,7 @@ function makeTidalHeatingDiagram(OM) {
 }
 
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { ...makeTidalHeatingDiagram(require('./orbitalMechanics')), makeTidalHeatingDiagram };
+  module.exports = { ...makeTidalHeatingDiagram(require('./orbitalMechanics')), makeTidalHeatingDiagram, IO_REAL_ECCENTRICITY };
 } else if (typeof window !== 'undefined') {
-  window.TidalHeatingDiagram = { ...makeTidalHeatingDiagram(window.OrbitalMechanics), makeTidalHeatingDiagram };
+  window.TidalHeatingDiagram = { ...makeTidalHeatingDiagram(window.OrbitalMechanics), makeTidalHeatingDiagram, IO_REAL_ECCENTRICITY };
 }
