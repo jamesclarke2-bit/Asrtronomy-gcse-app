@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Retrograde Motion and Planetary Alignments</title>
-  <link rel="stylesheet" href="../styles.css?v=202610101700" />
+  <link rel="stylesheet" href="../styles.css?v=202610122223" />
 </head>
 <body>
   <main>
@@ -20,20 +20,6 @@
 
     <div class="layout tool-layout">
       <div class="diagrams-column">
-        <div class="diagram">
-          <h2>Solar system (top-down)</h2>
-          <canvas
-            id="solar-system"
-            width="380"
-            height="380"
-            aria-label="Top-down schematic of Earth's and the selected planet's circular orbits around the Sun, with a sightline from Earth to the planet, a sightline from Earth to the Sun, and an arc marking the elongation angle between them"
-          ></canvas>
-          <p class="legend">
-            <span class="legend-swatch legend-earth-orbit"></span> Earth's orbit
-            &nbsp; <span class="legend-swatch" id="planet-orbit-swatch"></span> <span id="planet-orbit-legend-label"></span>
-          </p>
-        </div>
-
         <section class="notes-section" id="inner-outer">
           <h2>1. Inner and outer planets</h2>
           <p>
@@ -144,8 +130,68 @@
           </p>
         </section>
 
+        <section class="retrograde-section" id="orbit-and-apparent-position">
+          <h2>3. Orbit and apparent position</h2>
+          <p>
+            Both diagrams below update together as the date changes: watch how a loop in the sky
+            position (right) lines up with Earth catching up to, or being overtaken by, the planet
+            in its own orbit (left).
+          </p>
+
+          <div class="diagram-row">
+            <div class="diagram orbit-chart-diagram">
+              <h3>Solar system (top-down)</h3>
+              <canvas
+                id="solar-system"
+                width="380"
+                height="380"
+                aria-label="Top-down schematic of Earth's and the selected planet's circular orbits around the Sun, with a sightline from Earth to the planet, a sightline from Earth to the Sun, and an arc marking the elongation angle between them"
+              ></canvas>
+              <p class="legend">
+                <span class="legend-swatch legend-earth-orbit"></span> Earth's orbit
+                &nbsp; <span class="legend-swatch" id="planet-orbit-swatch"></span> <span id="planet-orbit-legend-label"></span>
+              </p>
+            </div>
+
+            <div class="diagram apparent-position-diagram">
+              <h3>Apparent position among the stars</h3>
+              <p>
+                The planet's apparent position lies along the
+                <button type="button" class="glossary-toggle glossary-term-button" data-term="ecliptic" aria-label="What is the ecliptic?" aria-expanded="false">ecliptic</button>
+                — the strip of sky also known as the
+                <button type="button" class="glossary-toggle glossary-term-button" data-term="zodiac" aria-label="What is the zodiacal band?" aria-expanded="false">zodiacal band</button>,
+                shown below with the currently-selected date's position marked. The graph underneath plots
+                that same position over the whole date range above: the line climbs steadily most of the
+                time (the planet drifting eastward through the stars, as expected) but — for a superior
+                planet, around each
+                <button type="button" class="glossary-toggle glossary-term-button" data-term="opposition" aria-label="What is opposition?" aria-expanded="false">opposition</button>;
+                for an inferior planet, around each inferior conjunction — briefly bends backwards. That
+                backward-curving stretch is the retrograde loop, and it repeats once every
+                <button type="button" class="glossary-toggle glossary-term-button" data-term="synodic" aria-label="What is a synodic period?" aria-expanded="false">synodic period</button>.
+              </p>
+              <span class="glossary-definition" data-term="ecliptic" hidden></span>
+              <span class="glossary-definition" data-term="zodiac" hidden></span>
+              <span class="glossary-definition" data-term="opposition" hidden></span>
+              <span class="glossary-definition" data-term="synodic" hidden></span>
+              <canvas
+                id="zodiac-strip"
+                width="700"
+                height="46"
+                class="zodiac-strip"
+                aria-label="A strip showing the 12 zodiac constellations along the ecliptic, with a marker showing the selected planet's current apparent position among them"
+              ></canvas>
+              <canvas
+                id="retrograde-graph"
+                width="700"
+                height="320"
+                aria-label="Graph of the selected planet's apparent ecliptic longitude against date, showing the backward-curving retrograde loop, with a marker at the currently-selected date"
+              ></canvas>
+            </div>
+          </div>
+        </section>
+
         <section class="notes-section" id="when-to-view">
-          <h2>3. When to view</h2>
+          <h2>4. When to view</h2>
           <p>Where the Sun and the selected planet sit at sunset, midnight and sunrise, for the date on the slider.</p>
 
           <canvas
@@ -154,6 +200,27 @@
             height="170"
             aria-label="Three horizon panels — sunset, midnight and sunrise — each showing whether the Sun and the selected planet are above or below the horizon at that moment, for the currently selected date"
           ></canvas>
+
+          <p>
+            <button type="button" class="glossary-toggle glossary-term-button" data-term="horizon-strip-howto" aria-label="How to read this diagram" aria-expanded="false">How to read this diagram</button>
+          </p>
+          <div class="glossary-definition" data-term="horizon-strip-howto" hidden>
+            <ol class="tip-list">
+              <li>The strip shows the sky at three moments for the date on the slider: sunset, midnight and sunrise.</li>
+              <li>The Sun is below the horizon at midnight — that's what makes it night.</li>
+              <li>A planet east of the Sun is in the evening sky: still up, in the west, after the Sun has set.</li>
+              <li>A planet west of the Sun is in the morning sky: already up, in the east, before the Sun rises.</li>
+              <li>A planet opposite the Sun is up all night: it rises as the Sun sets and sets as the Sun rises.</li>
+            </ol>
+            <p class="note">
+              <strong>Venus</strong> is always close to the Sun in the sky, so it's only ever an evening star
+              just after sunset or a morning star just before sunrise — never visible at midnight.
+            </p>
+            <p class="note">
+              <strong>Mars</strong> can reach opposition, so around then it's up all night — rising as the Sun
+              sets and setting as the Sun rises.
+            </p>
+          </div>
 
           <p class="eot-readout" id="viewing-sentence"></p>
 
@@ -181,41 +248,6 @@
             </tbody>
           </table>
         </section>
-
-        <section class="retrograde-section" id="apparent-motion">
-          <h2>4. Apparent position over time</h2>
-          <p>
-            The planet's apparent position lies along the
-            <button type="button" class="glossary-toggle glossary-term-button" data-term="ecliptic" aria-label="What is the ecliptic?" aria-expanded="false">ecliptic</button>
-            — the strip of sky also known as the
-            <button type="button" class="glossary-toggle glossary-term-button" data-term="zodiac" aria-label="What is the zodiacal band?" aria-expanded="false">zodiacal band</button>,
-            shown below with the currently-selected date's position marked. The graph underneath plots
-            that same position over the whole date range above: the line climbs steadily most of the
-            time (the planet drifting eastward through the stars, as expected) but — for a superior
-            planet, around each
-            <button type="button" class="glossary-toggle glossary-term-button" data-term="opposition" aria-label="What is opposition?" aria-expanded="false">opposition</button>;
-            for an inferior planet, around each inferior conjunction — briefly bends backwards. That
-            backward-curving stretch is the retrograde loop, and it repeats once every
-            <button type="button" class="glossary-toggle glossary-term-button" data-term="synodic" aria-label="What is a synodic period?" aria-expanded="false">synodic period</button>.
-          </p>
-          <span class="glossary-definition" data-term="ecliptic" hidden></span>
-          <span class="glossary-definition" data-term="zodiac" hidden></span>
-          <span class="glossary-definition" data-term="opposition" hidden></span>
-          <span class="glossary-definition" data-term="synodic" hidden></span>
-          <canvas
-            id="zodiac-strip"
-            width="700"
-            height="46"
-            class="zodiac-strip"
-            aria-label="A strip showing the 12 zodiac constellations along the ecliptic, with a marker showing the selected planet's current apparent position among them"
-          ></canvas>
-          <canvas
-            id="retrograde-graph"
-            width="700"
-            height="320"
-            aria-label="Graph of the selected planet's apparent ecliptic longitude against date, showing the backward-curving retrograde loop, with a marker at the currently-selected date"
-          ></canvas>
-        </section>
       </div>
 
       <div class="controls">
@@ -230,11 +262,20 @@
 
         <div class="control">
           <label for="date-slider">Date: <span id="date-label"></span></label>
-          <input type="range" id="date-slider" min="0" max="1560" step="1" value="0" />
+          <input type="range" id="date-slider" min="0" max="1560" step="any" value="0" />
         </div>
 
         <div class="control checkbox-control">
           <button type="button" id="play-button" class="secondary-button" aria-pressed="false">&#9658; Animate</button>
+        </div>
+
+        <div class="control">
+          <p>Animation speed</p>
+          <div class="preset-list" role="group" aria-label="Animation speed" id="speed-selector">
+            <button type="button" class="preset-button preset-button-active" data-speed="slow" data-days-per-frame="0.75" aria-pressed="true">Slow</button>
+            <button type="button" class="preset-button" data-speed="normal" data-days-per-frame="3" aria-pressed="false">Normal</button>
+            <button type="button" class="preset-button" data-speed="fast" data-days-per-frame="6" aria-pressed="false">Fast</button>
+          </div>
         </div>
 
         <p class="eot-readout" id="alignment-readout"></p>
@@ -338,7 +379,7 @@
   <script src="../src/planetaryMotionQuestions.js?v=202610101200"></script>
   <script src="../glossary.js?v=202609221600"></script>
   <script src="../quiz-ui.js?v=202609221100"></script>
-  <script src="solar-system-observation.js?v=202610101200"></script>
+  <script src="solar-system-observation.js?v=202610122223"></script>
   <script src="../nextPage.js?v=202609270100"></script>
 </body>
 </html>

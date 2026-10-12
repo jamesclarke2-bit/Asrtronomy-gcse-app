@@ -597,8 +597,33 @@
   // to the start of the range. Setting .value programmatically doesn't
   // fire the slider's own 'input' event, so this can't fight with the
   // "stop on manual drag" handler below.
+  //
+  // Speed (days advanced per frame) comes from each button's own
+  // data-days-per-frame, not a hand-typed JS lookup, so the HTML is the
+  // one place that relationship lives (and can be checked from it — see
+  // test/solarSystemObservation.test.js). The date slider's own step is
+  // "any" (not a whole number of days — see CLAUDE.md rule 12): the
+  // default Slow speed (0.75 days/frame) would otherwise get silently
+  // snapped to the nearest whole day on every frame.
 
-  const DAYS_PER_FRAME = 3;
+  const speedButtons = document.querySelectorAll('#speed-selector [data-speed]');
+  let speedDaysPerFrame = Number(
+    [...speedButtons].find((button) => button.classList.contains('preset-button-active')).dataset.daysPerFrame
+  );
+
+  function setSpeed(selectedButton) {
+    speedDaysPerFrame = Number(selectedButton.dataset.daysPerFrame);
+    speedButtons.forEach((button) => {
+      const active = button === selectedButton;
+      button.classList.toggle('preset-button-active', active);
+      button.setAttribute('aria-pressed', String(active));
+    });
+  }
+
+  speedButtons.forEach((button) => {
+    button.addEventListener('click', () => setSpeed(button));
+  });
+
   let animationFrameId = null;
 
   function stopAnimation() {
@@ -614,7 +639,10 @@
     playButton.textContent = '❚❚ Pause';
     playButton.setAttribute('aria-pressed', 'true');
     function step() {
-      let next = Number(dateSlider.value) + DAYS_PER_FRAME;
+      // speedDaysPerFrame is read fresh every frame, so changing speed
+      // mid-animation takes effect immediately without a restart, and
+      // the slider (read by update()) never falls out of step with it.
+      let next = Number(dateSlider.value) + speedDaysPerFrame;
       if (next > RANGE_DAYS) next = 0;
       dateSlider.value = next;
       update();

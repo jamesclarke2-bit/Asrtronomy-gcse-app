@@ -86,6 +86,22 @@ canvas {
   max-width: 700px;
 }
 
+/* sims/solar-system-observation.html's "Orbit and apparent position" row:
+   .diagrams-column's own real budget alongside the sidebar (~756px at a
+   1280px viewport) is narrower than two generic 420px .diagram caps plus
+   the row's gap, so the pair never sits side by side without its own,
+   narrower caps. The orbit chart is a simple square canvas that stays
+   legible much narrower than 420px, freeing room for its paired
+   apparent-position diagram (a denser retrograde-loop graph) to keep more
+   width for its own labels. */
+.diagram.orbit-chart-diagram {
+  max-width: 260px;
+}
+
+.diagram.apparent-position-diagram {
+  max-width: 460px;
+}
+
 .legend {
   font-size: 0.8rem;
   color: #555;
@@ -529,9 +545,13 @@ canvas {
 
 /* Nested in .diagrams-column (see sims/solar-system-observation.html), not
    a page-level section, so its spacing comes from that flex column's own
-   gap rather than a repeated margin-top. */
+   gap rather than a repeated margin-top. Wide enough for its own
+   .diagram-row (the orbit chart and the apparent-position graph) to sit
+   side by side at a reasonable size on a wide screen — .diagram-row's own
+   flex-wrap still stacks them, both fully visible, once the column is
+   too narrow for that, down to a phone. */
 .retrograde-section {
-  max-width: 700px;
+  max-width: 900px;
 }
 
 .concept-grid {
