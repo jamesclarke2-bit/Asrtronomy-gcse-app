@@ -118,7 +118,11 @@
       card.className = 'page-card';
       card.href = page.href;
 
-      const title = document.createElement('h4');
+      // h3, not h4: this card sits directly under the section's own h2
+      // ("Reference"), with no h3 of its own in between — unlike the
+      // Recommended path section above, where each page-card-title is an
+      // h4 nested under that phase's own h3 heading.
+      const title = document.createElement('h3');
       title.className = 'page-card-title';
       title.textContent = page.title;
       card.appendChild(title);
@@ -154,7 +158,11 @@
       card.className = 'page-card';
       card.href = page.href;
 
-      const title = document.createElement('h4');
+      // h3: this section's own heading is a <summary> (a disclosure
+      // widget, not an h1-h6), so the nearest real heading above these
+      // cards in the outline is "Reference"'s own h2 — same reasoning as
+      // renderReferencePages above.
+      const title = document.createElement('h3');
       title.className = 'page-card-title';
       title.textContent = page.title;
       card.appendChild(title);

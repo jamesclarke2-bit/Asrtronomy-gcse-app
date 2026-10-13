@@ -627,16 +627,27 @@ canvas {
    "What makes a dwarf planet?" diagram), each .concept-card stacked with
    a small connecting arrow between — reuses .concept-card's own box
    style rather than a second one, just centred and width-capped so it
-   doesn't stretch across the whole .notes-section column. */
+   doesn't stretch across the whole .notes-section column. width: 100%
+   matters at narrow viewports: without it, this shrink-to-fit flex
+   column sized itself from its children's own max-content (unwrapped,
+   one-line) width rather than the space actually available, overflowing
+   a 390px-wide screen by a few pixels. */
 .decision-flow {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0.4rem;
+  width: 100%;
   max-width: 420px;
 }
 
 .decision-flow .concept-card {
+  /* border-box so this 100%-width card's own padding and border count
+     inside that 100%, rather than adding onto it — .concept-card's own
+     1.25rem side padding and 1px border otherwise pushed the rendered
+     box about 42px past its container, the other half of the same
+     390px-wide overflow width: 100% on .decision-flow above fixes. */
+  box-sizing: border-box;
   width: 100%;
   text-align: center;
 }

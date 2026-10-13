@@ -17,11 +17,24 @@
  * whose wording depends on live page state rather than being fixed
  * (e.g. coordinates.html's NCP/SCP "pole" term, which the page itself
  * keeps current on every redraw).
+ *
+ * Idempotent per toggle: init marks every toggle it wires with
+ * WIRED_ATTRIBUTE, and skips any toggle that already carries it — so
+ * calling init again (a second Glossary.init on the page, or a page
+ * script re-running it after changing the dict) never attaches a second
+ * click handler to the same toggle. A page that wires some toggles
+ * itself (e.g. notes/solar-system-bodies.js's sortable table, whose
+ * per-body toggles are recreated on every sort rather than going through
+ * init at all) sets the same attribute itself, via Glossary.WIRED_ATTRIBUTE,
+ * so init still leaves those alone.
  */
 (function () {
+  const WIRED_ATTRIBUTE = 'data-glossary-wired';
+
   function init(definitions) {
     const dict = definitions || {};
     document.querySelectorAll('.glossary-toggle').forEach((button) => {
+      if (button.hasAttribute(WIRED_ATTRIBUTE)) return;
       const term = button.dataset.term;
       const definition = document.querySelector(`.glossary-definition[data-term="${term}"]`);
       if (!definition) return;
@@ -44,8 +57,9 @@
           }
         });
       }
+      button.setAttribute(WIRED_ATTRIBUTE, 'true');
     });
   }
 
-  window.Glossary = { init };
+  window.Glossary = { init, WIRED_ATTRIBUTE };
 })();

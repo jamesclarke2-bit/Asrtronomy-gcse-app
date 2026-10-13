@@ -6,7 +6,7 @@
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; form-action 'none'; base-uri 'self'" />
   <meta name="referrer" content="no-referrer" />
   <title>Formulae and Data Sheet</title>
-  <link rel="stylesheet" href="../styles.css?v=202610130705" />
+  <link rel="stylesheet" href="../styles.css?v=202610131052" />
   <link rel="icon" type="image/svg+xml" href="../favicon.svg?v=202610130720" />
 </head>
 <body>
@@ -26,47 +26,49 @@
         Six equations the exam gives you. Where a page on this site lets you work with one
         interactively, it's linked; the rest are marked "Coming soon".
       </p>
-      <table class="shower-table">
-        <thead>
-          <tr>
-            <th scope="col">Equation</th>
-            <th scope="col">Formula</th>
-            <th scope="col">Used on</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th scope="row">Equation of time</th>
-            <td>Equation of time = AST &minus; MST</td>
-            <td><a href="../sims/equation-of-time.html">Equation of Time</a></td>
-          </tr>
-          <tr>
-            <th scope="row">Kepler's third law</th>
-            <td>T&sup2; / r&sup3; = constant</td>
-            <td><a href="../sims/kepler.html">Kepler's Laws of Planetary Motion</a></td>
-          </tr>
-          <tr>
-            <th scope="row">Magnification</th>
-            <td>magnification = f<sub>objective</sub> / f<sub>eyepiece</sub></td>
-            <td><a href="telescopes.html">Telescopes: Magnification, Light Grasp and Resolution</a></td>
-          </tr>
-          <tr>
-            <th scope="row">Distance modulus</th>
-            <td>m &minus; M = 5 log&#8321;&#8320;(d) &minus; 5, d in parsecs</td>
-            <td>Coming soon</td>
-          </tr>
-          <tr>
-            <th scope="row">Redshift</th>
-            <td>(&lambda; &minus; &lambda;&#8320;) / &lambda;&#8320; = v / c</td>
-            <td>Coming soon</td>
-          </tr>
-          <tr>
-            <th scope="row">Hubble's law</th>
-            <td>v = H&#8320; &times; d</td>
-            <td>Coming soon</td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="table-scroll">
+        <table class="shower-table">
+          <thead>
+            <tr>
+              <th scope="col">Equation</th>
+              <th scope="col">Formula</th>
+              <th scope="col">Used on</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">Equation of time</th>
+              <td>Equation of time = AST &minus; MST</td>
+              <td><a href="../sims/equation-of-time.html">Equation of Time</a></td>
+            </tr>
+            <tr>
+              <th scope="row">Kepler's third law</th>
+              <td>T&sup2; / r&sup3; = constant</td>
+              <td><a href="../sims/kepler.html">Kepler's Laws of Planetary Motion</a></td>
+            </tr>
+            <tr>
+              <th scope="row">Magnification</th>
+              <td>magnification = f<sub>objective</sub> / f<sub>eyepiece</sub></td>
+              <td><a href="telescopes.html">Telescopes: Magnification, Light Grasp and Resolution</a></td>
+            </tr>
+            <tr>
+              <th scope="row">Distance modulus</th>
+              <td>m &minus; M = 5 log&#8321;&#8320;(d) &minus; 5, d in parsecs</td>
+              <td>Coming soon</td>
+            </tr>
+            <tr>
+              <th scope="row">Redshift</th>
+              <td>(&lambda; &minus; &lambda;&#8320;) / &lambda;&#8320; = v / c</td>
+              <td>Coming soon</td>
+            </tr>
+            <tr>
+              <th scope="row">Hubble's law</th>
+              <td>v = H&#8320; &times; d</td>
+              <td>Coming soon</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
       <p class="note">
         T is the orbital period and r the mean orbital radius for Kepler's third law &mdash; see
         <a href="../sims/kepler.html">Kepler's Laws of Planetary Motion</a> for the AU/years
@@ -85,15 +87,17 @@
         different scales: AU within the Solar System, light years and parsecs beyond it.
       </p>
       <span class="glossary-definition" data-term="parsec" hidden></span>
-      <table class="shower-table">
-        <thead>
-          <tr>
-            <th scope="col">Constant</th>
-            <th scope="col">Value</th>
-          </tr>
-        </thead>
-        <tbody id="constants-body"></tbody>
-      </table>
+      <div class="table-scroll">
+        <table class="shower-table">
+          <thead>
+            <tr>
+              <th scope="col">Constant</th>
+              <th scope="col">Value</th>
+            </tr>
+          </thead>
+          <tbody id="constants-body"></tbody>
+        </table>
+      </div>
     </section>
 
     <section class="notes-section" id="planet-data">
@@ -178,7 +182,7 @@
 
   <script src="../src/pages.js?v=202610091200"></script>
   <script src="../src/specData.js?v=202610051000"></script>
-  <script src="../glossary.js?v=202609221600"></script>
+  <script src="../glossary.js?v=202610131052"></script>
   <script src="data-sheet.js?v=202610072301"></script>
   <script src="../notesPage.js?v=202609252100"></script>
   <script src="../nextPage.js?v=202609270100"></script>

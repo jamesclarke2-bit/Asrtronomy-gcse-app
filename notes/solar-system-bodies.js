@@ -217,12 +217,18 @@
       // recreated every time the table is re-sorted, and re-running
       // Glossary.init on every sort would pile up a fresh click
       // listener on every *other* toggle on the page each time too.
+      // Marked with Glossary.WIRED_ATTRIBUTE so Glossary.init (called
+      // once, below, for the page's own static prose toggles) skips
+      // these rather than attaching its own second handler on top of
+      // this one — which otherwise opened and immediately re-closed on
+      // a single click, one handler undoing the other.
       const definition = document.querySelector(`.glossary-definition[data-term="${body.slug}"]`);
       toggle.addEventListener('click', () => {
         const isOpen = !definition.hidden;
         definition.hidden = isOpen;
         toggle.setAttribute('aria-expanded', String(!isOpen));
       });
+      toggle.setAttribute(Glossary.WIRED_ATTRIBUTE, 'true');
       nameCell.appendChild(toggle);
       tr.appendChild(nameCell);
 
