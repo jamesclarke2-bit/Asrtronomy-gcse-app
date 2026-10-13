@@ -28,18 +28,30 @@ function listHtmlFiles() {
 
 const PAGES = listHtmlFiles();
 
+const SKIP_MESSAGE = (err) =>
+  `Playwright's Chromium browser isn't installed — run "npx playwright install chromium" to enable this test (${err.message})`;
+
 let browser;
+let launchError;
 
 test.before(async () => {
-  browser = await chromium.launch();
+  try {
+    browser = await chromium.launch();
+  } catch (err) {
+    launchError = err;
+  }
 });
 
 test.after(async () => {
-  await browser.close();
+  if (browser) await browser.close();
 });
 
 PAGES.forEach((href) => {
-  test(`${href}: heading levels never skip (no hN directly followed by h(N+2) or deeper)`, async () => {
+  test(`${href}: heading levels never skip (no hN directly followed by h(N+2) or deeper)`, async (t) => {
+    if (launchError) {
+      t.skip(SKIP_MESSAGE(launchError));
+      return;
+    }
     const page = await browser.newPage();
     try {
       await page.goto('file://' + path.join(ROOT, href));

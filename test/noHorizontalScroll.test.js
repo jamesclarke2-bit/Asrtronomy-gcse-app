@@ -25,18 +25,30 @@ function listHtmlFiles() {
 
 const PAGES = listHtmlFiles();
 
+const SKIP_MESSAGE = (err) =>
+  `Playwright's Chromium browser isn't installed — run "npx playwright install chromium" to enable this test (${err.message})`;
+
 let browser;
+let launchError;
 
 test.before(async () => {
-  browser = await chromium.launch();
+  try {
+    browser = await chromium.launch();
+  } catch (err) {
+    launchError = err;
+  }
 });
 
 test.after(async () => {
-  await browser.close();
+  if (browser) await browser.close();
 });
 
 PAGES.forEach((href) => {
-  test(`${href}: no sideways scroll at 390px wide`, async () => {
+  test(`${href}: no sideways scroll at 390px wide`, async (t) => {
+    if (launchError) {
+      t.skip(SKIP_MESSAGE(launchError));
+      return;
+    }
     const page = await browser.newPage({ viewport: { width: 390, height: 800 } });
     try {
       await page.goto('file://' + path.join(ROOT, href));

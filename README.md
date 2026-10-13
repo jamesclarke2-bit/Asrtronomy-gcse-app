@@ -23,6 +23,16 @@ That runs every file in `test/`: unit tests for the astronomy engines in `src/`,
 checks on the HTML pages themselves (page templates, curriculum coverage, security headers, and
 so on).
 
+`npm install` installs the Playwright *package* but not the browser it drives. The handful of
+tests that need a real rendered page (layout and accessibility checks that can't be read off the
+raw HTML) notice this and skip themselves with a message rather than failing the whole suite. Run
+
+```sh
+npx playwright install chromium
+```
+
+once to download that browser and have those tests actually run instead of skip.
+
 ## Privacy
 
 This site collects and sends nothing. There's no analytics, no tracking pixel, no sign-up, and no

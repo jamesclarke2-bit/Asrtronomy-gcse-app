@@ -19,8 +19,17 @@ const FIXTURE_HTML = `<!DOCTYPE html>
 </body>
 </html>`;
 
-async function withGlossaryPage(run) {
-  const browser = await chromium.launch();
+const SKIP_MESSAGE = (err) =>
+  `Playwright's Chromium browser isn't installed — run "npx playwright install chromium" to enable this test (${err.message})`;
+
+async function withGlossaryPage(t, run) {
+  let browser;
+  try {
+    browser = await chromium.launch();
+  } catch (err) {
+    t.skip(SKIP_MESSAGE(err));
+    return;
+  }
   try {
     const page = await browser.newPage();
     await page.setContent(FIXTURE_HTML);
@@ -31,8 +40,8 @@ async function withGlossaryPage(run) {
   }
 }
 
-test('Glossary.init wires a toggle: one click opens its definition', async () => {
-  await withGlossaryPage(async (page) => {
+test('Glossary.init wires a toggle: one click opens its definition', async (t) => {
+  await withGlossaryPage(t, async (page) => {
     await page.evaluate(() => window.Glossary.init({ demo: 'A demo term.' }));
     await page.click('.glossary-toggle');
     const hidden = await page.$eval('.glossary-definition', (el) => el.hidden);
@@ -40,8 +49,8 @@ test('Glossary.init wires a toggle: one click opens its definition', async () =>
   });
 });
 
-test('calling Glossary.init a second time on the same toggle attaches exactly one handler: one click still only opens it, not opens-then-closes', async () => {
-  await withGlossaryPage(async (page) => {
+test('calling Glossary.init a second time on the same toggle attaches exactly one handler: one click still only opens it, not opens-then-closes', async (t) => {
+  await withGlossaryPage(t, async (page) => {
     await page.evaluate(() => window.Glossary.init({ demo: 'A demo term.' }));
     await page.evaluate(() => window.Glossary.init({ demo: 'A demo term.' }));
     await page.click('.glossary-toggle');
@@ -53,8 +62,8 @@ test('calling Glossary.init a second time on the same toggle attaches exactly on
   });
 });
 
-test('Glossary.init marks every toggle it wires with its own WIRED_ATTRIBUTE, so other code can set the same mark to opt out', async () => {
-  await withGlossaryPage(async (page) => {
+test('Glossary.init marks every toggle it wires with its own WIRED_ATTRIBUTE, so other code can set the same mark to opt out', async (t) => {
+  await withGlossaryPage(t, async (page) => {
     const attrName = await page.evaluate(() => window.Glossary.WIRED_ATTRIBUTE);
     assert.ok(attrName, 'Glossary.WIRED_ATTRIBUTE should be exported');
 
@@ -64,8 +73,8 @@ test('Glossary.init marks every toggle it wires with its own WIRED_ATTRIBUTE, so
   });
 });
 
-test('a toggle pre-marked with Glossary.WIRED_ATTRIBUTE (e.g. wired directly by a page script) is skipped by init, even though its own term is in the dict', async () => {
-  await withGlossaryPage(async (page) => {
+test('a toggle pre-marked with Glossary.WIRED_ATTRIBUTE (e.g. wired directly by a page script) is skipped by init, even though its own term is in the dict', async (t) => {
+  await withGlossaryPage(t, async (page) => {
     // Simulate notes/solar-system-bodies.js's table: it wires its own
     // click handler directly, then sets the same mark glossary.js uses,
     // so a later Glossary.init() call leaves that handler alone.
