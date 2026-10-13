@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>From Earth-Centred to Sun-Centred</title>
-  <link rel="stylesheet" href="../styles.css?v=202610130634" />
+  <link rel="stylesheet" href="../styles.css?v=202610130705" />
 </head>
 <body>
   <main>
@@ -121,28 +121,19 @@
 
     <section class="notes-section" id="timeline">
       <h2>A timeline</h2>
-      <p>How the model changed, roughly a century at a time.</p>
-      <div class="concept-grid">
-        <div class="concept-card">
-          <h3>Ptolemy</h3>
-          <p>About 150 CE &mdash; the deferent-and-epicycle model</p>
-        </div>
-        <div class="concept-card">
-          <h3>Copernicus</h3>
-          <p>1543 &mdash; a Sun-centred model, still circular orbits</p>
-        </div>
-        <div class="concept-card">
-          <h3>Brahe's observations</h3>
-          <p>1570s&ndash;1590s &mdash; naked-eye precision on Mars</p>
-        </div>
-        <div class="concept-card">
-          <h3>Galileo</h3>
-          <p>1610 &mdash; Jupiter's moons and Venus's phases</p>
-        </div>
-        <div class="concept-card">
-          <h3>Kepler</h3>
-          <p>1609 and 1619 &mdash; three laws, orbits as ellipses</p>
-        </div>
+      <p>
+        How the model changed: thirteen centuries where almost nothing did, then a burst of
+        rival ideas within about 150 years. Tap a point for what changed and why.
+      </p>
+
+      <div class="diagram wide-diagram">
+        <svg
+          id="timeline-diagram"
+          class="responsive-svg"
+          viewBox="0 0 700 150"
+          role="img"
+          aria-label="A time axis from about 150 CE to 1700, with a tick for each of six events: Ptolemy around 150 CE, then Copernicus, Brahe, Kepler, Galileo and Newton all within the last 150 years of the axis — showing a long gap followed by a burst of activity. Each event is a tappable point"
+        ></svg>
       </div>
       <p class="note">Dates are a first draft, to be checked by the teacher.</p>
     </section>
@@ -153,27 +144,63 @@
 
       <div class="diagram-row">
         <div class="diagram diagram-pair">
+          <h3>Venus's real orbit</h3>
           <canvas
-            id="venus-phases-geocentric"
+            id="venus-orbit-diagram"
             width="260"
-            height="110"
-            aria-label="Venus kept near the Earth-Sun line, so from Earth it can only ever show a thin crescent, however fat or thin"
+            height="260"
+            aria-label="Top-down view of the Sun, Earth and Venus at the selected date, with Earth's and Venus's orbits drawn"
           ></canvas>
-          <p class="diagram-caption">Earth-centred model predicts: never more than a crescent.</p>
+          <p class="legend">
+            <span class="legend-dot" style="background:#f5a623"></span> Sun
+            &nbsp; <span class="legend-dot" style="background:#2a6bd6"></span> Earth
+            &nbsp; <span class="legend-dot" style="background:#c0392b"></span> Venus
+          </p>
         </div>
         <div class="diagram diagram-pair">
+          <h3>Venus as seen from Earth</h3>
           <canvas
-            id="venus-phases-heliocentric"
+            id="venus-earth-view"
             width="260"
-            height="110"
-            aria-label="Venus orbiting the Sun, so from Earth it shows a full range of phases from crescent through to nearly full, exactly what Galileo observed"
+            height="260"
+            aria-label="Venus's phase and apparent size as seen from Earth at the selected date"
           ></canvas>
-          <p class="diagram-caption">Sun-centred model &mdash; and what Galileo saw: the full set of phases.</p>
+          <p class="eot-readout" id="venus-phase-readout"></p>
         </div>
       </div>
+
+      <div class="control">
+        <label for="venus-date-slider">Date: <span id="venus-date-label"></span></label>
+        <input type="range" id="venus-date-slider" min="0" max="600" value="420" />
+      </div>
+      <p class="note">Dates are a first draft, to be checked by the teacher.</p>
+
+      <p>
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="venus-geocentric-problem" aria-label="What did the Earth-centred model predict for Venus?" aria-expanded="false">The Earth-centred model's problem</button>
+      </p>
+      <div class="glossary-definition timeline-event-detail" data-term="venus-geocentric-problem" hidden>
+        <svg width="90" height="70" viewBox="0 0 90 70" aria-hidden="true">
+          <circle cx="20" cy="35" r="7" fill="#2a6bd6" stroke="#173d75" stroke-width="1.25"></circle>
+          <line x1="27" y1="35" x2="85" y2="35" stroke="#cdd7e1" stroke-width="1" stroke-dasharray="2,2"></line>
+          <circle cx="85" cy="35" r="6" fill="#f5a623" stroke="#ad7312" stroke-width="1.25"></circle>
+          <circle cx="56" cy="35" r="9" fill="none" stroke="#b7c3d1" stroke-width="1.25" stroke-dasharray="2,2"></circle>
+          <circle cx="60" cy="31" r="3.5" fill="#c0392b" stroke="#7a2015" stroke-width="1"></circle>
+        </svg>
+        <p>
+          In Ptolemy's model, Venus's epicycle is centred on the line joining Earth and the Sun, so
+          Venus is always kept close to that line, between Earth and the Sun &mdash; it can never
+          swing round to the far side. From Earth we would therefore only ever see its mostly dark
+          side: new to a thin crescent, never a half or full Venus.
+        </p>
+      </div>
+
+      <p>
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="venus-heliocentric-prediction" aria-label="What did the Sun-centred model predict for Venus?" aria-expanded="false">The Sun-centred prediction</button>
+      </p>
+      <div class="glossary-definition" data-term="venus-heliocentric-prediction" hidden></div>
     </section>
 
-    <section class="notes-section" id="galileo-jupiter">
+    <section class="notes-section" id="galileo">
       <h2>Galileo and Jupiter</h2>
       <p>Four points of light, swapping sides around Jupiter night after night.</p>
 
@@ -248,7 +275,7 @@
         <strong>Common exam confusion:</strong> Jupiter's moons showed that <em>not everything</em>
         orbits Earth, a general point against geocentrism. It didn't by itself prove the Sun-centred
         model.
-        <a href="#galileo-jupiter">Galileo and Jupiter &uarr;</a>
+        <a href="#galileo">Galileo and Jupiter &uarr;</a>
       </p>
       <p class="exam-tip">
         <strong>Common exam confusion:</strong> Venus's phases are the more specific, direct
@@ -297,15 +324,15 @@
 
   <script src="../src/curriculum.js?v=202610072300"></script>
   <script src="../src/pages.js?v=202610091200"></script>
-  <script src="../src/geocentricHeliocentricQuestions.js?v=202610101500"></script>
+  <script src="../src/geocentricHeliocentricQuestions.js?v=202610130705"></script>
   <script src="../src/epicycleModel.js?v=202610051100"></script>
-  <script src="../src/planetaryMotion.js?v=202610101500"></script>
+  <script src="../src/planetaryMotion.js?v=202610130705"></script>
   <script src="../src/orbitalMechanics.js?v=202610101500"></script>
   <script src="../src/galileanMoons.js?v=202610101500"></script>
   <script src="../src/animationTiming.js?v=202610130606"></script>
   <script src="../glossary.js?v=202609221600"></script>
   <script src="../quiz-ui.js?v=202609221100"></script>
-  <script src="geocentric-to-heliocentric.js?v=202610130606"></script>
+  <script src="geocentric-to-heliocentric.js?v=202610130705"></script>
   <script src="../notesPage.js?v=202609252100"></script>
   <script src="../nextPage.js?v=202609270100"></script>
 </body>

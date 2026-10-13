@@ -290,6 +290,37 @@ function zodiacSignForLongitude(deg) {
   return ZODIAC_SIGNS[Math.floor(normalizeDeg(deg) / 30) % 12];
 }
 
+/** Earth-planet distance, in AU, at the given date. */
+function distanceFromEarthAU(planetKey, date) {
+  const earth = heliocentricPosition('earth', date);
+  const planet = heliocentricPosition(planetKey, date);
+  return Math.hypot(planet.x - earth.x, planet.y - earth.y);
+}
+
+/**
+ * Illuminated fraction (0-1) of the planet's disc as seen from Earth —
+ * the classic phase relation k = (1 + cos(phase angle)) / 2, where the
+ * phase angle is the Sun-planet-Earth angle (the angle AT the planet,
+ * unlike elongationDeg's angle at Earth): 0 degrees at superior
+ * conjunction (Sun and Earth both roughly the same direction from the
+ * planet — fully lit, far side of the Sun), 180 degrees at inferior
+ * conjunction (Earth sees the planet's unlit side, passing between
+ * Earth and the Sun). Most directly relevant to an inferior planet
+ * (Mercury, Venus), whose phase angle swings through this whole range;
+ * a superior planet's phase angle from Earth's own orbit is always
+ * small, so it reads as nearly fully lit (k close to 1) throughout.
+ */
+function illuminatedFraction(planetKey, date) {
+  const earth = heliocentricPosition('earth', date);
+  const planet = heliocentricPosition(planetKey, date);
+  const toEarth = { x: earth.x - planet.x, y: earth.y - planet.y };
+  const toSun = { x: -planet.x, y: -planet.y };
+  const magProduct = Math.hypot(toEarth.x, toEarth.y) * Math.hypot(toSun.x, toSun.y);
+  if (magProduct === 0) return 1;
+  const cosPhaseAngle = (toEarth.x * toSun.x + toEarth.y * toSun.y) / magProduct;
+  return (1 + Math.max(-1, Math.min(1, cosPhaseAngle))) / 2;
+}
+
 const api = {
   PLANETS,
   heliocentricLongitude,
@@ -307,6 +338,8 @@ const api = {
   GREATEST_ELONGATION_THRESHOLD_DEG,
   ZODIAC_SIGNS,
   zodiacSignForLongitude,
+  distanceFromEarthAU,
+  illuminatedFraction,
 };
 
 if (typeof module !== 'undefined' && module.exports) {

@@ -53,12 +53,13 @@ canvas {
   height: auto;
 }
 
-/* sims/shadows-and-sundials.html's sundial/clock-time bar chart: a fixed
-   width/height (rather than this scalable viewBox + CSS size) overflowed
-   a 390px-wide screen by 35px. Scoped to this one SVG, not a sitewide
-   rule, since a couple of other pages' SVGs are small fixed-size icons
-   that are meant to stay their own size regardless of container width. */
-#offset-breakdown {
+/* An SVG sized from its own viewBox rather than a fixed width/height
+   attribute (a fixed one overflowed a 390px screen by 35px on
+   sims/shadows-and-sundials.html's bar chart). Opt-in via this class,
+   not a sitewide rule, since a couple of other pages' SVGs are small
+   fixed-size icons meant to stay their own size regardless of container
+   width. */
+.responsive-svg {
   display: block;
   width: 100%;
   height: auto;
@@ -900,6 +901,23 @@ canvas {
 
 .challenge-step {
   margin: 0.75rem 0;
+}
+
+/* notes/geocentric-to-heliocentric.html's timeline: each tapped event's
+   reveal panel pairs a small model drawing with its explanation text,
+   side by side. */
+.timeline-event-detail {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.timeline-event-detail svg {
+  flex: none;
+}
+
+.timeline-event-detail p {
+  margin: 0;
 }
 
 .mode-toggle {

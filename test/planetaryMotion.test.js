@@ -247,6 +247,32 @@ test('configurationName names every stage for an inner planet: inferior/superior
   }
 });
 
+test('illuminatedFraction: 0 at inferior conjunction, 1 at superior conjunction, about 0.5 at greatest elongation', () => {
+  assert.ok(
+    PlanetaryMotion.illuminatedFraction('venus', dayDate(VENUS_INFERIOR_CONJUNCTION_DAY)) < 0.01,
+    'inferior conjunction: Venus shows its unlit side to Earth'
+  );
+  assert.ok(
+    PlanetaryMotion.illuminatedFraction('venus', dayDate(744)) > 0.99,
+    'superior conjunction: Venus shows its fully-lit side to Earth'
+  );
+
+  const greatestEasternDay = 381; // same reference days as configurationName's own test above
+  const greatestWesternDay = 523;
+  [greatestEasternDay, greatestWesternDay].forEach((day) => {
+    const fraction = PlanetaryMotion.illuminatedFraction('venus', dayDate(day));
+    assert.ok(Math.abs(fraction - 0.5) < 0.02, `expected ≈0.5 at greatest elongation (day ${day}), got ${fraction.toFixed(3)}`);
+  });
+});
+
+test('distanceFromEarthAU: Venus is about 6.2x farther at superior conjunction than at inferior conjunction', () => {
+  const inferior = PlanetaryMotion.distanceFromEarthAU('venus', dayDate(VENUS_INFERIOR_CONJUNCTION_DAY));
+  const superior = PlanetaryMotion.distanceFromEarthAU('venus', dayDate(744));
+  assert.ok(Math.abs(inferior - 0.277) < 0.01, `distance at inferior conjunction: expected ≈0.277 AU, got ${inferior.toFixed(4)}`);
+  assert.ok(Math.abs(superior - 1.723) < 0.01, `distance at superior conjunction: expected ≈1.723 AU, got ${superior.toFixed(4)}`);
+  assert.ok(Math.abs(superior / inferior - 6.2) < 0.1, `distance ratio: expected ≈6.2, got ${(superior / inferior).toFixed(2)}`);
+});
+
 test('configurationName names every stage for an outer planet: conjunction, opposition, between — never inferior/superior or greatest elongation', () => {
   assert.equal(PlanetaryMotion.configurationName('mars', dayDate(MARS_OPPOSITION_DAY)), 'opposition');
   assert.equal(PlanetaryMotion.configurationName('mars', dayDate(MARS_OPPOSITION_DAY + 390)), 'conjunction');

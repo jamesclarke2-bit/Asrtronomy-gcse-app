@@ -140,6 +140,28 @@ function makeQuestions() {
       },
     },
     {
+      id: 'full-venus-disproof',
+      units: ['u3.15'],
+      type: 'choice',
+      prompt: 'Galileo saw Venus look fully lit on some dates. Why does that one observation, by itself, rule out the Earth-centred model?',
+      options: [
+        "A full Venus needs Venus on the far side of the Sun from Earth. Ptolemy's epicycle keeps Venus's whole orbit centred on the Earth-Sun line, so it can never swing round to that far side and show a full disc",
+        'A full Venus shows Venus is closer to Earth than the Moon is',
+        "It doesn't rule anything out — a full Venus is equally possible in both models",
+        'A full Venus shows Venus has no atmosphere',
+      ],
+      check(value) {
+        const correct =
+          value ===
+          "A full Venus needs Venus on the far side of the Sun from Earth. Ptolemy's epicycle keeps Venus's whole orbit centred on the Earth-Sun line, so it can never swing round to that far side and show a full disc";
+        return {
+          correct,
+          message:
+            "Full illumination needs the Sun directly behind Venus as seen from Earth — Venus on the Sun's far side. In Ptolemy's model, Venus's epicycle is centred on the Earth-Sun line, keeping Venus near that line, between Earth and the Sun, at best only reaching something like a half-lit disc. A genuinely full Venus is geometrically impossible there, however the model's other details are adjusted — only a Sun-centred orbit, which lets Venus swing all the way round to the far side of the Sun, predicts it could happen at all.",
+        };
+      },
+    },
+    {
       id: 'jupiter-moons',
       units: ['u3.15'],
       type: 'choice',

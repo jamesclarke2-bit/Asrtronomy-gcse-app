@@ -292,6 +292,179 @@
     }
   }
 
+  // --- A timeline: a real time axis from 150 CE to 1700 ---------------
+  //
+  // Events are placed at their TRUE year on the axis itself (tick marks
+  // and gridlines), so the thirteen-century gap before Copernicus and
+  // the cluster of ideas after him are genuinely visible in the spacing.
+  // Five of the six events fall within the axis's last ~10% (1543-1687),
+  // too close together to also host a legible, individually-tappable
+  // marker right on the axis — so each marker/label instead sits at a
+  // hand-spaced "display" position above the axis, joined to its own
+  // true position by a thin leader line. The leader lines' convergence
+  // near the right-hand end is itself part of the picture: it's what a
+  // burst of activity within 150 years looks like next to 1400 quiet
+  // ones.
+  const TIMELINE_START_YEAR = 150;
+  const TIMELINE_END_YEAR = 1700;
+  const TIMELINE_MARGIN_LEFT = 16;
+  const TIMELINE_MARGIN_RIGHT = 16;
+  const TIMELINE_VIEWBOX_WIDTH = 700;
+  const TIMELINE_PLOT_WIDTH = TIMELINE_VIEWBOX_WIDTH - TIMELINE_MARGIN_LEFT - TIMELINE_MARGIN_RIGHT;
+  const TIMELINE_AXIS_Y = 110;
+  const TIMELINE_MARKER_Y = 40;
+
+  function timelineTrueX(year) {
+    return TIMELINE_MARGIN_LEFT + ((year - TIMELINE_START_YEAR) / (TIMELINE_END_YEAR - TIMELINE_START_YEAR)) * TIMELINE_PLOT_WIDTH;
+  }
+
+  // A small illustrative drawing of the orbital model current at each
+  // event, reused across events that share one (see each event's own
+  // `model` below) — Earth-centred with epicycles, Sun-centred circles,
+  // or Sun-centred ellipses, the three shapes this whole page's history
+  // actually passes through.
+  function timelineModelIconSvg(model) {
+    if (model === 'epicycles') {
+      return (
+        '<svg width="52" height="52" viewBox="0 0 52 52" aria-hidden="true">' +
+        '<circle cx="26" cy="26" r="20" fill="none" stroke="#b7c3d1" stroke-width="1.5" stroke-dasharray="3,3"></circle>' +
+        '<circle cx="26" cy="26" r="3" fill="#2a6bd6"></circle>' +
+        '<circle cx="41" cy="18" r="7" fill="none" stroke="#c0392b" stroke-width="1.5" stroke-dasharray="2,2"></circle>' +
+        '<circle cx="45" cy="14" r="2.5" fill="#c0392b"></circle>' +
+        '</svg>'
+      );
+    }
+    if (model === 'ellipses') {
+      return (
+        '<svg width="52" height="52" viewBox="0 0 52 52" aria-hidden="true">' +
+        '<ellipse cx="28" cy="26" rx="21" ry="13" fill="none" stroke="#2a6bd6" stroke-width="1.5"></ellipse>' +
+        '<circle cx="13" cy="26" r="4" fill="#f5a623"></circle>' +
+        '<circle cx="45" cy="26" r="2.5" fill="#2a6bd6"></circle>' +
+        '</svg>'
+      );
+    }
+    // 'circles': Sun-centred, still circular orbits.
+    return (
+      '<svg width="52" height="52" viewBox="0 0 52 52" aria-hidden="true">' +
+      '<circle cx="26" cy="26" r="4" fill="#f5a623"></circle>' +
+      '<circle cx="26" cy="26" r="13" fill="none" stroke="#2a6bd6" stroke-width="1.25"></circle>' +
+      '<circle cx="26" cy="26" r="20" fill="none" stroke="#c0392b" stroke-width="1.25"></circle>' +
+      '<circle cx="39" cy="26" r="2.5" fill="#2a6bd6"></circle>' +
+      '<circle cx="6" cy="26" r="2" fill="#c0392b"></circle>' +
+      '</svg>'
+    );
+  }
+
+  const TIMELINE_EVENTS = [
+    {
+      id: 'ptolemy',
+      year: 150,
+      displayX: 50, // nudged right of its true position (the axis's own left edge) so its centred label isn't clipped
+      dateLabel: 'About 150 CE',
+      label: 'Ptolemy',
+      model: 'epicycles',
+      detail:
+        'Ptolemy fixed Earth at the centre and gave each planet a small epicycle circle riding on a larger deferent — the extra loop needed to reproduce retrograde motion and brightness changes, which a single circle around a fixed Earth could not.',
+    },
+    {
+      id: 'copernicus',
+      year: 1543,
+      displayX: 150,
+      dateLabel: '1543',
+      label: 'Copernicus',
+      model: 'circles',
+      detail:
+        'Copernicus put the Sun at the centre instead, with Earth and the other planets on circular orbits around it. Retrograde motion now fell out naturally, from Earth overtaking (or being overtaken by) another planet on its own orbit — no epicycles needed for that — though circular orbits alone still left small errors, which Copernicus had to patch with epicycles of his own, smaller than Ptolemy’s.',
+    },
+    {
+      id: 'brahe',
+      year: 1588,
+      displayX: 300,
+      dateLabel: '1576 to 1601',
+      label: 'Brahe’s observations',
+      model: 'circles',
+      detail:
+        'Tycho Brahe measured planetary positions, Mars’s especially, to about one arcminute using naked-eye instruments — the most accurate data before the telescope existed. It didn’t fit a circular orbit, even Copernicus’s Sun-centred one, though the mismatch was too small to have been caught by anyone less precise.',
+    },
+    {
+      id: 'kepler',
+      year: 1609,
+      displayX: 440,
+      dateLabel: '1609, then 1619',
+      label: 'Kepler',
+      model: 'ellipses',
+      detail:
+        'Using Brahe’s own data after his death, Kepler found in 1609 that Mars’s orbit was an ellipse with the Sun at one focus, not a circle (his first law), and that a line from the Sun to a planet sweeps out equal areas in equal times, so a planet moves fastest nearest the Sun (his second law). In 1619 he added a third: a planet’s orbital period squared is proportional to its orbit’s size cubed, tying every planet’s period to its distance from the Sun in one relationship.',
+    },
+    {
+      id: 'galileo',
+      year: 1610,
+      displayX: 560,
+      dateLabel: '1610',
+      label: 'Galileo',
+      model: 'circles',
+      detail:
+        'Galileo’s telescope showed Jupiter’s four largest moons circling Jupiter, not Earth, and Venus showing a full range of phases and a changing apparent size — only possible if Venus orbits the Sun, not Earth. See "Venus: the test" and "Galileo and Jupiter" below.',
+    },
+    {
+      id: 'newton',
+      year: 1687,
+      displayX: 670, // nudged left of its true position so its centred label isn't clipped at the viewBox's right edge
+      dateLabel: '1687',
+      label: 'Newton',
+      model: 'ellipses',
+      detail:
+        'Newton showed that a single inverse-square law of gravity between any two masses predicts exactly Kepler’s three laws as a consequence, not a separate set of rules to assume — the same force that makes an apple fall keeps every planet in its ellipse.',
+    },
+  ];
+
+  function renderTimeline() {
+    const svg = document.getElementById('timeline-diagram');
+    if (!svg) return;
+
+    let gridlines = '';
+    for (let year = 200; year <= 1600; year += 200) {
+      const x = timelineTrueX(year);
+      gridlines +=
+        `<line x1="${x}" y1="${TIMELINE_AXIS_Y - 4}" x2="${x}" y2="${TIMELINE_AXIS_Y + 4}" stroke="#cdd7e1" stroke-width="1"></line>` +
+        `<text x="${x}" y="${TIMELINE_AXIS_Y + 16}" font-size="9" fill="#8a97a5" text-anchor="middle">${year}</text>`;
+    }
+
+    let markers = '';
+    let defs = '';
+    TIMELINE_EVENTS.forEach((event) => {
+      const trueX = timelineTrueX(event.year);
+      const term = `timeline-${event.id}`;
+
+      markers +=
+        `<line x1="${event.displayX}" y1="${TIMELINE_MARKER_Y + 7}" x2="${trueX}" y2="${TIMELINE_AXIS_Y}" stroke="#b7c3d1" stroke-width="1"></line>` +
+        `<g class="glossary-toggle diagram-region" data-term="${term}" tabindex="0" role="button" aria-expanded="false" aria-label="What changed with ${event.label}? (${event.dateLabel})">` +
+        `<circle cx="${event.displayX}" cy="${TIMELINE_MARKER_Y}" r="7" fill="#2a6bd6" stroke="#173d75" stroke-width="1.5"></circle>` +
+        `<text x="${event.displayX}" y="${TIMELINE_MARKER_Y - 12}" font-size="11" font-weight="600" fill="#2a2a2a" text-anchor="middle">${event.label}</text>` +
+        `<text x="${event.displayX}" y="${TIMELINE_MARKER_Y + 22}" font-size="9" fill="#555" text-anchor="middle">${event.dateLabel}</text>` +
+        `</g>`;
+
+      defs +=
+        '<div class="glossary-definition timeline-event-detail" data-term="' + term + '" hidden>' +
+        timelineModelIconSvg(event.model) +
+        `<p><strong>${event.label} — ${event.dateLabel}.</strong> ${event.detail}</p>` +
+        '</div>';
+    });
+
+    svg.innerHTML =
+      `<line x1="${TIMELINE_MARGIN_LEFT}" y1="${TIMELINE_AXIS_Y}" x2="${TIMELINE_VIEWBOX_WIDTH - TIMELINE_MARGIN_RIGHT}" y2="${TIMELINE_AXIS_Y}" stroke="#8a97a5" stroke-width="1.5"></line>` +
+      gridlines +
+      markers;
+
+    const container = svg.closest('.diagram');
+    if (container) {
+      const detailWrap = document.createElement('div');
+      detailWrap.id = 'timeline-event-details';
+      detailWrap.innerHTML = defs;
+      container.after(detailWrap);
+    }
+  }
+
   // --- Venus's phases: Earth-centred prediction vs Sun-centred/Galileo's view --
 
   // A simple terminator curve for an illuminated fraction (0 = fully dark,
@@ -336,40 +509,70 @@
     ctx.stroke();
   }
 
-  function drawPhaseStrip(canvasEl, discs) {
-    if (!canvasEl) return;
-    const ctx = canvasEl.getContext('2d');
-    ctx.clearRect(0, 0, canvasEl.width, canvasEl.height);
-    const r = 30;
-    const gap = canvasEl.width / discs.length;
-    discs.forEach((d, i) => {
-      const cx = gap * i + gap / 2;
-      const cy = canvasEl.height / 2;
-      drawPhaseDisc(ctx, cx, cy, r, d.illuminatedFraction, d.waxing);
-      ctx.fillStyle = '#555';
-      ctx.font = '11px sans-serif';
-      ctx.textAlign = 'center';
-      ctx.fillText(d.label, cx, canvasEl.height - 4);
-    });
+  // Both diagrams are driven by the engine, at the date the slider picks
+  // — not illustrative fixed values — via PlanetaryMotion's own
+  // heliocentricPosition, illuminatedFraction and distanceFromEarthAU
+  // (see src/planetaryMotion.js and test/planetaryMotion.test.js for the
+  // underlying geometry and its own tests).
+  const VENUS_START_DATE_MS = Date.UTC(2000, 0, 1, 12, 0, 0);
+  const venusDateSlider = document.getElementById('venus-date-slider');
+  const venusDateLabel = document.getElementById('venus-date-label');
+  const venusOrbitCanvas = document.getElementById('venus-orbit-diagram');
+  const venusEarthViewCanvas = document.getElementById('venus-earth-view');
+  const venusPhaseReadout = document.getElementById('venus-phase-readout');
+
+  // Venus's apparent disc radius scales as 1/distance (a closer object
+  // looks bigger) — calibrated so the two real extremes, about 0.28 AU
+  // at inferior conjunction and about 1.72 AU at superior conjunction,
+  // come out close to the "about six times bigger" ratio Galileo's own
+  // observations showed (1.72 / 0.28 ≈ 6.2 — see
+  // test/planetaryMotion.test.js's own distance-ratio test).
+  const VENUS_APPARENT_RADIUS_K = 13;
+
+  function updateVenusSection() {
+    if (!venusDateSlider) return;
+    const days = Number(venusDateSlider.value);
+    const date = new Date(VENUS_START_DATE_MS + days * 86400000);
+    venusDateLabel.textContent = date.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+
+    if (venusOrbitCanvas) {
+      const sun = { x: 0, y: 0 };
+      const earth = PlanetaryMotion.heliocentricPosition('earth', date);
+      const venus = PlanetaryMotion.heliocentricPosition('venus', date);
+      drawOrbitDiagram(
+        venusOrbitCanvas,
+        [
+          { x: sun.x, y: sun.y, label: 'Sun', color: '#f5a623', strokeColor: '#ad7312', radiusPx: 10, name: 'sun' },
+          { x: earth.x, y: earth.y, label: 'Earth', color: '#2a6bd6', strokeColor: '#173d75', radiusPx: 7, name: 'earth' },
+          { x: venus.x, y: venus.y, label: 'Venus', color: '#c0392b', strokeColor: '#7a2015', radiusPx: 6, name: 'venus' },
+        ],
+        'sun'
+      );
+    }
+
+    const illuminatedFraction = PlanetaryMotion.illuminatedFraction('venus', date);
+    const distanceAU = PlanetaryMotion.distanceFromEarthAU('venus', date);
+    // A later date's own illuminated fraction, to tell whether it's
+    // currently growing (waxing) or shrinking (waning) — the same
+    // numerical-derivative approach src/planetaryMotion.js's own
+    // retrograde-direction tests use, not a second geometric model.
+    const laterFraction = PlanetaryMotion.illuminatedFraction('venus', new Date(date.getTime() + 86400000));
+    const waxing = laterFraction >= illuminatedFraction;
+
+    if (venusEarthViewCanvas) {
+      const ctx = venusEarthViewCanvas.getContext('2d');
+      ctx.clearRect(0, 0, venusEarthViewCanvas.width, venusEarthViewCanvas.height);
+      const radiusPx = Math.min(70, VENUS_APPARENT_RADIUS_K / distanceAU);
+      drawPhaseDisc(ctx, venusEarthViewCanvas.width / 2, venusEarthViewCanvas.height / 2, radiusPx, illuminatedFraction, waxing);
+    }
+
+    if (venusPhaseReadout) {
+      venusPhaseReadout.textContent =
+        `Illuminated: ${Math.round(illuminatedFraction * 100)}% — distance from Earth: ${distanceAU.toFixed(2)} AU`;
+    }
   }
 
-  function drawVenusPhases() {
-    // Illustrative only, matching the claim already made in this
-    // section's own prose: in a strict Earth-centred model Venus stays
-    // close to the Earth-Sun line, so it can only ever show a thin
-    // crescent; a Sun-centred orbit lets it show the full range.
-    drawPhaseStrip(document.getElementById('venus-phases-geocentric'), [
-      { illuminatedFraction: 0.08, waxing: true, label: 'thin' },
-      { illuminatedFraction: 0.18, waxing: false, label: 'thin' },
-      { illuminatedFraction: 0.12, waxing: true, label: 'thin' },
-    ]);
-    drawPhaseStrip(document.getElementById('venus-phases-heliocentric'), [
-      { illuminatedFraction: 0.05, waxing: true, label: 'crescent' },
-      { illuminatedFraction: 0.5, waxing: true, label: 'half' },
-      { illuminatedFraction: 0.78, waxing: true, label: 'gibbous' },
-      { illuminatedFraction: 0.95, waxing: false, label: 'near-full' },
-    ]);
-  }
+  if (venusDateSlider) venusDateSlider.addEventListener('input', updateVenusSection);
 
   // --- Galileo and Jupiter: an animated strip of its four largest moons ----
 
@@ -558,6 +761,8 @@
       'Tycho Brahe measured planetary positions to about one arcminute using naked-eye instruments, decades before the telescope existed — far more precise than anything before him, and precise enough to show up Mars’s small but real departure from a circular orbit.',
     'kepler-struggle':
       'Kepler spent years trying to fit Brahe’s precise Mars data to a circular orbit, as every model before his had assumed, including Copernicus’s Sun-centred one. The data wouldn’t fit — the discrepancies were small, but Brahe’s observations were accurate enough that Kepler could tell they were real. Allowing the orbit to be an ellipse instead removed the discrepancy entirely.',
+    'venus-heliocentric-prediction':
+      'Sun-centred prediction: as Venus goes right round the Sun, its distance from Earth changes from about 0.28 AU (inferior conjunction, nearest) to about 1.72 AU (superior conjunction, farthest) — about six times closer at the near extreme, so it should look about six times bigger as a thin crescent than it does nearly full. The full phase only happens when Venus is far away, on the Sun’s far side. Galileo saw exactly this: the full set of phases, new to full, together with Venus visibly shrinking as it fattens.',
   };
 
   const thresholdOption = document.getElementById('loop-threshold-option');
@@ -570,7 +775,8 @@
   updateMotionStatus();
   updateLoopStatus();
   drawTwoModels();
-  drawVenusPhases();
+  renderTimeline();
+  updateVenusSection();
   drawJupiterMoons(jupiterDays);
   updateJupiterReadout();
   drawMarsEllipse();

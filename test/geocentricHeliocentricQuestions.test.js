@@ -65,6 +65,17 @@ test('venus-phases: the full-phase-range argument is the only correct option', (
   assert.equal(q.check("It didn't — Venus's phases are consistent with either model").correct, false);
 });
 
+test('full-venus-disproof: the far-side-of-the-Sun geometric argument is the only correct option', () => {
+  const questions = makeQuestions();
+  const q = findQuestion(questions, 'full-venus-disproof');
+  assert.ok(
+    q.check(
+      "A full Venus needs Venus on the far side of the Sun from Earth. Ptolemy's epicycle keeps Venus's whole orbit centred on the Earth-Sun line, so it can never swing round to that far side and show a full disc"
+    ).correct
+  );
+  assert.equal(q.check("It doesn't rule anything out — a full Venus is equally possible in both models").correct, false);
+});
+
 test('jupiter-moons: "not everything orbits Earth" is the only correct option', () => {
   const questions = makeQuestions();
   const q = findQuestion(questions, 'jupiter-moons');
