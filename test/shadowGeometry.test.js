@@ -11,6 +11,16 @@ test('shadow length = height / tan(altitude): a 1 m stick at 30° altitude gives
   closeTo(ShadowGeometry.shadowLengthM(1, 30), 1.732, 0.001, 'shadow length at 30°');
 });
 
+test('shadow length is proportional to stick height: doubling the height exactly doubles the shadow, at any altitude', () => {
+  [5, 15, 30, 45, 60, 75].forEach((altitude) => {
+    const base = ShadowGeometry.shadowLengthM(1, altitude);
+    const doubled = ShadowGeometry.shadowLengthM(2, altitude);
+    const halved = ShadowGeometry.shadowLengthM(0.5, altitude);
+    closeTo(doubled, base * 2, 1e-9, `double height at ${altitude}°`);
+    closeTo(halved, base * 0.5, 1e-9, `half height at ${altitude}°`);
+  });
+});
+
 test('shadowLengthM returns null once the Sun is at or below the horizon', () => {
   assert.equal(ShadowGeometry.shadowLengthM(1, 0), null);
   assert.equal(ShadowGeometry.shadowLengthM(1, -5), null);
@@ -123,4 +133,40 @@ test('the traced shadow minimum matches the time of solar noon from the existing
     }
   }
   closeTo(bestMinute, solarNoonUT, 1, 'traced shadow-length minimum vs. engine solar noon');
+});
+
+test("the midpoint of two independently-found equal-length shadow times matches the shortest-shadow time, to within a minute", () => {
+  // Independent of the app's own mirror formula (2*solarNoonUT - t): pick
+  // a morning minute, then SCAN the afternoon for the minute whose
+  // shadow length is closest to that morning minute's — the same
+  // "equal-shadow-length" construction a student performs by eye — and
+  // check that pair's own midpoint against the engine's solar noon.
+  const cases = [
+    { lat: 51.5, lon: -2.6, date: new Date(Date.UTC(2026, 3, 15)) }, // Bristol, April
+    { lat: -33.9, lon: 151.2, date: new Date(Date.UTC(2026, 5, 21)) }, // Sydney, June
+    { lat: 35.7, lon: 139.7, date: new Date(Date.UTC(2026, 9, 1)) }, // Tokyo, October
+  ];
+
+  cases.forEach(({ lat, lon, date }) => {
+    const { solarNoonUT } = SolarPosition.getSunriseSunset(date, lat, lon);
+    const morningMinute = solarNoonUT - 150;
+    const morningSun = SolarPosition.getSunPosition(new Date(date.getTime() + morningMinute * 60000), lat, lon);
+    const morningLength = ShadowGeometry.shadowLengthM(1, morningSun.altitude);
+
+    let bestAfternoonMinute = null;
+    let bestDiff = Infinity;
+    for (let minute = Math.round(solarNoonUT); minute < 1440; minute += 1) {
+      const sun = SolarPosition.getSunPosition(new Date(date.getTime() + minute * 60000), lat, lon);
+      const length = ShadowGeometry.shadowLengthM(1, sun.altitude);
+      if (length === null) continue;
+      const diff = Math.abs(length - morningLength);
+      if (diff < bestDiff) {
+        bestDiff = diff;
+        bestAfternoonMinute = minute;
+      }
+    }
+
+    const midpoint = (morningMinute + bestAfternoonMinute) / 2;
+    closeTo(midpoint, solarNoonUT, 1, `equal-shadow midpoint vs. solar noon at (${lat}, ${lon})`);
+  });
 });

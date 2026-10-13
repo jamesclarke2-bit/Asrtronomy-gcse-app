@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Shadows and Sundials</title>
-  <link rel="stylesheet" href="../styles.css?v=202610130606" />
+  <link rel="stylesheet" href="../styles.css?v=202610130634" />
 </head>
 <body>
   <main>
@@ -33,6 +33,9 @@
             &nbsp; <span class="legend-swatch legend-total"></span> Shortest shadow (local noon)
           </p>
           <p class="eot-readout" id="shadow-noon-summary"></p>
+          <p class="step-indicator" id="equal-shadow-step-indicator"></p>
+          <p class="eot-readout" id="equal-shadow-caption"></p>
+          <p class="eot-readout" id="equal-shadow-times"></p>
         </div>
 
         <section class="notes-section" id="shadow-stick-method">
@@ -41,13 +44,19 @@
             The shadow is shortest exactly when the Sun is highest for the day &mdash;
             <strong>local apparent noon</strong>. North of the Sun's declination the shadow then
             points due north; south of it, due south (the dashed curve above traces every shadow
-            tip through the day, and the ringed marker shows that shortest point). Tick
-            <strong>"Show equal-shadow-length construction"</strong> to find the same north-south
-            line without timing the exact minimum: move the time slider to any moment before noon,
-            and its mirror-image moment after noon casts an equally long shadow, since shadow
-            length depends only on how far from noon you are, not which side &mdash; the
+            tip through the day, and the ringed marker shows that shortest point). The
+            <strong>"Find north and noon with equal shadows"</strong> steps below find the same
+            north-south line without timing the exact minimum: move the time slider to any moment
+            before noon, and its mirror-image moment after noon casts an equally long shadow, since
+            shadow length depends only on how far from noon you are, not which side &mdash; the
             perpendicular bisector of the line joining those two tips passes exactly through true
             north-south.
+          </p>
+          <p class="note">
+            Worked example: a shadow marked at 09:12 in the morning and one of the same length at
+            14:48 in the afternoon have a midpoint of (09:12 + 14:48) &divide; 2 = 12:00 &mdash; so
+            that day's local apparent noon is 12:00, and the line joining the two marks runs due
+            east-west.
           </p>
         </section>
 
@@ -69,22 +78,83 @@
         </div>
 
         <section class="notes-section" id="longitude-method">
-          <h2>From a noon time to a longitude</h2>
+          <h2>Find your longitude from a shadow and a clock</h2>
           <p>
-            The equation of time shown above only depends on the date, not on where you are &mdash;
-            it's the same quantity the <a href="equation-of-time.html">Equation of Time</a> page
-            calculates. Scrub the challenge time slider until the shadow is as short as it gets:
-            that moment's UT clock time is the UT of local apparent noon.
+            What this is for: finding your longitude from nothing but a shadow and a clock &mdash;
+            no map, compass or GPS. The equation of time shown above only depends on the date, not
+            on where you are &mdash; it's the same quantity the
+            <a href="equation-of-time.html">Equation of Time</a> page calculates.
           </p>
-          <p class="formula">UT of local noon = 12:00 &minus; equation of time &minus; longitude &divide; 15 hours</p>
-          <p>Rearranged for longitude (east positive, so a negative answer is west):</p>
-          <p class="formula">longitude = 15 &times; (12:00 &minus; equation of time &minus; UT of local noon)</p>
-          <div class="control">
-            <label for="longitude-guess">Your longitude (&deg;, negative for west):</label>
-            <input type="number" id="longitude-guess" step="0.1" />
-            <button type="button" id="check-longitude" class="secondary-button">Check</button>
+          <p class="step-indicator" id="longitude-step-indicator"></p>
+
+          <div class="challenge-step" data-longitude-step="1">
+            <p>Find the time (UT) of the shortest shadow, using the UT time slider.</p>
+            <button type="button" class="secondary-button hint-button" data-hint-step="1">Hint</button>
+            <p class="note hint-panel" data-hint-step="1" hidden>
+              Drag the slider back and forth and watch "Shadow length now" above it: the shortest
+              reading is local apparent noon at the hidden longitude.
+            </p>
           </div>
-          <p class="question-feedback" id="longitude-feedback"></p>
+
+          <div class="challenge-step" data-longitude-step="2" hidden>
+            <p>
+              Look up the equation of time for this date (shown above), and work out the UT at
+              which the Sun would cross the meridian at longitude 0&deg;:
+            </p>
+            <p class="formula">UT of longitude-0&deg; noon = 12:00 &minus; equation of time</p>
+            <button type="button" class="secondary-button hint-button" data-hint-step="2">Hint</button>
+            <p class="note hint-panel" data-hint-step="2" hidden>
+              A positive equation of time means the Sun is running ahead of clock time &mdash;
+              subtract it from 12:00. Subtracting a negative value adds instead.
+            </p>
+          </div>
+
+          <div class="challenge-step" data-longitude-step="3" hidden>
+            <p>
+              The difference between your time (step 1) and the longitude-0&deg; time (step 2) is
+              4 minutes per degree of longitude &mdash; and east is earlier, since the Sun reaches
+              an eastern longitude's meridian before it reaches Greenwich's.
+            </p>
+            <p class="formula">longitude = (longitude-0&deg; time &minus; your time) &divide; 4 minutes/degree</p>
+            <button type="button" class="secondary-button hint-button" data-hint-step="3">Hint</button>
+            <p class="note hint-panel" data-hint-step="3" hidden>
+              Your noon earlier than the longitude-0&deg; time means east (positive); later means
+              west (negative).
+            </p>
+          </div>
+
+          <div class="challenge-step" data-longitude-step="4" hidden>
+            <p>Enter your longitude:</p>
+            <div class="control">
+              <label for="longitude-guess">Your longitude (&deg;, negative for west):</label>
+              <input type="number" id="longitude-guess" step="0.1" />
+              <button type="button" id="check-longitude" class="secondary-button">Check</button>
+            </div>
+            <p class="question-feedback" id="longitude-feedback"></p>
+            <button type="button" class="secondary-button hint-button" data-hint-step="4">Hint</button>
+            <p class="note hint-panel" data-hint-step="4" hidden>
+              longitude = 15 &times; (12:00 &minus; equation of time &minus; UT of local noon) &mdash;
+              the same relationship, rearranged into one line.
+            </p>
+          </div>
+
+          <div class="step-nav">
+            <button type="button" id="longitude-step-prev" class="secondary-button">&larr; Back</button>
+            <button type="button" id="longitude-step-next" class="secondary-button">Next &rarr;</button>
+          </div>
+
+          <p>
+            <button type="button" id="show-worked-example" class="secondary-button" aria-expanded="false">Show a worked example</button>
+            <button type="button" id="show-longitude-answer" class="secondary-button">Show the answer</button>
+          </p>
+          <div class="note" id="worked-example-panel" hidden>
+            <strong>Worked example.</strong> Step 1: the shortest shadow is found at 11:42 UT.
+            Step 2: that day's equation of time is +3.4 min, so the longitude-0&deg; noon is
+            12:00 &minus; 3.4 min = 11:56.6 UT. Step 3: the difference is
+            11:42 &minus; 11:56.6 = &minus;14.6 min &mdash; your noon came earlier, so you're east.
+            Step 4: 14.6 min &divide; 4 min/degree = 3.65&deg;, so the longitude is 3.65&deg; E.
+          </div>
+          <p class="eot-readout" id="longitude-answer-reveal"></p>
         </section>
 
         <div class="diagram">
@@ -128,13 +198,26 @@
           <h3>How sundial time and clock time differ</h3>
           <svg
             id="offset-breakdown"
-            viewBox="0 0 440 110"
-            width="440"
-            height="110"
+            viewBox="0 0 440 170"
             role="img"
-            aria-label="Bar chart showing how the longitude correction, the equation of time and the time zone's own offset from GMT add together to give the difference between sundial time and clock time"
+            aria-label="Bar chart showing how the longitude correction, the equation of time and the time zone's own offset from GMT add together to give the difference between sundial time and clock time, with a legend naming each segment's value in minutes"
           ></svg>
           <p class="panel-note" id="offset-breakdown-caption"></p>
+        </div>
+
+        <div class="diagram">
+          <h3>Where today's offset comes from</h3>
+          <canvas
+            id="shadows-eot-graph"
+            width="380"
+            height="180"
+            aria-label="The equation of time across the year, in minutes, with a marker at the currently selected date"
+          ></canvas>
+          <p class="panel-note">
+            This is the same equation of time used above &mdash; see the
+            <a href="equation-of-time.html">Equation of Time</a> page for why it has two bumps a
+            year.
+          </p>
         </div>
 
         <p class="note">
@@ -178,8 +261,13 @@
             <input type="range" id="height-slider" min="0.2" max="2" step="0.1" value="1" />
           </div>
 
-          <div class="control checkbox-control">
-            <label><input type="checkbox" id="equal-shadow-toggle" /> Show equal-shadow-length construction</label>
+        </div>
+
+        <div class="control-panel star-panel">
+          <h3 class="panel-title">Find north and noon with equal shadows</h3>
+          <div class="step-nav">
+            <button type="button" id="equal-shadow-prev" class="secondary-button">&larr; Back</button>
+            <button type="button" id="equal-shadow-next" class="secondary-button">Next &rarr;</button>
           </div>
         </div>
 
@@ -233,7 +321,7 @@
   <script src="../src/shadowGeometry.js?v=202610101700"></script>
   <script src="../src/shadowsAndSundialsQuestions.js?v=202610101700"></script>
   <script src="../quiz-ui.js?v=202609212100"></script>
-  <script src="shadows-and-sundials.js?v=202610101700"></script>
+  <script src="shadows-and-sundials.js?v=202610130634"></script>
   <script src="../nextPage.js?v=202609270100"></script>
 </body>
 </html>

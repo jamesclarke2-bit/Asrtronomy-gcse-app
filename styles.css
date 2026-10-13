@@ -53,6 +53,17 @@ canvas {
   height: auto;
 }
 
+/* sims/shadows-and-sundials.html's sundial/clock-time bar chart: a fixed
+   width/height (rather than this scalable viewBox + CSS size) overflowed
+   a 390px-wide screen by 35px. Scoped to this one SVG, not a sitewide
+   rule, since a couple of other pages' SVGs are small fixed-size icons
+   that are meant to stay their own size regardless of container width. */
+#offset-breakdown {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
 .diagram {
   max-width: 420px;
 }
@@ -857,6 +868,38 @@ canvas {
 .secondary-button[aria-pressed='true'] {
   background: #2a6bd6;
   color: #fff;
+}
+
+.secondary-button:disabled {
+  border-color: #cdd7e1;
+  color: #9aa5b1;
+  cursor: not-allowed;
+  background: #fff;
+}
+
+/* A numbered step-through (e.g. sims/shadows-and-sundials.html's "Find
+   north and noon with equal shadows" and its longitude challenge): a
+   short "Step n of m" label, and a Back/Next button pair sized to split
+   its row evenly. */
+.step-indicator {
+  margin: 0.75rem 0 0.25rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #2a6bd6;
+}
+
+.step-nav {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.step-nav .secondary-button {
+  flex: 1;
+  margin: 0.5rem 0;
+}
+
+.challenge-step {
+  margin: 0.75rem 0;
 }
 
 .mode-toggle {
