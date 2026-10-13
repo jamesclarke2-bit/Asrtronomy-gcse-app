@@ -461,8 +461,10 @@
     const ORBIT_SECONDS = 8;
     let lastTime = null;
     function step(now) {
-      if (lastTime === null) lastTime = now;
-      const elapsedSeconds = (now - lastTime) / 1000;
+      // Capped so a tab backgrounded mid-animation (rAF pauses while
+      // hidden) doesn't replay the whole missed gap as one huge jump in
+      // true anomaly the instant it's foregrounded again.
+      const elapsedSeconds = AnimationTiming.cappedElapsedSeconds(now, lastTime);
       lastTime = now;
       tidalState.trueAnomalyRad = (tidalState.trueAnomalyRad + (elapsedSeconds / ORBIT_SECONDS) * 2 * Math.PI) % (2 * Math.PI);
       updateTidal();

@@ -347,12 +347,15 @@
     playButton.textContent = '❚❚ Pause';
     playButton.setAttribute('aria-pressed', 'true');
     function step(now) {
-      if (lastFrameTime !== null) {
-        const dt = (now - lastFrameTime) / 1000;
+      // Capped so a tab backgrounded mid-animation (rAF pauses while
+      // hidden) doesn't replay the whole missed gap as one huge jump in
+      // mean anomaly the instant it's foregrounded again.
+      const dt = AnimationTiming.cappedElapsedSeconds(now, lastFrameTime);
+      lastFrameTime = now;
+      if (dt > 0) {
         state.meanAnomaly = (state.meanAnomaly + (2 * Math.PI * dt) / ORBIT_SECONDS) % (2 * Math.PI);
         redrawOrbitDiagrams();
       }
-      lastFrameTime = now;
       animationFrameId = requestAnimationFrame(step);
     }
     animationFrameId = requestAnimationFrame(step);

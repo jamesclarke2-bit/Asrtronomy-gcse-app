@@ -143,19 +143,21 @@
   // the start. Setting .value programmatically doesn't fire 'input', so
   // this can't fight with the "stop on manual drag" handler below.
   //
-  // A range input's value sanitisation snaps any value that isn't a whole
-  // multiple of its own step attribute — silently, even when set from
-  // script — so DAYS_PER_FRAME only actually moves the slider if it's a
-  // multiple of day-slider's step (0.01 in the HTML). A mismatch here
-  // doesn't throw or log anything: the slider just never leaves 0.
-  const DAYS_PER_FRAME = 0.03;
+  // Speed is expressed per real second (1.8 days/sec), not per frame — a
+  // per-frame constant would run twice as fast on a 120Hz screen as on a
+  // 60Hz one. The day slider's own step is "any" (not a fixed grid — see
+  // CLAUDE.md rule 12): a fractional day advanced between two frames
+  // would otherwise get silently snapped to the nearest 0.01 of a day.
+  const DAYS_PER_SECOND = 1.8;
   let animationFrameId = null;
+  let lastFrameTime = null;
 
   function stopAnimation() {
     if (animationFrameId !== null) {
       cancelAnimationFrame(animationFrameId);
       animationFrameId = null;
     }
+    lastFrameTime = null;
     playButton.textContent = '▶ Animate';
     playButton.setAttribute('aria-pressed', 'false');
   }
@@ -163,8 +165,10 @@
   function startAnimation() {
     playButton.textContent = '❚❚ Pause';
     playButton.setAttribute('aria-pressed', 'true');
-    function step() {
-      let next = Number(daySlider.value) + DAYS_PER_FRAME;
+    function step(now) {
+      const dt = AnimationTiming.cappedElapsedSeconds(now, lastFrameTime);
+      lastFrameTime = now;
+      let next = Number(daySlider.value) + dt * DAYS_PER_SECOND;
       if (next > MAX_DAYS) next = 0;
       daySlider.value = next;
       render();

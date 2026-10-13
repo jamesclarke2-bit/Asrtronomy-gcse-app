@@ -87,19 +87,38 @@ canvas {
 }
 
 /* sims/solar-system-observation.html's "Orbit and apparent position" row:
-   .diagrams-column's own real budget alongside the sidebar (~756px at a
-   1280px viewport) is narrower than two generic 420px .diagram caps plus
-   the row's gap, so the pair never sits side by side without its own,
-   narrower caps. The orbit chart is a simple square canvas that stays
-   legible much narrower than 420px, freeing room for its paired
-   apparent-position diagram (a denser retrograde-loop graph) to keep more
-   width for its own labels. */
-.diagram.orbit-chart-diagram {
-  max-width: 260px;
+   stacked (each at the generic .diagram cap) below 900px, matching the
+   point where .tool-layout .controls itself switches from a bottom bar to
+   a sidebar — an organic flex-wrap threshold would flicker here instead,
+   since .diagrams-column is wide (no sidebar yet) just below 900px and
+   then suddenly narrow (sidebar appears) just above it. From 900px up,
+   sized to fit .diagrams-column's own tightest real budget at that exact
+   width (~500px after the row's own gap) through its plateau at wider
+   screens (~730px once main hits its 1100px cap): the orbit chart is a
+   simple square canvas that stays legible much narrower than the generic
+   420px cap, leaving more room for its paired apparent-position diagram
+   (a denser retrograde-loop graph) to keep its own labels readable. */
+.orbit-apparent-row {
+  flex-direction: column;
+  flex-wrap: nowrap;
 }
 
-.diagram.apparent-position-diagram {
-  max-width: 460px;
+@media (min-width: 900px) {
+  .orbit-apparent-row {
+    flex-direction: row;
+    flex-wrap: nowrap;
+  }
+
+  .orbit-apparent-row .orbit-chart-diagram {
+    flex: 1 1 200px;
+    max-width: 260px;
+  }
+
+  .orbit-apparent-row .apparent-position-diagram {
+    flex: 2 1 280px;
+    max-width: 460px;
+    min-width: 0;
+  }
 }
 
 .legend {

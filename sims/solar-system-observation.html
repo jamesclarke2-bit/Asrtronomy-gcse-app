@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Retrograde Motion and Planetary Alignments</title>
-  <link rel="stylesheet" href="../styles.css?v=202610122223" />
+  <link rel="stylesheet" href="../styles.css?v=202610130606" />
 </head>
 <body>
   <main>
@@ -138,7 +138,7 @@
             in its own orbit (left).
           </p>
 
-          <div class="diagram-row">
+          <div class="diagram-row orbit-apparent-row">
             <div class="diagram orbit-chart-diagram">
               <h3>Solar system (top-down)</h3>
               <canvas
@@ -272,9 +272,9 @@
         <div class="control">
           <p>Animation speed</p>
           <div class="preset-list" role="group" aria-label="Animation speed" id="speed-selector">
-            <button type="button" class="preset-button preset-button-active" data-speed="slow" data-days-per-frame="0.75" aria-pressed="true">Slow</button>
-            <button type="button" class="preset-button" data-speed="normal" data-days-per-frame="3" aria-pressed="false">Normal</button>
-            <button type="button" class="preset-button" data-speed="fast" data-days-per-frame="6" aria-pressed="false">Fast</button>
+            <button type="button" class="preset-button preset-button-active" data-speed="slow" data-days-per-second="45" aria-pressed="true">Slow</button>
+            <button type="button" class="preset-button" data-speed="normal" data-days-per-second="180" aria-pressed="false">Normal</button>
+            <button type="button" class="preset-button" data-speed="fast" data-days-per-second="360" aria-pressed="false">Fast</button>
           </div>
         </div>
 
@@ -377,9 +377,10 @@
   <script src="../src/pages.js?v=202610091200"></script>
   <script src="../src/planetaryMotion.js?v=202610101200"></script>
   <script src="../src/planetaryMotionQuestions.js?v=202610101200"></script>
+  <script src="../src/animationTiming.js?v=202610130606"></script>
   <script src="../glossary.js?v=202609221600"></script>
   <script src="../quiz-ui.js?v=202609221100"></script>
-  <script src="solar-system-observation.js?v=202610122223"></script>
+  <script src="solar-system-observation.js?v=202610130606"></script>
   <script src="../nextPage.js?v=202609270100"></script>
 </body>
 </html>

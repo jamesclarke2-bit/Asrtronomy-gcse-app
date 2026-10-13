@@ -12,6 +12,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 
 const html = fs.readFileSync(path.join(__dirname, '..', 'sims', 'solar-system-observation.html'), 'utf8');
+const css = fs.readFileSync(path.join(__dirname, '..', 'styles.css'), 'utf8');
 
 function attr(tag, name) {
   const m = new RegExp(`${name}="([^"]*)"`).exec(tag);
@@ -23,11 +24,11 @@ test('the date slider uses step="any" so a script-set value never gets snapped (
   assert.equal(attr(sliderTag, 'step'), 'any');
 });
 
-test('there are exactly 3 speed buttons — slow, normal, fast — each carrying its own days-per-frame', () => {
+test('there are exactly 3 speed buttons — slow, normal, fast — each carrying its own days-per-second (time-based, not per-frame)', () => {
   const buttonTags = [...html.matchAll(/<button[^>]*data-speed="[^"]*"[^>]*>([^<]*)<\/button>/g)];
   const buttons = buttonTags.map((m) => ({
     speed: attr(m[0], 'data-speed'),
-    daysPerFrame: Number(attr(m[0], 'data-days-per-frame')),
+    daysPerSecond: Number(attr(m[0], 'data-days-per-second')),
     label: m[1].trim(),
   }));
   assert.equal(buttons.length, 3, 'expected 3 speed buttons');
@@ -39,7 +40,7 @@ test('there are exactly 3 speed buttons — slow, normal, fast — each carrying
     buttons.map((b) => b.label),
     ['Slow', 'Normal', 'Fast']
   );
-  buttons.forEach((b) => assert.ok(Number.isFinite(b.daysPerFrame) && b.daysPerFrame > 0, `${b.speed} should carry a positive data-days-per-frame`));
+  buttons.forEach((b) => assert.ok(Number.isFinite(b.daysPerSecond) && b.daysPerSecond > 0, `${b.speed} should carry a positive data-days-per-second`));
 });
 
 test('Slow defaults to active, and is exactly a quarter of Normal\'s speed', () => {
@@ -53,8 +54,8 @@ test('Slow defaults to active, and is exactly a quarter of Normal\'s speed', () 
     assert.ok(!t.includes('preset-button-active'), 'only Slow should start active');
     assert.equal(attr(t, 'aria-pressed'), 'false');
   });
-  const slowDays = Number(attr(slow, 'data-days-per-frame'));
-  const normalDays = Number(attr(normal, 'data-days-per-frame'));
+  const slowDays = Number(attr(slow, 'data-days-per-second'));
+  const normalDays = Number(attr(normal, 'data-days-per-second'));
   assert.equal(slowDays, normalDays / 4, 'Slow should be a quarter of Normal\'s speed');
 });
 
@@ -80,12 +81,12 @@ test('section 3\'s diagram-row holds both the solar-system canvas and the appare
   const sectionMatch = /<section class="retrograde-section" id="orbit-and-apparent-position">[\s\S]*?<\/section>/.exec(html);
   assert.ok(sectionMatch, 'orbit-and-apparent-position section should exist');
   const section = sectionMatch[0];
-  assert.match(section, /<div class="diagram-row">/);
+  assert.match(section, /<div class="diagram-row orbit-apparent-row">/);
   assert.match(section, /id="solar-system"/);
   assert.match(section, /id="zodiac-strip"/);
   assert.match(section, /id="retrograde-graph"/);
 
-  const rowStart = section.indexOf('<div class="diagram-row">');
+  const rowStart = section.indexOf('<div class="diagram-row orbit-apparent-row">');
   const solarSystemPos = section.indexOf('id="solar-system"');
   const zodiacPos = section.indexOf('id="zodiac-strip"');
   const retrogradePos = section.indexOf('id="retrograde-graph"');
@@ -133,6 +134,49 @@ test('the "How to read this diagram" panel sits right after the horizon strip, t
 
   assert.match(panel, /<strong>Venus<\/strong>/);
   assert.match(panel, /<strong>Mars<\/strong>/);
+});
+
+test('the diagram-row opts into the page\'s own 900px side-by-side breakpoint', () => {
+  assert.match(html, /<div class="diagram-row orbit-apparent-row">/);
+});
+
+test('.orbit-apparent-row stacks by default and switches to a row at min-width: 900px, matching .tool-layout .controls\' own sidebar breakpoint', () => {
+  const baseRuleMatch = /\.orbit-apparent-row\s*\{([^}]*)\}/.exec(css);
+  assert.ok(baseRuleMatch, '.orbit-apparent-row should have a base (mobile-first) rule');
+  assert.match(baseRuleMatch[1], /flex-direction:\s*column/);
+
+  const mediaMatch = /@media \(min-width: 900px\) \{([\s\S]*?)\n\}\n\n\.legend/.exec(css);
+  assert.ok(mediaMatch, 'a min-width: 900px media query should immediately precede .legend');
+  const block = mediaMatch[1];
+  assert.match(block, /\.orbit-apparent-row\s*\{[^}]*flex-direction:\s*row/);
+});
+
+test('at the 900px breakpoint the two diagrams\' flex-basis values fit .diagrams-column\'s own tightest real budget there (500px, measured) without shrinking', () => {
+  const mediaMatch = /@media \(min-width: 900px\) \{([\s\S]*?)\n\}\n\n\.legend/.exec(css);
+  const block = mediaMatch[1];
+  const orbitRule = /\.orbit-apparent-row \.orbit-chart-diagram\s*\{([^}]*)\}/.exec(block)[1];
+  const apparentRule = /\.orbit-apparent-row \.apparent-position-diagram\s*\{([^}]*)\}/.exec(block)[1];
+
+  // Both budgets below are .diagrams-column widths with the row's own 24px
+  // gap (1.5rem) already subtracted — measured directly with Playwright at
+  // the real breakpoint (900px viewport) and at its wide-screen plateau
+  // (>=~1194px viewport, once main hits its 1100px cap).
+  const orbitBasis = Number(/flex:\s*[\d.]+\s+[\d.]+\s+(\d+)px/.exec(orbitRule)[1]);
+  const apparentBasis = Number(/flex:\s*[\d.]+\s+[\d.]+\s+(\d+)px/.exec(apparentRule)[1]);
+  const budgetAt900 = 500;
+
+  assert.ok(
+    orbitBasis + apparentBasis <= budgetAt900,
+    `flex-basis sum (${orbitBasis} + ${apparentBasis}) should fit within the measured 900px-viewport budget of ${budgetAt900}px, or the pair will wrap back to stacked right at the breakpoint`
+  );
+
+  const orbitMax = Number(/max-width:\s*(\d+)px/.exec(orbitRule)[1]);
+  const apparentMax = Number(/max-width:\s*(\d+)px/.exec(apparentRule)[1]);
+  const budgetAtPlateau = 732;
+  assert.ok(
+    orbitMax + apparentMax <= budgetAtPlateau,
+    `max-width sum (${orbitMax} + ${apparentMax}) should fit within .diagrams-column's wide-screen plateau budget of ${budgetAtPlateau}px`
+  );
 });
 
 test('the howto panel is deliberately left out of the page\'s own GLOSSARY dict so its hand-authored HTML survives Glossary.init', () => {

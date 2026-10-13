@@ -598,21 +598,22 @@
   // fire the slider's own 'input' event, so this can't fight with the
   // "stop on manual drag" handler below.
   //
-  // Speed (days advanced per frame) comes from each button's own
-  // data-days-per-frame, not a hand-typed JS lookup, so the HTML is the
-  // one place that relationship lives (and can be checked from it — see
-  // test/solarSystemObservation.test.js). The date slider's own step is
-  // "any" (not a whole number of days — see CLAUDE.md rule 12): the
-  // default Slow speed (0.75 days/frame) would otherwise get silently
-  // snapped to the nearest whole day on every frame.
+  // Speed (days advanced per second of real time, not per frame — a
+  // per-frame constant would run twice as fast on a 120Hz screen as on a
+  // 60Hz one) comes from each button's own data-days-per-second, not a
+  // hand-typed JS lookup, so the HTML is the one place that relationship
+  // lives (and can be checked from it — see test/solarSystemObservation.test.js).
+  // The date slider's own step is "any" (not a whole number of days —
+  // see CLAUDE.md rule 12): a fractional day advanced between two frames
+  // would otherwise get silently snapped to the nearest whole day.
 
   const speedButtons = document.querySelectorAll('#speed-selector [data-speed]');
-  let speedDaysPerFrame = Number(
-    [...speedButtons].find((button) => button.classList.contains('preset-button-active')).dataset.daysPerFrame
+  let speedDaysPerSecond = Number(
+    [...speedButtons].find((button) => button.classList.contains('preset-button-active')).dataset.daysPerSecond
   );
 
   function setSpeed(selectedButton) {
-    speedDaysPerFrame = Number(selectedButton.dataset.daysPerFrame);
+    speedDaysPerSecond = Number(selectedButton.dataset.daysPerSecond);
     speedButtons.forEach((button) => {
       const active = button === selectedButton;
       button.classList.toggle('preset-button-active', active);
@@ -625,12 +626,14 @@
   });
 
   let animationFrameId = null;
+  let lastFrameTime = null;
 
   function stopAnimation() {
     if (animationFrameId !== null) {
       cancelAnimationFrame(animationFrameId);
       animationFrameId = null;
     }
+    lastFrameTime = null;
     playButton.textContent = '▶ Animate';
     playButton.setAttribute('aria-pressed', 'false');
   }
@@ -638,11 +641,13 @@
   function startAnimation() {
     playButton.textContent = '❚❚ Pause';
     playButton.setAttribute('aria-pressed', 'true');
-    function step() {
-      // speedDaysPerFrame is read fresh every frame, so changing speed
+    function step(now) {
+      // speedDaysPerSecond is read fresh every frame, so changing speed
       // mid-animation takes effect immediately without a restart, and
       // the slider (read by update()) never falls out of step with it.
-      let next = Number(dateSlider.value) + speedDaysPerFrame;
+      const dt = AnimationTiming.cappedElapsedSeconds(now, lastFrameTime);
+      lastFrameTime = now;
+      let next = Number(dateSlider.value) + dt * speedDaysPerSecond;
       if (next > RANGE_DAYS) next = 0;
       dateSlider.value = next;
       update();

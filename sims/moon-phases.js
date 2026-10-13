@@ -221,14 +221,22 @@
   // --- Explore mode: scrub or animate through the cycle. Setting
   // cycleSlider.value programmatically doesn't fire 'input', so animation
   // can't fight with the "stop on manual drag" handler below.
-  const SPEEDS = { slow: 0.02, fast: 0.08 };
+  //
+  // Speed is expressed per real second, not per frame — a per-frame
+  // constant would run twice as fast on a 120Hz screen as on a 60Hz one.
+  // The cycle slider's own step is "any" (not a fixed grid — see
+  // CLAUDE.md rule 12): a fractional day advanced between two frames
+  // would otherwise get silently snapped to the nearest 0.01 of a day.
+  const SPEEDS_PER_SECOND = { slow: 1.2, fast: 4.8 };
   let animationFrameId = null;
+  let lastFrameTime = null;
 
   function stopAnimation() {
     if (animationFrameId !== null) {
       cancelAnimationFrame(animationFrameId);
       animationFrameId = null;
     }
+    lastFrameTime = null;
     playButton.textContent = '▶ Animate';
     playButton.setAttribute('aria-pressed', 'false');
   }
@@ -236,9 +244,11 @@
   function startAnimation() {
     playButton.textContent = '❚❚ Pause';
     playButton.setAttribute('aria-pressed', 'true');
-    function step() {
-      const perFrame = SPEEDS[speedSelect.value] || SPEEDS.slow;
-      let next = Number(cycleSlider.value) + perFrame;
+    function step(now) {
+      const dt = AnimationTiming.cappedElapsedSeconds(now, lastFrameTime);
+      lastFrameTime = now;
+      const perSecond = SPEEDS_PER_SECOND[speedSelect.value] || SPEEDS_PER_SECOND.slow;
+      let next = Number(cycleSlider.value) + dt * perSecond;
       if (next > SYNODIC) next -= SYNODIC;
       cycleSlider.value = next;
       renderExplore();

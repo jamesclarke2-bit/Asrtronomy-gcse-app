@@ -445,8 +445,10 @@
     jupiterPlayButton.setAttribute('aria-pressed', 'true');
     let lastTime = null;
     function step(now) {
-      if (lastTime === null) lastTime = now;
-      const elapsedSeconds = (now - lastTime) / 1000;
+      // Capped so a tab backgrounded mid-animation (rAF pauses while
+      // hidden) doesn't replay the whole missed gap as one huge jump in
+      // the moons' positions the instant it's foregrounded again.
+      const elapsedSeconds = AnimationTiming.cappedElapsedSeconds(now, lastTime);
       lastTime = now;
       jupiterDays = (jupiterDays + elapsedSeconds * 2.5) % (GalileanMoons.MOONS.at(-1).periodDays * 2);
       drawJupiterMoons(jupiterDays);
