@@ -1,6 +1,6 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const { SPEC_POINTS, SPEC_POINT_CODES, getSpecPoint } = require('../src/specPoints');
+const { SPEC_POINTS, SPEC_POINT_CODES, SPEC_POINT_GROUPS, getSpecPoint, getGroupCoverageStatus } = require('../src/specPoints');
 
 const VALID_DEPTHS = ['know', 'understand', 'be able to'];
 const REGISTERED_TOPICS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
@@ -45,5 +45,52 @@ test('Topics 1-12 are each present, with no gaps or extras in scope', () => {
 
 test("every 'be able to' point in Topics 7, 8, 11 and 12 is exactly the expected set", () => {
   const beAbleTo = SPEC_POINTS.filter((p) => [7, 8, 11, 12].includes(p.topic) && p.depth === 'be able to').map((p) => p.code);
-  assert.deepEqual(beAbleTo, ['7.5', '7.6', '8.6', '11.1', '11.8', '11.9', '11.23', '12.1', '12.2']);
+  assert.deepEqual(beAbleTo, [
+    '7.5', '7.6', '8.6', '11.1', '11.8', '11.9', '11.23',
+    '12.1a', '12.1b', '12.1c', '12.1d', '12.1e',
+    '12.2a', '12.2b', '12.2c',
+  ]);
+});
+
+test('SPEC_POINT_GROUPS: every group has 12.1 or 12.2 as its key, each listing exactly its own lettered sub-codes', () => {
+  assert.deepEqual(SPEC_POINT_GROUPS, {
+    '12.1': ['12.1a', '12.1b', '12.1c', '12.1d', '12.1e'],
+    '12.2': ['12.2a', '12.2b', '12.2c'],
+  });
+});
+
+test('every group child is a real SPEC_POINTS entry, on the same topic as its parent code', () => {
+  Object.entries(SPEC_POINT_GROUPS).forEach(([parentCode, children]) => {
+    const parentTopic = parentCode.split('.')[0];
+    children.forEach((code) => {
+      const point = getSpecPoint(code);
+      assert.ok(point, `group "${parentCode}" names child "${code}", which isn't in SPEC_POINTS`);
+      assert.equal(String(point.topic), parentTopic, `${code} should belong to topic ${parentTopic}, same as its parent`);
+    });
+  });
+});
+
+test("every SPEC_POINTS entry with a `group` field is listed as that group's child, and vice versa", () => {
+  const declaredChildren = new Set(Object.values(SPEC_POINT_GROUPS).flat());
+  SPEC_POINTS.forEach((point) => {
+    if (point.group) {
+      assert.ok(SPEC_POINT_GROUPS[point.group], `${point.code} claims group "${point.group}", which doesn't exist`);
+      assert.ok(
+        SPEC_POINT_GROUPS[point.group].includes(point.code),
+        `${point.code} claims group "${point.group}", but that group's children don't list it`
+      );
+    } else {
+      assert.ok(!declaredChildren.has(point.code), `${point.code} is a group child but carries no \`group\` field`);
+    }
+  });
+});
+
+test('getGroupCoverageStatus: covered only when every child is tagged, partly when some are, not covered when none are', () => {
+  assert.equal(getGroupCoverageStatus('12.1', []), 'not covered');
+  assert.equal(getGroupCoverageStatus('12.1', ['12.1b']), 'partly covered');
+  assert.equal(getGroupCoverageStatus('12.1', ['12.1b', '12.1d', '12.1e']), 'partly covered');
+  assert.equal(getGroupCoverageStatus('12.1', ['12.1a', '12.1b', '12.1c', '12.1d', '12.1e']), 'covered');
+  assert.equal(getGroupCoverageStatus('12.1', ['12.1a', '12.1b', '12.1c', '12.1d', '12.1e', '99.9']), 'covered');
+  assert.equal(getGroupCoverageStatus('12.2', new Set(['12.2a', '12.2c'])), 'partly covered');
+  assert.equal(getGroupCoverageStatus('99.9', ['99.9a']), undefined);
 });

@@ -4,7 +4,7 @@ const { UNITS, getUnit, getSubtopic } = require('../src/curriculum');
 const { CURRICULUM_UNITS } = require('../src/solarPosition');
 const { QUESTIONS } = require('../src/questions');
 const { QUESTIONS: EOT_QUESTIONS } = require('../src/eotQuestions');
-const { getSpecPoint } = require('../src/specPoints');
+const { getSpecPoint, SPEC_POINT_GROUPS } = require('../src/specPoints');
 
 // Topics with their own registry in src/specPoints.js, checked against
 // below. Topics 13-16 have no spec-tagged curriculum content yet, so
@@ -99,4 +99,34 @@ test('no curriculum entry lists the same spec code twice', () => {
       assert.equal(unique.size, subtopic.spec.length, `${subtopic.id} lists a spec code more than once: ${subtopic.spec.join(', ')}`);
     });
   });
+});
+
+test('no curriculum entry tags a bare group parent code (e.g. "12.1") — only its own lettered sub-codes', () => {
+  const groupParents = new Set(Object.keys(SPEC_POINT_GROUPS));
+  UNITS.forEach((unit) => {
+    unit.subtopics.forEach((subtopic) => {
+      (subtopic.spec || []).forEach((code) => {
+        assert.ok(
+          !groupParents.has(code),
+          `${subtopic.id} tags "${code}" directly, but that's a multi-part spec point — tag the specific sub-code(s) it actually teaches instead`
+        );
+      });
+    });
+  });
+});
+
+test('u3.30 (Tidal heating) is tagged with 12.1b (tidal/internal heating) and 12.5 (life), not the old bare 12.1', () => {
+  assert.deepEqual(getSubtopic('u3.30').spec, ['12.1b', '12.5']);
+});
+
+test('u2.2 (Moon structure) is tagged with 12.1d: it explains impact craters, one of that sub-code\'s two parts', () => {
+  assert.ok(getSubtopic('u2.2').spec.includes('12.1d'));
+});
+
+test('u2.12 (Solar wind) is tagged with 12.1e: it covers the solar wind\'s effect on comets (ion tails), one of that sub-code\'s three parts', () => {
+  assert.ok(getSubtopic('u2.12').spec.includes('12.1e'));
+});
+
+test('u3.21 (Formation of gas giants) keeps 12.3: its page names core accretion, one of 12.3\'s "main theories"', () => {
+  assert.ok(getSubtopic('u3.21').spec.includes('12.3'));
 });

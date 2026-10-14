@@ -44,6 +44,13 @@
  * from that tagging pass for the full per-point breakdown, including
  * the handful of spec points no page covers at all.
  *
+ * A spec point with lettered parts in the real spec (12.1's five, 12.2's
+ * three — see specPoints.js's SPEC_POINT_GROUPS) is tagged here by its
+ * own lettered sub-code (e.g. `spec: ['12.1b']`), never the bare parent
+ * — a subtopic that only teaches one part of a five-part point doesn't
+ * get to claim the whole thing. A coverage report rolls those sub-codes
+ * back up under their shared parent, covered only once every part is.
+ *
  * A subtopic can also carry `level: 'extension'`, for content that goes
  * beyond the GCSE spec entirely (A-level-reaching material, e.g.
  * sims/gravitational-potential.html's work/energy treatment of
@@ -245,7 +252,7 @@ const UNITS = [
         id: 'u2.2',
         title: 'Moon structure',
         depth: 'know',
-        spec: ['2.1', '2.2', '2.3', '2.4'],
+        spec: ['2.1', '2.2', '2.3', '2.4', '12.1d'],
         notes:
           "a near-sphere, mean diameter ~3,500 km (3,475 km more precisely); surface features and their origins: craters (meteoroid impacts, of all sizes and ages), maria (dark, smooth lava that flooded low-lying impact basins), terrae/highlands (light, rugged, older and more heavily cratered), mountain ranges such as the Apennines (uplifted rims of large impact basins, not volcanoes), and rilles (narrow channels in the maria, thought to be collapsed lava tubes or lava channels); the far side looks more heavily cratered mainly because it has almost no maria to have buried older craters",
       },
@@ -322,7 +329,7 @@ const UNITS = [
         id: 'u2.12',
         title: 'Solar wind',
         depth: 'understand',
-        spec: ['10.10', '10.11'],
+        spec: ['10.10', '10.11', '12.1e'],
         notes:
           'a continuous stream of charged particles (electrons, protons and alpha particles) escaping the corona at roughly 300-800 km/s; influences planetary magnetospheres, causes aurorae, shapes cometary ion tails, and can drive geomagnetic storms that disrupt satellites, aircraft and power grids',
       },
@@ -653,6 +660,11 @@ const UNITS = [
         id: 'u3.21',
         title: 'Formation of gas giants',
         depth: 'know',
+        // 12.3 kept: the page (notes/solar-system-bodies.html) names
+        // core accretion, one of 12.3's "main theories" (plural) for
+        // gas giant formation, even though it doesn't also name disc
+        // instability, the other — only dropping 12.3 if it named
+        // neither.
         spec: ['11.7', '12.3'],
         notes:
           'brief overview only — covered in depth on the Topic 12 formation-of-planetary-systems page (not yet built): the leading model, core accretion, has a solid core of ice and rock grow large enough, far enough from the young Sun for ices to survive, to gravitationally capture a massive envelope of hydrogen and helium gas directly from the surrounding protoplanetary disc',
@@ -725,7 +737,7 @@ const UNITS = [
         id: 'u3.30',
         title: 'Tidal heating',
         depth: 'understand',
-        spec: ['12.1', '12.5'],
+        spec: ['12.1b', '12.5'],
         notes:
           'Io’s orbit around Jupiter is kept measurably non-circular by orbital resonance with Europa and Ganymede (periods in a 1:2:4 ratio, so the three moons repeatedly line up and reinforce each other’s gravitational tug — see src/galileanMoons.js); that non-zero eccentricity means Io’s distance from Jupiter, and so the strength of Jupiter’s tidal pull on it, changes around every orbit, flexing its interior and heating it by friction — the direct cause of Io’s volcanoes; Europa and Saturn’s moon Enceladus are heated the same way, by their own orbital resonances, which is why both are considered promising places to look for life despite being far from the Sun',
       },

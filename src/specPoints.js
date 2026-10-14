@@ -16,6 +16,14 @@
  * yet at all — see the site inventory report). Adding those as their
  * own topics' worth of SPEC_POINTS, the same way this file does for
  * 1-12, is future work, not done here.
+ *
+ * A spec point that bundles several distinct things under one code in
+ * the real spec document (e.g. 12.1's five lettered parts, 12.2's
+ * three) is split here into its own lettered sub-code per part, rather
+ * than kept as a single point — otherwise one curriculum subtopic
+ * tagging only the first of five parts would read as covering all
+ * five. See SPEC_POINT_GROUPS below for how a coverage report rolls
+ * those sub-codes back up under their shared parent code.
  */
 
 const SPEC_POINTS = [
@@ -253,20 +261,68 @@ const SPEC_POINTS = [
   { code: '11.30', topic: 11, depth: 'understand', text: 'main features of the Apollo programme' },
 
   // --- Topic 12: Formation of planetary systems -------------------------------
+  // 12.1 and 12.2 are each a multi-part spec point, split into their own
+  // lettered sub-codes rather than kept as one point — see
+  // SPEC_POINT_GROUPS below, and its header comment, for why: a single
+  // curriculum tag against '12.1' could claim credit for all five of its
+  // parts (a)-(e) while a page taught only one. Each sub-code's `group`
+  // field names its parent, kept in sync with SPEC_POINT_GROUPS by
+  // test/specPoints.test.js.
   {
-    code: '12.1',
+    code: '12.1a',
     topic: 12,
     depth: 'be able to',
-    text:
-      "identify gravity's operation in the Solar System: (a) regular motion, (b) tidal forces (rings, asteroid belts, internal heating), " +
-      '(c) multi-body interactions (shifting orbits, chaos, resonances, Lagrange points), (d) collisions, (e) the solar wind\'s effects',
+    group: '12.1',
+    text: "identify gravity's operation in the Solar System: regular motion caused by gravity",
   },
   {
-    code: '12.2',
+    code: '12.1b',
     topic: 12,
     depth: 'be able to',
-    text:
-      'identify interactions in forming planets and moons: (a) the Roche limit, (b) round or irregular shape, (c) holding an atmosphere',
+    group: '12.1',
+    text: "identify gravity's operation in the Solar System: tidal forces (ring systems, asteroid belts, internal heating)",
+  },
+  {
+    code: '12.1c',
+    topic: 12,
+    depth: 'be able to',
+    group: '12.1',
+    text: "identify gravity's operation in the Solar System: multi-body interactions (shifting orbits, chaos, resonances, Lagrange points)",
+  },
+  {
+    code: '12.1d',
+    topic: 12,
+    depth: 'be able to',
+    group: '12.1',
+    text: "identify gravity's operation in the Solar System: collisions (impact craters, changes to orbits and tilts)",
+  },
+  {
+    code: '12.1e',
+    topic: 12,
+    depth: 'be able to',
+    group: '12.1',
+    text: "identify gravity's operation in the Solar System: the solar wind's effects (on comets, planetary atmospheres and the heliosphere)",
+  },
+  {
+    code: '12.2a',
+    topic: 12,
+    depth: 'be able to',
+    group: '12.2',
+    text: 'identify interactions in forming planets and moons: the Roche limit',
+  },
+  {
+    code: '12.2b',
+    topic: 12,
+    depth: 'be able to',
+    group: '12.2',
+    text: 'identify interactions in forming planets and moons: round or irregular shape',
+  },
+  {
+    code: '12.2c',
+    topic: 12,
+    depth: 'be able to',
+    group: '12.2',
+    text: 'identify interactions in forming planets and moons: holding an atmosphere',
   },
   { code: '12.3', topic: 12, depth: 'understand', text: 'main theories for the formation of gas giants' },
   { code: '12.4', topic: 12, depth: 'understand', text: 'exoplanet detection methods (transit, astrometry, radial velocity)' },
@@ -281,14 +337,50 @@ const SPEC_POINTS = [
   { code: '12.8', topic: 12, depth: 'understand', text: 'SETI by radio, and the benefits and dangers of finding extraterrestrial life' },
 ];
 
+/**
+ * Which spec points are actually a group of lettered sub-codes, keyed
+ * by the parent code a reader would recognise from the spec document
+ * (e.g. "12.1"), listing its children in the order given there. A
+ * curriculum subtopic tags one or more of the children directly (e.g.
+ * `spec: ['12.1b']`), never the bare parent code — getSpecPoint below
+ * only resolves real SPEC_POINTS entries, which no longer include '12.1'
+ * or '12.2' themselves, so a curriculum entry that tried to tag the
+ * parent would fail test/curriculum.test.js's registry check. A
+ * coverage report walks this object's keys as one row each, rolling
+ * each parent's children up via getGroupCoverageStatus below, rather
+ * than listing every child as its own row alongside the ordinary,
+ * unsplit points.
+ */
+const SPEC_POINT_GROUPS = {
+  '12.1': ['12.1a', '12.1b', '12.1c', '12.1d', '12.1e'],
+  '12.2': ['12.2a', '12.2b', '12.2c'],
+};
+
 function getSpecPoint(code) {
   return SPEC_POINTS.find((point) => point.code === code);
+}
+
+/**
+ * For a group's parent code, how much of it a given set of tagged spec
+ * codes covers: 'covered' only when every child is tagged, 'not
+ * covered' when none is, 'partly covered' otherwise. `taggedCodes` can
+ * be any iterable of spec code strings (e.g. every code a curriculum
+ * audit found tagged somewhere) — it doesn't need to be a Set already.
+ */
+function getGroupCoverageStatus(parentCode, taggedCodes) {
+  const children = SPEC_POINT_GROUPS[parentCode];
+  if (!children) return undefined;
+  const tagged = taggedCodes instanceof Set ? taggedCodes : new Set(taggedCodes);
+  const coveredCount = children.filter((code) => tagged.has(code)).length;
+  if (coveredCount === 0) return 'not covered';
+  if (coveredCount === children.length) return 'covered';
+  return 'partly covered';
 }
 
 const SPEC_POINT_CODES = SPEC_POINTS.map((point) => point.code);
 
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { SPEC_POINTS, SPEC_POINT_CODES, getSpecPoint };
+  module.exports = { SPEC_POINTS, SPEC_POINT_CODES, SPEC_POINT_GROUPS, getSpecPoint, getGroupCoverageStatus };
 } else if (typeof window !== 'undefined') {
-  window.SpecPoints = { SPEC_POINTS, SPEC_POINT_CODES, getSpecPoint };
+  window.SpecPoints = { SPEC_POINTS, SPEC_POINT_CODES, SPEC_POINT_GROUPS, getSpecPoint, getGroupCoverageStatus };
 }
