@@ -499,6 +499,7 @@
   const sundialCanvas = document.getElementById('sundial-canvas');
   const sundialCtx = sundialCanvas.getContext('2d');
   const clockTimeToggle = document.getElementById('clock-time-toggle');
+  const bstToggle = document.getElementById('bst-toggle');
   const breakdownSvg = document.getElementById('offset-breakdown');
   const eotGraphCanvas = document.getElementById('shadows-eot-graph');
   const eotGraphCtx = eotGraphCanvas.getContext('2d');
@@ -666,11 +667,18 @@
     ctx.fillText('Toward the pole', cx, 14);
   }
 
-  function drawOffsetBreakdown(lon, eotMinutes, zone) {
+  function drawOffsetBreakdown(lon, eotMinutes, zone, bstOffsetMinutes) {
     const longitudeCorrection = 4 * lon;
     const timeZoneDifference = -60 * zone;
-    const total = longitudeCorrection + eotMinutes + timeZoneDifference;
-    const maxAbs = Math.max(Math.abs(longitudeCorrection), Math.abs(eotMinutes), Math.abs(timeZoneDifference), Math.abs(total), 20) + 10;
+    // Clocks put forward (BST) make the clock read later, so this
+    // contributes the same way as timeZoneDifference above: a positive
+    // bstOffsetMinutes (the clock's own +1 hour) subtracts from
+    // sundial-minus-clock.
+    const dstDifference = -bstOffsetMinutes;
+    const total = longitudeCorrection + eotMinutes + timeZoneDifference + dstDifference;
+    const maxAbs =
+      Math.max(Math.abs(longitudeCorrection), Math.abs(eotMinutes), Math.abs(timeZoneDifference), Math.abs(dstDifference), Math.abs(total), 20) +
+      10;
     const left = 36;
     const right = 410;
     const xForValue = (v) => left + ((v + maxAbs) / (2 * maxAbs)) * (right - left);
@@ -681,6 +689,7 @@
       { name: 'Longitude correction', value: longitudeCorrection, color: '#2a6bd6' },
       { name: 'Equation of Time', value: eotMinutes, color: '#f5a623' },
       { name: 'Time zone', value: timeZoneDifference, color: '#2e8b57' },
+      { name: 'Daylight saving (BST)', value: dstDifference, color: '#c0392b' },
     ];
 
     let bars = '';
@@ -696,7 +705,7 @@
     const legendRows = segments.concat([{ name: 'Total', value: total, color: '#8e44ad' }]);
     let legend = '';
     legendRows.forEach((row, i) => {
-      const y = 96 + i * 18;
+      const y = 110 + i * 18;
       const label = `${row.name} ${row.value >= 0 ? '+' : ''}${row.value.toFixed(1)} min`;
       legend +=
         `<rect x="${left}" y="${y - 9}" width="12" height="12" fill="${row.color}"></rect>` +
@@ -704,16 +713,17 @@
     });
 
     breakdownSvg.innerHTML =
-      `<line x1="${zeroX}" y1="10" x2="${zeroX}" y2="72" stroke="#8a97a5" stroke-width="1"></line>` +
+      `<line x1="${zeroX}" y1="10" x2="${zeroX}" y2="80" stroke="#8a97a5" stroke-width="1"></line>` +
       bars +
-      `<line x1="${totalX}" y1="10" x2="${totalX}" y2="72" stroke="#8e44ad" stroke-width="2"></line>` +
-      `<text x="${zeroX}" y="86" font-size="10" fill="#555" text-anchor="middle">0 min</text>` +
+      `<line x1="${totalX}" y1="10" x2="${totalX}" y2="80" stroke="#8e44ad" stroke-width="2"></line>` +
+      `<text x="${zeroX}" y="94" font-size="10" fill="#555" text-anchor="middle">0 min</text>` +
       legend;
 
     document.getElementById('offset-breakdown-caption').textContent =
       `Longitude correction ${longitudeCorrection >= 0 ? '+' : ''}${longitudeCorrection.toFixed(1)} min, ` +
       `equation of time ${eotMinutes >= 0 ? '+' : ''}${eotMinutes.toFixed(1)} min, ` +
-      `time-zone difference ${timeZoneDifference >= 0 ? '+' : ''}${timeZoneDifference.toFixed(1)} min ` +
+      `time-zone difference ${timeZoneDifference >= 0 ? '+' : ''}${timeZoneDifference.toFixed(1)} min, ` +
+      `daylight saving ${dstDifference >= 0 ? '+' : ''}${dstDifference.toFixed(1)} min ` +
       `— sundial minus clock = ${total >= 0 ? '+' : ''}${total.toFixed(1)} min.`;
   }
 
@@ -731,16 +741,18 @@
     drawEotGraph(dayIndex);
 
     const zone = Math.round(lon / 15);
+    const bstOffsetMinutes = bstToggle.checked ? 60 : 0;
     const timeValue = document.getElementById('sundial-time-value');
     if (clockTimeToggle.checked) {
-      const zoneTimeMinutes = minutesUT + 60 * zone;
+      const zoneTimeMinutes = ShadowGeometry.clockTimeMinutes(minutesUT, lon, bstOffsetMinutes);
       const zoneName = zone === 0 ? 'GMT' : `GMT${zone > 0 ? '+' : '−'}${Math.abs(zone)}`;
-      timeValue.textContent = `Clock (zone) time: ${formatClock(zoneTimeMinutes)} (${zoneName})`;
+      const dstSuffix = bstOffsetMinutes ? ' + BST' : '';
+      timeValue.textContent = `Clock (zone) time: ${formatClock(zoneTimeMinutes)} (${zoneName}${dstSuffix})`;
     } else {
       timeValue.textContent = `Sundial reading (apparent solar time): ${formatClock(apparentMinutes)}`;
     }
 
-    drawOffsetBreakdown(lon, sun.equationOfTime, zone);
+    drawOffsetBreakdown(lon, sun.equationOfTime, zone, bstOffsetMinutes);
   }
 
   // --- Wiring, coverage and quiz --------------------------------------
@@ -756,6 +768,7 @@
   document.getElementById('new-challenge-button').addEventListener('click', newChallenge);
   document.getElementById('check-longitude').addEventListener('click', checkLongitudeGuess);
   clockTimeToggle.addEventListener('change', updateSundialSection);
+  bstToggle.addEventListener('change', updateSundialSection);
 
   setEqualShadowStep(1);
   newChallenge();

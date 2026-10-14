@@ -101,6 +101,23 @@
     return (((utcMinutes + equationOfTimeMinutes + 4 * longitudeDeg) % 1440) + 1440) % 1440;
   }
 
+  /**
+   * A civil clock's own reading (what a wall clock or phone shows), in
+   * minutes after UT midnight, from a UT clock time and a longitude
+   * used only to pick the nearest whole-hour time zone
+   * (Math.round(longitude/15)) — the same zone sims/shadows-and-
+   * sundials.js already uses for its "Clock (zone) time" readout.
+   * `dstOffsetMinutes` adds a daylight-saving adjustment on top (e.g.
+   * 60 for British Summer Time); omit it, or pass 0, for standard
+   * time. Unlike apparentSolarTimeMinutes above, this does not depend
+   * on the equation of time at all — a clock keeps zone time
+   * regardless of where the real Sun is.
+   */
+  function clockTimeMinutes(utcMinutes, longitudeDeg, dstOffsetMinutes) {
+    const zone = Math.round(longitudeDeg / 15);
+    return utcMinutes + 60 * zone + (dstOffsetMinutes || 0);
+  }
+
   const api = {
     shadowLengthM,
     shadowAzimuthDeg,
@@ -108,6 +125,7 @@
     sundialHourLineAngleDeg,
     longitudeFromNoonUTDeg,
     apparentSolarTimeMinutes,
+    clockTimeMinutes,
   };
 
   if (typeof module !== 'undefined' && module.exports) {

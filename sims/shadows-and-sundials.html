@@ -189,11 +189,18 @@
             spaced, exactly 15&deg; apart. A sundial reads <strong>apparent solar time</strong>
             directly &mdash; exactly what a shadow stick measures &mdash; which is <em>not</em>
             what a clock shows. See the <a href="equation-of-time.html">Equation of Time</a> page
-            for one of the three reasons why; toggle the readout below for all three together.
+            for one of the four reasons why; toggle the readout below for all four together.
           </p>
           <div class="control checkbox-control">
             <label><input type="checkbox" id="clock-time-toggle" /> Show clock time instead of sundial time</label>
           </div>
+          <div class="control checkbox-control">
+            <label><input type="checkbox" id="bst-toggle" /> Clocks put forward (BST, +1 hour)</label>
+          </div>
+          <p class="panel-note">
+            In a UK summer, clocks are put forward an hour for British Summer Time, so a sundial
+            then reads about an hour behind the clock, on top of the other three effects above.
+          </p>
           <p class="eot-readout" id="sundial-time-value"></p>
         </section>
 
@@ -202,9 +209,9 @@
           <svg
             id="offset-breakdown"
             class="responsive-svg"
-            viewBox="0 0 440 170"
+            viewBox="0 0 440 194"
             role="img"
-            aria-label="Bar chart showing how the longitude correction, the equation of time and the time zone's own offset from GMT add together to give the difference between sundial time and clock time, with a legend naming each segment's value in minutes"
+            aria-label="Bar chart showing how the longitude correction, the equation of time, the time zone's own offset from GMT, and (when switched on) daylight saving add together to give the difference between sundial time and clock time, with a legend naming each segment's value in minutes"
           ></svg>
           <p class="panel-note" id="offset-breakdown-caption"></p>
         </div>
@@ -322,10 +329,10 @@
   <script src="../src/curriculum.js?v=202610072300"></script>
   <script src="../src/pages.js?v=202610091200"></script>
   <script src="../src/solarPosition.js?v=202609260300"></script>
-  <script src="../src/shadowGeometry.js?v=202610101700"></script>
+  <script src="../src/shadowGeometry.js?v=202610141540"></script>
   <script src="../src/shadowsAndSundialsQuestions.js?v=202610101700"></script>
   <script src="../quiz-ui.js?v=202609212100"></script>
-  <script src="shadows-and-sundials.js?v=202610130634"></script>
+  <script src="shadows-and-sundials.js?v=202610141540"></script>
   <script src="../nextPage.js?v=202609270100"></script>
 </body>
 </html>

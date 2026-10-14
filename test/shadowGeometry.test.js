@@ -135,6 +135,33 @@ test('the traced shadow minimum matches the time of solar noon from the existing
   closeTo(bestMinute, solarNoonUT, 1, 'traced shadow-length minimum vs. engine solar noon');
 });
 
+test('clockTimeMinutes: zone comes from rounding longitude/15, and a daylight-saving offset adds on top', () => {
+  closeTo(ShadowGeometry.clockTimeMinutes(720, 0, 0), 720, 1e-9, 'Greenwich, noon UT, no DST');
+  closeTo(ShadowGeometry.clockTimeMinutes(720, 0, 60), 780, 1e-9, 'Greenwich, noon UT, +60 min DST (BST)');
+  closeTo(ShadowGeometry.clockTimeMinutes(720, -2.6, 0), 720, 1e-9, "Bristol's longitude still rounds to the GMT zone");
+  closeTo(ShadowGeometry.clockTimeMinutes(0, 139.7, 0), 9 * 60, 1e-9, "Tokyo's zone is UT+9");
+  assert.equal(ShadowGeometry.clockTimeMinutes(720, 0), 720, 'a missing dstOffsetMinutes behaves like 0');
+});
+
+test('on 1 July at longitude 0°, with the BST toggle on, clock time minus sundial time is about an hour plus the day\'s equation-of-time offset', () => {
+  // This codebase's own equationOfTime is AST - MST (see CLAUDE.md /
+  // curriculum.js u2.10); a clock keeps MST (plus the BST hour), so
+  // "clock minus sundial" works out to +60 minus that value, not plus
+  // it — confirmed against the actual sundial/clock formulas below,
+  // not just asserted.
+  const utcMinutes = 720; // noon UT
+  const lon = 0;
+  const date = new Date(Date.UTC(2026, 6, 1, 12, 0)); // 1 July
+  const sun = SolarPosition.getSunPosition(date, 0, lon);
+
+  const sundialMinutes = ShadowGeometry.apparentSolarTimeMinutes(utcMinutes, lon, sun.equationOfTime);
+  const clockMinutesBST = ShadowGeometry.clockTimeMinutes(utcMinutes, lon, 60);
+  const clockMinusSundial = clockMinutesBST - sundialMinutes;
+
+  closeTo(clockMinusSundial, 60 - sun.equationOfTime, 0.01, 'exact algebraic relationship');
+  closeTo(clockMinusSundial, 60, 10, 'about an hour, with 1 July\'s few-minute equation-of-time wobble');
+});
+
 test("the midpoint of two independently-found equal-length shadow times matches the shortest-shadow time, to within a minute", () => {
   // Independent of the app's own mirror formula (2*solarNoonUT - t): pick
   // a morning minute, then SCAN the afternoon for the minute whose
