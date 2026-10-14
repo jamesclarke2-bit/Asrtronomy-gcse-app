@@ -13,6 +13,14 @@
  * CURRICULUM_UNITS in src/solarPosition.js) so the app can show what
  * a given simulation is teaching towards.
  *
+ * A subtopic id, once published, must never be reused for something
+ * else after being deleted — quiz-ui.js's own saved practice-question
+ * tally (astro-quiz-progress in localStorage) is keyed by these same
+ * ids, so handing a deleted id to an unrelated new subtopic would
+ * silently inherit some visitor's old, unrelated attempts/correct
+ * count. Removing a subtopic retires its id for good; a replacement
+ * takes the next free one in its unit instead.
+ *
  * "Our place in the Galaxy" appears under both u4 and u6 on purpose:
  * u4.4 is about the Milky Way's own structure, u6.5 is about our
  * position within the wider observable Universe.
@@ -30,6 +38,11 @@
  * placement (content is solid, exact decimal numbering less certain)
  * pending a check against the primary spec PDF. Topic 11 ("The Solar
  * System") is also fully tagged, across u3.3/u3.4 and u3.16-u3.25.
+ * Topic 12 ("Formation of planetary systems") carries spec tags too,
+ * but only on the handful of subtopics whose own pages actually touch
+ * it (u2.2, u2.12, u3.21, u3.30) — most of Topic 12 (exoplanet
+ * detection, habitability, the Drake equation, SETI) has no page yet,
+ * so unlike 7/8/11 it isn't fully tagged.
  *
  * Topics 1-6, 9 and 10 are tagged against src/specPoints.js, a
  * standalone registry of those topics' own spec points (point code,
