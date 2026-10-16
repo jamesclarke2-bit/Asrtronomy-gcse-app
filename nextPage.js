@@ -9,6 +9,15 @@
  * right after #coverage. On the path's last page there's nothing to
  * link on to, so it says so instead and points back at index.html.
  *
+ * This same script also appends one small site-footer line after
+ * #next-page, on every page that loads it, linking to
+ * notes/privacy.html — the one place that link needed adding sitewide
+ * without hand-editing every page's own HTML (index.html's own link to
+ * it lives in its Reference section instead, rendered by home.js from
+ * src/pages.js, not from here). It runs unconditionally, even on a
+ * page not on RECOMMENDED_PATH at all (e.g. a reference page), unlike
+ * the next-step link below, which needs a path position to work from.
+ *
  * Requires src/pages.js (for Pages.RECOMMENDED_PATH and Pages.PAGES)
  * loaded first; load this script itself last. The pure lookup below
  * is exported for Node so it's unit-testable without a DOM/location;
@@ -45,7 +54,27 @@
     return segments.slice(-2).join('/');
   }
 
+  // Appends a small "Privacy" line to <main>, after #next-page. Safe to
+  // call on any page, including one not on RECOMMENDED_PATH at all.
+  function renderSiteFooterNote() {
+    const main = document.querySelector('main');
+    if (!main || document.getElementById('site-footer-note')) return;
+
+    const note = document.createElement('p');
+    note.id = 'site-footer-note';
+    note.className = 'panel-note';
+    note.appendChild(document.createTextNode('This site keeps no accounts and sets no cookies — see the '));
+    const link = document.createElement('a');
+    link.href = '../notes/privacy.html';
+    link.textContent = 'privacy notice';
+    note.appendChild(link);
+    note.appendChild(document.createTextNode(' for what it stores and how to clear it.'));
+    main.appendChild(note);
+  }
+
   function init() {
+    renderSiteFooterNote();
+
     const container = document.getElementById('next-page');
     if (!container || typeof Pages === 'undefined') return;
 

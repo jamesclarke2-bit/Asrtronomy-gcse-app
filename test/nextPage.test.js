@@ -1,14 +1,16 @@
 /**
  * The "next page" link shown at the bottom of every sims/ and notes/
- * page (see nextPage.js and notes/TEMPLATE.md section 5), checked two
- * ways: the pure sequencing logic against small fixtures and against
- * the real RECOMMENDED_PATH, then the shared markup every registered
- * page must carry.
+ * page (see nextPage.js and notes/TEMPLATE.md section 5), checked
+ * three ways: the pure sequencing logic against small fixtures and
+ * against the real RECOMMENDED_PATH, the shared markup every
+ * registered page must carry, and (in a real browser) that the same
+ * script's privacy-notice footer line actually renders.
  */
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
+const { chromium } = require('playwright');
 const { PAGES, RECOMMENDED_PATH } = require('../src/pages');
 const { resolveNextStep } = require('../nextPage');
 
@@ -77,5 +79,54 @@ PAGES.forEach((page) => {
     const scripts = [...html.matchAll(/<script src="([^"?]+)/g)].map((m) => m[1]);
     assert.ok(scripts.includes('../src/pages.js'), 'loads src/pages.js');
     assert.equal(scripts.at(-1), '../nextPage.js', 'nextPage.js is the last script tag');
+  });
+});
+
+// --- renderSiteFooterNote, in a real browser --------------------------
+
+const SKIP_MESSAGE = (err) =>
+  `Playwright's Chromium browser isn't installed — run "npx playwright install chromium" to enable this test (${err.message})`;
+
+let browser;
+let launchError;
+
+test.before(async () => {
+  try {
+    browser = await chromium.launch();
+  } catch (err) {
+    launchError = err;
+  }
+});
+
+test.after(async () => {
+  if (browser) await browser.close();
+});
+
+// A sims/ page, a notes/ page, and privacy.html itself (whose own
+// footer links back to itself — harmless, and simpler than special-
+// casing the one page the note is about).
+['sims/kepler.html', 'notes/moon-structure.html', 'notes/privacy.html'].forEach((href) => {
+  test(`${href}: loading the page adds a #site-footer-note linking to notes/privacy.html`, async (t) => {
+    if (launchError) {
+      t.skip(SKIP_MESSAGE(launchError));
+      return;
+    }
+    const page = await browser.newPage();
+    try {
+      await page.goto('file://' + path.join(ROOT, href));
+      const note = await page.$('#site-footer-note');
+      assert.ok(note, '#site-footer-note should exist after the page loads');
+
+      const linkHref = await page.$eval('#site-footer-note a', (el) => el.getAttribute('href'));
+      assert.equal(linkHref, '../notes/privacy.html');
+
+      // #site-footer-note is appended after #next-page, so it's the
+      // true last element in <main> at runtime — #next-page itself
+      // stays the last *static* element (checked above from raw HTML).
+      const isLast = await page.evaluate(() => document.querySelector('main').lastElementChild.id === 'site-footer-note');
+      assert.ok(isLast, '#site-footer-note should be the last element in <main>');
+    } finally {
+      await page.close();
+    }
   });
 });

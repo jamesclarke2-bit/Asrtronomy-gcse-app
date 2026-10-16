@@ -194,6 +194,17 @@ const PAGES = [
     href: 'sims/gravity-field-map.html',
     units: ['u3.28', 'u3.29'],
   },
+  {
+    title: 'Privacy',
+    description:
+      "What this site is, what it stores on your own device (one local-storage entry of right/wrong practice-question counts), how to clear it, and that GitHub, as host, sees visitor IP addresses in its own logs.",
+    href: 'notes/privacy.html',
+    // A reference page: it's about the site itself, not any part of the
+    // curriculum (see the `kind: 'reference'` note in the file header
+    // above).
+    kind: 'reference',
+    units: [],
+  },
 ];
 
 /**

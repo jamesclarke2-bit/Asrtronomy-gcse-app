@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; form-action 'none'; base-uri 'self'" />
+  <meta name="referrer" content="no-referrer" />
+  <title>Privacy</title>
+  <link rel="stylesheet" href="../styles.css?v=202610131052" />
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg?v=202610130720" />
+</head>
+<body>
+  <main>
+    <p class="back-link"><a href="../index.html">&larr; Back to all tools</a></p>
+
+    <h1>Privacy</h1>
+    <p class="subtitle">
+      What this site is, what it stores on your own device, and how to clear it &mdash; in plain
+      English, not legal text.
+    </p>
+    <p class="panel-note">Last updated: 16 October 2026.</p>
+
+    <section class="notes-section" id="what-this-is">
+      <h2>What this site is</h2>
+      <p>
+        GCSE Astronomy is a free set of interactive simulators and reference pages for the Pearson
+        Edexcel GCSE Astronomy specification. Every page runs entirely in your own browser &mdash;
+        there's no server behind it doing anything with what you do here.
+      </p>
+    </section>
+
+    <section class="notes-section" id="no-accounts">
+      <h2>No accounts, forms or cookies</h2>
+      <p>
+        There's nothing to sign up for, no account to create, and no form anywhere on the site
+        that sends anything to anyone &mdash; including the number and text boxes on practice
+        questions, which check your answer right here in your browser and are never submitted
+        anywhere. This site sets no cookies at all.
+      </p>
+    </section>
+
+    <section class="notes-section" id="what-is-stored">
+      <h2>What's stored on your device</h2>
+      <p>
+        The only thing this site keeps is one entry in your browser's own
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="localStorage" aria-label="What is local storage?" aria-expanded="false">local storage</button>,
+        named <code>astro-quiz-progress</code>. It holds how many practice questions you've got
+        right and wrong so far, grouped by topic &mdash; numbers only, nothing that identifies
+        you. It stays on this device and is never sent anywhere, to this site or anyone else's.
+      </p>
+      <span class="glossary-definition" data-term="localStorage" hidden></span>
+    </section>
+
+    <section class="notes-section" id="clearing-it">
+      <h2>Clearing it</h2>
+      <p>
+        Use the button below, or clear it yourself through your browser's own settings &mdash;
+        it's stored under this site's address, so clearing your browser's site data for this site
+        removes it the same way.
+      </p>
+      <div class="control">
+        <button type="button" id="clear-progress-button" class="secondary-button">Clear my saved progress</button>
+      </div>
+      <p class="eot-readout" id="clear-progress-status" role="status"></p>
+    </section>
+
+    <section class="notes-section" id="hosting">
+      <h2>Hosting and visitor logs</h2>
+      <p>
+        One thing is outside this site's own control: like any website, this one is hosted
+        somewhere, and a host's own server logs typically see each visitor's IP address
+        regardless of what the site itself does. This site is hosted on GitHub, which keeps its
+        own logs under its own privacy policy, separate from anything described above.
+      </p>
+    </section>
+
+    <p class="coverage" id="coverage"></p>
+    <p class="next-page-link" id="next-page"></p>
+  </main>
+
+  <script src="../src/pages.js?v=202610160950"></script>
+  <script src="../glossary.js?v=202610131052"></script>
+  <script src="privacy.js?v=202610160945"></script>
+  <script src="../notesPage.js?v=202609252100"></script>
+  <script src="../nextPage.js?v=202610160950"></script>
+</body>
+</html>
