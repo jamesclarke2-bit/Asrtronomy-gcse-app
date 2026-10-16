@@ -2510,3 +2510,63 @@ canvas {
 .depth-key-list dd {
   margin: 0 0 0.6rem;
 }
+
+/* The slim site-navigation bar nextPage.js prepends to every sims/ and
+   notes/ page's own <main> (Home, Syllabus Map, Formulae and Data
+   Sheet, Privacy) — see that file's own header comment. Kept small and
+   low-contrast against the page's own content so it reads as
+   navigation, not a second headline, and wraps onto a second line
+   cleanly at phone widths rather than overflowing. */
+.site-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem 1.1rem;
+  margin: 0 0 0.6rem;
+  padding: 0.3rem 0.9rem;
+  background: #1f2d3d;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  line-height: 1.3;
+}
+
+.site-bar a {
+  color: #cfe0f5;
+  text-decoration: none;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.site-bar a:hover,
+.site-bar a:focus-visible {
+  color: #fff;
+  text-decoration: underline;
+}
+
+/* index.html's own one-line privacy summary, directly under the h1. */
+.privacy-line {
+  margin: 0 0 0.75rem;
+  font-size: 0.95rem;
+  color: #444;
+}
+
+.privacy-line a {
+  font-weight: 600;
+}
+
+/* index.html's compact "Reference" panel, above Recommended path — the
+   same reference pages renderReferencePages (further down the page)
+   lists in full, but as a single row of links so they're visible
+   without scrolling past the whole Recommended path first. */
+.reference-quick-section {
+  margin: 1rem 0 1.5rem;
+}
+
+.reference-quick-links {
+  margin: 0.5rem 0 0;
+  font-size: 1rem;
+}
+
+.reference-quick-links a {
+  font-weight: 600;
+}

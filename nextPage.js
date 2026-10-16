@@ -18,10 +18,20 @@
  * page not on RECOMMENDED_PATH at all (e.g. a reference page), unlike
  * the next-step link below, which needs a path position to work from.
  *
+ * It also prepends a slim site bar (Home, Syllabus Map, Formulae and
+ * Data Sheet, Privacy) as the first element inside <main>, on every
+ * page — again index.html excepted, which has no reason to link back
+ * to itself and builds its own "Reference" panel from the same data
+ * instead (home.js). Three of the four links resolve their label from
+ * Pages.PAGES by href, rather than a second hardcoded title, so a
+ * renamed page can't leave the bar showing a stale label; "Home" has
+ * no PAGES entry to resolve (index.html isn't registered there) so it
+ * stays a literal label/href pair.
+ *
  * Requires src/pages.js (for Pages.RECOMMENDED_PATH and Pages.PAGES)
- * loaded first; load this script itself last. The pure lookup below
- * is exported for Node so it's unit-testable without a DOM/location;
- * only init() touches the page.
+ * loaded first; load this script itself last. The pure lookups below
+ * are exported for Node so they're unit-testable without a DOM/
+ * location; only init() touches the page.
  */
 (function () {
   function flattenPath(recommendedPath) {
@@ -54,6 +64,56 @@
     return segments.slice(-2).join('/');
   }
 
+  // The site bar's four links, in order. A plain {label, href} pair is
+  // used as given; a {pageHref} entry is resolved against Pages.PAGES
+  // at render time instead, so its label always matches that page's
+  // own registered title.
+  const SITE_BAR_LINKS = [
+    { label: 'Home', href: '../index.html' },
+    { pageHref: 'notes/syllabus-map.html' },
+    { pageHref: 'notes/data-sheet.html' },
+    { pageHref: 'notes/privacy.html' },
+  ];
+
+  /**
+   * Resolves SITE_BAR_LINKS against a PAGES array into plain
+   * {label, href} pairs, dropping (rather than throwing on) a
+   * pageHref entry whose target isn't registered, so one missing
+   * registration can't take down the whole bar.
+   */
+  function resolveSiteBarLinks(pages) {
+    return SITE_BAR_LINKS.map((link) => {
+      if (!link.pageHref) return { label: link.label, href: link.href };
+      const page = pages.find((p) => p.href === link.pageHref);
+      return page ? { label: page.title, href: `../${page.href}` } : null;
+    }).filter(Boolean);
+  }
+
+  // Prepends the site bar as the first child of <main>, ahead of the
+  // page's own back-link, so it reads first without disturbing
+  // anything else already there. <main> rather than <body>: body is a
+  // centering flex row with a single child (main) on every page today,
+  // so a second direct child would sit beside main instead of above
+  // it, not stack with it.
+  function renderSiteBar() {
+    const main = document.querySelector('main');
+    if (!main || typeof Pages === 'undefined' || document.getElementById('site-bar')) return;
+
+    const nav = document.createElement('nav');
+    nav.id = 'site-bar';
+    nav.className = 'site-bar';
+    nav.setAttribute('aria-label', 'Site');
+
+    resolveSiteBarLinks(Pages.PAGES).forEach(({ label, href }) => {
+      const a = document.createElement('a');
+      a.href = href;
+      a.textContent = label;
+      nav.appendChild(a);
+    });
+
+    main.insertBefore(nav, main.firstChild);
+  }
+
   // Appends a small "Privacy" line to <main>, after #next-page. Safe to
   // call on any page, including one not on RECOMMENDED_PATH at all.
   function renderSiteFooterNote() {
@@ -73,6 +133,7 @@
   }
 
   function init() {
+    renderSiteBar();
     renderSiteFooterNote();
 
     const container = document.getElementById('next-page');
@@ -101,7 +162,7 @@
     container.appendChild(document.createTextNode(' →'));
   }
 
-  const api = { resolveNextStep };
+  const api = { resolveNextStep, resolveSiteBarLinks };
 
   if (typeof module !== 'undefined' && module.exports) {
     module.exports = api;

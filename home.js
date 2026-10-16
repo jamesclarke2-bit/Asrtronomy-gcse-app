@@ -6,6 +6,8 @@
   const extensionListEl = document.getElementById('extension-list');
   const referenceSectionEl = document.getElementById('reference-section');
   const referenceListEl = document.getElementById('reference-list');
+  const referenceQuickSectionEl = document.getElementById('reference-quick-section');
+  const referenceQuickListEl = document.getElementById('reference-quick-list');
 
   function pagesForUnit(unitId) {
     return Pages.PAGES.filter((page) => page.units.some((u) => u.startsWith(`${unitId}.`)));
@@ -96,6 +98,33 @@
       phaseSection.appendChild(stepsList);
       pathListEl.appendChild(phaseSection);
     });
+  }
+
+  // --- Reference quick links (top of page) -----------------------------------
+  // The same reference pages renderReferencePages lists in full, further
+  // down the page — but as one compact row of links right under the
+  // title, above the Recommended path, so they're visible without
+  // scrolling past all 22 of its steps. Built from the same Pages.PAGES
+  // data as that full listing, so the two can never show different
+  // pages; order follows PAGES itself, same as renderReferencePages.
+
+  function renderReferenceQuickLinks() {
+    const referencePages = Pages.PAGES.filter((page) => Pages.isReferencePage(page));
+    if (referencePages.length === 0) return;
+
+    referenceQuickSectionEl.hidden = false;
+    const links = document.createElement('p');
+    links.className = 'reference-quick-links';
+
+    referencePages.forEach((page, i) => {
+      if (i > 0) links.appendChild(document.createTextNode(' · '));
+      const a = document.createElement('a');
+      a.href = page.href;
+      a.textContent = page.title;
+      links.appendChild(a);
+    });
+
+    referenceQuickListEl.appendChild(links);
   }
 
   // --- Reference pages ------------------------------------------------------
@@ -233,6 +262,7 @@
   }
 
   renderScopeNote();
+  renderReferenceQuickLinks();
   renderPath();
   renderReferencePages();
   renderExtensionPages();

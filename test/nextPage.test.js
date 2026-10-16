@@ -4,7 +4,7 @@
  * three ways: the pure sequencing logic against small fixtures and
  * against the real RECOMMENDED_PATH, the shared markup every
  * registered page must carry, and (in a real browser) that the same
- * script's privacy-notice footer line actually renders.
+ * script's privacy-notice footer line and site bar actually render.
  */
 const test = require('node:test');
 const assert = require('node:assert/strict');
@@ -12,7 +12,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { chromium } = require('playwright');
 const { PAGES, RECOMMENDED_PATH } = require('../src/pages');
-const { resolveNextStep } = require('../nextPage');
+const { resolveNextStep, resolveSiteBarLinks } = require('../nextPage');
 
 const ROOT = path.join(__dirname, '..');
 
@@ -60,6 +60,37 @@ test('resolveNextStep against the real data: every page but the last resolves to
       assert.equal(result.next.href, flat[i + 1].href, `${step.href}'s next should be ${flat[i + 1].href}`);
     }
   });
+});
+
+// --- resolveSiteBarLinks, pure logic ---------------------------------------
+
+test('resolveSiteBarLinks: a plain {label, href} entry is used as given, never resolved against PAGES', () => {
+  const links = resolveSiteBarLinks([]);
+  assert.deepEqual(links[0], { label: 'Home', href: '../index.html' });
+});
+
+test('resolveSiteBarLinks: a {pageHref} entry resolves its label from that page\'s own registered title', () => {
+  const pages = [{ href: 'notes/syllabus-map.html', title: 'Syllabus Map' }];
+  const links = resolveSiteBarLinks(pages);
+  assert.deepEqual(
+    links.find((l) => l.href === '../notes/syllabus-map.html'),
+    { label: 'Syllabus Map', href: '../notes/syllabus-map.html' }
+  );
+});
+
+test('resolveSiteBarLinks: a {pageHref} entry whose target is missing from PAGES is dropped, not thrown', () => {
+  const links = resolveSiteBarLinks([]);
+  assert.deepEqual(links, [{ label: 'Home', href: '../index.html' }]);
+});
+
+test('resolveSiteBarLinks against the real data: exactly Home, Syllabus Map, Formulae and Data Sheet, Privacy, in that order', () => {
+  const links = resolveSiteBarLinks(PAGES);
+  assert.deepEqual(links, [
+    { label: 'Home', href: '../index.html' },
+    { label: 'Syllabus Map', href: '../notes/syllabus-map.html' },
+    { label: 'Formulae and Data Sheet', href: '../notes/data-sheet.html' },
+    { label: 'Privacy', href: '../notes/privacy.html' },
+  ]);
 });
 
 // --- Every registered page carries the shared markup -----------------------
@@ -127,6 +158,37 @@ test.after(async () => {
       assert.ok(isLast, '#site-footer-note should be the last element in <main>');
     } finally {
       await page.close();
+    }
+  });
+});
+
+// --- renderSiteBar, on every registered page, in a real browser -----------
+
+PAGES.forEach((page) => {
+  test(`${page.href}: shows the site bar with exactly Home, Syllabus Map, Formulae and Data Sheet and Privacy, every link resolving to a real file`, async (t) => {
+    if (launchError) {
+      t.skip(SKIP_MESSAGE(launchError));
+      return;
+    }
+    const browserPage = await browser.newPage();
+    try {
+      await browserPage.goto('file://' + path.join(ROOT, page.href));
+      const links = await browserPage.$$eval('#site-bar a', (as) => as.map((a) => ({ label: a.textContent, href: a.getAttribute('href') })));
+
+      assert.deepEqual(
+        links.map((l) => l.label),
+        ['Home', 'Syllabus Map', 'Formulae and Data Sheet', 'Privacy']
+      );
+
+      links.forEach(({ href, label }) => {
+        // Every link is "../<repo-root-relative path>" from this page's
+        // own directory (sims/ or notes/) — resolve the same way a
+        // browser would and confirm the target file actually exists.
+        const resolved = path.posix.normalize(path.posix.join(path.posix.dirname(page.href), href));
+        assert.ok(fs.existsSync(path.join(ROOT, resolved)), `${label} (${href}) should resolve to an existing file, got ${resolved}`);
+      });
+    } finally {
+      await browserPage.close();
     }
   });
 });
