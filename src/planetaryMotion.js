@@ -61,11 +61,17 @@ const PLANETS = {
   },
 };
 
-function toRad(deg) {
+// Named distinctly from solarPosition.js's own toRad/toDeg (identical
+// one-line conversions) because both files can be loaded together on
+// the same page (notes/syllabus-map.html) — a plain function
+// redeclaration is silently harmless across separate <script> tags,
+// but solarPosition.js declares its pair with const, and a const/
+// function name clash throws instead.
+function toRadians(deg) {
   return (deg * Math.PI) / 180;
 }
 
-function toDeg(rad) {
+function toDegrees(rad) {
   return (rad * 180) / Math.PI;
 }
 
@@ -84,7 +90,7 @@ function heliocentricLongitude(planetKey, date) {
 /** Heliocentric (x, y) position in AU, in the shared orbital plane. */
 function heliocentricPosition(planetKey, date) {
   const planet = PLANETS[planetKey];
-  const lonRad = toRad(heliocentricLongitude(planetKey, date));
+  const lonRad = toRadians(heliocentricLongitude(planetKey, date));
   return { x: planet.orbitalRadiusAU * Math.cos(lonRad), y: planet.orbitalRadiusAU * Math.sin(lonRad) };
 }
 
@@ -100,7 +106,7 @@ function heliocentricPosition(planetKey, date) {
 function apparentGeocentricLongitude(planetKey, date) {
   const earth = heliocentricPosition('earth', date);
   const planet = heliocentricPosition(planetKey, date);
-  return normalizeDeg(toDeg(Math.atan2(planet.y - earth.y, planet.x - earth.x)));
+  return normalizeDeg(toDegrees(Math.atan2(planet.y - earth.y, planet.x - earth.x)));
 }
 
 /**
@@ -119,7 +125,7 @@ function elongationDeg(planetKey, date) {
   const magProduct = Math.hypot(toSun.x, toSun.y) * Math.hypot(toPlanet.x, toPlanet.y);
   if (magProduct === 0) return 0;
   const cosAngle = (toSun.x * toPlanet.x + toSun.y * toPlanet.y) / magProduct;
-  return toDeg(Math.acos(Math.max(-1, Math.min(1, cosAngle))));
+  return toDegrees(Math.acos(Math.max(-1, Math.min(1, cosAngle))));
 }
 
 /**
@@ -153,7 +159,7 @@ function planetType(planetKey) {
  * full 180 degrees, at opposition).
  */
 function greatestElongationDeg(planetKey) {
-  return toDeg(Math.asin(PLANETS[planetKey].orbitalRadiusAU));
+  return toDegrees(Math.asin(PLANETS[planetKey].orbitalRadiusAU));
 }
 
 // A live classifier only needs a window, not an exact 0/180 crossing —
@@ -321,7 +327,7 @@ function illuminatedFraction(planetKey, date) {
   return (1 + Math.max(-1, Math.min(1, cosPhaseAngle))) / 2;
 }
 
-const api = {
+const planetaryMotionApi = {
   PLANETS,
   heliocentricLongitude,
   heliocentricPosition,
@@ -343,7 +349,7 @@ const api = {
 };
 
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = api;
+  module.exports = planetaryMotionApi;
 } else if (typeof window !== 'undefined') {
-  window.PlanetaryMotion = api;
+  window.PlanetaryMotion = planetaryMotionApi;
 }

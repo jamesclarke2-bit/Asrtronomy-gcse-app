@@ -205,6 +205,17 @@ const PAGES = [
     kind: 'reference',
     units: [],
   },
+  {
+    title: 'Syllabus Map',
+    description:
+      "Every point in the Edexcel GCSE Astronomy (1AS0) specification, matched to the page that teaches it — built straight from the site's own data, so it can't drift. A coverage summary per topic, which points still need a page, and which 'be able to' points already have practice questions.",
+    href: 'notes/syllabus-map.html',
+    // A reference page: it maps the whole specification at once, not
+    // any one unit (see the `kind: 'reference'` note in the file
+    // header above).
+    kind: 'reference',
+    units: [],
+  },
 ];
 
 /**

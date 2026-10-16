@@ -338,6 +338,33 @@ const SPEC_POINTS = [
 ];
 
 /**
+ * Every topic's own title, 1-16 — the first 12 are exactly the section
+ * headers above (this registry's own Topics 1-12); 13-16 have no
+ * SPEC_POINTS entries yet (see this file's header), but still have
+ * real titles in the spec document, needed anywhere a page lists every
+ * topic by name regardless of registry status (e.g. notes/syllabus-
+ * map.html).
+ */
+const TOPIC_NAMES = {
+  1: 'Planet Earth',
+  2: 'The lunar disc',
+  3: 'The Earth-Moon-Sun system',
+  4: 'Time and the Earth-Moon-Sun cycles',
+  5: 'Solar System observation',
+  6: 'Celestial observation',
+  7: 'Early models of the Solar System',
+  8: 'Planetary motion and gravity',
+  9: 'Exploring the Moon',
+  10: 'Solar astronomy',
+  11: 'Exploring the Solar System',
+  12: 'Formation of planetary systems',
+  13: 'Exploring starlight',
+  14: 'Stellar evolution',
+  15: 'Our place in the Galaxy',
+  16: 'Cosmology',
+};
+
+/**
  * Which spec points are actually a group of lettered sub-codes, keyed
  * by the parent code a reader would recognise from the spec document
  * (e.g. "12.1"), listing its children in the order given there. A
@@ -379,8 +406,16 @@ function getGroupCoverageStatus(parentCode, taggedCodes) {
 
 const SPEC_POINT_CODES = SPEC_POINTS.map((point) => point.code);
 
+// Topics 1-12 (this file's own registry) vs 13-16 (name only, no points
+// yet) — used anywhere that distinction matters (e.g. "not yet added to
+// the registry" on notes/syllabus-map.html) without hardcoding the
+// boundary a second time.
+const REGISTERED_TOPICS = [...new Set(SPEC_POINTS.map((point) => point.topic))].sort((a, b) => a - b);
+
+const specPointsApi = { SPEC_POINTS, SPEC_POINT_CODES, SPEC_POINT_GROUPS, TOPIC_NAMES, REGISTERED_TOPICS, getSpecPoint, getGroupCoverageStatus };
+
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { SPEC_POINTS, SPEC_POINT_CODES, SPEC_POINT_GROUPS, getSpecPoint, getGroupCoverageStatus };
+  module.exports = specPointsApi;
 } else if (typeof window !== 'undefined') {
-  window.SpecPoints = { SPEC_POINTS, SPEC_POINT_CODES, SPEC_POINT_GROUPS, getSpecPoint, getGroupCoverageStatus };
+  window.SpecPoints = specPointsApi;
 }

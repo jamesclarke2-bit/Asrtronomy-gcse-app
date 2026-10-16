@@ -54,10 +54,10 @@ function makeQuestions(SolarPosition, Coordinates) {
   ];
 }
 
-const api = { makeQuestions };
+const sunDeclinationQuestionsApi = { makeQuestions };
 
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = api;
+  module.exports = sunDeclinationQuestionsApi;
 } else if (typeof window !== 'undefined') {
-  window.SunDeclinationQuestions = api;
+  window.SunDeclinationQuestions = sunDeclinationQuestionsApi;
 }

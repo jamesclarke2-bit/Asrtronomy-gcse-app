@@ -305,10 +305,10 @@ function generateChainedQuestion(Coordinates, params) {
   };
 }
 
-const api = { makeQuestions, generateChainedQuestion, CHAINED_PARAM_PRESETS, pickRandomChainedParams };
+const coordinatesQuestionsApi = { makeQuestions, generateChainedQuestion, CHAINED_PARAM_PRESETS, pickRandomChainedParams };
 
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = api;
+  module.exports = coordinatesQuestionsApi;
 } else if (typeof window !== 'undefined') {
-  window.CoordinatesQuestions = api;
+  window.CoordinatesQuestions = coordinatesQuestionsApi;
 }

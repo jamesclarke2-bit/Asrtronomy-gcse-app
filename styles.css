@@ -2371,3 +2371,142 @@ canvas {
   border-color: #e0a79c;
   color: #8a2d22;
 }
+
+/* notes/syllabus-map.html: the spec-to-page coverage map. */
+.syllabus-summary-table td,
+.syllabus-summary-table th {
+  text-align: left;
+}
+
+.syllabus-summary-table td.syllabus-not-registered {
+  color: #888;
+  font-style: italic;
+}
+
+.syllabus-partly-detail {
+  margin-top: 0.75rem;
+}
+
+.syllabus-topic {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 0.85rem 1.1rem;
+  margin-bottom: 0.75rem;
+}
+
+.syllabus-topic summary {
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.syllabus-topic summary:hover,
+.syllabus-topic summary:focus-visible {
+  color: #2a6bd6;
+}
+
+.syllabus-topic-body {
+  margin-top: 0.85rem;
+}
+
+.syllabus-unregistered-topic {
+  padding: 0.6rem 0;
+  border-bottom: 1px solid #eee;
+  color: #555;
+}
+
+.spec-point-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.spec-point {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #e5e9ee;
+}
+
+.spec-point:last-child {
+  border-bottom: none;
+}
+
+.spec-point-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin: 0 0 0.3rem;
+}
+
+.spec-point-code {
+  font-weight: 700;
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+}
+
+.depth-tag {
+  display: inline-block;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: #555;
+  background: #eef1f5;
+  padding: 0.1rem 0.45rem;
+  border-radius: 3px;
+}
+
+.syllabus-status {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.1rem 0.5rem;
+  border-radius: 999px;
+}
+
+.syllabus-status[data-status='covered'] {
+  background: #e7f5ec;
+  color: #1a7f37;
+}
+
+.syllabus-status[data-status='partly covered'] {
+  background: #fdf0da;
+  color: #9a6400;
+}
+
+.syllabus-status[data-status='not built'] {
+  background: #fbeaea;
+  color: #b3261e;
+}
+
+.spec-point-text {
+  margin: 0 0 0.3rem;
+}
+
+.spec-point-pages,
+.spec-point-questions {
+  margin: 0.15rem 0 0;
+  font-size: 0.9rem;
+  color: #444;
+}
+
+.spec-point-children {
+  list-style: none;
+  margin: 0.6rem 0 0 1rem;
+  padding-left: 0.85rem;
+  border-left: 2px solid #e5e9ee;
+}
+
+.spec-point-children .spec-point {
+  padding: 0.6rem 0;
+}
+
+.depth-key-list {
+  margin: 0;
+}
+
+.depth-key-list dt {
+  font-weight: 700;
+}
+
+.depth-key-list dd {
+  margin: 0 0 0.6rem;
+}
