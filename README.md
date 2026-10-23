@@ -36,7 +36,9 @@ once to download that browser and have those tests actually run instead of skip.
 ## Privacy
 
 This site collects and sends nothing. There's no analytics, no tracking pixel, no sign-up, and no
-server for your data to go to — every page runs entirely in your own browser.
+server for your data to go to — every page runs entirely in your own browser. The practice
+questions' number, time and short-text answer boxes are checked right here in your browser and are
+never sent anywhere; only the right-or-wrong tally is stored.
 
 The only thing the site stores is a tally of which practice questions you've got right and wrong
 so far, kept in your browser's own `localStorage` and never sent anywhere. Clearing your browser's
