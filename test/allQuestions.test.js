@@ -63,6 +63,7 @@ test("getAllQuestionsNode's total is exactly the sum of every individual questio
   const { makeQuestions: makeSolarSystemBodies } = require('../src/solarSystemBodiesQuestions');
   const { makeQuestions: makeSunDeclination } = require('../src/sunDeclinationQuestions');
   const { makeQuestions: makeTelescope } = require('../src/telescopeQuestions');
+  const { makeQuestions: makeTides } = require('../src/tidesQuestions');
 
   const expectedTotal =
     sunPath.length +
@@ -80,7 +81,8 @@ test("getAllQuestionsNode's total is exactly the sum of every individual questio
     makeSolarActivity(ButterflyDiagram).length +
     makeSolarSystemBodies(SpecData).length +
     makeSunDeclination({ getSunPosition: SolarPosition.getSunPosition }, Coordinates).length +
-    makeTelescope(TelescopeModel, RayOptics).length;
+    makeTelescope(TelescopeModel, RayOptics).length +
+    makeTides(Tides).length;
 
   assert.equal(getAllQuestionsNode().length, expectedTotal);
 });

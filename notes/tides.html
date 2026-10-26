@@ -122,32 +122,86 @@
         <li><strong>In between:</strong> water drains towards the bulges &mdash; the sea is low.</li>
       </ul>
 
-      <div class="diagram" id="beach-scene-wrap">
-        <svg id="beach-scene" viewBox="0 0 300 170" role="img" aria-label="A beach scene with a high tide mark and a lower low tide mark on the sand, and the sea's edge between them"></svg>
-        <p class="diagram-caption">
-          On a real coastline, the same cycle shows up as the sea's edge moving between a high
-          tide mark and a low tide mark.
-        </p>
+      <div class="diagram-row">
+        <div class="diagram diagram-pair">
+          <h3>High tide</h3>
+          <div class="labelled-diagram-wrap" id="beach-high-wrap">
+            <svg id="beach-high" class="mini-tide-svg" width="220" height="170" viewBox="0 0 220 170" role="img" aria-label="A beach with a high tide mark post and a low tide mark post; the sea's edge has risen to reach the high tide mark, covering most of the sand"></svg>
+          </div>
+        </div>
+        <div class="diagram diagram-pair">
+          <h3>Low tide</h3>
+          <div class="labelled-diagram-wrap" id="beach-low-wrap">
+            <svg id="beach-low" class="mini-tide-svg" width="220" height="170" viewBox="0 0 220 170" role="img" aria-label="The same beach with the sea's edge retreated down to the low tide mark, exposing a wide strip of sand"></svg>
+          </div>
+        </div>
       </div>
+      <p class="diagram-caption">The sea's edge moves between the high tide mark and the low tide mark, about 6 hours apart.</p>
 
       <p class="eot-readout">
-        Most places get two high tides and two low tides a day, about
-        <strong id="lunar-day"></strong> apart.
+        Most places get two high tides and two low tides in each lunar day of
+        <strong id="lunar-day"></strong>, so high tides come about
+        <strong id="half-lunar-day"></strong> apart, and each day they arrive about
+        <strong id="daily-lag"></strong> later.
       </p>
       <p>
         <button type="button" class="glossary-toggle glossary-term-button" data-term="whyTwoADay" aria-label="Why two tides a day, not one?" aria-expanded="false">Why two tides a day, not one?</button>
       </p>
       <span class="glossary-definition" data-term="whyTwoADay" hidden></span>
 
-      <p class="eot-readout">
-        The Sun's own pull on Earth is about <strong id="pull-ratio"></strong> times stronger
-        than the Moon's, but its tidal effect is only about <strong id="tide-ratio"></strong> of
-        the Moon's.
-      </p>
+      <h3>The Sun pulls on Earth about <strong id="pull-ratio-heading"></strong> times harder than the Moon. So why does the Moon make bigger tides?</h3>
+      <ol class="tip-list">
+        <li>
+          Tides come from the <em>difference</em> in pull across the Earth &mdash; the stretch
+          &mdash; not from the pull itself. A strong pull that's the same everywhere just moves
+          the whole Earth together and raises no tide: like a fast stream carrying a boat along
+          without stretching it; it's the difference between the current at the bow and at the
+          stern that stretches the boat.
+        </li>
+        <li>
+          The Moon is close, so its pull changes a lot from the near side of Earth to the far
+          side. The Sun is about <strong id="distance-ratio"></strong> times further away, so
+          its pull is almost the same across the whole Earth.
+        </li>
+        <li>
+          So the Sun's stretch is only about <strong id="tide-ratio-step"></strong> &mdash;
+          under half &mdash; of the Moon's, even though its pull is far bigger. When they line
+          up (spring tides) the effects add; at right angles (neap tides) they partly cancel.
+        </li>
+      </ol>
+
+      <div class="diagram wide-diagram" id="pull-stretch-wrap">
+        <div class="labelled-diagram-wrap" id="pull-stretch-diagram-wrap">
+          <svg
+            id="pull-stretch-diagram"
+            class="mini-tide-svg"
+            width="640"
+            height="260"
+            viewBox="0 0 640 260"
+            role="img"
+            aria-label="Two rows, Earth with three pull arrows (near side, centre and far side) for the Sun and for the Moon. The Sun's three arrows are drawn very large and almost the same length. The Moon's arrows are smaller, but clearly different in length between the near and far side &mdash; the stretch that raises tides. Not to scale."
+          ></svg>
+        </div>
+        <p class="diagram-caption">Pull: <strong id="pull-ratio-caption"></strong> (Sun) against 1 (Moon)</p>
+        <p class="diagram-caption">Stretch across Earth: <strong id="tide-ratio-caption"></strong> (Sun) against 1 (Moon)</p>
+        <p class="diagram-caption">Not to scale: the arrow lengths are exaggerated to show the pattern, not the true sizes.</p>
+      </div>
+
       <p>
-        <button type="button" class="glossary-toggle glossary-term-button" data-term="whyMoonWins" aria-label="Why does the weaker puller win?" aria-expanded="false">Why does the weaker puller win?</button>
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="whyMoonWins" aria-label="Why does the Moon beat the Sun at making tides?" aria-expanded="false">Why does the Moon beat the Sun at making tides?</button>
       </p>
       <span class="glossary-definition" data-term="whyMoonWins" hidden></span>
+    </section>
+
+    <section class="questions">
+      <h2>Practice questions</h2>
+      <div id="questions-list"></div>
+    </section>
+
+    <section class="progress">
+      <h2>Your progress</h2>
+      <ul id="progress-list"></ul>
+      <p class="note">Stored in this browser only (localStorage) &mdash; no account needed.</p>
     </section>
 
     <section class="notes-section" id="exam-tips">
@@ -218,8 +272,10 @@
   <script src="../src/pages.js?v=202610161036"></script>
   <script src="../src/moonPhase.js?v=202609241000"></script>
   <script src="../src/tides.js?v=202609260100"></script>
+  <script src="../src/tidesQuestions.js?v=202610281200"></script>
   <script src="../glossary.js?v=202610131052"></script>
-  <script src="tides.js?v=202610271600"></script>
+  <script src="../quiz-ui.js?v=202609221100"></script>
+  <script src="tides.js?v=202610281200"></script>
   <script src="../notesPage.js?v=202609252100"></script>
   <script src="../nextPage.js?v=202610161057"></script>
 </body>

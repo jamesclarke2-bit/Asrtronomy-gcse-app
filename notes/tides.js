@@ -236,23 +236,88 @@
     });
   }
 
-  // --- Beach scene: an illustrative, not data-driven, SVG ------------------
+  // --- Beach scene: two illustrative, not data-driven, panels of the same
+  // beach — one with the sea risen to the high tide mark, one with it
+  // retreated to the low tide mark. Both posts and both marks are drawn
+  // in both panels (they're fixed features of the beach); only the sea's
+  // own edge, and which mark it currently reaches, changes between them.
 
-  function buildBeachScene() {
-    const svg = document.getElementById('beach-scene');
-    svgEl('rect', { x: 0, y: 0, width: 300, height: 110, fill: '#cfe6f5' }, svg);
-    svgEl('circle', { cx: 252, cy: 30, r: 18, fill: '#f5c542' }, svg);
-    svgEl('rect', { x: 0, y: 90, width: 300, height: 30, fill: '#6fa8dc' }, svg);
-    svgEl('path', { d: 'M0,120 Q60,108 120,118 T240,116 T300,120 L300,170 L0,170 Z', fill: '#e8d9a8' }, svg);
+  const BEACH_W = 220;
+  const BEACH_H = 170;
+  const BEACH_HIGH_POST = { x: 70, topY: 58, bottomY: 96 };
+  const BEACH_LOW_POST = { x: 150, topY: 116, bottomY: 150 };
+  const BEACH_DUNE_PATH = 'M0,52 Q55,42 110,50 T220,46 L220,170 L0,170 Z';
 
-    // High and low tide marks: two short posts with a dashed line each,
-    // at different heights up the beach.
-    [
-      { x: 70, y: 96, label: 'High tide mark' },
-      { x: 150, y: 128, label: 'Low tide mark' },
-    ].forEach(({ x, y }) => {
-      svgEl('line', { x1: x, y1: y, x2: x, y2: y + 30, stroke: '#7a5230', 'stroke-width': 3 }, svg);
-      svgEl('line', { x1: x - 14, y1: y, x2: 296, y2: y, stroke: '#b3261e', 'stroke-width': 1.5, 'stroke-dasharray': '4 3' }, svg);
+  function buildBeachPanel(containerId, seaLevel) {
+    const wrap = document.getElementById(containerId.wrap);
+    const svg = document.getElementById(containerId.svg);
+    const seaTop = seaLevel === 'high' ? BEACH_HIGH_POST.topY : BEACH_LOW_POST.topY;
+
+    svgEl('rect', { x: 0, y: 0, width: BEACH_W, height: 52, fill: '#cfe6f5' }, svg);
+    svgEl('circle', { cx: 195, cy: 20, r: 12, fill: '#f5c542' }, svg);
+    svgEl('path', { d: BEACH_DUNE_PATH, fill: '#e8d9a8' }, svg);
+    svgEl('rect', { x: 0, y: seaTop, width: BEACH_W, height: BEACH_H - seaTop, fill: '#6fa8dc' }, svg);
+
+    [BEACH_HIGH_POST, BEACH_LOW_POST].forEach((post) => {
+      svgEl('line', { x1: post.x, y1: post.topY, x2: post.x, y2: post.bottomY, stroke: '#7a5230', 'stroke-width': 3 }, svg);
+      svgEl('line', { x1: post.x - 6, y1: post.topY, x2: post.x + 6, y2: post.topY, stroke: '#7a5230', 'stroke-width': 3 }, svg);
+    });
+
+    svgEl('line', { x1: 8, y1: seaTop, x2: 212, y2: seaTop, stroke: '#b3261e', 'stroke-width': 1.5, 'stroke-dasharray': '4 3' }, svg);
+
+    placeLabel(makeLabel(wrap, 'High tide mark'), BEACH_HIGH_POST.x, 30, BEACH_W, BEACH_H);
+    placeLabel(makeLabel(wrap, 'Low tide mark'), BEACH_LOW_POST.x, 104, BEACH_W, BEACH_H);
+    placeLabel(makeLabel(wrap, 'Sea level'), 178, seaTop + 18, BEACH_W, BEACH_H);
+    placeLabel(makeLabel(wrap, 'Sand'), 20, seaLevel === 'high' ? 47 : 88, BEACH_W, BEACH_H);
+  }
+
+  // --- Pull vs stretch diagram: two rows (Sun, Moon), each an Earth with
+  // three pull arrows (near side, centre, far side). The Sun's arrows are
+  // drawn very large and almost equal, the Moon's smaller but clearly
+  // graded — illustrating the stretch, not the true relative sizes (the
+  // page says so in its own caption).
+
+  function buildPullStretchDiagram() {
+    const wrap = document.getElementById('pull-stretch-diagram-wrap');
+    const svg = document.getElementById('pull-stretch-diagram');
+    const PW = 640;
+    const PH = 260;
+    const earthCx = 140;
+    const earthR = 20;
+    const arrowStartX = earthCx + earthR + 10;
+    const bodyCx = 580;
+
+    function drawArrow(y, length, color) {
+      const x2 = arrowStartX + length;
+      svgEl('line', { x1: arrowStartX, y1: y, x2, y2: y, stroke: color, 'stroke-width': 3, 'stroke-linecap': 'round' }, svg);
+      svgEl('path', { d: `M${x2},${y} l-9,-5 M${x2},${y} l-9,5`, stroke: color, 'stroke-width': 3, fill: 'none', 'stroke-linecap': 'round' }, svg);
+    }
+
+    function drawRow(cy, lengths, bodyRadius, isMoon) {
+      svgEl('circle', { cx: earthCx, cy, r: earthR, fill: '#7a9a5c', stroke: '#4f6b3a', 'stroke-width': 1.5 }, svg);
+      if (isMoon) {
+        svgEl('circle', { cx: bodyCx, cy, r: bodyRadius, fill: '#3b3f48' }, svg);
+        svgEl('path', { d: `M${bodyCx},${cy - bodyRadius} A${bodyRadius},${bodyRadius} 0 0 1 ${bodyCx},${cy + bodyRadius} Z`, fill: '#f4f1e8' }, svg);
+      } else {
+        svgEl('circle', { cx: bodyCx, cy, r: bodyRadius, fill: '#f5c542' }, svg);
+      }
+      drawArrow(cy - 28, lengths.near, '#c0392b');
+      drawArrow(cy, lengths.centre, '#555');
+      drawArrow(cy + 28, lengths.far, '#2f6b9a');
+    }
+
+    const sunCy = 70;
+    const moonCy = 190;
+    drawRow(sunCy, { near: 330, centre: 320, far: 310 }, 26, false);
+    drawRow(moonCy, { near: 200, centre: 120, far: 40 }, 16, true);
+
+    placeLabel(makeLabel(wrap, 'The Sun'), 40, sunCy, PW, PH);
+    placeLabel(makeLabel(wrap, 'The Moon'), 40, moonCy, PW, PH);
+
+    [sunCy, moonCy].forEach((cy) => {
+      placeLabel(makeLabel(wrap, 'Near side'), 185, cy - 38, PW, PH);
+      placeLabel(makeLabel(wrap, 'Centre'), 185, cy - 10, PW, PH);
+      placeLabel(makeLabel(wrap, 'Far side'), 185, cy + 18, PW, PH);
     });
   }
 
@@ -336,12 +401,28 @@
     });
   });
 
+  // Formats a number of hours as "H hours M minutes", used for every
+  // lunar-day-derived figure on the page so none of them get hand-typed.
+  function formatHoursMinutes(hours) {
+    const h = Math.floor(hours);
+    const m = Math.round((hours - h) * 60);
+    return `${h} hours ${m} minutes`;
+  }
+
   function fillFigures() {
-    const lunarH = Math.floor(T.LUNAR_DAY_HOURS);
-    const lunarM = Math.round((T.LUNAR_DAY_HOURS - lunarH) * 60);
-    document.getElementById('lunar-day').textContent = `${lunarH} hours ${lunarM} minutes`;
-    document.getElementById('pull-ratio').textContent = String(Math.round(T.sunToMoonPullRatio() / 10) * 10);
-    document.getElementById('tide-ratio').textContent = T.TIDE_RATIO.toFixed(2);
+    document.getElementById('lunar-day').textContent = formatHoursMinutes(T.LUNAR_DAY_HOURS);
+    document.getElementById('half-lunar-day').textContent = formatHoursMinutes(T.LUNAR_DAY_HOURS / 2);
+    document.getElementById('daily-lag').textContent = `${Math.round((T.LUNAR_DAY_HOURS - 24) * 60)} minutes`;
+
+    const pullRatio = String(Math.round(T.sunToMoonPullRatio() / 10) * 10);
+    document.getElementById('pull-ratio-heading').textContent = pullRatio;
+    document.getElementById('pull-ratio-caption').textContent = pullRatio;
+
+    const tideRatio = T.TIDE_RATIO.toFixed(2);
+    document.getElementById('tide-ratio-step').textContent = tideRatio;
+    document.getElementById('tide-ratio-caption').textContent = tideRatio;
+
+    document.getElementById('distance-ratio').textContent = String(Math.round(T.SUN_DISTANCE_KM / T.MOON_DISTANCE_KM / 10) * 10);
     document.getElementById('spring-neap-ratio').textContent = T.springToNeapRatio().toFixed(1);
   }
 
@@ -361,14 +442,16 @@
     whyTwoADay:
       'The Moon moves on along its orbit while Earth turns, so it takes a little longer than one full spin for a place to come back under the Moon — the same reason moonrise itself comes about 50 minutes later each day.',
     whyMoonWins:
-      "Tides come from the difference in pull across Earth, not the pull itself — and that difference falls off much faster with distance. The Moon is far closer, so despite its weaker overall pull, its tidal effect wins by more than two to one.",
+      "Gravity's pull falls with the square of the distance (pull ∝ 1/d²), but the tidal stretch — the difference in pull from one side of Earth to the other — falls faster still, with the cube of the distance (stretch ∝ 1/d³), because it depends on how fast the pull itself is changing from place to place. The Moon's much shorter distance more than makes up for its much smaller mass once you're comparing stretch rather than pull, which is why the Moon's tides win even though the Sun's overall pull on Earth is far stronger.",
   };
 
   setUpDiagram();
   buildMiniTideDiagram({ wrap: 'spring-wrap', svg: 'spring-diagram' }, 0);
   buildMiniTideDiagram({ wrap: 'neap-wrap', svg: 'neap-diagram' }, 90);
   buildMonthStrip();
-  buildBeachScene();
+  buildBeachPanel({ wrap: 'beach-high-wrap', svg: 'beach-high' }, 'high');
+  buildBeachPanel({ wrap: 'beach-low-wrap', svg: 'beach-low' }, 'low');
+  buildPullStretchDiagram();
   fillFigures();
   const today = new Date();
   dateInput.value = today.toISOString().slice(0, 10);
@@ -376,4 +459,5 @@
   checkDate();
   renderCoverage();
   Glossary.init(GLOSSARY);
+  QuizUI.mount(TidesQuestions.makeQuestions(T));
 })();

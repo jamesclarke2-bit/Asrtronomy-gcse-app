@@ -43,6 +43,7 @@
       SolarSystemBodiesQuestions,
       SunDeclinationQuestions,
       TelescopeQuestions,
+      TidesQuestions,
     } = deps;
 
     return [
@@ -62,6 +63,7 @@
       ...SolarSystemBodiesQuestions.makeQuestions(SpecData),
       ...SunDeclinationQuestions.makeQuestions({ getSunPosition: SolarPosition.getSunPosition }, Coordinates),
       ...TelescopeQuestions.makeQuestions(TelescopeModel, RayOptics),
+      ...TidesQuestions.makeQuestions(Tides),
     ];
   }
 
@@ -98,6 +100,7 @@
       SolarSystemBodiesQuestions: require('./solarSystemBodiesQuestions'),
       SunDeclinationQuestions: require('./sunDeclinationQuestions'),
       TelescopeQuestions: require('./telescopeQuestions'),
+      TidesQuestions: require('./tidesQuestions'),
     });
   }
 
@@ -134,6 +137,7 @@
       SolarSystemBodiesQuestions: window.SolarSystemBodiesQuestions,
       SunDeclinationQuestions: window.SunDeclinationQuestions,
       TelescopeQuestions: window.TelescopeQuestions,
+      TidesQuestions: window.TidesQuestions,
     });
   }
 
