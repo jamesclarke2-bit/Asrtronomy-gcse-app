@@ -92,9 +92,11 @@ canvas {
   max-width: 320px;
 }
 
-/* notes/tides.html's four-card lunar-month strip, inside the same
-   700px .notes-section as .diagram-pair above — four cards need a much
-   narrower cap than the generic .diagram to fit a row without wrapping. */
+/* A row of four small cards inside the same 700px .notes-section as
+   .diagram-pair above — four cards need a much narrower cap than the
+   generic .diagram to fit a row without wrapping. First used by
+   notes/tides.html's lunar-month strip; also notes/measuring-the-sky.html's
+   four-step Eratosthenes recap. */
 .diagram.month-strip-card {
   max-width: 150px;
 }

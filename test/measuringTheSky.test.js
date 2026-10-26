@@ -34,6 +34,30 @@ test('Aristarchus, lunar distance: half a degree across puts the Moon ~110 diame
   assert.equal(Math.round(M.MOON_DISTANCE_KM / M.MOON_DIAMETER_KM / 10) * 10, 110);
 });
 
+test('distanceFromAngularSizeKm is the small-angle rearrangement of angularDiameterDeg', () => {
+  // A round trip (angle, then back to distance) should return very close to
+  // the original — not exact, since angularDiameterDeg uses the exact
+  // atan() formula while distanceFromAngularSizeKm uses the small-angle
+  // approximation (diameter / angle), as Aristarchus's own method does.
+  const angleDeg = M.angularDiameterDeg(M.MOON_DIAMETER_KM, M.MOON_DISTANCE_KM);
+  const roundTripKm = M.distanceFromAngularSizeKm(M.MOON_DIAMETER_KM, angleDeg * (Math.PI / 180));
+  assert.ok(Math.abs(roundTripKm - M.MOON_DISTANCE_KM) / M.MOON_DISTANCE_KM < 1e-4);
+});
+
+test('the worked "0.52° ≈ 0.0091 rad, so distance ≈ 385,000 km" line on notes/measuring-the-sky.html, rounded the way a student would at each step', () => {
+  const SpecData = require('../src/specData');
+  const angleDeg = Number(M.angularDiameterDeg(M.MOON_DIAMETER_KM, M.MOON_DISTANCE_KM).toFixed(2));
+  assert.equal(angleDeg, 0.52);
+  const angleRad = Number((angleDeg * (Math.PI / 180)).toFixed(4));
+  assert.equal(angleRad, 0.0091);
+  const diameterKm = SpecData.CONSTANTS.meanDiameterKm.moon;
+  assert.equal(diameterKm, 3500);
+  const distanceKm = M.distanceFromAngularSizeKm(diameterKm, angleRad);
+  assert.equal(Math.round(distanceKm / 1000) * 1000, 385000);
+  // The exam data sheet rounds the real distance further still, to 380,000 km.
+  assert.equal(SpecData.CONSTANTS.meanEarthMoonDistanceKm, 380000);
+});
+
 test('Aristarchus, quarter Moon: 87° gives ~19x; the true angle (~89.85°) gives ~390x', () => {
   assert.equal(Math.round(M.sunDistanceInMoonDistances(87)), 19);
   const trueAngle = M.trueQuarterAngleDeg();

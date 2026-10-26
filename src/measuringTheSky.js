@@ -78,6 +78,14 @@
     return 2 * Math.atan(diameterKm / 2 / distanceKm) / RAD;
   }
 
+  // The small-angle rearrangement the other way round: given how big
+  // something looks (its angular diameter) and its real diameter, how
+  // far away it must be. The same relationship angularDiameterDeg() uses,
+  // solved for distance instead of angle.
+  function distanceFromAngularSizeKm(diameterKm, angleRad) {
+    return diameterKm / angleRad;
+  }
+
   // --- Precession ---------------------------------------------------------
 
   // Ecliptic longitude and latitude (degrees) of a J2000 RA/Dec.
@@ -130,6 +138,7 @@
     trueQuarterAngleDeg,
     earthShadowAtMoon,
     angularDiameterDeg,
+    distanceFromAngularSizeKm,
     equatorialToEcliptic,
     celestialPoleAt,
   };

@@ -122,6 +122,26 @@
     update();
   }
 
+  function setUpMeridianTieup() {
+    const button = document.getElementById('toggle-meridian-tieup');
+    const panel = document.getElementById('meridian-tieup-panel');
+    button.addEventListener('click', () => {
+      const nowHidden = !panel.hidden;
+      panel.hidden = nowHidden;
+      button.setAttribute('aria-pressed', String(!nowHidden));
+    });
+  }
+
+  function setUpSizesTableToggle() {
+    const button = document.getElementById('toggle-sizes-table');
+    const panel = document.getElementById('sizes-table-panel');
+    button.addEventListener('click', () => {
+      const nowHidden = !panel.hidden;
+      panel.hidden = nowHidden;
+      button.setAttribute('aria-pressed', String(!nowHidden));
+    });
+  }
+
   // --- Aristarchus: the lunar eclipse shadow -----------------------------
 
   function drawShadow() {
@@ -146,6 +166,65 @@
     }
     addLabel(wrap, 380, 36, W, H, "Earth's shadow (umbra)");
     addLabel(wrap, 385, 158, W, H, 'Moon-sized circles');
+  }
+
+  // --- Aristarchus: the Moon's distance, from how big it looks -----------
+
+  function drawMoonDistanceTriangle() {
+    const W = 300;
+    const H = 150;
+    const svg = document.getElementById('moon-distance-diagram');
+    const wrap = document.getElementById('moon-distance-wrap');
+    const observer = { x: 20, y: 75 };
+    const moonX = 280;
+    const halfWidth = 16; // exaggerated half-diameter, so the angle is visible
+    const angleDeg = Math.atan2(halfWidth, moonX - observer.x) / RAD;
+
+    const sides = svgEl('g', { stroke: '#555', 'stroke-width': 1.5 }, svg);
+    svgEl('line', { x1: observer.x, y1: observer.y, x2: moonX, y2: observer.y - halfWidth }, sides);
+    svgEl('line', { x1: observer.x, y1: observer.y, x2: moonX, y2: observer.y + halfWidth }, sides);
+    svgEl('line', { x1: moonX, y1: observer.y - halfWidth, x2: moonX, y2: observer.y + halfWidth, stroke: MOON_FILL, 'stroke-width': 6, 'stroke-linecap': 'round' }, svg);
+    svgEl('path', { d: arcPath(observer.x, observer.y, 26, -angleDeg, angleDeg), fill: 'none', stroke: ANGLE_COLOR, 'stroke-width': 2 }, svg);
+    svgEl('circle', { cx: observer.x, cy: observer.y, r: 7, fill: EARTH_FILL }, svg);
+
+    addLabel(wrap, observer.x + 2, observer.y + 26, W, H, 'Observer');
+    addLabel(wrap, moonX, observer.y - 32, W, H, 'Moon');
+    addLabel(wrap, 150, observer.y + 22, W, H, 'distance');
+    addLabel(wrap, moonX + 26, observer.y, W, H, 'diameter');
+    addLabel(wrap, observer.x + 48, observer.y - 20, W, H, 'angle it covers');
+  }
+
+  function drawCoinComparison() {
+    const svg = document.getElementById('coin-diagram');
+    const eye = { x: 30, y: 75 };
+    const coin = { x: 230, y: 75 };
+    const coinR = 14;
+    const shoulder = { x: 15, y: 140 };
+
+    svgEl('line', { x1: shoulder.x, y1: shoulder.y, x2: coin.x, y2: coin.y, stroke: '#c9a27a', 'stroke-width': 10, 'stroke-linecap': 'round' }, svg);
+    const sightLines = svgEl('g', { stroke: ANGLE_COLOR, 'stroke-width': 1.5, 'stroke-dasharray': '3 2' }, svg);
+    svgEl('line', { x1: eye.x, y1: eye.y, x2: coin.x, y2: coin.y - coinR }, sightLines);
+    svgEl('line', { x1: eye.x, y1: eye.y, x2: coin.x, y2: coin.y + coinR }, sightLines);
+    svgEl('circle', { cx: coin.x, cy: coin.y, r: coinR, fill: '#c9a227', stroke: '#8a6d1a', 'stroke-width': 1.5 }, svg);
+    svgEl('circle', { cx: eye.x, cy: eye.y, r: 6, fill: '#1f2d3d' }, svg);
+  }
+
+  // Works out the "0.52° ≈ 0.0091 radians, so distance ≈ 385,000 km" worked
+  // line at each rounded step, the way a student would with a calculator —
+  // the data sheet's own Moon diameter (3,500 km), not the precise value.
+  function fillMoonDistanceWorked() {
+    const angleDeg = Number(M.angularDiameterDeg(M.MOON_DIAMETER_KM, M.MOON_DISTANCE_KM).toFixed(2));
+    const angleRad = Number((angleDeg * RAD).toFixed(4));
+    const diameterKm = SpecData.CONSTANTS.meanDiameterKm.moon;
+    const distanceKm = M.distanceFromAngularSizeKm(diameterKm, angleRad);
+    const roundedDistanceKm = Math.round(distanceKm / 1000) * 1000;
+    const examDistanceKm = SpecData.CONSTANTS.meanEarthMoonDistanceKm;
+    setText(
+      'moon-distance-worked',
+      `${angleDeg}° is about ${angleRad} radians, so distance = diameter ÷ angle = ` +
+        `${diameterKm.toLocaleString('en-GB')} km ÷ ${angleRad}, about ${roundedDistanceKm.toLocaleString('en-GB')} km. ` +
+        `The exam data sheet rounds this to ${examDistanceKm.toLocaleString('en-GB')} km.`
+    );
   }
 
   // --- Aristarchus: the quarter Moon -------------------------------------
@@ -366,20 +445,29 @@
     gnomon: "A gnomon: an upright stick or pillar whose shadow shows the Sun's direction, as on a sundial.",
     umbra: "The umbra: the dark central part of a shadow, where the Sun's light is blocked completely.",
     angularDiameter:
-      "Angular diameter: how wide something looks, measured as an angle. It depends on both an object's real size and its distance: the Sun and Moon both measure about half a degree.",
+      "Angular diameter: how wide something looks, measured as an angle. It depends on both an object's real size and its distance: the Sun and Moon both measure about half a degree, which is why the Moon can just cover the Sun in a total solar eclipse. The Moon's distance varies, so when it's farther away than average it looks slightly smaller than the Sun, and the eclipse is annular instead.",
     precession:
       "Precession: the slow circling of the direction of Earth's axis, taking about 26,000 years, caused by the Sun's and Moon's pull on Earth's equatorial bulge.",
     eclipticPole:
       "The north ecliptic pole: the point in the sky 90° from the ecliptic, straight 'above' the plane of Earth's orbit. It stays fixed while the celestial pole circles it.",
+    stadiaDistance:
+      "How this distance was found is uncertain. Eratosthenes took it as 5,000 stadia, traditionally said to come from professional pacers (bematists) counting their steps between the two cities, or from the travel time of camel caravans — a first draft, to be checked by the teacher.",
+    aristarchusHeliocentric:
+      "Since the Sun and Moon look the same size in the sky, a Sun 19 times farther away than the Moon had to be 19 times wider too, and so far bigger than Earth. That a much bigger body would orbit a smaller one seemed more natural to Aristarchus, leading him to suggest that the Earth goes around the Sun, nearly 1,800 years before Copernicus.",
   };
 
   drawEratosthenes();
   setUpCalculator();
+  setUpMeridianTieup();
   drawShadow();
+  drawMoonDistanceTriangle();
+  drawCoinComparison();
+  fillMoonDistanceWorked();
   drawQuarter();
   setUpQuarterSlider();
   drawScale();
   fillFigures();
+  setUpSizesTableToggle();
   setUpPrecession();
   setUpYearSlider();
   renderCoverage();

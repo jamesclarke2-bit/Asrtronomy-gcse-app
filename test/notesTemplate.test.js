@@ -45,6 +45,7 @@ const DIAGRAM_FIRST_PAGES = [
   'sims/eclipses.html',
   'notes/tides.html',
   'notes/moon-structure.html',
+  'notes/measuring-the-sky.html',
 ];
 
 function read(href) {

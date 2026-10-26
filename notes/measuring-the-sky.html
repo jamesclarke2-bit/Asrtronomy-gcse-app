@@ -7,7 +7,7 @@
   <meta name="referrer" content="no-referrer" />
   <meta name="robots" content="noindex, nofollow" />
   <title>Measuring the Sky</title>
-  <link rel="stylesheet" href="../styles.css?v=202610281430" />
+  <link rel="stylesheet" href="../styles.css?v=202610281600" />
   <link rel="icon" type="image/svg+xml" href="../favicon.svg?v=202610130720" />
 </head>
 <body>
@@ -25,23 +25,68 @@
       <h2>Eratosthenes measures the Earth</h2>
       <p>
         Around 240 BCE, Eratosthenes, a scholar in Alexandria, heard that at noon on the summer
-        solstice the Sun shone straight down a deep well at Syene (modern Aswan), far to the
-        south. The Sun was at the
+        solstice the Sun shone straight down a deep well at Syene (modern Aswan): the Sun was at
+        the
         <button type="button" class="glossary-toggle glossary-term-button" data-term="zenith" aria-label="What is the zenith?" aria-expanded="false">zenith</button>
-        there, so upright objects cast no shadow. At the same moment in Alexandria, a vertical
-        stick, a
-        <button type="button" class="glossary-toggle glossary-term-button" data-term="gnomon" aria-label="What is a gnomon?" aria-expanded="false">gnomon</button>,
-        did cast a shadow: the Sun was about <strong>7.2&deg;</strong> away from overhead, one
-        fiftieth of a full circle.
+        there. At the same moment in Alexandria, a
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="gnomon" aria-label="What is a gnomon?" aria-expanded="false">gnomon</button>
+        cast a shadow: the Sun was about 7.2&deg; from overhead. Four steps turn that into
+        Earth's whole circumference:
       </p>
       <span class="glossary-definition" data-term="zenith" hidden></span>
       <span class="glossary-definition" data-term="gnomon" hidden></span>
-      <p>
-        The Sun is so far away that its rays arrive at Earth effectively
-        <strong>parallel</strong>. So the only reason the angle differs between the two cities is
-        that Earth's surface curves between them, and the 7.2&deg; shadow angle is also the
-        angle between the two cities at Earth's centre.
-      </p>
+
+      <div class="diagram-row">
+        <div class="diagram month-strip-card">
+          <h3>1. No shadow at Syene</h3>
+          <svg viewBox="0 0 140 150" role="img" aria-label="At Syene, the Sun is directly overhead at noon, so a vertical stick casts no shadow">
+            <line x1="10" y1="120" x2="130" y2="120" stroke="#8c9aa8" stroke-width="2" />
+            <line x1="70" y1="40" x2="70" y2="120" stroke="#1f2d3d" stroke-width="4" stroke-linecap="round" />
+            <g stroke="#e0a21a" stroke-width="2" stroke-linecap="round">
+              <line x1="58" y1="10" x2="58" y2="34" /><path d="M58,34 l-4,-7 M58,34 l4,-7" fill="none" />
+              <line x1="70" y1="6" x2="70" y2="34" /><path d="M70,34 l-4,-7 M70,34 l4,-7" fill="none" />
+              <line x1="82" y1="10" x2="82" y2="34" /><path d="M82,34 l-4,-7 M82,34 l4,-7" fill="none" />
+            </g>
+          </svg>
+          <p class="diagram-caption">The Sun is overhead: no shadow</p>
+        </div>
+        <div class="diagram month-strip-card">
+          <h3>2. Shadow angle at Alexandria</h3>
+          <svg viewBox="0 0 140 150" role="img" aria-label="At Alexandria, the same stick casts a shadow, with the Sun about 7.2 degrees from overhead">
+            <line x1="10" y1="120" x2="130" y2="120" stroke="#8c9aa8" stroke-width="2" />
+            <line x1="70" y1="40" x2="70" y2="120" stroke="#1f2d3d" stroke-width="4" stroke-linecap="round" />
+            <line x1="70" y1="120" x2="100" y2="120" stroke="#1f2d3d" stroke-width="4" stroke-linecap="round" />
+            <g stroke="#e0a21a" stroke-width="2" stroke-linecap="round">
+              <line x1="48" y1="12" x2="70" y2="40" /><path d="M70,40 l-9,-1 M70,40 l-4,-8" fill="none" />
+              <line x1="60" y1="8" x2="80" y2="40" transform="translate(6,0)" />
+              <line x1="88" y1="14" x2="86" y2="40" />
+            </g>
+            <path d="M70,80 A40,40 0 0 1 97,96" fill="none" stroke="#c0392b" stroke-width="2" />
+          </svg>
+          <p class="diagram-caption">Shadow angle: about 7.2&deg;</p>
+        </div>
+        <div class="diagram month-strip-card">
+          <h3>3. Distance between them</h3>
+          <svg viewBox="0 0 140 150" role="img" aria-label="The distance measured between Syene and Alexandria, about 800 kilometres">
+            <line x1="20" y1="90" x2="120" y2="40" stroke="#8c9aa8" stroke-width="2" stroke-dasharray="4 4" />
+            <circle cx="20" cy="90" r="7" fill="#c0392b" stroke="#fff" stroke-width="1.5" />
+            <circle cx="120" cy="40" r="7" fill="#c0392b" stroke="#fff" stroke-width="1.5" />
+          </svg>
+          <p class="diagram-caption">
+            Traditionally about 800&nbsp;km &mdash;
+            <button type="button" class="glossary-toggle glossary-term-button" data-term="stadiaDistance" aria-label="How was the distance between the two cities found?" aria-expanded="false">how was this found?</button>
+          </p>
+          <span class="glossary-definition" data-term="stadiaDistance" hidden></span>
+        </div>
+        <div class="diagram month-strip-card">
+          <h3>4. Circumference</h3>
+          <svg viewBox="0 0 140 150" role="img" aria-label="A full circle, with a thin wedge of it highlighted the same fraction as the shadow angle is of 360 degrees">
+            <circle cx="70" cy="75" r="45" fill="none" stroke="#8c9aa8" stroke-width="2" />
+            <path d="M70,75 L70,30 A45,45 0 0 1 95,42 Z" fill="#c0392b" fill-opacity="0.75" />
+          </svg>
+          <p class="diagram-caption">distance &times; 360&deg; &divide; angle</p>
+        </div>
+      </div>
 
       <div class="diagram eratosthenes-diagram">
         <div class="labelled-diagram-wrap" id="eratosthenes-wrap">
@@ -52,23 +97,21 @@
             aria-label="Cross-section of Earth with parallel rays of sunlight arriving from above. At Syene a vertical stick casts no shadow, because the Sun is overhead. At Alexandria, further round the curve, a vertical stick casts a shadow, and the angle between the stick and the Sun's rays is the same as the angle between the two cities at Earth's centre."
           ></svg>
         </div>
-        <p class="diagram-caption">The shadow angle at Alexandria equals the angle between the two cities at Earth's centre</p>
+        <p class="diagram-caption">
+          Steps 1 and 2 in full: the Sun's rays arrive <strong>parallel</strong>, so the shadow
+          angle at Alexandria equals the angle between the two cities at Earth's centre
+        </p>
       </div>
       <p class="note">The angle is drawn three times bigger than the real 7.2&deg; so it's visible.</p>
 
-      <p>
-        If 7.2&deg; is one fiftieth of a circle, the distance from Syene to Alexandria must be one
-        fiftieth of Earth's whole circumference:
-      </p>
       <p class="formula">
         angle &divide; 360&deg; = distance between the places &divide; circumference
       </p>
       <p>
-        Eratosthenes took the distance to be 5,000 stadia, giving 250,000 stadia. Nobody knows
-        exactly which length of stadion he meant; depending on which, that's somewhere between
-        about 39,000 and 46,000&nbsp;km. With today's figure of about 800&nbsp;km between
-        the two cities, 7.2&deg; gives <strong>40,000&nbsp;km</strong>, almost exactly the real
-        circumference.
+        Eratosthenes took the distance to be 5,000 stadia, giving 250,000 stadia &mdash;
+        somewhere between about 39,000 and 46,000&nbsp;km depending which stadion he meant. With
+        today's figure of about 800&nbsp;km, 7.2&deg; gives <strong>40,000&nbsp;km</strong>,
+        almost exactly the real circumference.
       </p>
 
       <div class="control calculator">
@@ -81,27 +124,30 @@
       </div>
 
       <p>
-        It only works if the two measurements are taken at <strong>local noon on the same
-        day</strong>, at places <strong>due north and south</strong> of each other (Eratosthenes
-        assumed Syene was due south of Alexandria; it's actually about 3&deg; of longitude
-        east).
+        It only works at <strong>local noon on the same day</strong>, at places
+        <strong>due north and south</strong> of each other (Eratosthenes assumed due south; it's
+        actually about 3&deg; east).
       </p>
 
-      <h3>The same geometry as the meridian cross-section</h3>
       <p>
-        This isn't a new idea: it's the geometry behind the meridian cross-section on the Star
-        Coordinates page. There, an object's altitude as it crosses the meridian is
-        90&deg; &minus; |latitude &minus; declination|. For the same object at the same moment,
-        moving north or south changes its noon altitude by exactly the change in latitude.
-        Eratosthenes' object was the Sun, and his shadow angle was that change. To see it for
-        yourself, use the meridian cross-section on
-        <a href="../sims/coordinates.html">Star Coordinates</a>:
+        <button type="button" id="toggle-meridian-tieup" class="secondary-button" aria-pressed="false">The same geometry as the meridian cross-section</button>
       </p>
-      <ol class="tip-list">
-        <li>Set the declination to +23.4&deg;, where the Sun sits at the June solstice.</li>
-        <li>Set the latitude to 24&deg;, Syene: the transit altitude is almost 90&deg;, straight overhead.</li>
-        <li>Move the latitude to 31&deg;, Alexandria: the altitude drops by 7&deg;, which is Eratosthenes' shadow angle.</li>
-      </ol>
+      <div id="meridian-tieup-panel" hidden>
+        <p>
+          This isn't a new idea: it's the geometry behind the meridian cross-section on the Star
+          Coordinates page. There, an object's altitude as it crosses the meridian is
+          90&deg; &minus; |latitude &minus; declination|. For the same object at the same moment,
+          moving north or south changes its noon altitude by exactly the change in latitude.
+          Eratosthenes' object was the Sun, and his shadow angle was that change. To see it for
+          yourself, use the meridian cross-section on
+          <a href="../sims/coordinates.html">Star Coordinates</a>:
+        </p>
+        <ol class="tip-list">
+          <li>Set the declination to +23.4&deg;, where the Sun sits at the June solstice.</li>
+          <li>Set the latitude to 24&deg;, Syene: the transit altitude is almost 90&deg;, straight overhead.</li>
+          <li>Move the latitude to 31&deg;, Alexandria: the altitude drops by 7&deg;, which is Eratosthenes' shadow angle.</li>
+        </ol>
+      </div>
     </section>
 
     <section class="notes-section" id="aristarchus">
@@ -149,6 +195,40 @@
         380,000&nbsp;km.
       </p>
 
+      <div class="diagram-row">
+        <div class="diagram diagram-pair">
+          <h3>A long, thin triangle</h3>
+          <div class="labelled-diagram-wrap" id="moon-distance-wrap">
+            <svg
+              id="moon-distance-diagram"
+              class="mini-tide-svg"
+              width="300"
+              height="150"
+              viewBox="0 0 300 150"
+              role="img"
+              aria-label="A long, thin triangle from the observer on Earth to the Moon, with the small angle it covers marked at the observer's end and the Moon's diameter marked at the far end"
+            ></svg>
+          </div>
+          <p class="diagram-caption" id="moon-distance-worked"></p>
+        </div>
+        <div class="diagram diagram-pair">
+          <h3>About the size of a coin</h3>
+          <div class="labelled-diagram-wrap" id="coin-wrap">
+            <svg
+              id="coin-diagram"
+              class="mini-tide-svg"
+              width="300"
+              height="150"
+              viewBox="0 0 300 150"
+              role="img"
+              aria-label="A coin held at arm's length, covering about the same tiny angle in the sky as the Moon does"
+            ></svg>
+          </div>
+          <p class="diagram-caption">A small coin at arm's length covers about the same tiny angle as the Moon &mdash; it looks far smaller in the sky than most people expect.</p>
+        </div>
+      </div>
+      <p class="note">The coin comparison is a first draft, to be checked by the teacher.</p>
+
       <h3>The Sun's distance, from the quarter Moon</h3>
       <p>
         At first quarter, the Moon is exactly half lit. That can only happen when the angle
@@ -185,40 +265,45 @@
 
       <p>
         Aristarchus measured 87&deg;, making the Sun about 19 times farther away than the Moon.
-        The true angle is <strong id="true-quarter-angle"></strong>, which makes it about
-        <strong id="true-sun-ratio"></strong> times farther. The method was right; the angle is
-        just too close to 90&deg; to measure by eye. Even so, since the Sun and Moon look the same
-        size, a Sun 19 times farther away had to be 19 times wider than the Moon, and so far
-        bigger than Earth. That led Aristarchus to suggest that the Earth goes around the Sun,
-        nearly 1,800 years before Copernicus.
+        The true angle is <strong id="true-quarter-angle"></strong>, about
+        <strong id="true-sun-ratio"></strong> times farther &mdash; the method was right, just
+        too close to 90&deg; to measure by eye.
       </p>
+      <p>
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="aristarchusHeliocentric" aria-label="Why does this matter for the Earth going around the Sun?" aria-expanded="false">Why does this matter for the Earth going around the Sun?</button>
+      </p>
+      <span class="glossary-definition" data-term="aristarchusHeliocentric" hidden></span>
     </section>
 
     <section class="notes-section" id="scale">
       <h2>The Earth, Moon and Sun in numbers</h2>
       <p>
         The Sun's mean diameter is about <strong>1.39 million km</strong> (the exam data sheet
-        uses 1.4&nbsp;&times;&nbsp;10&sup6;&nbsp;km). Measured with modern methods, the whole
-        system looks like this:
+        uses 1.4&nbsp;&times;&nbsp;10<sup>6</sup>&nbsp;km).
       </p>
-      <div class="table-scroll">
-        <table class="shower-table">
-          <caption>Sizes and mean distances</caption>
-          <thead>
-            <tr><th scope="col">Body</th><th scope="col">Mean diameter</th><th scope="col">Mean distance from Earth</th><th scope="col">Exam data sheet uses</th></tr>
-          </thead>
-          <tbody>
-            <tr><td>Moon</td><td>3,475&nbsp;km</td><td>384,400&nbsp;km</td><td>3,500&nbsp;km diameter; 380,000&nbsp;km distance</td></tr>
-            <tr><td>Earth</td><td>12,742&nbsp;km</td><td>&ndash;</td><td>13,000&nbsp;km diameter</td></tr>
-            <tr><td>Sun</td><td>1,391,400&nbsp;km</td><td>149.6 million km (1&nbsp;AU)</td><td>1.4&nbsp;&times;&nbsp;10&sup6;&nbsp;km diameter; 1&nbsp;AU = 1.5&nbsp;&times;&nbsp;10&sup8;&nbsp;km</td></tr>
-          </tbody>
-        </table>
+      <p>
+        <button type="button" id="toggle-sizes-table" class="secondary-button" aria-pressed="false">Sizes and mean distances table</button>
+      </p>
+      <div id="sizes-table-panel" hidden>
+        <div class="table-scroll">
+          <table class="shower-table">
+            <caption>Sizes and mean distances</caption>
+            <thead>
+              <tr><th scope="col">Body</th><th scope="col">Mean diameter</th><th scope="col">Mean distance from Earth</th><th scope="col">Exam data sheet uses</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Moon</td><td>3,475&nbsp;km</td><td>384,400&nbsp;km</td><td>3,500&nbsp;km diameter; 380,000&nbsp;km distance</td></tr>
+              <tr><td>Earth</td><td>12,742&nbsp;km</td><td>&ndash;</td><td>13,000&nbsp;km diameter</td></tr>
+              <tr><td>Sun</td><td>1,391,400&nbsp;km</td><td>149.6 million km (1&nbsp;AU)</td><td>1.4&nbsp;&times;&nbsp;10<sup>6</sup>&nbsp;km diameter; 1&nbsp;AU = 1.5&nbsp;&times;&nbsp;10<sup>8</sup>&nbsp;km</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note">
+          The right-hand column is what <a href="data-sheet.html">the exam's own data sheet</a>
+          gives for these same figures &mdash; a little more rounded than the precise modern values
+          in the rest of this table.
+        </p>
       </div>
-      <p class="note">
-        The right-hand column is what <a href="data-sheet.html">the exam's own data sheet</a>
-        gives for these same figures &mdash; a little more rounded than the precise modern values
-        in the rest of this table.
-      </p>
       <ul class="tip-list">
         <li>The Sun is about <strong id="sun-earth-ratio"></strong> times Earth's diameter, and Earth is about <strong id="earth-moon-ratio"></strong> times the Moon's.</li>
         <li>The Moon is about <strong id="moon-distance-earths"></strong> Earth diameters away.</li>
@@ -228,13 +313,11 @@
       <h3>The 400&times; coincidence</h3>
       <p>
         The Sun is about <strong id="sun-moon-size"></strong> times the Moon's diameter, and also
-        about <strong id="sun-moon-distance"></strong> times farther away. The two factors almost
-        cancel, so from Earth the Sun and Moon have almost exactly the same
+        about <strong id="sun-moon-distance"></strong> times farther away &mdash; the two nearly
+        cancel, so the Sun and Moon have almost exactly the same
         <button type="button" class="glossary-toggle glossary-term-button" data-term="angularDiameter" aria-label="What is angular diameter?" aria-expanded="false">angular diameter</button>,
-        about half a degree (<span id="moon-angle"></span> for the Moon at its mean distance,
-        <span id="sun-angle"></span> for the Sun). That's why the Moon can just cover the Sun in a
-        total solar eclipse. The Moon's distance varies, so when it's farther away than average
-        it looks slightly smaller than the Sun, and an eclipse is annular instead.
+        about half a degree (<span id="moon-angle"></span> Moon, <span id="sun-angle"></span>
+        Sun).
       </p>
       <span class="glossary-definition" data-term="angularDiameter" hidden></span>
 
@@ -384,10 +467,11 @@
 
   <script src="../src/curriculum.js?v=202610141552"></script>
   <script src="../src/pages.js?v=202610161036"></script>
+  <script src="../src/specData.js?v=202610281500"></script>
   <script src="../src/starPatterns.js?v=202609280900"></script>
-  <script src="../src/measuringTheSky.js?v=202609252300"></script>
+  <script src="../src/measuringTheSky.js?v=202610281500"></script>
   <script src="../glossary.js?v=202610131052"></script>
-  <script src="measuring-the-sky.js?v=202609252300"></script>
+  <script src="measuring-the-sky.js?v=202610281500"></script>
   <script src="../notesPage.js?v=202609252100"></script>
   <script src="../nextPage.js?v=202610161057"></script>
 </body>
