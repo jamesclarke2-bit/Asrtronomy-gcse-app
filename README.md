@@ -50,15 +50,3 @@ a host's own server logs typically see each visitor's IP address regardless of w
 itself does. This repository, and the site built from it, is hosted on GitHub — see
 [GitHub's own privacy statement](https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement)
 for what it logs and for how long.
-
-## Licence
-
-This repository's code — its HTML, CSS and JavaScript — is MIT licensed; see [LICENSE](LICENSE).
-
-The notes, diagrams and practice questions are licensed separately, under
-[Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode)
-(CC BY-NC-SA 4.0): you're free to share and adapt them for any non-commercial purpose, as long as
-you credit the source and share your own version under the same licence. See
-[LICENSE-CONTENT.md](LICENSE-CONTENT.md) for the full plain-English summary, and for what's
-excluded — the Edexcel GCSE Astronomy (1AS0) specification's own wording and its exam data-sheet
-values, which belong to Pearson and are included only for revision reference.
