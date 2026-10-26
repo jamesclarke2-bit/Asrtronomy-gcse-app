@@ -50,3 +50,9 @@ a host's own server logs typically see each visitor's IP address regardless of w
 itself does. This repository, and the site built from it, is hosted on GitHub — see
 [GitHub's own privacy statement](https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement)
 for what it logs and for how long.
+
+## Licence
+
+All rights reserved for now; licensing to be confirmed.
+
+The site is also deliberately unlisted from search engines for now, while this is sorted out.
