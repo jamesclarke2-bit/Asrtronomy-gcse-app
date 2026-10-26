@@ -19,7 +19,16 @@
  * notes/geocentric-to-heliocentric.html.
  */
 (function () {
-  const CURRICULUM_UNITS = ['u3.16', 'u3.17', 'u3.18', 'u3.19', 'u3.20', 'u3.21', 'u3.22', 'u3.23', 'u3.24', 'u3.25', 'u3.30'];
+  const CURRICULUM_UNITS = ['u3.16', 'u3.17', 'u3.18', 'u3.19', 'u3.20', 'u3.21', 'u3.22', 'u3.23', 'u3.24', 'u3.25', 'u3.30', 'u3.31'];
+
+  const SVG_NS = 'http://www.w3.org/2000/svg';
+
+  function svgEl(tag, attrs, parent) {
+    const el = document.createElementNS(SVG_NS, tag);
+    Object.entries(attrs).forEach(([key, value]) => el.setAttribute(key, value));
+    if (parent) parent.appendChild(el);
+    return el;
+  }
 
   const SUPERSCRIPT_DIGITS = { 0: '⁰', 1: '¹', 2: '²', 3: '³', 4: '⁴', 5: '⁵', 6: '⁶', 7: '⁷', 8: '⁸', 9: '⁹', '-': '⁻', '+': '' };
 
@@ -338,6 +347,73 @@
     ctx.moveTo(10, baselineY);
     ctx.lineTo(Math.max(x, canvas.width - 10), baselineY);
     ctx.stroke();
+  }
+
+  // --- Ring systems: the four ringed planets, to relative size --------
+  //
+  // Diameters come straight from SpecData.PLANETARY_DATA, the exam data
+  // sheet, so the four circles are genuinely to relative scale. The ring
+  // appearance (outer radius vs. opacity/width) is this page's own
+  // first-draft simplification of each planet's real rings — Saturn's
+  // really are the widest and by far the brightest; Jupiter's, Uranus's
+  // and Neptune's really are much fainter and narrower, which the
+  // opacity and stroke-width differences below are meant to show, not
+  // just the caption text.
+  const RING_PLANET_NAMES = ['Jupiter', 'Saturn', 'Uranus', 'Neptune'];
+  const RING_APPEARANCE = {
+    Jupiter: { fill: '#c9975a', outerRatio: 1.4, opacity: 0.18, stroke: '#8a97a5', strokeWidth: 3 },
+    Saturn: { fill: '#e3c16f', outerRatio: 2.3, opacity: 0.9, stroke: '#8a6a2e', strokeWidth: 10 },
+    Uranus: { fill: '#8fd8e0', outerRatio: 1.8, opacity: 0.35, stroke: '#3a9db0', strokeWidth: 3 },
+    // Neptune's real rings are known to be clumpy, partial arcs rather
+    // than one smooth band — the dashed stroke is a nod to that, not
+    // just decoration.
+    Neptune: { fill: '#3b5fcc', outerRatio: 1.7, opacity: 0.25, stroke: '#1f2f80', strokeWidth: 3, dashed: true },
+  };
+
+  function drawRingSystems() {
+    const svg = document.getElementById('ring-systems-diagram');
+    const viewHeight = 160;
+    const cy = viewHeight / 2;
+    const margin = 18;
+    const gap = 18;
+
+    const planets = RING_PLANET_NAMES.map((name) => ({
+      name,
+      diameter: SpecData.PLANETARY_DATA.find((b) => b.name === name).diameterThousandKm,
+    }));
+
+    // Scale so the largest (Jupiter) gets a 65px radius, leaving its own
+    // widest ring comfortably inside the viewBox's half-height.
+    const pxPerThousandKm = (65 * 2) / Math.max(...planets.map((p) => p.diameter));
+
+    let x = margin;
+    const sized = planets.map((p) => {
+      const radius = (p.diameter * pxPerThousandKm) / 2;
+      const outerRingRadius = radius * RING_APPEARANCE[p.name].outerRatio;
+      const cx = x + outerRingRadius;
+      x = cx + outerRingRadius + gap;
+      return { ...p, radius, outerRingRadius, cx };
+    });
+
+    svg.setAttribute('viewBox', `0 0 ${x - gap + margin} ${viewHeight}`);
+    svg.textContent = '';
+
+    sized.forEach((p) => {
+      const appearance = RING_APPEARANCE[p.name];
+      const ringAttrs = {
+        cx: p.cx,
+        cy,
+        rx: p.outerRingRadius,
+        ry: p.outerRingRadius * 0.28,
+        fill: 'none',
+        stroke: appearance.stroke,
+        'stroke-width': appearance.strokeWidth,
+        opacity: appearance.opacity,
+      };
+      if (appearance.dashed) ringAttrs['stroke-dasharray'] = '4 5';
+      svgEl('ellipse', ringAttrs, svg);
+      svgEl('circle', { cx: p.cx, cy, r: p.radius, fill: appearance.fill, stroke: appearance.stroke, 'stroke-width': 1.5 }, svg);
+    });
   }
 
   // --- Moons: the larger named moons, grouped by planet, to scale -----
@@ -779,6 +855,8 @@
   // Glossary.init — the table's per-body toggles are wired directly in
   // renderTableBody, see the comment there.
   const GLOSSARY = {
+    rings:
+      'Rings: countless small particles circling a planet instead of a moon — Saturn’s are mostly ice, from dust-sized grains to boulders. A ring system is very wide but typically only tens of metres thick. The two leading ideas for where rings come from: a moon or comet broken apart by the planet’s own tidal forces after straying inside the Roche limit, or material left over from the planet’s own formation that never clumped into a moon.',
     nucleus: 'Nucleus: a comet’s solid core of ice, dust and rock, often called a ‘dirty snowball’ — typically only a few km across.',
     coma: 'Coma: the glowing cloud of gas and dust released as a comet’s nucleus is heated near the Sun, surrounding it like a fuzzy atmosphere.',
     'comet-tail': 'Tail: gas and dust pushed away from a comet’s coma by the solar wind and radiation pressure — always pointing away from the Sun, whichever way the comet itself is moving.',
@@ -796,6 +874,7 @@
   renderTableBody();
   drawSizeBarChart();
   drawSizeScaleDiagram();
+  drawRingSystems();
   drawMoonsDiagram();
   updateTidal();
   drawResonanceStrip();

@@ -754,6 +754,14 @@ const UNITS = [
         notes:
           'Io’s orbit around Jupiter is kept measurably non-circular by orbital resonance with Europa and Ganymede (periods in a 1:2:4 ratio, so the three moons repeatedly line up and reinforce each other’s gravitational tug — see src/galileanMoons.js); that non-zero eccentricity means Io’s distance from Jupiter, and so the strength of Jupiter’s tidal pull on it, changes around every orbit, flexing its interior and heating it by friction — the direct cause of Io’s volcanoes; Europa and Saturn’s moon Enceladus are heated the same way, by their own orbital resonances, which is why both are considered promising places to look for life despite being far from the Sun',
       },
+      {
+        id: 'u3.31',
+        title: 'Ring systems',
+        depth: 'understand',
+        spec: ['11.6', '12.1b'],
+        notes:
+          'all four giant planets — Jupiter, Saturn, Uranus and Neptune — have ring systems, though only Saturn’s is bright enough to see easily from Earth; a ring is made of countless small particles (Saturn’s mostly ice, from dust-sized grains to boulders) spread into a disc that is very wide but typically only tens of metres thick; the two leading ideas for where rings come from are a moon or comet broken apart by the planet’s own tidal forces after straying inside the Roche limit, or material left over from the planet’s own formation that never coalesced into a moon',
+      },
     ],
   },
   {
