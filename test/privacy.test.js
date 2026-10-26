@@ -9,7 +9,7 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
-const { chromium } = require('playwright');
+const { launchChromium, trackSkips } = require('./browserLaunch');
 const { STORAGE_KEY, clearSavedProgress } = require('../notes/privacy');
 
 const ROOT = path.join(__dirname, '..');
@@ -59,12 +59,14 @@ test("STORAGE_KEY matches quiz-ui.js's own storage key, so this page clears what
 const SKIP_MESSAGE = (err) =>
   `Playwright's Chromium browser isn't installed — run "npx playwright install chromium" to enable this test (${err.message})`;
 
+const { skip } = trackSkips('test/privacy.test.js');
+
 let browser;
 let launchError;
 
 test.before(async () => {
   try {
-    browser = await chromium.launch();
+    browser = await launchChromium();
   } catch (err) {
     launchError = err;
   }
@@ -76,7 +78,7 @@ test.after(async () => {
 
 test('the Clear my saved progress button removes the real localStorage entry and shows a confirmation', async (t) => {
   if (launchError) {
-    t.skip(SKIP_MESSAGE(launchError));
+    skip(t, SKIP_MESSAGE(launchError));
     return;
   }
   const page = await browser.newPage();
@@ -104,7 +106,7 @@ test('the Clear my saved progress button removes the real localStorage entry and
 
 test('clicking the button when there was nothing saved still shows the confirmation, without throwing', async (t) => {
   if (launchError) {
-    t.skip(SKIP_MESSAGE(launchError));
+    skip(t, SKIP_MESSAGE(launchError));
     return;
   }
   const page = await browser.newPage();

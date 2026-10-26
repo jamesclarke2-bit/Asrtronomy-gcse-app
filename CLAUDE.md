@@ -64,3 +64,10 @@ Static HTML/CSS/JS with no build step. Pages live in `sims/` (interactive) and `
     original SVG illustration, cartoon or animated diagram of our own making, not only a schematic.
     Use no outside images, fonts or scripts, because the security policy allows only the site's own
     files. Respect the reduced-motion setting for any animation.
+14. **Report passed, skipped and failed tests separately** — never collapse them into one number.
+    Before merging any change that touches a page (HTML/CSS/JS a browser actually renders), run the
+    browser-dependent tests for real, not skipped: if the run's own `⚠ BROWSER TESTS SKIPPED`
+    warning fires, fix it first (see README.md's "Running the tests" section —
+    `PLAYWRIGHT_CHROMIUM_PATH` is the usual override) rather than merging on a suite that quietly
+    skipped the one layer of checks (real rendering, layout, click behaviour) the rest of the suite
+    can't cover.

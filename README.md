@@ -31,7 +31,23 @@ raw HTML) notice this and skip themselves with a message rather than failing the
 npx playwright install chromium
 ```
 
-once to download that browser and have those tests actually run instead of skip.
+once to download that browser and have those tests actually run instead of skip. `playwright` is
+pinned in `package.json` to exactly `1.63.0` (not `^1.63.0`) because each Playwright release
+bundles a specific Chromium build revision, and some sandboxes/CI images here come with a
+Chromium pre-installed rather than letting `npx playwright install` download one — a `^` range
+can silently resolve to a newer Playwright than that pre-installed browser matches, and every
+browser-dependent test then skips instead of running. If you hit that (the test run prints a
+`⚠ BROWSER TESTS SKIPPED` warning naming how many, per file, when it happens), either run
+`npx playwright install chromium` to fetch the exact build the pinned version expects, or point
+at whatever Chromium is already on that machine:
+
+```sh
+PLAYWRIGHT_CHROMIUM_PATH=/path/to/chromium npm test
+```
+
+`test/browserLaunch.js` is the shared helper every browser-dependent test file launches Chromium
+through; it uses `PLAYWRIGHT_CHROMIUM_PATH` when set, whatever Playwright version is actually
+installed.
 
 ## Privacy
 

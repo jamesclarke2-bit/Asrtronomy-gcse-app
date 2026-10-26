@@ -8,7 +8,7 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
-const { chromium } = require('playwright');
+const { launchChromium, trackSkips } = require('./browserLaunch');
 
 const ROOT = path.join(__dirname, '..');
 
@@ -28,12 +28,14 @@ const PAGES = listHtmlFiles();
 const SKIP_MESSAGE = (err) =>
   `Playwright's Chromium browser isn't installed — run "npx playwright install chromium" to enable this test (${err.message})`;
 
+const { skip } = trackSkips('test/noHorizontalScroll.test.js');
+
 let browser;
 let launchError;
 
 test.before(async () => {
   try {
-    browser = await chromium.launch();
+    browser = await launchChromium();
   } catch (err) {
     launchError = err;
   }
@@ -46,7 +48,7 @@ test.after(async () => {
 PAGES.forEach((href) => {
   test(`${href}: no sideways scroll at 390px wide`, async (t) => {
     if (launchError) {
-      t.skip(SKIP_MESSAGE(launchError));
+      skip(t, SKIP_MESSAGE(launchError));
       return;
     }
     const page = await browser.newPage({ viewport: { width: 390, height: 800 } });

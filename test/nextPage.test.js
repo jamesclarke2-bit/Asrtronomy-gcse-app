@@ -10,7 +10,7 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
-const { chromium } = require('playwright');
+const { launchChromium, trackSkips } = require('./browserLaunch');
 const { PAGES, RECOMMENDED_PATH } = require('../src/pages');
 const { resolveNextStep, resolveSiteBarLinks } = require('../nextPage');
 
@@ -118,12 +118,14 @@ PAGES.forEach((page) => {
 const SKIP_MESSAGE = (err) =>
   `Playwright's Chromium browser isn't installed — run "npx playwright install chromium" to enable this test (${err.message})`;
 
+const { skip } = trackSkips('test/nextPage.test.js');
+
 let browser;
 let launchError;
 
 test.before(async () => {
   try {
-    browser = await chromium.launch();
+    browser = await launchChromium();
   } catch (err) {
     launchError = err;
   }
@@ -139,7 +141,7 @@ test.after(async () => {
 ['sims/kepler.html', 'notes/moon-structure.html', 'notes/privacy.html'].forEach((href) => {
   test(`${href}: loading the page adds a #site-footer-note linking to notes/privacy.html`, async (t) => {
     if (launchError) {
-      t.skip(SKIP_MESSAGE(launchError));
+      skip(t, SKIP_MESSAGE(launchError));
       return;
     }
     const page = await browser.newPage();
@@ -167,7 +169,7 @@ test.after(async () => {
 PAGES.forEach((page) => {
   test(`${page.href}: shows the site bar with exactly Home, Syllabus Map, Formulae and Data Sheet and Privacy, every link resolving to a real file`, async (t) => {
     if (launchError) {
-      t.skip(SKIP_MESSAGE(launchError));
+      skip(t, SKIP_MESSAGE(launchError));
       return;
     }
     const browserPage = await browser.newPage();

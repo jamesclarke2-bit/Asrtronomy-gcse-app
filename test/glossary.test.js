@@ -9,7 +9,7 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const path = require('node:path');
-const { chromium } = require('playwright');
+const { launchChromium, trackSkips } = require('./browserLaunch');
 
 const FIXTURE_HTML = `<!DOCTYPE html>
 <html>
@@ -22,12 +22,14 @@ const FIXTURE_HTML = `<!DOCTYPE html>
 const SKIP_MESSAGE = (err) =>
   `Playwright's Chromium browser isn't installed — run "npx playwright install chromium" to enable this test (${err.message})`;
 
+const { skip } = trackSkips('test/glossary.test.js');
+
 async function withGlossaryPage(t, run) {
   let browser;
   try {
-    browser = await chromium.launch();
+    browser = await launchChromium();
   } catch (err) {
-    t.skip(SKIP_MESSAGE(err));
+    skip(t, SKIP_MESSAGE(err));
     return;
   }
   try {
