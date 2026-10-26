@@ -39,6 +39,7 @@
   const circularSpeedValueEl = document.getElementById('circular-speed-value');
   const escapeSpeedValueEl = document.getElementById('escape-speed-value');
 
+  const spreadingCanvas = document.getElementById('spreading-view');
   const inverseSquareCanvas = document.getElementById('inverse-square-view');
   const mass1Slider = document.getElementById('mass1-slider');
   const mass1Label = document.getElementById('mass1-label');
@@ -47,8 +48,9 @@
   const separationSlider = document.getElementById('separation-slider');
   const separationLabel = document.getElementById('separation-label');
   const forceRatioReadout = document.getElementById('force-ratio-readout');
-  const exampleDistanceNote = document.getElementById('example-distance-note');
-  const exampleMassNote = document.getElementById('example-mass-note');
+  const ratioDoubleDistanceEl = document.getElementById('ratio-double-distance');
+  const ratioTripleDistanceEl = document.getElementById('ratio-triple-distance');
+  const ratioDoubleMassEl = document.getElementById('ratio-double-mass');
 
   const realworldCircularCanvas = document.getElementById('realworld-circular-view');
   const realworldEscapeCanvas = document.getElementById('realworld-escape-view');
@@ -401,6 +403,86 @@
     return `gives ${ratio.toFixed(2)}× the force`;
   }
 
+  // The classic spreading diagram: two straight rays from a point source
+  // widen in direct proportion to distance, so the same ray bundle that
+  // crosses 1 unit square at r crosses a 2×2 (4-square) patch at 2r and a
+  // 3×3 (9-square) patch at 3r — the geometric reason the force per
+  // square falls to a quarter, then a ninth.
+  function drawSpreadingDiagram() {
+    const ctx = spreadingCanvas.getContext('2d');
+    const w = spreadingCanvas.width;
+    const h = spreadingCanvas.height;
+    ctx.clearRect(0, 0, w, h);
+
+    const sourceX = 14;
+    const cy = 55;
+    const rStep = (w - 40 - sourceX) / 3;
+    const halfHeightPerUnit = 14;
+    const screens = [1, 2, 3].map((n) => ({ n, x: sourceX + n * rStep, halfHeight: n * halfHeightPerUnit }));
+    const outer = screens[screens.length - 1];
+
+    ctx.beginPath();
+    ctx.arc(sourceX, cy, 4, 0, Math.PI * 2);
+    ctx.fillStyle = '#2a6bd6';
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.moveTo(sourceX, cy);
+    ctx.lineTo(outer.x, cy - outer.halfHeight);
+    ctx.moveTo(sourceX, cy);
+    ctx.lineTo(outer.x, cy + outer.halfHeight);
+    ctx.strokeStyle = '#c0392b';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+
+    ctx.font = '11px sans-serif';
+    ctx.fillStyle = '#555';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'top';
+    screens.forEach(({ n, x, halfHeight }) => {
+      ctx.strokeStyle = '#8a97a5';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(x, cy - halfHeight);
+      ctx.lineTo(x, cy + halfHeight);
+      ctx.stroke();
+      ctx.fillText(n === 1 ? 'r' : `${n}r`, x, cy + outer.halfHeight + 6);
+    });
+
+    // The same three screens, drawn face on as actual 1×1, 2×2 and 3×3
+    // grids of one shared unit size — the literal 1, 4 and 9 squares.
+    const cell = 13;
+    const gridY = 120;
+    const gridBottom = gridY + outer.n * cell;
+    screens.forEach(({ n, x }) => {
+      const size = n * cell;
+      const left = x - size / 2;
+      ctx.fillStyle = 'rgba(192, 57, 43, 0.12)';
+      ctx.fillRect(left, gridY, size, size);
+      ctx.strokeStyle = '#8a97a5';
+      ctx.lineWidth = 1;
+      for (let i = 0; i <= n; i += 1) {
+        ctx.beginPath();
+        ctx.moveTo(left + i * cell, gridY);
+        ctx.lineTo(left + i * cell, gridY + size);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(left, gridY + i * cell);
+        ctx.lineTo(left + size, gridY + i * cell);
+        ctx.stroke();
+      }
+    });
+
+    const squareLabels = { 1: '1 square', 2: '4 squares', 3: '9 squares' };
+    const forceLabels = { 1: 'full force each', 2: '¼ force each', 3: '⅑ force each' };
+    ctx.font = '10px sans-serif';
+    ctx.fillStyle = '#3a3f4d';
+    screens.forEach(({ n, x }) => ctx.fillText(squareLabels[n], x, gridBottom + 6));
+    ctx.font = 'italic 10px sans-serif';
+    ctx.fillStyle = '#8a97a5';
+    screens.forEach(({ n, x }) => ctx.fillText(forceLabels[n], x, gridBottom + 18));
+  }
+
   function drawInverseSquare() {
     const ctx = inverseSquareCanvas.getContext('2d');
     const w = inverseSquareCanvas.width;
@@ -471,11 +553,10 @@
 
   [mass1Slider, mass2Slider, separationSlider].forEach((el) => el.addEventListener('input', updateInverseSquare));
 
-  function renderStaticExamples() {
-    const distanceRatio = OM.gravitationalForceRatio({ separationFactor: 2 });
-    const massRatio = OM.gravitationalForceRatio({ massFactor1: 3 });
-    exampleDistanceNote.textContent = `Twice as far apart, masses unchanged: ${ratioPhrase(distanceRatio)}.`;
-    exampleMassNote.textContent = `Three times the mass, separation unchanged: ${ratioPhrase(massRatio)}.`;
+  function renderRatioTable() {
+    ratioDoubleDistanceEl.textContent = ratioPhrase(OM.gravitationalForceRatio({ separationFactor: 2 }));
+    ratioTripleDistanceEl.textContent = ratioPhrase(OM.gravitationalForceRatio({ separationFactor: 3 }));
+    ratioDoubleMassEl.textContent = ratioPhrase(OM.gravitationalForceRatio({ massFactor1: 2 }));
   }
 
   // --- Real-world check: three figures, each with a small picture ----------
@@ -631,12 +712,21 @@
   const GLOSSARY = {
     inverseSquareFormula:
       'Beyond the spec: the full equation is F = Gm₁m₂/r², where G is the gravitational constant. The exam never requires you to use this formula — only to reason about how the force changes, which is exactly what the sliders above let you check directly.',
+    'cannon-wedges':
+      "Every shaded wedge covers an equal time and has the same area — the same equal-area rule as Kepler's Laws of Planetary Motion, but here it falls straight out of just stepping gravity forward, not assumed in advance.",
+    'cannon-tower':
+      "Fired from a schematic 10 km tower (Newton's own thought experiment), so there's real ground to fall to. Not to scale: the gap is stretched out visually to stay visible next to Earth's 6,371 km radius.",
+    'cannon-air':
+      'Air resistance is ignored completely — a vacuum, gravity-only idealisation. A real object launched from only 10 km up would burn up or slow long before tracing any of these paths.',
+    'cannon-precision':
+      'The exam data sheet gives 13,000 km and 6.0 × 10²⁴ kg for Earth. This simulation uses more precise values (6,371 km radius, 5.97 × 10²⁴ kg) so speeds and orbits match real ones.',
   };
 
   launchSpeedSlider.value = V_CIRCULAR_LAUNCH / 1000; // visual position only — see updateCannon's own note
   updateCannon(V_CIRCULAR_LAUNCH / 1000);
+  drawSpreadingDiagram();
   updateInverseSquare();
-  renderStaticExamples();
+  renderRatioTable();
   renderRealWorldCheck();
   renderCoverage();
   Glossary.init(GLOSSARY);

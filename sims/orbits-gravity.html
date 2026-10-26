@@ -17,16 +17,45 @@
     <h1>Orbits and Gravity</h1>
     <p class="subtitle">
       Why do planets stay in orbit? Gravity pulls with a force that gets weaker with the square of
-      the distance. Newton's own argument for why the Moon doesn't fall out of the sky: fire a
-      cannonball fast enough sideways, and "falling" and "orbiting" become the same thing. Watch a
-      real, step-by-step simulation of gravity alone turn a launch speed into a path, then see why
-      gravity's strength depends on distance and mass the way it does.
+      the distance &mdash; by the end of this page you should be able to use those ratios (double
+      the distance, quarter the force) and explain why a fast enough sideways fall becomes a
+      stable orbit instead of a crash.
     </p>
 
     <div class="layout tool-layout">
       <div class="diagrams-column">
         <div class="diagram">
-          <h2>1. Newton's cannon</h2>
+          <h2>1. Inverse-square law</h2>
+          <canvas
+            id="spreading-view"
+            width="390"
+            height="200"
+            aria-label="A point source with two diverging rays passing through three screens at r, 2r and 3r. The same ray bundle covers 1 square at r, a 2 by 2 grid of 4 squares at 2r, and a 3 by 3 grid of 9 squares at 3r — so each square gets the full force at r, a quarter at 2r, and a ninth at 3r"
+          ></canvas>
+          <p class="diagram-caption">
+            The same pull spreads over more area the further out it goes &mdash; 4 times the area
+            at twice the distance, 9 times at three times the distance, so each square gets a
+            quarter, then a ninth, of the force.
+          </p>
+
+          <canvas
+            id="inverse-square-view"
+            width="380"
+            height="200"
+            aria-label="Two masses on a line, sized by their mass multiplier and spaced by their separation multiplier, joined by a line whose thickness shows the relative gravitational force between them"
+          ></canvas>
+          <p id="force-ratio-readout" class="eot-readout"></p>
+          <div class="curiosity-box">
+            <button type="button" class="glossary-toggle curiosity-toggle" data-term="inverseSquareFormula" aria-expanded="false">
+              <span class="curiosity-badge">Beyond the spec</span>
+              See the actual equation
+            </button>
+            <span class="glossary-definition" data-term="inverseSquareFormula" hidden></span>
+          </div>
+        </div>
+
+        <div class="diagram">
+          <h2>2. Newton's cannon</h2>
           <canvas
             id="cannon-view"
             width="380"
@@ -47,56 +76,22 @@
               <dd id="outcome-detail"></dd>
             </div>
           </dl>
-          <p class="note">
-            Every shaded wedge covers an equal time interval, and every wedge has the same area
-            &mdash; exactly like the wedges on
-            <a href="kepler.html">Kepler's Laws of Planetary Motion</a>, but this time nothing
-            about ellipses or equal areas was assumed in advance. The path above comes purely
-            from numerically stepping gravity (F = GMm/r&sup2;) forward in tiny increments; the
-            equal areas, and the ellipse itself, fall straight out of that &mdash; exactly what
-            Newton showed.
+          <p>
+            <button type="button" class="glossary-toggle glossary-term-button" data-term="cannon-wedges" aria-label="Why do the wedges matter?" aria-expanded="false">Why do the wedges matter?</button>
           </p>
-          <p class="note">
-            Fired from a schematic 10&nbsp;km tower, like Newton's own very-tall-mountain thought
-            experiment, so the cannonball has real ground to fall to below its launch point.
-            <strong>Not to scale:</strong> that 10&nbsp;km gap is stretched out visually so it's
-            actually visible next to Earth's 6,371&nbsp;km radius &mdash; the simulation itself
-            uses the true, un-exaggerated altitude throughout, only the drawing is stretched.
+          <span class="glossary-definition" data-term="cannon-wedges" hidden></span>
+          <p>
+            <button type="button" class="glossary-toggle glossary-term-button" data-term="cannon-tower" aria-label="Why a 10 km tower?" aria-expanded="false">Why a 10 km tower?</button>
           </p>
-          <p class="note">
-            Air resistance is ignored completely. A real object launched from only 10&nbsp;km up
-            would still be deep in the atmosphere and would burn up or slow dramatically long
-            before tracing any of these paths &mdash; this is a vacuum, gravity-only
-            idealisation, the same one Newton's own thought experiment imagined by firing from
-            above the atmosphere entirely.
+          <span class="glossary-definition" data-term="cannon-tower" hidden></span>
+          <p>
+            <button type="button" class="glossary-toggle glossary-term-button" data-term="cannon-air" aria-label="What about air resistance?" aria-expanded="false">What about air resistance?</button>
           </p>
-          <p class="note">
-            The exam's own data sheet gives Earth's mean diameter as 13,000&nbsp;km and mass as
-            6.0 &times; 10<sup>24</sup>&nbsp;kg. This simulation uses more precise values instead
-            &mdash; a 6,371&nbsp;km radius (12,742&nbsp;km across) and
-            5.97 &times; 10<sup>24</sup>&nbsp;kg &mdash; so its computed speeds and orbits match
-            real ones.
+          <span class="glossary-definition" data-term="cannon-air" hidden></span>
+          <p>
+            <button type="button" class="glossary-toggle glossary-term-button" data-term="cannon-precision" aria-label="Why not the exam's rounded figures?" aria-expanded="false">Why not the exam's rounded figures?</button>
           </p>
-        </div>
-
-        <div class="diagram">
-          <h2>2. Inverse-square law</h2>
-          <canvas
-            id="inverse-square-view"
-            width="380"
-            height="200"
-            aria-label="Two masses on a line, sized by their mass multiplier and spaced by their separation multiplier, joined by a line whose thickness shows the relative gravitational force between them"
-          ></canvas>
-          <p id="force-ratio-readout" class="eot-readout"></p>
-          <p class="note" id="example-distance-note"></p>
-          <p class="note" id="example-mass-note"></p>
-          <div class="curiosity-box">
-            <button type="button" class="glossary-toggle curiosity-toggle" data-term="inverseSquareFormula" aria-expanded="false">
-              <span class="curiosity-badge">Beyond the spec</span>
-              See the actual equation
-            </button>
-            <span class="glossary-definition" data-term="inverseSquareFormula" hidden></span>
-          </div>
+          <span class="glossary-definition" data-term="cannon-precision" hidden></span>
         </div>
       </div>
 
@@ -109,6 +104,12 @@
             <button type="button" class="preset-button" data-cannon-preset="elliptical">Elliptical</button>
             <button type="button" class="preset-button" data-cannon-preset="escape">Escape</button>
           </div>
+          <ul class="tip-list">
+            <li><strong>Too slow:</strong> falls back to the ground.</li>
+            <li><strong>Circular:</strong> a perfect circular orbit.</li>
+            <li><strong>Elliptical:</strong> a stable elliptical orbit.</li>
+            <li><strong>Escape:</strong> leaves and never returns.</li>
+          </ul>
         </div>
 
         <div class="control">
@@ -120,11 +121,9 @@
           </datalist>
         </div>
         <p class="panel-note">
-          Dragging close to circular speed locks on to it exactly, rather than landing on the
-          nearest slider step. That's deliberate, not a glitch: orbits this close to the ground
-          are extremely sensitive, and a speed only a fraction of a percent too slow sends the
-          path straight into the ground instead of around it &mdash; the snap is what keeps a
-          deliberate circular launch from becoming an accidental crash.
+          Dragging close to circular speed locks onto it exactly, rather than the nearest slider
+          step &mdash; this close to the ground, orbits are sensitive enough that a tiny shortfall
+          sends the path straight into the ground instead of around it.
         </p>
 
         <div class="control checkbox-control">
@@ -133,11 +132,10 @@
 
         <p class="note">
           Marked on the slider: circular orbit speed (<strong id="circular-speed-value"></strong>)
-          and escape speed (<strong id="escape-speed-value"></strong>). Escape speed here is the
-          same escape velocity a rocket needs to reach the Moon &mdash; see
-          <a href="../notes/moon-structure.html#escape-velocity">Escape velocity and rockets on The Moon: Structure, Surface and Origin</a>
-          rather than re-deriving it here. For gravity's own pull drawn as a field, rather than
-          reduced to a single speed at a single radius, see
+          and escape speed (<strong id="escape-speed-value"></strong>) &mdash; the same velocity a
+          rocket needs to reach the Moon (see
+          <a href="../notes/moon-structure.html#escape-velocity">Escape velocity on The Moon: Structure, Surface and Origin</a>).
+          For gravity's pull as a full field rather than one speed, see
           <a href="gravity-field-map.html">Gravitational Field Maps and Lagrange Points</a>.
         </p>
 
@@ -149,6 +147,22 @@
           <input type="range" id="mass2-slider" min="1" max="4" step="1" value="1" />
           <label for="separation-slider">Separation: <span id="separation-label"></span></label>
           <input type="range" id="separation-slider" min="0" max="4" step="1" value="1" />
+
+          <p class="panel-note">In plain words:</p>
+          <dl class="readout">
+            <div class="readout-row">
+              <dt>Double the distance</dt>
+              <dd id="ratio-double-distance"></dd>
+            </div>
+            <div class="readout-row">
+              <dt>Triple the distance</dt>
+              <dd id="ratio-triple-distance"></dd>
+            </div>
+            <div class="readout-row">
+              <dt>Double one mass</dt>
+              <dd id="ratio-double-mass"></dd>
+            </div>
+          </dl>
         </div>
 
         <p class="coverage" id="coverage"></p>
@@ -213,7 +227,7 @@
   <script src="../src/orbitsGravityQuestions.js?v=202610071000"></script>
   <script src="../glossary.js?v=202610131052"></script>
   <script src="../quiz-ui.js?v=202609221100"></script>
-  <script src="orbits-gravity.js?v=202610092200"></script>
+  <script src="orbits-gravity.js?v=202610271000"></script>
   <script src="../nextPage.js?v=202610161057"></script>
 </body>
 </html>
