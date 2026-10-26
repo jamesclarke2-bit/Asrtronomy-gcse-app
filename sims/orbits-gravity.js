@@ -442,8 +442,13 @@
     ctx.fillStyle = '#3a3f4d';
     ctx.font = '12px sans-serif';
     ctx.textAlign = 'center';
+
+    // Mass 1's label sits above its circle and mass 2's below, so the two
+    // never share a vertical band and can't collide even when a small
+    // separation pulls the circles close together.
+    ctx.textBaseline = 'bottom';
+    ctx.fillText(`mass ×${m1}`, x1, cy - r1 - 8);
     ctx.textBaseline = 'top';
-    ctx.fillText(`mass ×${m1}`, x1, cy + r1 + 10);
     ctx.fillText(`mass ×${m2}`, x2, cy + r2 + 10);
 
     ctx.font = 'italic 11px sans-serif';
