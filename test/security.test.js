@@ -2,8 +2,10 @@
  * Sitewide hardening, checked from the raw HTML (same convention as
  * test/studentFacingText.test.js), not a DOM, since this repo has no
  * DOM-simulation dependency: every page carries the same
- * Content-Security-Policy and Referrer-Policy meta tags, and nothing on
- * the site points at another origin except the one doi.org citation on
+ * Content-Security-Policy, Referrer-Policy and (while the site is
+ * deliberately unlisted during the interim licensing period — see
+ * README.md) robots meta tags, and nothing on the site points at
+ * another origin except the one doi.org citation on
  * notes/moon-structure.html (which must itself carry
  * rel="noopener noreferrer").
  */
@@ -64,6 +66,16 @@ PAGES.forEach((href) => {
     const headMatch = /<head>([\s\S]*?)<\/head>/.exec(html);
     const head = headMatch[1];
     assert.match(head, /<meta name="referrer" content="no-referrer" \/>/, `${href}'s <head> has no referrer-policy meta tag`);
+  });
+
+  test(`${href}: carries a noindex, nofollow robots meta tag, while the site is deliberately unlisted`, () => {
+    const headMatch = /<head>([\s\S]*?)<\/head>/.exec(html);
+    const head = headMatch[1];
+    assert.match(
+      head,
+      /<meta name="robots" content="noindex, nofollow" \/>/,
+      `${href}'s <head> has no robots meta tag`
+    );
   });
 
   test(`${href}: every src/href either stays on this origin, or is the one allowed doi.org citation`, () => {
