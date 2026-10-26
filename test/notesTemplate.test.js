@@ -42,6 +42,7 @@ const DIAGRAM_FIRST_PAGES = [
   'sims/shadows-and-sundials.html',
   'sims/orbits-gravity.html',
   'sims/sidereal-vs-synodic.html',
+  'sims/eclipses.html',
 ];
 
 function read(href) {

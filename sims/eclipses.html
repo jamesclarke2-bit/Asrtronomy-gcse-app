@@ -21,10 +21,111 @@
       relative to the line where its orbit crosses Earth's.
     </p>
 
+    <section class="notes-section" id="eclipse-pictures">
+      <h2>Solar and lunar eclipses</h2>
+      <div class="diagram-row">
+        <div class="diagram">
+          <h3>Solar eclipse</h3>
+          <svg
+            class="responsive-svg"
+            viewBox="0 0 400 180"
+            role="img"
+            aria-label="The Moon between the Sun and Earth. A dark umbra cone narrows from the Moon to a point touching Earth's surface, with a wider, lighter penumbra cone around it also reaching Earth"
+          >
+            <line x1="20" y1="90" x2="382" y2="90" stroke="#cdd7e1" stroke-width="1" stroke-dasharray="4 4" />
+            <polygon points="190,70 190,110 400,50 400,130" fill="#f0d38a" opacity="0.45" />
+            <polygon points="190,81 190,99 348,90" fill="#2f3f55" opacity="0.8" />
+            <circle cx="30" cy="90" r="26" fill="#f5a623" stroke="#c9820a" stroke-width="1.5" />
+            <circle cx="190" cy="90" r="9" fill="#3a3f4d" stroke="#20242e" stroke-width="1" />
+            <circle cx="362" cy="90" r="20" fill="#2a6bd6" stroke="#173d75" stroke-width="1.5" />
+            <path d="M 344 81 A 20 20 0 0 1 344 99" fill="none" stroke="#c0392b" stroke-width="4" stroke-linecap="round" />
+            <text x="30" y="128" font-size="11" fill="#555" text-anchor="middle">Sun</text>
+            <text x="190" y="66" font-size="11" fill="#555" text-anchor="middle">Moon</text>
+            <text x="362" y="122" font-size="11" fill="#555" text-anchor="middle">Earth</text>
+            <text x="330" y="66" font-size="10" fill="#b3261e" text-anchor="middle">Path of totality</text>
+          </svg>
+          <p class="diagram-caption">
+            Happens at new Moon, when the Moon passes directly between the Sun and Earth &mdash;
+            visible only from the narrow path where the umbra touches the ground.
+          </p>
+        </div>
+
+        <div class="diagram">
+          <h3>Lunar eclipse</h3>
+          <svg
+            class="responsive-svg"
+            viewBox="0 0 400 180"
+            role="img"
+            aria-label="Earth between the Sun and Moon, with the Moon sitting inside the dark cone of Earth's umbra"
+          >
+            <line x1="20" y1="90" x2="382" y2="90" stroke="#cdd7e1" stroke-width="1" stroke-dasharray="4 4" />
+            <polygon points="180,64 180,116 380,90" fill="#2f3f55" opacity="0.8" />
+            <circle cx="30" cy="90" r="22" fill="#f5a623" stroke="#c9820a" stroke-width="1.5" />
+            <circle cx="180" cy="90" r="26" fill="#2a6bd6" stroke="#173d75" stroke-width="1.5" />
+            <circle cx="270" cy="90" r="11" fill="#b3261e" stroke="#7a1a12" stroke-width="1" />
+            <text x="30" y="124" font-size="11" fill="#555" text-anchor="middle">Sun</text>
+            <text x="180" y="128" font-size="11" fill="#555" text-anchor="middle">Earth</text>
+            <text x="270" y="112" font-size="11" fill="#555" text-anchor="middle">Moon</text>
+          </svg>
+          <p class="diagram-caption">
+            Happens at full Moon, when the Moon passes into Earth's shadow &mdash; visible from
+            the whole night side of Earth at once.
+          </p>
+        </div>
+      </div>
+
+      <p class="panel-note">Three kinds of solar eclipse, depending on how closely the Moon covers the Sun:</p>
+      <div class="diagram-row">
+        <div class="diagram">
+          <svg
+            width="80"
+            height="80"
+            viewBox="0 0 80 80"
+            role="img"
+            aria-label="A dark circle completely covering a bright one, leaving only a thin glowing ring, for a total solar eclipse"
+          >
+            <circle cx="40" cy="40" r="28" fill="none" stroke="#f5a623" stroke-width="3" />
+            <circle cx="40" cy="40" r="26" fill="#3a3f4d" stroke="#20242e" stroke-width="1" />
+          </svg>
+          <p class="diagram-caption">Total</p>
+        </div>
+        <div class="diagram">
+          <svg
+            width="80"
+            height="80"
+            viewBox="0 0 80 80"
+            role="img"
+            aria-label="A dark circle centred on a slightly larger bright circle, leaving a bright ring all the way round, for an annular solar eclipse"
+          >
+            <circle cx="40" cy="40" r="28" fill="#f5a623" stroke="#c9820a" stroke-width="1.5" />
+            <circle cx="40" cy="40" r="20" fill="#3a3f4d" stroke="#20242e" stroke-width="1" />
+          </svg>
+          <p class="diagram-caption">Annular</p>
+        </div>
+        <div class="diagram">
+          <svg
+            width="80"
+            height="80"
+            viewBox="0 0 80 80"
+            role="img"
+            aria-label="A dark circle overlapping only part of a bright circle, leaving a bright crescent, for a partial solar eclipse"
+          >
+            <circle cx="36" cy="40" r="28" fill="#f5a623" stroke="#c9820a" stroke-width="1.5" />
+            <circle cx="56" cy="30" r="24" fill="#3a3f4d" stroke="#20242e" stroke-width="1" />
+          </svg>
+          <p class="diagram-caption">Partial</p>
+        </div>
+      </div>
+    </section>
+
     <div class="layout tool-layout">
       <div class="diagrams-column">
         <div class="diagram eclipse-diagram">
-          <h2>The Moon's tilted orbit</h2>
+          <h2 id="orbit-view-heading">The Moon's tilted orbit</h2>
+          <div class="mode-toggle" role="group" aria-label="Choose how to view the Moon's tilted orbit">
+            <button type="button" id="orbit-view-angled-button" class="mode-toggle-button" aria-pressed="true">Angled view</button>
+            <button type="button" id="orbit-view-edge-on-button" class="mode-toggle-button" aria-pressed="false">Along the ecliptic</button>
+          </div>
           <canvas
             id="tilted-orbit"
             width="440"
@@ -37,7 +138,7 @@
             &nbsp; <span class="legend-swatch legend-orbit-above"></span> Orbit above the ecliptic
             &nbsp; <span class="legend-swatch legend-orbit-below"></span> below it
           </p>
-          <p class="note">
+          <p class="note" id="orbit-view-note">
             Seen from above and to one side. The Moon's orbit is really tilted by only 5.1&deg;;
             it's drawn 3&times; steeper here so you can see it.
           </p>
@@ -215,7 +316,7 @@
   <script src="../src/moonOrbitPanel.js?v=202610041201"></script>
   <script src="../src/eclipseGeometry.js?v=202609241800"></script>
   <script src="../glossary.js?v=202610131052"></script>
-  <script src="eclipses.js?v=202609241845"></script>
+  <script src="eclipses.js?v=202610271500"></script>
   <script src="../nextPage.js?v=202610161057"></script>
 </body>
 </html>

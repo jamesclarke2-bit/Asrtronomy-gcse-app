@@ -7,10 +7,18 @@
   const TILT_EXAGGERATION = 3;
   // Viewing angle above the ecliptic plane for the angled view.
   const VIEW_ELEVATION_DEG = 24;
+  // A small but deliberately nonzero viewing angle for "Along the
+  // ecliptic" — see drawOrbitDiagram's own comment for why exactly 0
+  // isn't safe across every date of the year.
+  const EDGE_ON_ELEVATION_DEG = 6;
 
   const dateInput = document.getElementById('date-input');
   const dateLabel = document.getElementById('date-label');
   const canvas = document.getElementById('tilted-orbit');
+  const orbitViewHeading = document.getElementById('orbit-view-heading');
+  const orbitViewNote = document.getElementById('orbit-view-note');
+  const orbitViewAngledButton = document.getElementById('orbit-view-angled-button');
+  const orbitViewEdgeOnButton = document.getElementById('orbit-view-edge-on-button');
   const indicator = document.getElementById('eclipse-indicator');
   const indicatorTitle = document.getElementById('eclipse-indicator-title');
   const indicatorDetail = document.getElementById('eclipse-indicator-detail');
@@ -56,12 +64,25 @@
     };
   }
 
-  function drawTiltedOrbit(state) {
+  // Shared by both orbit views below — only the viewing elevation (how
+  // far above the ecliptic plane the camera sits), the plane's own
+  // label, and whether to mark the eclipse-possible zone actually
+  // differ. elevationDeg must stay safely above 0: at exactly 0 the
+  // in-plane (p.y) component of the projection drops out completely
+  // (see project()'s own formula), and whenever the line of nodes then
+  // swings close to perpendicular to the Sun's fixed screen direction,
+  // x and y both collapse onto the same sin(u) term and the whole
+  // ellipse flattens into a line instead of staying a readable oval. A
+  // few degrees keeps the band looking flat while keeping a genuine
+  // (if small) p.y contribution, which is enough to keep the curve a
+  // proper ellipse at every date of the year — checked against the
+  // worst case (nodeAngle 90°) algebraically, not just by eye.
+  function drawOrbitDiagram(state, { elevationDeg, planeLabel, markEclipseZone }) {
     const ctx = canvas.getContext('2d');
     const cx = 190;
     const cy = canvas.height / 2 + 10;
     const R = 120;
-    const elevation = VIEW_ELEVATION_DEG * RAD;
+    const elevation = elevationDeg * RAD;
     const tilt = EclipseGeometry.INCLINATION_DEG * TILT_EXAGGERATION;
     const nodeAngle = state.nodeAngleFromSunDeg;
 
@@ -70,15 +91,15 @@
       y: cy - (p.y * Math.sin(elevation) + p.z * Math.cos(elevation)) * scale,
     });
 
-    function strokeOrbitArc(fromDeg, toDeg, style, dashed) {
+    function strokeOrbitArc(fromDeg, toDeg, style, dashed, lineWidth = 2) {
       ctx.beginPath();
-      for (let u = fromDeg; u <= toDeg; u += 3) {
+      for (let u = fromDeg; u <= toDeg; u += 2) {
         const p = project(orbitPoint(u, nodeAngle, tilt));
         if (u === fromDeg) ctx.moveTo(p.x, p.y);
         else ctx.lineTo(p.x, p.y);
       }
       ctx.strokeStyle = style;
-      ctx.lineWidth = 2;
+      ctx.lineWidth = lineWidth;
       ctx.setLineDash(dashed ? [4, 4] : []);
       ctx.stroke();
       ctx.setLineDash([]);
@@ -101,7 +122,7 @@
     ctx.font = '11px sans-serif';
     ctx.textAlign = 'left';
     ctx.textBaseline = 'alphabetic';
-    ctx.fillText('Ecliptic plane', cx - R * 1.3, cy + R * 1.35 * Math.sin(elevation) + 14);
+    ctx.fillText(planeLabel, cx - R * 1.3, cy + R * 1.35 * Math.sin(elevation) + 14);
 
     // Sunlight, arriving along the ecliptic from the right.
     const sunX = canvas.width - 26;
@@ -132,6 +153,15 @@
     ctx.strokeStyle = '#7b4bb3';
     ctx.lineWidth = 1.5;
     ctx.stroke();
+
+    // Highlight the stretch of orbit either side of each node where an
+    // eclipse becomes possible — the same solar ecliptic limit the
+    // page's own table gives, now drawn rather than just stated.
+    if (markEclipseZone) {
+      const limitDeg = EclipseGeometry.SOLAR_LIMIT_DEG;
+      strokeOrbitArc(-limitDeg, limitDeg, 'rgba(192, 57, 43, 0.75)', false, 4);
+      strokeOrbitArc(180 - limitDeg, 180 + limitDeg, 'rgba(192, 57, 43, 0.75)', false, 4);
+    }
 
     strokeOrbitArc(0, 180, '#2f3f55', false);
 
@@ -186,6 +216,65 @@
     ctx.textAlign = 'left';
     ctx.fillText('Tilt exaggerated 3× · not to scale', 8, canvas.height - 10);
   }
+
+  function drawTiltedOrbit(state) {
+    drawOrbitDiagram(state, { elevationDeg: VIEW_ELEVATION_DEG, planeLabel: 'Ecliptic plane', markEclipseZone: false });
+  }
+
+  // "Along the ecliptic": the same orbit, now seen almost exactly
+  // edge-on, so the plane reads as a flat band rather than a wide
+  // ellipse, with the two ecliptic-limit zones marked directly on the
+  // orbit instead of only given in the table further down the page.
+  function drawEdgeOnView(state) {
+    drawOrbitDiagram(state, {
+      elevationDeg: EDGE_ON_ELEVATION_DEG,
+      planeLabel: 'Ecliptic plane, seen edge-on',
+      markEclipseZone: true,
+    });
+  }
+
+  let orbitViewMode = 'angled';
+
+  const ORBIT_VIEW_ARIA_LABELS = {
+    angled:
+      "Angled view of the ecliptic plane with the Moon's tilted orbit crossing it at the ascending and descending nodes, joined by the line of nodes. The Sun is off to the right. The Moon is shown at its position on the selected date, with a line dropping to the ecliptic plane to show how far above or below it the Moon is.",
+    edgeOn:
+      "The ecliptic plane seen exactly edge-on, as a flat band, with the Sun and Earth sitting on it and the Moon's tilted orbit oscillating above and below it, crossing it at the ascending and descending nodes. A red stretch of orbit either side of each node marks where an eclipse becomes possible. The Moon is shown at its position on the selected date.",
+  };
+
+  function drawOrbitView(state) {
+    if (orbitViewMode === 'edgeOn') {
+      drawEdgeOnView(state);
+      orbitViewHeading.textContent = 'Along the ecliptic';
+      orbitViewNote.textContent =
+        "Seen exactly edge-on, along the ecliptic plane itself. The Moon's orbit is really " +
+        'tilted by only 5.1°; it\'s drawn 3× steeper here so you can see it. The red stretches ' +
+        "either side of each node mark where an eclipse becomes possible — the Sun's own " +
+        "18.4° solar ecliptic limit.";
+    } else {
+      drawTiltedOrbit(state);
+      orbitViewHeading.textContent = "The Moon's tilted orbit";
+      orbitViewNote.textContent =
+        "Seen from above and to one side. The Moon's orbit is really tilted by only 5.1°; " +
+        "it's drawn 3× steeper here so you can see it.";
+    }
+    canvas.setAttribute('aria-label', ORBIT_VIEW_ARIA_LABELS[orbitViewMode]);
+  }
+
+  orbitViewAngledButton.addEventListener('click', () => {
+    if (orbitViewMode === 'angled') return;
+    orbitViewMode = 'angled';
+    orbitViewAngledButton.setAttribute('aria-pressed', 'true');
+    orbitViewEdgeOnButton.setAttribute('aria-pressed', 'false');
+    render();
+  });
+  orbitViewEdgeOnButton.addEventListener('click', () => {
+    if (orbitViewMode === 'edgeOn') return;
+    orbitViewMode = 'edgeOn';
+    orbitViewAngledButton.setAttribute('aria-pressed', 'false');
+    orbitViewEdgeOnButton.setAttribute('aria-pressed', 'true');
+    render();
+  });
 
   // --- Shadow diagrams -------------------------------------------------
 
@@ -506,7 +595,7 @@
     const state = EclipseGeometry.getEclipseState(date);
     dateLabel.textContent = formatDate(date);
 
-    drawTiltedOrbit(state);
+    drawOrbitView(state);
     renderIndicator(state);
     renderShadowPanel(state);
 
