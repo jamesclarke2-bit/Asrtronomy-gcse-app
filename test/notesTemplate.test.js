@@ -43,6 +43,7 @@ const DIAGRAM_FIRST_PAGES = [
   'sims/orbits-gravity.html',
   'sims/sidereal-vs-synodic.html',
   'sims/eclipses.html',
+  'notes/tides.html',
 ];
 
 function read(href) {

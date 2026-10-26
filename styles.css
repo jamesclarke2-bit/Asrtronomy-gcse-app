@@ -92,6 +92,13 @@ canvas {
   max-width: 320px;
 }
 
+/* notes/tides.html's four-card lunar-month strip, inside the same
+   700px .notes-section as .diagram-pair above — four cards need a much
+   narrower cap than the generic .diagram to fit a row without wrapping. */
+.diagram.month-strip-card {
+  max-width: 150px;
+}
+
 /* A data-dense diagram (several stacked graphs, a larger labelled map)
    that needs more room than the generic .diagram cap gives. */
 .diagram.wide-diagram {
@@ -2147,6 +2154,15 @@ canvas {
 .quarter-diagram svg,
 .scale-diagram svg,
 .tide-diagram svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: #f7f7f5;
+  border-radius: 8px;
+  border: 1px solid #cdd7e1;
+}
+
+.mini-tide-svg {
   display: block;
   width: 100%;
   height: auto;

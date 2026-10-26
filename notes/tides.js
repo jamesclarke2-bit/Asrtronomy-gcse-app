@@ -36,9 +36,9 @@
     return el;
   }
 
-  function placeLabel(el, x, y) {
-    el.style.left = `${(x / W) * 100}%`;
-    el.style.top = `${(y / H) * 100}%`;
+  function placeLabel(el, x, y, width, height) {
+    el.style.left = `${(x / (width || W)) * 100}%`;
+    el.style.top = `${(y / (height || H)) * 100}%`;
   }
 
   function waterRadius(angleDeg, elongationDeg) {
@@ -130,6 +130,130 @@
     diagram.observer.setAttribute('cy', o.y);
     const youAt = at(observerAngle, EARTH_R - 30);
     placeLabel(diagram.labels.you, youAt.x, youAt.y);
+  }
+
+  // --- Spring/neap mini diagrams: the same water-bulge model, drawn once
+  // each at a fixed elongation (0° = spring, 90° = neap) rather than
+  // driven by a slider. Self-contained geometry, not sharing the main
+  // diagram's CX/CY/EARTH_R, since these are drawn much smaller.
+
+  function buildMiniTideDiagram(containerId, elongationDeg) {
+    const wrap = document.getElementById(containerId.wrap);
+    const svg = document.getElementById(containerId.svg);
+    const cx = 70;
+    const cy = 95;
+    const earthR = 24;
+    const waterBase = 7;
+    const waterScale = 8;
+    const moonOrbitR = 78;
+    const miniAt = (angleDeg, r) => ({ x: cx + r * Math.cos(angleDeg * RAD), y: cy - r * Math.sin(angleDeg * RAD) });
+    const radiusAt = (angleDeg) => earthR + waterBase + waterScale * T.waterHeight(angleDeg, elongationDeg);
+
+    // Sunlight, arriving from the right.
+    const rays = svgEl('g', { stroke: '#e0a21a', 'stroke-width': 1.5, 'stroke-linecap': 'round' }, svg);
+    [60, 95, 130].forEach((y) => {
+      svgEl('line', { x1: 214, y1: y, x2: 188, y2: y }, rays);
+      svgEl('path', { d: `M188,${y} l6,-4 M188,${y} l6,4`, fill: 'none' }, rays);
+    });
+
+    svgEl('circle', { cx, cy, r: moonOrbitR, fill: 'none', stroke: '#b0bac5', 'stroke-width': 1, 'stroke-dasharray': '3 4' }, svg);
+
+    const points = [];
+    for (let a = 0; a < 360; a += 4) {
+      const p = miniAt(a, radiusAt(a));
+      points.push(`${p.x.toFixed(1)},${p.y.toFixed(1)}`);
+    }
+    svgEl('path', { d: `M${points.join('L')}Z`, fill: '#8fc1e8', stroke: '#3a7fb8', 'stroke-width': 1.2 }, svg);
+    svgEl('circle', { cx, cy, r: earthR, fill: '#7a9a5c', stroke: '#4f6b3a', 'stroke-width': 1.2 }, svg);
+
+    // The Moon, lit on the side facing the Sun (to the right).
+    const moon = miniAt(elongationDeg, moonOrbitR);
+    const mr = 8;
+    svgEl('circle', { cx: moon.x, cy: moon.y, r: mr, fill: '#3b3f48' }, svg);
+    svgEl('path', { d: `M${moon.x},${moon.y - mr} A${mr},${mr} 0 0 1 ${moon.x},${moon.y + mr} Z`, fill: '#f4f1e8' }, svg);
+
+    // High/low markers, one labelled pair — the other high and low are the
+    // same distance round, by symmetry.
+    const heights = [];
+    for (let a = 0; a < 360; a++) heights.push(T.waterHeight(a, elongationDeg));
+    let highAngle = 0;
+    let lowAngle = 0;
+    for (let a = 0; a < 360; a++) {
+      if (heights[a] > heights[highAngle]) highAngle = a;
+      if (heights[a] < heights[lowAngle]) lowAngle = a;
+    }
+    [[highAngle, 'High'], [lowAngle, 'Low']].forEach(([angle, text]) => {
+      const p = miniAt(angle, radiusAt(angle));
+      svgEl('circle', { cx: p.x, cy: p.y, r: 2.5, fill: '#c0392b' }, svg);
+      const labelPoint = miniAt(angle, radiusAt(angle) + 14);
+      placeLabel(makeLabel(wrap, text), labelPoint.x, labelPoint.y, 220, 190);
+    });
+  }
+
+  // --- Lunar-month strip: four phases, each with its tide type ------------
+
+  function buildMonthStrip() {
+    const strip = document.getElementById('month-strip');
+    const PHASES = [
+      { elongation: 0, label: 'New Moon', tide: 'Spring' },
+      { elongation: 90, label: 'First quarter', tide: 'Neap' },
+      { elongation: 180, label: 'Full Moon', tide: 'Spring' },
+      { elongation: 270, label: 'Last quarter', tide: 'Neap' },
+    ];
+    PHASES.forEach(({ elongation, label, tide }) => {
+      const card = document.createElement('div');
+      card.className = 'diagram month-strip-card';
+      const svg = document.createElementNS(SVG_NS, 'svg');
+      svg.setAttribute('viewBox', '0 0 60 60');
+      svg.setAttribute('width', '60');
+      svg.setAttribute('height', '60');
+      svg.setAttribute('role', 'img');
+      svg.setAttribute('aria-label', `${label}: ${tide} tides`);
+      const cx = 30;
+      const cy = 30;
+      const r = 24;
+      svgEl('circle', { cx, cy, r, fill: '#3b3f48', stroke: '#20242e', 'stroke-width': 1 }, svg);
+      // The lit fraction: none at new Moon, half at the quarters, all at
+      // full — the same simplified half-and-half convention the main
+      // diagram's own Moon icon uses, not a true crescent shape.
+      if (elongation === 90) {
+        svgEl('path', { d: `M${cx},${cy - r} A${r},${r} 0 0 1 ${cx},${cy + r} Z`, fill: '#f4f1e8' }, svg);
+      } else if (elongation === 270) {
+        svgEl('path', { d: `M${cx},${cy - r} A${r},${r} 0 0 0 ${cx},${cy + r} Z`, fill: '#f4f1e8' }, svg);
+      } else if (elongation === 180) {
+        svgEl('circle', { cx, cy, r, fill: '#f4f1e8', stroke: '#c9c2a5', 'stroke-width': 1 }, svg);
+      }
+      card.appendChild(svg);
+      const caption = document.createElement('p');
+      caption.className = 'diagram-caption';
+      caption.appendChild(document.createTextNode(label));
+      caption.appendChild(document.createElement('br'));
+      const tideStrong = document.createElement('strong');
+      tideStrong.textContent = tide;
+      caption.appendChild(tideStrong);
+      card.appendChild(caption);
+      strip.appendChild(card);
+    });
+  }
+
+  // --- Beach scene: an illustrative, not data-driven, SVG ------------------
+
+  function buildBeachScene() {
+    const svg = document.getElementById('beach-scene');
+    svgEl('rect', { x: 0, y: 0, width: 300, height: 110, fill: '#cfe6f5' }, svg);
+    svgEl('circle', { cx: 252, cy: 30, r: 18, fill: '#f5c542' }, svg);
+    svgEl('rect', { x: 0, y: 90, width: 300, height: 30, fill: '#6fa8dc' }, svg);
+    svgEl('path', { d: 'M0,120 Q60,108 120,118 T240,116 T300,120 L300,170 L0,170 Z', fill: '#e8d9a8' }, svg);
+
+    // High and low tide marks: two short posts with a dashed line each,
+    // at different heights up the beach.
+    [
+      { x: 70, y: 96, label: 'High tide mark' },
+      { x: 150, y: 128, label: 'Low tide mark' },
+    ].forEach(({ x, y }) => {
+      svgEl('line', { x1: x, y1: y, x2: x, y2: y + 30, stroke: '#7a5230', 'stroke-width': 3 }, svg);
+      svgEl('line', { x1: x - 14, y1: y, x2: 296, y2: y, stroke: '#b3261e', 'stroke-width': 1.5, 'stroke-dasharray': '4 3' }, svg);
+    });
   }
 
   // --- Readouts -----------------------------------------------------------
@@ -232,9 +356,19 @@
       "Tidal force: the stretching effect caused by gravity pulling harder on the near side of a body than on its far side. It depends on how quickly the pull changes with distance, so it falls off very fast the farther away the pulling body is.",
     tidalRange:
       'Tidal range: the difference in height between high tide and the next low tide. Largest at spring tides, smallest at neap tides.',
+    realTides:
+      "Real tides follow this pattern, but coastlines and the sea floor change the details — high tide doesn't come exactly when the Moon is overhead, and the biggest spring tides usually arrive a day or two late. The extra-large spring tides at a supermoon are covered on Moon Phases.",
+    whyTwoADay:
+      'The Moon moves on along its orbit while Earth turns, so it takes a little longer than one full spin for a place to come back under the Moon — the same reason moonrise itself comes about 50 minutes later each day.',
+    whyMoonWins:
+      "Tides come from the difference in pull across Earth, not the pull itself — and that difference falls off much faster with distance. The Moon is far closer, so despite its weaker overall pull, its tidal effect wins by more than two to one.",
   };
 
   setUpDiagram();
+  buildMiniTideDiagram({ wrap: 'spring-wrap', svg: 'spring-diagram' }, 0);
+  buildMiniTideDiagram({ wrap: 'neap-wrap', svg: 'neap-diagram' }, 90);
+  buildMonthStrip();
+  buildBeachScene();
   fillFigures();
   const today = new Date();
   dateInput.value = today.toISOString().slice(0, 10);
