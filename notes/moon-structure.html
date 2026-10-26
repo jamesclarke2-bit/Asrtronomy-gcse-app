@@ -7,7 +7,7 @@
   <meta name="referrer" content="no-referrer" />
   <meta name="robots" content="noindex, nofollow" />
   <title>The Moon: Structure, Surface and Origin</title>
-  <link rel="stylesheet" href="../styles.css?v=202610271615" />
+  <link rel="stylesheet" href="../styles.css?v=202610281430" />
   <link rel="icon" type="image/svg+xml" href="../favicon.svg?v=202610130720" />
 </head>
 <body>
@@ -21,51 +21,77 @@
       it takes to get there &mdash; and where the Moon came from.
     </p>
 
-    <section class="notes-section" id="shape-and-size">
-      <h2>Shape and size</h2>
-      <p>
-        The Moon is a near-sphere, with a mean diameter of about
-        <strong>3,500&nbsp;km</strong> (3,475&nbsp;km more precisely).
-      </p>
-    </section>
-
     <section class="notes-section" id="inside-the-moon">
       <h2>Inside the Moon</h2>
       <p>
-        Like Earth, the Moon is layered into a <strong>crust</strong>, a <strong>mantle</strong>
-        and a <strong>core</strong> &mdash; but in very different proportions.
+        The Moon is a near-sphere about 3,500&nbsp;km across, layered like Earth into a crust,
+        mantle and core &mdash; but in very different proportions. Tap a layer for more.
       </p>
-      <table class="shower-table">
-        <caption>The Moon's layers compared with Earth's</caption>
-        <thead>
-          <tr><th scope="col">Layer</th><th scope="col">Moon</th><th scope="col">Earth</th></tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Crust</td>
-            <td>~34&ndash;43&nbsp;km thick on average &mdash; about 2&ndash;2.5% of its radius</td>
-            <td>Typically 5&ndash;70&nbsp;km &mdash; under 1% of its radius, so proportionally much thinner</td>
-          </tr>
-          <tr>
-            <td>Mantle</td>
-            <td>Most of the Moon's interior</td>
-            <td>The thickest layer</td>
-          </tr>
-          <tr>
-            <td>Core</td>
-            <td>Small: under 25% of the Moon's radius, and offset ~2&nbsp;km towards the near side</td>
-            <td>Large: about 55% of Earth's radius</td>
-          </tr>
-        </tbody>
-      </table>
+
+      <div class="diagram moon-structure-diagram">
+        <div class="labelled-diagram-wrap" id="moon-structure-wrap">
+          <svg
+            id="moon-structure"
+            viewBox="0 0 500 500"
+            role="group"
+            aria-label="Cutaway diagram of the Moon's internal structure, showing the inner core, outer core, mantle and crust as concentric layers, each tappable for detail"
+          ></svg>
+        </div>
+      </div>
+      <ul class="legend layer-legend">
+        <li data-layer="crust"><span class="legend-dot layer-dot-crust"></span><strong>Crust</strong> &mdash; thin and rocky, ~34&ndash;43&nbsp;km thick on average.</li>
+        <li data-layer="mantle"><span class="legend-dot layer-dot-mantle"></span><strong>Mantle</strong> &mdash; most of the Moon's interior, semi-solid rock.</li>
+        <li data-layer="outer-core"><span class="legend-dot layer-dot-outer-core"></span><strong>Outer core</strong> &mdash; a thin, partly molten layer around the inner core.</li>
+        <li data-layer="inner-core"><span class="legend-dot layer-dot-inner-core"></span><strong>Inner core</strong> &mdash; small, dense and likely solid.</li>
+      </ul>
+      <div class="moon-structure-definitions">
+        <span class="glossary-definition" data-term="moonCrust" hidden></span>
+        <span class="glossary-definition" data-term="moonMantle" hidden></span>
+        <span class="glossary-definition" data-term="moonOuterCore" hidden></span>
+        <span class="glossary-definition" data-term="moonInnerCore" hidden></span>
+      </div>
       <p class="note">
-        The ~2&nbsp;km offset shows up as the Moon's centre of mass sitting about 2&nbsp;km closer
-        to Earth than its geometric centre.
+        Layer thicknesses in the diagram are schematic, not to scale. Splitting the core into an
+        outer and inner part, like Earth's, is a first draft, to be checked by the teacher &mdash;
+        the spec notes describe the Moon's core only as small and offset towards the near side.
       </p>
-      <p class="note">
-        Crust thickness from NASA's GRAIL gravity-mapping mission (2012): Wieczorek et al. (2013), &ldquo;The Crust of the Moon as Seen by GRAIL&rdquo;, <em>Science</em> 339, 671&ndash;675, <a href="https://doi.org/10.1126/science.1231530" rel="noopener noreferrer">doi:10.1126/science.1231530</a>.
-        Older, pre-GRAIL estimates put the crust noticeably thicker.
+
+      <p>
+        <button type="button" id="toggle-layer-table" class="secondary-button" aria-pressed="false">Compare with Earth's layers</button>
       </p>
+      <div id="layer-table-panel" hidden>
+        <table class="shower-table">
+          <caption>The Moon's layers compared with Earth's</caption>
+          <thead>
+            <tr><th scope="col">Layer</th><th scope="col">Moon</th><th scope="col">Earth</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Crust</td>
+              <td>~34&ndash;43&nbsp;km thick on average &mdash; about 2&ndash;2.5% of its radius</td>
+              <td>Typically 5&ndash;70&nbsp;km &mdash; under 1% of its radius, so proportionally much thinner</td>
+            </tr>
+            <tr>
+              <td>Mantle</td>
+              <td>Most of the Moon's interior</td>
+              <td>The thickest layer</td>
+            </tr>
+            <tr>
+              <td>Core</td>
+              <td>Small: under 25% of the Moon's radius, and offset ~2&nbsp;km towards the near side</td>
+              <td>Large: about 55% of Earth's radius</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="note">
+          The ~2&nbsp;km offset shows up as the Moon's centre of mass sitting about 2&nbsp;km closer
+          to Earth than its geometric centre.
+        </p>
+        <p class="note">
+          Crust thickness from NASA's GRAIL gravity-mapping mission (2012): Wieczorek et al. (2013), &ldquo;The Crust of the Moon as Seen by GRAIL&rdquo;, <em>Science</em> 339, 671&ndash;675, <a href="https://doi.org/10.1126/science.1231530" rel="noopener noreferrer">doi:10.1126/science.1231530</a>.
+          Older, pre-GRAIL estimates put the crust noticeably thicker.
+        </p>
+      </div>
     </section>
 
     <section class="notes-section" id="surface-features">
@@ -73,39 +99,23 @@
       <div class="concept-grid">
         <div class="concept-card">
           <h3>Craters</h3>
-          <p>
-            Bowl-shaped hollows made by meteoroid impacts, ranging from tiny pits to basins
-            hundreds of kilometres across, and varying widely in age. With no air to burn up
-            incoming rock and almost no erosion, craters last for billions of years.
-          </p>
+          <p>Impact scars, from tiny pits to huge basins. With no air or erosion, they last for billions of years.</p>
         </div>
         <div class="concept-card">
           <h3>Maria (&ldquo;seas&rdquo;)</h3>
-          <p>
-            Dark grey, relatively smooth plains. They're not water: they formed when ancient lava
-            welled up and flooded low-lying impact basins, then set hard.
-          </p>
+          <p>Dark, smooth plains &mdash; not water, but ancient lava that flooded impact basins and set hard.</p>
         </div>
         <div class="concept-card">
           <h3>Terrae (highlands)</h3>
-          <p>
-            Light grey, mountainous and rugged. The highlands are older than the maria and far
-            more heavily cratered, because they've been collecting impacts for longer.
-          </p>
+          <p>Light, rugged ground. Older than the maria, so far more heavily cratered.</p>
         </div>
         <div class="concept-card">
           <h3>Mountains</h3>
-          <p>
-            Ranges such as the Apennines are the uplifted rims of huge impact basins &mdash;
-            thrown up by the impact itself, not by volcanic activity.
-          </p>
+          <p>Ranges like the Apennines are impact-basin rims, thrown up by the impact itself, not volcanoes.</p>
         </div>
         <div class="concept-card">
           <h3>Valleys and rilles</h3>
-          <p>
-            Narrow, channel-like depressions winding across the maria, thought to be collapsed
-            lava tubes or channels left behind by ancient lava flows.
-          </p>
+          <p>Channel-like dips across the maria, thought to be collapsed lava tubes or old lava channels.</p>
         </div>
       </div>
     </section>
@@ -118,6 +128,7 @@
       </p>
       <div class="control">
         <button type="button" id="toggle-labels" class="secondary-button" aria-pressed="false">Hide labels &mdash; test yourself</button>
+        <button type="button" id="toggle-apollo" class="secondary-button" aria-pressed="false">Show Apollo landing sites</button>
       </div>
       <div class="diagram moon-map-diagram">
         <div class="labelled-diagram-wrap" id="moon-map-wrap">
@@ -125,7 +136,7 @@
             id="moon-map"
             viewBox="0 0 600 600"
             role="group"
-            aria-label="Map of the Moon's near side at full Moon, north at the top, with seven clickable features: the Sea of Tranquility, the Ocean of Storms, the Sea of Crises, the craters Tycho, Copernicus and Kepler, and the Apennine mountains"
+            aria-label="Map of the Moon's near side at full Moon, north at the top, with seven clickable features: the Sea of Tranquility, the Ocean of Storms, the Sea of Crises, the craters Tycho, Copernicus and Kepler, and the Apennine mountains, plus an optional toggle showing the six crewed Apollo landing sites"
           ></svg>
         </div>
       </div>
@@ -135,6 +146,10 @@
         lunar latitudes and longitudes; the small craters are drawn larger than life so you can
         tap them.
       </p>
+      <p class="note">
+        Apollo landing site coordinates are a first draft, to be checked by the teacher. Flight
+        paths to reach them are covered on the Probes and Apollo page.
+      </p>
       <div class="moon-feature-definitions">
         <span class="glossary-definition" data-term="tranquility" hidden></span>
         <span class="glossary-definition" data-term="storms" hidden></span>
@@ -143,6 +158,12 @@
         <span class="glossary-definition" data-term="copernicus" hidden></span>
         <span class="glossary-definition" data-term="kepler" hidden></span>
         <span class="glossary-definition" data-term="apennines" hidden></span>
+        <span class="glossary-definition" data-term="apollo11" hidden></span>
+        <span class="glossary-definition" data-term="apollo12" hidden></span>
+        <span class="glossary-definition" data-term="apollo14" hidden></span>
+        <span class="glossary-definition" data-term="apollo15" hidden></span>
+        <span class="glossary-definition" data-term="apollo16" hidden></span>
+        <span class="glossary-definition" data-term="apollo17" hidden></span>
       </div>
     </section>
 
@@ -196,41 +217,76 @@
       <h2>Libration: seeing slightly more than half</h2>
       <p>
         Even though the same face always points our way, the Moon appears to rock and nod
-        slightly, letting us peek a little way round its edges. Over time this
-        <button type="button" class="glossary-toggle glossary-term-button" data-term="libration" aria-label="What is libration?" aria-expanded="false">libration</button>
-        lets us see about <strong>59%</strong> of its surface from Earth &mdash; though never the
-        remaining 41%. It has three separate causes:
+        slightly, letting us peek a little way round its edges &mdash; a
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="libration" aria-label="What is libration?" aria-expanded="false">libration</button>.
+        Three diagrams, three causes.
       </p>
       <span class="glossary-definition" data-term="libration" hidden></span>
-      <div class="concept-grid">
-        <div class="concept-card">
-          <h3>Libration in longitude</h3>
-          <p>
-            The Moon spins at a perfectly steady rate, but its orbit is an ellipse, so it moves
-            faster near perigee and slower near apogee (see
-            <a href="../sims/moon-phases.html#perigee-apogee">perigee and apogee</a>). The steady
-            spin and the uneven orbit drift slightly out of step, so we see up to about 8&deg;
-            further round its eastern and western edges.
-          </p>
+
+      <h3>Libration in longitude: the steady spin against the uneven orbit</h3>
+      <div class="diagram moon-libration-diagram">
+        <div class="labelled-diagram-wrap" id="libration-longitude-wrap">
+          <svg
+            id="libration-longitude"
+            viewBox="0 0 400 300"
+            role="img"
+            aria-label="Top-down view of the Moon's elliptical orbit around Earth, with the Moon shown at several points. A blue marker on each Moon spins at a perfectly steady rate; a red marker shows the true direction to Earth, which runs ahead near perigee and behind near apogee, so the two markers drift apart and back together once an orbit"
+          ></svg>
         </div>
-        <div class="concept-card">
-          <h3>Libration in latitude</h3>
-          <p>
-            The Moon's axis is tilted about 6.7&deg; to the plane of its orbit, so during each
-            orbit we see a little way over its north pole, then a little way under its south
-            pole &mdash; like seeing the top and then the bottom of a slowly nodding head.
-          </p>
-        </div>
-        <div class="concept-card">
-          <h3>Diurnal libration</h3>
-          <p>
-            A small parallax effect from where you stand: Earth's rotation carries you across its
-            width &mdash; about 13,000&nbsp;km (more precisely 12,742&nbsp;km) &mdash; between
-            moonrise and moonset, so you view the Moon from slightly different angles &mdash;
-            about 1&deg; further round one edge, then the other.
-          </p>
-        </div>
+        <p class="diagram-caption">
+          Top-down, hugely exaggerated. The Moon turns at a steady rate (blue marker), but moves
+          faster near perigee and slower near apogee (Kepler's second law), so the true
+          Earth-facing point (red marker) swings a little east, then west, of it.
+        </p>
       </div>
+
+      <h3>Libration in latitude: the tilted axis</h3>
+      <div class="diagram moon-libration-diagram">
+        <div class="labelled-diagram-wrap" id="libration-latitude-wrap">
+          <svg
+            id="libration-latitude"
+            viewBox="0 0 400 260"
+            role="img"
+            aria-label="Side-on view of the Moon's orbital plane, with the Moon's rotation axis tilted about 6.7 degrees from upright. At one side of the orbit Earth sees a little way over the Moon's north pole, and at the opposite side a little way under its south pole"
+          ></svg>
+        </div>
+        <p class="diagram-caption">
+          Side-on, hugely exaggerated. The Moon's axis stays tilted about 6.7&deg; the same way in
+          space all orbit, so Earth's view nods: a little over the north pole on one side of the
+          orbit, a little under the south pole on the other.
+        </p>
+      </div>
+
+      <h3>A month of libration: the extra surface it reveals</h3>
+      <div class="diagram moon-libration-diagram">
+        <div class="labelled-diagram-wrap" id="libration-month-wrap">
+          <svg
+            id="libration-month"
+            viewBox="0 0 340 340"
+            role="img"
+            aria-label="The Moon's disc as seen from Earth, with a thin bright sliver on one edge showing today's extra visible surface, and a shaded ring building up around the limb to show everything libration has revealed over the month so far"
+          ></svg>
+        </div>
+        <div class="control">
+          <label for="libration-day-slider">Day in the month: <span id="libration-day-label"></span></label>
+          <input type="range" id="libration-day-slider" min="0" max="27.3" step="0.1" value="0" />
+          <div class="preset-list">
+            <button type="button" class="preset-button" id="libration-reset">Reset to day 0</button>
+          </div>
+        </div>
+        <p class="eot-readout" id="libration-coverage-readout"></p>
+        <p class="note">
+          Schematic: longitude and latitude libration are modelled here as simple back-and-forth
+          swings timed to the sidereal month, not the Moon's real, slightly different orbital
+          cycles &mdash; a first draft, to be checked by the teacher. The combined total of about
+          59% matches the figure already given above.
+        </p>
+      </div>
+
+      <p>
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="diurnalLibration" aria-label="Is that everything that lets us see round the edge?" aria-expanded="false">Is that everything that lets us see round the edge?</button>
+      </p>
+      <span class="glossary-definition" data-term="diurnalLibration" hidden></span>
     </section>
 
     <section class="notes-section" id="near-far-side">
@@ -382,8 +438,9 @@
 
   <script src="../src/curriculum.js?v=202610141552"></script>
   <script src="../src/pages.js?v=202610161036"></script>
+  <script src="../src/orbitalMechanics.js?v=202610281400"></script>
   <script src="../glossary.js?v=202610131052"></script>
-  <script src="moon-structure.js?v=202609251200"></script>
+  <script src="moon-structure.js?v=202610281400"></script>
   <script src="../notesPage.js?v=202609270100"></script>
   <script src="../nextPage.js?v=202610161057"></script>
 </body>

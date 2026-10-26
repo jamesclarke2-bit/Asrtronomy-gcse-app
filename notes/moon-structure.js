@@ -117,6 +117,97 @@
     }, parent);
   }
 
+  // --- Inside the Moon: crust / mantle / outer core / inner core, as ------
+  // concentric rings. The ring colours reuse Earth's own .layer-dot-*
+  // palette (see earth-structure.html) for a direct visual match. Each
+  // ring is drawn as a full circle, smaller ones layered on top, so only
+  // the outer band of each colour actually shows — the same approach
+  // earth-structure.html uses for its own cutaway. The labels, not the
+  // thin rings themselves, are the tap targets (a thin ring is an
+  // unreliable target — see earth-structure.js's own note on this).
+
+  const STRUCTURE_LAYERS = [
+    { term: 'moonCrust', name: 'Crust', r: 225, fill: '#5b7c99', stroke: '#3f5a70', pos: [12, 50] },
+    { term: 'moonMantle', name: 'Mantle', r: 205, fill: '#c17a4a', pos: [50, 94] },
+    { term: 'moonOuterCore', name: 'Outer core', r: 70, fill: '#e8631a', pos: [88, 50] },
+    { term: 'moonInnerCore', name: 'Inner core', r: 32, fill: '#fff2c4', pos: [50, 6] },
+  ];
+
+  function drawMoonStructure() {
+    const svg = document.getElementById('moon-structure');
+    const wrap = document.getElementById('moon-structure-wrap');
+    const cx = 250;
+    const cy = 250;
+
+    STRUCTURE_LAYERS.forEach((layer) => {
+      const attrs = { cx, cy, r: layer.r, fill: layer.fill };
+      if (layer.stroke) {
+        attrs.stroke = layer.stroke;
+        attrs['stroke-width'] = 2;
+      }
+      svgEl('circle', attrs, svg);
+    });
+
+    STRUCTURE_LAYERS.forEach((layer) => {
+      const label = document.createElement('span');
+      label.className = 'labelled-diagram-label glossary-toggle diagram-region moon-structure-label';
+      label.textContent = layer.name;
+      label.style.left = `${layer.pos[0]}%`;
+      label.style.top = `${layer.pos[1]}%`;
+      label.tabIndex = 0;
+      label.setAttribute('role', 'button');
+      label.setAttribute('aria-expanded', 'false');
+      label.setAttribute('aria-label', `${layer.name}: show its description`);
+      label.dataset.term = layer.term;
+      wrap.appendChild(label);
+    });
+  }
+
+  function setUpLayerTableToggle() {
+    const button = document.getElementById('toggle-layer-table');
+    const panel = document.getElementById('layer-table-panel');
+    button.addEventListener('click', () => {
+      const nowHidden = !panel.hidden;
+      panel.hidden = nowHidden;
+      button.setAttribute('aria-pressed', String(!nowHidden));
+    });
+  }
+
+  // --- Apollo landing sites: a toggle on the near-side map. First draft,
+  // to be checked by the teacher — see the page's own note. No flight
+  // paths here; those belong on the future Probes and Apollo page.
+
+  const APOLLO_SITES = [
+    { term: 'apollo11', name: 'Apollo 11', year: 1969, lat: 0.67, lon: 23.47 },
+    { term: 'apollo12', name: 'Apollo 12', year: 1969, lat: -3.01, lon: -23.42 },
+    { term: 'apollo14', name: 'Apollo 14', year: 1971, lat: -3.65, lon: -17.47 },
+    { term: 'apollo15', name: 'Apollo 15', year: 1971, lat: 26.13, lon: 3.63 },
+    { term: 'apollo16', name: 'Apollo 16', year: 1972, lat: -8.97, lon: 15.5 },
+    { term: 'apollo17', name: 'Apollo 17', year: 1972, lat: 20.19, lon: 30.77 },
+  ];
+
+  function drawApolloSites(svg) {
+    const group = svgEl('g', { id: 'apollo-markers', class: 'apollo-markers-hidden' }, svg);
+    APOLLO_SITES.forEach((site) => {
+      const p = project(site.lat, site.lon);
+      const marker = makeToggle(group, site.term, `${site.name}, ${site.year}`);
+      svgEl('circle', { cx: p.x, cy: p.y, r: 12, fill: 'transparent', 'pointer-events': 'all' }, marker);
+      svgEl('line', { x1: p.x, y1: p.y, x2: p.x, y2: p.y - 14, stroke: '#f1efe6', 'stroke-width': 1.5 }, marker);
+      svgEl('path', { d: `M${p.x},${p.y - 14} L${p.x},${p.y - 6} L${(p.x + 8).toFixed(1)},${(p.y - 10).toFixed(1)} Z`, fill: '#c0392b', stroke: '#f1efe6', 'stroke-width': 0.5 }, marker);
+      svgEl('circle', { cx: p.x, cy: p.y, r: 2.5, fill: '#f1efe6' }, marker);
+    });
+  }
+
+  function setUpApolloToggle() {
+    const button = document.getElementById('toggle-apollo');
+    const markers = document.getElementById('apollo-markers');
+    button.addEventListener('click', () => {
+      const showing = markers.classList.toggle('apollo-markers-hidden') === false;
+      button.setAttribute('aria-pressed', String(showing));
+      button.textContent = showing ? 'Hide Apollo landing sites' : 'Show Apollo landing sites';
+    });
+  }
+
   function drawMoonMap() {
     const svg = document.getElementById('moon-map');
     const wrap = document.getElementById('moon-map-wrap');
@@ -213,6 +304,176 @@
       labelEl.textContent = name;
       wrap.appendChild(labelEl);
     });
+
+    drawApolloSites(svg);
+  }
+
+  // --- Libration in longitude: top-down, exaggerated ellipse. At each of
+  // 8 points around the orbit, a blue marker shows the Moon's perfectly
+  // steady spin and a red marker shows the true direction to Earth —
+  // OrbitalMechanics.trueAnomaly() (the same equation-of-centre maths
+  // behind the Equation of Time page) gives the gap between them. The
+  // gap is exactly zero at perigee and apogee themselves, and largest a
+  // quarter-orbit from each — correct, if easy to miss on first look.
+
+  function drawLibrationLongitude() {
+    const svg = document.getElementById('libration-longitude');
+    const focus = { x: 260, y: 150 };
+    const aPx = 120;
+    const eVisual = 0.4; // hugely exaggerated vs the Moon's real ~0.055
+
+    svgEl('circle', { cx: focus.x, cy: focus.y, r: 14, fill: '#2a6bd6' }, svg);
+
+    const ellipsePoints = [];
+    for (let m = 0; m <= 360; m += 6) {
+      const p = OrbitalMechanics.positionAtMeanAnomaly(m * RAD, aPx, eVisual);
+      ellipsePoints.push(`${(focus.x + p.x).toFixed(1)},${(focus.y + p.y).toFixed(1)}`);
+    }
+    svgEl('path', { d: `M${ellipsePoints.join('L')}Z`, fill: 'none', stroke: '#b7c3d1', 'stroke-width': 1.5, 'stroke-dasharray': '5 5' }, svg);
+
+    for (let m = 0; m < 360; m += 45) {
+      const M = m * RAD;
+      const pos = OrbitalMechanics.positionAtMeanAnomaly(M, aPx, eVisual);
+      const moon = { x: focus.x + pos.x, y: focus.y + pos.y };
+      const libAngle = Math.atan2(Math.sin(pos.trueAnomalyRad - M), Math.cos(pos.trueAnomalyRad - M));
+
+      svgEl('circle', { cx: moon.x, cy: moon.y, r: 9, fill: '#c9cdd3', stroke: '#6b7684', 'stroke-width': 1 }, svg);
+
+      const toEarth = Math.atan2(focus.y - moon.y, focus.x - moon.x);
+      const bodyDir = toEarth - libAngle;
+      const markerR = 11;
+      const red = { x: moon.x + markerR * Math.cos(toEarth), y: moon.y + markerR * Math.sin(toEarth) };
+      const blue = { x: moon.x + markerR * Math.cos(bodyDir), y: moon.y + markerR * Math.sin(bodyDir) };
+      svgEl('circle', { cx: red.x, cy: red.y, r: 3, fill: '#c0392b' }, svg);
+      svgEl('circle', { cx: blue.x, cy: blue.y, r: 3, fill: '#2a6bd6' }, svg);
+    }
+  }
+
+  // --- Libration in latitude: side-on. The Moon drawn at two opposite
+  // points of the orbit, with its rotation axis tilted the same way in
+  // space both times — so the pole we see a little way over flips from
+  // north to south.
+
+  function drawLibrationLatitude() {
+    const svg = document.getElementById('libration-latitude');
+    const planeY = 150;
+    const earth = { x: 50, y: planeY };
+    const tiltDeg = 25; // hugely exaggerated vs the Moon's real ~6.7°
+
+    svgEl('line', { x1: 20, y1: planeY, x2: 380, y2: planeY, stroke: '#b7c3d1', 'stroke-width': 1.5, 'stroke-dasharray': '5 5' }, svg);
+    svgEl('circle', { cx: earth.x, cy: earth.y, r: 16, fill: '#2a6bd6' }, svg);
+
+    const moons = [
+      { cx: 190, pole: 'north' },
+      { cx: 340, pole: 'south' },
+    ];
+
+    moons.forEach((m) => {
+      const r = 36;
+      svgEl('line', { x1: earth.x, y1: earth.y, x2: m.cx, y2: planeY, stroke: '#cfd6df', 'stroke-width': 1, 'stroke-dasharray': '3 2' }, svg);
+      svgEl('circle', { cx: m.cx, cy: planeY, r, fill: '#c9cdd3', stroke: '#6b7684', 'stroke-width': 1.5 }, svg);
+
+      const axisLen = r + 20;
+      const axisRad = tiltDeg * RAD;
+      const ax = Math.sin(axisRad) * axisLen;
+      const ay = Math.cos(axisRad) * axisLen;
+      svgEl('line', { x1: m.cx - ax, y1: planeY - ay, x2: m.cx + ax, y2: planeY + ay, stroke: '#2f2f2f', 'stroke-width': 2, 'stroke-dasharray': '2 2' }, svg);
+
+      const poleSign = m.pole === 'north' ? -1 : 1;
+      const wedgeCenter = poleSign * 90 * RAD;
+      const wedgeHalf = 18 * RAD;
+      const p1 = { x: m.cx + r * Math.cos(wedgeCenter - wedgeHalf), y: planeY + r * Math.sin(wedgeCenter - wedgeHalf) };
+      const p2 = { x: m.cx + r * Math.cos(wedgeCenter + wedgeHalf), y: planeY + r * Math.sin(wedgeCenter + wedgeHalf) };
+      svgEl('path', {
+        d: `M${m.cx},${planeY} L${p1.x.toFixed(1)},${p1.y.toFixed(1)} A${r},${r} 0 0 1 ${p2.x.toFixed(1)},${p2.y.toFixed(1)} Z`,
+        fill: '#f5c542', 'fill-opacity': 0.55,
+      }, svg);
+    });
+  }
+
+  // --- A month of libration: the visible disc, with today's extra
+  // sliver and the cumulative envelope of everything revealed so far as
+  // the slider scrubs through a sidereal month. Longitude and latitude
+  // libration are modelled as simple sinusoids using the amplitudes (8°,
+  // 6.7°) already stated in the text above — a schematic first draft,
+  // not the Moon's real, slightly different orbital cycles.
+
+  const LIBRATION_PERIOD_DAYS = 27.3;
+  const LIBRATION_LON_MAX_DEG = 8;
+  const LIBRATION_LAT_MAX_DEG = 6.7;
+  const MONTH_CX = 170;
+  const MONTH_CY = 170;
+  const MONTH_R = 130;
+  const MONTH_BINS = 72;
+  const MONTH_PX_PER_DEG = 3.2;
+  let monthRevealed = new Array(MONTH_BINS).fill(0);
+  let monthEnvelopePath;
+  let monthTodayPath;
+
+  function libAtDay(t) {
+    const phase = (2 * Math.PI * t) / LIBRATION_PERIOD_DAYS;
+    return { lon: LIBRATION_LON_MAX_DEG * Math.sin(phase), lat: LIBRATION_LAT_MAX_DEG * Math.cos(phase) };
+  }
+
+  // Tapered falloff from the peak direction, zero beyond a narrow arc —
+  // a thin sliver round the limb, not a bulge across half the disc.
+  const BULGE_HALF_WIDTH_DEG = 28;
+
+  function bulgeAt(binDeg, peakDeg, magnitudeDeg) {
+    const diff = ((binDeg - peakDeg + 540) % 360) - 180;
+    if (Math.abs(diff) > BULGE_HALF_WIDTH_DEG) return 0;
+    const t = diff / BULGE_HALF_WIDTH_DEG;
+    return magnitudeDeg * Math.cos((t * Math.PI) / 2);
+  }
+
+  function setUpLibrationMonth() {
+    const svg = document.getElementById('libration-month');
+    svgEl('circle', { cx: MONTH_CX, cy: MONTH_CY, r: MONTH_R, fill: '#c9cdd3', stroke: '#6b7684', 'stroke-width': 1.5 }, svg);
+    monthEnvelopePath = svgEl('path', { fill: '#a9693f', 'fill-opacity': 0.45 }, svg);
+    monthTodayPath = svgEl('path', { fill: '#f5c542', 'fill-opacity': 0.6 }, svg);
+  }
+
+  function renderLibrationMonth(t) {
+    const { lon, lat } = libAtDay(t);
+    const peakDeg = (Math.atan2(lat, lon) * 180) / Math.PI;
+    const magnitudeDeg = Math.hypot(lon, lat);
+
+    const todayPoints = [];
+    const envPoints = [];
+    for (let i = 0; i <= MONTH_BINS; i += 1) {
+      const bin = i % MONTH_BINS;
+      const binDeg = bin * (360 / MONTH_BINS);
+      const todayBulge = Math.max(0, bulgeAt(binDeg, peakDeg, magnitudeDeg));
+      if (todayBulge > monthRevealed[bin]) monthRevealed[bin] = todayBulge;
+
+      const rad = (binDeg * RAD);
+      const todayR = MONTH_R + todayBulge * MONTH_PX_PER_DEG;
+      const envR = MONTH_R + monthRevealed[bin] * MONTH_PX_PER_DEG;
+      todayPoints.push(`${(MONTH_CX + todayR * Math.cos(rad)).toFixed(1)},${(MONTH_CY - todayR * Math.sin(rad)).toFixed(1)}`);
+      envPoints.push(`${(MONTH_CX + envR * Math.cos(rad)).toFixed(1)},${(MONTH_CY - envR * Math.sin(rad)).toFixed(1)}`);
+    }
+    monthTodayPath.setAttribute('d', `M${todayPoints.join('L')}Z`);
+    monthEnvelopePath.setAttribute('d', `M${envPoints.join('L')}Z`);
+
+    const revealedAvg = monthRevealed.reduce((a, b) => a + b, 0) / MONTH_BINS;
+    const extraPercent = 9 * (revealedAvg / LIBRATION_LON_MAX_DEG);
+    const totalPercent = 50 + extraPercent;
+
+    document.getElementById('libration-day-label').textContent = `${t.toFixed(1)} days`;
+    document.getElementById('libration-coverage-readout').textContent =
+      `Revealed so far this scrub: about ${totalPercent.toFixed(0)}% of the surface (50% base + ` +
+      `${extraPercent.toFixed(1)}% from libration).`;
+  }
+
+  function setUpLibrationMonthControls() {
+    const slider = document.getElementById('libration-day-slider');
+    const resetButton = document.getElementById('libration-reset');
+    slider.addEventListener('input', () => renderLibrationMonth(Number(slider.value)));
+    resetButton.addEventListener('click', () => {
+      monthRevealed = new Array(MONTH_BINS).fill(0);
+      slider.value = '0';
+      renderLibrationMonth(0);
+    });
   }
 
   function setUpLabelToggle() {
@@ -248,14 +509,38 @@
       'The Apennine Mountains (Montes Apenninus): a curved range along the south-eastern edge of the Sea of Rains (Mare Imbrium) — the uplifted rim of the giant impact that made that basin.',
     libration:
       "Libration: the Moon's slight apparent rocking and nodding as seen from Earth, which lets us see about 59% of its surface over time.",
+    diurnalLibration:
+      "Almost — there's a third, smaller cause: diurnal libration, a parallax effect from where you stand. Earth's rotation carries you across its width — about 12,742 km — between moonrise and moonset, so you view the Moon from slightly different angles: about 1° further round one edge, then the other.",
     escapeVelocity:
       "Escape velocity: the speed an object needs to coast away from a planet's gravity for good, with no further push. About 11.2 km/s for Earth.",
     giantImpact:
       'The Giant Impact Hypothesis: the idea that the Moon formed from debris thrown out when a Mars-sized body, Theia, struck the young Earth a glancing blow.',
+    moonCrust:
+      "Crust: the Moon's thin, rocky outer shell, about 34–43 km thick on average (GRAIL, 2013) — roughly 2–2.5% of its radius, proportionally much thicker than Earth's own crust.",
+    moonMantle:
+      "Mantle: most of the Moon's interior by volume, semi-solid rock beneath the crust, cooler and stiffer than Earth's own mantle.",
+    moonOuterCore:
+      'Outer core: a thin, partly molten layer around the inner core, inferred from Apollo seismometer data and later gravity and libration measurements — a first draft, to be checked by the teacher.',
+    moonInnerCore:
+      "Inner core: a small, dense, likely solid centre rich in iron. Together with the outer core it makes up under 25% of the Moon's radius, offset about 2 km towards the near side — a first draft, to be checked by the teacher.",
+    apollo11: 'Apollo 11 — mission 11, 1969: the first crewed Moon landing, in the Sea of Tranquility.',
+    apollo12: 'Apollo 12 — mission 12, 1969: landed in the Ocean of Storms.',
+    apollo14: 'Apollo 14 — mission 14, 1971: landed near Fra Mauro.',
+    apollo15: 'Apollo 15 — mission 15, 1971: landed near Hadley Rille.',
+    apollo16: 'Apollo 16 — mission 16, 1972: landed in the Descartes highlands.',
+    apollo17: 'Apollo 17 — mission 17, 1972: the last crewed Moon landing, at Taurus–Littrow.',
   };
 
+  drawMoonStructure();
+  setUpLayerTableToggle();
   drawMoonMap();
   setUpLabelToggle();
+  setUpApolloToggle();
+  drawLibrationLongitude();
+  drawLibrationLatitude();
+  setUpLibrationMonth();
+  renderLibrationMonth(0);
+  setUpLibrationMonthControls();
   renderCoverage();
   Glossary.init(GLOSSARY);
 })();

@@ -44,6 +44,7 @@ const DIAGRAM_FIRST_PAGES = [
   'sims/sidereal-vs-synodic.html',
   'sims/eclipses.html',
   'notes/tides.html',
+  'notes/moon-structure.html',
 ];
 
 function read(href) {

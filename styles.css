@@ -2017,6 +2017,50 @@ canvas {
   max-width: 460px;
 }
 
+/* notes/moon-structure.html's "Inside the Moon" cutaway, reusing the
+   same concentric-ring language and .layer-dot-*/.layer-legend classes
+   as notes/earth-structure.html for a direct visual comparison. */
+.moon-structure-diagram {
+  max-width: 420px;
+  margin: 1rem 0;
+}
+
+.moon-structure-diagram svg {
+  width: 100%;
+  height: auto;
+  background: #f7f7f5;
+  border-radius: 8px;
+  border: 1px solid #cdd7e1;
+}
+
+/* The labels are the tap target here, not the thin rings — same
+   reasoning as .earth-layer-label (see earth-structure.html's CSS). */
+.moon-structure-label {
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.apollo-markers-hidden {
+  display: none;
+}
+
+/* notes/moon-structure.html's three libration diagrams: a top-down
+   orbit, a side-on tilt view, and the monthly coverage slider. Wider
+   than the generic .diagram cap since the orbit/tilt views need the
+   room, but still well under the 700px .notes-section width. */
+.moon-libration-diagram {
+  max-width: 460px;
+  margin: 1rem 0 1.5rem;
+}
+
+.moon-libration-diagram svg {
+  width: 100%;
+  height: auto;
+  background: #f7f7f5;
+  border-radius: 8px;
+  border: 1px solid #cdd7e1;
+}
+
 /* notes/naked-eye-sky.html */
 .pattern-grid {
   display: grid;
