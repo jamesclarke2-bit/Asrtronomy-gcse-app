@@ -60,3 +60,7 @@ Static HTML/CSS/JS with no build step. Pages live in `sims/` (interactive) and `
     snaps the value to the nearest step-aligned value instead (`step="any"` sidesteps this
     entirely). This has already caused bugs on three pages — check it explicitly (e.g. by reading
     the value back) whenever a script, not just a drag, sets a range input's value.
+13. **Make pages inviting.** Each page opens with a picture a student would want to look at: an
+    original SVG illustration, cartoon or animated diagram of our own making, not only a schematic.
+    Use no outside images, fonts or scripts, because the security policy allows only the site's own
+    files. Respect the reduced-motion setting for any animation.
