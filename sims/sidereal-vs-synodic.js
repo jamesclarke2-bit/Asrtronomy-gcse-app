@@ -21,6 +21,14 @@
   const synodicValue = document.getElementById('synodic-value');
   const periodNote = document.getElementById('period-note');
 
+  const storyCanvas = document.getElementById('story-view');
+  const storyStepLabel = document.getElementById('story-step-label');
+  const storyCaption = document.getElementById('story-caption');
+  const storyBackButton = document.getElementById('story-back-button');
+  const storyNextButton = document.getElementById('story-next-button');
+  const storySiderealValue = document.getElementById('story-sidereal-value');
+  const storySynodicValue = document.getElementById('story-synodic-value');
+
   // The synodic month (Moon back to the same phase) is exact by
   // construction in src/moonPhase.js. The sidereal month (Moon back to
   // the same direction against the stars) follows from it plus Earth's
@@ -80,10 +88,10 @@
     ctx.stroke();
   }
 
-  function drawReferenceStar(canvas, geom) {
+  function drawReferenceStar(canvas, geom, angleDeg, outerRadius) {
     const ctx = canvas.getContext('2d');
-    const inner = orbitPoint(geom.cx, geom.cy, 15, referenceStarAngleDeg);
-    const outer = orbitPoint(geom.cx, geom.cy, geom.R + 18, referenceStarAngleDeg);
+    const inner = orbitPoint(geom.cx, geom.cy, 15, angleDeg);
+    const outer = orbitPoint(geom.cx, geom.cy, outerRadius, angleDeg);
 
     ctx.beginPath();
     ctx.moveTo(inner.x, inner.y);
@@ -111,6 +119,80 @@
     ctx.restore();
   }
 
+  // --- Three-snapshot story: Day 0, Day 27.3, Day 29.5 --------------------
+  //
+  // Deliberately exaggerated, hand-picked angles — not the real
+  // simulation's own values above. Earth's true shift in one sidereal
+  // month is only ~27 degrees, which (correctly drawn next to a full
+  // 360-degree orbit) barely reads as a shift at all; stretching it here
+  // is purely visual, the page says so, and every day count stays
+  // accurate. The star's own direction never moves, the same convention
+  // moonOrbitPanel's real diagram below uses.
+  const STORY_STEPS = [
+    {
+      day: '0',
+      sunAngleDeg: 180,
+      moonAngleDeg: 180,
+      starAngleDeg: 180,
+      caption:
+        'Sun, Earth and Moon all in line — new Moon. The dashed arrow marks a distant star in that same direction, for reference.',
+      sidereal: '0.0 days',
+      synodic: '0.0 days',
+    },
+    {
+      day: '27.3',
+      sunAngleDeg: 145,
+      moonAngleDeg: 180,
+      starAngleDeg: 180,
+      caption:
+        "The Moon has swept all the way round to point at the star again. But Earth's own orbit " +
+        "has carried it onward too, so the Sun is now in a different direction — the Moon hasn't " +
+        'caught up to it yet.',
+      sidereal: '27.3 days — a full sidereal month',
+      synodic: '27.3 days — not quite there yet',
+    },
+    {
+      day: '29.5',
+      sunAngleDeg: 140,
+      moonAngleDeg: 140,
+      starAngleDeg: 180,
+      caption:
+        "About two more days let the Moon catch up to the Sun's new direction — new Moon again. " +
+        'It no longer points at the original star.',
+      sidereal: '29.5 days — one sidereal month, plus a bit more',
+      synodic: '29.5 days — a full synodic month',
+    },
+  ];
+
+  let storyStepIndex = 0;
+
+  function renderStory() {
+    const step = STORY_STEPS[storyStepIndex];
+    const geom = MoonOrbitPanel.draw(storyCanvas, { moonAngleDeg: step.moonAngleDeg, sunAngleDeg: step.sunAngleDeg });
+    // Drawn further out than the Sun's own marker (unlike the continuous
+    // simulation below) so the two never visually collide even when the
+    // star and the Sun point the same way, as they do at Day 0.
+    drawReferenceStar(storyCanvas, geom, step.starAngleDeg, geom.R + 45);
+
+    storyStepLabel.textContent = `Step ${storyStepIndex + 1} of ${STORY_STEPS.length} — Day ${step.day}`;
+    storyCaption.textContent = step.caption;
+    storySiderealValue.textContent = step.sidereal;
+    storySynodicValue.textContent = step.synodic;
+    storyBackButton.disabled = storyStepIndex === 0;
+    storyNextButton.disabled = storyStepIndex === STORY_STEPS.length - 1;
+  }
+
+  storyBackButton.addEventListener('click', () => {
+    if (storyStepIndex === 0) return;
+    storyStepIndex -= 1;
+    renderStory();
+  });
+  storyNextButton.addEventListener('click', () => {
+    if (storyStepIndex === STORY_STEPS.length - 1) return;
+    storyStepIndex += 1;
+    renderStory();
+  });
+
   function render() {
     const t = Number(daySlider.value);
     dayLabel.textContent = `Day ${t.toFixed(1)}`;
@@ -127,7 +209,7 @@
       moonAngleDeg: moonAbsoluteAngle,
       sunAngleDeg: sunDirection,
     });
-    drawReferenceStar(moonOrbitCanvas, geom);
+    drawReferenceStar(moonOrbitCanvas, geom, referenceStarAngleDeg, geom.R + 18);
 
     const sidereal = t % T_SIDEREAL;
     const synodic = t % T_SYNODIC;
@@ -201,6 +283,7 @@
   };
 
   render();
+  renderStory();
   renderCoverage();
   Glossary.init(GLOSSARY);
   QuizUI.mount(SiderealSynodicQuestions.makeQuestions(MoonPhase));

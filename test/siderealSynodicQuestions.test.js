@@ -13,6 +13,17 @@ function findQuestion(questions, id) {
   return q;
 }
 
+test('why-synodic-longer: accepts the correct explanation, rejects the distractors', () => {
+  const questions = makeQuestions(MoonPhase);
+  const q = findQuestion(questions, 'why-synodic-longer');
+  const correctOption = q.options[0];
+  assert.match(correctOption, /Earth is moving along its own orbit/);
+  assert.ok(q.check(correctOption).correct);
+  q.options.slice(1).forEach((option) => {
+    assert.equal(q.check(option).correct, false, `should reject: ${option}`);
+  });
+});
+
 test('catch-up-gap: accepts the real ~2.2-day gap, rejects a wrong guess', () => {
   const questions = makeQuestions(MoonPhase);
   const q = findQuestion(questions, 'catch-up-gap');

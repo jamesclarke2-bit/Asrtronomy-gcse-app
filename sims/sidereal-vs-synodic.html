@@ -21,6 +21,53 @@
       or the Sun.
     </p>
 
+    <section class="notes-section" id="month-types">
+      <h2>Two ways to measure a month</h2>
+      <div class="concept-grid">
+        <div class="concept-card">
+          <p><strong>Sidereal month:</strong> the Moon returns to the same place among the stars (27.3 days).</p>
+        </div>
+        <div class="concept-card">
+          <p><strong>Synodic month:</strong> the Moon returns to the same phase, the same angle to the Sun (29.5 days).</p>
+        </div>
+      </div>
+
+      <canvas
+        id="story-view"
+        width="380"
+        height="300"
+        aria-label="Earth at the centre, with an arrow to the Sun's current direction, a dashed arrow to a fixed distant star, and the Moon's phase-shaded icon at its current angle, stepping through Day 0, Day 27.3 and Day 29.5"
+      ></canvas>
+      <p class="diagram-caption" id="story-step-label"></p>
+      <p class="note" id="story-caption"></p>
+
+      <div class="control checkbox-control">
+        <button type="button" id="story-back-button" class="secondary-button">&larr; Back</button>
+        <button type="button" id="story-next-button" class="secondary-button">Next &rarr;</button>
+      </div>
+
+      <dl class="readout">
+        <div class="readout-row">
+          <dt><span class="legend-dot legend-dot-reference-star"></span> Sidereal (since pointing at the star)</dt>
+          <dd id="story-sidereal-value"></dd>
+        </div>
+        <div class="readout-row">
+          <dt><span class="legend-dot legend-dot-star"></span> Synodic (since the same phase)</dt>
+          <dd id="story-synodic-value"></dd>
+        </div>
+      </dl>
+
+      <p class="note">
+        The synodic month is longer because Earth keeps moving along its own orbit while the Moon
+        orbits it, so the Moon needs a little extra time each cycle to catch up to the Sun's
+        shifted direction.
+      </p>
+      <p class="note">
+        Angles exaggerated for clarity &mdash; Earth's real shift in 27.3 days is about 27&deg;,
+        not this large.
+      </p>
+    </section>
+
     <div class="layout tool-layout">
       <div class="diagrams-column">
         <div class="orbit-panel">
@@ -140,7 +187,7 @@
   <script src="../src/animationTiming.js?v=202610130606"></script>
   <script src="../glossary.js?v=202610131052"></script>
   <script src="../quiz-ui.js?v=202609212100"></script>
-  <script src="sidereal-vs-synodic.js?v=202610130606"></script>
+  <script src="sidereal-vs-synodic.js?v=202610271100"></script>
   <script src="../nextPage.js?v=202610161057"></script>
 </body>
 </html>

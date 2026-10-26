@@ -51,7 +51,35 @@ function makeQuestions(MoonPhase) {
     };
   }
 
+  const WHY_LONGER_CORRECT =
+    "Because Earth is moving along its own orbit around the Sun, so the Sun's direction has shifted slightly by the time the Moon catches up to the same star";
+
   return [
+    {
+      id: 'why-synodic-longer',
+      units: ['u2.17'],
+      type: 'choice',
+      prompt: 'Why is the synodic month (~29.5 days) longer than the sidereal month (~27.3 days)?',
+      options: [
+        WHY_LONGER_CORRECT,
+        "Because the Moon's own orbital speed around Earth slows down over the course of a month",
+        "Because the Moon's orbit is elliptical, so it moves slower near apogee than near perigee",
+        'Because the two months are measured using different calendars',
+      ],
+      check(value) {
+        const correct = value === WHY_LONGER_CORRECT;
+        return {
+          correct,
+          message:
+            "Earth doesn't stand still while the Moon orbits it — it's moving along its own orbit " +
+            'around the Sun too. By the time the Moon has swept back round to point at the same ' +
+            'star again (one sidereal month), Earth has travelled a little further round its own ' +
+            "orbit, so the Sun's direction as seen from Earth has shifted by that same small " +
+            'amount. The Moon needs a few more days to catch up to that new direction and ' +
+            'complete the cycle of phases — the synodic month.',
+        };
+      },
+    },
     {
       id: 'catch-up-gap',
       units: ['u2.17'],

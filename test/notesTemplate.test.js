@@ -41,6 +41,7 @@ const DIAGRAM_FIRST_PAGES = [
   'notes/solar-system-bodies.html',
   'sims/shadows-and-sundials.html',
   'sims/orbits-gravity.html',
+  'sims/sidereal-vs-synodic.html',
 ];
 
 function read(href) {
