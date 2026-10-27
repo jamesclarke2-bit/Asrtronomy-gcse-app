@@ -440,9 +440,24 @@
   };
 
   const PHENOMENA_CARDS = [
-    { icon: 'sun', title: 'The Sun', body: 'By far the brightest object in the sky. Never look at it directly, even briefly.' },
-    { icon: 'moon', title: 'The Moon', body: "Earth's only natural satellite. Goes through a full cycle of phases roughly every 29.5 days." },
-    { icon: 'stars', title: 'Stars', body: 'Distant suns that twinkle and keep fixed patterns. A double star is two stars that appear close together — a different idea entirely from a constellation or asterism.' },
+    {
+      icon: 'sun',
+      title: 'The Sun',
+      tell: 'By far the brightest object in the sky.',
+      body: 'By far the brightest object in the sky. Never look at it directly, even briefly.',
+    },
+    {
+      icon: 'moon',
+      title: 'The Moon',
+      tell: 'The brightest thing at night; changes phase.',
+      body: "Our only natural satellite. Goes through a full cycle of phases roughly every 29.5 days.",
+    },
+    {
+      icon: 'stars',
+      title: 'Stars',
+      tell: 'Twinkling points of light in fixed patterns.',
+      body: 'Distant suns that twinkle and keep fixed patterns. A double star is two stars that appear close together — a different idea entirely from a constellation or asterism.',
+    },
     {
       icon: 'starClusters',
       title: 'Star cluster',
@@ -511,10 +526,11 @@
     },
   ];
 
-  // The subset and order shown in the tappable picture grid — everything
-  // above except the Sun, Moon and plain Stars, which aren't really
-  // "which of these is it" identification targets.
+  // The order shown in the tappable picture grid: the Sun, Moon and
+  // ordinary stars first, then everything else a beginner might mistake
+  // for one of those three.
   const PHENOMENA_GRID_ORDER = [
+    'sun', 'moon', 'stars',
     'satellites', 'aircraft', 'planets', 'meteors', 'comets', 'aurorae',
     'supernovae', 'doubleStar', 'starClusters', 'galaxiesNebulae', 'milkyWay',
   ];

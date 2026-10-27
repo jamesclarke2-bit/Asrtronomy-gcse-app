@@ -34,14 +34,17 @@
             id="phenomena-grid"
             class="responsive-svg"
             width="640"
-            height="690"
-            viewBox="0 0 640 690"
+            height="920"
+            viewBox="0 0 640 920"
             role="group"
-            aria-label="A tappable picture grid of eleven naked-eye phenomena: satellite trail, aircraft lights, planet, meteor, comet, aurora, supernova, double star, star cluster, galaxy and nebula, and the Milky Way, each with a one-line tell and more detail on tap"
+            aria-label="A tappable picture grid of fourteen naked-eye phenomena: the Sun, the Moon, stars, satellite trail, aircraft lights, planet, meteor, comet, aurora, supernova, double star, star cluster, galaxy and nebula, and the Milky Way, each with a one-line tell and more detail on tap"
           ></svg>
         </div>
       </div>
       <div class="phenomena-grid-definitions">
+        <span class="glossary-definition" data-term="sun" hidden></span>
+        <span class="glossary-definition" data-term="moon" hidden></span>
+        <span class="glossary-definition" data-term="stars" hidden></span>
         <span class="glossary-definition" data-term="satellites" hidden></span>
         <span class="glossary-definition" data-term="aircraft" hidden></span>
         <span class="glossary-definition" data-term="planets" hidden></span>
@@ -56,13 +59,12 @@
       </div>
 
       <p>
-        The <strong>Sun</strong> is far brighter than anything else &mdash;
-        <strong>never look at it directly</strong>, even briefly; see
-        <a href="../sims/sun-declination.html">Observing the Sun</a> for safe methods. The
-        <strong>Moon</strong> is the brightest thing at night, cycling through phases every
-        ~29.5 days. Ordinary <strong>stars</strong>
+        The <strong>Sun</strong>, the <strong>Moon</strong> and ordinary <strong>stars</strong>
+        are tappable above too. <strong>Never look at the Sun directly</strong>, even briefly
+        &mdash; see <a href="../sims/sun-declination.html">Observing the Sun</a> for safe
+        methods. Stars
         <button type="button" class="glossary-toggle glossary-term-button" data-term="twinkling" aria-label="Why do stars twinkle?" aria-expanded="false">twinkle</button>
-        and keep fixed patterns.
+        for a specific reason.
       </p>
       <span class="glossary-definition" data-term="twinkling" hidden></span>
 
@@ -407,7 +409,7 @@
   <script src="../src/starPatterns.js?v=202609280900"></script>
   <script src="../glossary.js?v=202610131052"></script>
   <script src="../flashcards.js?v=202609281200"></script>
-  <script src="naked-eye-sky.js?v=202610281900"></script>
+  <script src="naked-eye-sky.js?v=202610291000"></script>
   <script src="../notesPage.js?v=202609252100"></script>
   <script src="../nextPage.js?v=202610161057"></script>
 </body>
