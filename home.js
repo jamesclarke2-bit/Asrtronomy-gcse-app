@@ -1,13 +1,86 @@
+/**
+ * index.html's own script: the scope note, the journey (hero + one
+ * "unit card" per phase, each with its own progress ring and steps,
+ * plus coming-soon steps for the topics nothing is built for yet — see
+ * src/pages.js's own header for how PAGES/COMING_SOON drive all of
+ * this), the Reference panel, the collapsed extension section, and the
+ * unit-grouped reference listing at the foot of the page.
+ *
+ * Pure logic (reading the quiz-progress tally, picking the Continue
+ * step, building the list-view's flat journey order) is exported for
+ * Node — see test/home.test.js — so it's checked without a browser;
+ * only init() touches the page itself.
+ */
 (function () {
+  // --- Reading the saved quiz tally (read-only; this page never writes it) --
+  // Same localStorage key and shape as quiz-ui.js: { [subtopicId]:
+  // {attempts, correct} }. A page "has answered questions" once at
+  // least one of its own curriculum units shows up with attempts > 0 —
+  // the only signal this page has for "the visitor has engaged with
+  // this step", since nothing else is tracked (no page-visit log, no
+  // accounts).
+  const PROGRESS_STORAGE_KEY = 'astro-quiz-progress';
+
+  function loadQuizProgress() {
+    try {
+      return JSON.parse(localStorage.getItem(PROGRESS_STORAGE_KEY)) || {};
+    } catch (e) {
+      return {};
+    }
+  }
+
+  function pageHasAnswered(page, progress) {
+    return page.units.some((id) => progress[id] && progress[id].attempts > 0);
+  }
+
+  // Built pages only (COMING_SOON has no quiz units to check), in
+  // journey order.
+  function journeyPages(pages) {
+    return pages.filter((p) => typeof p.position === 'number').sort((a, b) => a.position - b.position);
+  }
+
+  /**
+   * The href the hero's "Continue" button should point at: the first
+   * journey page with no answered questions yet. If every page has
+   * been answered at least once, falls back to the last page on the
+   * journey (nothing left to "continue" to) rather than nowhere.
+   */
+  function findContinueHref(pages, progress) {
+    const ordered = journeyPages(pages);
+    const next = ordered.find((page) => !pageHasAnswered(page, progress));
+    return (next || ordered[ordered.length - 1]).href;
+  }
+
+  // --- Per-phase progress, for each unit card's ring -------------------
+  // Only built items count towards a ring's fraction — a coming-soon
+  // step can't be "finished", so it's never part of the denominator.
+
+  function phaseProgress(items, progress) {
+    const built = items.filter((item) => item.type === 'built');
+    const finished = built.filter((item) => pageHasAnswered(item.page, progress));
+    return { finished: finished.length, total: built.length };
+  }
+
+  // --- DOM only from here down ------------------------------------------
+
+  if (typeof window === 'undefined') {
+    module.exports = { loadQuizProgress, pageHasAnswered, journeyPages, findContinueHref, phaseProgress };
+    return;
+  }
+
   const scopeNoteEl = document.getElementById('scope-note');
-  const pathListEl = document.getElementById('path-list');
-  const unitListEl = document.getElementById('unit-list');
+  const unitCardsEl = document.getElementById('unit-cards');
+  const journeyListEl = document.getElementById('journey-list');
+  const listToggleEl = document.getElementById('list-view-toggle');
+  const continueButtonEl = document.getElementById('continue-button');
+  const startButtonEl = document.getElementById('start-button');
   const extensionSectionEl = document.getElementById('extension-section');
   const extensionListEl = document.getElementById('extension-list');
   const referenceSectionEl = document.getElementById('reference-section');
   const referenceListEl = document.getElementById('reference-list');
   const referenceQuickSectionEl = document.getElementById('reference-quick-section');
   const referenceQuickListEl = document.getElementById('reference-quick-list');
+  const unitListEl = document.getElementById('unit-list');
 
   function pagesForUnit(unitId) {
     return Pages.PAGES.filter((page) => page.units.some((u) => u.startsWith(`${unitId}.`)));
@@ -42,71 +115,178 @@
     scopeNoteEl.appendChild(document.createTextNode(sentences.join(' ')));
   }
 
-  // --- Recommended path ----------------------------------------------------
+  // --- The hero: illustration, welcome line, Continue/Start here -----------
 
-  function pageByHref(href) {
-    const page = Pages.PAGES.find((p) => p.href === href);
-    if (!page) throw new Error(`Recommended path references a page not in PAGES: ${href}`);
-    return page;
+  function renderHero(progress) {
+    const ordered = journeyPages(Pages.PAGES);
+    continueButtonEl.href = `${findContinueHref(Pages.PAGES, progress)}`;
+    startButtonEl.href = `${ordered[0].href}`;
   }
 
-  function renderPath() {
-    let stepNumber = 1;
-    Pages.RECOMMENDED_PATH.forEach((phase) => {
-      const phaseSection = document.createElement('div');
-      phaseSection.className = 'path-phase';
+  // --- The journey: one unit card per phase, plus a plain-list view --------
+  // Both views are built from the exact same Pages.buildJourney() data in
+  // the exact same order, so they can never show different steps — see
+  // test/home.test.js's "list view matches the cards" check.
+
+  const PHASE_ICON_IDS = {
+    'Look up': 'phase-icon-look-up',
+    'Earth, Moon and Sun': 'phase-icon-earth-moon-sun',
+    Time: 'phase-icon-time',
+    'The Solar System and gravity': 'phase-icon-solar-system',
+    'Telescopes and exploring': 'phase-icon-telescopes',
+    'Stars and the Universe': 'phase-icon-stars',
+  };
+
+  // A small ring: a grey full-circle track plus a blue arc over it,
+  // the arc's length set by stroke-dasharray/offset from the finished
+  // fraction. An empty ring (0 built steps yet, e.g. a phase that's
+  // entirely coming-soon) draws as just the track, not a div-by-zero
+  // NaN arc.
+  function buildProgressRing(finished, total) {
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('viewBox', '0 0 40 40');
+    svg.setAttribute('width', '40');
+    svg.setAttribute('height', '40');
+    svg.setAttribute('class', 'progress-ring');
+    svg.setAttribute('role', 'img');
+    svg.setAttribute('aria-label', `${finished} of ${total} step${total === 1 ? '' : 's'} finished`);
+
+    const r = 16;
+    const circumference = 2 * Math.PI * r;
+    const track = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    track.setAttribute('cx', '20');
+    track.setAttribute('cy', '20');
+    track.setAttribute('r', String(r));
+    track.setAttribute('class', 'progress-ring-track');
+    svg.appendChild(track);
+
+    if (total > 0) {
+      const fraction = finished / total;
+      const arc = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      arc.setAttribute('cx', '20');
+      arc.setAttribute('cy', '20');
+      arc.setAttribute('r', String(r));
+      arc.setAttribute('class', 'progress-ring-arc');
+      arc.setAttribute('stroke-dasharray', `${circumference}`);
+      arc.setAttribute('stroke-dashoffset', `${circumference * (1 - fraction)}`);
+      svg.appendChild(arc);
+    }
+
+    const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    label.setAttribute('x', '20');
+    label.setAttribute('y', '24');
+    label.setAttribute('class', 'progress-ring-text');
+    label.setAttribute('aria-hidden', 'true');
+    label.textContent = `${finished}/${total}`;
+    svg.appendChild(label);
+
+    return svg;
+  }
+
+  function buildStepLink(page, progress) {
+    const li = document.createElement('li');
+    li.className = 'journey-step';
+    if (pageHasAnswered(page, progress)) li.classList.add('journey-step-finished');
+
+    const a = document.createElement('a');
+    a.className = 'journey-step-link';
+    a.href = page.href;
+    a.textContent = page.title;
+    li.appendChild(a);
+    return li;
+  }
+
+  function buildComingSoonItem(step) {
+    const li = document.createElement('li');
+    li.className = 'journey-step journey-step-coming-soon';
+    const span = document.createElement('span');
+    span.className = 'journey-step-coming-soon-label';
+    span.textContent = `${step.name} — coming soon`;
+    li.appendChild(span);
+    return li;
+  }
+
+  function renderUnitCards(journey, progress) {
+    journey.forEach(({ phase, items }) => {
+      const card = document.createElement('article');
+      card.className = 'unit-card';
+
+      const header = document.createElement('div');
+      header.className = 'unit-card-header';
+
+      const iconUse = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      iconUse.setAttribute('class', 'unit-card-icon');
+      iconUse.setAttribute('width', '36');
+      iconUse.setAttribute('height', '36');
+      iconUse.setAttribute('aria-hidden', 'true');
+      const use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+      use.setAttributeNS('http://www.w3.org/1999/xlink', 'href', `#${PHASE_ICON_IDS[phase]}`);
+      use.setAttribute('href', `#${PHASE_ICON_IDS[phase]}`);
+      iconUse.appendChild(use);
+      header.appendChild(iconUse);
 
       const heading = document.createElement('h3');
-      heading.className = 'path-phase-heading';
-      heading.textContent = phase.phase;
-      phaseSection.appendChild(heading);
+      heading.className = 'unit-card-title';
+      heading.textContent = phase;
+      header.appendChild(heading);
+
+      const { finished, total } = phaseProgress(items, progress);
+      header.appendChild(buildProgressRing(finished, total));
+
+      card.appendChild(header);
 
       const stepsList = document.createElement('ol');
-      stepsList.className = 'path-steps';
-      stepsList.start = stepNumber;
-
-      phase.steps.forEach((step) => {
-        const page = pageByHref(step.href);
-
-        const li = document.createElement('li');
-        li.className = 'path-step';
-
-        const card = document.createElement('a');
-        card.className = 'page-card path-step-card';
-        card.href = page.href;
-
-        const title = document.createElement('h4');
-        title.className = 'page-card-title';
-        title.textContent = page.title;
-        card.appendChild(title);
-
-        const description = document.createElement('p');
-        description.className = 'page-card-description';
-        description.textContent = page.description;
-        card.appendChild(description);
-
-        const why = document.createElement('p');
-        why.className = 'path-step-why';
-        why.textContent = step.why;
-        card.appendChild(why);
-
-        li.appendChild(card);
-        stepsList.appendChild(li);
-        stepNumber += 1;
+      stepsList.className = 'unit-card-steps';
+      items.forEach((item) => {
+        stepsList.appendChild(item.type === 'built' ? buildStepLink(item.page, progress) : buildComingSoonItem(item.step));
       });
+      card.appendChild(stepsList);
 
-      phaseSection.appendChild(stepsList);
-      pathListEl.appendChild(phaseSection);
+      unitCardsEl.appendChild(card);
     });
   }
 
-  // --- Reference quick links (top of page) -----------------------------------
+  function renderJourneyList(journey, progress) {
+    journey.forEach(({ phase, items }) => {
+      const heading = document.createElement('h3');
+      heading.className = 'journey-list-phase-heading';
+      heading.textContent = phase;
+      journeyListEl.appendChild(heading);
+
+      const stepsList = document.createElement('ol');
+      stepsList.className = 'journey-list-steps';
+      items.forEach((item) => {
+        stepsList.appendChild(item.type === 'built' ? buildStepLink(item.page, progress) : buildComingSoonItem(item.step));
+      });
+      journeyListEl.appendChild(stepsList);
+    });
+  }
+
+  function setUpListViewToggle() {
+    listToggleEl.addEventListener('click', () => {
+      const showingList = listToggleEl.getAttribute('aria-pressed') === 'true';
+      const next = !showingList;
+      listToggleEl.setAttribute('aria-pressed', String(next));
+      listToggleEl.textContent = next ? 'Show as cards' : 'Show as list';
+      unitCardsEl.hidden = next;
+      journeyListEl.hidden = !next;
+    });
+  }
+
+  function renderJourney(progress) {
+    const journey = Pages.buildJourney(Pages.PAGES, Pages.COMING_SOON, Pages.PHASES);
+    renderUnitCards(journey, progress);
+    renderJourneyList(journey, progress);
+    setUpListViewToggle();
+  }
+
+  // --- Reference quick links (top bar, right under the title) --------------
   // The same reference pages renderReferencePages lists in full, further
   // down the page — but as one compact row of links right under the
-  // title, above the Recommended path, so they're visible without
-  // scrolling past all 22 of its steps. Built from the same Pages.PAGES
-  // data as that full listing, so the two can never show different
-  // pages; order follows PAGES itself, same as renderReferencePages.
+  // title, above the journey, so they're visible without scrolling.
+  // Built from the same Pages.PAGES data as that full listing, so the
+  // two can never show different pages; order follows PAGES itself,
+  // same as renderReferencePages.
 
   function renderReferenceQuickLinks() {
     const referencePages = Pages.PAGES.filter((page) => Pages.isReferencePage(page));
@@ -130,9 +310,9 @@
   // --- Reference pages ------------------------------------------------------
   // Pages marked Pages.isReferencePage cut across every unit instead of
   // teaching towards particular ones, so they sit in their own section —
-  // outside every unit group, the Recommended path (test/pages.test.js
-  // enforces that) and the scope note's coverage figures (their empty
-  // `units` means Pages.computeUnitCoverage already leaves them out).
+  // outside every unit group, the journey (test/pages.test.js enforces
+  // that) and the scope note's coverage figures (their empty `units`
+  // means Pages.computeUnitCoverage already leaves them out).
 
   function renderReferencePages() {
     const referencePages = Pages.PAGES.filter((page) => Pages.isReferencePage(page));
@@ -147,10 +327,6 @@
       card.className = 'page-card';
       card.href = page.href;
 
-      // h3, not h4: this card sits directly under the section's own h2
-      // ("Reference"), with no h3 of its own in between — unlike the
-      // Recommended path section above, where each page-card-title is an
-      // h4 nested under that phase's own h3 heading.
       const title = document.createElement('h3');
       title.className = 'page-card-title';
       title.textContent = page.title;
@@ -168,8 +344,8 @@
   }
 
   // --- Beyond GCSE: A-level extension pages ---------------------------------
-  // Kept out of the Recommended path (test/pages.test.js enforces that) and
-  // out of the scope note's coverage figures (Pages.computeUnitCoverage
+  // Kept out of the journey (test/pages.test.js enforces that) and out
+  // of the scope note's coverage figures (Pages.computeUnitCoverage
   // already excludes level:'extension' subtopics) — listed here instead,
   // collapsed by default since they're optional extra depth, not part of
   // the GCSE course the rest of this page is organised around.
@@ -187,10 +363,6 @@
       card.className = 'page-card';
       card.href = page.href;
 
-      // h3: this section's own heading is a <summary> (a disclosure
-      // widget, not an h1-h6), so the nearest real heading above these
-      // cards in the outline is "Reference"'s own h2 — same reasoning as
-      // renderReferencePages above.
       const title = document.createElement('h3');
       title.className = 'page-card-title';
       title.textContent = page.title;
@@ -261,9 +433,11 @@
     });
   }
 
+  const progress = loadQuizProgress();
   renderScopeNote();
+  renderHero(progress);
   renderReferenceQuickLinks();
-  renderPath();
+  renderJourney(progress);
   renderReferencePages();
   renderExtensionPages();
   renderUnitReference();

@@ -1132,66 +1132,277 @@ canvas {
   color: #333;
 }
 
-.path-section {
+/* --- The hero -------------------------------------------------------- */
+
+.hero {
+  margin: 0 0 1.5rem;
+  text-align: center;
+}
+
+.hero-illustration {
+  max-width: 480px;
+  margin: 0 auto 1rem;
+}
+
+.hero-illustration svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+}
+
+.hero h1 {
+  margin: 0 0 0.3rem;
+}
+
+.hero-welcome {
+  margin: 0 0 1.1rem;
+  color: #444;
+  font-size: 1.05rem;
+}
+
+.hero-actions {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.1rem;
+}
+
+.hero-button {
+  display: inline-block;
+  padding: 0.6rem 1.3rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  border: 1.5px solid #2a6bd6;
+  color: #2a6bd6;
+  background: #fff;
+}
+
+.hero-button:hover,
+.hero-button:focus-visible {
+  background: #eaf2fb;
+}
+
+.hero-button-primary {
+  background: #2a6bd6;
+  color: #fff;
+}
+
+.hero-button-primary:hover,
+.hero-button-primary:focus-visible {
+  background: #1f55ab;
+}
+
+.hero .privacy-line {
+  margin: 0;
+}
+
+.hero-star {
+  animation: hero-twinkle 3.2s ease-in-out infinite;
+}
+
+@keyframes hero-twinkle {
+  0%, 100% { opacity: 0.25; }
+  50% { opacity: 1; }
+}
+
+.hero-rocket-drift {
+  animation: hero-drift 4s ease-in-out infinite;
+}
+
+@keyframes hero-drift {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-star,
+  .hero-rocket-drift {
+    animation: none;
+  }
+}
+
+/* --- The journey: one unit card per phase ----------------------------- */
+
+.journey-section {
   margin-top: 2rem;
 }
 
-.path-phase {
-  margin-top: 1.75rem;
+.journey-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: start;
+  gap: 0.5rem 1rem;
+  margin-bottom: 1rem;
 }
 
-.path-phase:first-of-type {
-  margin-top: 1rem;
+.journey-header h2 {
+  margin: 0;
+  flex-basis: 100%;
 }
 
-.path-phase-heading {
+.journey-header .note {
+  margin: 0;
+  flex: 1 1 420px;
+}
+
+.list-view-toggle {
+  align-self: flex-start;
+  padding: 0.45rem 0.9rem;
+  border-radius: 7px;
+  border: 1.5px solid #2a6bd6;
+  background: #fff;
+  color: #2a6bd6;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.list-view-toggle:hover,
+.list-view-toggle:focus-visible {
+  background: #eaf2fb;
+}
+
+.list-view-toggle[aria-pressed='true'] {
+  background: #2a6bd6;
+  color: #fff;
+}
+
+.unit-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.25rem;
+}
+
+.unit-card {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 1.1rem 1.25rem 1.3rem;
+}
+
+.unit-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-bottom: 0.85rem;
+}
+
+.unit-card-icon {
+  flex: none;
+  border-radius: 8px;
+}
+
+.unit-card-title {
+  margin: 0;
+  font-size: 1.05rem;
+  color: #1a1a1a;
+  flex: 1;
+}
+
+.progress-ring {
+  flex: none;
+}
+
+.progress-ring-track {
+  fill: none;
+  stroke: #e0e0e0;
+  stroke-width: 4;
+}
+
+.progress-ring-arc {
+  fill: none;
+  stroke: #2a6bd6;
+  stroke-width: 4;
+  stroke-linecap: round;
+  transform: rotate(-90deg);
+  transform-origin: 20px 20px;
+  transition: stroke-dashoffset 0.3s ease;
+}
+
+.progress-ring-text {
+  font-size: 10px;
+  font-weight: 700;
+  fill: #555;
+  text-anchor: middle;
+}
+
+/* Shared by both the card view's step lists and the plain list-view's
+   (and the noscript fallback's) — a finished step is lit, a coming-soon
+   step is dimmed text with no link, never a real page. */
+.unit-card-steps,
+.journey-list-steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.journey-step-link {
+  display: block;
+  padding: 0.4rem 0.6rem;
+  border-radius: 6px;
+  color: #2a6bd6;
+  text-decoration: none;
+  font-size: 0.92rem;
+  border: 1px solid transparent;
+}
+
+.journey-step-link:hover,
+.journey-step-link:focus-visible {
+  background: #eaf2fb;
+  border-color: #cfe0f5;
+}
+
+.journey-step-finished > .journey-step-link {
+  background: #eef8ee;
+  color: #1c6b1c;
+  font-weight: 600;
+}
+
+.journey-step-finished > .journey-step-link:hover,
+.journey-step-finished > .journey-step-link:focus-visible {
+  background: #ddf1dd;
+}
+
+.journey-step-coming-soon-label {
+  display: block;
+  padding: 0.4rem 0.6rem;
+  font-size: 0.92rem;
+  color: #999;
+  font-style: italic;
+}
+
+.journey-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.journey-list-phase-heading {
+  margin: 1.5rem 0 0.4rem;
   font-size: 1rem;
   color: #555;
   text-transform: uppercase;
   letter-spacing: 0.03em;
-  margin: 0 0 0.75rem;
 }
 
-/* Numbered natively via <ol start="…">, continuing the count across
-   phases (home.js sets each phase's start) rather than restarting at
-   1 — this is one sequence, just grouped for readability. */
-.path-steps {
-  list-style: decimal;
-  margin: 0;
-  padding-left: 1.6rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+.journey-list-phase-heading:first-of-type {
+  margin-top: 0.5rem;
 }
 
-.path-steps li::marker {
-  font-weight: 700;
-  color: #2a6bd6;
-}
-
-.path-step-card {
-  max-width: 720px;
-}
-
-.path-step-why {
-  margin: 0.6rem 0 0;
-  padding-top: 0.6rem;
-  border-top: 1px dashed #e0e0e0;
-  font-size: 0.85rem;
-  color: #555;
-  font-style: italic;
-}
-
-.path-step-why::before {
-  content: 'Why here: ';
-  font-weight: 600;
-  font-style: normal;
-  color: #8a5b00;
+.journey-list-steps {
+  max-width: 480px;
 }
 
 /* Pages that cut across every unit instead of teaching towards particular
    ones (see src/pages.js's `kind: 'reference'` and Pages.isReferencePage) —
-   kept out of the Recommended path above and out of the scope note's
+   kept out of the journey above and out of the scope note's
    coverage figures, same reasoning as .extension-section below, but always
    shown rather than collapsed since there's nothing optional about it. */
 .reference-section {
@@ -1204,7 +1415,7 @@ canvas {
 }
 
 /* Collapsed by default (no "open" attribute) — A-level extension pages,
-   kept out of the Recommended path above and out of the scope note's
+   kept out of the journey above and out of the scope note's
    coverage figures (see src/curriculum.js's `level: 'extension'` and
    Pages.computeUnitCoverage). */
 .extension-section {
@@ -1283,9 +1494,10 @@ canvas {
 
 /* .page-card h3 covers the plain, hand-written "Related pages" cards
    on notes/ pages (see notes/TEMPLATE.md); .page-card-title covers
-   index.html's own cards, whose heading level varies (h4 under the
-   Recommended path's h3 phase headings, or under the unit-reference
-   listing's own h3s) so it's targeted by class rather than tag. */
+   index.html's own cards (Reference, Beyond GCSE, and the h4s under
+   the unit-reference listing's own h3s) so it's targeted by class
+   rather than tag. The journey's own cards use .journey-step-link
+   instead — see that rule's own comment. */
 .page-card h3,
 .page-card-title {
   margin: 0 0 0.4rem;
@@ -2693,10 +2905,10 @@ canvas {
   font-weight: 600;
 }
 
-/* index.html's compact "Reference" panel, above Recommended path — the
+/* index.html's compact "Reference" panel, above the journey — the
    same reference pages renderReferencePages (further down the page)
    lists in full, but as a single row of links so they're visible
-   without scrolling past the whole Recommended path first. */
+   without scrolling past the whole journey first. */
 .reference-quick-section {
   margin: 1rem 0 1.5rem;
 }

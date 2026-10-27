@@ -7,16 +7,118 @@
   <meta name="referrer" content="no-referrer" />
   <meta name="robots" content="noindex, nofollow" />
   <title>GCSE Astronomy</title>
-  <link rel="stylesheet" href="styles.css?v=202610291100" />
+  <link rel="stylesheet" href="styles.css?v=202610291200" />
   <link rel="icon" type="image/svg+xml" href="favicon.svg?v=202610130720" />
 </head>
 <body>
   <main>
-    <h1>GCSE Astronomy</h1>
-    <p class="privacy-line">
-      No accounts. Nothing is sent anywhere. One quiz tally stays on your device.
-      <a href="notes/privacy.html">Privacy notice</a>
-    </p>
+    <!-- Phase icons, defined once and reused via <use> on each phase's
+         own card below — never duplicated inline, so one edit here
+         changes every card. -->
+    <svg width="0" height="0" style="position: absolute" aria-hidden="true">
+      <defs>
+        <symbol id="phase-icon-look-up" viewBox="0 0 36 36">
+          <rect width="36" height="36" rx="8" fill="#10141f" />
+          <circle cx="13" cy="23" r="7" fill="none" stroke="#ffcf5c" stroke-width="2.2" />
+          <circle cx="24" cy="23" r="7" fill="none" stroke="#ffcf5c" stroke-width="2.2" />
+          <rect x="17.4" y="21.4" width="3.2" height="3.2" fill="#ffcf5c" />
+          <circle cx="9" cy="8" r="1.1" fill="#fdfcf5" />
+          <circle cx="18" cy="5" r="1.3" fill="#fdfcf5" />
+          <circle cx="27" cy="9" r="1" fill="#fdfcf5" />
+        </symbol>
+        <symbol id="phase-icon-earth-moon-sun" viewBox="0 0 36 36">
+          <rect width="36" height="36" rx="8" fill="#10141f" />
+          <circle cx="9" cy="21" r="5.5" fill="#f5a623" />
+          <circle cx="19" cy="17" r="8" fill="#2a6bd6" />
+          <circle cx="30" cy="22" r="4" fill="#c9cfda" />
+        </symbol>
+        <symbol id="phase-icon-time" viewBox="0 0 36 36">
+          <rect width="36" height="36" rx="8" fill="#10141f" />
+          <circle cx="18" cy="18" r="13" fill="none" stroke="#ffcf5c" stroke-width="2.4" />
+          <line x1="18" y1="18" x2="18" y2="9" stroke="#ffcf5c" stroke-width="2.4" stroke-linecap="round" />
+          <line x1="18" y1="18" x2="24.5" y2="18" stroke="#2a6bd6" stroke-width="2.4" stroke-linecap="round" />
+        </symbol>
+        <symbol id="phase-icon-solar-system" viewBox="0 0 36 36">
+          <rect width="36" height="36" rx="8" fill="#10141f" />
+          <ellipse cx="18" cy="19" rx="14" ry="8" fill="none" stroke="#2a6bd6" stroke-width="2" transform="rotate(-14 18 19)" />
+          <circle cx="18" cy="19" r="3.4" fill="#f5a623" />
+          <circle cx="30" cy="14" r="2.1" fill="#fdfcf5" />
+        </symbol>
+        <symbol id="phase-icon-telescopes" viewBox="0 0 36 36">
+          <rect width="36" height="36" rx="8" fill="#10141f" />
+          <rect x="0" y="0" width="22" height="7" rx="2.5" fill="#f5a623" transform="translate(7,17) rotate(-30)" />
+          <path d="M10 31 L17 22 L24 31" fill="none" stroke="#c9cfda" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
+          <circle cx="29" cy="7" r="1.5" fill="#fdfcf5" />
+        </symbol>
+        <symbol id="phase-icon-stars" viewBox="0 0 36 36">
+          <rect width="36" height="36" rx="8" fill="#10141f" />
+          <path d="M18 18 C 24.5 16.5, 26.5 10, 20.5 6.5" fill="none" stroke="#2a6bd6" stroke-width="2" stroke-linecap="round" />
+          <path d="M18 18 C 11.5 20, 9.5 26.5, 15.5 29.5" fill="none" stroke="#2a6bd6" stroke-width="2" stroke-linecap="round" />
+          <circle cx="18" cy="18" r="2.2" fill="#f5a623" />
+          <circle cx="8" cy="10" r="1.2" fill="#fdfcf5" />
+          <circle cx="29" cy="26" r="1.2" fill="#fdfcf5" />
+        </symbol>
+      </defs>
+    </svg>
+
+    <section class="hero">
+      <div class="hero-illustration">
+        <svg
+          viewBox="0 0 400 150"
+          width="400"
+          height="150"
+          class="hero-svg responsive-svg"
+          role="img"
+          aria-labelledby="hero-illustration-title hero-illustration-desc"
+        >
+          <title id="hero-illustration-title">A ringed planet and a rocket among the stars</title>
+          <desc id="hero-illustration-desc">
+            An original illustration: a blue ringed planet on the left, scattered stars that twinkle, and an
+            orange rocket climbing on the right, against a dark night sky, in the site's own blue and orange.
+          </desc>
+          <rect x="0" y="0" width="400" height="150" rx="12" fill="#10141f" />
+          <g class="hero-stars">
+            <circle class="hero-star" style="animation-delay: 0s" cx="40" cy="28" r="1.6" fill="#fdfcf5" />
+            <circle class="hero-star" style="animation-delay: 0.6s" cx="70" cy="55" r="1.2" fill="#fdfcf5" />
+            <circle class="hero-star" style="animation-delay: 1.2s" cx="30" cy="80" r="1.4" fill="#fdfcf5" />
+            <circle class="hero-star" style="animation-delay: 1.8s" cx="165" cy="20" r="1.3" fill="#fdfcf5" />
+            <circle class="hero-star" style="animation-delay: 0.3s" cx="200" cy="40" r="1.7" fill="#fdfcf5" />
+            <circle class="hero-star" style="animation-delay: 2.1s" cx="180" cy="110" r="1.2" fill="#fdfcf5" />
+            <circle class="hero-star" style="animation-delay: 1s" cx="230" cy="90" r="1.1" fill="#fdfcf5" />
+            <circle class="hero-star" style="animation-delay: 1.6s" cx="370" cy="25" r="1.5" fill="#fdfcf5" />
+            <circle class="hero-star" style="animation-delay: 0.9s" cx="355" cy="120" r="1.3" fill="#fdfcf5" />
+            <circle class="hero-star" style="animation-delay: 2.4s" cx="120" cy="30" r="1" fill="#fdfcf5" />
+          </g>
+          <g class="hero-planet" transform="translate(95,98)">
+            <ellipse rx="42" ry="11" fill="none" stroke="#f5a623" stroke-width="4" transform="rotate(-16)" />
+            <circle r="27" fill="#2a6bd6" />
+            <circle cx="-8" cy="-9" r="5" fill="#5a8ee8" opacity="0.6" />
+          </g>
+          <g transform="translate(300,95) rotate(-28)">
+            <g class="hero-rocket-drift">
+              <path d="M0,-32 C9,-21 9,11 0,24 C-9,11 -9,-21 0,-32 Z" fill="#f5a623" />
+              <circle cx="0" cy="-9" r="5.5" fill="#2a6bd6" />
+              <path d="M-9,10 L-20,24 L-7,19 Z" fill="#ffcf5c" />
+              <path d="M9,10 L20,24 L7,19 Z" fill="#ffcf5c" />
+              <path class="hero-rocket-flame" d="M-5,23 C-5,31 0,39 0,39 C0,39 5,31 5,23 Z" fill="#ffcf5c" />
+            </g>
+          </g>
+        </svg>
+      </div>
+
+      <h1>GCSE Astronomy</h1>
+      <p class="hero-welcome">Welcome, explorer. Pick up where you left off, or start from the beginning.</p>
+      <div class="hero-actions">
+        <a id="continue-button" class="hero-button hero-button-primary" href="notes/naked-eye-sky.html">Continue</a>
+        <a id="start-button" class="hero-button" href="notes/naked-eye-sky.html">Start here</a>
+      </div>
+
+      <p class="privacy-line">
+        No accounts. Nothing is sent anywhere. One quiz tally stays on your device.
+        <a href="notes/privacy.html">Privacy notice</a>
+      </p>
+    </section>
+
     <p class="subtitle">
       Interactive simulators and reference pages, each tagged with the exact part of the GCSE
       Astronomy specification it teaches towards.
@@ -29,22 +131,82 @@
       <div id="reference-quick-list"></div>
     </section>
 
-    <section class="path-section">
-      <h2>Recommended path</h2>
-      <p class="note">
-        Every page in the app, start to finish, in the order most students should actually work
-        through them — not alphabetical, not spec order. Each step says why it comes where it
-        does.
-      </p>
-      <div id="path-list"></div>
+    <section class="journey-section">
+      <div class="journey-header">
+        <h2>Your journey</h2>
+        <p class="note">
+          Every page in the app, start to finish, in the order most students should actually work
+          through them — not alphabetical, not spec order — grouped into phases, each with its own
+          progress ring. A dimmed step with no link is coming soon: planned, not built yet.
+        </p>
+        <button type="button" id="list-view-toggle" class="list-view-toggle" aria-pressed="false">Show as list</button>
+      </div>
+      <div id="unit-cards" class="unit-cards"></div>
+      <div id="journey-list" class="journey-list" hidden></div>
     </section>
+
+    <noscript>
+      <!--
+        The exact same journey, phase by phase and step by step, that
+        the page above shows once scripting runs — kept honest by an
+        automated check against the site's own data, not just by hand.
+      -->
+      <section class="journey-section">
+        <h2>Your journey</h2>
+        <div class="journey-list">
+          <h3 class="journey-list-phase-heading">Look up</h3>
+          <ol class="journey-list-steps">
+            <li class="journey-step"><a class="journey-step-link" href="notes/naked-eye-sky.html">The Naked-Eye Sky</a></li>
+            <li class="journey-step"><a class="journey-step-link" href="notes/observing-techniques.html">Observing Techniques</a></li>
+          </ol>
+          <h3 class="journey-list-phase-heading">Earth, Moon and Sun</h3>
+          <ol class="journey-list-steps">
+            <li class="journey-step"><a class="journey-step-link" href="notes/earth-structure.html">Earth: Structure, Atmosphere and Motion</a></li>
+            <li class="journey-step"><a class="journey-step-link" href="sims/moon-phases.html">Moon Phases</a></li>
+            <li class="journey-step"><a class="journey-step-link" href="notes/tides.html">Tides</a></li>
+            <li class="journey-step"><a class="journey-step-link" href="sims/sidereal-vs-synodic.html">Sidereal vs Synodic Month</a></li>
+            <li class="journey-step"><a class="journey-step-link" href="sims/eclipses.html">Eclipses</a></li>
+            <li class="journey-step"><a class="journey-step-link" href="notes/moon-structure.html">The Moon: Structure, Surface and Origin</a></li>
+          </ol>
+          <h3 class="journey-list-phase-heading">Time</h3>
+          <ol class="journey-list-steps">
+            <li class="journey-step"><a class="journey-step-link" href="sims/coordinates.html">Star Coordinates</a></li>
+            <li class="journey-step"><a class="journey-step-link" href="sims/sun-path.html">Sun Path Simulator</a></li>
+            <li class="journey-step"><a class="journey-step-link" href="sims/equation-of-time.html">Equation of Time</a></li>
+            <li class="journey-step"><a class="journey-step-link" href="sims/shadows-and-sundials.html">Shadows and Sundials</a></li>
+            <li class="journey-step"><a class="journey-step-link" href="sims/sun-declination.html">Observing the Sun</a></li>
+            <li class="journey-step"><a class="journey-step-link" href="notes/measuring-the-sky.html">Measuring the Sky</a></li>
+            <li class="journey-step"><a class="journey-step-link" href="notes/archaeoastronomy.html">Archaeoastronomy: Precession and Monuments</a></li>
+          </ol>
+          <h3 class="journey-list-phase-heading">The Solar System and gravity</h3>
+          <ol class="journey-list-steps">
+            <li class="journey-step"><a class="journey-step-link" href="notes/geocentric-to-heliocentric.html">From Earth-Centred to Sun-Centred</a></li>
+            <li class="journey-step"><a class="journey-step-link" href="sims/kepler.html">Kepler's Laws of Planetary Motion</a></li>
+            <li class="journey-step"><a class="journey-step-link" href="sims/orbits-gravity.html">Orbits and Gravity</a></li>
+            <li class="journey-step"><a class="journey-step-link" href="notes/scale-of-the-solar-system.html">The Scale of the Solar System</a></li>
+            <li class="journey-step"><a class="journey-step-link" href="notes/solar-system-bodies.html">Bodies of the Solar System</a></li>
+            <li class="journey-step journey-step-coming-soon"><span class="journey-step-coming-soon-label">Formation of planetary systems — coming soon</span></li>
+            <li class="journey-step journey-step-coming-soon"><span class="journey-step-coming-soon-label">Exoplanets and life — coming soon</span></li>
+          </ol>
+          <h3 class="journey-list-phase-heading">Telescopes and exploring</h3>
+          <ol class="journey-list-steps">
+            <li class="journey-step"><a class="journey-step-link" href="sims/solar-system-observation.html">Retrograde Motion and Planetary Alignments</a></li>
+            <li class="journey-step"><a class="journey-step-link" href="notes/telescopes.html">Telescopes: Magnification, Light Grasp and Resolution</a></li>
+            <li class="journey-step journey-step-coming-soon"><span class="journey-step-coming-soon-label">Probes and Apollo — coming soon</span></li>
+          </ol>
+          <h3 class="journey-list-phase-heading">Stars and the Universe</h3>
+          <ol class="journey-list-steps">
+            <li class="journey-step journey-step-coming-soon"><span class="journey-step-coming-soon-label">Stars, galaxies and the Universe — coming soon</span></li>
+          </ol>
+        </div>
+      </section>
+    </noscript>
 
     <section class="reference-section" id="reference-section" hidden>
       <h2>Reference</h2>
       <p class="note">
         Pages that cut across every unit instead of teaching towards particular ones — not part
-        of the Recommended path above and not counted in the coverage note at the top of this
-        page.
+        of the journey above and not counted in the coverage note at the top of this page.
       </p>
       <div id="reference-list"></div>
     </section>
@@ -54,8 +216,8 @@
         <summary>Beyond GCSE: A-level extension pages</summary>
         <p class="note">
           Content that goes past the GCSE Astronomy specification entirely — extra depth for
-          anyone who wants it, not part of the Recommended path above and not counted in the
-          coverage note at the top of this page.
+          anyone who wants it, not part of the journey above and not counted in the coverage note
+          at the top of this page.
         </p>
         <div id="extension-list"></div>
       </details>
@@ -72,7 +234,7 @@
   </main>
 
   <script src="src/curriculum.js?v=202610141552"></script>
-  <script src="src/pages.js?v=202610161036"></script>
-  <script src="home.js?v=202610161057"></script>
+  <script src="src/pages.js?v=202610291200"></script>
+  <script src="home.js?v=202610291200"></script>
 </body>
 </html>
