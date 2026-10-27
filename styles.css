@@ -1969,6 +1969,23 @@ canvas {
   outline-offset: 2px;
 }
 
+/* A quiz question's own small picture (notes/moon-structure.html's "Name
+   that feature" and notes/earth-structure.html's "Name that line"):
+   narrower than the page's main diagram, since it sits inside a
+   question-card alongside the prompt and answer choices. */
+.question-diagram {
+  max-width: 260px;
+  margin: 0 0 0.75rem;
+}
+
+/* Marks whichever .diagram-region a "name that feature/line" question
+   redrew its diagram to highlight — a glow that reads on any shape
+   (a filled mare, a crater circle, a coloured parallel line) regardless
+   of its own fill or stroke colour. */
+.diagram-feature-highlight {
+  filter: drop-shadow(0 0 3px #ffd400) drop-shadow(0 0 7px #ffd400);
+}
+
 .curiosity-box {
   margin-top: 1.25rem;
   padding: 0.75rem 1rem;
@@ -2266,7 +2283,8 @@ canvas {
 }
 
 .labels-hidden .labelled-diagram-label,
-.labels-hidden .moon-map-leader {
+.labels-hidden .moon-map-leader,
+.labels-hidden .globe-leader {
   visibility: hidden;
 }
 

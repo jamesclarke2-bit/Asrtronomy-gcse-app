@@ -15,75 +15,49 @@
  * use — so it can never quote a figure the rest of the site disagrees
  * with.
  *
- * NAMED_FEATURES' clue text for the seven named-feature questions is
- * copied verbatim from moon-structure.js's own GLOSSARY entries (with
- * each feature's own name trimmed off the front, since giving the name
- * away would make the question pointless) — test/moonStructureQuestions
- * .test.js cross-checks every clue is still found in that source, so the
- * two can't silently drift apart. NAMED_FEATURES is exported alongside
- * makeQuestions for exactly that cross-check.
+ * The seven "name that feature" questions are picture-based, as the exam
+ * itself asks (spec 2.5): each one's render(container) calls back into
+ * notes/moon-structure.js's own renderFeatureQuizDiagram (passed in as
+ * MoonStructureDiagram, the third argument), which redraws the real map
+ * with one feature highlighted — never a hand-written text clue that
+ * could drift from what the map actually shows. makeQuestions still runs
+ * perfectly well without that third argument (e.g. from a Node test, or
+ * from src/allQuestions.js's sitewide list, neither of which has a DOM
+ * to draw into) — render just never gets called there.
  */
-const TERRAIN_OPTIONS = ['Maria', 'Terrae (highlands)', 'Crater', 'Valley or rille', 'Mountains'];
-
 const NAMED_FEATURES = [
-  {
-    term: 'tranquility',
-    name: 'Sea of Tranquility',
-    clue: 'a dark lava plain just right of centre, north of the equator. Apollo 11 landed here in 1969.',
-  },
-  {
-    term: 'storms',
-    name: 'Ocean of Storms',
-    clue: "the largest mare by far, a huge dark expanse covering much of the Moon's western (left-hand) side.",
-  },
-  {
-    term: 'crises',
-    name: 'Sea of Crises',
-    clue: 'an isolated oval mare near the right-hand edge — easy to spot because it stands apart from the other maria.',
-  },
-  {
-    term: 'tycho',
-    name: 'Tycho',
-    clue:
-      'a young, sharp-edged crater (~85 km across) in the southern highlands, with bright rays of splashed-out rock stretching across much of the Moon. Most striking at full Moon.',
-  },
-  {
-    term: 'copernicus',
-    name: 'Copernicus',
-    clue: 'a large crater (~93 km across) on the dark maria west of centre, with terraced walls and its own bright ray system.',
-  },
-  {
-    term: 'kepler',
-    name: 'Kepler',
-    clue: 'a smaller bright-rayed crater (~31 km across) further west than Copernicus, out in the Ocean of Storms.',
-  },
-  {
-    term: 'apennines',
-    name: 'Apennine Mountains',
-    clue:
-      'a curved range along the south-eastern edge of the Sea of Rains (Mare Imbrium) — the uplifted rim of the giant impact that made that basin.',
-  },
+  { term: 'tranquility', name: 'Sea of Tranquility' },
+  { term: 'storms', name: 'Ocean of Storms' },
+  { term: 'crises', name: 'Sea of Crises' },
+  { term: 'tycho', name: 'Tycho' },
+  { term: 'copernicus', name: 'Copernicus' },
+  { term: 'kepler', name: 'Kepler' },
+  { term: 'apennines', name: 'Apennine Mountains' },
 ];
 const FEATURE_NAMES = NAMED_FEATURES.map((f) => f.name);
+const TERRAIN_OPTIONS = ['Maria', 'Terrae (highlands)', 'Crater', 'Valley or rille', 'Mountains'];
 
-function namedFeatureQuestion(feature) {
+function namedFeatureQuestion(feature, MoonStructureDiagram) {
   return {
     id: `named-feature-${feature.term}`,
     units: ['u2.20'],
     type: 'choice',
-    prompt: `Which of the seven named features does this describe: "${feature.clue}"?`,
+    prompt: 'Name that feature: which of the seven named features is highlighted on the map?',
     options: FEATURE_NAMES,
+    render(container) {
+      if (MoonStructureDiagram) MoonStructureDiagram.renderFeatureQuizDiagram(container, feature.term);
+    },
     check(value) {
       const correct = value === feature.name;
       return {
         correct,
-        message: `That description is the ${feature.name}.`,
+        message: `The highlighted feature is the ${feature.name}.`,
       };
     },
   };
 }
 
-function makeQuestions(SpecData, MoonPhase) {
+function makeQuestions(SpecData, MoonPhase, MoonStructureDiagram) {
   const earthDiameterKm = SpecData.CONSTANTS.meanDiameterKm.earth;
   const moonDiameterKm = SpecData.CONSTANTS.meanDiameterKm.moon;
   const diametersAcrossEarth = earthDiameterKm / moonDiameterKm;
@@ -124,7 +98,7 @@ function makeQuestions(SpecData, MoonPhase) {
         };
       },
     },
-    ...NAMED_FEATURES.map(namedFeatureQuestion),
+    ...NAMED_FEATURES.map((feature) => namedFeatureQuestion(feature, MoonStructureDiagram)),
     {
       id: 'rotation-and-orbit',
       units: ['u2.21'],

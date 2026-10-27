@@ -9,9 +9,9 @@ function findQuestion(questions, id) {
   return q;
 }
 
-test('makeQuestions returns 8 questions, each tagged u2.1 or u2.28', () => {
+test('makeQuestions returns 15 questions, each tagged u2.1 or u2.28', () => {
   const questions = makeQuestions(SpecData);
-  assert.equal(questions.length, 8);
+  assert.equal(questions.length, 15);
   questions.forEach((q) => {
     assert.ok(Array.isArray(q.units) && q.units.length > 0, `${q.id} has no units`);
     q.units.forEach((id) => assert.ok(['u2.1', 'u2.28'].includes(id), `${q.id} tags unexpected unit "${id}"`));
@@ -81,11 +81,47 @@ test('equator-latitude-value: accepts 0, rejects a non-zero value', () => {
   assert.equal(q.check(23.5).correct, false);
 });
 
-test('click-the-line-styling: Tropic of Capricorn is the only correct option, and the prompt describes the real drawn styling', () => {
-  const q = findQuestion(makeQuestions(SpecData), 'click-the-line-styling');
-  assert.match(q.prompt, /dashed orange/i);
-  assert.ok(q.check('Tropic of Capricorn').correct);
-  q.options.filter((o) => o !== 'Tropic of Capricorn').forEach((o) => {
-    assert.equal(q.check(o).correct, false, `"${o}" should not be marked correct`);
+const EIGHT_FEATURE_TERMS_AND_NAMES = [
+  ['northPole', 'North Pole'],
+  ['arcticCircle', 'Arctic Circle'],
+  ['tropicOfCancer', 'Tropic of Cancer'],
+  ['equator', 'Equator'],
+  ['tropicOfCapricorn', 'Tropic of Capricorn'],
+  ['antarcticCircle', 'Antarctic Circle'],
+  ['southPole', 'South Pole'],
+  ['primeMeridian', 'Prime Meridian'],
+];
+
+test('"name that line": exactly 8 picture-based questions, one per reference feature, each with a render function', () => {
+  const questions = makeQuestions(SpecData);
+  const lineQuestions = questions.filter((q) => q.id.startsWith('name-that-line-'));
+  assert.equal(lineQuestions.length, 8);
+  lineQuestions.forEach((q) => {
+    assert.equal(typeof q.render, 'function', `${q.id} should have a render function`);
+    assert.equal(q.options.length, 8);
   });
+});
+
+test('"name that line": every one of the 8 reference features is the correct answer to exactly one question, and every wrong option is rejected', () => {
+  const questions = makeQuestions(SpecData);
+  EIGHT_FEATURE_TERMS_AND_NAMES.forEach(([term, name]) => {
+    const q = findQuestion(questions, `name-that-line-${term}`);
+    assert.ok(q.check(name).correct);
+    q.options.filter((o) => o !== name).forEach((o) => {
+      assert.equal(q.check(o).correct, false, `"${o}" should not be marked correct for ${term}`);
+    });
+  });
+});
+
+test('"name that line": render() calls the passed-in EarthStructureDiagram with this question\'s own term, and never throws when no diagram API is given', () => {
+  const calls = [];
+  const stubDiagram = { renderLineQuizDiagram: (container, term) => calls.push({ container, term }) };
+  const questions = makeQuestions(SpecData, stubDiagram);
+  const q = findQuestion(questions, 'name-that-line-tropicOfCapricorn');
+  const fakeContainer = {};
+  q.render(fakeContainer);
+  assert.deepEqual(calls, [{ container: fakeContainer, term: 'tropicOfCapricorn' }]);
+
+  const questionsWithoutDiagram = makeQuestions(SpecData);
+  assert.doesNotThrow(() => findQuestion(questionsWithoutDiagram, 'name-that-line-equator').render({}));
 });

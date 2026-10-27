@@ -1,7 +1,5 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const fs = require('node:fs');
-const path = require('node:path');
 const { makeQuestions, NAMED_FEATURES } = require('../src/moonStructureQuestions');
 const SpecData = require('../src/specData');
 const MoonPhase = require('../src/moonPhase');
@@ -52,23 +50,30 @@ test('NAMED_FEATURES has exactly the 7 named features, each with a distinct name
   );
 });
 
-test('every named-feature clue is copied verbatim from moon-structure.js\'s own GLOSSARY text, so it can\'t silently drift', () => {
-  const pageSource = fs.readFileSync(path.join(__dirname, '..', 'notes', 'moon-structure.js'), 'utf8');
-  NAMED_FEATURES.forEach(({ term, clue }) => {
-    assert.ok(pageSource.includes(clue), `clue for "${term}" is not found verbatim in moon-structure.js's GLOSSARY`);
-  });
-});
-
-test('a generated named-feature question for every feature: its own clue is correct, and every other feature name is wrong', () => {
+test('a generated named-feature question for every feature: render is a function, its own feature is correct, and every other feature name is wrong', () => {
   const questions = makeQuestions(SpecData, MoonPhase);
   NAMED_FEATURES.forEach((feature) => {
     const q = findQuestion(questions, `named-feature-${feature.term}`);
+    assert.equal(typeof q.render, 'function', `${q.id} should have a render function`);
     assert.equal(q.options.length, 7);
     assert.ok(q.check(feature.name).correct);
     q.options.filter((name) => name !== feature.name).forEach((name) => {
       assert.equal(q.check(name).correct, false, `"${name}" should not be marked correct for ${feature.term}`);
     });
   });
+});
+
+test('named-feature render() calls the passed-in MoonStructureDiagram with this question\'s own term, and never throws when no diagram API is given', () => {
+  const calls = [];
+  const stubDiagram = { renderFeatureQuizDiagram: (container, term) => calls.push({ container, term }) };
+  const questions = makeQuestions(SpecData, MoonPhase, stubDiagram);
+  const q = findQuestion(questions, 'named-feature-tycho');
+  const fakeContainer = {};
+  q.render(fakeContainer);
+  assert.deepEqual(calls, [{ container: fakeContainer, term: 'tycho' }]);
+
+  const questionsWithoutDiagram = makeQuestions(SpecData, MoonPhase);
+  assert.doesNotThrow(() => findQuestion(questionsWithoutDiagram, 'named-feature-tycho').render({}));
 });
 
 test('every one of the 7 named features is the correct answer to at least one generated question', () => {

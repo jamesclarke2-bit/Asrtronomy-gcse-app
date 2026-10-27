@@ -4,6 +4,14 @@
  * localStorage store (astro-quiz-progress) so progress accumulates
  * across pages, keyed by curriculum subtopic id. Call QuizUI.mount(questions)
  * once per page with that page's own question array.
+ *
+ * A question may optionally supply render(container): called once per
+ * mount with an empty <div>, it draws a picture above the answer choices
+ * (e.g. a page's own map or globe, redrawn small with one feature
+ * highlighted) — see src/moonStructureQuestions.js and
+ * src/earthStructureQuestions.js's "name that feature/line" questions.
+ * Checking and tallying the answer works exactly as for a text question;
+ * quiz-ui.js never inspects what render() drew.
  */
 (function () {
   const STORAGE_KEY = 'astro-quiz-progress';
@@ -152,6 +160,19 @@
       prompt.className = 'question-prompt';
       prompt.textContent = question.prompt;
       card.appendChild(prompt);
+
+      // Optional picture-based question: question.render(container) draws
+      // a diagram above the answer choices, using the page's own drawing
+      // code (never built from typed text here) — e.g. a map or globe with
+      // one feature highlighted for a "name that feature" question. Purely
+      // additive: a question with no render function renders exactly as
+      // before, and the answer is still checked and tallied the usual way.
+      if (typeof question.render === 'function') {
+        const diagram = document.createElement('div');
+        diagram.className = 'question-diagram';
+        question.render(diagram);
+        card.appendChild(diagram);
+      }
 
       const form = document.createElement('div');
       form.className = 'question-form';

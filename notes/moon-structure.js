@@ -208,23 +208,25 @@
     });
   }
 
-  function drawMoonMap() {
-    const svg = document.getElementById('moon-map');
-    const wrap = document.getElementById('moon-map-wrap');
-
+  // svg/wrap default to the page's own main map so existing callers (just
+  // below) don't change; renderFeatureQuizDiagram() below passes a fresh
+  // svg/wrap pair instead, with idPrefix set so its <defs> ids can't
+  // collide with the main map's (or another quiz instance's) when both
+  // are inlined in the same document.
+  function drawMoonMap(svg = document.getElementById('moon-map'), wrap = document.getElementById('moon-map-wrap'), idPrefix = '') {
     const defs = svgEl('defs', {}, svg);
-    const shade = svgEl('radialGradient', { id: 'moon-shade', cx: '50%', cy: '50%', r: '50%' }, defs);
+    const shade = svgEl('radialGradient', { id: `${idPrefix}moon-shade`, cx: '50%', cy: '50%', r: '50%' }, defs);
     svgEl('stop', { offset: '0%', 'stop-color': '#e6e5df' }, shade);
     svgEl('stop', { offset: '85%', 'stop-color': '#d2d1ca' }, shade);
     svgEl('stop', { offset: '100%', 'stop-color': '#b5b4ad' }, shade);
 
     // Soft mare edges, and a clip so nothing spills off the disc.
-    const soften = svgEl('filter', { id: 'mare-soften', x: '-10%', y: '-10%', width: '120%', height: '120%' }, defs);
+    const soften = svgEl('filter', { id: `${idPrefix}mare-soften`, x: '-10%', y: '-10%', width: '120%', height: '120%' }, defs);
     svgEl('feGaussianBlur', { stdDeviation: '2.2' }, soften);
-    const disc = svgEl('clipPath', { id: 'moon-disc' }, defs);
+    const disc = svgEl('clipPath', { id: `${idPrefix}moon-disc` }, defs);
     svgEl('circle', { cx: CX, cy: CY, r: R }, disc);
 
-    svgEl('circle', { cx: CX, cy: CY, r: R, fill: 'url(#moon-shade)' }, svg);
+    svgEl('circle', { cx: CX, cy: CY, r: R, fill: `url(#${idPrefix}moon-shade)` }, svg);
 
     // The blur goes on each mare's shapes, not on the clickable group,
     // so the group's hover/focus brightening (a CSS filter) can't
@@ -232,7 +234,7 @@
     const mareAttrs = (lat, lon, radius) => ({
       d: sphereCirclePath(lat, lon, radius),
       fill: MARE_COLOR,
-      filter: 'url(#mare-soften)',
+      filter: `url(#${idPrefix}mare-soften)`,
     });
     BACKGROUND_MARIA.forEach(([lat, lon, radius]) => svgEl('path', mareAttrs(lat, lon, radius), svg));
 
@@ -247,7 +249,7 @@
       stroke: '#f4f3ee',
       'stroke-linecap': 'round',
       'pointer-events': 'none',
-      'clip-path': 'url(#moon-disc)',
+      'clip-path': `url(#${idPrefix}moon-disc)`,
     }, svg);
     CRATERS.forEach((crater) => {
       const c = project(crater.lat, crater.lon);
@@ -305,7 +307,41 @@
       wrap.appendChild(labelEl);
     });
 
-    drawApolloSites(svg);
+    // Apollo sites are the main page's own toggle (setUpApolloToggle,
+    // keyed by the fixed #apollo-markers id below) — skip them for a quiz
+    // instance, which has nothing to toggle them with and would otherwise
+    // collide with that id if more than one instance is on the page at once.
+    if (!idPrefix) drawApolloSites(svg);
+  }
+
+  // A small, standalone copy of the map above for a "name that feature"
+  // practice question: redraws the same map (drawMoonMap, unchanged) into
+  // a fresh svg/wrap pair, reuses the existing hide-labels mechanism (the
+  // same .labels-hidden class the page's own "Hide labels" button toggles
+  // on #moon-map-wrap) so no label text renders at all, and highlights
+  // just the one feature being asked about. Appends the result into
+  // `container` (quiz-ui.js's own per-question <div>).
+  function renderFeatureQuizDiagram(container, highlightTerm) {
+    const wrap = document.createElement('div');
+    wrap.className = 'labelled-diagram-wrap labels-hidden';
+    const svg = svgEl('svg', {
+      viewBox: `0 0 ${SIZE} ${SIZE}`,
+      class: 'responsive-svg',
+      role: 'img',
+      'aria-label': "Map of the Moon's near side, with labels hidden and one feature highlighted to identify",
+    }, wrap);
+
+    drawMoonMap(svg, wrap, `quiz-${highlightTerm}-`);
+
+    const target = svg.querySelector(`[data-term="${highlightTerm}"]`);
+    if (target) target.classList.add('diagram-feature-highlight');
+
+    // These toggles have no matching glossary definition in a question
+    // card, so take them out of the tab order rather than leave a dead
+    // keyboard stop.
+    svg.querySelectorAll('.glossary-toggle').forEach((el) => el.setAttribute('tabindex', '-1'));
+
+    container.appendChild(wrap);
   }
 
   // --- Libration in longitude: top-down, exaggerated ellipse. At each of
@@ -543,5 +579,5 @@
   setUpLibrationMonthControls();
   renderCoverage();
   Glossary.init(GLOSSARY);
-  QuizUI.mount(MoonStructureQuestions.makeQuestions(SpecData, MoonPhase));
+  QuizUI.mount(MoonStructureQuestions.makeQuestions(SpecData, MoonPhase, { renderFeatureQuizDiagram }));
 })();

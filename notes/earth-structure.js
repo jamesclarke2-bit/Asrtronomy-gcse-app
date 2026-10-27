@@ -96,12 +96,15 @@
     wrap.appendChild(labelEl);
   }
 
-  function drawGlobe() {
-    const svg = document.getElementById('globe');
-    const wrap = document.getElementById('globe-wrap');
-
+  // svg/wrap default to the page's own main globe so existing callers
+  // (just below) don't change; renderLineQuizDiagram() below passes a
+  // fresh svg/wrap pair instead, with idPrefix set so its <defs> id can't
+  // collide with the main globe's (or another quiz instance's) when both
+  // are inlined in the same document, and showLabels off so none of its
+  // reference lines render a label at all.
+  function drawGlobe(svg = document.getElementById('globe'), wrap = document.getElementById('globe-wrap'), idPrefix = '', showLabels = true) {
     const defs = svgEl('defs', {}, svg);
-    const shade = svgEl('radialGradient', { id: 'globe-shade', cx: '42%', cy: '40%', r: '65%' }, defs);
+    const shade = svgEl('radialGradient', { id: `${idPrefix}globe-shade`, cx: '42%', cy: '40%', r: '65%' }, defs);
     svgEl('stop', { offset: '0%', 'stop-color': '#e3f0fa' }, shade);
     svgEl('stop', { offset: '100%', 'stop-color': '#a9cbe6' }, shade);
 
@@ -110,7 +113,7 @@
       x1: CX, y1: CY - R - 24, x2: CX, y2: CY + R + 24,
       stroke: '#555', 'stroke-width': 1.5, 'stroke-dasharray': '4 3',
     }, svg);
-    svgEl('circle', { cx: CX, cy: CY, r: R, fill: 'url(#globe-shade)', stroke: '#5b7c99', 'stroke-width': 2 }, svg);
+    svgEl('circle', { cx: CX, cy: CY, r: R, fill: `url(#${idPrefix}globe-shade)`, stroke: '#5b7c99', 'stroke-width': 2 }, svg);
 
     // Faint unnamed meridians every 30°, on the visible half only.
     const graticule = svgEl('g', { fill: 'none', stroke: '#7d9bb5', 'stroke-width': 1, 'stroke-opacity': 0.6 }, svg);
@@ -118,7 +121,7 @@
       if (lon !== 0) svgEl('path', { d: meridianPath(lon) }, graticule);
     }
 
-    const leaders = svgEl('g', { stroke: '#8a97a5', 'stroke-width': 1, 'stroke-dasharray': '3 2', 'pointer-events': 'none' }, svg);
+    const leaders = svgEl('g', { class: 'globe-leader', stroke: '#8a97a5', 'stroke-width': 1, 'stroke-dasharray': '3 2', 'pointer-events': 'none' }, svg);
 
     NAMED_PARALLELS.forEach((line) => {
       const west = project(line.lat, CENTRE_LONGITUDE - 90);
@@ -129,17 +132,21 @@
       if (line.dash) visible['stroke-dasharray'] = line.dash;
       svgEl('line', visible, group);
 
-      svgEl('line', { x1: east.x + 6, y1: east.y, x2: LABEL_X - 78, y2: east.y }, leaders);
-      addLabel(wrap, LABEL_X, east.y, line.name, line.value);
+      if (showLabels) {
+        svgEl('line', { x1: east.x + 6, y1: east.y, x2: LABEL_X - 78, y2: east.y }, leaders);
+        addLabel(wrap, LABEL_X, east.y, line.name, line.value);
+      }
     });
 
     const meridian = makeToggle(svg, 'primeMeridian', 'Prime Meridian');
     svgEl('path', { d: meridianPath(0), fill: 'none', stroke: 'transparent', 'stroke-width': 18, 'pointer-events': 'stroke' }, meridian);
     svgEl('path', { d: meridianPath(0), fill: 'none', stroke: PRIME_MERIDIAN_COLOR, 'stroke-width': 3 }, meridian);
-    const meridianPoint = project(-50, 0);
-    const meridianLabel = { x: 95, y: 470 };
-    svgEl('line', { x1: meridianPoint.x - 4, y1: meridianPoint.y + 4, x2: meridianLabel.x + 30, y2: meridianLabel.y - 22 }, leaders);
-    addLabel(wrap, meridianLabel.x, meridianLabel.y, 'Prime Meridian', '0° longitude');
+    if (showLabels) {
+      const meridianPoint = project(-50, 0);
+      const meridianLabel = { x: 95, y: 470 };
+      svgEl('line', { x1: meridianPoint.x - 4, y1: meridianPoint.y + 4, x2: meridianLabel.x + 30, y2: meridianLabel.y - 22 }, leaders);
+      addLabel(wrap, meridianLabel.x, meridianLabel.y, 'Prime Meridian', '0° longitude');
+    }
 
     [
       { term: 'northPole', name: 'North Pole', value: '90°N', lat: 90, labelY: 24 },
@@ -149,8 +156,35 @@
       const group = makeToggle(svg, pole.term, pole.name);
       svgEl('circle', { cx: p.x, cy: p.y, r: 16, fill: 'transparent', 'pointer-events': 'all' }, group);
       svgEl('circle', { cx: p.x, cy: p.y, r: 6, fill: '#1f2d3d', stroke: '#fff', 'stroke-width': 1.5 }, group);
-      addLabel(wrap, CX, pole.labelY, pole.name, pole.value);
+      if (showLabels) addLabel(wrap, CX, pole.labelY, pole.name, pole.value);
     });
+  }
+
+  // A small, standalone copy of the globe above for a "name that line"
+  // practice question: redraws the same globe (drawGlobe, unchanged
+  // geometry) into a fresh svg/wrap pair with showLabels off (so none of
+  // the eight reference features render a label at all — stronger than
+  // the Moon map's .labels-hidden CSS toggle, since there's no existing
+  // "hide labels" button on this page to reuse the class from), and
+  // highlights just the one feature being asked about.
+  function renderLineQuizDiagram(container, highlightTerm) {
+    const wrap = document.createElement('div');
+    wrap.className = 'labelled-diagram-wrap';
+    const svg = svgEl('svg', {
+      viewBox: `0 0 ${WIDTH} ${HEIGHT}`,
+      class: 'responsive-svg',
+      role: 'img',
+      'aria-label': 'Globe with labels hidden and one reference line or point highlighted to identify',
+    }, wrap);
+
+    drawGlobe(svg, wrap, `quiz-${highlightTerm}-`, false);
+
+    const target = svg.querySelector(`[data-term="${highlightTerm}"]`);
+    if (target) target.classList.add('diagram-feature-highlight');
+
+    svg.querySelectorAll('.glossary-toggle').forEach((el) => el.setAttribute('tabindex', '-1'));
+
+    container.appendChild(wrap);
   }
 
   function renderCoverage() {
@@ -219,5 +253,5 @@
   render();
   renderCoverage();
   Glossary.init(GLOSSARY);
-  QuizUI.mount(EarthStructureQuestions.makeQuestions(SpecData));
+  QuizUI.mount(EarthStructureQuestions.makeQuestions(SpecData, { renderLineQuizDiagram }));
 })();

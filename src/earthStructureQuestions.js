@@ -9,29 +9,53 @@
  * section states. Greenwich and Sydney's coordinates are quoted exactly
  * as that page already states them.
  *
- * The last question ("click the line") stands in for literally clicking
- * a highlighted feature on the globe: quiz-ui.js's question cards are
- * plain text with no diagram of their own, so the clue instead describes
- * exactly how that line is actually drawn (its colour, dash pattern and
- * which side of the equator it's on) — the same facts NAMED_PARALLELS in
- * earth-structure.js uses to draw it, just read back as a clue instead
- * of a drawing instruction.
+ * The eight "name that line" questions are picture-based, as the exam
+ * itself asks (spec 1.5): each one's render(container) calls back into
+ * notes/earth-structure.js's own renderLineQuizDiagram (passed in as
+ * EarthStructureDiagram, the second argument), which redraws the real
+ * globe with one reference feature highlighted — never a hand-written
+ * text clue that could drift from what the globe actually shows.
+ * makeQuestions still runs perfectly well without that second argument
+ * (e.g. from a Node test, or from src/allQuestions.js's sitewide list,
+ * neither of which has a DOM to draw into) — render just never gets
+ * called there.
  */
-function makeQuestions(SpecData) {
+const EIGHT_FEATURES = [
+  { term: 'northPole', name: 'North Pole' },
+  { term: 'arcticCircle', name: 'Arctic Circle' },
+  { term: 'tropicOfCancer', name: 'Tropic of Cancer' },
+  { term: 'equator', name: 'Equator' },
+  { term: 'tropicOfCapricorn', name: 'Tropic of Capricorn' },
+  { term: 'antarcticCircle', name: 'Antarctic Circle' },
+  { term: 'southPole', name: 'South Pole' },
+  { term: 'primeMeridian', name: 'Prime Meridian' },
+];
+const EIGHT_FEATURE_NAMES = EIGHT_FEATURES.map((f) => f.name);
+
+function namedLineQuestion(feature, EarthStructureDiagram) {
+  return {
+    id: `name-that-line-${feature.term}`,
+    units: ['u2.1'],
+    type: 'choice',
+    prompt: 'Name that line: which of the eight reference features is highlighted on the globe?',
+    options: EIGHT_FEATURE_NAMES,
+    render(container) {
+      if (EarthStructureDiagram) EarthStructureDiagram.renderLineQuizDiagram(container, feature.term);
+    },
+    check(value) {
+      const correct = value === feature.name;
+      return {
+        correct,
+        message: `The highlighted feature is the ${feature.name}.`,
+      };
+    },
+  };
+}
+
+function makeQuestions(SpecData, EarthStructureDiagram) {
   const diameterKm = SpecData.CONSTANTS.meanDiameterKm.earth;
   const radiusKm = diameterKm / 2;
   const circumferenceKm = Math.PI * diameterKm;
-
-  const EIGHT_FEATURES = [
-    'North Pole',
-    'Arctic Circle',
-    'Tropic of Cancer',
-    'Equator',
-    'Tropic of Capricorn',
-    'Antarctic Circle',
-    'South Pole',
-    'Prime Meridian',
-  ];
 
   return [
     {
@@ -111,7 +135,7 @@ function makeQuestions(SpecData) {
       units: ['u2.1'],
       type: 'choice',
       prompt: 'Which named line is the furthest north at which the Sun is ever directly overhead at noon?',
-      options: EIGHT_FEATURES,
+      options: EIGHT_FEATURE_NAMES,
       check(value) {
         const correct = value === 'Tropic of Cancer';
         return {
@@ -127,7 +151,7 @@ function makeQuestions(SpecData) {
       type: 'choice',
       prompt:
         "Which named circle marks the latitude beyond which there's at least one day a year with 24 hours of daylight, and one with 24 hours of darkness?",
-      options: EIGHT_FEATURES,
+      options: EIGHT_FEATURE_NAMES,
       check(value) {
         const correct = value === 'Arctic Circle';
         return {
@@ -151,22 +175,7 @@ function makeQuestions(SpecData) {
         };
       },
     },
-    {
-      id: 'click-the-line-styling',
-      units: ['u2.1'],
-      type: 'choice',
-      prompt:
-        'On the globe diagram, one reference line is drawn as a dashed orange line, south of the equator. Which of the eight named reference features is it?',
-      options: EIGHT_FEATURES,
-      check(value) {
-        const correct = value === 'Tropic of Capricorn';
-        return {
-          correct,
-          message:
-            "The globe draws the Tropic of Cancer and Tropic of Capricorn both as dashed orange lines — they're the same distance (23.5°) either side of the equator — but the Tropic of Cancer is north and the Tropic of Capricorn is south, so a dashed orange line south of the equator can only be the Tropic of Capricorn. (The Arctic and Antarctic Circles are also a matching north/south pair, but drawn dashed blue instead; the equator itself is solid red; the Prime Meridian is a solid green curve, not a straight parallel at all.)",
-        };
-      },
-    },
+    ...EIGHT_FEATURES.map((feature) => namedLineQuestion(feature, EarthStructureDiagram)),
   ];
 }
 
