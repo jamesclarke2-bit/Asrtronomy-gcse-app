@@ -158,12 +158,10 @@ const SPEC_POINTS = [
   { code: '10.12', topic: 10, depth: 'know', text: 'shape and position of the magnetosphere, including Van Allen belts' },
 
   // --- Topic 7: Early models of the Solar System ------------------------------
-  {
-    code: '7.1',
-    topic: 7,
-    depth: 'understand',
-    text: 'ancient civilisations used observations of solar and lunar cycles for agriculture, religion, time and calendars, and aligning monuments',
-  },
+  { code: '7.1a', topic: 7, depth: 'understand', group: '7.1', text: 'ancient civilisations used observations of solar and lunar cycles for agriculture' },
+  { code: '7.1b', topic: 7, depth: 'understand', group: '7.1', text: 'ancient civilisations used observations of solar and lunar cycles for religion' },
+  { code: '7.1c', topic: 7, depth: 'understand', group: '7.1', text: 'ancient civilisations used observations of solar and lunar cycles for time and calendars' },
+  { code: '7.1d', topic: 7, depth: 'understand', group: '7.1', text: 'ancient civilisations used observations of solar and lunar cycles for aligning monuments' },
   { code: '7.2', topic: 7, depth: 'understand', text: "monuments' present alignments differ from the original because of precession" },
   { code: '7.3', topic: 7, depth: 'understand', text: 'early geocentric models' },
   { code: '7.4', topic: 7, depth: 'understand', text: 'the advantage of epicycles (Ptolemy)' },
@@ -383,6 +381,7 @@ const TOPIC_NAMES = {
  */
 const SPEC_POINT_GROUPS = {
   '1.6': ['1.6a', '1.6b', '1.6c'],
+  '7.1': ['7.1a', '7.1b', '7.1c', '7.1d'],
   '12.1': ['12.1a', '12.1b', '12.1c', '12.1d', '12.1e'],
   '12.2': ['12.2a', '12.2b', '12.2c'],
 };

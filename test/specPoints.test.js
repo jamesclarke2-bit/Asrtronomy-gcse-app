@@ -30,11 +30,12 @@ test("every point's code starts with its own topic number", () => {
 test('getSpecPoint resolves a known code and returns undefined for an unknown one', () => {
   assert.deepEqual(getSpecPoint('4.4'), { code: '4.4', topic: 4, depth: 'be able to', text: 'use Equation of Time = AST - MST' });
   assert.equal(getSpecPoint('99.9'), undefined);
-  assert.deepEqual(getSpecPoint('7.1'), {
-    code: '7.1',
+  assert.deepEqual(getSpecPoint('7.1d'), {
+    code: '7.1d',
     topic: 7,
     depth: 'understand',
-    text: 'ancient civilisations used observations of solar and lunar cycles for agriculture, religion, time and calendars, and aligning monuments',
+    group: '7.1',
+    text: 'ancient civilisations used observations of solar and lunar cycles for aligning monuments',
   });
 });
 
@@ -52,9 +53,10 @@ test("every 'be able to' point in Topics 7, 8, 11 and 12 is exactly the expected
   ]);
 });
 
-test('SPEC_POINT_GROUPS: every group has 1.6, 12.1 or 12.2 as its key, each listing exactly its own lettered sub-codes', () => {
+test('SPEC_POINT_GROUPS: every group has 1.6, 7.1, 12.1 or 12.2 as its key, each listing exactly its own lettered sub-codes', () => {
   assert.deepEqual(SPEC_POINT_GROUPS, {
     '1.6': ['1.6a', '1.6b', '1.6c'],
+    '7.1': ['7.1a', '7.1b', '7.1c', '7.1d'],
     '12.1': ['12.1a', '12.1b', '12.1c', '12.1d', '12.1e'],
     '12.2': ['12.2a', '12.2b', '12.2c'],
   });

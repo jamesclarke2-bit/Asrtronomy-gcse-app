@@ -7,7 +7,7 @@
   <meta name="referrer" content="no-referrer" />
   <meta name="robots" content="noindex, nofollow" />
   <title>Archaeoastronomy: Precession and Monuments</title>
-  <link rel="stylesheet" href="../styles.css?v=202610291200" />
+  <link rel="stylesheet" href="../styles.css?v=202610291800" />
   <link rel="icon" type="image/svg+xml" href="../favicon.svg?v=202610130720" />
 </head>
 <body>
@@ -63,6 +63,38 @@
         <button type="button" class="glossary-toggle glossary-term-button" data-term="precession" aria-label="What is precession, and what else does it affect?" aria-expanded="false">precession</button>.
       </p>
       <span class="glossary-definition" data-term="precession" hidden></span>
+    </section>
+
+    <section class="notes-section" id="ancient-uses">
+      <h2>How ancient civilisations used the Sun and Moon</h2>
+      <p>
+        Long before telescopes, people tracked the sky closely, for four different reasons
+        &mdash; tap a card for one real example of each.
+      </p>
+
+      <div class="diagram ancient-uses-diagram">
+        <div class="labelled-diagram-wrap" id="ancient-uses-grid-wrap">
+          <svg
+            id="ancient-uses-grid"
+            class="responsive-svg"
+            width="400"
+            height="460"
+            viewBox="0 0 400 460"
+            role="group"
+            aria-label="A tappable grid of four ways ancient civilisations used the Sun and Moon: agriculture, religion, time and calendar systems, and aligning monuments, each with a one-line summary and an example on tap"
+          ></svg>
+        </div>
+      </div>
+      <div class="ancient-uses-definitions">
+        <span class="glossary-definition" data-term="agriculture" hidden></span>
+        <span class="glossary-definition" data-term="religion" hidden></span>
+        <span class="glossary-definition" data-term="calendar" hidden></span>
+        <span class="glossary-definition" data-term="alignments" hidden></span>
+      </div>
+
+      <p class="note">
+        The historical examples above are <strong>first draft, to be checked by the teacher</strong>.
+      </p>
     </section>
 
     <section class="notes-section" id="stonehenge">
@@ -146,6 +178,17 @@
       <span class="glossary-definition" data-term="pyramidDetail" hidden></span>
     </section>
 
+    <section class="questions">
+      <h2>Practice questions</h2>
+      <div id="questions-list"></div>
+    </section>
+
+    <section class="progress">
+      <h2>Your progress</h2>
+      <ul id="progress-list"></ul>
+      <p class="note">Stored in this browser only (localStorage) &mdash; no account needed.</p>
+    </section>
+
     <section class="notes-section" id="exam-tips">
       <h2>Exam tips</h2>
       <p class="exam-tip">
@@ -203,12 +246,15 @@
     <p class="next-page-link" id="next-page"></p>
   </main>
 
-  <script src="../src/curriculum.js?v=202610291500"></script>
-  <script src="../src/pages.js?v=202610291600"></script>
+  <script src="../src/curriculum.js?v=202610291800"></script>
+  <script src="../src/pages.js?v=202610291800"></script>
   <script src="../src/starPatterns.js?v=202609280900"></script>
   <script src="../src/measuringTheSky.js?v=202609252300"></script>
+  <script src="../src/moonPhase.js?v=202609241000"></script>
+  <script src="../src/archaeoastronomyQuestions.js?v=202610291700"></script>
   <script src="../glossary.js?v=202610131052"></script>
-  <script src="archaeoastronomy.js?v=202610291100"></script>
+  <script src="../quiz-ui.js?v=202609221100"></script>
+  <script src="archaeoastronomy.js?v=202610291700"></script>
   <script src="../notesPage.js?v=202609252100"></script>
   <script src="../nextPage.js?v=202610161057"></script>
 </body>

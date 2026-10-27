@@ -113,8 +113,8 @@ const PAGES = [
     href: 'sims/coordinates.html',
     units: ['u1.7', 'u1.8', 'u1.9', 'u1.10', 'u1.11', 'u1.12', 'u1.13', 'u1.14', 'u1.21'],
     phase: 'Look up',
-    position: 5,
-    why: "A new, more technical toolkit, building on what you've just learned to look up and recognise: right ascension, declination, hour angle, sidereal time, and finding your latitude from Polaris.",
+    position: 4,
+    why: "A new, more technical toolkit, building on what you've just learned to look up and recognise: right ascension, declination, hour angle, sidereal time, and finding your latitude from Polaris — the toolkit planning an observing night, next, puts to use.",
   },
   {
     title: 'Observing the Sun',
@@ -367,8 +367,8 @@ const COMING_SOON = [
   {
     name: 'Planning an observing night',
     phase: 'Look up',
-    position: 4,
-    why: "Turns Observing Techniques' own tools into a step-by-step plan: picking the best time, predicting what's up, and reading the conditions before you go out.",
+    position: 5,
+    why: "Needs Star Coordinates' toolkit to actually predict what's up and when, turning Observing Techniques' tools into a step-by-step plan: picking the best time, predicting what's up, and reading the conditions before you go out.",
     specPoints: ['6.12', '6.17', '6.20'],
   },
   {

@@ -2533,6 +2533,38 @@ canvas {
   border: 1px solid #cdd7e1;
 }
 
+/* notes/archaeoastronomy.html's "How ancient civilisations used the Sun
+   and Moon" tappable grid — same convention as naked-eye-sky.html's own
+   picture grid (one SVG, each icon a .diagram-region glossary-toggle,
+   with its own always-visible title/tell labels), kept as its own small
+   class set rather than shared, since addLabel() sets a className
+   outright (no default label class to extend). */
+.ancient-uses-diagram {
+  max-width: 460px;
+  margin: 1rem 0;
+}
+
+.ancient-uses-title,
+.ancient-uses-tell {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 8.5rem;
+  text-align: center;
+  line-height: 1.25;
+  pointer-events: none;
+}
+
+.ancient-uses-title {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #1b2430;
+}
+
+.ancient-uses-tell {
+  font-size: 0.72rem;
+  color: #666;
+}
+
 .calculator {
   max-width: 420px;
   padding: 0.75rem 1rem;

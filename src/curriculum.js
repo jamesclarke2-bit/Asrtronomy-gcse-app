@@ -545,7 +545,7 @@ const UNITS = [
         id: 'u3.5',
         title: 'Archaeoastronomy',
         depth: 'understand',
-        spec: ['7.1', '7.2', '3.6'],
+        spec: ['7.1a', '7.1b', '7.1c', '7.1d', '7.2', '3.6'],
         notes:
           "ancient civilisations used detailed observations of solar and lunar cycles for (a) agriculture — timing planting and harvest to the seasons; (b) religion — festivals and rituals tied to solstices, equinoxes and lunar phases; (c) time and calendar systems — the day, the (lunar) month and the year itself; and (d) aligning monuments to risings and settings, e.g. Stonehenge's solstice-sunrise alignment and the Great Pyramid of Giza's star-aligned shafts. Axial precession (u2.29) — Earth's axis slowly tracing a ~26,000-year circle — means those original alignments have since drifted: Thuban, not Polaris, was the pole star the ancient Egyptians aligned shafts to",
       },

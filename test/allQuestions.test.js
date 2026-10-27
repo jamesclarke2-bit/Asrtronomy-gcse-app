@@ -49,6 +49,7 @@ test('getAllQuestionsNode: every tagged unit id resolves to a real curriculum su
 test("getAllQuestionsNode's total is exactly the sum of every individual question file's own count — nothing silently dropped", () => {
   const { QUESTIONS: sunPath } = require('../src/questions');
   const { QUESTIONS: eot } = require('../src/eotQuestions');
+  const { makeQuestions: makeArchaeoastronomy } = require('../src/archaeoastronomyQuestions');
   const { makeQuestions: makeCoordinates } = require('../src/coordinatesQuestions');
   const { makeQuestions: makeGeocentricHeliocentric } = require('../src/geocentricHeliocentricQuestions');
   const { makeQuestions: makeGravitationalPotential } = require('../src/gravitationalPotentialQuestions');
@@ -68,6 +69,7 @@ test("getAllQuestionsNode's total is exactly the sum of every individual questio
   const expectedTotal =
     sunPath.length +
     eot.length +
+    makeArchaeoastronomy(MoonPhase).length +
     makeCoordinates(Coordinates, null).length +
     makeGeocentricHeliocentric().length +
     makeGravitationalPotential(GravityField, OrbitalMechanics).length +
