@@ -52,8 +52,9 @@ test("every 'be able to' point in Topics 7, 8, 11 and 12 is exactly the expected
   ]);
 });
 
-test('SPEC_POINT_GROUPS: every group has 12.1 or 12.2 as its key, each listing exactly its own lettered sub-codes', () => {
+test('SPEC_POINT_GROUPS: every group has 1.6, 12.1 or 12.2 as its key, each listing exactly its own lettered sub-codes', () => {
   assert.deepEqual(SPEC_POINT_GROUPS, {
+    '1.6': ['1.6a', '1.6b', '1.6c'],
     '12.1': ['12.1a', '12.1b', '12.1c', '12.1d', '12.1e'],
     '12.2': ['12.2a', '12.2b', '12.2c'],
   });

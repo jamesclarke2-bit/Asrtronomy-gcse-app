@@ -18,12 +18,13 @@
  * 1-12, is future work, not done here.
  *
  * A spec point that bundles several distinct things under one code in
- * the real spec document (e.g. 12.1's five lettered parts, 12.2's
- * three) is split here into its own lettered sub-code per part, rather
- * than kept as a single point — otherwise one curriculum subtopic
- * tagging only the first of five parts would read as covering all
- * five. See SPEC_POINT_GROUPS below for how a coverage report rolls
- * those sub-codes back up under their shared parent code.
+ * the real spec document (e.g. 1.6's "sky colour, skyglow, twinkling",
+ * or 12.1's five lettered parts and 12.2's three) is split here into
+ * its own lettered sub-code per part, rather than kept as a single
+ * point — otherwise one curriculum subtopic tagging only one of
+ * several parts would read as covering all of them. See
+ * SPEC_POINT_GROUPS below for how a coverage report rolls those
+ * sub-codes back up under their shared parent code.
  */
 
 const SPEC_POINTS = [
@@ -33,7 +34,9 @@ const SPEC_POINTS = [
   { code: '1.3', topic: 1, depth: 'understand', text: "Earth's internal divisions (crust, mantle, outer core, inner core)" },
   { code: '1.4', topic: 1, depth: 'be able to', text: 'use latitude and longitude' },
   { code: '1.5', topic: 1, depth: 'be able to', text: 'use surface divisions as reference points (equator, tropics, polar circles, prime meridian, poles)' },
-  { code: '1.6', topic: 1, depth: 'understand', text: 'atmosphere effects on observation (sky colour, skyglow, twinkling)' },
+  { code: '1.6a', topic: 1, depth: 'understand', text: 'atmosphere effects on observation: sky colour', group: '1.6' },
+  { code: '1.6b', topic: 1, depth: 'understand', text: 'atmosphere effects on observation: skyglow', group: '1.6' },
+  { code: '1.6c', topic: 1, depth: 'understand', text: 'atmosphere effects on observation: twinkling', group: '1.6' },
 
   // --- Topic 2: The lunar disc ----------------------------------------------
   { code: '2.1', topic: 2, depth: 'know', text: 'shape of the Moon' },
@@ -379,6 +382,7 @@ const TOPIC_NAMES = {
  * unsplit points.
  */
 const SPEC_POINT_GROUPS = {
+  '1.6': ['1.6a', '1.6b', '1.6c'],
   '12.1': ['12.1a', '12.1b', '12.1c', '12.1d', '12.1e'],
   '12.2': ['12.2a', '12.2b', '12.2c'],
 };

@@ -283,12 +283,11 @@ test('buildRecommendedPath reproduces the precomputed RECOMMENDED_PATH exactly',
 });
 
 // --- COMING_SOON accounts for every spec point the syllabus map marks ------
-// "not built yet", for the topics it actually claims to speak for (11's
-// probe/Apollo points and 12's formation/exoplanet points — not the
-// handful of small, scattered not-built points elsewhere, e.g. 1.6 or
-// 6.20, which don't belong to any of the four named coming-soon topics
-// and are pre-existing gaps outside this rebuild's scope), plus Topics
-// 13-16, which have no SPEC_POINTS registry entries at all yet.
+// "not built yet", across every registered topic (not just the ones a
+// coming-soon step is named after) — plus Topics 13-16, which have no
+// SPEC_POINTS registry entries at all yet. src/pages.js's own header
+// explains why this is the thing that keeps COMING_SOON honest as
+// pages get built and the syllabus map's own coverage shifts.
 
 function notBuiltLeafCodes(points, topicNumber, out) {
   points.forEach((point) => {
@@ -298,7 +297,7 @@ function notBuiltLeafCodes(points, topicNumber, out) {
   return out;
 }
 
-test('every spec point Topics 11 and 12 mark "not built yet" is named in some coming-soon step', () => {
+test('every spec point the syllabus map marks "not built yet", in any registered topic, is named in some coming-soon step', () => {
   const map = buildSyllabusMap({
     specPoints: SPEC_POINTS,
     specPointGroups: SPEC_POINT_GROUPS,
@@ -312,14 +311,14 @@ test('every spec point Topics 11 and 12 mark "not built yet" is named in some co
 
   const namedSpecPoints = new Set(COMING_SOON.flatMap((step) => step.specPoints || []));
 
-  [11, 12].forEach((topicNumber) => {
+  const notBuilt = REGISTERED_TOPICS.flatMap((topicNumber) => {
     const topic = map.topics.find((t) => t.number === topicNumber);
     assert.ok(topic && topic.registered, `Topic ${topicNumber} should be registered`);
-    const notBuilt = notBuiltLeafCodes(topic.points, topicNumber, []);
-    assert.ok(notBuilt.length > 0, `Topic ${topicNumber} should have at least one not-built point to check against (test fixture assumption)`);
-    notBuilt.forEach(({ code }) => {
-      assert.ok(namedSpecPoints.has(code), `${code} (Topic ${topicNumber}, not built) is not named in any coming-soon step`);
-    });
+    return notBuiltLeafCodes(topic.points, topicNumber, []);
+  });
+  assert.ok(notBuilt.length > 0, 'there should be at least one not-built point to check against (test fixture assumption)');
+  notBuilt.forEach(({ code, topic }) => {
+    assert.ok(namedSpecPoints.has(code), `${code} (Topic ${topic}, not built) is not named in any coming-soon step`);
   });
 });
 
