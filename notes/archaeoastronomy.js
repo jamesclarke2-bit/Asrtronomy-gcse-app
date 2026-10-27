@@ -9,6 +9,8 @@
   const STONE_COLOR = '#9aa5b5';
   const SUN_COLOR = '#ffcf5c';
 
+  const CURRENT_YEAR = 2026;
+
   function svgEl(tag, attrs, parent) {
     const el = document.createElementNS(SVG_NS, tag);
     Object.entries(attrs).forEach(([key, value]) => el.setAttribute(key, value));
@@ -27,23 +29,38 @@
     return el;
   }
 
+  function clearDiagram(svg, wrap) {
+    while (svg.firstChild) svg.removeChild(svg.firstChild);
+    wrap.querySelectorAll('.labelled-diagram-label, .star-label').forEach((el) => el.remove());
+  }
+
   function formatSep(deg) {
     return deg < 1 ? `${deg.toFixed(1)}°` : `${Math.round(deg)}°`;
   }
 
-  // --- The pole then and now: Thuban's era and today ----------------------
+  // Every signed readout shows its own sign, rather than leaving a plain
+  // "28°" to mean "28° too high" by implication.
+  function formatSigned(deg) {
+    const rounded = Math.round(deg);
+    return `${rounded >= 0 ? '+' : ''}${rounded}°`;
+  }
 
-  const PYRAMID_YEAR = -2560; // astronomical year numbering: -2560 = 2561 BCE, close enough
-  const CURRENT_YEAR = 2026;
+  // Astronomical year numbering (0 = 1 BCE) to a BCE/AD label.
+  function formatYear(year) {
+    return year <= 0 ? `${1 - year} BCE` : `AD ${year}`;
+  }
 
-  const POLE_DIAGRAM = { W: 320, H: 320, cx: 160, cy: 160, degToUnits: 4.6 };
+  // --- Axial precession: the pole's ~26,000-year circle -------------------
+
+  const PRECESSION_CIRCLE = { W: 320, H: 320, cx: 160, cy: 160, degToUnits: 3.9 };
+  const MARKED_STARS = ['thuban', 'polaris', 'vega'];
 
   // Same projection as measuring-the-sky.js's precession diagram: looking
   // up at the northern sky, centred on the ecliptic pole, distance from it
   // true to scale.
   function eclipticPolarView(eq) {
     const { lon, lat } = M.equatorialToEcliptic(eq);
-    const { cx, cy, degToUnits } = POLE_DIAGRAM;
+    const { cx, cy, degToUnits } = PRECESSION_CIRCLE;
     const r = (90 - lat) * degToUnits;
     const a = (lon - 90) * RAD;
     return { x: cx + r * Math.sin(a), y: cy - r * Math.cos(a) };
@@ -53,125 +70,182 @@
     return eclipticPolarView(M.celestialPoleAt(year));
   }
 
-  function drawPoleThenNowDiagram() {
-    const svg = document.getElementById('pole-then-now-diagram');
-    const wrap = document.getElementById('pole-then-now-wrap');
+  // Whichever of the three marked stars the pole currently sits nearest,
+  // however far off that actually is — there are long stretches of the
+  // cycle with no bright star anywhere close.
+  function nearestMarkedStar(year) {
+    const pole = M.celestialPoleAt(year);
+    let best = null;
+    MARKED_STARS.forEach((key) => {
+      const sep = angularSeparation(pole, STARS[key]);
+      if (!best || sep < best.sep) best = { key, name: STARS[key].name, sep };
+    });
+    return best;
+  }
+
+  function drawPrecessionCircleDiagram(year) {
+    const svg = document.getElementById('precession-circle-diagram');
+    const wrap = document.getElementById('precession-circle-wrap');
     if (!svg || !wrap) return;
-    const { W, H, cx, cy, degToUnits } = POLE_DIAGRAM;
+    clearDiagram(svg, wrap);
+    const { W, H, cx, cy, degToUnits } = PRECESSION_CIRCLE;
 
     svgEl('rect', { x: 0, y: 0, width: W, height: H, rx: 8, fill: '#10141f' }, svg);
+
+    // The ecliptic pole, and the full circle the celestial pole traces
+    // around it over one ~26,000-year cycle.
     svgEl('circle', { cx, cy, r: M.OBLIQUITY_DEG * degToUnits, fill: 'none', stroke: SKY_LINE_COLOR, 'stroke-width': 1.5, 'stroke-dasharray': '6 5' }, svg);
     svgEl('circle', { cx, cy, r: 2.5, fill: SKY_LINE_COLOR }, svg);
     addLabel(wrap, cx, cy - 14, W, H, 'Ecliptic pole', 'star-label finder-pattern-label');
 
-    // The stretch of the pole's own path actually travelled since the
-    // Great Pyramid was built, sampled as a polyline rather than an SVG
-    // arc so the maths never has to work out which way it sweeps.
-    const steps = 24;
-    const points = [];
-    for (let i = 0; i <= steps; i += 1) {
-      const year = PYRAMID_YEAR + ((CURRENT_YEAR - PYRAMID_YEAR) * i) / steps;
-      const p = poleViewAt(year);
-      points.push(`${p.x},${p.y}`);
-    }
-    svgEl('polyline', { points: points.join(' '), fill: 'none', stroke: '#f5a623', 'stroke-width': 2.5, 'stroke-linecap': 'round' }, svg);
+    // The celestial pole's own position in the selected year, found first
+    // so a star sitting right on top of it (as Polaris does today) can
+    // share one label instead of two illegibly overlapping ones.
+    const pole = poleViewAt(year);
+    const COINCIDE_PX = 24;
+    let coincidingStar = null;
 
-    // Thuban and Polaris, in their real positions.
-    ['thuban', 'polaris'].forEach((key) => {
+    // Thuban, Polaris and Vega, in their real (essentially fixed) positions.
+    MARKED_STARS.forEach((key) => {
       const star = STARS[key];
       const p = eclipticPolarView(star);
       svgEl('circle', { cx: p.x, cy: p.y, r: Math.max(2, 5.2 - 1.05 * star.mag), fill: '#fdfcf5' }, svg);
+      if (Math.hypot(p.x - pole.x, p.y - pole.y) < COINCIDE_PX) {
+        coincidingStar = star;
+        return;
+      }
       const dx = p.x - cx;
       const dy = p.y - cy;
-      const d = Math.hypot(dx, dy);
+      const d = Math.hypot(dx, dy) || 1;
       addLabel(wrap, p.x + (dx / d) * 16, p.y + (dy / d) * 16, W, H, star.name, 'star-label');
     });
 
-    // The pole's own position at each end of the highlighted stretch.
-    [[PYRAMID_YEAR, 'Pole, ~2560 BCE'], [CURRENT_YEAR, 'Pole, today']].forEach(([year, text]) => {
-      const p = poleViewAt(year);
-      svgEl('circle', { cx: p.x, cy: p.y, r: 7, fill: 'none', stroke: '#ffe9a8', 'stroke-width': 2 }, svg);
-      const dx = cx - p.x;
-      const dy = cy - p.y;
-      const d = Math.hypot(dx, dy) || 1;
-      const label = addLabel(wrap, p.x - (dx / d) * 26, p.y - (dy / d) * 26, W, H, text, 'star-label finder-polaris-label');
-      // Long labels near the canvas's right edge (Thuban's marker, close
-      // to the ecliptic pole's 90° longitude) would otherwise overrun it.
-      if (p.x > cx) label.dataset.side = 'left';
-    });
+    svgEl('circle', { cx: pole.x, cy: pole.y, r: 7, fill: 'none', stroke: '#ffe9a8', 'stroke-width': 2.5 }, svg);
+    svgEl('circle', { cx: pole.x, cy: pole.y, r: 2, fill: '#ffe9a8' }, svg);
+    const dx = pole.x - cx;
+    const dy = pole.y - cy;
+    const d = Math.hypot(dx, dy) || 1;
+    const poleText = coincidingStar ? `${coincidingStar.name} — the pole, this year` : 'The pole, this year';
+    const label = addLabel(wrap, pole.x + (dx / d) * 22, pole.y + (dy / d) * 22, W, H, poleText, 'star-label finder-polaris-label');
+    if (pole.x > cx) label.dataset.side = 'left';
   }
 
-  function fillPoleFigures() {
-    const pyramidPole = M.celestialPoleAt(PYRAMID_YEAR);
-    const nowPole = M.celestialPoleAt(CURRENT_YEAR);
-    document.getElementById('thuban-then-sep').textContent = formatSep(angularSeparation(pyramidPole, STARS.thuban));
-    document.getElementById('polaris-then-sep').textContent = formatSep(angularSeparation(pyramidPole, STARS.polaris));
-    document.getElementById('polaris-now-sep').textContent = formatSep(angularSeparation(nowPole, STARS.polaris));
-    document.getElementById('thuban-now-sep').textContent = formatSep(angularSeparation(nowPole, STARS.thuban));
+  function setUpPrecessionSlider() {
+    const slider = document.getElementById('precession-year-slider');
+    const label = document.getElementById('precession-year-label');
+    const readout = document.getElementById('precession-nearest-star');
+    function render() {
+      const year = Number(slider.value);
+      label.textContent = formatYear(year);
+      drawPrecessionCircleDiagram(year);
+      const nearest = nearestMarkedStar(year);
+      readout.textContent = nearest.sep < 2
+        ? `${nearest.name}, about ${formatSep(nearest.sep)} from the pole — a genuinely useful pole star.`
+        : `${nearest.name}, about ${formatSep(nearest.sep)} from the pole — nowhere near useful as one.`;
+    }
+    slider.addEventListener('input', render);
+    render();
   }
 
-  // --- Stonehenge: a schematic top-down plan -------------------------------
+  // --- Stonehenge: the solstice-sunrise alignment --------------------------
 
-  function drawStonehengeDiagram() {
-    const svg = document.getElementById('stonehenge-diagram');
-    const wrap = document.getElementById('stonehenge-wrap');
+  // The scene itself (Sun, Heel Stone, sarsen stones) never changes between
+  // these two dates — that's the whole point. Only the small pole-star
+  // marker updates, which is the one thing precession actually moves here.
+  const STONEHENGE_ERAS = { then: -2500, now: CURRENT_YEAR };
+
+  function drawStonehengeScene(mode) {
+    const svg = document.getElementById('stonehenge-scene-diagram');
+    const wrap = document.getElementById('stonehenge-scene-wrap');
     if (!svg || !wrap) return;
+    clearDiagram(svg, wrap);
     const W = 320;
-    const H = 320;
-    const cx = W / 2;
-    const cy = H / 2;
-    const ringRadius = 78;
-    const axisAngle = -55; // degrees from straight up, towards the north-east
+    const H = 260;
+    const horizonY = 190;
 
     svgEl('rect', { x: 0, y: 0, width: W, height: H, rx: 8, fill: '#10141f' }, svg);
+    svgEl('rect', { x: 0, y: horizonY, width: W, height: H - horizonY, fill: '#1c2a1e' }, svg);
 
-    // The sarsen circle: a ring of evenly-spaced stones.
-    const stoneCount = 16;
-    for (let i = 0; i < stoneCount; i += 1) {
-      const angle = (i / stoneCount) * 360 * RAD;
-      const x = cx + ringRadius * Math.sin(angle);
-      const y = cy - ringRadius * Math.cos(angle);
-      svgEl('rect', { x: x - 5, y: y - 5, width: 10, height: 10, rx: 2, fill: STONE_COLOR, transform: `rotate(${angle / RAD} ${x} ${y})` }, svg);
+    // A few sarsen stones, framing the gap the Sun rises through.
+    [36, 70, 250, 284].forEach((x) => {
+      svgEl('rect', { x: x - 10, y: horizonY - 46, width: 20, height: 46, rx: 2, fill: STONE_COLOR }, svg);
+    });
+
+    // Midsummer sunrise, low over the horizon.
+    const sunX = 160;
+    const sunY = horizonY - 18;
+    for (let i = 0; i < 8; i += 1) {
+      const angle = (i / 8) * 2 * Math.PI;
+      svgEl('line', {
+        x1: sunX + Math.cos(angle) * 24, y1: sunY + Math.sin(angle) * 24,
+        x2: sunX + Math.cos(angle) * 34, y2: sunY + Math.sin(angle) * 34,
+        stroke: SUN_COLOR, 'stroke-width': 3, 'stroke-linecap': 'round',
+      }, svg);
     }
-    // The great trilithon, facing the winter-sunset end of the axis.
-    const trilithonAngle = (axisAngle + 180) * RAD;
-    const tx = cx + ringRadius * Math.sin(trilithonAngle);
-    const ty = cy - ringRadius * Math.cos(trilithonAngle);
-    svgEl('rect', { x: tx - 9, y: ty - 9, width: 18, height: 18, rx: 2, fill: '#c9cfda', transform: `rotate(${trilithonAngle / RAD} ${tx} ${ty})` }, svg);
+    svgEl('circle', { cx: sunX, cy: sunY, r: 18, fill: SUN_COLOR }, svg);
 
-    // The axis itself, from the winter-sunset side, through the centre, out
-    // past the ring to the Heel Stone and on to the horizon.
-    const a = axisAngle * RAD;
-    const ux = Math.sin(a);
-    const uy = -Math.cos(a);
-    const axisLine = svgEl('g', { stroke: '#f5a623', 'stroke-width': 2, 'stroke-dasharray': '6 5' }, svg);
-    svgEl('line', { x1: cx - ux * ringRadius, y1: cy - uy * ringRadius, x2: cx + ux * 140, y2: cy + uy * 140 }, axisLine);
+    // The Heel Stone, just to one side of the Sun.
+    const heelX = 118;
+    svgEl('rect', { x: heelX - 7, y: horizonY - 38, width: 14, height: 38, rx: 2, fill: STONE_COLOR }, svg);
+    addLabel(wrap, heelX, horizonY - 46, W, H, 'Heel Stone', 'star-label');
+    addLabel(wrap, sunX, sunY - 44, W, H, 'Midsummer sunrise', 'star-label finder-polaris-label');
 
-    // The Heel Stone, outside the ring along the sunrise direction.
-    const heelX = cx + ux * 108;
-    const heelY = cy + uy * 108;
-    svgEl('circle', { cx: heelX, cy: heelY, r: 6, fill: STONE_COLOR }, svg);
-    addLabel(wrap, heelX, heelY - 16, W, H, 'Heel Stone', 'star-label');
+    // A small sky marker for whichever star sat nearest the pole in the
+    // selected era — the one thing that has actually moved.
+    const star = nearestMarkedStar(STONEHENGE_ERAS[mode]);
+    svgEl('circle', { cx: 44, cy: 40, r: 16, fill: 'none', stroke: SKY_LINE_COLOR, 'stroke-width': 1.2, 'stroke-dasharray': '3 4' }, svg);
+    svgEl('circle', { cx: 44, cy: 40, r: 2.4, fill: '#fdfcf5' }, svg);
+    addLabel(wrap, 44, 18, W, H, `Pole star: ${star.name}`, 'star-label');
 
-    // A simple sun glyph at the midsummer sunrise end of the axis. Both
-    // ends of the axis sit near a side of the canvas, so their labels are
-    // anchored to grow inward rather than centred (which would overrun
-    // the edge).
-    const sunX = cx + ux * 140;
-    const sunY = cy + uy * 140;
-    svgEl('circle', { cx: sunX, cy: sunY, r: 10, fill: SUN_COLOR }, svg);
-    const sunriseLabel = addLabel(wrap, sunX, sunY - 20, W, H, 'Midsummer sunrise', 'star-label finder-polaris-label');
-    sunriseLabel.dataset.side = sunX < cx ? 'right' : 'left';
-    const sunsetLabel = addLabel(wrap, cx - ux * 140, cy - uy * 140 + 8, W, H, 'Midwinter sunset', 'star-label finder-pattern-label');
-    sunsetLabel.dataset.side = (cx - ux * 140) < cx ? 'right' : 'left';
+    document.getElementById('stonehenge-pole-star').textContent = star.name;
   }
 
-  // --- The Great Pyramid: a schematic cross-section ------------------------
+  function setUpStonehengeToggle() {
+    const thenButton = document.getElementById('stonehenge-then-button');
+    const nowButton = document.getElementById('stonehenge-now-button');
+    function render(mode) {
+      thenButton.setAttribute('aria-pressed', String(mode === 'then'));
+      nowButton.setAttribute('aria-pressed', String(mode === 'now'));
+      drawStonehengeScene(mode);
+    }
+    thenButton.addEventListener('click', () => render('then'));
+    nowButton.addEventListener('click', () => render('now'));
+    render('then');
+  }
 
-  function drawPyramidShaftDiagram() {
+  // --- The Great Pyramid: fixed shafts, drifting targets -------------------
+
+  const GIZA_LATITUDE = 29.9792; // Giza, Egypt — general knowledge, not a data-sheet figure
+  const PYRAMID_BUILD_YEAR = -2560;
+  const NORTH_SHAFT_ANGLE = 33;
+  const SOUTH_SHAFT_ANGLE = 45;
+
+  // A star's declination as it would have been measured against the
+  // celestial pole of the given year, found from its (essentially fixed)
+  // position and how far that year's true pole sat from it.
+  function declinationThen(starKey, year) {
+    const pole = M.celestialPoleAt(year);
+    return 90 - angularSeparation(pole, STARS[starKey]);
+  }
+
+  // Thuban is circumpolar from Giza throughout the years this slider
+  // covers, so its lower culmination (the low point of its daily circle
+  // around the pole) is a plain function of its declination and latitude.
+  function thubanLowerCulmination(year) {
+    return declinationThen('thuban', year) + GIZA_LATITUDE - 90;
+  }
+
+  // Alnitak is never circumpolar from Giza, so it has one meridian
+  // crossing a day, due south, at this altitude.
+  function alnitakTransitAltitude(year) {
+    return 90 - GIZA_LATITUDE + declinationThen('alnitak', year);
+  }
+
+  function drawPyramidShaftDiagram(year) {
     const svg = document.getElementById('pyramid-shaft-diagram');
     const wrap = document.getElementById('pyramid-shaft-wrap');
     if (!svg || !wrap) return;
+    clearDiagram(svg, wrap);
     const W = 320;
     const H = 260;
     const baseY = 226;
@@ -187,31 +261,63 @@
       fill: '#2a2f3d', stroke: '#7c8aa3', 'stroke-width': 1.5,
     }, svg);
 
-    // The King's Chamber, roughly a third of the way up.
     const chamberY = baseY - (baseY - apexY) * 0.42;
     const chamberHalfWidth = 26;
     svgEl('rect', { x: apexX - chamberHalfWidth, y: chamberY - 10, width: chamberHalfWidth * 2, height: 20, fill: '#10141f', stroke: '#cdd7e1', 'stroke-width': 1.5 }, svg);
     addLabel(wrap, apexX, chamberY, W, H, "King's Chamber", 'star-label');
 
-    // The northern shaft (towards Thuban, then near the pole) and the
-    // southern shaft (towards Orion's Belt at its lowest crossing).
+    // Each shaft's own fixed line, cut once and never adjustable.
+    const run = 150;
     const shafts = svgEl('g', { stroke: '#f5a623', 'stroke-width': 2.5 }, svg);
-    const north = { x1: apexX - chamberHalfWidth, y1: chamberY - 4, angleDeg: 33 };
-    const south = { x1: apexX + chamberHalfWidth, y1: chamberY - 4, angleDeg: 45 };
-    [north, south].forEach((shaft, i) => {
-      const dir = i === 0 ? -1 : 1;
-      const run = 150;
-      const x2 = shaft.x1 + dir * run * Math.cos(shaft.angleDeg * RAD);
+    const north = { x1: apexX - chamberHalfWidth, y1: chamberY - 4, angleDeg: NORTH_SHAFT_ANGLE, dir: -1 };
+    const south = { x1: apexX + chamberHalfWidth, y1: chamberY - 4, angleDeg: SOUTH_SHAFT_ANGLE, dir: 1 };
+    [north, south].forEach((shaft) => {
+      const x2 = shaft.x1 + shaft.dir * run * Math.cos(shaft.angleDeg * RAD);
       const y2 = shaft.y1 - run * Math.sin(shaft.angleDeg * RAD);
       svgEl('line', { x1: shaft.x1, y1: shaft.y1, x2, y2 }, shafts);
     });
 
-    // Both shafts' labels sit near the top corners, so each is anchored to
-    // grow back in towards the middle rather than centred on its point.
-    const northLabel = addLabel(wrap, apexX - chamberHalfWidth - 70, chamberY - 70, W, H, 'North shaft → Thuban, then', 'star-label finder-polaris-label');
+    // Where each shaft's original target actually sits in the selected
+    // year: a dashed line at the true current altitude, from the same
+    // origin, so the gap from the fixed shaft is visible directly.
+    const targetRun = 120;
+    function drawTarget(shaft, altitudeDeg, label, side) {
+      const x2 = shaft.x1 + shaft.dir * targetRun * Math.cos(altitudeDeg * RAD);
+      const y2 = shaft.y1 - targetRun * Math.sin(altitudeDeg * RAD);
+      svgEl('line', { x1: shaft.x1, y1: shaft.y1, x2, y2, stroke: SKY_LINE_COLOR, 'stroke-width': 2, 'stroke-dasharray': '5 4' }, svg);
+      svgEl('circle', { cx: x2, cy: y2, r: 4, fill: '#fdfcf5' }, svg);
+      const l = addLabel(wrap, x2, y2 - 12, W, H, label, 'star-label finder-polaris-label');
+      l.dataset.side = side;
+    }
+    drawTarget(north, thubanLowerCulmination(year), 'Thuban now', 'right');
+    drawTarget(south, alnitakTransitAltitude(year), 'Alnitak now', 'left');
+
+    const northLabel = addLabel(wrap, apexX - chamberHalfWidth - 70, chamberY - 88, W, H, 'North shaft (fixed)', 'star-label finder-pattern-label');
     northLabel.dataset.side = 'right';
-    const southLabel = addLabel(wrap, apexX + chamberHalfWidth + 60, chamberY - 92, W, H, "South shaft → Orion's Belt, then", 'star-label finder-polaris-label');
+    const southLabel = addLabel(wrap, apexX + chamberHalfWidth + 60, chamberY - 110, W, H, 'South shaft (fixed)', 'star-label finder-pattern-label');
     southLabel.dataset.side = 'left';
+  }
+
+  function updatePyramidReadout(year) {
+    const northAlt = thubanLowerCulmination(year);
+    const southAlt = alnitakTransitAltitude(year);
+    document.getElementById('pyramid-north-readout').textContent =
+      `Thuban's lower crossing: ${formatSep(northAlt)} (${formatSigned(northAlt - NORTH_SHAFT_ANGLE)} from the shaft)`;
+    document.getElementById('pyramid-south-readout').textContent =
+      `Alnitak's meridian crossing: ${formatSep(southAlt)} (${formatSigned(southAlt - SOUTH_SHAFT_ANGLE)} from the shaft)`;
+  }
+
+  function setUpPyramidSlider() {
+    const slider = document.getElementById('pyramid-year-slider');
+    const label = document.getElementById('pyramid-year-label');
+    function render() {
+      const year = Number(slider.value);
+      label.textContent = formatYear(year);
+      drawPyramidShaftDiagram(year);
+      updatePyramidReadout(year);
+    }
+    slider.addEventListener('input', render);
+    render();
   }
 
   function renderCoverage() {
@@ -220,15 +326,28 @@
     coverageEl.textContent = 'Covers: ' + subtopics.map((s) => `${s.id} ${s.title}`).join(', ');
   }
 
+  // The then/now separations quoted in pyramidDetail, computed once here
+  // rather than hand-typed, so they can never drift out of step with the
+  // interactive diagrams above.
+  const pyramidPole = M.celestialPoleAt(PYRAMID_BUILD_YEAR);
+  const nowPole = M.celestialPoleAt(CURRENT_YEAR);
+  const thubanThenSep = formatSep(angularSeparation(pyramidPole, STARS.thuban));
+  const polarisThenSep = formatSep(angularSeparation(pyramidPole, STARS.polaris));
+  const polarisNowSep = formatSep(angularSeparation(nowPole, STARS.polaris));
+  const thubanNowSep = formatSep(angularSeparation(nowPole, STARS.thuban));
+
   const GLOSSARY = {
     precession:
-      "Precession: the slow, roughly 26,000-year circling of the direction Earth's rotation axis points, caused by the Sun's and Moon's gravity acting on Earth's equatorial bulge. The tilt itself barely changes; only its direction in space does.",
+      "Precession: the slow, roughly 26,000-year circling of the direction Earth's rotation axis points, caused by the Sun's and Moon's gravity acting on Earth's equatorial bulge. The tilt itself barely changes; only its direction does. Three knock-on effects: the pole star changes, as a different bright star happens to lie near the axis each era; the equinox points drift westward along the ecliptic by about 1° every 72 years, slowly shifting which constellation the Sun sits in at the spring equinox; and every star's right ascension and declination shift slowly too, which is why star catalogues state the epoch (e.g. J2000) their coordinates are measured for.",
+    stonehengeDetail:
+      'Stonehenge was built and reworked in stages from around 3000 BCE, with its sarsen circle and trilithons raised around 2500 BCE. Its main axis, running past the outlying Heel Stone, frames sunrise on the midsummer solstice; face the opposite way and the same axis frames sunset on the midwinter solstice. One axis marking both events is deliberate: the solstices are the Sun’s most extreme rising and setting points, so tracking them needs no calendar at all, just a fixed line of sight. The illustration above is schematic, not an accurate plan: the real stone-by-stone spacing is more irregular than shown.',
+    pyramidDetail:
+      `The Great Pyramid, built around 2560 BCE at a latitude close to 30°N, holds four narrow shafts running from the King’s and Queen’s Chambers — too narrow for ventilation, long thought to have had a symbolic, sky-facing purpose. Each is cut once, at a fixed angle, so it always points the same way. The King’s Chamber’s two shafts have long-proposed matches in the sky of 2560 BCE: the northern shaft, about 33° up, in Thuban’s lower crossing near the pole; the southern shaft, about 45° up, in Orion’s Belt star Alnitak, at its lowest meridian crossing from Giza. At that date Thuban sat about ${thubanThenSep} from the pole, with Polaris about ${polarisThenSep} away — useless for finding north. Today that’s reversed: Polaris sits about ${polarisNowSep} from the pole, Thuban about ${thubanNowSep} away. The shafts themselves haven’t moved; it’s the sky around their old targets that has.`,
   };
 
-  drawPoleThenNowDiagram();
-  drawStonehengeDiagram();
-  drawPyramidShaftDiagram();
-  fillPoleFigures();
+  setUpPrecessionSlider();
+  setUpStonehengeToggle();
+  setUpPyramidSlider();
   renderCoverage();
   Glossary.init(GLOSSARY);
 })();

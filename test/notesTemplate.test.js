@@ -48,6 +48,7 @@ const DIAGRAM_FIRST_PAGES = [
   'notes/measuring-the-sky.html',
   'notes/scale-of-the-solar-system.html',
   'notes/naked-eye-sky.html',
+  'notes/archaeoastronomy.html',
 ];
 
 function read(href) {

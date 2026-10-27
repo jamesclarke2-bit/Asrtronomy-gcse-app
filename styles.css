@@ -2303,15 +2303,15 @@ canvas {
 }
 
 /* notes/archaeoastronomy.html */
-.pole-then-now-diagram,
-.stonehenge-diagram,
+.precession-circle-diagram,
+.stonehenge-scene-diagram,
 .pyramid-shaft-diagram {
   max-width: 420px;
   margin: 1rem 0 0.5rem;
 }
 
-.pole-then-now-diagram svg,
-.stonehenge-diagram svg,
+.precession-circle-diagram svg,
+.stonehenge-scene-diagram svg,
 .pyramid-shaft-diagram svg {
   display: block;
   width: 100%;
