@@ -543,4 +543,5 @@
   setUpLibrationMonthControls();
   renderCoverage();
   Glossary.init(GLOSSARY);
+  QuizUI.mount(MoonStructureQuestions.makeQuestions(SpecData, MoonPhase));
 })();

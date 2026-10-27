@@ -1,6 +1,6 @@
 (function () {
   const YEAR = 2026;
-  const CURRICULUM_UNITS = ['u2.1', 'u2.9', 'u2.15', 'u2.16'];
+  const CURRICULUM_UNITS = ['u2.1', 'u2.9', 'u2.15', 'u2.16', 'u2.28'];
   const SVG_NS = 'http://www.w3.org/2000/svg';
   const RAD = Math.PI / 180;
 
@@ -219,4 +219,5 @@
   render();
   renderCoverage();
   Glossary.init(GLOSSARY);
+  QuizUI.mount(EarthStructureQuestions.makeQuestions(SpecData));
 })();

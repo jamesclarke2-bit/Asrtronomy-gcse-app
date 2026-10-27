@@ -51,10 +51,12 @@ test("getAllQuestionsNode's total is exactly the sum of every individual questio
   const { QUESTIONS: eot } = require('../src/eotQuestions');
   const { makeQuestions: makeArchaeoastronomy } = require('../src/archaeoastronomyQuestions');
   const { makeQuestions: makeCoordinates } = require('../src/coordinatesQuestions');
+  const { makeQuestions: makeEarthStructure } = require('../src/earthStructureQuestions');
   const { makeQuestions: makeGeocentricHeliocentric } = require('../src/geocentricHeliocentricQuestions');
   const { makeQuestions: makeGravitationalPotential } = require('../src/gravitationalPotentialQuestions');
   const { makeQuestions: makeGravityFieldMap } = require('../src/gravityFieldMapQuestions');
   const { makeQuestions: makeKepler } = require('../src/keplerQuestions');
+  const { makeQuestions: makeMoonStructure } = require('../src/moonStructureQuestions');
   const { makeQuestions: makeOrbitsGravity } = require('../src/orbitsGravityQuestions');
   const { makeQuestions: makePlanetaryMotion } = require('../src/planetaryMotionQuestions');
   const { makeQuestions: makeScaleOfSolarSystem } = require('../src/scaleOfSolarSystemQuestions');
@@ -71,10 +73,12 @@ test("getAllQuestionsNode's total is exactly the sum of every individual questio
     eot.length +
     makeArchaeoastronomy(MoonPhase).length +
     makeCoordinates(Coordinates, null).length +
+    makeEarthStructure(SpecData).length +
     makeGeocentricHeliocentric().length +
     makeGravitationalPotential(GravityField, OrbitalMechanics).length +
     makeGravityFieldMap(GravityField, OrbitalMechanics, Tides).length +
     makeKepler(OrbitalMechanics, SpecData).length +
+    makeMoonStructure(SpecData, MoonPhase).length +
     makeOrbitsGravity(OrbitalMechanics).length +
     makePlanetaryMotion(PlanetaryMotion).length +
     makeScaleOfSolarSystem(SpecData).length +
