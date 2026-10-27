@@ -56,6 +56,7 @@ test("getAllQuestionsNode's total is exactly the sum of every individual questio
   const { makeQuestions: makeGravitationalPotential } = require('../src/gravitationalPotentialQuestions');
   const { makeQuestions: makeGravityFieldMap } = require('../src/gravityFieldMapQuestions');
   const { makeQuestions: makeKepler } = require('../src/keplerQuestions');
+  const { makeQuestions: makeMeasuringTheSky } = require('../src/measuringTheSkyQuestions');
   const { makeQuestions: makeMoonStructure } = require('../src/moonStructureQuestions');
   const { makeQuestions: makeOrbitsGravity } = require('../src/orbitsGravityQuestions');
   const { makeQuestions: makePlanetaryMotion } = require('../src/planetaryMotionQuestions');
@@ -78,6 +79,7 @@ test("getAllQuestionsNode's total is exactly the sum of every individual questio
     makeGravitationalPotential(GravityField, OrbitalMechanics).length +
     makeGravityFieldMap(GravityField, OrbitalMechanics, Tides).length +
     makeKepler(OrbitalMechanics, SpecData).length +
+    makeMeasuringTheSky(SpecData).length +
     makeMoonStructure(SpecData, MoonPhase).length +
     makeOrbitsGravity(OrbitalMechanics).length +
     makePlanetaryMotion(PlanetaryMotion).length +

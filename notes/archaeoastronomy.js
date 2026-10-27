@@ -1,5 +1,5 @@
 (function () {
-  const CURRICULUM_UNITS = ['u3.5'];
+  const CURRICULUM_UNITS = ['u3.5', 'u2.29'];
   const SVG_NS = 'http://www.w3.org/2000/svg';
   const RAD = Math.PI / 180;
   const M = MeasuringTheSky;

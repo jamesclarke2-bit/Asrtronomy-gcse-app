@@ -180,7 +180,7 @@ const PAGES = [
     description:
       "Why the pole star changes over millennia — Thuban, not Polaris, for the ancient Egyptians — and what that ~26,000-year wobble explains about two real monuments: Stonehenge's solstice-sunrise alignment and the Great Pyramid of Giza's star-aligned shafts.",
     href: 'notes/archaeoastronomy.html',
-    units: ['u3.5'],
+    units: ['u3.5', 'u2.29'],
     phase: 'Earth, Moon and Sun',
     position: 13,
     why: "Builds directly on Measuring the Sky's precession section — what that 26,000-year wobble meant for real ancient monuments.",

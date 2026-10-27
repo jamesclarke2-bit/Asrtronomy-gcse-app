@@ -472,4 +472,5 @@
   setUpYearSlider();
   renderCoverage();
   Glossary.init(GLOSSARY);
+  QuizUI.mount(MeasuringTheSkyQuestions.makeQuestions(SpecData));
 })();
