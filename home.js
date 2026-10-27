@@ -132,6 +132,7 @@
     'Look up': 'phase-icon-look-up',
     'Earth, Moon and Sun': 'phase-icon-earth-moon-sun',
     Time: 'phase-icon-time',
+    'The Sun': 'phase-icon-sun',
     'The Solar System and gravity': 'phase-icon-solar-system',
     'Telescopes and exploring': 'phase-icon-telescopes',
     'Stars and the Universe': 'phase-icon-stars',
