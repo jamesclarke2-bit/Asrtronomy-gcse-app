@@ -71,14 +71,8 @@
     });
 
     const chart = card.querySelector('.pattern-chart');
-    const wrap = document.createElement('div');
-    wrap.className = 'labelled-diagram-wrap';
-    chart.appendChild(wrap);
-    const svg = svgEl('svg', {
-      viewBox: `0 0 ${CHART_WIDTH} ${CHART_HEIGHT}`,
-      role: 'img',
-      'aria-label': `Star chart of ${pattern.name}, north up and east to the left, with its stars joined into the pattern`,
-    }, wrap);
+    const wrap = chart.querySelector('.labelled-diagram-wrap');
+    const svg = wrap.querySelector('svg');
 
     const lines = svgEl('g', { stroke: SKY_LINE_COLOR, 'stroke-width': 1.5 }, svg);
     pattern.lines.forEach(([a, b]) => {
@@ -422,22 +416,158 @@
       svgEl('circle', { cx: 63, cy: 56, r: 3, fill: '#4fd39a' }, svg);
       return svg;
     },
+    doubleStar() {
+      const svg = iconSvg();
+      const cy = ICON_HEIGHT / 2;
+      svgEl('circle', { cx: 56, cy, r: 7, fill: '#fdfcf5' }, svg);
+      svgEl('circle', { cx: 80, cy: cy - 6, r: 4.5, fill: '#ffe9a8' }, svg);
+      return svg;
+    },
+    milkyWay() {
+      const svg = iconSvg();
+      const band = svgEl('g', { opacity: 0.6 }, svg);
+      for (let i = 0; i < 6; i += 1) {
+        const t = i / 5;
+        const x = 14 + t * 112;
+        const y = 86 - t * 72;
+        svgEl('ellipse', { cx: x, cy: y, rx: 26, ry: 10, fill: '#cfd9ec', transform: `rotate(-35 ${x} ${y})` }, band);
+      }
+      [[18, 68], [46, 52], [78, 34], [108, 18], [30, 28], [100, 68], [58, 84], [120, 52], [12, 14]].forEach(([x, y]) => {
+        svgEl('circle', { cx: x, cy: y, r: 1.3, fill: '#fdfcf5' }, svg);
+      });
+      return svg;
+    },
   };
 
   const PHENOMENA_CARDS = [
     { icon: 'sun', title: 'The Sun', body: 'By far the brightest object in the sky. Never look at it directly, even briefly.' },
     { icon: 'moon', title: 'The Moon', body: "Earth's only natural satellite. Goes through a full cycle of phases roughly every 29.5 days." },
     { icon: 'stars', title: 'Stars', body: 'Distant suns that twinkle and keep fixed patterns. A double star is two stars that appear close together — a different idea entirely from a constellation or asterism.' },
-    { icon: 'starClusters', title: 'Star clusters', body: 'A group of stars born together, still close enough to look like a tight knot or fuzzy patch, e.g. the Pleiades.' },
-    { icon: 'galaxiesNebulae', title: 'Galaxies and nebulae', body: 'A galaxy is an entire separate star system, like the Andromeda Galaxy. A nebula is a closer cloud of gas and dust inside our own Galaxy, like the Orion Nebula.' },
-    { icon: 'planets', title: 'Planets', body: 'Shine with a steadier light than stars, stay within the zodiacal band, and drift slowly against the background stars.' },
-    { icon: 'comets', title: 'Comets', body: 'A fuzzy coma with a faint tail that always points away from the Sun. Drifts slowly against the stars from one night to the next.' },
-    { icon: 'meteors', title: 'Meteors', body: '"Shooting stars": a brief streak of light under a second long, as a grain of dust burns up in the atmosphere.' },
-    { icon: 'aurorae', title: 'Aurorae', body: 'Glowing curtains, arcs or rays of light, mostly green, caused by solar wind particles striking the upper atmosphere near the poles.' },
-    { icon: 'supernovae', title: 'Supernovae', body: "A dying star's catastrophic explosion, briefly outshining its whole galaxy. A naked-eye one in our own Galaxy is extremely rare." },
-    { icon: 'satellites', title: 'Artificial satellites', body: 'A star-like point that glides steadily in a straight line for a few minutes, with no flashing lights.' },
-    { icon: 'aircraft', title: 'Aircraft', body: "Not an astronomical object at all — but it blinks with steady or flashing coloured lights, unlike a satellite's steady glide." },
+    {
+      icon: 'starClusters',
+      title: 'Star cluster',
+      tell: 'A tight knot or fuzzy patch, not just one point.',
+      body: 'A group of stars born together, still close enough to look like a tight knot or fuzzy patch, e.g. the Pleiades.',
+    },
+    {
+      icon: 'galaxiesNebulae',
+      title: 'Galaxy / nebula',
+      tell: 'A smudge: a whole galaxy, or a closer gas cloud.',
+      body: 'A galaxy is an entire separate star system, like the Andromeda Galaxy. A nebula is a closer cloud of gas and dust inside our own Galaxy, like the Orion Nebula.',
+    },
+    {
+      icon: 'planets',
+      title: 'Planet',
+      tell: 'Shines steady, drifting slowly against the stars.',
+      body: 'Shines with a steadier light than stars, stays within the zodiacal band, and drifts slowly against the background stars.',
+    },
+    {
+      icon: 'comets',
+      title: 'Comet',
+      tell: 'A fuzzy tail, always pointing away from the Sun.',
+      body: 'A fuzzy coma with a faint tail that always points away from the Sun. Drifts slowly against the stars from one night to the next.',
+    },
+    {
+      icon: 'meteors',
+      title: 'Meteor',
+      tell: 'A single streak under a second, gone in a blink.',
+      body: '"Shooting stars": a brief streak of light under a second long, as a grain of dust burns up in the atmosphere.',
+    },
+    {
+      icon: 'aurorae',
+      title: 'Aurora',
+      tell: 'Rippling green curtains or arcs, low in the north.',
+      body: 'Glowing curtains, arcs or rays of light, mostly green, caused by solar wind particles striking the upper atmosphere near the poles.',
+    },
+    {
+      icon: 'supernovae',
+      title: 'Supernova',
+      tell: 'A "new star" — briefly dazzling, vanishingly rare.',
+      body: "A dying star's catastrophic explosion, briefly outshining its whole galaxy. A naked-eye one in our own Galaxy is extremely rare.",
+    },
+    {
+      icon: 'doubleStar',
+      title: 'Double star',
+      tell: 'Two stars sitting right next to each other.',
+      body: 'Two stars that appear close together in the sky. Some are a true binary, genuinely orbiting each other, like Albireo in Cygnus; others just happen to lie in nearly the same direction from Earth, at very different real distances.',
+    },
+    {
+      icon: 'satellites',
+      title: 'Satellite trail',
+      tell: 'Glides steadily in a straight line, no flashing lights.',
+      body: 'A star-like point that glides steadily in a straight line for a few minutes, with no flashing lights.',
+    },
+    {
+      icon: 'aircraft',
+      title: 'Aircraft lights',
+      tell: 'Flashing lights, unlike a satellite’s steady glide.',
+      body: "Not an astronomical object at all — but it blinks with steady or flashing coloured lights, unlike a satellite's steady glide.",
+    },
+    {
+      icon: 'milkyWay',
+      title: 'The Milky Way',
+      tell: 'A faint band across the sky, not one object.',
+      body: "A faint, diffuse band of light arching across the sky on a dark, moonless night — the combined glow of billions of stars in our Galaxy's disc, seen edge-on from inside it. Dark lanes across it, like the Great Rift through Cygnus, are dust clouds blocking the light behind them. Needs a genuinely dark site: even moderate light pollution hides it completely.",
+    },
   ];
+
+  // The subset and order shown in the tappable picture grid — everything
+  // above except the Sun, Moon and plain Stars, which aren't really
+  // "which of these is it" identification targets.
+  const PHENOMENA_GRID_ORDER = [
+    'satellites', 'aircraft', 'planets', 'meteors', 'comets', 'aurorae',
+    'supernovae', 'doubleStar', 'starClusters', 'galaxiesNebulae', 'milkyWay',
+  ];
+
+  // --- The phenomena picture grid: one SVG, one tappable region per -----
+  // icon (same glossary-toggle/diagram-region convention as the clickable
+  // shapes on notes/moon-structure.html), each icon generated by the same
+  // PHENOMENA_ICONS functions the flashcards use — grafted into a <g> at
+  // its grid cell instead of its own standalone <svg>, so the drawing
+  // code itself never needed to change.
+
+  const GRID_COLS = 4;
+  const GRID_CELL_W = 160;
+  const GRID_CELL_H = 230;
+  const GRID_ICON_MARGIN_X = (GRID_CELL_W - ICON_WIDTH) / 2;
+  const GRID_ICON_MARGIN_TOP = 12;
+
+  function buildPhenomenaGrid() {
+    const svg = document.getElementById('phenomena-grid');
+    const wrap = document.getElementById('phenomena-grid-wrap');
+    const rows = Math.ceil(PHENOMENA_GRID_ORDER.length / GRID_COLS);
+    const totalWidth = GRID_COLS * GRID_CELL_W;
+    const totalHeight = rows * GRID_CELL_H;
+    svg.setAttribute('viewBox', `0 0 ${totalWidth} ${totalHeight}`);
+
+    PHENOMENA_GRID_ORDER.forEach((key, i) => {
+      const card = PHENOMENA_CARDS.find((c) => c.icon === key);
+      const col = i % GRID_COLS;
+      const row = Math.floor(i / GRID_COLS);
+      const cellX = col * GRID_CELL_W;
+      const cellY = row * GRID_CELL_H;
+      const iconX = cellX + GRID_ICON_MARGIN_X;
+      const iconY = cellY + GRID_ICON_MARGIN_TOP;
+
+      const group = svgEl('g', {
+        class: 'glossary-toggle diagram-region',
+        'data-term': card.icon,
+        tabindex: '0',
+        role: 'button',
+        'aria-expanded': 'false',
+        'aria-label': `${card.title}: ${card.tell} Tap for more.`,
+        transform: `translate(${iconX},${iconY})`,
+      }, svg);
+
+      const generated = PHENOMENA_ICONS[key]();
+      while (generated.firstChild) group.appendChild(generated.firstChild);
+
+      const labelX = cellX + GRID_CELL_W / 2;
+      const titleY = iconY + ICON_HEIGHT + 18;
+      placeLabel(makeLabel(wrap, 'phenomena-grid-title', card.title), labelX, titleY, totalWidth, totalHeight);
+      placeLabel(makeLabel(wrap, 'phenomena-grid-tell', card.tell), labelX, titleY + 48, totalWidth, totalHeight);
+    });
+  }
 
   // A small SVG of just one pattern's stars and lines, unlabelled — the
   // same real positions as its full pattern-card chart, cropped down to
@@ -726,10 +856,22 @@
       'An asterism: a recognisable star pattern that is not one of the 88 official constellations. It may be part of a constellation (the Plough, in Ursa Major) or use stars from several (the Summer Triangle).',
     circumpolar:
       'Circumpolar: close enough to the celestial pole that it never sets, but circles the pole all night and all year. Whether a star is circumpolar depends on your latitude.',
+    patternKinds:
+      'Cassiopeia, Orion, Cygnus and the Southern Cross are official constellations; the Plough, the Summer Triangle and the Square of Pegasus are asterisms — the Plough is part of the constellation Ursa Major, the Square is part of Pegasus and Andromeda, and the Summer Triangle spans three separate constellations altogether.',
     doubleStar:
       "A double star: two stars that appear close together in the sky. Some are a true binary, genuinely orbiting each other, like Albireo in Cygnus; others just happen to lie in nearly the same direction from Earth, at very different real distances.",
   };
 
+  // The rest of the picture grid's tap-to-reveal text: the same body text
+  // PHENOMENA_CARDS already gives the flashcards, so the grid can never
+  // disagree with the deck — never retyped here.
+  const lowerFirst = (s) => s.charAt(0).toLowerCase() + s.slice(1);
+  PHENOMENA_GRID_ORDER.filter((key) => key !== 'doubleStar').forEach((key) => {
+    const card = PHENOMENA_CARDS.find((c) => c.icon === key);
+    GLOSSARY[key] = `${card.title}: ${lowerFirst(card.body)}`;
+  });
+
+  buildPhenomenaGrid();
   document.querySelectorAll('.pattern-card').forEach(drawPatternChart);
   setUpPoleFinder();
   setUpMonthSlider();

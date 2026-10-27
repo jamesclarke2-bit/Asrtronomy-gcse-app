@@ -47,6 +47,7 @@ const DIAGRAM_FIRST_PAGES = [
   'notes/moon-structure.html',
   'notes/measuring-the-sky.html',
   'notes/scale-of-the-solar-system.html',
+  'notes/naked-eye-sky.html',
 ];
 
 function read(href) {

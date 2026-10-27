@@ -2107,6 +2107,40 @@ canvas {
 }
 
 /* notes/naked-eye-sky.html */
+/* notes/naked-eye-sky.html's tappable phenomena picture grid: one SVG,
+   each icon a .diagram-region glossary-toggle, with its own always-visible
+   title/tell labels (custom classes since makeLabel() replaces, rather
+   than adds to, the default .labelled-diagram-label class). */
+.phenomena-grid-diagram {
+  max-width: 700px;
+  margin: 1rem 0;
+}
+
+.phenomena-grid-definitions {
+  max-width: 700px;
+}
+
+.phenomena-grid-title,
+.phenomena-grid-tell {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 6.4rem;
+  text-align: center;
+  line-height: 1.25;
+  pointer-events: none;
+}
+
+.phenomena-grid-title {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #1b2430;
+}
+
+.phenomena-grid-tell {
+  font-size: 0.7rem;
+  color: #666;
+}
+
 .pattern-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
