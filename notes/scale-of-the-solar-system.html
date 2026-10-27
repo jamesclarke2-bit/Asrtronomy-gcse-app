@@ -7,7 +7,7 @@
   <meta name="referrer" content="no-referrer" />
   <meta name="robots" content="noindex, nofollow" />
   <title>The Scale of the Solar System</title>
-  <link rel="stylesheet" href="../styles.css?v=202610281600" />
+  <link rel="stylesheet" href="../styles.css?v=202610281730" />
   <link rel="icon" type="image/svg+xml" href="../favicon.svg?v=202610130720" />
 </head>
 <body>
@@ -48,13 +48,92 @@
       <p class="eot-readout" id="distance-nearest"></p>
       <p class="eot-readout" id="distance-light-time"></p>
 
+      <p class="panel-note">Or zoom out one step at a time:</p>
+      <div class="scale-ladder" id="scale-ladder">
+        <div class="scale-ladder-rung">
+          <svg class="scale-ladder-icon" viewBox="0 0 60 60" role="img" aria-label="Earth">
+            <circle cx="30" cy="30" r="24" fill="#2a6bd6" />
+            <path d="M14,22 Q22,14 32,18 Q28,24 20,26 Q16,28 14,22 Z" fill="#3e8e52" />
+            <path d="M30,36 Q40,32 46,38 Q42,46 34,44 Q28,42 30,36 Z" fill="#3e8e52" />
+          </svg>
+          <div class="scale-ladder-text">
+            <h3>Earth</h3>
+            <p class="diagram-caption">Where we're standing</p>
+          </div>
+        </div>
+        <div class="scale-ladder-rung">
+          <svg class="scale-ladder-icon" viewBox="0 0 60 60" role="img" aria-label="The Moon">
+            <circle cx="30" cy="30" r="20" fill="#c9cdd3" stroke="#9c9a91" stroke-width="1" />
+            <circle cx="22" cy="24" r="4" fill="#b1afa6" />
+            <circle cx="35" cy="20" r="2.5" fill="#b1afa6" />
+            <circle cx="33" cy="36" r="5" fill="#b1afa6" />
+          </svg>
+          <div class="scale-ladder-text">
+            <h3>The Moon</h3>
+            <p class="diagram-caption" id="ladder-moon"></p>
+          </div>
+        </div>
+        <div class="scale-ladder-rung">
+          <svg class="scale-ladder-icon" viewBox="0 0 60 60" role="img" aria-label="The Sun">
+            <g stroke="#e0a21a" stroke-width="2" stroke-linecap="round">
+              <line x1="30" y1="2" x2="30" y2="10" /><line x1="30" y1="50" x2="30" y2="58" />
+              <line x1="2" y1="30" x2="10" y2="30" /><line x1="50" y1="30" x2="58" y2="30" />
+              <line x1="10" y1="10" x2="15" y2="15" /><line x1="45" y1="45" x2="50" y2="50" />
+              <line x1="50" y1="10" x2="45" y2="15" /><line x1="15" y1="45" x2="10" y2="50" />
+            </g>
+            <circle cx="30" cy="30" r="18" fill="#f5a623" />
+          </svg>
+          <div class="scale-ladder-text">
+            <h3>The Sun</h3>
+            <p class="diagram-caption" id="ladder-sun"></p>
+          </div>
+        </div>
+        <div class="scale-ladder-rung">
+          <svg class="scale-ladder-icon" viewBox="0 0 60 60" role="img" aria-label="Jupiter">
+            <circle cx="30" cy="30" r="24" fill="#d9b38c" />
+            <path d="M6,22 A24,24 0 0 1 54,22 Z" fill="#c79a6e" opacity="0.7" />
+            <path d="M6,38 A24,24 0 0 0 54,38 Z" fill="#c79a6e" opacity="0.7" />
+            <ellipse cx="38" cy="33" rx="6" ry="3.5" fill="#b5542f" />
+          </svg>
+          <div class="scale-ladder-text">
+            <h3>Jupiter</h3>
+            <p class="diagram-caption" id="ladder-jupiter"></p>
+          </div>
+        </div>
+        <div class="scale-ladder-rung">
+          <svg class="scale-ladder-icon" viewBox="0 0 60 60" role="img" aria-label="Neptune">
+            <circle cx="30" cy="30" r="22" fill="#2e5fa3" />
+            <path d="M8,26 A22,22 0 0 1 52,26" fill="none" stroke="#1f4278" stroke-width="3" />
+            <ellipse cx="22" cy="34" rx="7" ry="3" fill="#1f4278" opacity="0.8" />
+          </svg>
+          <div class="scale-ladder-text">
+            <h3>Neptune</h3>
+            <p class="diagram-caption" id="ladder-neptune"></p>
+          </div>
+        </div>
+        <div class="scale-ladder-rung">
+          <svg class="scale-ladder-icon scale-ladder-icon-dark" viewBox="0 0 60 60" role="img" aria-label="The nearest star beyond the Sun">
+            <rect x="0" y="0" width="60" height="60" fill="#10141f" rx="8" />
+            <g stroke="#fdfcf5" stroke-width="1.5" stroke-linecap="round">
+              <line x1="30" y1="14" x2="30" y2="46" /><line x1="14" y1="30" x2="46" y2="30" />
+            </g>
+            <circle cx="30" cy="30" r="4" fill="#fdfcf5" />
+          </svg>
+          <div class="scale-ladder-text">
+            <h3>Nearest star</h3>
+            <p class="diagram-caption" id="ladder-star"></p>
+          </div>
+        </div>
+      </div>
+      <p class="eot-readout" id="ladder-ratio"></p>
+
       <p class="note">
         Notice how tightly the eight planets bunch up together on this scale &mdash; Mercury to
         Neptune spans less than two decades (powers of ten) &mdash; while the gap from Neptune to
-        the nearest star beyond the Sun is over three more decades on top of that: more than
-        10,000&times; farther than Neptune is from the Sun. That gap is exactly why the Solar
-        System gets its own unit (the AU) and interstellar space gets different ones
-        (light years and parsecs) &mdash; see the next section.
+        the nearest star beyond the Sun is over three more decades on top of that:
+        <span id="ladder-ratio-inline"></span> farther than Neptune is from the Sun. That gap is
+        exactly why the Solar System gets its own unit (the AU) and interstellar space gets
+        different ones (light years and parsecs) &mdash; see the next section.
       </p>
     </section>
 
@@ -212,7 +291,7 @@
   <script src="../src/scaleOfSolarSystemQuestions.js?v=202610071700"></script>
   <script src="../glossary.js?v=202610131052"></script>
   <script src="../quiz-ui.js?v=202609221100"></script>
-  <script src="scale-of-the-solar-system.js?v=202610071700"></script>
+  <script src="scale-of-the-solar-system.js?v=202610281700"></script>
   <script src="../notesPage.js?v=202609252100"></script>
   <script src="../nextPage.js?v=202610161057"></script>
 </body>

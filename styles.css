@@ -75,6 +75,49 @@ canvas {
   gap: 1.5rem;
 }
 
+/* notes/scale-of-the-solar-system.html's "zoom out" picture ladder: one
+   rung per body, each an icon beside its distance and light travel time. */
+.scale-ladder {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin: 1rem 0;
+  max-width: 520px;
+}
+
+.scale-ladder-rung {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem 0.75rem;
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+}
+
+.scale-ladder-icon {
+  flex: 0 0 auto;
+  width: 48px;
+  height: 48px;
+  background: #f7f7f5;
+  border-radius: 8px;
+}
+
+.scale-ladder-icon-dark {
+  background: #10141f;
+}
+
+.scale-ladder-text h3 {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.scale-ladder-text .diagram-caption {
+  margin: 0.15rem 0 0;
+  text-align: left;
+  font-style: normal;
+}
+
 /* The telescope bench (notes/telescopes.html) needs more horizontal
    room than the generic .diagram cap gives a schematic tube diagram. */
 .diagram.bench-diagram {

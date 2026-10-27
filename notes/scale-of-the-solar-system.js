@@ -218,6 +218,33 @@
     document.getElementById('parsec-value').textContent = `1 pc = ${formatScientific(PARSEC_KM, 1)} km = ${PARSEC_LY} ly`;
   }
 
+  // The "zoom out" picture ladder: every figure computed live from the
+  // same data-sheet constants the rest of the page uses, never retyped.
+  function renderLadder() {
+    const jupiter = PLANETS.find((p) => p.name === 'Jupiter');
+    const neptune = PLANETS.find((p) => p.name === 'Neptune');
+    const jupiterKm = jupiter.distanceAU * AU_KM;
+    const neptuneKm = neptune.distanceAU * AU_KM;
+
+    document.getElementById('ladder-moon').textContent =
+      `${formatKm(MOON_KM)} away — light takes ${formatDuration(MOON_KM / SPEED_OF_LIGHT_KM_S)}`;
+    document.getElementById('ladder-sun').textContent =
+      `${formatKm(AU_KM)} away (1 AU) — light takes ${formatDuration(AU_KM / SPEED_OF_LIGHT_KM_S)}`;
+    document.getElementById('ladder-jupiter').textContent =
+      `${jupiter.distanceAU} AU away — light takes ${formatDuration(jupiterKm / SPEED_OF_LIGHT_KM_S)}`;
+    document.getElementById('ladder-neptune').textContent =
+      `${neptune.distanceAU} AU away — light takes ${formatDuration(neptuneKm / SPEED_OF_LIGHT_KM_S)}`;
+    document.getElementById('ladder-star').textContent =
+      `About ${NEAREST_STAR_LY} light years away — so its light takes about ${NEAREST_STAR_LY} years to reach us`;
+
+    const ratio = NEAREST_STAR_KM / neptuneKm;
+    const roundedRatio = Math.round(ratio / 1000) * 1000;
+    const ratioText = `about ${roundedRatio.toLocaleString()} times`;
+    document.getElementById('ladder-ratio').textContent =
+      `The nearest star is ${ratioText} farther away than Neptune is from the Sun — computed from the data-sheet distances: ${Math.round(ratio).toLocaleString()}×.`;
+    document.getElementById('ladder-ratio-inline').textContent = ratioText;
+  }
+
   function renderLightTimeTable() {
     const tbody = document.getElementById('light-time-body');
     tbody.innerHTML = '';
@@ -260,6 +287,7 @@
   slider.value = String((Math.log10(state.km) - LOG_MIN) / (LOG_MAX - LOG_MIN));
   update();
   renderUnitsTable();
+  renderLadder();
   renderLightTimeTable();
   renderCoverage();
   Glossary.init(GLOSSARY);

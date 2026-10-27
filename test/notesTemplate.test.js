@@ -46,6 +46,7 @@ const DIAGRAM_FIRST_PAGES = [
   'notes/tides.html',
   'notes/moon-structure.html',
   'notes/measuring-the-sky.html',
+  'notes/scale-of-the-solar-system.html',
 ];
 
 function read(href) {
