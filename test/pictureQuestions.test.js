@@ -74,6 +74,11 @@ async function withPage(t, url, viewport, run) {
   try {
     const page = await browser.newPage({ viewport: { width: viewport.width, height: viewport.height } });
     await page.goto(url);
+    // The picture questions live inside a collapsed <details> panel (see
+    // notes/earth-structure.html's "Picture quiz: name that line" and
+    // notes/moon-structure.html's "Picture quiz: name that feature") —
+    // open it so the questions inside are actually visible/interactable.
+    await page.evaluate(() => document.querySelectorAll('details.picture-quiz-panel').forEach((d) => (d.open = true)));
     await page.waitForTimeout(200);
     await run(page);
   } finally {

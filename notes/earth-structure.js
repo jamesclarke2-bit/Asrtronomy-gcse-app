@@ -160,6 +160,36 @@
     });
   }
 
+  // A CSS filter/drop-shadow doesn't render reliably on SVG shapes in
+  // Safari/WebKit, so the highlight here is real SVG attributes: a much
+  // thicker stroke in a colour that appears nowhere else on the globe
+  // (so it reads against the orange/blue/red parallels and the blue
+  // globe background alike), a bigger dot for a pole, and every other
+  // reference feature dimmed via the plain, reliable CSS opacity
+  // property instead.
+  const QUIZ_HIGHLIGHT_COLOR = '#ff00c8';
+  const QUIZ_HIGHLIGHT_STROKE_WIDTH = 12;
+
+  function applyLineQuizHighlight(svg, highlightTerm) {
+    const isPole = highlightTerm === 'northPole' || highlightTerm === 'southPole';
+    svg.querySelectorAll('.diagram-region').forEach((region) => {
+      const isTarget = region.dataset.term === highlightTerm;
+      region.classList.toggle('diagram-feature-highlight', isTarget);
+      region.classList.toggle('diagram-feature-dimmed', !isTarget);
+      if (!isTarget) return;
+      Array.from(region.children).forEach((shape) => {
+        if (shape.hasAttribute('pointer-events')) return; // the shape's own invisible, wider hit-area
+        if (isPole) {
+          const baseRadius = parseFloat(shape.getAttribute('r')) || 6;
+          shape.setAttribute('r', String(baseRadius * 3));
+          shape.setAttribute('fill', QUIZ_HIGHLIGHT_COLOR);
+        }
+        shape.setAttribute('stroke', QUIZ_HIGHLIGHT_COLOR);
+        shape.setAttribute('stroke-width', String(QUIZ_HIGHLIGHT_STROKE_WIDTH));
+      });
+    });
+  }
+
   // A small, standalone copy of the globe above for a "name that line"
   // practice question: redraws the same globe (drawGlobe, unchanged
   // geometry) into a fresh svg/wrap pair with showLabels off (so none of
@@ -178,9 +208,7 @@
     }, wrap);
 
     drawGlobe(svg, wrap, `quiz-${highlightTerm}-`, false);
-
-    const target = svg.querySelector(`[data-term="${highlightTerm}"]`);
-    if (target) target.classList.add('diagram-feature-highlight');
+    applyLineQuizHighlight(svg, highlightTerm);
 
     svg.querySelectorAll('.glossary-toggle').forEach((el) => el.setAttribute('tabindex', '-1'));
 
@@ -193,9 +221,24 @@
     coverageEl.textContent = 'Covers: ' + subtopics.map((s) => `${s.id} ${s.title}`).join(', ');
   }
 
-  // --- "Inside the Earth" labels: highlight the matching ring and ------
-  // scroll to the matching legend entry, each other's match by the same
-  // data-layer value (crust / mantle / outer-core / inner-core).
+  // --- "Inside the Earth": drawn here (not static markup) so its ---------
+  // labels can use the same leader-line-to-a-dot-on-its-own-ring, label-
+  // in-a-neat-column-outside placement as sims/sun-declination.html's Sun
+  // structure diagram and notes/moon-structure.html's Inside the Moon —
+  // see src/ringDiagramLabels.js, the geometry shared by all three.
+  // Clicking a label highlights the matching ring and scrolls to the
+  // matching legend entry, each other's match by the same data-layer
+  // value (crust / mantle / outer-core / inner-core) — unchanged from
+  // before, just wired up after the labels are drawn instead of to
+  // static ones already in the HTML.
+
+  const EARTH_INTERNAL_LAYERS = [
+    { layer: 'inner-core', name: 'Inner core', radius: 45, angleDeg: 90, fill: '#fff2c4' },
+    { layer: 'outer-core', name: 'Outer core', radius: 110, angleDeg: 0, fill: '#e8631a' },
+    { layer: 'mantle', name: 'Mantle', radius: 195, angleDeg: 270, fill: '#c17a4a' },
+    { layer: 'crust', name: 'Crust', radius: 208, angleDeg: 180, fill: '#5b7c99', stroke: '#3f5a70' },
+  ];
+  const EARTH_LAYERS_GEOMETRY = { cx: 450, cy: 450, outerRadius: 208, width: 900, height: 900, margin: 130 };
 
   function highlightEarthLayer(layer) {
     document.querySelectorAll('.earth-layer-region').forEach((region) => {
@@ -208,15 +251,52 @@
     if (li) li.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 
-  document.querySelectorAll('.earth-layer-label').forEach((label) => {
-    label.addEventListener('click', () => highlightEarthLayer(label.dataset.layer));
-    label.addEventListener('keydown', (event) => {
-      if (event.key === 'Enter' || event.key === ' ') {
-        event.preventDefault();
-        highlightEarthLayer(label.dataset.layer);
+  function drawEarthLayers() {
+    const svg = document.getElementById('earth-layers');
+    const wrap = document.getElementById('earth-layers-wrap');
+
+    // Outermost first so each smaller ring paints over it, same nesting
+    // the previous static markup relied on.
+    [...EARTH_INTERNAL_LAYERS].reverse().forEach((layer) => {
+      const attrs = {
+        cx: EARTH_LAYERS_GEOMETRY.cx, cy: EARTH_LAYERS_GEOMETRY.cy, r: layer.radius, fill: layer.fill,
+        class: 'earth-layer-region', 'data-layer': layer.layer,
+      };
+      if (layer.stroke) {
+        attrs.stroke = layer.stroke;
+        attrs['stroke-width'] = 2;
       }
+      svgEl('circle', attrs, svg);
     });
-  });
+
+    const leaders = svgEl('g', { stroke: '#8a97a5', 'stroke-width': 1, 'stroke-dasharray': '3 2', 'pointer-events': 'none' }, svg);
+    EARTH_INTERNAL_LAYERS.forEach((layer) => {
+      const pos = RingDiagramLabels.layoutRingLabel({ ...EARTH_LAYERS_GEOMETRY, radius: layer.radius, angleDeg: layer.angleDeg });
+      svgEl('line', { x1: pos.dotX, y1: pos.dotY, x2: pos.leaderEndX, y2: pos.leaderEndY }, leaders);
+      svgEl('circle', { cx: pos.dotX, cy: pos.dotY, r: 4, fill: '#8a97a5' }, leaders);
+
+      const label = document.createElement('span');
+      label.className = 'labelled-diagram-label labelled-diagram-label--narrow earth-layer-label';
+      label.dataset.layer = layer.layer;
+      label.tabIndex = 0;
+      label.setAttribute('role', 'button');
+      label.setAttribute('aria-label', `${layer.name}: show its description`);
+      label.style.left = `${pos.leftPercent}%`;
+      label.style.top = `${pos.topPercent}%`;
+      label.textContent = layer.name;
+      wrap.appendChild(label);
+    });
+
+    document.querySelectorAll('.earth-layer-label').forEach((label) => {
+      label.addEventListener('click', () => highlightEarthLayer(label.dataset.layer));
+      label.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          highlightEarthLayer(label.dataset.layer);
+        }
+      });
+    });
+  }
 
   const GLOSSARY = {
     oblateSpheroid:
@@ -250,8 +330,18 @@
   };
 
   drawGlobe();
+  drawEarthLayers();
   render();
   renderCoverage();
   Glossary.init(GLOSSARY);
-  QuizUI.mount(EarthStructureQuestions.makeQuestions(SpecData, { renderLineQuizDiagram }));
+  const earthQuestions = EarthStructureQuestions.makeQuestions(SpecData, { renderLineQuizDiagram });
+  const lineQuizQuestions = earthQuestions.filter((q) => q.id.startsWith('name-that-line-'));
+  const textQuestions = earthQuestions.filter((q) => !q.id.startsWith('name-that-line-'));
+  QuizUI.mount(textQuestions);
+  QuizUI.mountGroup({
+    questions: lineQuizQuestions,
+    listElementId: 'line-quiz-list',
+    summaryElementId: 'line-quiz-summary',
+    label: 'Picture quiz: name that line',
+  });
 })();

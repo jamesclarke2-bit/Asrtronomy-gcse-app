@@ -1,9 +1,10 @@
 /**
- * Shared quiz rendering: renders a set of questions into #questions-list
- * and a per-subtopic tally into #progress-list, backed by one shared
- * localStorage store (astro-quiz-progress) so progress accumulates
- * across pages, keyed by curriculum subtopic id. Call QuizUI.mount(questions)
- * once per page with that page's own question array.
+ * Shared quiz rendering: renders a set of questions into a container
+ * (#questions-list by default) and a per-subtopic tally into
+ * #progress-list, backed by one shared localStorage store
+ * (astro-quiz-progress) so progress accumulates across pages, keyed by
+ * curriculum subtopic id. Call QuizUI.mount(questions) once per page
+ * with that page's own question array.
  *
  * A question may optionally supply render(container): called once per
  * mount with an empty <div>, it draws a picture above the answer choices
@@ -12,9 +13,22 @@
  * src/earthStructureQuestions.js's "name that feature/line" questions.
  * Checking and tallying the answer works exactly as for a text question;
  * quiz-ui.js never inspects what render() drew.
+ *
+ * A long, same-shape set of questions (those same "name that
+ * feature/line" ones) can instead go in their own collapsed panel via
+ * QuizUI.mountGroup({questions, listElementId, summaryElementId, label}):
+ * rendered into listElementId exactly like mount() renders into
+ * questions-list, but summaryElementId's text is kept live-updated with
+ * "label (N questions) — X/N correct", answered from the same shared
+ * tally (now also keyed per question id, not just per subtopic, so a
+ * group's own correct count never gets mixed up with another
+ * question's that happens to share a unit tag). #progress-list always
+ * covers every question mounted on the page, by either call.
  */
 (function () {
   const STORAGE_KEY = 'astro-quiz-progress';
+  let allMountedQuestions = [];
+  const groupSummaries = [];
 
   function loadProgress() {
     try {
@@ -37,11 +51,11 @@
     return subtopic ? `${id} ${subtopic.title}` : id;
   }
 
-  function renderProgress(questions) {
+  function renderProgress() {
     const progress = loadProgress();
     const list = document.getElementById('progress-list');
     list.innerHTML = '';
-    const allUnits = [...new Set(questions.flatMap((q) => q.units))];
+    const allUnits = [...new Set(allMountedQuestions.flatMap((q) => q.units))];
     allUnits.forEach((id) => {
       const entry = progress[id] || { attempts: 0, correct: 0 };
       const li = document.createElement('li');
@@ -50,16 +64,29 @@
     });
   }
 
-  function recordResult(units, correct, questions) {
+  function renderGroupSummaries() {
     const progress = loadProgress();
-    units.forEach((id) => {
+    const results = progress.questionResults || {};
+    groupSummaries.forEach(({ questions, summaryEl, label }) => {
+      const correctCount = questions.filter((q) => results[q.id]).length;
+      const noun = questions.length === 1 ? 'question' : 'questions';
+      summaryEl.textContent = `${label} (${questions.length} ${noun}) — ${correctCount}/${questions.length} correct`;
+    });
+  }
+
+  function recordResult(question, correct) {
+    const progress = loadProgress();
+    question.units.forEach((id) => {
       const entry = progress[id] || { attempts: 0, correct: 0 };
       entry.attempts += 1;
       if (correct) entry.correct += 1;
       progress[id] = entry;
     });
+    progress.questionResults = progress.questionResults || {};
+    progress.questionResults[question.id] = correct;
     saveProgress(progress);
-    renderProgress(questions);
+    renderProgress();
+    renderGroupSummaries();
   }
 
   // Renders one input for a field-like spec ({type, unitLabel, options}),
@@ -144,9 +171,7 @@
     return buildSingleInput(question, question.id, form);
   }
 
-  function renderQuestions(questions) {
-    const container = document.getElementById('questions-list');
-
+  function renderQuestions(questions, container) {
     questions.forEach((question) => {
       const card = document.createElement('div');
       card.className = 'question-card';
@@ -199,7 +224,7 @@
           return;
         }
         const result = question.check(value);
-        recordResult(question.units, result.correct, questions);
+        recordResult(question, result.correct);
         feedback.className = 'question-feedback ' + (result.correct ? 'correct' : 'incorrect');
         // Always reveal the explanation, not just right/wrong — every
         // question's message is written to read sensibly either way (a
@@ -220,9 +245,22 @@
   }
 
   function mount(questions) {
-    renderQuestions(questions);
-    renderProgress(questions);
+    allMountedQuestions = allMountedQuestions.concat(questions);
+    renderQuestions(questions, document.getElementById('questions-list'));
+    renderProgress();
   }
 
-  window.QuizUI = { mount };
+  // A second, separately-collapsed set of questions on the same page —
+  // e.g. a "name that feature/line" picture-quiz panel — sharing the
+  // same #progress-list tally as mount()'s own questions, plus its own
+  // live "X/N correct" count in summaryEl.
+  function mountGroup({ questions, listElementId, summaryElementId, label }) {
+    allMountedQuestions = allMountedQuestions.concat(questions);
+    renderQuestions(questions, document.getElementById(listElementId));
+    groupSummaries.push({ questions, summaryEl: document.getElementById(summaryElementId), label });
+    renderProgress();
+    renderGroupSummaries();
+  }
+
+  window.QuizUI = { mount, mountGroup };
 })();

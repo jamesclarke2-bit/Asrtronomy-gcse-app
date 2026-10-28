@@ -7,7 +7,7 @@
   <meta name="referrer" content="no-referrer" />
   <meta name="robots" content="noindex, nofollow" />
   <title>Observing the Sun</title>
-  <link rel="stylesheet" href="../styles.css?v=202610300900" />
+  <link rel="stylesheet" href="../styles.css?v=202611011100" />
   <link rel="icon" type="image/svg+xml" href="../favicon.svg?v=202610130720" />
 </head>
 <body>
@@ -254,8 +254,8 @@
       </p>
       <p class="note">Click or tap a layer below to reveal what it is.</p>
       <div class="diagram sun-structure-diagram">
-        <div class="labelled-diagram-wrap">
-          <svg viewBox="0 0 500 500" role="group" aria-label="Interactive, labelled cutaway diagram of the Sun's layered structure. Click or tap a layer — core, radiative zone, convective zone, photosphere, chromosphere or corona — to reveal what it is">
+        <div class="labelled-diagram-wrap" id="sun-structure-wrap">
+          <svg id="sun-structure" viewBox="0 0 500 500" role="group" aria-label="Interactive, labelled cutaway diagram of the Sun's layered structure. Click or tap a layer — core, radiative zone, convective zone, photosphere, chromosphere or corona — to reveal what it is">
             <g pointer-events="none">
               <line x1="250" y1="250" x2="250" y2="110" stroke="#eaf2fb" stroke-width="2" />
               <line x1="250" y1="250" x2="384" y2="250" stroke="#eaf2fb" stroke-width="2" />
@@ -295,21 +295,7 @@
               class="glossary-toggle diagram-region" data-term="core" tabindex="0" role="button" aria-expanded="false" aria-label="Core"
               cx="250" cy="250" r="20" fill="#fff7d6"
             />
-            <g pointer-events="none" stroke="#8a97a5" stroke-width="1" stroke-dasharray="3 2">
-              <line x1="250" y1="230" x2="250" y2="34" />
-              <line x1="211.0" y1="227.5" x2="59.5" y2="140" />
-              <line x1="189.4" y1="285" x2="59.5" y2="360" />
-              <line x1="250" y1="340" x2="250" y2="466" />
-              <line x1="334.9" y1="299" x2="440.5" y2="360" />
-              <line x1="362.6" y1="185" x2="440.5" y2="140" />
-            </g>
           </svg>
-          <span class="labelled-diagram-label" style="left: 50%; top: 6%;">Core</span>
-          <span class="labelled-diagram-label" style="left: 11.9%; top: 28%;">Radiative zone</span>
-          <span class="labelled-diagram-label" style="left: 11.9%; top: 72%;">Convective zone</span>
-          <span class="labelled-diagram-label" style="left: 50%; top: 94%;">Photosphere</span>
-          <span class="labelled-diagram-label" style="left: 88.1%; top: 72%;">Chromosphere</span>
-          <span class="labelled-diagram-label" style="left: 88.1%; top: 28%;">Corona</span>
         </div>
       </div>
       <ul class="legend layer-legend">
@@ -470,6 +456,7 @@
   <script src="../src/coordinates.js?v=202609212100"></script>
   <script src="../src/earthOrbit.js?v=202609212100"></script>
   <script src="../src/orbitPanel.js?v=202609221500"></script>
+  <script src="../src/ringDiagramLabels.js?v=202611011000"></script>
   <script src="../src/butterflyDiagram.js?v=202609221900"></script>
   <script src="../src/sunDeclinationQuestions.js?v=202610161036"></script>
   <script src="../src/solarActivityQuestions.js?v=202609221900"></script>

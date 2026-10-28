@@ -7,7 +7,7 @@
   <meta name="referrer" content="no-referrer" />
   <meta name="robots" content="noindex, nofollow" />
   <title>The Moon: Structure, Surface and Origin</title>
-  <link rel="stylesheet" href="../styles.css?v=202610300900" />
+  <link rel="stylesheet" href="../styles.css?v=202611011100" />
   <link rel="icon" type="image/svg+xml" href="../favicon.svg?v=202610130720" />
 </head>
 <body>
@@ -32,9 +32,9 @@
         <div class="labelled-diagram-wrap" id="moon-structure-wrap">
           <svg
             id="moon-structure"
-            viewBox="0 0 500 500"
+            viewBox="0 0 980 980"
             role="group"
-            aria-label="Cutaway diagram of the Moon's internal structure, showing the inner core, outer core, mantle and crust as concentric layers, each tappable for detail"
+            aria-label="Cutaway diagram of the Moon's internal structure, showing the inner core, outer core, mantle and crust as concentric layers, each labelled with a leader line and tappable for detail"
           ></svg>
         </div>
       </div>
@@ -292,20 +292,46 @@
     <section class="notes-section" id="near-far-side">
       <h2>Near side and far side</h2>
       <p>
-        Because of synchronous rotation, the side facing Earth is always the same, and the two
-        hemispheres look strikingly different. The near side is marked by large dark maria; the
-        far side is almost devoid of them.
+        Because of synchronous rotation, the side facing Earth is always the same &mdash; and the
+        two hemispheres look strikingly different.
       </p>
+      <div class="moon-hemisphere-compare">
+        <figure class="moon-hemisphere-figure">
+          <svg
+            id="moon-near-side"
+            viewBox="0 0 300 300"
+            role="img"
+            aria-label="Illustration of the Moon's near side: large dark maria over lighter highlands. Tap a region to see its name."
+          ></svg>
+          <figcaption>
+            Near side: large dark maria, covering about <strong>31%</strong> of the surface
+            (first draft, to be checked by the teacher).
+          </figcaption>
+        </figure>
+        <figure class="moon-hemisphere-figure">
+          <svg
+            id="moon-far-side"
+            viewBox="0 0 300 300"
+            role="img"
+            aria-label="Illustration of the Moon's far side: mostly bright, heavily cratered highlands, the South Pole-Aitken basin, and only a few small maria. Tap a region to see its name."
+          ></svg>
+          <figcaption>
+            Far side: mostly bright highlands, maria covering only about <strong>2%</strong>
+            (first draft, to be checked by the teacher).
+          </figcaption>
+        </figure>
+      </div>
       <p>
-        The structural cause is the crust. It is thickest on the far side &mdash; up to about
-        <strong>60&nbsp;km</strong> in the central far-side highlands, against an average of
-        34&ndash;43&nbsp;km &mdash; and thinnest, close to zero, beneath some large impact basins
-        such as the Sea of Crises (GRAIL; Wieczorek et al. 2013, cited above). Molten rock
-        rising from inside the Moon could break through the thinner near-side crust and flood its
-        low-lying impact basins, but mostly couldn't get through the far side's. That is also why
-        the far side keeps so many more of its ancient craters, as noted under surface features
-        above.
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="farSideCrust" aria-label="Why is the far side's crust thicker?" aria-expanded="false">Why is the far side's crust thicker?</button>
       </p>
+      <span class="glossary-definition" data-term="farSideCrust" hidden></span>
+      <div class="moon-feature-definitions">
+        <span class="glossary-definition" data-term="nearSideMaria" hidden></span>
+        <span class="glossary-definition" data-term="nearSideHighlands" hidden></span>
+        <span class="glossary-definition" data-term="farSideHighlands" hidden></span>
+        <span class="glossary-definition" data-term="farSideMaria" hidden></span>
+        <span class="glossary-definition" data-term="southPoleAitken" hidden></span>
+      </div>
     </section>
 
     <section class="notes-section" id="seeing-far-side">
@@ -385,6 +411,10 @@
     <section class="questions">
       <h2>Practice questions</h2>
       <div id="questions-list"></div>
+      <details class="picture-quiz-panel">
+        <summary id="feature-quiz-summary">Picture quiz: name that feature (7 questions)</summary>
+        <div id="feature-quiz-list"></div>
+      </details>
     </section>
 
     <section class="progress">
@@ -453,9 +483,10 @@
   <script src="../src/moonPhase.js?v=202609241000"></script>
   <script src="../src/moonStructureQuestions.js?v=202610300900"></script>
   <script src="../src/orbitalMechanics.js?v=202610281400"></script>
+  <script src="../src/ringDiagramLabels.js?v=202611011000"></script>
   <script src="../glossary.js?v=202610131052"></script>
   <script src="../quiz-ui.js?v=202610300900"></script>
-  <script src="moon-structure.js?v=202610300900"></script>
+  <script src="moon-structure.js?v=202611011000"></script>
   <script src="../notesPage.js?v=202609270100"></script>
   <script src="../nextPage.js?v=202610161057"></script>
 </body>

@@ -126,20 +126,26 @@
   // thin rings themselves, are the tap targets (a thin ring is an
   // unreliable target — see earth-structure.js's own note on this).
 
+  // innermost -> outermost, each at its own ring radius; angleDeg follows
+  // the same inner-core=top / outer-core=right / mantle=bottom /
+  // crust=left convention as notes/earth-structure.html's own layers
+  // (see src/ringDiagramLabels.js, the geometry shared by both, plus
+  // sims/sun-declination.html's Sun structure).
   const STRUCTURE_LAYERS = [
-    { term: 'moonCrust', name: 'Crust', r: 225, fill: '#5b7c99', stroke: '#3f5a70', pos: [12, 50] },
-    { term: 'moonMantle', name: 'Mantle', r: 205, fill: '#c17a4a', pos: [50, 94] },
-    { term: 'moonOuterCore', name: 'Outer core', r: 70, fill: '#e8631a', pos: [88, 50] },
-    { term: 'moonInnerCore', name: 'Inner core', r: 32, fill: '#fff2c4', pos: [50, 6] },
+    { term: 'moonInnerCore', name: 'Inner core', r: 32, fill: '#fff2c4', angleDeg: 90 },
+    { term: 'moonOuterCore', name: 'Outer core', r: 70, fill: '#e8631a', angleDeg: 0 },
+    { term: 'moonMantle', name: 'Mantle', r: 205, fill: '#c17a4a', angleDeg: 270 },
+    { term: 'moonCrust', name: 'Crust', r: 225, fill: '#5b7c99', stroke: '#3f5a70', angleDeg: 180 },
   ];
+  const MOON_STRUCTURE_GEOMETRY = { cx: 490, cy: 490, outerRadius: 225, width: 980, height: 980, margin: 130 };
 
   function drawMoonStructure() {
     const svg = document.getElementById('moon-structure');
     const wrap = document.getElementById('moon-structure-wrap');
-    const cx = 250;
-    const cy = 250;
+    const { cx, cy } = MOON_STRUCTURE_GEOMETRY;
 
-    STRUCTURE_LAYERS.forEach((layer) => {
+    // Outermost first so each smaller ring paints over it.
+    [...STRUCTURE_LAYERS].reverse().forEach((layer) => {
       const attrs = { cx, cy, r: layer.r, fill: layer.fill };
       if (layer.stroke) {
         attrs.stroke = layer.stroke;
@@ -148,12 +154,17 @@
       svgEl('circle', attrs, svg);
     });
 
+    const leaders = svgEl('g', { stroke: '#8a97a5', 'stroke-width': 1, 'stroke-dasharray': '3 2', 'pointer-events': 'none' }, svg);
     STRUCTURE_LAYERS.forEach((layer) => {
+      const pos = RingDiagramLabels.layoutRingLabel({ ...MOON_STRUCTURE_GEOMETRY, radius: layer.r, angleDeg: layer.angleDeg });
+      svgEl('line', { x1: pos.dotX, y1: pos.dotY, x2: pos.leaderEndX, y2: pos.leaderEndY }, leaders);
+      svgEl('circle', { cx: pos.dotX, cy: pos.dotY, r: 4, fill: '#8a97a5' }, leaders);
+
       const label = document.createElement('span');
-      label.className = 'labelled-diagram-label glossary-toggle diagram-region moon-structure-label';
+      label.className = 'labelled-diagram-label labelled-diagram-label--narrow glossary-toggle diagram-region moon-structure-label';
       label.textContent = layer.name;
-      label.style.left = `${layer.pos[0]}%`;
-      label.style.top = `${layer.pos[1]}%`;
+      label.style.left = `${pos.leftPercent}%`;
+      label.style.top = `${pos.topPercent}%`;
       label.tabIndex = 0;
       label.setAttribute('role', 'button');
       label.setAttribute('aria-expanded', 'false');
@@ -314,6 +325,101 @@
     if (!idPrefix) drawApolloSites(svg);
   }
 
+  // --- Near side vs far side: two small original illustrations making
+  // the maria/highlands contrast and the South Pole-Aitken basin visible
+  // at a glance (not a precise map -- that's "Recognise the named
+  // features" above). Tapping a region reveals its name via the same
+  // glossary-toggle mechanism as every other diagram on this page.
+  const HEMI_CX = 150;
+  const HEMI_CY = 150;
+  const HEMI_R = 130;
+  const HIGHLAND_FILL = '#c9cdd3';
+  const FAR_SIDE_FILL = '#dedcd2';
+  const BASIN_FILL = '#a8a89d';
+
+  // Fixed [angleDeg, radiusFrac, r] speckle positions standing in for the
+  // far side's dense, ancient cratering -- illustrative, not real crater
+  // positions, so they carry no term and aren't tappable.
+  const HEMISPHERE_SPECKLES = [
+    [20, 0.55, 5], [55, 0.75, 4], [95, 0.4, 6], [140, 0.65, 4.5], [170, 0.3, 5],
+    [205, 0.8, 4], [240, 0.5, 6], [275, 0.7, 4.5], [310, 0.35, 5], [345, 0.6, 4],
+    [75, 0.25, 4], [255, 0.2, 4],
+  ];
+
+  function hemiPoint(angleDeg, radiusFrac) {
+    const angle = angleDeg * RAD;
+    return {
+      x: HEMI_CX + Math.cos(angle) * HEMI_R * radiusFrac,
+      y: HEMI_CY + Math.sin(angle) * HEMI_R * radiusFrac,
+    };
+  }
+
+  function drawHemisphereSpeckles(svg) {
+    HEMISPHERE_SPECKLES.forEach(([angleDeg, radiusFrac, r]) => {
+      const p = hemiPoint(angleDeg, radiusFrac);
+      svgEl('circle', {
+        cx: p.x.toFixed(1), cy: p.y.toFixed(1), r,
+        fill: '#eceae0', stroke: '#b7b5aa', 'stroke-width': 1, 'pointer-events': 'none',
+      }, svg);
+    });
+  }
+
+  function drawNearSideIllustration() {
+    const svg = document.getElementById('moon-near-side');
+    if (!svg) return;
+    svgEl('circle', { cx: HEMI_CX, cy: HEMI_CY, r: HEMI_R, fill: HIGHLAND_FILL }, svg);
+
+    const highlands = makeToggle(svg, 'nearSideHighlands', 'Highlands');
+    svgEl('circle', { cx: HEMI_CX, cy: HEMI_CY, r: HEMI_R, fill: 'transparent', 'pointer-events': 'all' }, highlands);
+
+    const maria = makeToggle(svg, 'nearSideMaria', 'Maria');
+    svgEl('ellipse', { cx: 95, cy: 150, rx: 55, ry: 70, fill: MARE_COLOR }, maria);
+    svgEl('ellipse', { cx: 195, cy: 110, rx: 45, ry: 35, fill: MARE_COLOR }, maria);
+    svgEl('circle', { cx: 230, cy: 150, r: 18, fill: MARE_COLOR }, maria);
+  }
+
+  function drawFarSideIllustration() {
+    const svg = document.getElementById('moon-far-side');
+    if (!svg) return;
+    svgEl('circle', { cx: HEMI_CX, cy: HEMI_CY, r: HEMI_R, fill: FAR_SIDE_FILL }, svg);
+
+    const highlands = makeToggle(svg, 'farSideHighlands', 'Highlands');
+    svgEl('circle', { cx: HEMI_CX, cy: HEMI_CY, r: HEMI_R, fill: 'transparent', 'pointer-events': 'all' }, highlands);
+
+    drawHemisphereSpeckles(svg);
+
+    const basin = makeToggle(svg, 'southPoleAitken', 'South Pole–Aitken basin');
+    svgEl('ellipse', { cx: 150, cy: 232, rx: 100, ry: 55, fill: BASIN_FILL, opacity: 0.85 }, basin);
+
+    const maria = makeToggle(svg, 'farSideMaria', 'Maria');
+    svgEl('circle', { cx: 190, cy: 72, r: 11, fill: MARE_COLOR }, maria);
+    svgEl('circle', { cx: 112, cy: 214, r: 8, fill: MARE_COLOR }, maria);
+  }
+
+  // A CSS filter/drop-shadow doesn't render reliably on SVG shapes in
+  // Safari/WebKit, so the highlight here is real SVG attributes: a
+  // thick, bright outline added around every visible shape that makes
+  // up the highlighted feature (a mare's path pieces, a crater's two
+  // circles, or the Apennines' ridge line), in a colour that appears
+  // nowhere else on the map. Every other named feature is dimmed via
+  // the plain, reliable CSS opacity property instead.
+  const QUIZ_HIGHLIGHT_COLOR = '#ff00c8';
+  const QUIZ_HIGHLIGHT_STROKE_WIDTH = 20;
+
+  function applyFeatureQuizHighlight(svg, highlightTerm) {
+    svg.querySelectorAll('.diagram-region').forEach((region) => {
+      const isTarget = region.dataset.term === highlightTerm;
+      region.classList.toggle('diagram-feature-highlight', isTarget);
+      region.classList.toggle('diagram-feature-dimmed', !isTarget);
+      if (!isTarget) return;
+      Array.from(region.children).forEach((shape) => {
+        if (shape.hasAttribute('pointer-events')) return; // the shape's own invisible, wider hit-area
+        shape.setAttribute('stroke', QUIZ_HIGHLIGHT_COLOR);
+        shape.setAttribute('stroke-width', String(QUIZ_HIGHLIGHT_STROKE_WIDTH));
+      });
+    });
+  }
+
   // A small, standalone copy of the map above for a "name that feature"
   // practice question: redraws the same map (drawMoonMap, unchanged) into
   // a fresh svg/wrap pair, reuses the existing hide-labels mechanism (the
@@ -332,9 +438,7 @@
     }, wrap);
 
     drawMoonMap(svg, wrap, `quiz-${highlightTerm}-`);
-
-    const target = svg.querySelector(`[data-term="${highlightTerm}"]`);
-    if (target) target.classList.add('diagram-feature-highlight');
+    applyFeatureQuizHighlight(svg, highlightTerm);
 
     // These toggles have no matching glossary definition in a question
     // card, so take them out of the tab order rather than leave a dead
@@ -565,6 +669,15 @@
     apollo15: 'Apollo 15 — mission 15, 1971: landed near Hadley Rille.',
     apollo16: 'Apollo 16 — mission 16, 1972: landed in the Descartes highlands.',
     apollo17: 'Apollo 17 — mission 17, 1972: the last crewed Moon landing, at Taurus–Littrow.',
+    nearSideMaria: 'Maria ("seas"): dark, smooth plains of ancient lava that flooded impact basins.',
+    nearSideHighlands: 'Terrae (highlands): the lighter, rugged, more heavily cratered ground between the maria.',
+    farSideHighlands:
+      "Terrae (highlands): the far side is almost all highlands — light, rugged ground, heavily cratered because it's so much older than the maria.",
+    farSideMaria: 'Maria ("seas"): a few small dark lava plains — much rarer here than on the near side.',
+    southPoleAitken:
+      'The South Pole–Aitken basin: one of the largest known impact basins in the Solar System, roughly 2,500 km across — a first draft, to be checked by the teacher.',
+    farSideCrust:
+      "The far side's crust is thicker — up to about 60 km in the central far-side highlands, against an average of 34–43 km (GRAIL; Wieczorek et al. 2013, cited above) — and thinnest, close to zero, beneath some large near-side impact basins such as the Sea of Crises. Molten rock rising from inside the Moon could break through the thinner near-side crust and flood its basins, but mostly couldn't get through the far side's — which is also why the far side keeps so many more of its ancient craters.",
   };
 
   drawMoonStructure();
@@ -572,6 +685,8 @@
   drawMoonMap();
   setUpLabelToggle();
   setUpApolloToggle();
+  drawNearSideIllustration();
+  drawFarSideIllustration();
   drawLibrationLongitude();
   drawLibrationLatitude();
   setUpLibrationMonth();
@@ -579,5 +694,14 @@
   setUpLibrationMonthControls();
   renderCoverage();
   Glossary.init(GLOSSARY);
-  QuizUI.mount(MoonStructureQuestions.makeQuestions(SpecData, MoonPhase, { renderFeatureQuizDiagram }));
+  const moonQuestions = MoonStructureQuestions.makeQuestions(SpecData, MoonPhase, { renderFeatureQuizDiagram });
+  const featureQuizQuestions = moonQuestions.filter((q) => q.id.startsWith('named-feature-'));
+  const moonTextQuestions = moonQuestions.filter((q) => !q.id.startsWith('named-feature-'));
+  QuizUI.mount(moonTextQuestions);
+  QuizUI.mountGroup({
+    questions: featureQuizQuestions,
+    listElementId: 'feature-quiz-list',
+    summaryElementId: 'feature-quiz-summary',
+    label: 'Picture quiz: name that feature',
+  });
 })();

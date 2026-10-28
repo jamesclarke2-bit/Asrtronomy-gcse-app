@@ -7,7 +7,7 @@
   <meta name="referrer" content="no-referrer" />
   <meta name="robots" content="noindex, nofollow" />
   <title>Earth: Structure, Atmosphere and Motion</title>
-  <link rel="stylesheet" href="../styles.css?v=202610300900" />
+  <link rel="stylesheet" href="../styles.css?v=202611011100" />
   <link rel="icon" type="image/svg+xml" href="../favicon.svg?v=202610130720" />
 </head>
 <body>
@@ -115,23 +115,8 @@
         live on.
       </p>
       <div class="diagram earth-structure-diagram">
-        <div class="labelled-diagram-wrap">
-          <svg viewBox="0 0 500 500" role="img" aria-label="Cutaway diagram of Earth's internal structure, showing the inner core, outer core, mantle and crust as concentric layers">
-            <g stroke="#8a97a5" stroke-width="1" stroke-dasharray="3 2">
-              <line x1="250" y1="205" x2="250" y2="30" />
-              <line x1="360" y1="250" x2="440" y2="250" />
-              <line x1="250" y1="445" x2="250" y2="470" />
-              <line x1="42" y1="250" x2="60" y2="250" />
-            </g>
-            <circle cx="250" cy="250" r="208" fill="#5b7c99" stroke="#3f5a70" stroke-width="2" class="earth-layer-region" data-layer="crust" />
-            <circle cx="250" cy="250" r="195" fill="#c17a4a" class="earth-layer-region" data-layer="mantle" />
-            <circle cx="250" cy="250" r="110" fill="#e8631a" class="earth-layer-region" data-layer="outer-core" />
-            <circle cx="250" cy="250" r="45" fill="#fff2c4" class="earth-layer-region" data-layer="inner-core" />
-          </svg>
-          <span class="labelled-diagram-label earth-layer-label" data-layer="inner-core" tabindex="0" role="button" aria-label="Inner core: show its description" style="left: 50%; top: 6%;">Inner core</span>
-          <span class="labelled-diagram-label earth-layer-label" data-layer="outer-core" tabindex="0" role="button" aria-label="Outer core: show its description" style="left: 88%; top: 50%;">Outer core</span>
-          <span class="labelled-diagram-label earth-layer-label" data-layer="mantle" tabindex="0" role="button" aria-label="Mantle: show its description" style="left: 50%; top: 94%;">Mantle</span>
-          <span class="labelled-diagram-label earth-layer-label" data-layer="crust" tabindex="0" role="button" aria-label="Crust: show its description" style="left: 12%; top: 50%;">Crust</span>
+        <div class="labelled-diagram-wrap" id="earth-layers-wrap">
+          <svg id="earth-layers" viewBox="0 0 900 900" role="img" aria-label="Cutaway diagram of Earth's internal structure, showing the inner core, outer core, mantle and crust as concentric layers, each labelled with a leader line"></svg>
         </div>
       </div>
       <ul class="legend layer-legend">
@@ -329,6 +314,10 @@
     <section class="questions">
       <h2>Practice questions</h2>
       <div id="questions-list"></div>
+      <details class="picture-quiz-panel">
+        <summary id="line-quiz-summary">Picture quiz: name that line (8 questions)</summary>
+        <div id="line-quiz-list"></div>
+      </details>
     </section>
 
     <section class="progress">
@@ -388,9 +377,10 @@
   <script src="../src/solarPosition.js?v=202609260300"></script>
   <script src="../src/earthOrbit.js?v=202609212100"></script>
   <script src="../src/orbitPanel.js?v=202609221500"></script>
+  <script src="../src/ringDiagramLabels.js?v=202611011000"></script>
   <script src="../glossary.js?v=202610131052"></script>
   <script src="../quiz-ui.js?v=202610300900"></script>
-  <script src="earth-structure.js?v=202610300900"></script>
+  <script src="earth-structure.js?v=202611011000"></script>
   <script src="../notesPage.js?v=202609270100"></script>
   <script src="../nextPage.js?v=202610161057"></script>
 </body>

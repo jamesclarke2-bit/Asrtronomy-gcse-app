@@ -716,6 +716,36 @@ canvas {
   font-style: italic;
 }
 
+/* Two illustrations side by side on anything wide enough for two 240px
+   columns, stacked on a phone -- the same auto-fit/minmax breakpoint
+   .concept-grid already uses. */
+.moon-hemisphere-compare {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.25rem;
+  margin: 1rem 0;
+}
+
+.moon-hemisphere-figure {
+  margin: 0;
+  text-align: center;
+}
+
+.moon-hemisphere-figure svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: #f7f7f5;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.moon-hemisphere-figure figcaption {
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  color: #444;
+}
+
 .concept-card h3 {
   margin: 0.75rem 0 0.4rem;
   font-size: 1rem;
@@ -1104,6 +1134,27 @@ canvas {
 
 .question-feedback.incorrect {
   color: #b3261e;
+}
+
+/* A long, same-shape set of practice questions (notes/earth-structure
+   .html's "name that line", notes/moon-structure.html's "name that
+   feature") collapsed behind a native <details>, so the main practice-
+   questions list stays short; QuizUI.mountGroup keeps the <summary>'s
+   own live "X/N correct" count current. */
+.picture-quiz-panel {
+  margin-top: 1rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+}
+
+.picture-quiz-panel summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.picture-quiz-panel[open] summary {
+  margin-bottom: 0.75rem;
 }
 
 .progress ul {
@@ -1828,6 +1879,16 @@ canvas {
   width: 9.5rem;
 }
 
+/* The Sun/Earth/Moon structure diagrams' own layer names are all short
+   ("Crust", "Outer core", ...) — a narrower box than the 5.5rem default
+   needs less clearance outside the outermost ring before it overlaps
+   it, letting the ring itself stay a reasonable size within the
+   diagram instead of shrinking to make room for wide label boxes it
+   never needs. */
+.labelled-diagram-label--narrow {
+  width: 4rem;
+}
+
 /* notes/telescopes.html: a diagram with a light background (the
    lens/mirror panel, the bench, the Galilean/Keplerian comparison)
    uses the default dark label text above; the eyepiece view keeps a
@@ -1978,12 +2039,16 @@ canvas {
   margin: 0 0 0.75rem;
 }
 
-/* Marks whichever .diagram-region a "name that feature/line" question
-   redrew its diagram to highlight — a glow that reads on any shape
-   (a filled mare, a crater circle, a coloured parallel line) regardless
-   of its own fill or stroke colour. */
-.diagram-feature-highlight {
-  filter: drop-shadow(0 0 3px #ffd400) drop-shadow(0 0 7px #ffd400);
+/* "Name that feature/line" questions (notes/earth-structure.html,
+   notes/moon-structure.html): .diagram-feature-highlight is just a
+   marker class (the real highlight is a thicker, brightly-coloured
+   stroke set directly as SVG attributes by each page's own
+   applyQuizHighlight(), since a CSS filter/drop-shadow doesn't render
+   reliably on SVG shapes in Safari/WebKit). Every other
+   .diagram-region gets .diagram-feature-dimmed instead, which CSS can
+   do safely. */
+.diagram-feature-dimmed {
+  opacity: 0.25;
 }
 
 .curiosity-box {

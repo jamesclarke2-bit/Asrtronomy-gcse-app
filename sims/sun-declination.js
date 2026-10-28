@@ -333,6 +333,44 @@
     coverageEl.textContent = 'Covers: ' + subtopics.map((s) => `${s.id} ${s.title}`).join(', ');
   }
 
+  // --- The Sun's structure: label leader lines ----------------------------
+  // The six rings themselves are static markup (each is its own
+  // .glossary-toggle, unchanged); only the leader-line-and-label
+  // placement is drawn here, via the shared RingDiagramLabels geometry
+  // every such diagram on the site now uses (see src/ringDiagramLabels.js).
+  const SUN_STRUCTURE_SVG_NS = 'http://www.w3.org/2000/svg';
+  function sunSvgEl(tag, attrs, parent) {
+    const el = document.createElementNS(SUN_STRUCTURE_SVG_NS, tag);
+    Object.entries(attrs).forEach(([key, value]) => el.setAttribute(key, value));
+    if (parent) parent.appendChild(el);
+    return el;
+  }
+  const SUN_STRUCTURE_LAYERS = [
+    { name: 'Core', radius: 20, angleDeg: 90 },
+    { name: 'Radiative zone', radius: 45, angleDeg: 150 },
+    { name: 'Convective zone', radius: 70, angleDeg: 210 },
+    { name: 'Photosphere', radius: 90, angleDeg: 270 },
+    { name: 'Chromosphere', radius: 98, angleDeg: 330 },
+    { name: 'Corona', radius: 135, angleDeg: 30 },
+  ];
+  function drawSunStructureLabels() {
+    const svg = document.getElementById('sun-structure');
+    const wrap = document.getElementById('sun-structure-wrap');
+    const geometry = { cx: 250, cy: 250, outerRadius: 135, width: 500, height: 500, margin: 85 };
+    const leaders = sunSvgEl('g', { stroke: '#8a97a5', 'stroke-width': 1, 'stroke-dasharray': '3 2', 'pointer-events': 'none' }, svg);
+    SUN_STRUCTURE_LAYERS.forEach((layer) => {
+      const pos = RingDiagramLabels.layoutRingLabel({ ...geometry, radius: layer.radius, angleDeg: layer.angleDeg });
+      sunSvgEl('line', { x1: pos.dotX, y1: pos.dotY, x2: pos.leaderEndX, y2: pos.leaderEndY }, leaders);
+      sunSvgEl('circle', { cx: pos.dotX, cy: pos.dotY, r: 3, fill: '#8a97a5' }, leaders);
+      const label = document.createElement('span');
+      label.className = 'labelled-diagram-label';
+      label.style.left = `${pos.leftPercent}%`;
+      label.style.top = `${pos.topPercent}%`;
+      label.textContent = layer.name;
+      wrap.appendChild(label);
+    });
+  }
+
   [dateSlider, latSlider].forEach((el) => el.addEventListener('input', update));
   butterflyYearSlider.addEventListener('input', updateButterfly);
 
@@ -356,6 +394,7 @@
 
   update();
   updateButterfly();
+  drawSunStructureLabels();
   renderCoverage();
   QuizUI.mount([
     ...SunDeclinationQuestions.makeQuestions(SolarPosition, Coordinates),
