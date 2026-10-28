@@ -1,13 +1,12 @@
 /**
- * The picture-based "name that feature/line" questions on
- * notes/moon-structure.html and notes/earth-structure.html: each one's
- * render(container) redraws the real map/globe with one feature
- * highlighted, so whether the right element actually gets highlighted
- * and whether the diagram leaks any label text is runtime DOM state a
- * real browser has to check — not something parseable from the raw
- * HTML or from src/moonStructureQuestions.js / src/earthStructureQuestions.js
- * alone (same reasoning as test/tidesPage.test.js and
- * test/noHorizontalScroll.test.js).
+ * The picture-based "name that feature/line/pattern" questions on
+ * notes/moon-structure.html, notes/earth-structure.html and
+ * notes/naked-eye-sky.html: each one's render(container) redraws the
+ * real map/globe/chart, so whether the right element actually gets
+ * highlighted and whether the diagram leaks any label text is runtime
+ * DOM state a real browser has to check — not something parseable from
+ * the raw HTML or from the question files alone (same reasoning as
+ * test/tidesPage.test.js and test/noHorizontalScroll.test.js).
  *
  * Checked at both a phone width (390px, matching
  * test/noHorizontalScroll.test.js's convention) and an iPad width
@@ -21,6 +20,7 @@ const { launchChromium, trackSkips } = require('./browserLaunch');
 
 const MOON_PAGE_URL = 'file://' + path.join(__dirname, '..', 'notes', 'moon-structure.html');
 const EARTH_PAGE_URL = 'file://' + path.join(__dirname, '..', 'notes', 'earth-structure.html');
+const NAKED_EYE_SKY_PAGE_URL = 'file://' + path.join(__dirname, '..', 'notes', 'naked-eye-sky.html');
 
 const SKIP_MESSAGE = (err) =>
   `Playwright's Chromium browser isn't installed — run "npx playwright install chromium" to enable this test (${err.message})`;
@@ -51,6 +51,16 @@ const EARTH_FEATURES = [
   ['antarcticCircle', 'Antarctic Circle'],
   ['southPole', 'South Pole'],
   ['primeMeridian', 'Prime Meridian'],
+];
+
+const STAR_PATTERNS = [
+  ['cassiopeia', 'Cassiopeia'],
+  ['cygnus', 'Cygnus'],
+  ['orion', 'Orion'],
+  ['plough', 'The Plough'],
+  ['southernCross', 'The Southern Cross'],
+  ['summerTriangle', 'The Summer Triangle'],
+  ['squareOfPegasus', 'The Square of Pegasus'],
 ];
 
 async function withPage(t, url, viewport, run) {
@@ -116,6 +126,22 @@ VIEWPORTS.forEach((viewport) => {
       }
     });
   });
+
+  test(`notes/naked-eye-sky.html "name that pattern" at ${viewport.label}: every pattern's own chart is drawn (stars, but no star-name labels)`, async (t) => {
+    await withPage(t, NAKED_EYE_SKY_PAGE_URL, viewport, async (page) => {
+      for (let i = 0; i < STAR_PATTERNS.length; i += 1) {
+        const [, name] = STAR_PATTERNS[i];
+        const diagram = questionDiagramLocator(page, 'Name that pattern', i);
+        await assert.doesNotReject(diagram.waitFor({ state: 'attached' }), `no diagram found for pattern #${i} (${name})`);
+
+        const starCount = await diagram.locator('circle').count();
+        assert.ok(starCount > 0, `diagram for pattern #${i} should draw at least one star`);
+
+        const visibleText = (await diagram.innerText()).trim();
+        assert.equal(visibleText, '', `diagram for pattern #${i} should carry no visible label text, got "${visibleText}"`);
+      }
+    });
+  });
 });
 
 test('notes/moon-structure.html: answering a "name that feature" question correctly checks out, and is recorded in the usual u2.20 tally', async (t) => {
@@ -157,5 +183,26 @@ test('notes/earth-structure.html: answering a "name that line" question correctl
     const progressAfter = await page.locator('#progress-list li', { hasText: 'u2.1 ' }).first().textContent();
     const attemptsAfter = Number(progressAfter.match(/(\d+)\/(\d+) correct/)[2]);
     assert.equal(attemptsAfter, attemptsBefore + 1, 'u2.1 attempts should have gone up by one');
+  });
+});
+
+test('notes/naked-eye-sky.html: answering a "name that pattern" question correctly checks out, and is recorded in the usual u1.2 tally', async (t) => {
+  await withPage(t, NAKED_EYE_SKY_PAGE_URL, VIEWPORTS[0], async (page) => {
+    const index = 2; // orion, per STAR_PATTERNS order
+    const [, name] = STAR_PATTERNS[index];
+    const card = page.locator('.question-card', { has: page.locator('.question-prompt', { hasText: 'Name that pattern' }) }).nth(index);
+
+    const progressBefore = await page.locator('#progress-list li', { hasText: 'u1.2 ' }).first().textContent();
+    const attemptsBefore = Number(progressBefore.match(/(\d+)\/(\d+) correct/)[2]);
+
+    await card.locator('label.choice-option', { hasText: name }).locator('input[type="radio"]').check();
+    await card.locator('button', { hasText: 'Check answer' }).click();
+
+    const feedback = (await card.locator('.question-feedback').textContent()).trim();
+    assert.match(feedback, /^Correct!/);
+
+    const progressAfter = await page.locator('#progress-list li', { hasText: 'u1.2 ' }).first().textContent();
+    const attemptsAfter = Number(progressAfter.match(/(\d+)\/(\d+) correct/)[2]);
+    assert.equal(attemptsAfter, attemptsBefore + 1, 'u1.2 attempts should have gone up by one');
   });
 });

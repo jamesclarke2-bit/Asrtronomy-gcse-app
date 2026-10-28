@@ -48,8 +48,14 @@
   const CHART_HEIGHT = 220;
   const CHART_PADDING = 34;
 
-  function drawPatternChart(card) {
-    const pattern = PATTERNS.find((p) => p.id === card.dataset.pattern);
+  // The actual star-chart drawing (lines, stars, optionally labels),
+  // shared by the main page's own cards (drawPatternChart, below) and
+  // by a "name that pattern" quiz question's render(container)
+  // (renderPatternQuizDiagram, below) — the same real chart either way,
+  // never a separately hand-drawn or hand-described copy. Returns the
+  // pattern's own angular span, which only drawPatternChart's own
+  // caption needs.
+  function drawPatternStars(svg, wrap, pattern, showLabels = true) {
     const stars = pattern.stars.map((key) => STARS[key]);
     const centre = StarPatterns.centreOf(stars);
     const flat = {};
@@ -70,10 +76,6 @@
       y: CHART_HEIGHT / 2 - (p.y - midY) * scale,
     });
 
-    const chart = card.querySelector('.pattern-chart');
-    const wrap = chart.querySelector('.labelled-diagram-wrap');
-    const svg = wrap.querySelector('svg');
-
     const lines = svgEl('g', { stroke: SKY_LINE_COLOR, 'stroke-width': 1.5 }, svg);
     pattern.lines.forEach(([a, b]) => {
       const p = toScreen(flat[a]);
@@ -87,14 +89,26 @@
       svgEl('circle', { cx: p.x, cy: p.y, r: starRadius(STARS[key].mag), fill: '#fdfcf5' }, svg);
     });
 
-    pattern.labels.forEach(([key, side]) => {
-      const p = toScreen(flat[key]);
-      const [dx, dy] = SIDE_OFFSETS[side];
-      const label = makeLabel(wrap, 'star-label', STARS[key].name);
-      placeLabel(label, p.x + dx, p.y + dy, CHART_WIDTH, CHART_HEIGHT, side);
-    });
+    if (showLabels) {
+      pattern.labels.forEach(([key, side]) => {
+        const p = toScreen(flat[key]);
+        const [dx, dy] = SIDE_OFFSETS[side];
+        const label = makeLabel(wrap, 'star-label', STARS[key].name);
+        placeLabel(label, p.x + dx, p.y + dy, CHART_WIDTH, CHART_HEIGHT, side);
+      });
+    }
 
-    const span = StarPatterns.spanOf(stars);
+    return { span: StarPatterns.spanOf(stars) };
+  }
+
+  function drawPatternChart(card) {
+    const pattern = PATTERNS.find((p) => p.id === card.dataset.pattern);
+    const chart = card.querySelector('.pattern-chart');
+    const wrap = chart.querySelector('.labelled-diagram-wrap');
+    const svg = wrap.querySelector('svg');
+
+    const { span } = drawPatternStars(svg, wrap, pattern, true);
+
     const caption = document.createElement('p');
     caption.className = 'pattern-span';
     caption.textContent = `About ${Math.round(span)}° across, roughly ${Math.round(span / 0.5)} full Moons side by side`;
@@ -102,6 +116,28 @@
 
     card.classList.add(`pattern-card--${pattern.kind}`);
     card.querySelector('.pattern-kind').textContent = pattern.kind === 'asterism' ? 'Asterism' : 'Constellation';
+  }
+
+  // A small, standalone copy of one pattern's chart for a "name that
+  // pattern" practice question: the same drawPatternStars used above,
+  // just with its labels left off and built into a fresh svg/wrap pair
+  // instead of an existing .pattern-card.
+  function renderPatternQuizDiagram(container, patternId) {
+    const pattern = PATTERNS.find((p) => p.id === patternId);
+    const chart = document.createElement('div');
+    chart.className = 'pattern-chart';
+    const wrap = document.createElement('div');
+    wrap.className = 'labelled-diagram-wrap';
+    chart.appendChild(wrap);
+    const svg = svgEl('svg', {
+      viewBox: `0 0 ${CHART_WIDTH} ${CHART_HEIGHT}`,
+      role: 'img',
+      'aria-label': 'Star chart with labels hidden, for you to identify',
+    }, wrap);
+
+    drawPatternStars(svg, wrap, pattern, false);
+
+    container.appendChild(chart);
   }
 
   // A scale-to-fit projection, shared by every star-hop diagram below: fits
@@ -897,4 +933,5 @@
   fillFigures();
   renderCoverage();
   Glossary.init(GLOSSARY);
+  QuizUI.mount(NakedEyeSkyQuestions.makeQuestions(StarPatterns, { renderPatternQuizDiagram }));
 })();

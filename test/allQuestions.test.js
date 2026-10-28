@@ -22,6 +22,7 @@ const MoonPhase = require('../src/moonPhase');
 const ButterflyDiagram = require('../src/butterflyDiagram');
 const TelescopeModel = require('../src/telescopeModel');
 const RayOptics = require('../src/rayOptics');
+const StarPatterns = require('../src/starPatterns');
 
 test('getAllQuestionsNode returns a non-empty array, every question carrying a non-empty units array', () => {
   const questions = getAllQuestionsNode();
@@ -58,6 +59,7 @@ test("getAllQuestionsNode's total is exactly the sum of every individual questio
   const { makeQuestions: makeKepler } = require('../src/keplerQuestions');
   const { makeQuestions: makeMeasuringTheSky } = require('../src/measuringTheSkyQuestions');
   const { makeQuestions: makeMoonStructure } = require('../src/moonStructureQuestions');
+  const { makeQuestions: makeNakedEyeSky } = require('../src/nakedEyeSkyQuestions');
   const { makeQuestions: makeOrbitsGravity } = require('../src/orbitsGravityQuestions');
   const { makeQuestions: makePlanetaryMotion } = require('../src/planetaryMotionQuestions');
   const { makeQuestions: makeScaleOfSolarSystem } = require('../src/scaleOfSolarSystemQuestions');
@@ -81,6 +83,7 @@ test("getAllQuestionsNode's total is exactly the sum of every individual questio
     makeKepler(OrbitalMechanics, SpecData).length +
     makeMeasuringTheSky(SpecData).length +
     makeMoonStructure(SpecData, MoonPhase).length +
+    makeNakedEyeSky(StarPatterns).length +
     makeOrbitsGravity(OrbitalMechanics).length +
     makePlanetaryMotion(PlanetaryMotion).length +
     makeScaleOfSolarSystem(SpecData).length +
