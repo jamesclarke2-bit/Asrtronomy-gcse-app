@@ -1749,6 +1749,42 @@ canvas {
   border: 1px solid #cdd7e1;
 }
 
+.skyglow-diagram,
+.star-chart-diagram,
+.constellation-patterns-diagram {
+  max-width: 420px;
+  margin: 1rem 0;
+}
+
+.skyglow-diagram svg,
+.star-chart-diagram svg,
+.constellation-patterns-diagram svg {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  border: 1px solid #cdd7e1;
+}
+
+.darkness-scale {
+  margin: 0.75rem 0 0.25rem;
+  max-width: 420px;
+}
+
+.darkness-scale-bar {
+  height: 14px;
+  border-radius: 7px;
+  background: linear-gradient(to right, #f5a623, #9a8f6e, #3a5a8c, #10141f);
+  border: 1px solid #cdd7e1;
+}
+
+.darkness-scale-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: #555;
+  margin-top: 0.3rem;
+}
+
 .shower-table {
   border-collapse: collapse;
   width: 100%;

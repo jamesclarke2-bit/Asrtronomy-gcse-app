@@ -7,7 +7,7 @@
   <meta name="referrer" content="no-referrer" />
   <meta name="robots" content="noindex, nofollow" />
   <title>Observing Techniques</title>
-  <link rel="stylesheet" href="../styles.css?v=202610300900" />
+  <link rel="stylesheet" href="../styles.css?v=202611011100" />
   <link rel="icon" type="image/svg+xml" href="../favicon.svg?v=202610130720" />
 </head>
 <body>
@@ -17,11 +17,343 @@
     <h1>Observing Techniques</h1>
     <p class="subtitle">
       A reference for planning an observing session, in the order you'll actually use it:
-      checking whether you can actually see your target at all, preparing your eyes, finding
-      your targets, understanding why the sky looks different to different cultures, and
-      catching a meteor shower. This page covers how to observe; its companion, The Naked-Eye
-      Sky, covers what you're looking at.
+      preparing your eyes, understanding light pollution, finding your targets, understanding
+      why the sky looks different to different cultures, catching a meteor shower, and finally
+      what decides whether you'll actually see anything at all. This page covers how to
+      observe; its companion, The Naked-Eye Sky, covers what you're looking at.
     </p>
+
+    <section class="notes-section" id="dark-adaptation">
+      <h2>Before you start: dark adaptation and averted vision</h2>
+      <p>Your eyes take time to become properly sensitive in the dark.</p>
+
+      <div class="diagram averted-vision-diagram">
+        <svg viewBox="0 0 320 160" role="img" aria-label="Diagram of averted vision: looking slightly to the side of a faint star places its image on the rod-rich peripheral retina rather than the less light-sensitive centre">
+          <circle cx="60" cy="95" r="4" fill="#f5a623" />
+          <circle cx="60" cy="95" r="9" fill="none" stroke="#f5a623" stroke-width="1" opacity="0.5" />
+          <line x1="230" y1="110" x2="60" y2="95" stroke="#8a97a5" stroke-width="1.5" stroke-dasharray="3 3" />
+          <line x1="230" y1="110" x2="80" y2="35" stroke="#2a6bd6" stroke-width="1.5" />
+          <circle cx="230" cy="110" r="26" fill="#eaf2fb" stroke="#8a97a5" stroke-width="1.5" />
+          <circle cx="230" cy="110" r="5" fill="#2a6bd6" />
+        </svg>
+        <p class="diagram-caption">
+          Looking past the star, slightly to one side (solid line), lands its light on the
+          rod-rich periphery, rather than looking straight at it (dashed line)
+        </p>
+      </div>
+
+      <p class="diagram-caption">
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="darkAdaptationDetail" aria-label="What is dark adaptation, in full?" aria-expanded="false">Dark adaptation, in full</button>
+        &middot;
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="avertedVisionDetail" aria-label="What is averted vision, in full?" aria-expanded="false">Averted vision, in full</button>
+      </p>
+      <span class="glossary-definition" data-term="darkAdaptationDetail" hidden></span>
+      <span class="glossary-definition" data-term="avertedVisionDetail" hidden></span>
+
+      <ul class="tip-list">
+        <li>Give your eyes 20&ndash;30 minutes in darkness before serious observing.</li>
+        <li>Use a dim <strong>red</strong> torch or a phone's night/red-light mode &mdash; red light preserves adaptation far better than white.</li>
+        <li>For a faint star, galaxy or meteor, look slightly to one side of it rather than straight at it.</li>
+        <li>Get away from streetlights and other direct light sources where you can; light pollution works against dark adaptation the same way a torch does.</li>
+      </ul>
+    </section>
+
+    <section class="notes-section" id="light-pollution">
+      <h2>Light pollution and skyglow</h2>
+      <p>
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="skyglow" aria-label="What is skyglow?" aria-expanded="false">Skyglow</button>
+        from towns and cities raises the sky's background brightness for miles around.
+      </p>
+      <span class="glossary-definition" data-term="skyglow" hidden></span>
+
+      <div class="diagram skyglow-diagram">
+        <svg viewBox="0 0 320 170" role="img" aria-label="A town's skyline glowing with an orange dome of light pollution (skyglow) against an otherwise dark, star-filled night sky">
+          <rect x="0" y="0" width="320" height="170" fill="#0f1830" />
+          <g fill="#eef3fb">
+            <circle cx="20" cy="20" r="1.5" />
+            <circle cx="45" cy="40" r="1.2" />
+            <circle cx="75" cy="15" r="1.6" />
+            <circle cx="30" cy="60" r="1.2" opacity="0.8" />
+            <circle cx="260" cy="18" r="1.5" />
+            <circle cx="290" cy="35" r="1.3" />
+            <circle cx="300" cy="60" r="1.2" opacity="0.7" />
+            <circle cx="230" cy="25" r="1.4" />
+            <circle cx="130" cy="20" r="1.3" opacity="0.6" />
+            <circle cx="170" cy="12" r="1.5" opacity="0.5" />
+            <circle cx="150" cy="55" r="0.9" opacity="0.25" />
+            <circle cx="190" cy="65" r="0.9" opacity="0.2" />
+          </g>
+          <ellipse cx="160" cy="170" rx="150" ry="100" fill="#f5a623" opacity="0.45" />
+          <ellipse cx="160" cy="170" rx="90" ry="60" fill="#f5a623" opacity="0.35" />
+          <g fill="#131b30">
+            <rect x="10" y="120" width="28" height="50" />
+            <rect x="45" y="100" width="24" height="70" />
+            <rect x="76" y="130" width="30" height="40" />
+            <rect x="113" y="90" width="26" height="80" />
+            <rect x="146" y="115" width="32" height="55" />
+            <rect x="185" y="95" width="24" height="75" />
+            <rect x="216" y="125" width="30" height="45" />
+            <rect x="253" y="105" width="26" height="65" />
+            <rect x="286" y="130" width="26" height="40" />
+          </g>
+          <g fill="#f5d87a">
+            <rect x="50" y="112" width="4" height="4" />
+            <rect x="58" y="128" width="4" height="4" />
+            <rect x="119" y="105" width="4" height="4" />
+            <rect x="191" y="112" width="4" height="4" />
+            <rect x="258" y="118" width="4" height="4" />
+          </g>
+        </svg>
+        <p class="diagram-caption">
+          Artificial light, scattered back down by the atmosphere, drowns out all but the
+          brightest stars near its source.
+        </p>
+      </div>
+
+      <div class="darkness-scale">
+        <div class="darkness-scale-bar"></div>
+        <div class="darkness-scale-labels">
+          <span>City sky</span>
+          <span>Suburbs</span>
+          <span>Rural</span>
+          <span>Dark Sky Park</span>
+        </div>
+      </div>
+      <p class="note">
+        A simplified darkness scale from a city centre to a Dark Sky Park (first draft, to be
+        checked by the teacher).
+      </p>
+
+      <p>
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="skyglowDetail" aria-label="What causes skyglow, and what is a Dark Sky Park?" aria-expanded="false">Sources of skyglow, and Dark Sky Parks</button>
+      </p>
+      <div class="glossary-definition" data-term="skyglowDetail" hidden>
+        <p>Skyglow is built up from many individual terrestrial sources, including:</p>
+        <ul class="tip-list">
+          <li>Commercial and sports floodlighting</li>
+          <li>Streetlamps and motorway lighting</li>
+          <li>Domestic and industrial security lighting</li>
+          <li>Car park and shopping centre lighting</li>
+        </ul>
+        <p>
+          A Dark Sky Park is an area officially designated and protected for having
+          exceptionally low light pollution, usually enforced through strict local lighting
+          rules &mdash; shielded, downward-facing fixtures, limits on brightness, and minimal
+          all-night lighting. They matter because they preserve some of the few remaining
+          places where the naked-eye sky looks close to how it would everywhere without
+          artificial lighting, both for astronomers and for nocturnal wildlife, whose
+          migration, foraging and breeding can all be disrupted by artificial light at night.
+        </p>
+      </div>
+    </section>
+
+    <section class="notes-section" id="finding-targets">
+      <h2>Finding your targets: star charts, planispheres and apps</h2>
+      <p>Three tools show you what's up tonight, each in a different way.</p>
+
+      <div class="diagram star-chart-diagram">
+        <svg viewBox="0 0 220 220" role="img" aria-label="A circular star chart or planisphere disc, scattered with stars, with an oval horizon window showing which part of the sky is visible right now">
+          <circle cx="110" cy="110" r="100" fill="#10233f" stroke="#0a1830" stroke-width="2" />
+          <circle cx="110" cy="110" r="92" fill="none" stroke="#2a6bd6" stroke-width="1" stroke-dasharray="2 4" opacity="0.6" />
+          <g fill="#eef3fb">
+            <circle cx="70" cy="60" r="1.6" />
+            <circle cx="95" cy="45" r="1.3" />
+            <circle cx="130" cy="55" r="1.5" />
+            <circle cx="150" cy="80" r="1.4" />
+            <circle cx="60" cy="100" r="1.3" />
+            <circle cx="160" cy="110" r="1.6" />
+            <circle cx="90" cy="130" r="1.3" />
+            <circle cx="120" cy="150" r="1.5" />
+            <circle cx="70" cy="160" r="1.3" />
+            <circle cx="145" cy="140" r="1.4" />
+            <circle cx="110" cy="75" r="1.3" />
+            <circle cx="50" cy="130" r="1.2" />
+            <circle cx="170" cy="90" r="1.3" />
+          </g>
+          <ellipse cx="110" cy="128" rx="78" ry="58" fill="#eaf2fb" opacity="0.14" stroke="#eaf2fb" stroke-width="1.5" />
+          <polygon points="110,6 104,18 116,18" fill="#f5a623" />
+        </svg>
+        <p class="diagram-caption">
+          A star chart or planisphere shows which stars and constellations are up for a given
+          date and time.
+        </p>
+      </div>
+
+      <div class="concept-grid">
+        <div class="concept-card">
+          <h3>Star chart</h3>
+          <p>
+            A flat, printed map of the sky for a particular date, time and latitude. No battery,
+            no screen glare, and easy to read by red light &mdash; the standard choice for not
+            wrecking your dark adaptation.
+          </p>
+        </div>
+        <div class="concept-card">
+          <h3>Planisphere</h3>
+          <p>
+            A rotating disc of two dials: turn it to line up today's date against the current
+            time, and the visible window shows exactly which stars and constellations are up,
+            for any time of night, all year round, without needing a new chart every night.
+          </p>
+        </div>
+        <div class="concept-card">
+          <h3>Sky app</h3>
+          <p>
+            Uses your phone's GPS and compass to show exactly what you're pointing at in
+            real time &mdash; the fastest way to identify something unfamiliar. Screen
+            brightness is the trade-off: use a red or night mode, and dim it as far as it'll go.
+          </p>
+        </div>
+      </div>
+
+      <p>
+        Whichever you use, a handful of bright
+        <a href="naked-eye-sky.html#patterns">constellations and asterisms</a> make the best
+        signposts for finding everything else.
+      </p>
+    </section>
+
+    <section class="notes-section" id="constellations-across-cultures">
+      <h2>Constellations across cultures</h2>
+      <p>The same stars have been connected into very different patterns by different cultures.</p>
+
+      <div class="diagram constellation-patterns-diagram">
+        <svg viewBox="0 0 320 170" role="img" aria-label="The same scatter of stars connected two different ways: one pattern traced in blue, a different pattern using some of the same stars traced in orange">
+          <rect x="0" y="0" width="320" height="170" fill="#0f1830" />
+          <g stroke="#2a6bd6" stroke-width="2" fill="none" stroke-linecap="round">
+            <polyline points="60,40 100,70 150,55 190,90" />
+          </g>
+          <g stroke="#f5a623" stroke-width="2" fill="none" stroke-linecap="round" stroke-dasharray="5 5">
+            <polyline points="100,70 130,120 190,90 240,110" />
+          </g>
+          <g fill="#eef3fb">
+            <circle cx="60" cy="40" r="3" />
+            <circle cx="100" cy="70" r="3" />
+            <circle cx="150" cy="55" r="3" />
+            <circle cx="190" cy="90" r="3" />
+            <circle cx="130" cy="120" r="3" />
+            <circle cx="240" cy="110" r="3" />
+            <circle cx="270" cy="50" r="1.5" opacity="0.6" />
+            <circle cx="35" cy="100" r="1.5" opacity="0.6" />
+            <circle cx="210" cy="30" r="1.5" opacity="0.6" />
+            <circle cx="280" cy="140" r="1.5" opacity="0.6" />
+          </g>
+        </svg>
+        <p class="diagram-caption">
+          A constellation's stars usually aren't physically related &mdash; it's the pattern,
+          not the stars, that a culture chooses.
+        </p>
+      </div>
+
+      <p>
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="constellationsIAU" aria-label="Where do today's constellations come from?" aria-expanded="false">Where today's 88 constellations come from</button>
+      </p>
+      <span class="glossary-definition" data-term="constellationsIAU" hidden></span>
+
+      <div class="concept-grid">
+        <div class="concept-card">
+          <h3>Aboriginal Australian</h3>
+          <p>
+            Several Aboriginal traditions read the dark dust lanes of the Milky Way, not its
+            bright stars, as a constellation: the "Emu in the Sky". Its position through the year
+            tracked emu breeding and egg-laying season, tying the sky directly to practical
+            seasonal knowledge.
+          </p>
+        </div>
+        <div class="concept-card">
+          <h3>Chinese</h3>
+          <p>
+            Traditional Chinese astronomy organises the sky into Three Enclosures around the
+            north celestial pole and Twenty-Eight Mansions along the Moon's path, an entirely
+            separate system from the Greco-Roman one, reflecting imperial court structure rather
+            than mythological figures.
+          </p>
+        </div>
+        <div class="concept-card">
+          <h3>Polynesian</h3>
+          <p>
+            Pacific wayfinders used the rising and setting points of particular stars, not fixed
+            figures, as a navigational compass for ocean voyaging. Matariki, the Pleiades star
+            cluster, marks the start of the new year in Māori and other Polynesian traditions.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="notes-section" id="meteor-showers">
+      <h2>Meteor showers and the radiant point</h2>
+      <p>A comet's debris trail, crossed by Earth's own orbit, creates a meteor shower.</p>
+
+      <div class="diagram radiant-diagram">
+        <svg viewBox="0 0 320 180" role="img" aria-label="Diagram of the radiant point: several meteor trails, drawn as parallel-looking streaks, all appearing to trace back to one point in the sky">
+          <circle cx="260" cy="30" r="3" fill="#1a1a1a" />
+          <g stroke="#c0392b" stroke-width="2" stroke-linecap="round">
+            <line x1="260" y1="30" x2="70" y2="150" />
+            <line x1="260" y1="30" x2="130" y2="160" />
+            <line x1="260" y1="30" x2="200" y2="168" />
+            <line x1="260" y1="30" x2="30" y2="90" />
+          </g>
+        </svg>
+        <p class="diagram-caption">Meteor trails, extended backwards, all meet at the radiant</p>
+      </div>
+
+      <p>
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="meteorShowerFormation" aria-label="How do meteor showers and the radiant point form?" aria-expanded="false">How showers and the radiant point form</button>
+      </p>
+      <div class="glossary-definition" data-term="meteorShowerFormation" hidden>
+        <p>
+          A comet sheds dust and small debris along its orbit as it's warmed by the Sun (an
+          asteroid occasionally does the same). When Earth's own orbit crosses that debris
+          trail, particles burn up in the atmosphere at high speed, and we see a meteor shower:
+          many more meteors than the handful of random ("sporadic") ones visible on any ordinary
+          night.
+        </p>
+        <p>
+          Every particle in a given shower is travelling roughly parallel to every other, on
+          paths that all converge toward Earth from the same direction. Perspective makes those
+          parallel paths appear to radiate outward from a single point in the sky, called the
+          radiant point &mdash; the same effect that makes parallel railway tracks appear to
+          meet at a single point in the distance. A shower is named after the constellation its
+          radiant falls in (the Perseids radiate from Perseus, the Geminids from Gemini, and so
+          on).
+        </p>
+      </div>
+
+      <p>
+        <strong>To actually spot one:</strong> dark-adapt first, get away from light pollution,
+        and look roughly 40&ndash;50&deg; away from the radiant &mdash; trails right next to it
+        are foreshortened and short-lived, while trails further away are longer and easier to
+        catch. Most showers are best after local midnight, when your side of Earth has turned to
+        face forward into its direction of orbital travel and sweeps up more debris, the way a
+        car's windscreen collects more insects than its rear window. Check the shower's peak
+        night in advance, and try for one with little or no moonlight.
+      </p>
+
+      <table class="shower-table">
+        <caption>A few reliable annual meteor showers</caption>
+        <thead>
+          <tr>
+            <th scope="col">Shower</th>
+            <th scope="col">Approx. peak</th>
+            <th scope="col">Parent body</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Quadrantids</td><td>early January</td><td>asteroid 2003 EH1</td></tr>
+          <tr><td>Lyrids</td><td>late April</td><td>Comet Thatcher</td></tr>
+          <tr><td>Eta Aquariids</td><td>early May</td><td>Comet Halley</td></tr>
+          <tr><td>Perseids</td><td>mid August</td><td>Comet Swift&ndash;Tuttle</td></tr>
+          <tr><td>Orionids</td><td>late October</td><td>Comet Halley</td></tr>
+          <tr><td>Leonids</td><td>mid November</td><td>Comet Tempel&ndash;Tuttle</td></tr>
+          <tr><td>Geminids</td><td>mid December</td><td>asteroid 3200 Phaethon</td></tr>
+        </tbody>
+      </table>
+      <p class="note">
+        The Eta Aquariids and Orionids share the same parent (Halley's Comet) but appear months
+        apart &mdash; Earth crosses two different parts of its debris trail at two different
+        points in its own orbit.
+      </p>
+    </section>
 
     <section class="notes-section" id="visibility-factors">
       <h2>What decides whether you can see it?</h2>
@@ -88,232 +420,6 @@
           any skyglow from <a href="#light-pollution">light pollution</a>.
         </p>
       </div>
-    </section>
-
-    <section class="notes-section" id="dark-adaptation">
-      <h2>Before you start: dark adaptation and averted vision</h2>
-      <p>
-        Your eyes take time to become properly sensitive in the dark.
-        <button type="button" class="glossary-toggle glossary-term-button" data-term="darkAdaptation" aria-label="What is dark adaptation?" aria-expanded="false">Dark adaptation</button>
-        is the process by which your rod cells — the retina's low-light receptors — build up a
-        light-sensitive pigment called rhodopsin, gradually increasing your sensitivity over
-        about 20&ndash;30 minutes. A single glance at a bright white light (a phone screen, a car's
-        headlights, a torch) bleaches that pigment and undoes most of the adaptation in seconds,
-        so once you're adapted it's worth protecting. Dim <strong>red</strong> light is the
-        exception: rhodopsin barely absorbs red wavelengths at all, so a red torch lets you read a
-        chart or find equipment by cone vision without bleaching the rod pigment your dark
-        adaptation depends on.
-      </p>
-      <p>
-        <button type="button" class="glossary-toggle glossary-term-button" data-term="avertedVision" aria-label="What is averted vision?" aria-expanded="false">Averted vision</button>
-        is a technique for seeing faint objects at all: rod cells are concentrated away from the
-        centre of the retina, while the very centre (the fovea) is packed with cones, which need
-        far more light to respond but give sharp, colour vision. Looking slightly to one side of
-        a faint object &mdash; rather than straight at it &mdash; shifts its image onto the
-        rod-rich periphery, often making it visible when a direct look shows nothing at all.
-      </p>
-      <span class="glossary-definition" data-term="darkAdaptation" hidden></span>
-      <span class="glossary-definition" data-term="avertedVision" hidden></span>
-
-      <div class="diagram averted-vision-diagram">
-        <svg viewBox="0 0 320 160" role="img" aria-label="Diagram of averted vision: looking slightly to the side of a faint star places its image on the rod-rich peripheral retina rather than the less light-sensitive centre">
-          <circle cx="60" cy="95" r="4" fill="#f5a623" />
-          <circle cx="60" cy="95" r="9" fill="none" stroke="#f5a623" stroke-width="1" opacity="0.5" />
-          <line x1="230" y1="110" x2="60" y2="95" stroke="#8a97a5" stroke-width="1.5" stroke-dasharray="3 3" />
-          <line x1="230" y1="110" x2="80" y2="35" stroke="#2a6bd6" stroke-width="1.5" />
-          <circle cx="230" cy="110" r="26" fill="#eaf2fb" stroke="#8a97a5" stroke-width="1.5" />
-          <circle cx="230" cy="110" r="5" fill="#2a6bd6" />
-        </svg>
-        <p class="diagram-caption">
-          Looking past the star, slightly to one side (solid line), lands its light on the
-          rod-rich periphery, rather than looking straight at it (dashed line)
-        </p>
-      </div>
-
-      <ul class="tip-list">
-        <li>Give your eyes 20&ndash;30 minutes in darkness before serious observing.</li>
-        <li>Use a dim <strong>red</strong> torch or a phone's night/red-light mode &mdash; red light preserves adaptation far better than white.</li>
-        <li>For a faint star, galaxy or meteor, look slightly to one side of it rather than straight at it.</li>
-        <li>Get away from streetlights and other direct light sources where you can; light pollution works against dark adaptation the same way a torch does.</li>
-      </ul>
-    </section>
-
-    <section class="notes-section" id="light-pollution">
-      <h2>Light pollution and skyglow</h2>
-      <p>
-        Even well away from any single light, the sky over a town or city glows a dull orange at
-        night &mdash;
-        <button type="button" class="glossary-toggle glossary-term-button" data-term="skyglow" aria-label="What is skyglow?" aria-expanded="false">skyglow</button>,
-        the scattered light from a whole area's artificial lighting, reflected back down by dust,
-        moisture and pollution in the atmosphere. It raises the sky's background brightness
-        everywhere, not just near the source, drowning out all but the brightest stars and making
-        faint objects &mdash; galaxies, nebulae, meteor showers &mdash; far harder to see.
-      </p>
-      <span class="glossary-definition" data-term="skyglow" hidden></span>
-      <p>Skyglow is built up from many individual terrestrial sources, including:</p>
-      <ul class="tip-list">
-        <li>Commercial and sports floodlighting</li>
-        <li>Streetlamps and motorway lighting</li>
-        <li>Domestic and industrial security lighting</li>
-        <li>Car park and shopping centre lighting</li>
-      </ul>
-      <p>
-        A
-        <button type="button" class="glossary-toggle glossary-term-button" data-term="darkSkyPark" aria-label="What is a Dark Sky Park?" aria-expanded="false">Dark Sky Park</button>
-        is an area officially designated and protected for having exceptionally low light
-        pollution, usually enforced through strict local lighting rules &mdash; shielded,
-        downward-facing fixtures, limits on brightness, and minimal all-night lighting. They
-        matter because they preserve some of the few remaining places where the naked-eye sky
-        looks close to how it would everywhere without artificial lighting, both for astronomers
-        and for nocturnal wildlife, whose migration, foraging and breeding can all be disrupted by
-        artificial light at night.
-      </p>
-      <span class="glossary-definition" data-term="darkSkyPark" hidden></span>
-    </section>
-
-    <section class="notes-section" id="finding-targets">
-      <h2>Finding your targets: star charts, planispheres and apps</h2>
-      <p>
-        Before you can observe something, you need to know where to look. Three tools do that job
-        in different ways, and most observers end up using more than one. Whichever you use,
-        a handful of bright
-        <a href="naked-eye-sky.html#patterns">constellations and asterisms</a> make the best
-        signposts for finding everything else.
-      </p>
-      <div class="concept-grid">
-        <div class="concept-card">
-          <h3>Star chart</h3>
-          <p>
-            A flat, printed map of the sky for a particular date, time and latitude. No battery,
-            no screen glare, and easy to read by red light &mdash; the standard choice for not
-            wrecking your dark adaptation.
-          </p>
-        </div>
-        <div class="concept-card">
-          <h3>Planisphere</h3>
-          <p>
-            A rotating disc of two dials: turn it to line up today's date against the current
-            time, and the visible window shows exactly which stars and constellations are up,
-            for any time of night, all year round, without needing a new chart every night.
-          </p>
-        </div>
-        <div class="concept-card">
-          <h3>Sky app</h3>
-          <p>
-            Uses your phone's GPS and compass to show exactly what you're pointing at in
-            real time &mdash; the fastest way to identify something unfamiliar. Screen
-            brightness is the trade-off: use a red or night mode, and dim it as far as it'll go.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <section class="notes-section" id="constellations-across-cultures">
-      <h2>Constellations across cultures</h2>
-      <p>
-        The 88 constellations recognised today by the International Astronomical Union (IAU) are
-        largely inherited from Greek and Babylonian tradition, formalised with fixed boundaries
-        only in 1930. They're a useful shared standard &mdash; but not the only way people have
-        organised the same sky. A constellation's stars are usually not physically related at all
-        (they typically sit at very different real distances from us); it's the pattern, not the
-        stars themselves, that a culture chooses and names.
-      </p>
-      <div class="concept-grid">
-        <div class="concept-card">
-          <h3>Aboriginal Australian</h3>
-          <p>
-            Several Aboriginal traditions read the dark dust lanes of the Milky Way, not its
-            bright stars, as a constellation: the "Emu in the Sky". Its position through the year
-            tracked emu breeding and egg-laying season, tying the sky directly to practical
-            seasonal knowledge.
-          </p>
-        </div>
-        <div class="concept-card">
-          <h3>Chinese</h3>
-          <p>
-            Traditional Chinese astronomy organises the sky into Three Enclosures around the
-            north celestial pole and Twenty-Eight Mansions along the Moon's path, an entirely
-            separate system from the Greco-Roman one, reflecting imperial court structure rather
-            than mythological figures.
-          </p>
-        </div>
-        <div class="concept-card">
-          <h3>Polynesian</h3>
-          <p>
-            Pacific wayfinders used the rising and setting points of particular stars, not fixed
-            figures, as a navigational compass for ocean voyaging. Matariki, the Pleiades star
-            cluster, marks the start of the new year in Māori and other Polynesian traditions.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <section class="notes-section" id="meteor-showers">
-      <h2>Meteor showers and the radiant point</h2>
-      <p>
-        A comet sheds dust and small debris along its orbit as it's warmed by the Sun (an
-        asteroid occasionally does the same). When Earth's own orbit crosses that debris trail,
-        particles burn up in the atmosphere at high speed, and we see a meteor shower: many more
-        meteors than the handful of random ("sporadic") ones visible on any ordinary night.
-      </p>
-      <p>
-        Every particle in a given shower is travelling roughly parallel to every other, on paths
-        that all converge toward Earth from the same direction. Perspective makes those parallel
-        paths appear to radiate outward from a single point in the sky, called the
-        <button type="button" class="glossary-toggle glossary-term-button" data-term="radiant" aria-label="What is a meteor shower's radiant point?" aria-expanded="false">radiant point</button>
-        &mdash; the same effect that makes parallel railway tracks appear to meet at a single
-        point in the distance. A shower is named after the constellation its radiant falls in
-        (the Perseids radiate from Perseus, the Geminids from Gemini, and so on).
-      </p>
-      <span class="glossary-definition" data-term="radiant" hidden></span>
-
-      <div class="diagram radiant-diagram">
-        <svg viewBox="0 0 320 180" role="img" aria-label="Diagram of the radiant point: several meteor trails, drawn as parallel-looking streaks, all appearing to trace back to one point in the sky">
-          <circle cx="260" cy="30" r="3" fill="#1a1a1a" />
-          <g stroke="#c0392b" stroke-width="2" stroke-linecap="round">
-            <line x1="260" y1="30" x2="70" y2="150" />
-            <line x1="260" y1="30" x2="130" y2="160" />
-            <line x1="260" y1="30" x2="200" y2="168" />
-            <line x1="260" y1="30" x2="30" y2="90" />
-          </g>
-        </svg>
-        <p class="diagram-caption">Meteor trails, extended backwards, all meet at the radiant</p>
-      </div>
-
-      <p>
-        <strong>To actually spot one:</strong> dark-adapt first, get away from light pollution,
-        and look roughly 40&ndash;50&deg; away from the radiant &mdash; trails right next to it
-        are foreshortened and short-lived, while trails further away are longer and easier to
-        catch. Most showers are best after local midnight, when your side of Earth has turned to
-        face forward into its direction of orbital travel and sweeps up more debris, the way a
-        car's windscreen collects more insects than its rear window. Check the shower's peak
-        night in advance, and try for one with little or no moonlight.
-      </p>
-
-      <table class="shower-table">
-        <caption>A few reliable annual meteor showers</caption>
-        <thead>
-          <tr>
-            <th scope="col">Shower</th>
-            <th scope="col">Approx. peak</th>
-            <th scope="col">Parent body</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td>Quadrantids</td><td>early January</td><td>asteroid 2003 EH1</td></tr>
-          <tr><td>Lyrids</td><td>late April</td><td>Comet Thatcher</td></tr>
-          <tr><td>Eta Aquariids</td><td>early May</td><td>Comet Halley</td></tr>
-          <tr><td>Perseids</td><td>mid August</td><td>Comet Swift&ndash;Tuttle</td></tr>
-          <tr><td>Orionids</td><td>late October</td><td>Comet Halley</td></tr>
-          <tr><td>Leonids</td><td>mid November</td><td>Comet Tempel&ndash;Tuttle</td></tr>
-          <tr><td>Geminids</td><td>mid December</td><td>asteroid 3200 Phaethon</td></tr>
-        </tbody>
-      </table>
-      <p class="note">
-        The Eta Aquariids and Orionids share the same parent (Halley's Comet) but appear months
-        apart &mdash; Earth crosses two different parts of its debris trail at two different
-        points in its own orbit.
-      </p>
     </section>
 
     <section class="notes-section" id="exam-tips">
@@ -390,7 +496,7 @@
   <script src="../src/observingTechniquesQuestions.js?v=202610292000"></script>
   <script src="../glossary.js?v=202610131052"></script>
   <script src="../quiz-ui.js?v=202610300900"></script>
-  <script src="observing-techniques.js?v=202610292000"></script>
+  <script src="observing-techniques.js?v=202611011100"></script>
   <script src="../notesPage.js?v=202609270100"></script>
   <script src="../nextPage.js?v=202610161057"></script>
 </body>

@@ -8,20 +8,19 @@
   }
 
   const GLOSSARY = {
-    darkAdaptation:
-      "Dark adaptation: the gradual increase in your eyes' sensitivity in darkness, mostly complete after 20-30 minutes, as rod cells build up light-sensitive rhodopsin. A single bright light undoes most of it in seconds.",
-    avertedVision:
-      'Averted vision: looking slightly to one side of a faint object instead of straight at it, so its image falls on the rod-rich peripheral retina rather than the less light-sensitive centre.',
-    radiant:
-      "A meteor shower's radiant point: the point in the sky meteor trails appear to radiate from, a perspective effect of near-parallel debris particles all approaching Earth from the same direction.",
+    darkAdaptationDetail:
+      "Dark adaptation is the process by which your rod cells — the retina's low-light receptors — build up a light-sensitive pigment called rhodopsin, gradually increasing your sensitivity over about 20-30 minutes. A single glance at a bright white light (a phone screen, a car's headlights, a torch) bleaches that pigment and undoes most of the adaptation in seconds, so once you're adapted it's worth protecting. Dim red light is the exception: rhodopsin barely absorbs red wavelengths at all, so a red torch lets you read a chart or find equipment by cone vision without bleaching the rod pigment your dark adaptation depends on.",
+    avertedVisionDetail:
+      "Averted vision is a technique for seeing faint objects at all: rod cells are concentrated away from the centre of the retina, while the very centre (the fovea) is packed with cones, which need far more light to respond but give sharp, colour vision. Looking slightly to one side of a faint object — rather than straight at it — shifts its image onto the rod-rich periphery, often making it visible when a direct look shows nothing at all.",
     skyglow:
-      "Skyglow: the orange background haze over urban areas at night, caused by artificial light scattering off dust, moisture and pollution in the atmosphere — it raises the sky's brightness everywhere, not just near individual lights.",
-    darkSkyPark:
-      'A Dark Sky Park: an area officially designated and protected for its exceptionally low light pollution, through measures like shielded fixtures and limits on night-time lighting.',
-    // seeingAndTransparency's definition is written directly in the HTML
-    // (it needs a real link to earth-structure.html), not here — this
-    // dict only overwrites a definition span with plain text, which
-    // would strip that link out again on every page load.
+      "Skyglow: the orange background haze over urban areas at night, caused by artificial light scattering off dust, moisture and pollution in the atmosphere — it raises the sky's brightness everywhere, not just near individual lights, drowning out all but the brightest stars and making faint objects (galaxies, nebulae, meteor showers) far harder to see.",
+    constellationsIAU:
+      "The 88 constellations recognised today by the International Astronomical Union (IAU) are largely inherited from Greek and Babylonian tradition, formalised with fixed boundaries only in 1930. They're a useful shared standard — but not the only way people have organised the same sky.",
+    // seeingAndTransparency and skyglowDetail's definitions are written
+    // directly in the HTML (they need real links, or a list and more
+    // than one paragraph), not here — this dict only overwrites a
+    // definition span with plain text, which would strip that markup
+    // out again on every page load.
   };
 
   // --- "What decides whether you can see it?": the horizon diagram --------

@@ -51,6 +51,7 @@ const DIAGRAM_FIRST_PAGES = [
   'notes/naked-eye-sky.html',
   'notes/archaeoastronomy.html',
   'sims/sunspot-rotation.html',
+  'notes/observing-techniques.html',
 ];
 
 function read(href) {
