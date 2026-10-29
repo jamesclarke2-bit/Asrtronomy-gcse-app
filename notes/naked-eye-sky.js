@@ -933,5 +933,14 @@
   fillFigures();
   renderCoverage();
   Glossary.init(GLOSSARY);
-  QuizUI.mount(NakedEyeSkyQuestions.makeQuestions(StarPatterns, { renderPatternQuizDiagram }));
+  const nakedEyeSkyQuestions = NakedEyeSkyQuestions.makeQuestions(StarPatterns, { renderPatternQuizDiagram });
+  const patternQuizQuestions = nakedEyeSkyQuestions.filter((q) => q.id.startsWith('name-that-pattern-'));
+  const nakedEyeSkyTextQuestions = nakedEyeSkyQuestions.filter((q) => !q.id.startsWith('name-that-pattern-'));
+  QuizUI.mount(nakedEyeSkyTextQuestions);
+  QuizUI.mountGroup({
+    questions: patternQuizQuestions,
+    listElementId: 'pattern-quiz-list',
+    summaryElementId: 'pattern-quiz-summary',
+    label: 'Picture quiz: name that pattern',
+  });
 })();
