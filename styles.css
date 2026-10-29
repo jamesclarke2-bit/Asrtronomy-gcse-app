@@ -728,12 +728,13 @@ canvas {
   font-style: italic;
 }
 
-/* Two illustrations side by side on anything wide enough for two 240px
-   columns, stacked on a phone -- the same auto-fit/minmax breakpoint
-   .concept-grid already uses. */
+/* Two illustrations side by side on anything wide enough for two 260px
+   columns (the same size as the near-side map's own quiz picture, see
+   .question-diagram), stacked on a phone -- the same auto-fit/minmax
+   breakpoint .concept-grid already uses. */
 .moon-hemisphere-compare {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 1.25rem;
   margin: 1rem 0;
 }
@@ -741,6 +742,16 @@ canvas {
 .moon-hemisphere-figure {
   margin: 0;
   text-align: center;
+}
+
+/* Overrides .labelled-diagram-wrap's own inline-block default: without
+   an explicit width here, the wrap would size to its content instead
+   of the figure, which can leave the svg's own width: 100% resolving
+   against a near-zero containing block (see the fix note on
+   .labelled-diagram-wrap's own CSS). */
+.moon-hemisphere-figure .labelled-diagram-wrap {
+  display: block;
+  width: 100%;
 }
 
 .moon-hemisphere-figure svg {
@@ -756,6 +767,17 @@ canvas {
   margin-top: 0.5rem;
   font-size: 0.85rem;
   color: #444;
+}
+
+.moon-hemisphere-figure figcaption strong {
+  display: block;
+  font-size: 0.95rem;
+  color: #1a1a1a;
+  margin-bottom: 0.15rem;
+}
+
+.moon-hemisphere-caption {
+  display: block;
 }
 
 .concept-card h3 {

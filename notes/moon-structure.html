@@ -7,7 +7,7 @@
   <meta name="referrer" content="no-referrer" />
   <meta name="robots" content="noindex, nofollow" />
   <title>The Moon: Structure, Surface and Origin</title>
-  <link rel="stylesheet" href="../styles.css?v=202611021000" />
+  <link rel="stylesheet" href="../styles.css?v=202611021500" />
   <link rel="icon" type="image/svg+xml" href="../favicon.svg?v=202610130720" />
 </head>
 <body>
@@ -301,40 +301,77 @@
       </p>
       <div class="moon-hemisphere-compare">
         <figure class="moon-hemisphere-figure">
-          <svg
-            id="moon-near-side"
-            viewBox="0 0 300 300"
-            role="img"
-            aria-label="Illustration of the Moon's near side: large dark maria over lighter highlands. Tap a region to see its name."
-          ></svg>
+          <div class="labelled-diagram-wrap labels-hidden" id="moon-near-side-wrap">
+            <svg
+              id="moon-near-side"
+              viewBox="0 0 600 600"
+              width="600"
+              height="600"
+              class="responsive-svg"
+              role="img"
+              aria-label="Illustration of the Moon's near side: the same map as Recognise the named features above, with labels hidden — dark maria, the craters Tycho, Copernicus and Kepler with their ray systems, and the Apennine Mountains. Tap a region to see its name."
+            ></svg>
+          </div>
           <figcaption>
-            Near side: large dark maria, covering about <strong>31%</strong> of the surface
-            (first draft, to be checked by the teacher).
+            <strong>Near side</strong>
+            <span class="moon-hemisphere-caption">
+              Dominated by vast dark plains of solidified lava, the maria &mdash; covering about
+              31% of the surface (first draft, to be checked by the teacher).
+            </span>
           </figcaption>
         </figure>
         <figure class="moon-hemisphere-figure">
-          <svg
-            id="moon-far-side"
-            viewBox="0 0 300 300"
-            role="img"
-            aria-label="Illustration of the Moon's far side: mostly bright, heavily cratered highlands, the South Pole-Aitken basin, and only a few small maria. Tap a region to see its name."
-          ></svg>
+          <div class="labelled-diagram-wrap labels-hidden" id="moon-far-side-wrap">
+            <svg
+              id="moon-far-side"
+              viewBox="0 0 600 600"
+              width="600"
+              height="600"
+              class="responsive-svg"
+              role="img"
+              aria-label="Illustration of the Moon's far side: brighter, densely cratered highlands, the South Pole-Aitken basin as a faint, slightly darker region near the bottom edge, and the small dark patches of Mare Moscoviense, Mare Ingenii and the crater Tsiolkovskiy. Tap a region to see its name."
+            ></svg>
+          </div>
           <figcaption>
-            Far side: mostly bright highlands, maria covering only about <strong>2%</strong>
-            (first draft, to be checked by the teacher).
+            <strong>Far side</strong>
+            <span class="moon-hemisphere-caption">
+              Heavily cratered, mountainous highlands with almost no maria &mdash; about 2%
+              (first draft, to be checked by the teacher) &mdash; so it's actually brighter
+              than the side facing us. The crust here is much thicker.
+            </span>
           </figcaption>
         </figure>
       </div>
+      <p class="note">
+        There's a far side, but no permanently &ldquo;dark side&rdquo;: both sides get day and
+        night, since the Moon rotates once per orbit.
+      </p>
       <p>
         <button type="button" class="glossary-toggle glossary-term-button" data-term="farSideCrust" aria-label="Why is the far side's crust thicker?" aria-expanded="false">Why is the far side's crust thicker?</button>
+        &middot;
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="whyTwoSidesDiffer" aria-label="Why are the two sides so different in the first place?" aria-expanded="false">Why are the two sides so different?</button>
       </p>
       <span class="glossary-definition" data-term="farSideCrust" hidden></span>
+      <div class="glossary-definition" data-term="whyTwoSidesDiffer" hidden>
+        <p>
+          Still an open question &mdash; the &ldquo;lunar far-side highlands problem&rdquo;. One
+          hypothesis, put forward in 2025 and not yet tested: once the Moon became tidally
+          locked, Earth's own heat kept the near side very hot, close to 1,000&deg;C, while the
+          far side, facing away, cooled to around &minus;20&deg;C. That split may have set up a
+          circulation in the Moon's early magma ocean, piling light, floating plagioclase
+          crystals into a thicker crust on the far side. A hypothesis, not an established fact
+          &mdash; first draft, to be checked by the teacher.
+        </p>
+        <p class="note">
+          Further reading:
+          <a href="https://www.skyatnightmagazine.com/space-science/moon-far-side-near-side-difference" rel="noopener noreferrer">Lewis Dartnell, &ldquo;Why does the Moon's far side look so different to the near side?&rdquo;, BBC Sky at Night Magazine (22 December 2025)</a>.
+        </p>
+      </div>
       <div class="moon-feature-definitions">
-        <span class="glossary-definition" data-term="nearSideMaria" hidden></span>
-        <span class="glossary-definition" data-term="nearSideHighlands" hidden></span>
-        <span class="glossary-definition" data-term="farSideHighlands" hidden></span>
-        <span class="glossary-definition" data-term="farSideMaria" hidden></span>
         <span class="glossary-definition" data-term="southPoleAitken" hidden></span>
+        <span class="glossary-definition" data-term="farSideMoscoviense" hidden></span>
+        <span class="glossary-definition" data-term="farSideIngenii" hidden></span>
+        <span class="glossary-definition" data-term="farSideTsiolkovskiy" hidden></span>
       </div>
     </section>
 
@@ -502,7 +539,7 @@
   <script src="../src/ringDiagramLabels.js?v=202611021000"></script>
   <script src="../glossary.js?v=202610131052"></script>
   <script src="../quiz-ui.js?v=202611021000"></script>
-  <script src="moon-structure.js?v=202611021000"></script>
+  <script src="moon-structure.js?v=202611021500"></script>
   <script src="../notesPage.js?v=202609270100"></script>
   <script src="../nextPage.js?v=202610161057"></script>
 </body>

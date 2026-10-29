@@ -329,75 +329,132 @@
     if (!idPrefix) drawApolloSites(svg);
   }
 
-  // --- Near side vs far side: two small original illustrations making
-  // the maria/highlands contrast and the South Pole-Aitken basin visible
-  // at a glance (not a precise map -- that's "Recognise the named
-  // features" above). Tapping a region reveals its name via the same
-  // glossary-toggle mechanism as every other diagram on this page.
-  const HEMI_CX = 150;
-  const HEMI_CY = 150;
-  const HEMI_R = 130;
-  const HIGHLAND_FILL = '#c9cdd3';
-  const FAR_SIDE_FILL = '#dedcd2';
-  const BASIN_FILL = '#a8a89d';
+  // --- Near side vs far side: two illustrations in the same realistic
+  // style, lighting and size as the near-side map above (as used in the
+  // "Name that feature" picture quiz), for a direct visual comparison.
+  // Tapping a region reveals its name via the same glossary-toggle
+  // mechanism as every other diagram on this page.
 
-  // Fixed [angleDeg, radiusFrac, r] speckle positions standing in for the
-  // far side's dense, ancient cratering -- illustrative, not real crater
-  // positions, so they carry no term and aren't tappable.
-  const HEMISPHERE_SPECKLES = [
-    [20, 0.55, 5], [55, 0.75, 4], [95, 0.4, 6], [140, 0.65, 4.5], [170, 0.3, 5],
-    [205, 0.8, 4], [240, 0.5, 6], [275, 0.7, 4.5], [310, 0.35, 5], [345, 0.6, 4],
-    [75, 0.25, 4], [255, 0.2, 4],
-  ];
+  // The near side just redraws the real map (drawMoonMap, unchanged)
+  // into its own svg/wrap pair, with labels hidden — the same
+  // labels-hidden trick renderFeatureQuizDiagram uses for a quiz
+  // picture, except here the regions stay fully interactive (tapping
+  // one reveals its name in "Recognise the named features" above,
+  // exactly as tapping it there does).
+  function drawNearSideIllustration() {
+    const svg = document.getElementById('moon-near-side');
+    const wrap = document.getElementById('moon-near-side-wrap');
+    if (!svg || !wrap) return;
+    drawMoonMap(svg, wrap, 'hemi-near-');
+  }
 
-  function hemiPoint(angleDeg, radiusFrac) {
-    const angle = angleDeg * RAD;
-    return {
-      x: HEMI_CX + Math.cos(angle) * HEMI_R * radiusFrac,
-      y: HEMI_CY + Math.sin(angle) * HEMI_R * radiusFrac,
+  // A small, seeded PRNG (not Math.random) so the far side's dense
+  // cratering draws the same way on every load.
+  function mulberry32(seed) {
+    return function () {
+      seed |= 0;
+      seed = (seed + 0x6d2b79f5) | 0;
+      let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
     };
   }
 
-  function drawHemisphereSpeckles(svg) {
-    HEMISPHERE_SPECKLES.forEach(([angleDeg, radiusFrac, r]) => {
-      const p = hemiPoint(angleDeg, radiusFrac);
-      svgEl('circle', {
-        cx: p.x.toFixed(1), cy: p.y.toFixed(1), r,
-        fill: '#eceae0', stroke: '#b7b5aa', 'stroke-width': 1, 'pointer-events': 'none',
-      }, svg);
-    });
-  }
-
-  function drawNearSideIllustration() {
-    const svg = document.getElementById('moon-near-side');
-    if (!svg) return;
-    svgEl('circle', { cx: HEMI_CX, cy: HEMI_CY, r: HEMI_R, fill: HIGHLAND_FILL }, svg);
-
-    const highlands = makeToggle(svg, 'nearSideHighlands', 'Highlands');
-    svgEl('circle', { cx: HEMI_CX, cy: HEMI_CY, r: HEMI_R, fill: 'transparent', 'pointer-events': 'all' }, highlands);
-
-    const maria = makeToggle(svg, 'nearSideMaria', 'Maria');
-    svgEl('ellipse', { cx: 95, cy: 150, rx: 55, ry: 70, fill: MARE_COLOR }, maria);
-    svgEl('ellipse', { cx: 195, cy: 110, rx: 45, ry: 35, fill: MARE_COLOR }, maria);
-    svgEl('circle', { cx: 230, cy: 150, r: 18, fill: MARE_COLOR }, maria);
-  }
+  // The far side has no map anywhere else on the page, so this is a new
+  // drawing, built the same way drawMoonMap is: a shaded disc, soft
+  // blurred maria, and tappable named features. First draft, to be
+  // checked by the teacher — the three named features here, and their
+  // approximate positions, are general knowledge, not sourced from the
+  // spec or this page's own data. Positions are given as an offset from
+  // the far side's own centre meridian (real selenographic longitude
+  // minus 180°) fed straight into the same project() the near side map
+  // uses, not true IAU longitudes.
+  const FAR_SIDE_SHADE_STOPS = [
+    ['0%', '#f3f1ea'],
+    ['85%', '#e3dfd2'],
+    ['100%', '#c7c0ae'],
+  ];
+  const FAR_SIDE_MARIA = [
+    { term: 'farSideMoscoviense', name: 'Mare Moscoviense', lat: 27, lon: -33, radiusDeg: 4.5 },
+    { term: 'farSideIngenii', name: 'Mare Ingenii', lat: -34, lon: -16, radiusDeg: 5.2 },
+  ];
+  const TSIOLKOVSKIY = { term: 'farSideTsiolkovskiy', name: 'Tsiolkovskiy', lat: -21, lon: -51, diameterKm: 180 };
+  const SOUTH_POLE_AITKEN = { term: 'southPoleAitken', name: 'South Pole–Aitken basin', lat: -56, lon: -5, rx: 140, ry: 78 };
+  const FAR_SIDE_CRATER_COUNT = 130;
+  const FAR_SIDE_CRATER_SEED = 20251103;
 
   function drawFarSideIllustration() {
     const svg = document.getElementById('moon-far-side');
-    if (!svg) return;
-    svgEl('circle', { cx: HEMI_CX, cy: HEMI_CY, r: HEMI_R, fill: FAR_SIDE_FILL }, svg);
+    const wrap = document.getElementById('moon-far-side-wrap');
+    if (!svg || !wrap) return;
+    const idPrefix = 'hemi-far-';
 
-    const highlands = makeToggle(svg, 'farSideHighlands', 'Highlands');
-    svgEl('circle', { cx: HEMI_CX, cy: HEMI_CY, r: HEMI_R, fill: 'transparent', 'pointer-events': 'all' }, highlands);
+    const defs = svgEl('defs', {}, svg);
+    const shade = svgEl('radialGradient', { id: `${idPrefix}shade`, cx: '42%', cy: '38%', r: '65%' }, defs);
+    FAR_SIDE_SHADE_STOPS.forEach(([offset, color]) => svgEl('stop', { offset, 'stop-color': color }, shade));
+    const soften = svgEl('filter', { id: `${idPrefix}soften`, x: '-10%', y: '-10%', width: '120%', height: '120%' }, defs);
+    svgEl('feGaussianBlur', { stdDeviation: '2.2' }, soften);
+    const disc = svgEl('clipPath', { id: `${idPrefix}disc` }, defs);
+    svgEl('circle', { cx: CX, cy: CY, r: R }, disc);
 
-    drawHemisphereSpeckles(svg);
+    svgEl('circle', { cx: CX, cy: CY, r: R, fill: `url(#${idPrefix}shade)` }, svg);
 
-    const basin = makeToggle(svg, 'southPoleAitken', 'South Pole–Aitken basin');
-    svgEl('ellipse', { cx: 150, cy: 232, rx: 100, ry: 55, fill: BASIN_FILL, opacity: 0.85 }, basin);
+    // South Pole-Aitken basin: not a true mare, so much paler than the
+    // named maria below — a large, only slightly darker patch near the
+    // bottom edge, with a faint rim, clipped to the disc since (unlike
+    // a mare's own sphereCirclePath) it's a plain ellipse that would
+    // otherwise spill past the limb.
+    const basinCentre = project(SOUTH_POLE_AITKEN.lat, SOUTH_POLE_AITKEN.lon);
+    const basin = makeToggle(svg, SOUTH_POLE_AITKEN.term, SOUTH_POLE_AITKEN.name);
+    basin.setAttribute('clip-path', `url(#${idPrefix}disc)`);
+    svgEl('ellipse', {
+      cx: basinCentre.x, cy: basinCentre.y, rx: SOUTH_POLE_AITKEN.rx, ry: SOUTH_POLE_AITKEN.ry,
+      fill: '#aca694', opacity: 0.5, filter: `url(#${idPrefix}soften)`,
+    }, basin);
+    svgEl('ellipse', {
+      cx: basinCentre.x, cy: basinCentre.y, rx: SOUTH_POLE_AITKEN.rx, ry: SOUTH_POLE_AITKEN.ry,
+      fill: 'none', stroke: '#a39d8a', 'stroke-width': 1.5, opacity: 0.6,
+    }, basin);
+    svgEl('ellipse', {
+      cx: basinCentre.x, cy: basinCentre.y, rx: SOUTH_POLE_AITKEN.rx, ry: SOUTH_POLE_AITKEN.ry,
+      fill: 'transparent', 'pointer-events': 'all',
+    }, basin);
 
-    const maria = makeToggle(svg, 'farSideMaria', 'Maria');
-    svgEl('circle', { cx: 190, cy: 72, r: 11, fill: MARE_COLOR }, maria);
-    svgEl('circle', { cx: 112, cy: 214, r: 8, fill: MARE_COLOR }, maria);
+    // Dense, many-sized cratering, standing in for the far side's real
+    // texture — decorative (no term, not tappable), seeded so it's the
+    // same on every load.
+    const craterRandom = mulberry32(FAR_SIDE_CRATER_SEED);
+    const craterLayer = svgEl('g', { 'pointer-events': 'none', 'clip-path': `url(#${idPrefix}disc)` }, svg);
+    for (let i = 0; i < FAR_SIDE_CRATER_COUNT; i++) {
+      const angle = craterRandom() * 2 * Math.PI;
+      const radiusFrac = Math.sqrt(craterRandom()) * 0.97;
+      const x = (CX + Math.cos(angle) * R * radiusFrac).toFixed(1);
+      const y = (CY + Math.sin(angle) * R * radiusFrac).toFixed(1);
+      const r = 3 + craterRandom() * 11;
+      const tone = 0.65 + craterRandom() * 0.35;
+      svgEl('circle', { cx: x, cy: y, r: (r * 0.6).toFixed(1), fill: '#efece3', opacity: (0.55 * tone).toFixed(2) }, craterLayer);
+      svgEl('circle', { cx: x, cy: y, r: r.toFixed(1), fill: 'none', stroke: '#a7a08f', 'stroke-width': 1, opacity: (0.45 * tone).toFixed(2) }, craterLayer);
+    }
+
+    // Tsiolkovskiy: unlike the near side's young, bright-rayed craters,
+    // this one is ancient and dark-floored, so no ray system.
+    const tsiolCentre = project(TSIOLKOVSKIY.lat, TSIOLKOVSKIY.lon);
+    const tsiolR = Math.max((TSIOLKOVSKIY.diameterKm / 2 / 1737.4) * R, 9);
+    const tsiol = makeToggle(svg, TSIOLKOVSKIY.term, TSIOLKOVSKIY.name);
+    svgEl('circle', { cx: tsiolCentre.x, cy: tsiolCentre.y, r: tsiolR + 6, fill: 'transparent', 'pointer-events': 'all' }, tsiol);
+    svgEl('circle', { cx: tsiolCentre.x, cy: tsiolCentre.y, r: tsiolR, fill: '#efece3', stroke: '#8c8a82', 'stroke-width': 1 }, tsiol);
+    svgEl('circle', { cx: tsiolCentre.x, cy: tsiolCentre.y, r: tsiolR * 0.72, fill: MARE_COLOR }, tsiol);
+
+    // Mare Moscoviense and Mare Ingenii: small, isolated dark patches —
+    // much rarer here than on the near side.
+    FAR_SIDE_MARIA.forEach((feature) => {
+      const group = makeToggle(svg, feature.term, feature.name);
+      svgEl('path', {
+        d: sphereCirclePath(feature.lat, feature.lon, feature.radiusDeg),
+        fill: MARE_COLOR,
+        filter: `url(#${idPrefix}soften)`,
+      }, group);
+    });
   }
 
   // A CSS filter/drop-shadow doesn't render reliably on SVG shapes in
@@ -723,13 +780,14 @@
     apollo15: 'Apollo 15 — mission 15, 1971: landed near Hadley Rille.',
     apollo16: 'Apollo 16 — mission 16, 1972: landed in the Descartes highlands.',
     apollo17: 'Apollo 17 — mission 17, 1972: the last crewed Moon landing, at Taurus–Littrow.',
-    nearSideMaria: 'Maria ("seas"): dark, smooth plains of ancient lava that flooded impact basins.',
-    nearSideHighlands: 'Terrae (highlands): the lighter, rugged, more heavily cratered ground between the maria.',
-    farSideHighlands:
-      "Terrae (highlands): the far side is almost all highlands — light, rugged ground, heavily cratered because it's so much older than the maria.",
-    farSideMaria: 'Maria ("seas"): a few small dark lava plains — much rarer here than on the near side.',
     southPoleAitken:
       'The South Pole–Aitken basin: one of the largest known impact basins in the Solar System, roughly 2,500 km across — a first draft, to be checked by the teacher.',
+    farSideMoscoviense:
+      'Mare Moscoviense (Sea of Moscow): one of the far side\'s few maria, a small dark patch in the northern highlands — first draft, to be checked by the teacher.',
+    farSideIngenii:
+      'Mare Ingenii (Sea of Cleverness): a small dark mare in the southern far side, likely linked to the South Pole–Aitken basin\'s own impact — first draft, to be checked by the teacher.',
+    farSideTsiolkovskiy:
+      'Tsiolkovskiy: an ancient, dark-floored crater (~180 km across) — unlike the near side\'s young rayed craters, it has no ray system — first draft, to be checked by the teacher.',
     farSideCrust:
       "The far side's crust is thicker — up to about 60 km in the central far-side highlands, against an average of 34–43 km (GRAIL; Wieczorek et al. 2013, cited above) — and thinnest, close to zero, beneath some large near-side impact basins such as the Sea of Crises. Molten rock rising from inside the Moon could break through the thinner near-side crust and flood its basins, but mostly couldn't get through the far side's — which is also why the far side keeps so many more of its ancient craters.",
   };

@@ -1,11 +1,15 @@
 /**
- * notes/moon-structure.html's "Near side and far side" section: the two
- * original SVG illustrations (#moon-near-side, #moon-far-side) and
- * their tap-to-reveal regions are JS-drawn, so whether each region
- * exists, reveals the right name, and lays out side-by-side at iPad
- * width / stacked at phone width is runtime DOM/layout state a real
- * browser has to check (same reasoning as test/pictureQuestions.test.js
- * and test/noHorizontalScroll.test.js).
+ * notes/moon-structure.html's "Near side and far side" section: two
+ * original SVG illustrations in the same realistic style as the page's
+ * main near-side map. #moon-near-side redraws that same map (drawMoonMap)
+ * with its labels hidden, so tapping a region reveals the same named-
+ * feature definitions as "Recognise the named features" above. #moon-far-side
+ * is a new drawing with its own, first-draft features (the South
+ * Pole-Aitken basin, Mare Moscoviense, Mare Ingenii and Tsiolkovskiy).
+ * Whether each region exists, reveals the right name, and lays out
+ * side-by-side at iPad width / stacked at phone width is runtime
+ * DOM/layout state a real browser has to check (same reasoning as
+ * test/pictureQuestions.test.js and test/noHorizontalScroll.test.js).
  */
 const test = require('node:test');
 const assert = require('node:assert/strict');
@@ -42,35 +46,36 @@ async function withPage(t, viewport, run) {
   }
 }
 
-// [svgId, term, position fraction of the 0-300 viewBox] for each
-// tappable region in the two illustrations.
-const REGIONS = [
-  ['moon-near-side', 'nearSideHighlands', 150, 20],
-  ['moon-near-side', 'nearSideMaria', 95, 150],
-  ['moon-far-side', 'farSideHighlands', 150, 20],
-  ['moon-far-side', 'southPoleAitken', 150, 232],
-  ['moon-far-side', 'farSideMaria', 190, 72],
-];
+// Clicks a region by dispatching the same 'click' event glossary.js
+// listens for, rather than hit-testing a pixel position: these regions
+// are irregular blurred mare outlines and ray-crater shapes, so a
+// bounding-box-centre click can land outside the filled shape.
+async function clickRegion(page, svgId, term) {
+  await page.locator(`#${svgId} [data-term="${term}"]`).evaluate((el) => {
+    el.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+  });
+}
+
+const NEAR_SIDE_TERMS = ['tranquility', 'crises', 'storms', 'tycho', 'copernicus', 'kepler', 'apennines'];
+const FAR_SIDE_TERMS = ['southPoleAitken', 'farSideMoscoviense', 'farSideIngenii', 'farSideTsiolkovskiy'];
 
 test('notes/moon-structure.html: both hemisphere illustrations draw their regions with no console errors', async (t) => {
   await withPage(t, { width: 1024, height: 900 }, async (page, consoleErrors) => {
     const nearRegions = await page.locator('#moon-near-side .diagram-region').count();
     const farRegions = await page.locator('#moon-far-side .diagram-region').count();
-    assert.equal(nearRegions, 2, 'near side should have a highlands region and a maria region');
-    assert.equal(farRegions, 3, 'far side should have a highlands region, the Aitken basin, and a maria region');
+    assert.equal(nearRegions, NEAR_SIDE_TERMS.length, 'near side should redraw the main map\'s named-feature regions');
+    assert.equal(farRegions, FAR_SIDE_TERMS.length, 'far side should have the basin, Tsiolkovskiy, and its two named maria');
     assert.deepEqual(consoleErrors, [], 'drawing the two illustrations should not log any console errors');
   });
 });
 
-REGIONS.forEach(([svgId, term, vx, vy]) => {
-  test(`notes/moon-structure.html: tapping the ${term} region reveals its name`, async (t) => {
+NEAR_SIDE_TERMS.forEach((term) => {
+  test(`notes/moon-structure.html: tapping the ${term} region on the near-side illustration reveals its name`, async (t) => {
     await withPage(t, { width: 1024, height: 900 }, async (page) => {
       const definition = page.locator(`.glossary-definition[data-term="${term}"]`);
       assert.equal(await definition.evaluate((el) => el.hidden), true, `${term}'s definition should start hidden`);
 
-      const svg = page.locator(`#${svgId}`);
-      const box = await svg.boundingBox();
-      await svg.click({ position: { x: box.width * (vx / 300), y: box.height * (vy / 300) } });
+      await clickRegion(page, 'moon-near-side', term);
 
       assert.equal(await definition.evaluate((el) => el.hidden), false, `${term}'s definition should be revealed after tapping its region`);
       const text = (await definition.textContent()).trim();
@@ -79,13 +84,29 @@ REGIONS.forEach(([svgId, term, vx, vy]) => {
   });
 });
 
+FAR_SIDE_TERMS.forEach((term) => {
+  test(`notes/moon-structure.html: tapping the ${term} region on the far-side illustration reveals its name`, async (t) => {
+    await withPage(t, { width: 1024, height: 900 }, async (page) => {
+      const definition = page.locator(`.glossary-definition[data-term="${term}"]`);
+      assert.equal(await definition.evaluate((el) => el.hidden), true, `${term}'s definition should start hidden`);
+
+      await clickRegion(page, 'moon-far-side', term);
+
+      assert.equal(await definition.evaluate((el) => el.hidden), false, `${term}'s definition should be revealed after tapping its region`);
+      const text = (await definition.textContent()).trim();
+      assert.ok(text.length > 0, `${term}'s revealed text should not be empty`);
+      assert.match(text, /first draft, to be checked by the teacher/, `${term}'s definition should be marked first draft`);
+    });
+  });
+});
+
 test('notes/moon-structure.html: a region is keyboard-accessible (focus + Enter)', async (t) => {
   await withPage(t, { width: 1024, height: 900 }, async (page) => {
-    const region = page.locator('#moon-near-side .diagram-region[data-term="nearSideHighlands"]');
+    const region = page.locator('#moon-near-side [data-term="tycho"]');
     await region.focus();
     await page.keyboard.press('Enter');
     const hidden = await page
-      .locator('.glossary-definition[data-term="nearSideHighlands"]')
+      .locator('.glossary-definition[data-term="tycho"]')
       .evaluate((el) => el.hidden);
     assert.equal(hidden, false, 'Enter on a focused region should reveal its definition, same as a click');
   });
@@ -119,5 +140,15 @@ test('notes/moon-structure.html: the near/far-side captions state the maria-cove
     captions.forEach((caption) => {
       assert.match(caption, /first draft, to be checked by the teacher/);
     });
+  });
+});
+
+test('notes/moon-structure.html: the near-side and far-side illustrations render at the same size as each other', async (t) => {
+  await withPage(t, { width: 1024, height: 900 }, async (page) => {
+    const nearBox = await page.locator('#moon-near-side').boundingBox();
+    const farBox = await page.locator('#moon-far-side').boundingBox();
+    assert.ok(nearBox.width > 0 && farBox.width > 0, 'both illustrations should render with non-zero width');
+    assert.ok(Math.abs(nearBox.width - farBox.width) < 1, 'the two illustrations should be drawn at the same width');
+    assert.ok(Math.abs(nearBox.height - farBox.height) < 1, 'the two illustrations should be drawn at the same height');
   });
 });

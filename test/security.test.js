@@ -5,8 +5,8 @@
  * Content-Security-Policy, Referrer-Policy and (while the site is
  * deliberately unlisted during the interim licensing period — see
  * README.md) robots meta tags, and nothing on the site points at
- * another origin except the one doi.org citation on
- * notes/moon-structure.html (which must itself carry
+ * another origin except a short, explicit allow-list of citation links
+ * on notes/moon-structure.html (each of which must itself carry
  * rel="noopener noreferrer").
  */
 const test = require('node:test');
@@ -19,9 +19,12 @@ const ROOT = path.join(__dirname, '..');
 const EXPECTED_CSP =
   "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; form-action 'none'; base-uri 'self'";
 
-// The one deliberate exception this whole file enforces against: a
-// citation link that has to point off-site by its very nature.
-const ALLOWED_EXTERNAL_URL = 'https://doi.org/10.1126/science.1231530';
+// The deliberate exceptions this whole file enforces against: citation
+// links that have to point off-site by their very nature.
+const ALLOWED_EXTERNAL_URLS = [
+  'https://doi.org/10.1126/science.1231530',
+  'https://www.skyatnightmagazine.com/space-science/moon-far-side-near-side-difference',
+];
 const ALLOWED_EXTERNAL_PAGE = 'notes/moon-structure.html';
 
 function listHtmlFiles() {
@@ -78,7 +81,7 @@ PAGES.forEach((href) => {
     );
   });
 
-  test(`${href}: every src/href either stays on this origin, or is the one allowed doi.org citation`, () => {
+  test(`${href}: every src/href either stays on this origin, or is one of the allowed citation links`, () => {
     const urls = [...html.matchAll(/\b(?:src|href)="([^"]*)"/g)].map((m) => m[1]);
     urls.forEach((url) => {
       // A scheme prefix (http:, https:, //, mailto:, etc.) means it
@@ -87,15 +90,17 @@ PAGES.forEach((href) => {
       const isExternal = /^([a-z][a-z0-9+.-]*:|\/\/)/i.test(url);
       if (!isExternal) return;
 
-      assert.equal(url, ALLOWED_EXTERNAL_URL, `${href} links off-site to "${url}", which isn't the one allowed citation link`);
-      assert.equal(href, ALLOWED_EXTERNAL_PAGE, `the allowed citation link should only appear on ${ALLOWED_EXTERNAL_PAGE}, not ${href}`);
+      assert.ok(ALLOWED_EXTERNAL_URLS.includes(url), `${href} links off-site to "${url}", which isn't one of the allowed citation links`);
+      assert.equal(href, ALLOWED_EXTERNAL_PAGE, `an allowed citation link should only appear on ${ALLOWED_EXTERNAL_PAGE}, not ${href}`);
     });
   });
 });
 
-test('the one allowed external link carries rel="noopener noreferrer"', () => {
-  const html = fs.readFileSync(path.join(ROOT, ALLOWED_EXTERNAL_PAGE), 'utf8');
-  const linkMatch = new RegExp(`<a href="${ALLOWED_EXTERNAL_URL.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\$&')}"[^>]*>`).exec(html);
-  assert.ok(linkMatch, `expected to find the citation link on ${ALLOWED_EXTERNAL_PAGE}`);
-  assert.match(linkMatch[0], /rel="noopener noreferrer"/, 'the citation link should carry rel="noopener noreferrer"');
+ALLOWED_EXTERNAL_URLS.forEach((url) => {
+  test(`the allowed external link ${url} carries rel="noopener noreferrer"`, () => {
+    const html = fs.readFileSync(path.join(ROOT, ALLOWED_EXTERNAL_PAGE), 'utf8');
+    const linkMatch = new RegExp(`<a href="${url.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\$&')}"[^>]*>`).exec(html);
+    assert.ok(linkMatch, `expected to find the citation link on ${ALLOWED_EXTERNAL_PAGE}`);
+    assert.match(linkMatch[0], /rel="noopener noreferrer"/, 'the citation link should carry rel="noopener noreferrer"');
+  });
 });
