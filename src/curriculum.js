@@ -263,6 +263,14 @@ const UNITS = [
         notes:
           "of two possible targets, the better-placed one is whichever has the greater maximum altitude at upper transit (90 - |latitude - declination|), since it sits higher above the horizon and its light passes through less atmosphere; an object is best placed for observing when the local sidereal time equals its right ascension (hour angle zero, upper transit)",
       },
+      {
+        id: 'u1.25',
+        title: 'Factors affecting visibility',
+        depth: 'understand',
+        spec: ['6.20'],
+        notes:
+          "four things decide whether a target can actually be seen on a given night, beyond just knowing where it is: whether it's risen above the horizon yet (rising and setting); how steady or turbulent the air is (seeing); cloud cover and haze (weather); and whether hills, buildings or trees block the horizon (landscape) — a low object is also dimmer, redder and twinkles more, since its light takes a longer path through the atmosphere",
+      },
     ],
   },
   {

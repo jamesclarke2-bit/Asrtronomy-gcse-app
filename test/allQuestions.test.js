@@ -60,6 +60,7 @@ test("getAllQuestionsNode's total is exactly the sum of every individual questio
   const { makeQuestions: makeMeasuringTheSky } = require('../src/measuringTheSkyQuestions');
   const { makeQuestions: makeMoonStructure } = require('../src/moonStructureQuestions');
   const { makeQuestions: makeNakedEyeSky } = require('../src/nakedEyeSkyQuestions');
+  const { makeQuestions: makeObservingTechniques } = require('../src/observingTechniquesQuestions');
   const { makeQuestions: makeOrbitsGravity } = require('../src/orbitsGravityQuestions');
   const { makeQuestions: makePlanetaryMotion } = require('../src/planetaryMotionQuestions');
   const { makeQuestions: makeScaleOfSolarSystem } = require('../src/scaleOfSolarSystemQuestions');
@@ -72,6 +73,7 @@ test("getAllQuestionsNode's total is exactly the sum of every individual questio
   const SunRotation = require('../src/sunRotation');
   const { makeQuestions: makeTelescope } = require('../src/telescopeQuestions');
   const { makeQuestions: makeTides } = require('../src/tidesQuestions');
+  const VisibilityFactors = require('../src/visibilityFactors');
 
   const expectedTotal =
     sunPath.length +
@@ -86,6 +88,7 @@ test("getAllQuestionsNode's total is exactly the sum of every individual questio
     makeMeasuringTheSky(SpecData).length +
     makeMoonStructure(SpecData, MoonPhase).length +
     makeNakedEyeSky(StarPatterns).length +
+    makeObservingTechniques(VisibilityFactors).length +
     makeOrbitsGravity(OrbitalMechanics).length +
     makePlanetaryMotion(PlanetaryMotion).length +
     makeScaleOfSolarSystem(SpecData).length +

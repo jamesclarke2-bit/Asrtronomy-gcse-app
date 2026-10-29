@@ -17,10 +17,78 @@
     <h1>Observing Techniques</h1>
     <p class="subtitle">
       A reference for planning an observing session, in the order you'll actually use it:
-      preparing your eyes, finding your targets, understanding why the sky looks different to
-      different cultures, and catching a meteor shower. This page covers how to observe; its
-      companion, The Naked-Eye Sky, covers what you're looking at.
+      checking whether you can actually see your target at all, preparing your eyes, finding
+      your targets, understanding why the sky looks different to different cultures, and
+      catching a meteor shower. This page covers how to observe; its companion, The Naked-Eye
+      Sky, covers what you're looking at.
     </p>
+
+    <section class="notes-section" id="visibility-factors">
+      <h2>What decides whether you can see it?</h2>
+
+      <div class="diagram visibility-diagram">
+        <canvas
+          id="visibility-canvas"
+          width="420"
+          height="260"
+          aria-label="A horizon diagram: an observer at the centre, with a target at an adjustable altitude above the horizon, joined by a coloured line showing its light's path through the atmosphere. The path gets longer, thicker and redder as the altitude drops toward the horizon. A landscape toggle can block low altitudes with hills, buildings or trees; a weather toggle can cover the whole sky with cloud."
+        ></canvas>
+      </div>
+
+      <div class="control">
+        <label for="altitude-slider">Altitude: <span id="altitude-label"></span></label>
+        <input type="range" id="altitude-slider" min="0" max="90" step="1" value="30" />
+      </div>
+
+      <div class="control checkbox-control">
+        <label><input type="checkbox" id="landscape-toggle" /> Hills, buildings or trees on the horizon (blocks anything below 15&deg;)</label>
+      </div>
+      <div class="control checkbox-control">
+        <label><input type="checkbox" id="weather-toggle" /> Cloud cover</label>
+      </div>
+
+      <dl class="readout">
+        <div class="readout-row">
+          <dt>Path length through the atmosphere</dt>
+          <dd id="path-length-readout"></dd>
+        </div>
+        <div class="readout-row">
+          <dt>Can you see it?</dt>
+          <dd id="visibility-status-readout"></dd>
+        </div>
+      </dl>
+
+      <p class="note">
+        Approximate: this treats the atmosphere as a single flat layer, about 1 / sin(altitude)
+        times the zenith path &mdash; 1 at the zenith (straight up), about 2 at 30&deg;, about
+        5.8 at 10&deg;. Real path lengths are a little shorter right down at the horizon, where a
+        curved, finite atmosphere caps the true figure below what this simple model predicts.
+      </p>
+      <p>
+        A lower altitude means a longer path through the atmosphere, which is why a low object
+        looks dimmer, redder and twinkles more than the same object higher up.
+      </p>
+      <p>
+        Two further things affect what you can see, even on a clear night with nothing blocking
+        the horizon:
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="seeingAndTransparency" aria-label="What are seeing and transparency?" aria-expanded="false">seeing and transparency</button>.
+      </p>
+      <div class="glossary-definition" data-term="seeingAndTransparency" hidden>
+        <p>
+          <strong>Seeing</strong> is how steady or turbulent the air is. On a night of good
+          seeing, a target holds still; on a night of poor seeing, shifting pockets of warmer and
+          cooler air blur and twinkle it, even directly overhead with nothing in the way &mdash;
+          see
+          <a href="earth-structure.html#atmosphere-and-astronomy">Why the atmosphere matters for astronomy</a>
+          for more on this effect (scintillation).
+        </p>
+        <p>
+          <strong>Transparency</strong> is how clear the air itself is. Thin cloud, haze and
+          moisture scatter and dim starlight even on a technically cloud-free night, on top of
+          any skyglow from <a href="#light-pollution">light pollution</a>.
+        </p>
+      </div>
+    </section>
 
     <section class="notes-section" id="dark-adaptation">
       <h2>Before you start: dark adaptation and averted vision</h2>
@@ -265,6 +333,14 @@
         faint object, not straight at it &mdash; and works the moment you try it.
         <a href="#dark-adaptation">Before you start &uarr;</a>
       </p>
+      <p class="exam-tip">
+        <strong>Common exam confusion:</strong> weather and seeing are different problems too.
+        Weather (cloud) is a yes/no check &mdash; it blocks the view completely, whatever the
+        target's altitude or the air's steadiness. Seeing is about <strong>steadiness</strong>:
+        a target can be fully visible, with clear sky and nothing in the way, and still look
+        blurred and twinkly on a night of poor seeing.
+        <a href="#visibility-factors">What decides whether you can see it? &uarr;</a>
+      </p>
     </section>
 
     <section class="notes-section" id="related">
@@ -282,6 +358,10 @@
           <h3>Observing the Sun</h3>
           <p class="page-card-description">Extends dark-sky technique to the one object you must never look at directly &mdash; its own safe observing methods.</p>
         </a>
+        <a class="page-card" href="earth-structure.html">
+          <h3>Earth: Structure, Atmosphere and Motion</h3>
+          <p class="page-card-description">Where scintillation &mdash; the atmospheric twinkling behind poor seeing &mdash; is explained in full, as part of why Earth's atmosphere both helps and hinders astronomy.</p>
+        </a>
         <a class="page-card" href="data-sheet.html">
           <h3>Formulae and Data Sheet</h3>
           <p class="page-card-description">The planet and distance data on this sheet are a useful check on what the techniques covered here can actually resolve.</p>
@@ -289,14 +369,28 @@
       </div>
     </section>
 
+    <section class="questions">
+      <h2>Practice questions</h2>
+      <div id="questions-list"></div>
+    </section>
+
+    <section class="progress">
+      <h2>Your progress</h2>
+      <ul id="progress-list"></ul>
+      <p class="note">Stored in this browser only (localStorage) &mdash; no account needed.</p>
+    </section>
+
     <p class="coverage" id="coverage"></p>
     <p class="next-page-link" id="next-page"></p>
   </main>
 
-  <script src="../src/curriculum.js?v=202610291800"></script>
-  <script src="../src/pages.js?v=202610300900"></script>
+  <script src="../src/curriculum.js?v=202610292000"></script>
+  <script src="../src/pages.js?v=202610292000"></script>
+  <script src="../src/visibilityFactors.js?v=202610292000"></script>
+  <script src="../src/observingTechniquesQuestions.js?v=202610292000"></script>
   <script src="../glossary.js?v=202610131052"></script>
-  <script src="observing-techniques.js?v=202609222000"></script>
+  <script src="../quiz-ui.js?v=202610300900"></script>
+  <script src="observing-techniques.js?v=202610292000"></script>
   <script src="../notesPage.js?v=202609270100"></script>
   <script src="../nextPage.js?v=202610161057"></script>
 </body>

@@ -40,6 +40,7 @@
       MeasuringTheSkyQuestions,
       MoonStructureQuestions,
       NakedEyeSkyQuestions,
+      ObservingTechniquesQuestions,
       OrbitsGravityQuestions,
       PlanetaryMotionQuestions,
       ScaleOfSolarSystemQuestions,
@@ -52,6 +53,7 @@
       SunspotRotationQuestions,
       TelescopeQuestions,
       TidesQuestions,
+      VisibilityFactors,
     } = deps;
 
     return [
@@ -67,6 +69,7 @@
       ...MeasuringTheSkyQuestions.makeQuestions(SpecData),
       ...MoonStructureQuestions.makeQuestions(SpecData, MoonPhase),
       ...NakedEyeSkyQuestions.makeQuestions(StarPatterns),
+      ...ObservingTechniquesQuestions.makeQuestions(VisibilityFactors),
       ...OrbitsGravityQuestions.makeQuestions(OrbitalMechanics),
       ...PlanetaryMotionQuestions.makeQuestions(PlanetaryMotion),
       ...ScaleOfSolarSystemQuestions.makeQuestions(SpecData),
@@ -111,6 +114,7 @@
       MeasuringTheSkyQuestions: require('./measuringTheSkyQuestions'),
       MoonStructureQuestions: require('./moonStructureQuestions'),
       NakedEyeSkyQuestions: require('./nakedEyeSkyQuestions'),
+      ObservingTechniquesQuestions: require('./observingTechniquesQuestions'),
       OrbitsGravityQuestions: require('./orbitsGravityQuestions'),
       PlanetaryMotionQuestions: require('./planetaryMotionQuestions'),
       ScaleOfSolarSystemQuestions: require('./scaleOfSolarSystemQuestions'),
@@ -123,6 +127,7 @@
       SunspotRotationQuestions: require('./sunspotRotationQuestions'),
       TelescopeQuestions: require('./telescopeQuestions'),
       TidesQuestions: require('./tidesQuestions'),
+      VisibilityFactors: require('./visibilityFactors'),
     });
   }
 
@@ -156,6 +161,7 @@
       MeasuringTheSkyQuestions: window.MeasuringTheSkyQuestions,
       MoonStructureQuestions: window.MoonStructureQuestions,
       NakedEyeSkyQuestions: window.NakedEyeSkyQuestions,
+      ObservingTechniquesQuestions: window.ObservingTechniquesQuestions,
       OrbitsGravityQuestions: window.OrbitsGravityQuestions,
       PlanetaryMotionQuestions: window.PlanetaryMotionQuestions,
       ScaleOfSolarSystemQuestions: window.ScaleOfSolarSystemQuestions,
@@ -168,6 +174,7 @@
       SunspotRotationQuestions: window.SunspotRotationQuestions,
       TelescopeQuestions: window.TelescopeQuestions,
       TidesQuestions: window.TidesQuestions,
+      VisibilityFactors: window.VisibilityFactors,
     });
   }
 
