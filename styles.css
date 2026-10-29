@@ -1150,23 +1150,93 @@ canvas {
 
 /* A long, same-shape set of practice questions (notes/earth-structure
    .html's "name that line", notes/moon-structure.html's "name that
-   feature") collapsed behind a native <details>, so the main practice-
-   questions list stays short; QuizUI.mountGroup keeps the <summary>'s
-   own live "X/N correct" count current. */
+   feature", notes/naked-eye-sky.html's "name that pattern", and the
+   "More practice" panels on sims/coordinates.html and
+   sims/equation-of-time.html) collapsed behind a native <details>, so
+   the main practice-questions list stays short. One shared button-card
+   style for every one of them — see .quiz-panel-summary below; the
+   panel itself just gives the opened body some room. */
 .picture-quiz-panel {
   margin-top: 1rem;
-  border: 1px solid #e0e0e0;
+}
+
+.picture-quiz-panel-body {
+  padding: 0.75rem 0.1rem 0;
+}
+
+/* The <summary> is the whole point: a full-width button-card, not a
+   quiet line of text, so a panel's worth of practice questions doesn't
+   read as an afterthought. Icon and title are static markup (see
+   notes/earth-structure.html for the shape); QuizUI.mountGroup only
+   ever touches .quiz-panel-count's text and this element's aria-label. */
+.quiz-panel-summary {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 44px;
+  padding: 0.6rem 1rem;
+  border: 1px solid #2a6bd6;
   border-radius: 8px;
-  padding: 0.75rem 1rem;
-}
-
-.picture-quiz-panel summary {
+  background: #eaf2fb;
+  color: #173d75;
+  font-size: 1rem;
   cursor: pointer;
-  font-weight: 600;
+  list-style: none;
+  transition: background 0.15s ease;
 }
 
-.picture-quiz-panel[open] summary {
-  margin-bottom: 0.75rem;
+.quiz-panel-summary::-webkit-details-marker {
+  display: none;
+}
+
+.quiz-panel-summary:hover {
+  background: #d9e9fb;
+}
+
+.quiz-panel-summary:focus-visible {
+  outline: 2px solid #173d75;
+  outline-offset: 2px;
+}
+
+.picture-quiz-panel[open] > .quiz-panel-summary {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.quiz-panel-icon {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  color: #2a6bd6;
+}
+
+.quiz-panel-title {
+  flex: 1 1 auto;
+  font-weight: 700;
+}
+
+.quiz-panel-count {
+  flex: none;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+  background: #2a6bd6;
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.quiz-panel-chevron {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  color: #2a6bd6;
+  transition: transform 0.2s ease;
+}
+
+.picture-quiz-panel[open] .quiz-panel-chevron {
+  transform: rotate(180deg);
 }
 
 .progress ul {
@@ -1880,7 +1950,7 @@ canvas {
 }
 
 .sun-structure-diagram {
-  max-width: 480px;
+  max-width: 620px;
   margin: 1rem 0;
 }
 
@@ -1954,14 +2024,25 @@ canvas {
   width: 9.5rem;
 }
 
-/* The Sun/Earth/Moon structure diagrams' own layer names are all short
-   ("Crust", "Outer core", ...) — a narrower box than the 5.5rem default
-   needs less clearance outside the outermost ring before it overlaps
-   it, letting the ring itself stay a reasonable size within the
-   diagram instead of shrinking to make room for wide label boxes it
-   never needs. */
-.labelled-diagram-label--narrow {
-  width: 4rem;
+/* The Sun/Earth/Moon interior ("ring") diagrams: one shared label style,
+   driven by src/ringDiagramLabels.js's layoutRingColumn — the ring sits
+   to the left, every layer's name sits in a single left-aligned column
+   to the right, top to bottom from the outermost layer to the centre.
+   Plain text, matching .layer-legend's own size and colour exactly — no
+   pill, no border, no background; these aren't buttons, except where a
+   page wires up its own click-to-reveal (.earth-layer-label and
+   .moon-structure-label below only add pointer-events + cursor on top
+   of this). */
+.ring-diagram-label {
+  position: absolute;
+  transform: translateY(-50%);
+  text-align: left;
+  width: 30%;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  line-height: 1.25;
+  pointer-events: none;
 }
 
 /* notes/telescopes.html: a diagram with a light background (the
@@ -2116,15 +2197,13 @@ canvas {
 
 /* "Name that feature/line" questions (notes/earth-structure.html,
    notes/moon-structure.html): .diagram-feature-highlight is just a
-   marker class (the real highlight is a thicker, brightly-coloured
-   stroke set directly as SVG attributes by each page's own
-   applyQuizHighlight(), since a CSS filter/drop-shadow doesn't render
-   reliably on SVG shapes in Safari/WebKit). Every other
-   .diagram-region gets .diagram-feature-dimmed instead, which CSS can
-   do safely. */
-.diagram-feature-dimmed {
-  opacity: 0.25;
-}
+   marker class, for tests and for each page's own applyQuizHighlight()
+   to find the right region by; the real highlight is the single marker
+   shape that function draws on top of the map/globe (a thicker,
+   accent-coloured stroke set directly as SVG attributes, since a CSS
+   filter/drop-shadow doesn't render reliably on SVG shapes in
+   Safari/WebKit). The rest of the picture is left at normal brightness
+   — no dimming — so it stays readable. */
 
 .curiosity-box {
   margin-top: 1.25rem;
@@ -2172,7 +2251,7 @@ canvas {
 
 /* notes/earth-structure.html */
 .earth-structure-diagram {
-  max-width: 420px;
+  max-width: 600px;
   margin: 1rem 0;
 }
 
@@ -2421,7 +2500,7 @@ canvas {
    same concentric-ring language and .layer-dot-*/.layer-legend classes
    as notes/earth-structure.html for a direct visual comparison. */
 .moon-structure-diagram {
-  max-width: 420px;
+  max-width: 600px;
   margin: 1rem 0;
 }
 
@@ -2438,6 +2517,40 @@ canvas {
 .moon-structure-label {
   pointer-events: auto;
   cursor: pointer;
+}
+
+.moon-structure-label:hover,
+.moon-structure-label:focus-visible {
+  text-decoration: underline;
+}
+
+.moon-structure-label:focus-visible {
+  outline: 2px solid #173d75;
+  outline-offset: 2px;
+}
+
+/* Earth's and Moon's ring-diagram labels double as their own click
+   target (.glossary-toggle for Moon's tap-to-reveal, or just a plain
+   span for Earth's own highlight-and-scroll handler) — reset every box
+   property .glossary-toggle would otherwise draw (the small bordered
+   '?' badge) so both read as plain text, like every other
+   .ring-diagram-label on the site. */
+.ring-diagram-label.glossary-toggle {
+  display: block;
+  width: 30%;
+  height: auto;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  background: none;
+  color: #1a1a1a;
+}
+
+.ring-diagram-label.glossary-toggle:hover,
+.ring-diagram-label.glossary-toggle:focus-visible,
+.ring-diagram-label.glossary-toggle[aria-expanded='true'] {
+  background: none;
+  color: #1a1a1a;
 }
 
 .apollo-markers-hidden {

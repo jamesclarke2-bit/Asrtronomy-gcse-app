@@ -7,7 +7,7 @@
   <meta name="referrer" content="no-referrer" />
   <meta name="robots" content="noindex, nofollow" />
   <title>Star Coordinates</title>
-  <link rel="stylesheet" href="../styles.css?v=202611011100" />
+  <link rel="stylesheet" href="../styles.css?v=202611021000" />
   <link rel="icon" type="image/svg+xml" href="../favicon.svg?v=202610130720" />
 </head>
 <body>
@@ -290,8 +290,20 @@
       <h2>Practice questions</h2>
       <div id="questions-list"></div>
       <details class="picture-quiz-panel">
-        <summary id="more-practice-summary">More practice: latitude, rise/set times and best time to observe (10 questions)</summary>
-        <div id="more-practice-list"></div>
+        <summary class="quiz-panel-summary" id="more-practice-summary">
+          <svg class="quiz-panel-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8" />
+            <path d="M8 12.5l2.5 2.5L16 9.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          <span class="quiz-panel-title">More practice: latitude, rise/set times and best time to observe (10 questions)</span>
+          <span class="quiz-panel-count"></span>
+          <svg class="quiz-panel-chevron" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </summary>
+        <div class="picture-quiz-panel-body">
+          <div id="more-practice-list"></div>
+        </div>
       </details>
     </section>
 
@@ -322,7 +334,7 @@
   <script src="../src/coordinates.js?v=202609212100"></script>
   <script src="../src/specData.js?v=202610051000"></script>
   <script src="../src/coordinatesQuestions.js?v=202610291100"></script>
-  <script src="../quiz-ui.js?v=202610300900"></script>
+  <script src="../quiz-ui.js?v=202611021000"></script>
   <script src="../glossary.js?v=202610131052"></script>
   <script src="coordinates.js?v=202610291100"></script>
   <script src="../nextPage.js?v=202610161057"></script>

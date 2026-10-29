@@ -18,12 +18,15 @@
  * feature/line" ones) can instead go in their own collapsed panel via
  * QuizUI.mountGroup({questions, listElementId, summaryElementId, label}):
  * rendered into listElementId exactly like mount() renders into
- * questions-list, but summaryElementId's text is kept live-updated with
- * "label (N questions) — X/N correct", answered from the same shared
- * tally (now also keyed per question id, not just per subtopic, so a
- * group's own correct count never gets mixed up with another
- * question's that happens to share a unit tag). #progress-list always
- * covers every question mounted on the page, by either call.
+ * questions-list. summaryElementId names a <summary class="quiz-panel-
+ * summary"> button-card (icon and title authored as static markup — see
+ * notes/earth-structure.html for the shape) whose .quiz-panel-count
+ * child and aria-label this keeps live-updated with "X/N correct",
+ * answered from the same shared tally (now also keyed per question id,
+ * not just per subtopic, so a group's own correct count never gets
+ * mixed up with another question's that happens to share a unit tag).
+ * #progress-list always covers every question mounted on the page, by
+ * either call.
  */
 (function () {
   const STORAGE_KEY = 'astro-quiz-progress';
@@ -64,13 +67,21 @@
     });
   }
 
+  // The <summary> itself is a button-card (see styles.css's
+  // .quiz-panel-summary): an icon and the title are static markup, so
+  // this only ever touches the live part — the "X/N correct" pill — via
+  // its .quiz-panel-count child, plus a matching aria-label on the
+  // <summary> so the live count is announced too, not just the title.
   function renderGroupSummaries() {
     const progress = loadProgress();
     const results = progress.questionResults || {};
     groupSummaries.forEach(({ questions, summaryEl, label }) => {
       const correctCount = questions.filter((q) => results[q.id]).length;
       const noun = questions.length === 1 ? 'question' : 'questions';
-      summaryEl.textContent = `${label} (${questions.length} ${noun}) — ${correctCount}/${questions.length} correct`;
+      const countText = `${correctCount}/${questions.length} correct`;
+      const countEl = summaryEl.querySelector('.quiz-panel-count');
+      if (countEl) countEl.textContent = countText;
+      summaryEl.setAttribute('aria-label', `${label} (${questions.length} ${noun}) — ${countText}`);
     });
   }
 

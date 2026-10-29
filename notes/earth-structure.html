@@ -7,7 +7,7 @@
   <meta name="referrer" content="no-referrer" />
   <meta name="robots" content="noindex, nofollow" />
   <title>Earth: Structure, Atmosphere and Motion</title>
-  <link rel="stylesheet" href="../styles.css?v=202611011100" />
+  <link rel="stylesheet" href="../styles.css?v=202611021000" />
   <link rel="icon" type="image/svg+xml" href="../favicon.svg?v=202610130720" />
 </head>
 <body>
@@ -32,6 +32,8 @@
           <svg
             id="globe"
             viewBox="0 0 660 520"
+            width="660"
+            height="520"
             role="group"
             aria-label="Globe with north at the top, showing lines of longitude and Earth's named reference lines, each clickable: the North and South Poles, the Arctic and Antarctic Circles, the Tropics of Cancer and Capricorn, the equator and the Prime Meridian"
           ></svg>
@@ -116,7 +118,7 @@
       </p>
       <div class="diagram earth-structure-diagram">
         <div class="labelled-diagram-wrap" id="earth-layers-wrap">
-          <svg id="earth-layers" viewBox="0 0 900 900" role="img" aria-label="Cutaway diagram of Earth's internal structure, showing the inner core, outer core, mantle and crust as concentric layers, each labelled with a leader line"></svg>
+          <svg id="earth-layers" viewBox="0 0 648 580" width="648" height="580" role="img" aria-label="Cutaway diagram of Earth's internal structure, showing the inner core, outer core, mantle and crust as concentric layers, each labelled with a leader line"></svg>
         </div>
       </div>
       <ul class="legend layer-legend">
@@ -302,8 +304,20 @@
       <h2>Practice questions</h2>
       <div id="questions-list"></div>
       <details class="picture-quiz-panel">
-        <summary id="line-quiz-summary">Picture quiz: name that line (8 questions)</summary>
-        <div id="line-quiz-list"></div>
+        <summary class="quiz-panel-summary" id="line-quiz-summary">
+          <svg class="quiz-panel-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8" />
+            <path d="M8 12.5l2.5 2.5L16 9.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          <span class="quiz-panel-title">Picture quiz: name that line (8 questions)</span>
+          <span class="quiz-panel-count"></span>
+          <svg class="quiz-panel-chevron" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </summary>
+        <div class="picture-quiz-panel-body">
+          <div id="line-quiz-list"></div>
+        </div>
       </details>
     </section>
 
@@ -364,10 +378,10 @@
   <script src="../src/solarPosition.js?v=202609260300"></script>
   <script src="../src/earthOrbit.js?v=202609212100"></script>
   <script src="../src/orbitPanel.js?v=202609221500"></script>
-  <script src="../src/ringDiagramLabels.js?v=202611011000"></script>
+  <script src="../src/ringDiagramLabels.js?v=202611021000"></script>
   <script src="../glossary.js?v=202610131052"></script>
-  <script src="../quiz-ui.js?v=202610300900"></script>
-  <script src="earth-structure.js?v=202610291200"></script>
+  <script src="../quiz-ui.js?v=202611021000"></script>
+  <script src="earth-structure.js?v=202611021000"></script>
   <script src="../notesPage.js?v=202609270100"></script>
   <script src="../nextPage.js?v=202610161057"></script>
 </body>

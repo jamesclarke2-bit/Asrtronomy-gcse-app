@@ -337,7 +337,10 @@
   // The six rings themselves are static markup (each is its own
   // .glossary-toggle, unchanged); only the leader-line-and-label
   // placement is drawn here, via the shared RingDiagramLabels geometry
-  // every such diagram on the site now uses (see src/ringDiagramLabels.js).
+  // every such diagram on the site now uses (see src/ringDiagramLabels.js):
+  // the ring sits to the left of its box, every layer's name sits in a
+  // single left-aligned column to the right, ordered top to bottom from
+  // the outermost layer (corona) down to the centre (core).
   const SUN_STRUCTURE_SVG_NS = 'http://www.w3.org/2000/svg';
   function sunSvgEl(tag, attrs, parent) {
     const el = document.createElementNS(SUN_STRUCTURE_SVG_NS, tag);
@@ -346,27 +349,27 @@
     return el;
   }
   const SUN_STRUCTURE_LAYERS = [
-    { name: 'Core', radius: 20, angleDeg: 90 },
-    { name: 'Radiative zone', radius: 45, angleDeg: 150 },
-    { name: 'Convective zone', radius: 70, angleDeg: 210 },
-    { name: 'Photosphere', radius: 90, angleDeg: 270 },
-    { name: 'Chromosphere', radius: 98, angleDeg: 330 },
-    { name: 'Corona', radius: 135, angleDeg: 30 },
+    { name: 'Corona', radius: 200 },
+    { name: 'Chromosphere', radius: 170 },
+    { name: 'Photosphere', radius: 140 },
+    { name: 'Convective zone', radius: 105 },
+    { name: 'Radiative zone', radius: 65 },
+    { name: 'Core', radius: 30 },
   ];
+  const SUN_STRUCTURE_GEOMETRY = { cx: 224, cy: 290, outerRadius: 200, width: 648, height: 580, labelX: 448 };
   function drawSunStructureLabels() {
     const svg = document.getElementById('sun-structure');
     const wrap = document.getElementById('sun-structure-wrap');
-    const geometry = { cx: 250, cy: 250, outerRadius: 135, width: 500, height: 500, margin: 85 };
+    const rows = RingDiagramLabels.layoutRingColumn({ ...SUN_STRUCTURE_GEOMETRY, layers: SUN_STRUCTURE_LAYERS });
     const leaders = sunSvgEl('g', { stroke: '#8a97a5', 'stroke-width': 1, 'stroke-dasharray': '3 2', 'pointer-events': 'none' }, svg);
-    SUN_STRUCTURE_LAYERS.forEach((layer) => {
-      const pos = RingDiagramLabels.layoutRingLabel({ ...geometry, radius: layer.radius, angleDeg: layer.angleDeg });
-      sunSvgEl('line', { x1: pos.dotX, y1: pos.dotY, x2: pos.leaderEndX, y2: pos.leaderEndY }, leaders);
-      sunSvgEl('circle', { cx: pos.dotX, cy: pos.dotY, r: 3, fill: '#8a97a5' }, leaders);
+    rows.forEach((row) => {
+      sunSvgEl('line', { x1: row.dotX, y1: row.dotY, x2: row.labelX, y2: row.labelY }, leaders);
+      sunSvgEl('circle', { cx: row.dotX, cy: row.dotY, r: 3, fill: '#8a97a5' }, leaders);
       const label = document.createElement('span');
-      label.className = 'labelled-diagram-label';
-      label.style.left = `${pos.leftPercent}%`;
-      label.style.top = `${pos.topPercent}%`;
-      label.textContent = layer.name;
+      label.className = 'ring-diagram-label';
+      label.style.left = `${row.leftPercent}%`;
+      label.style.top = `${row.topPercent}%`;
+      label.textContent = row.name;
       wrap.appendChild(label);
     });
   }

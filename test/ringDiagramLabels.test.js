@@ -1,84 +1,91 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const { layoutRingLabel } = require('../src/ringDiagramLabels');
+const { layoutRingColumn } = require('../src/ringDiagramLabels');
 
-const BASE = { cx: 250, cy: 250, outerRadius: 135, width: 500, height: 500, margin: 85 };
+// A 4-layer diagram (Earth/Moon convention), outer to inner.
+const EARTH_LAYERS = [
+  { name: 'Crust', radius: 200 },
+  { name: 'Mantle', radius: 188 },
+  { name: 'Outer core', radius: 106 },
+  { name: 'Inner core', radius: 43 },
+];
+const BASE = { cx: 198, cy: 260, outerRadius: 200, width: 600, height: 520, labelX: 396 };
 
-test('top (90°): dot sits directly above centre at its own ring radius, leader end further up', () => {
-  const r = layoutRingLabel({ ...BASE, radius: 20, angleDeg: 90 });
-  assert.ok(Math.abs(r.dotX - 250) < 1e-9);
-  assert.equal(r.dotY, 250 - 20);
-  assert.ok(Math.abs(r.leaderEndX - 250) < 1e-9);
-  assert.equal(r.leaderEndY, 250 - (135 + 85));
-  assert.equal(r.side, 'top');
+test('labels are evenly spaced, outer layer first (top) through to the innermost layer last (bottom)', () => {
+  const rows = layoutRingColumn({ ...BASE, layers: EARTH_LAYERS });
+  assert.equal(rows.length, 4);
+  assert.deepEqual(rows.map((r) => r.name), ['Crust', 'Mantle', 'Outer core', 'Inner core']);
+  for (let i = 1; i < rows.length; i += 1) {
+    assert.ok(rows[i].labelY > rows[i - 1].labelY, 'each label sits below the previous one');
+  }
+  const gaps = rows.slice(1).map((r, i) => r.labelY - rows[i].labelY);
+  gaps.forEach((gap) => assert.ok(Math.abs(gap - gaps[0]) < 1e-9, 'every gap between consecutive labels is identical'));
 });
 
-test('bottom (270°): dot and leader end sit below centre', () => {
-  const r = layoutRingLabel({ ...BASE, radius: 90, angleDeg: 270 });
-  assert.ok(Math.abs(r.dotX - 250) < 1e-9);
-  assert.equal(r.dotY, 250 + 90);
-  assert.equal(r.leaderEndY, 250 + (135 + 85));
-  assert.equal(r.side, 'bottom');
+test('every label shares the same x', () => {
+  const rows = layoutRingColumn({ ...BASE, layers: EARTH_LAYERS });
+  rows.forEach((r) => assert.equal(r.labelX, BASE.labelX));
 });
 
-test('left (180°) and right (0°): dot and leader end sit purely horizontal', () => {
-  const left = layoutRingLabel({ ...BASE, radius: 110, angleDeg: 180 });
-  assert.equal(left.dotX, 250 - 110);
-  assert.ok(Math.abs(left.dotY - 250) < 1e-9);
-  assert.equal(left.leaderEndX, 250 - 220);
-  assert.equal(left.side, 'left');
-
-  const right = layoutRingLabel({ ...BASE, radius: 110, angleDeg: 0 });
-  assert.equal(right.dotX, 250 + 110);
-  assert.equal(right.leaderEndX, 250 + 220);
-  assert.equal(right.side, 'right');
-});
-
-test('every label in a diagram sits the same distance from the centre, regardless of its own ring radius', () => {
-  const distanceFromCentre = (r) => Math.hypot(r.leaderEndX - 250, r.leaderEndY - 250);
-  const inner = layoutRingLabel({ ...BASE, radius: 20, angleDeg: 90 });
-  const outer = layoutRingLabel({ ...BASE, radius: 98, angleDeg: 150 });
-  assert.ok(Math.abs(distanceFromCentre(inner) - distanceFromCentre(outer)) < 1e-9);
-  assert.ok(Math.abs(distanceFromCentre(inner) - (BASE.outerRadius + BASE.margin)) < 1e-9);
-});
-
-test('the dot always sits closer to the centre than the leader end (the label is always outside every ring)', () => {
-  [0, 45, 90, 135, 180, 225, 270, 315].forEach((angleDeg) => {
-    const r = layoutRingLabel({ ...BASE, radius: 135, angleDeg });
-    const dotDist = Math.hypot(r.dotX - 250, r.dotY - 250);
-    const endDist = Math.hypot(r.leaderEndX - 250, r.leaderEndY - 250);
-    assert.ok(endDist > dotDist, `leader end (${endDist}) should be further out than the dot (${dotDist}) at ${angleDeg}°`);
+test("each layer's dot sits at the midpoint radius of its own band (between its own radius and the next layer in)", () => {
+  const rows = layoutRingColumn({ ...BASE, layers: EARTH_LAYERS });
+  assert.equal(rows[0].bandRadius, (200 + 188) / 2);
+  assert.equal(rows[1].bandRadius, (188 + 106) / 2);
+  assert.equal(rows[2].bandRadius, (106 + 43) / 2);
+  assert.equal(rows[3].bandRadius, (43 + 0) / 2); // innermost layer's band runs down to the centre
+  rows.forEach((r) => {
+    const dist = Math.hypot(r.dotX - BASE.cx, r.dotY - BASE.cy);
+    assert.ok(Math.abs(dist - r.bandRadius) < 1e-9, `dot for ${r.name} should sit exactly at its band radius`);
   });
 });
 
-test('diagonal angles (Sun\'s upper-left/lower-right style) split between two sides, never both axes at once', () => {
-  const upperLeft = layoutRingLabel({ ...BASE, radius: 45, angleDeg: 150 });
-  assert.equal(upperLeft.side, 'left');
-  const lowerRight = layoutRingLabel({ ...BASE, radius: 98, angleDeg: 330 });
-  assert.equal(lowerRight.side, 'right');
+test('a leader line never has to cross another: every dot sits on the straight line from the centre to its own label, so each leader is just the outer part of its own ray', () => {
+  const rows = layoutRingColumn({ ...BASE, layers: EARTH_LAYERS });
+  rows.forEach((r) => {
+    // Collinearity: (dot - centre) and (label - centre) point the same way.
+    const dotAngle = Math.atan2(r.dotY - BASE.cy, r.dotX - BASE.cx);
+    const labelAngle = Math.atan2(r.labelY - BASE.cy, r.labelX - BASE.cx);
+    assert.ok(Math.abs(dotAngle - labelAngle) < 1e-9, `${r.name}'s dot should lie on the ray toward its own label`);
+  });
+  // Rays to monotonically-ordered (top to bottom) labels sweep through a
+  // monotonically-ordered sequence of angles, so no two rays ever cross
+  // except at the shared centre, which is below every dot's own radius.
+  const angles = rows.map((r) => Math.atan2(r.labelY - BASE.cy, r.labelX - BASE.cx));
+  for (let i = 1; i < angles.length; i += 1) {
+    assert.ok(angles[i] > angles[i - 1], 'label angle (from centre) moves steadily in one direction, top to bottom');
+  }
 });
 
-test('leftPercent/topPercent are leaderEnd expressed as a percentage of width/height', () => {
-  const r = layoutRingLabel({ ...BASE, radius: 20, angleDeg: 90 });
-  assert.equal(r.leftPercent, (r.leaderEndX / BASE.width) * 100);
-  assert.equal(r.topPercent, (r.leaderEndY / BASE.height) * 100);
-});
-
-test('margin defaults to 70 when not given', () => {
-  const withDefault = layoutRingLabel({ cx: 0, cy: 0, radius: 10, angleDeg: 90, outerRadius: 100, width: 500, height: 500 });
-  assert.equal(withDefault.leaderEndY, -(100 + 70));
-});
-
-test('a 4-ring diagram (Earth/Moon convention: innermost = top, then clockwise) reproduces the existing inner-core/outer-core/mantle/crust layout', () => {
-  const layers = [
-    { name: 'inner-core', radius: 45, angleDeg: 90 },
-    { name: 'outer-core', radius: 110, angleDeg: 0 },
-    { name: 'mantle', radius: 195, angleDeg: 270 },
-    { name: 'crust', radius: 208, angleDeg: 180 },
+test('a 6-layer diagram (the Sun) spaces its labels across the same span, just more tightly', () => {
+  const sunLayers = [
+    { name: 'Corona', radius: 200 },
+    { name: 'Chromosphere', radius: 145 },
+    { name: 'Photosphere', radius: 133 },
+    { name: 'Convective zone', radius: 104 },
+    { name: 'Radiative zone', radius: 67 },
+    { name: 'Core', radius: 30 },
   ];
-  const expectedSides = { 'inner-core': 'top', 'outer-core': 'right', mantle: 'bottom', crust: 'left' };
-  layers.forEach((layer) => {
-    const r = layoutRingLabel({ cx: 250, cy: 250, outerRadius: 208, width: 900, height: 900, margin: 70, radius: layer.radius, angleDeg: layer.angleDeg });
-    assert.equal(r.side, expectedSides[layer.name]);
+  const rows = layoutRingColumn({ ...BASE, layers: sunLayers });
+  assert.equal(rows.length, 6);
+  const firstGap = rows[1].labelY - rows[0].labelY;
+  assert.ok(Math.abs(firstGap - (BASE.outerRadius * 2) / 6) < 1e-9);
+});
+
+test('percentages are the raw coordinates expressed as a share of width/height', () => {
+  const rows = layoutRingColumn({ ...BASE, layers: EARTH_LAYERS });
+  rows.forEach((r) => {
+    assert.equal(r.leftPercent, (r.labelX / BASE.width) * 100);
+    assert.equal(r.topPercent, (r.labelY / BASE.height) * 100);
+    assert.equal(r.dotLeftPercent, (r.dotX / BASE.width) * 100);
+    assert.equal(r.dotTopPercent, (r.dotY / BASE.height) * 100);
+  });
+});
+
+test('the outermost layer (first in the array) is always the top label, however many layers there are', () => {
+  [1, 2, 3, 4, 5, 6, 7].forEach((n) => {
+    const layers = Array.from({ length: n }, (_, i) => ({ name: `layer-${i}`, radius: 200 - i * 20 }));
+    const rows = layoutRingColumn({ ...BASE, layers });
+    assert.equal(rows[0].name, 'layer-0');
+    assert.ok(rows[0].labelY < rows[rows.length - 1].labelY || n === 1);
   });
 });

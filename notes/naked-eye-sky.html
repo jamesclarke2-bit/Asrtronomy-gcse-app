@@ -7,7 +7,7 @@
   <meta name="referrer" content="no-referrer" />
   <meta name="robots" content="noindex, nofollow" />
   <title>The Naked-Eye Sky</title>
-  <link rel="stylesheet" href="../styles.css?v=202611011100" />
+  <link rel="stylesheet" href="../styles.css?v=202611021000" />
   <link rel="icon" type="image/svg+xml" href="../favicon.svg?v=202610130720" />
 </head>
 <body>
@@ -338,8 +338,20 @@
       <h2>Practice questions</h2>
       <div id="questions-list"></div>
       <details class="picture-quiz-panel">
-        <summary id="pattern-quiz-summary">Picture quiz: name that pattern (7 questions)</summary>
-        <div id="pattern-quiz-list"></div>
+        <summary class="quiz-panel-summary" id="pattern-quiz-summary">
+          <svg class="quiz-panel-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8" />
+            <path d="M8 12.5l2.5 2.5L16 9.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          <span class="quiz-panel-title">Picture quiz: name that pattern (7 questions)</span>
+          <span class="quiz-panel-count"></span>
+          <svg class="quiz-panel-chevron" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </summary>
+        <div class="picture-quiz-panel-body">
+          <div id="pattern-quiz-list"></div>
+        </div>
       </details>
     </section>
 
@@ -424,7 +436,7 @@
   <script src="../src/starPatterns.js?v=202609280900"></script>
   <script src="../src/nakedEyeSkyQuestions.js?v=202610310900"></script>
   <script src="../glossary.js?v=202610131052"></script>
-  <script src="../quiz-ui.js?v=202610300900"></script>
+  <script src="../quiz-ui.js?v=202611021000"></script>
   <script src="../flashcards.js?v=202609281200"></script>
   <script src="naked-eye-sky.js?v=202610291000"></script>
   <script src="../notesPage.js?v=202609252100"></script>

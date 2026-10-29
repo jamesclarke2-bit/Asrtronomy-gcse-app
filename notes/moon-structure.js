@@ -126,26 +126,26 @@
   // thin rings themselves, are the tap targets (a thin ring is an
   // unreliable target — see earth-structure.js's own note on this).
 
-  // innermost -> outermost, each at its own ring radius; angleDeg follows
-  // the same inner-core=top / outer-core=right / mantle=bottom /
-  // crust=left convention as notes/earth-structure.html's own layers
-  // (see src/ringDiagramLabels.js, the geometry shared by both, plus
-  // sims/sun-declination.html's Sun structure).
+  // Outermost first, matching the top-to-bottom label order (outermost
+  // layer to the centre) — see src/ringDiagramLabels.js, the geometry
+  // shared with notes/earth-structure.html's own layers and
+  // sims/sun-declination.html's Sun structure.
   const STRUCTURE_LAYERS = [
-    { term: 'moonInnerCore', name: 'Inner core', r: 32, fill: '#fff2c4', angleDeg: 90 },
-    { term: 'moonOuterCore', name: 'Outer core', r: 70, fill: '#e8631a', angleDeg: 0 },
-    { term: 'moonMantle', name: 'Mantle', r: 205, fill: '#c17a4a', angleDeg: 270 },
-    { term: 'moonCrust', name: 'Crust', r: 225, fill: '#5b7c99', stroke: '#3f5a70', angleDeg: 180 },
+    { term: 'moonCrust', name: 'Crust', r: 200, fill: '#5b7c99', stroke: '#3f5a70' },
+    { term: 'moonMantle', name: 'Mantle', r: 182, fill: '#c17a4a' },
+    { term: 'moonOuterCore', name: 'Outer core', r: 62, fill: '#e8631a' },
+    { term: 'moonInnerCore', name: 'Inner core', r: 28, fill: '#fff2c4' },
   ];
-  const MOON_STRUCTURE_GEOMETRY = { cx: 490, cy: 490, outerRadius: 225, width: 980, height: 980, margin: 130 };
+  const MOON_STRUCTURE_GEOMETRY = { cx: 224, cy: 290, outerRadius: 200, width: 648, height: 580, labelX: 448 };
 
   function drawMoonStructure() {
     const svg = document.getElementById('moon-structure');
     const wrap = document.getElementById('moon-structure-wrap');
     const { cx, cy } = MOON_STRUCTURE_GEOMETRY;
 
-    // Outermost first so each smaller ring paints over it.
-    [...STRUCTURE_LAYERS].reverse().forEach((layer) => {
+    // STRUCTURE_LAYERS is already outermost first, so drawing it in that
+    // order paints each smaller ring over the last.
+    STRUCTURE_LAYERS.forEach((layer) => {
       const attrs = { cx, cy, r: layer.r, fill: layer.fill };
       if (layer.stroke) {
         attrs.stroke = layer.stroke;
@@ -155,16 +155,20 @@
     });
 
     const leaders = svgEl('g', { stroke: '#8a97a5', 'stroke-width': 1, 'stroke-dasharray': '3 2', 'pointer-events': 'none' }, svg);
-    STRUCTURE_LAYERS.forEach((layer) => {
-      const pos = RingDiagramLabels.layoutRingLabel({ ...MOON_STRUCTURE_GEOMETRY, radius: layer.r, angleDeg: layer.angleDeg });
-      svgEl('line', { x1: pos.dotX, y1: pos.dotY, x2: pos.leaderEndX, y2: pos.leaderEndY }, leaders);
-      svgEl('circle', { cx: pos.dotX, cy: pos.dotY, r: 4, fill: '#8a97a5' }, leaders);
+    const rows = RingDiagramLabels.layoutRingColumn({
+      ...MOON_STRUCTURE_GEOMETRY,
+      layers: STRUCTURE_LAYERS.map((layer) => ({ name: layer.name, radius: layer.r })),
+    });
+    rows.forEach((row, i) => {
+      const layer = STRUCTURE_LAYERS[i];
+      svgEl('line', { x1: row.dotX, y1: row.dotY, x2: row.labelX, y2: row.labelY }, leaders);
+      svgEl('circle', { cx: row.dotX, cy: row.dotY, r: 4, fill: '#8a97a5' }, leaders);
 
       const label = document.createElement('span');
-      label.className = 'labelled-diagram-label labelled-diagram-label--narrow glossary-toggle diagram-region moon-structure-label';
+      label.className = 'ring-diagram-label glossary-toggle diagram-region moon-structure-label';
       label.textContent = layer.name;
-      label.style.left = `${pos.leftPercent}%`;
-      label.style.top = `${pos.topPercent}%`;
+      label.style.left = `${row.leftPercent}%`;
+      label.style.top = `${row.topPercent}%`;
       label.tabIndex = 0;
       label.setAttribute('role', 'button');
       label.setAttribute('aria-expanded', 'false');
@@ -397,27 +401,75 @@
   }
 
   // A CSS filter/drop-shadow doesn't render reliably on SVG shapes in
-  // Safari/WebKit, so the highlight here is real SVG attributes: a
-  // thick, bright outline added around every visible shape that makes
-  // up the highlighted feature (a mare's path pieces, a crater's two
-  // circles, or the Apennines' ridge line), in a colour that appears
-  // nowhere else on the map. Every other named feature is dimmed via
-  // the plain, reliable CSS opacity property instead.
-  const QUIZ_HIGHLIGHT_COLOR = '#ff00c8';
-  const QUIZ_HIGHLIGHT_STROKE_WIDTH = 20;
+  // Safari/WebKit, so the highlight here is real SVG attributes, added
+  // as one fresh marker shape on top of the map — never a restyle of the
+  // feature's own shapes, which for a mare built from a dozen-odd
+  // overlapping circles turned "highlighted" into a scribble. The rest
+  // of the map stays at normal brightness (no dimming), so the surface
+  // itself stays readable: the marker alone shows which feature is
+  // being asked about. One ring (circle or ellipse), sized to the
+  // feature, in the site's own accent blue with a thin white stroke
+  // underneath for contrast against the map's light and dark areas
+  // alike; the Apennines (a ridge, not a blob) get the same treatment
+  // traced along a short arc instead.
+  const QUIZ_MARKER_COLOR = '#2a6bd6';
+  const QUIZ_MARKER_UNDERLAY_COLOR = '#ffffff';
+  const QUIZ_MARKER_STROKE_WIDTH = 4;
+  const QUIZ_MARKER_UNDERLAY_STROKE_WIDTH = 8;
+  const QUIZ_MARKER_PADDING = 10;
+
+  // Draws the shape twice — a wider white underlay first, the accent-blue
+  // ring on top — so the marker reads clearly against both the pale
+  // highlands and the darker maria.
+  function drawQuizMarkerShape(tag, attrs, parent) {
+    svgEl(tag, { ...attrs, fill: 'none', stroke: QUIZ_MARKER_UNDERLAY_COLOR, 'stroke-width': QUIZ_MARKER_UNDERLAY_STROKE_WIDTH }, parent);
+    svgEl(tag, { ...attrs, fill: 'none', stroke: QUIZ_MARKER_COLOR, 'stroke-width': QUIZ_MARKER_STROKE_WIDTH }, parent);
+  }
 
   function applyFeatureQuizHighlight(svg, highlightTerm) {
-    svg.querySelectorAll('.diagram-region').forEach((region) => {
-      const isTarget = region.dataset.term === highlightTerm;
-      region.classList.toggle('diagram-feature-highlight', isTarget);
-      region.classList.toggle('diagram-feature-dimmed', !isTarget);
-      if (!isTarget) return;
-      Array.from(region.children).forEach((shape) => {
-        if (shape.hasAttribute('pointer-events')) return; // the shape's own invisible, wider hit-area
-        shape.setAttribute('stroke', QUIZ_HIGHLIGHT_COLOR);
-        shape.setAttribute('stroke-width', String(QUIZ_HIGHLIGHT_STROKE_WIDTH));
+    const region = svg.querySelector(`.diagram-region[data-term="${highlightTerm}"]`);
+    if (!region) return;
+    region.classList.add('diagram-feature-highlight');
+
+    const marker = svgEl('g', { class: 'quiz-feature-marker', 'pointer-events': 'none' }, svg);
+
+    if (highlightTerm === 'apennines') {
+      const ridge = APENNINES.map(([lat, lon]) => project(lat, lon));
+      const d = `M${ridge.map((p) => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join('L')}`;
+      drawQuizMarkerShape('path', { d, 'stroke-linecap': 'round' }, marker);
+      return;
+    }
+
+    const crater = CRATERS.find((c) => c.term === highlightTerm);
+    if (crater) {
+      const c = project(crater.lat, crater.lon);
+      const trueRadiusPx = Math.max((crater.diameterKm / 2 / 1737.4) * R, 5);
+      drawQuizMarkerShape('circle', { cx: c.x, cy: c.y, r: trueRadiusPx + QUIZ_MARKER_PADDING }, marker);
+      return;
+    }
+
+    const mare = NAMED_MARIA.find((m) => m.term === highlightTerm);
+    if (mare) {
+      // A bounding ellipse around every circle the mare is built from —
+      // radiusDeg*RAD*R is the small-angle approximation of each
+      // circle's own pixel radius, plenty accurate for a schematic
+      // marker that only needs to enclose the shape, not trace it.
+      const pieces = mare.circles.map(([lat, lon, radiusDeg]) => {
+        const centre = project(lat, lon);
+        const radiusPx = radiusDeg * RAD * R;
+        return { centre, radiusPx };
       });
-    });
+      const minX = Math.min(...pieces.map((p) => p.centre.x - p.radiusPx));
+      const maxX = Math.max(...pieces.map((p) => p.centre.x + p.radiusPx));
+      const minY = Math.min(...pieces.map((p) => p.centre.y - p.radiusPx));
+      const maxY = Math.max(...pieces.map((p) => p.centre.y + p.radiusPx));
+      drawQuizMarkerShape('ellipse', {
+        cx: (minX + maxX) / 2,
+        cy: (minY + maxY) / 2,
+        rx: (maxX - minX) / 2 + QUIZ_MARKER_PADDING,
+        ry: (maxY - minY) / 2 + QUIZ_MARKER_PADDING,
+      }, marker);
+    }
   }
 
   // A small, standalone copy of the map above for a "name that feature"
@@ -432,6 +484,8 @@
     wrap.className = 'labelled-diagram-wrap labels-hidden';
     const svg = svgEl('svg', {
       viewBox: `0 0 ${SIZE} ${SIZE}`,
+      width: SIZE,
+      height: SIZE,
       class: 'responsive-svg',
       role: 'img',
       'aria-label': "Map of the Moon's near side, with labels hidden and one feature highlighted to identify",

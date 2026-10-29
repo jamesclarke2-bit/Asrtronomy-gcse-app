@@ -161,33 +161,48 @@
   }
 
   // A CSS filter/drop-shadow doesn't render reliably on SVG shapes in
-  // Safari/WebKit, so the highlight here is real SVG attributes: a much
-  // thicker stroke in a colour that appears nowhere else on the globe
-  // (so it reads against the orange/blue/red parallels and the blue
-  // globe background alike), a bigger dot for a pole, and every other
-  // reference feature dimmed via the plain, reliable CSS opacity
-  // property instead.
-  const QUIZ_HIGHLIGHT_COLOR = '#ff00c8';
-  const QUIZ_HIGHLIGHT_STROKE_WIDTH = 12;
+  // Safari/WebKit, so the highlight here is real SVG attributes, added
+  // as one fresh marker shape on top of the globe — never a restyle of
+  // the feature's own line or dot — in the site's own accent blue with
+  // a thin white stroke underneath for contrast, same approach and same
+  // colours as notes/moon-structure.html's own quiz markers. The rest
+  // of the globe stays at normal brightness (no dimming); the marker
+  // alone shows which feature is being asked about.
+  const QUIZ_MARKER_COLOR = '#2a6bd6';
+  const QUIZ_MARKER_UNDERLAY_COLOR = '#ffffff';
+  const QUIZ_MARKER_STROKE_WIDTH = 4;
+  const QUIZ_MARKER_UNDERLAY_STROKE_WIDTH = 8;
+  const QUIZ_MARKER_POLE_RADIUS = 16;
+
+  function drawQuizMarkerShape(tag, attrs, parent) {
+    svgEl(tag, { ...attrs, fill: 'none', stroke: QUIZ_MARKER_UNDERLAY_COLOR, 'stroke-width': QUIZ_MARKER_UNDERLAY_STROKE_WIDTH }, parent);
+    svgEl(tag, { ...attrs, fill: 'none', stroke: QUIZ_MARKER_COLOR, 'stroke-width': QUIZ_MARKER_STROKE_WIDTH }, parent);
+  }
 
   function applyLineQuizHighlight(svg, highlightTerm) {
-    const isPole = highlightTerm === 'northPole' || highlightTerm === 'southPole';
-    svg.querySelectorAll('.diagram-region').forEach((region) => {
-      const isTarget = region.dataset.term === highlightTerm;
-      region.classList.toggle('diagram-feature-highlight', isTarget);
-      region.classList.toggle('diagram-feature-dimmed', !isTarget);
-      if (!isTarget) return;
-      Array.from(region.children).forEach((shape) => {
-        if (shape.hasAttribute('pointer-events')) return; // the shape's own invisible, wider hit-area
-        if (isPole) {
-          const baseRadius = parseFloat(shape.getAttribute('r')) || 6;
-          shape.setAttribute('r', String(baseRadius * 3));
-          shape.setAttribute('fill', QUIZ_HIGHLIGHT_COLOR);
-        }
-        shape.setAttribute('stroke', QUIZ_HIGHLIGHT_COLOR);
-        shape.setAttribute('stroke-width', String(QUIZ_HIGHLIGHT_STROKE_WIDTH));
-      });
-    });
+    const region = svg.querySelector(`.diagram-region[data-term="${highlightTerm}"]`);
+    if (!region) return;
+    region.classList.add('diagram-feature-highlight');
+
+    const marker = svgEl('g', { class: 'quiz-feature-marker', 'pointer-events': 'none' }, svg);
+
+    if (highlightTerm === 'northPole' || highlightTerm === 'southPole') {
+      const p = project(highlightTerm === 'northPole' ? 90 : -90, CENTRE_LONGITUDE);
+      drawQuizMarkerShape('circle', { cx: p.x, cy: p.y, r: QUIZ_MARKER_POLE_RADIUS }, marker);
+      return;
+    }
+
+    if (highlightTerm === 'primeMeridian') {
+      drawQuizMarkerShape('path', { d: meridianPath(0), 'stroke-linecap': 'round' }, marker);
+      return;
+    }
+
+    const parallel = NAMED_PARALLELS.find((line) => line.term === highlightTerm);
+    if (parallel) {
+      const west = project(parallel.lat, CENTRE_LONGITUDE - 90);
+      const east = project(parallel.lat, CENTRE_LONGITUDE + 90);
+      drawQuizMarkerShape('line', { x1: west.x, y1: west.y, x2: east.x, y2: east.y, 'stroke-linecap': 'round' }, marker);
+    }
   }
 
   // A small, standalone copy of the globe above for a "name that line"
@@ -202,6 +217,8 @@
     wrap.className = 'labelled-diagram-wrap';
     const svg = svgEl('svg', {
       viewBox: `0 0 ${WIDTH} ${HEIGHT}`,
+      width: WIDTH,
+      height: HEIGHT,
       class: 'responsive-svg',
       role: 'img',
       'aria-label': 'Globe with labels hidden and one reference line or point highlighted to identify',
@@ -222,23 +239,25 @@
   }
 
   // --- "Inside the Earth": drawn here (not static markup) so its ---------
-  // labels can use the same leader-line-to-a-dot-on-its-own-ring, label-
-  // in-a-neat-column-outside placement as sims/sun-declination.html's Sun
-  // structure diagram and notes/moon-structure.html's Inside the Moon —
-  // see src/ringDiagramLabels.js, the geometry shared by all three.
+  // labels can use the same ring-sits-to-the-left, labels-in-one-column-
+  // to-the-right placement as sims/sun-declination.html's Sun structure
+  // diagram and notes/moon-structure.html's Inside the Moon — see
+  // src/ringDiagramLabels.js, the geometry shared by all three.
   // Clicking a label highlights the matching ring and scrolls to the
   // matching legend entry, each other's match by the same data-layer
   // value (crust / mantle / outer-core / inner-core) — unchanged from
   // before, just wired up after the labels are drawn instead of to
   // static ones already in the HTML.
 
+  // Outermost first, matching the top-to-bottom label order (outermost
+  // layer to the centre).
   const EARTH_INTERNAL_LAYERS = [
-    { layer: 'inner-core', name: 'Inner core', radius: 45, angleDeg: 90, fill: '#fff2c4' },
-    { layer: 'outer-core', name: 'Outer core', radius: 110, angleDeg: 0, fill: '#e8631a' },
-    { layer: 'mantle', name: 'Mantle', radius: 195, angleDeg: 270, fill: '#c17a4a' },
-    { layer: 'crust', name: 'Crust', radius: 208, angleDeg: 180, fill: '#5b7c99', stroke: '#3f5a70' },
+    { layer: 'crust', name: 'Crust', radius: 200, fill: '#5b7c99', stroke: '#3f5a70' },
+    { layer: 'mantle', name: 'Mantle', radius: 188, fill: '#c17a4a' },
+    { layer: 'outer-core', name: 'Outer core', radius: 106, fill: '#e8631a' },
+    { layer: 'inner-core', name: 'Inner core', radius: 43, fill: '#fff2c4' },
   ];
-  const EARTH_LAYERS_GEOMETRY = { cx: 450, cy: 450, outerRadius: 208, width: 900, height: 900, margin: 130 };
+  const EARTH_LAYERS_GEOMETRY = { cx: 224, cy: 290, outerRadius: 200, width: 648, height: 580, labelX: 448 };
 
   function highlightEarthLayer(layer) {
     document.querySelectorAll('.earth-layer-region').forEach((region) => {
@@ -255,9 +274,10 @@
     const svg = document.getElementById('earth-layers');
     const wrap = document.getElementById('earth-layers-wrap');
 
-    // Outermost first so each smaller ring paints over it, same nesting
-    // the previous static markup relied on.
-    [...EARTH_INTERNAL_LAYERS].reverse().forEach((layer) => {
+    // EARTH_INTERNAL_LAYERS is already outermost first, so drawing it in
+    // that order paints each smaller ring over the last, same nesting the
+    // previous static markup relied on.
+    EARTH_INTERNAL_LAYERS.forEach((layer) => {
       const attrs = {
         cx: EARTH_LAYERS_GEOMETRY.cx, cy: EARTH_LAYERS_GEOMETRY.cy, r: layer.radius, fill: layer.fill,
         class: 'earth-layer-region', 'data-layer': layer.layer,
@@ -270,19 +290,20 @@
     });
 
     const leaders = svgEl('g', { stroke: '#8a97a5', 'stroke-width': 1, 'stroke-dasharray': '3 2', 'pointer-events': 'none' }, svg);
-    EARTH_INTERNAL_LAYERS.forEach((layer) => {
-      const pos = RingDiagramLabels.layoutRingLabel({ ...EARTH_LAYERS_GEOMETRY, radius: layer.radius, angleDeg: layer.angleDeg });
-      svgEl('line', { x1: pos.dotX, y1: pos.dotY, x2: pos.leaderEndX, y2: pos.leaderEndY }, leaders);
-      svgEl('circle', { cx: pos.dotX, cy: pos.dotY, r: 4, fill: '#8a97a5' }, leaders);
+    const rows = RingDiagramLabels.layoutRingColumn({ ...EARTH_LAYERS_GEOMETRY, layers: EARTH_INTERNAL_LAYERS });
+    rows.forEach((row, i) => {
+      const layer = EARTH_INTERNAL_LAYERS[i];
+      svgEl('line', { x1: row.dotX, y1: row.dotY, x2: row.labelX, y2: row.labelY }, leaders);
+      svgEl('circle', { cx: row.dotX, cy: row.dotY, r: 4, fill: '#8a97a5' }, leaders);
 
       const label = document.createElement('span');
-      label.className = 'labelled-diagram-label labelled-diagram-label--narrow earth-layer-label';
+      label.className = 'ring-diagram-label earth-layer-label';
       label.dataset.layer = layer.layer;
       label.tabIndex = 0;
       label.setAttribute('role', 'button');
       label.setAttribute('aria-label', `${layer.name}: show its description`);
-      label.style.left = `${pos.leftPercent}%`;
-      label.style.top = `${pos.topPercent}%`;
+      label.style.left = `${row.leftPercent}%`;
+      label.style.top = `${row.topPercent}%`;
       label.textContent = layer.name;
       wrap.appendChild(label);
     });

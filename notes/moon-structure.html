@@ -7,7 +7,7 @@
   <meta name="referrer" content="no-referrer" />
   <meta name="robots" content="noindex, nofollow" />
   <title>The Moon: Structure, Surface and Origin</title>
-  <link rel="stylesheet" href="../styles.css?v=202611011100" />
+  <link rel="stylesheet" href="../styles.css?v=202611021000" />
   <link rel="icon" type="image/svg+xml" href="../favicon.svg?v=202610130720" />
 </head>
 <body>
@@ -32,7 +32,9 @@
         <div class="labelled-diagram-wrap" id="moon-structure-wrap">
           <svg
             id="moon-structure"
-            viewBox="0 0 980 980"
+            viewBox="0 0 648 580"
+            width="648"
+            height="580"
             role="group"
             aria-label="Cutaway diagram of the Moon's internal structure, showing the inner core, outer core, mantle and crust as concentric layers, each labelled with a leader line and tappable for detail"
           ></svg>
@@ -135,6 +137,8 @@
           <svg
             id="moon-map"
             viewBox="0 0 600 600"
+            width="600"
+            height="600"
             role="group"
             aria-label="Map of the Moon's near side at full Moon, north at the top, with seven clickable features: the Sea of Tranquility, the Ocean of Storms, the Sea of Crises, the craters Tycho, Copernicus and Kepler, and the Apennine mountains, plus an optional toggle showing the six crewed Apollo landing sites"
           ></svg>
@@ -412,8 +416,20 @@
       <h2>Practice questions</h2>
       <div id="questions-list"></div>
       <details class="picture-quiz-panel">
-        <summary id="feature-quiz-summary">Picture quiz: name that feature (7 questions)</summary>
-        <div id="feature-quiz-list"></div>
+        <summary class="quiz-panel-summary" id="feature-quiz-summary">
+          <svg class="quiz-panel-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8" />
+            <path d="M8 12.5l2.5 2.5L16 9.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          <span class="quiz-panel-title">Picture quiz: name that feature (7 questions)</span>
+          <span class="quiz-panel-count"></span>
+          <svg class="quiz-panel-chevron" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </summary>
+        <div class="picture-quiz-panel-body">
+          <div id="feature-quiz-list"></div>
+        </div>
       </details>
     </section>
 
@@ -483,10 +499,10 @@
   <script src="../src/moonPhase.js?v=202609241000"></script>
   <script src="../src/moonStructureQuestions.js?v=202610300900"></script>
   <script src="../src/orbitalMechanics.js?v=202610281400"></script>
-  <script src="../src/ringDiagramLabels.js?v=202611011000"></script>
+  <script src="../src/ringDiagramLabels.js?v=202611021000"></script>
   <script src="../glossary.js?v=202610131052"></script>
-  <script src="../quiz-ui.js?v=202610300900"></script>
-  <script src="moon-structure.js?v=202611011000"></script>
+  <script src="../quiz-ui.js?v=202611021000"></script>
+  <script src="moon-structure.js?v=202611021000"></script>
   <script src="../notesPage.js?v=202609270100"></script>
   <script src="../nextPage.js?v=202610161057"></script>
 </body>

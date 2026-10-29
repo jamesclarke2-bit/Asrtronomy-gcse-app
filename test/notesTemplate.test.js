@@ -92,9 +92,19 @@ function stripHiddenAndTags(s) {
 }
 
 // Position (character offset) of every <canvas> or <svg> opening tag —
-// "a visual" for the diagram-first rule — in document order.
+// "a visual" for the diagram-first rule — in document order. The small
+// icon and chevron on a .quiz-panel-summary button-card (see
+// styles.css) aren't a diagram a student looks at for content, so they
+// don't count as one here — unlike, say, solar-system-bodies.html's own
+// aria-hidden decision-arrow icons, which sit between real diagrams and
+// have always counted.
 function visualPositions(html) {
-  return [...html.matchAll(/<canvas\b|<svg\b/g)].map((m) => m.index);
+  const positions = [];
+  for (const match of html.matchAll(/<canvas\b[^>]*>|<svg\b[^>]*>/g)) {
+    if (/^<svg\b/.test(match[0]) && /\bclass="quiz-panel-(icon|chevron)"/.test(match[0])) continue;
+    positions.push(match.index);
+  }
+  return positions;
 }
 
 test('the contents list appears only on pages long enough to need one', () => {
