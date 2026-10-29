@@ -237,6 +237,18 @@ canvas {
   border: 1px solid #8a97a5;
 }
 
+.legend-dot-spot-0 {
+  background: #c0392b;
+}
+
+.legend-dot-spot-30 {
+  background: #2a6bd6;
+}
+
+.legend-dot-spot-60 {
+  background: #173d75;
+}
+
 /* Opt-in via .tool-layout, a second class alongside the shared .layout
    (so a plain .layout page is untouched): keep the control panels usable
    alongside the diagrams at every viewport size, instead of them
@@ -2204,6 +2216,26 @@ canvas {
 
 .composition-bar-diagram svg,
 .atmosphere-ladder-diagram svg {
+  width: 100%;
+  height: auto;
+  background: #f7f7f5;
+  border-radius: 8px;
+  border: 1px solid #cdd7e1;
+}
+
+.sun-disc-diagram,
+.sunspot-plot-diagram {
+  max-width: 420px;
+  margin: 1rem 0;
+}
+
+.sunspot-plot-diagram {
+  max-width: 520px;
+}
+
+.sun-disc-diagram canvas,
+.sunspot-plot-diagram canvas {
+  display: block;
   width: 100%;
   height: auto;
   background: #f7f7f5;

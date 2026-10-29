@@ -127,12 +127,22 @@ const PAGES = [
     why: "The Sun's own structure and how to observe it safely, reusing the transit-altitude idea from Star Coordinates.",
   },
   {
+    title: 'Sunspot Rotation',
+    description:
+      "Tracking real sunspot positions across the disc, day by day, to measure the Sun's own rotation period — and why differential rotation and Earth's own motion mean that period is never one fixed number.",
+    href: 'sims/sunspot-rotation.html',
+    units: ['u2.5'],
+    phase: 'The Sun',
+    position: 19,
+    why: "Puts Observing the Sun's structure to direct use: tracking real sunspot data across the disc to measure the Sun's own rotation period, and seeing why it isn't one fixed number.",
+  },
+  {
     title: 'Retrograde Motion and Planetary Alignments',
     description: 'Pick Mercury, Venus or Mars and watch its whole cycle: retrograde loops, every conjunction and elongation, and when (or whether) it can be seen.',
     href: 'sims/solar-system-observation.html',
     units: ['u1.15', 'u1.16', 'u1.17'],
     phase: 'The Solar System and gravity',
-    position: 22,
+    position: 23,
     why: "Now that you know why planets loop and drift (Kepler's Laws and Orbits and Gravity, just covered), here's how to actually track Mercury, Venus and Mars doing it for real.",
   },
   {
@@ -202,7 +212,7 @@ const PAGES = [
     href: 'notes/geocentric-to-heliocentric.html',
     units: ['u3.1', 'u3.2', 'u3.6', 'u3.7', 'u3.15'],
     phase: 'The Solar System and gravity',
-    position: 19,
+    position: 20,
     why: "A new thread: how the Earth-centred model slowly gave way to the Sun-centred one, setting up why Kepler's laws, next, were worth discovering at all.",
   },
   {
@@ -212,7 +222,7 @@ const PAGES = [
     href: 'sims/kepler.html',
     units: ['u3.9', 'u3.10', 'u3.11', 'u3.12'],
     phase: 'The Solar System and gravity',
-    position: 20,
+    position: 21,
     why: "From ancient models of the sky to the actual physics of orbits: why they're ellipses, why speed changes around one, and how period and distance relate.",
   },
   {
@@ -222,7 +232,7 @@ const PAGES = [
     href: 'sims/orbits-gravity.html',
     units: ['u3.8', 'u3.13', 'u3.14'],
     phase: 'The Solar System and gravity',
-    position: 21,
+    position: 22,
     why: "Kepler described the three laws; this is Newton explaining why they're true — simulating gravity itself, rather than assuming the ellipse Kepler's page draws.",
   },
   {
@@ -232,7 +242,7 @@ const PAGES = [
     href: 'notes/scale-of-the-solar-system.html',
     units: ['u3.3', 'u3.4'],
     phase: 'The Solar System and gravity',
-    position: 23,
+    position: 24,
     why: "Puts the distance and period figures Kepler's page introduced to a different purpose: just how big the Solar System actually is, and why AU, light years and parsecs each earn their place.",
   },
   {
@@ -294,7 +304,7 @@ const PAGES = [
     href: 'notes/telescopes.html',
     units: ['u5.1', 'u5.2'],
     phase: 'Telescopes and exploring',
-    position: 27,
+    position: 28,
     why: "The equipment that made everything above observable in the first place — including Galileo's own telescope, back on From Earth-Centred to Sun-Centred.",
   },
   {
@@ -304,7 +314,7 @@ const PAGES = [
     href: 'notes/solar-system-bodies.html',
     units: ['u3.16', 'u3.17', 'u3.18', 'u3.19', 'u3.20', 'u3.21', 'u3.22', 'u3.23', 'u3.24', 'u3.25', 'u3.30', 'u3.31'],
     phase: 'The Solar System and gravity',
-    position: 24,
+    position: 25,
     why: "Rounds out the Solar System itself: the same planet table compared directly, then everything smaller — asteroids, comets, meteorites — plus how a transit of Venus first measured the AU just introduced.",
   },
   {
@@ -381,28 +391,28 @@ const COMING_SOON = [
   {
     name: 'Formation of planetary systems',
     phase: 'The Solar System and gravity',
-    position: 25,
+    position: 26,
     why: "The next natural question once you know the planets themselves: how gravity actually built them, and shaped their rings, resonances and atmospheres — Bodies of the Solar System's own formation theories are only a first draft.",
     specPoints: ['12.1a', '12.1c', '12.2a', '12.2b', '12.2c'],
   },
   {
     name: 'Exoplanets and life',
     phase: 'The Solar System and gravity',
-    position: 26,
+    position: 27,
     why: "The same 'requirements for life' question Bodies of the Solar System raises for Titan, Europa and Enceladus, turned outward: how we actually find planets around other stars, and whether anyone's out there.",
     specPoints: ['12.4', '12.6', '12.7', '12.8'],
   },
   {
     name: 'Probes and Apollo',
     phase: 'Telescopes and exploring',
-    position: 28,
+    position: 29,
     why: 'How we stopped just watching and went there — the Apollo missions, and the trade-offs of every kind of robotic probe since.',
     specPoints: ['11.26', '11.27', '11.28', '11.29', '11.30'],
   },
   {
     name: 'Stars, galaxies and the Universe',
     phase: 'Stars and the Universe',
-    position: 29,
+    position: 30,
     why: "The whole rest of the sky this course hasn't reached yet: what stars are and how they live and die, our own Galaxy's structure, and the wider Universe beyond it.",
     // Topics 13-16 have no SPEC_POINTS registry entries at all yet
     // (src/specPoints.js's own header explains why), so there are no

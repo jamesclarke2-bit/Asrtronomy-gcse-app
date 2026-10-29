@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; form-action 'none'; base-uri 'self'" />
+  <meta name="referrer" content="no-referrer" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Sunspot Rotation</title>
+  <link rel="stylesheet" href="../styles.css?v=202610300900" />
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg?v=202610130720" />
+</head>
+<body>
+  <main>
+    <p class="back-link"><a href="../index.html">&larr; Back to all tools</a></p>
+
+    <h1>Sunspot Rotation</h1>
+    <p class="subtitle">
+      Sunspots are carried round the Sun by its own rotation &mdash; tracking one's position
+      across the visible disc, day by day, is how real solar observers measure how fast the
+      Sun actually spins.
+    </p>
+
+    <section class="notes-section" id="disc">
+      <h2>Tracking a sunspot across the disc</h2>
+      <p>
+        Sunspots are carried round by the Sun's own rotation. Watch spots at three different
+        latitudes cross the disc below, then record one yourself.
+      </p>
+      <div class="diagram sun-disc-diagram">
+        <canvas
+          id="sun-disc"
+          width="400"
+          height="400"
+          aria-label="The Sun's disc, viewed face-on, with three sunspots at latitudes 0, 30 and 60 degrees crossing from the east limb to the west limb as the day advances. A dashed vertical line marks the central meridian."
+        ></canvas>
+      </div>
+      <p class="legend">
+        <span class="legend-dot legend-dot-spot-0"></span> 0&deg; (equator)
+        &nbsp; <span class="legend-dot legend-dot-spot-30"></span> 30&deg;
+        &nbsp; <span class="legend-dot legend-dot-spot-60"></span> 60&deg;
+      </p>
+      <div class="controls">
+        <div class="control">
+          <label for="day-slider">Day: <span id="day-label"></span></label>
+          <input type="range" id="day-slider" min="0" max="20" step="any" value="0" />
+        </div>
+        <div class="control checkbox-control">
+          <button type="button" id="play-button" class="secondary-button" aria-pressed="false">&#9658; Play</button>
+        </div>
+      </div>
+      <p class="note">
+        This simplified view ignores the small tilt of the Sun's own rotation axis as seen
+        from Earth &mdash; real tracking has to allow for it, this diagram doesn't.
+      </p>
+    </section>
+
+    <section class="notes-section" id="recording">
+      <h2>Recording a sunspot's position</h2>
+      <p>
+        Pick a latitude, step through the days, and record the spot's x position each time to
+        build up your own table.
+      </p>
+      <div class="controls">
+        <div class="control">
+          <label for="latitude-select">Latitude:</label>
+          <select id="latitude-select">
+            <option value="0">0&deg; (equator)</option>
+            <option value="30">30&deg;</option>
+            <option value="60">60&deg;</option>
+          </select>
+        </div>
+        <div class="control checkbox-control">
+          <button type="button" id="record-button" class="secondary-button">Record this day</button>
+          <button type="button" id="clear-button" class="secondary-button">Clear readings</button>
+        </div>
+      </div>
+      <p class="note" id="record-feedback" aria-live="polite"></p>
+      <table class="shower-table" id="readings-table">
+        <caption>Your recorded readings</caption>
+        <thead>
+          <tr><th scope="col">Day</th><th scope="col">x position</th></tr>
+        </thead>
+        <tbody id="readings-tbody"></tbody>
+      </table>
+      <div class="diagram sunspot-plot-diagram">
+        <canvas
+          id="sunspot-plot"
+          width="500"
+          height="300"
+          aria-label="Plot of x position against day for your recorded readings"
+        ></canvas>
+      </div>
+    </section>
+
+    <section class="notes-section" id="methods">
+      <h2>Two ways to estimate the period from your readings</h2>
+      <h3>Method 1: double the limb-to-limb time</h3>
+      <p>
+        A spot crosses the whole visible disc &mdash; east limb to west limb &mdash; in exactly
+        half a rotation (the far side, where it isn't visible, is the other half). Note the day
+        it disappears off the west limb, then double that day count to estimate the full
+        (synodic) rotation period.
+      </p>
+      <p class="panel-note" id="limb-to-limb-readout"></p>
+      <h3>Method 2: the two-reading "stretch" method</h3>
+      <p>
+        From any two readings, work out the angle the spot moved (its longitude on the second
+        day minus its longitude on the first) and the days between them, then scale up to a
+        full 360&deg; rotation:
+      </p>
+      <p class="formula">period = 360&deg; &times; days &divide; angle moved</p>
+      <p class="panel-note" id="stretch-estimate-readout"></p>
+      <p class="note">
+        Recording a spot's position day by day like this is observation task
+        <strong>A6</strong> on the specification; using that data to calculate the rotation
+        period, as both methods above do, is task <strong>B6</strong>.
+      </p>
+    </section>
+
+    <section class="notes-section" id="why-not-fixed">
+      <h2>Why the rotation period isn't one fixed number</h2>
+      <p>
+        Two separate effects both shift the number you measure away from a single "true" value.
+      </p>
+      <h3>The Sun isn't a solid body: differential rotation</h3>
+      <p>
+        A sunspot's own latitude changes how fast it's carried round. Using the differential
+        rotation law &omega; = 14.71 &minus; 2.40 sin&sup2;(&phi;) &minus; 1.79 sin&#8308;(&phi;)
+        degrees per day (sidereal), at latitude &phi;, gives sidereal periods of about
+        <strong>24.5 days</strong> at the equator, <strong>25.7 days</strong> at 30&deg;, and
+        <strong>30.2 days</strong> at 60&deg;.
+      </p>
+      <p class="note">
+        These three figures are a first draft, to be checked by the teacher against the notes'
+        own simpler figures &mdash; about 25 days at the equator, about 35 days near the poles.
+      </p>
+      <h3>Earth moves too: sidereal vs synodic</h3>
+      <p>
+        The period you actually observe from Earth (the <strong>synodic</strong> period) is
+        longer than the Sun's true rotation against the stars (the <strong>sidereal</strong>
+        period), for the same reason the Moon's synodic month is longer than its sidereal one:
+        Earth orbits the Sun in the same direction the Sun itself spins, so a sunspot has to
+        turn a little further each rotation before it lines back up with Earth's new position.
+        The relationship is <code>1/synodic = 1/sidereal &minus; 1/365.25</code> (days in a
+        year). A mean sidereal period of 25.38 days gives a synodic period of about
+        <strong>27.27 days</strong>.
+      </p>
+      <p class="eot-link">
+        <a href="sun-declination.html#sunspots-and-solar-cycle">See the sunspot butterfly diagram and the 11-year solar cycle on Observing the Sun &rarr;</a>
+      </p>
+      <p class="exam-tip">
+        <strong>Common exam confusion:</strong> the Sun's <strong>rotation period</strong>
+        (~25&ndash;35 days, how fast it spins) and the <strong>solar cycle</strong> (~11 years,
+        how sunspot number rises and falls) are entirely different things, on wildly different
+        timescales.
+      </p>
+    </section>
+
+    <section class="notes-section" id="safety">
+      <h2>Observing safely</h2>
+      <p>
+        Never look directly at the Sun. The safe way to track a real sunspot is to project its
+        image &mdash; through a simple pinhole, or more sharply through a small telescope.
+      </p>
+      <p class="eot-link">
+        <a href="sun-declination.html#observing-the-sun-safely">See pinhole and telescope projection, step by step, on Observing the Sun &rarr;</a>
+      </p>
+    </section>
+
+    <section class="questions">
+      <h2>Practice questions</h2>
+      <div id="questions-list"></div>
+    </section>
+
+    <section class="progress">
+      <h2>Your progress</h2>
+      <ul id="progress-list"></ul>
+      <p class="note">Stored in this browser only (localStorage) &mdash; no account needed.</p>
+    </section>
+
+    <p class="coverage" id="coverage"></p>
+    <p class="next-page-link" id="next-page"></p>
+  </main>
+
+  <script src="../src/curriculum.js?v=202610291800"></script>
+  <script src="../src/pages.js?v=202610300900"></script>
+  <script src="../src/sunRotation.js?v=202610300900"></script>
+  <script src="../src/sunspotRotationQuestions.js?v=202610300900"></script>
+  <script src="../src/animationTiming.js?v=202610130606"></script>
+  <script src="../quiz-ui.js?v=202610300900"></script>
+  <script src="sunspot-rotation.js?v=202610300900"></script>
+  <script src="../nextPage.js?v=202610161057"></script>
+</body>
+</html>

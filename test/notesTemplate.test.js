@@ -50,6 +50,7 @@ const DIAGRAM_FIRST_PAGES = [
   'notes/scale-of-the-solar-system.html',
   'notes/naked-eye-sky.html',
   'notes/archaeoastronomy.html',
+  'sims/sunspot-rotation.html',
 ];
 
 function read(href) {
