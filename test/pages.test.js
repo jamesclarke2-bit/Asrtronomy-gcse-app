@@ -322,6 +322,47 @@ test('every spec point the syllabus map marks "not built yet", in any registered
   });
 });
 
+test('no coming-soon step lists only spec points that are already covered by a built page', () => {
+  // The flip side of the "not built" check above: once every spec point
+  // a step names gets its own built page (and curriculum tagging), the
+  // step is stale and should be turned into a real PAGES entry (with
+  // its own phase/position/why) and deleted here, not left announcing
+  // "coming soon" work that already shipped — see src/pages.js's own
+  // header on COMING_SOON.
+  const map = buildSyllabusMap({
+    specPoints: SPEC_POINTS,
+    specPointGroups: SPEC_POINT_GROUPS,
+    topicNames: TOPIC_NAMES,
+    registeredTopics: REGISTERED_TOPICS,
+    units: UNITS,
+    pages: PAGES,
+    allQuestions: getAllQuestionsNode(),
+    isExtensionPage: (page) => isExtensionPage(page, getSubtopic),
+  });
+
+  const statusByCode = new Map();
+  REGISTERED_TOPICS.forEach((topicNumber) => {
+    const topic = map.topics.find((t) => t.number === topicNumber);
+    const leaves = [];
+    (function collect(points) {
+      points.forEach((point) => {
+        if (!point.isGroup) leaves.push(point);
+        if (point.children) collect(point.children);
+      });
+    })(topic.points);
+    leaves.forEach((point) => statusByCode.set(point.code, point.status));
+  });
+
+  COMING_SOON.forEach((step) => {
+    if (!step.specPoints || step.specPoints.length === 0) return; // a topics-only step (13-16) is never "already covered"
+    const allCovered = step.specPoints.every((code) => statusByCode.get(code) === 'covered');
+    assert.ok(
+      !allCovered,
+      `"${step.name}" names only spec points already covered by a built page (${step.specPoints.join(', ')}) — it should be removed or narrowed`
+    );
+  });
+});
+
 test('every unregistered topic (13-16, no SPEC_POINTS entries at all) is named in some coming-soon step\'s topics list', () => {
   const namedTopics = new Set(COMING_SOON.flatMap((step) => step.topics || []));
   const unregistered = Object.keys(TOPIC_NAMES).map(Number).filter((n) => !REGISTERED_TOPICS.includes(n));
