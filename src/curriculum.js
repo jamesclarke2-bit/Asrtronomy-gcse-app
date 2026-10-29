@@ -247,6 +247,22 @@ const UNITS = [
         notes:
           "dark adaptation: rod cells build up the light-sensitive pigment rhodopsin over about 20-30 minutes, bleached almost instantly by white light but barely absorbed by dim red light, which is why a red torch is used once adapted; averted vision: looking slightly to one side of a faint object shifts its image onto the rod-rich peripheral retina (rods respond to far lower light levels than the cone-packed fovea at the centre), often revealing something a direct look shows nothing of",
       },
+      {
+        id: 'u1.23',
+        title: 'Predicting rising, transit and setting times',
+        depth: 'be able to',
+        spec: ['6.17'],
+        notes:
+          "a star rises, transits and sets about 4 minutes earlier each night, the gap between the sidereal and solar day; an observer east of another sees the same star transit earlier still, by 4 minutes for every degree of longitude between them (west sees it later)",
+      },
+      {
+        id: 'u1.24',
+        title: 'Best time and object to observe',
+        depth: 'be able to',
+        spec: ['6.12'],
+        notes:
+          "of two possible targets, the better-placed one is whichever has the greater maximum altitude at upper transit (90 - |latitude - declination|), since it sits higher above the horizon and its light passes through less atmosphere; an object is best placed for observing when the local sidereal time equals its right ascension (hour angle zero, upper transit)",
+      },
     ],
   },
   {

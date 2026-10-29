@@ -111,7 +111,7 @@ const PAGES = [
     description:
       'Right ascension, declination, hour angle and sidereal time — pick a star and watch how they all relate, and see why a sidereal day is about 4 minutes shorter than a solar one.',
     href: 'sims/coordinates.html',
-    units: ['u1.7', 'u1.8', 'u1.9', 'u1.10', 'u1.11', 'u1.12', 'u1.13', 'u1.14', 'u1.21'],
+    units: ['u1.7', 'u1.8', 'u1.9', 'u1.10', 'u1.11', 'u1.12', 'u1.13', 'u1.14', 'u1.21', 'u1.23', 'u1.24'],
     phase: 'Look up',
     position: 4,
     why: "A new, more technical toolkit, building on what you've just learned to look up and recognise: right ascension, declination, hour angle, sidereal time, and finding your latitude from Polaris — the toolkit planning an observing night, next, puts to use.",

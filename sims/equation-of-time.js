@@ -557,5 +557,14 @@
   renderCoverage();
   Glossary.init(GLOSSARY);
 
-  QuizUI.mount(EotQuestions.QUESTIONS);
+  const TIMEZONE_PRACTICE_PREFIXES = ['eot-zone-', 'eot-lmt-', 'eot-longitude-'];
+  const timezonePracticeQuestions = EotQuestions.QUESTIONS.filter((q) => TIMEZONE_PRACTICE_PREFIXES.some((prefix) => q.id.startsWith(prefix)));
+  const originalEotQuestions = EotQuestions.QUESTIONS.filter((q) => !TIMEZONE_PRACTICE_PREFIXES.some((prefix) => q.id.startsWith(prefix)));
+  QuizUI.mount(originalEotQuestions);
+  QuizUI.mountGroup({
+    questions: timezonePracticeQuestions,
+    listElementId: 'timezone-practice-list',
+    summaryElementId: 'timezone-practice-summary',
+    label: 'More practice: time zones',
+  });
 })();

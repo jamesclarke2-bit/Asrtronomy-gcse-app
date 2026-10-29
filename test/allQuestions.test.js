@@ -75,7 +75,7 @@ test("getAllQuestionsNode's total is exactly the sum of every individual questio
     sunPath.length +
     eot.length +
     makeArchaeoastronomy(MoonPhase).length +
-    makeCoordinates(Coordinates, null).length +
+    makeCoordinates(Coordinates, null, null, SpecData).length +
     makeEarthStructure(SpecData).length +
     makeGeocentricHeliocentric().length +
     makeGravitationalPotential(GravityField, OrbitalMechanics).length +

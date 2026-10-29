@@ -56,7 +56,7 @@
       ...Questions.QUESTIONS,
       ...EotQuestions.QUESTIONS,
       ...ArchaeoastronomyQuestions.makeQuestions(MoonPhase),
-      ...CoordinatesQuestions.makeQuestions(Coordinates, null),
+      ...CoordinatesQuestions.makeQuestions(Coordinates, null, null, SpecData),
       ...EarthStructureQuestions.makeQuestions(SpecData),
       ...GeocentricHeliocentricQuestions.makeQuestions(),
       ...GravitationalPotentialQuestions.makeQuestions(GravityField, OrbitalMechanics),

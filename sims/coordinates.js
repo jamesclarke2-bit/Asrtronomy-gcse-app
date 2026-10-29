@@ -1,7 +1,7 @@
 (function () {
   const YEAR = 2026;
   const SIDEREAL_RATE = 1.0027379093; // sidereal hours per solar hour
-  const CURRICULUM_UNITS = ['u1.7', 'u1.8', 'u1.9', 'u1.10', 'u1.11', 'u1.12', 'u1.13', 'u1.14', 'u1.21'];
+  const CURRICULUM_UNITS = ['u1.7', 'u1.8', 'u1.9', 'u1.10', 'u1.11', 'u1.12', 'u1.13', 'u1.14', 'u1.21', 'u1.23', 'u1.24'];
 
   const STAR_PRESETS = [
     { name: 'Polaris (Ursa Minor)', ra: 2.53, dec: 89.26 },
@@ -1025,7 +1025,17 @@
   update();
   renderCoverage();
   updatePolarisFinder();
-  QuizUI.mount(CoordinatesQuestions.makeQuestions(Coordinates, getLiveState, highlightDiurnalAnswer));
+  const coordinatesQuestions = CoordinatesQuestions.makeQuestions(Coordinates, getLiveState, highlightDiurnalAnswer, SpecData);
+  const MORE_PRACTICE_PREFIXES = ['polaris-', 'riseset-', 'besttime-'];
+  const morePracticeQuestions = coordinatesQuestions.filter((q) => MORE_PRACTICE_PREFIXES.some((prefix) => q.id.startsWith(prefix)));
+  const originalQuestions = coordinatesQuestions.filter((q) => !MORE_PRACTICE_PREFIXES.some((prefix) => q.id.startsWith(prefix)));
+  QuizUI.mount(originalQuestions);
+  QuizUI.mountGroup({
+    questions: morePracticeQuestions,
+    listElementId: 'more-practice-list',
+    summaryElementId: 'more-practice-summary',
+    label: 'More practice: latitude, rise/set times and best time to observe',
+  });
   renderChainedQuestion(chainedContainer, CoordinatesQuestions.pickRandomChainedParams());
   // "pole" is deliberately absent from GLOSSARY: its NCP/SCP wording
   // depends on the latitude slider, so drawMeridian() keeps its

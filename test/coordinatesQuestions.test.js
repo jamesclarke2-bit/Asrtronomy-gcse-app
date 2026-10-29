@@ -1,6 +1,7 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const Coordinates = require('../src/coordinates');
+const SpecData = require('../src/specData');
 const { makeQuestions, generateChainedQuestion, CHAINED_PARAM_PRESETS } = require('../src/coordinatesQuestions');
 
 function findQuestion(questions, id) {
@@ -117,6 +118,95 @@ test('diagram-reading question tolerates a missing highlight hook', () => {
   const questions = makeQuestions(Coordinates, () => state);
   const q = findQuestion(questions, 'diagram-reading');
   assert.doesNotThrow(() => q.onAnswered());
+});
+
+// --- Finding latitude via Polaris (u1.13) -------------------------------
+
+test('polaris-edinburgh/beijing/bombay: altitude approximates the city\'s own latitude', () => {
+  const questions = makeQuestions(Coordinates, null);
+  [
+    ['polaris-edinburgh', 56],
+    ['polaris-beijing', 40],
+    ['polaris-bombay', 19],
+  ].forEach(([id, latitude]) => {
+    const q = findQuestion(questions, id);
+    assert.ok(q.check(latitude).correct, `${id} should accept ${latitude}`);
+    assert.equal(q.check(latitude + 5).correct, false, `${id} should reject a 5° miss`);
+  });
+});
+
+test('polaris-wellington: Polaris cannot be seen from the southern hemisphere', () => {
+  const questions = makeQuestions(Coordinates, null);
+  const q = findQuestion(questions, 'polaris-wellington');
+  assert.ok(q.check("Polaris is below the horizon — it can't be seen from the southern hemisphere").correct);
+  assert.equal(q.check('Polaris at 41° altitude').correct, false);
+  assert.equal(q.check('Polaris at 49° altitude').correct, false);
+});
+
+test('polaris-reverse: an altitude of 52° gives a latitude of 52°N', () => {
+  const questions = makeQuestions(Coordinates, null);
+  const q = findQuestion(questions, 'polaris-reverse');
+  assert.ok(q.check(52).correct);
+  assert.equal(q.check(60).correct, false);
+});
+
+// --- Predicting rising, transit and setting times (u1.23) ---------------
+
+test('rise/set questions are omitted when SpecData is not supplied', () => {
+  const questions = makeQuestions(Coordinates, null);
+  assert.equal(questions.some((q) => q.id.startsWith('riseset-')), false);
+});
+
+test('riseset-betelgeuse: rises at 19:23 on 30 November, within 2 minutes', () => {
+  const questions = makeQuestions(Coordinates, null, null, SpecData);
+  const q = findQuestion(questions, 'riseset-betelgeuse');
+  assert.ok(q.check('19:23').correct);
+  assert.ok(q.check('19:24').correct, 'within the stated 2-minute tolerance');
+  assert.equal(q.check('19:30').correct, false);
+});
+
+test('riseset-aldebaran: culminates at 21:04 on 15 December, within 2 minutes', () => {
+  const questions = makeQuestions(Coordinates, null, null, SpecData);
+  const q = findQuestion(questions, 'riseset-aldebaran');
+  assert.ok(q.check('21:04').correct);
+  assert.equal(q.check('21:20').correct, false);
+});
+
+test('riseset-longitude: an observer 3° east sees culmination 12 minutes earlier', () => {
+  const questions = makeQuestions(Coordinates, null, null, SpecData);
+  const q = findQuestion(questions, 'riseset-longitude');
+  assert.ok(q.check(12).correct);
+  assert.ok(q.check(13).correct, 'within the stated 2-minute tolerance');
+  assert.equal(q.check(5).correct, false);
+});
+
+// --- Best time and object to observe (u1.24) -----------------------------
+
+test('besttime-compare: at 52°N, a star with dec +20° (58°) beats one with dec -30° (8°)', () => {
+  const questions = makeQuestions(Coordinates, null);
+  const q = findQuestion(questions, 'besttime-compare');
+  assert.ok(q.check('Star A (dec +20°)').correct);
+  assert.equal(q.check('Star B (dec −30°)').correct, false);
+});
+
+test('besttime-lst: a star with RA 5h 55m is best placed at LST 5h 55m', () => {
+  const questions = makeQuestions(Coordinates, null);
+  const q = findQuestion(questions, 'besttime-lst');
+  assert.ok(q.check({ lstHours: 5, lstMinutes: 55 }).correct);
+  assert.equal(q.check({ lstHours: 6, lstMinutes: 30 }).correct, false);
+});
+
+// --- Every new question states its own constants -------------------------
+
+test('every new polaris/riseset/besttime question states the constants it needs in its own prompt text', () => {
+  const questions = makeQuestions(Coordinates, null, null, SpecData);
+  const newQuestions = questions.filter((q) =>
+    ['polaris-', 'riseset-', 'besttime-'].some((prefix) => q.id.startsWith(prefix))
+  );
+  assert.ok(newQuestions.length >= 10);
+  newQuestions.forEach((q) => {
+    assert.ok(q.prompt.length > 0, `${q.id} has no prompt`);
+  });
 });
 
 // --- Chained multi-part question: the 4 reference exam cases ---------------

@@ -5,6 +5,83 @@
  * solarPosition.js calculation the graph is drawn from.
  */
 
+// Minutes-of-day helpers for the time-zone questions' time-type fields.
+function parseClockTime(hhmm) {
+  const [h, m] = String(hhmm).split(':').map(Number);
+  return h * 60 + m;
+}
+
+function formatClockTime(totalMinutes) {
+  const wrapped = ((totalMinutes % 1440) + 1440) % 1440;
+  const h = Math.floor(wrapped / 60);
+  const m = Math.round(wrapped % 60);
+  return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+}
+
+// --- Time-zone data (u2.10) -----------------------------------------------
+// Every zone and every degree of longitude is worth the same conversion
+// rate: a 24h 00m solar day spread over 360°, i.e. 15° per hour (4
+// minutes per degree) — stated in each prompt rather than assumed.
+function makeTimeZoneQuestions() {
+  return [
+    {
+      id: 'eot-zone-time',
+      type: 'time',
+      units: ['u2.10'],
+      prompt: 'It is 12:00 UT. A time zone 5 hours east of UT is simply 5 hours ahead on the clock. What time is it in that zone?',
+      check(value) {
+        const trueMinutes = parseClockTime('12:00') + 5 * 60;
+        const correct = Math.abs(parseClockTime(value) - trueMinutes) <= 2;
+        return { correct, message: `A zone 5 hours east reads 5 hours ahead of UT: 12:00 + 5h = ${formatClockTime(trueMinutes)}.` };
+      },
+    },
+    {
+      id: 'eot-lmt-west',
+      type: 'time',
+      units: ['u2.10'],
+      prompt:
+        'It is 12:00 UT. Local Mean Time = UT − longitude/15h for a place west of Greenwich (15° of longitude is worth 1 hour, 4 minutes per degree). What is the local mean time at longitude 75°W?',
+      check(value) {
+        const trueMinutes = parseClockTime('12:00') - (75 / 15) * 60;
+        const correct = Math.abs(parseClockTime(value) - trueMinutes) <= 2;
+        return { correct, message: `75° ÷ 15°/h = 5h behind: 12:00 − 5h = ${formatClockTime(trueMinutes)}.` };
+      },
+    },
+    {
+      id: 'eot-lmt-east',
+      type: 'time',
+      units: ['u2.10'],
+      prompt:
+        'It is 15:00 UT. Local Mean Time = UT + longitude/15h for a place east of Greenwich. What is the local mean time at longitude 30°E?',
+      check(value) {
+        const trueMinutes = parseClockTime('15:00') + (30 / 15) * 60;
+        const correct = Math.abs(parseClockTime(value) - trueMinutes) <= 2;
+        return { correct, message: `30° ÷ 15°/h = 2h ahead: 15:00 + 2h = ${formatClockTime(trueMinutes)}.` };
+      },
+    },
+    {
+      id: 'eot-longitude-for-noon',
+      units: ['u2.10'],
+      prompt:
+        'It is 14:00 UT. Local Mean Time = UT ± longitude/15h, with west behind and east ahead. At what longitude is it local noon (12:00 local mean time) right now?',
+      fields: [
+        { key: 'degrees', type: 'number', label: 'Longitude — degrees', unitLabel: '°' },
+        { key: 'direction', type: 'choice', label: 'Direction', options: ['East', 'West'] },
+      ],
+      check(value) {
+        const correctDegrees = 30;
+        const correctDirection = 'West';
+        const degreesOk = Math.abs(Math.abs(value.degrees) - correctDegrees) <= 1;
+        const directionOk = value.direction === correctDirection;
+        return {
+          correct: degreesOk && directionOk,
+          message: `Noon there is 2 hours behind 14:00 UT, so the place is west of Greenwich by 2h × 15°/h = ${correctDegrees}°: longitude ${correctDegrees}°${correctDirection === 'West' ? 'W' : 'E'}.`,
+        };
+      },
+    },
+  ];
+}
+
 function makeEotQuestions(getSunPosition, obliquityComponent, eccentricityComponent) {
   const YEAR = 2026;
 
@@ -90,6 +167,7 @@ function makeEotQuestions(getSunPosition, obliquityComponent, eccentricityCompon
         };
       },
     },
+    ...makeTimeZoneQuestions(),
   ];
 }
 

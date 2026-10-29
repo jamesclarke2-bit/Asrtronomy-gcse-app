@@ -29,7 +29,176 @@ function formatHoursMinutes(hoursDecimal) {
   return `${h}h ${String(m).padStart(2, '0')}m`;
 }
 
-function makeQuestions(Coordinates, getLiveState, highlightDiurnalPoint) {
+// Minutes-of-day helpers for the rise/set time questions below, whose
+// answers come from an <input type="time"> field (an "HH:MM" string).
+function parseClockTime(hhmm) {
+  const [h, m] = String(hhmm).split(':').map(Number);
+  return h * 60 + m;
+}
+
+function formatClockTime(totalMinutes) {
+  const wrapped = ((totalMinutes % 1440) + 1440) % 1440;
+  const h = Math.floor(wrapped / 60);
+  const m = Math.round(wrapped % 60);
+  return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+}
+
+// --- Finding latitude via Polaris (u1.13) -------------------------------
+// Polaris sits so close to the north celestial pole that its altitude
+// above the northern horizon approximates the observer's latitude, to
+// the nearest degree. The reverse question is graded via
+// Coordinates.getLatitudeFromAltitudeAndDeclination with declination 90°
+// (Polaris treated as exactly at the pole), rather than a hard-coded
+// equality, so it stays tied to the engine's own formula.
+function makePolarisLatitudeQuestions(Coordinates) {
+  const CITIES = [
+    { id: 'polaris-edinburgh', city: 'Edinburgh', latitude: 56 },
+    { id: 'polaris-beijing', city: 'Beijing', latitude: 40 },
+    { id: 'polaris-bombay', city: 'Bombay (Mumbai)', latitude: 19 },
+  ];
+
+  const questions = CITIES.map(({ id, city, latitude }) => ({
+    id,
+    units: ['u1.13'],
+    prompt: `An observer in ${city}, at latitude ${latitude}°N, looks for Polaris above the northern horizon. To the nearest degree, Polaris's altitude approximates the observer's latitude — what altitude will they measure?`,
+    type: 'number',
+    unitLabel: '°',
+    check(value) {
+      const correct = Math.abs(value - latitude) <= 1;
+      return { correct, message: `Polaris's altitude ≈ the observer's latitude, so about ${latitude}°.` };
+    },
+  }));
+
+  questions.push({
+    id: 'polaris-wellington',
+    units: ['u1.13'],
+    prompt:
+      "An observer in Wellington, New Zealand, at latitude 41°S, looks for Polaris above the northern horizon. What will they find?",
+    type: 'choice',
+    options: [
+      'Polaris at 41° altitude',
+      'Polaris at 49° altitude',
+      "Polaris is below the horizon — it can't be seen from the southern hemisphere",
+    ],
+    check(value) {
+      const correctAnswer = "Polaris is below the horizon — it can't be seen from the southern hemisphere";
+      return {
+        correct: value === correctAnswer,
+        message:
+          "Polaris only approximates the latitude of observers in the northern hemisphere, where it stays above the horizon. South of the equator the north celestial pole — and Polaris with it — is below the northern horizon altogether, so it can't be used to find latitude there.",
+      };
+    },
+  });
+
+  questions.push({
+    id: 'polaris-reverse',
+    units: ['u1.13'],
+    prompt: "An observer sees Polaris 52° above the northern horizon. What is the observer's latitude?",
+    type: 'number',
+    unitLabel: '°N',
+    check(value) {
+      const latitude = Coordinates.getLatitudeFromAltitudeAndDeclination(52, 90).lower;
+      const correct = Math.abs(value - latitude) <= 1;
+      return { correct, message: `The observer's latitude ≈ Polaris's altitude, so about ${latitude.toFixed(0)}°N.` };
+    },
+  });
+
+  return questions;
+}
+
+// --- Predicting rising, transit and setting times (u1.23) ---------------
+// The ~4-minute daily gain comes from the data sheet's own sidereal day
+// (23h 56m) against the solar day (24h 00m) a clock keeps — computed
+// from SpecData, never hard-coded, so it tracks the data sheet.
+function makeRiseSetQuestions(SpecData) {
+  const { siderealDayHours, synodicDayHours } = SpecData.CONSTANTS;
+  const dailyGainMinutes = (synodicDayHours - siderealDayHours) * 60;
+  const minutesPerDegreeLongitude = (synodicDayHours * 60) / 360;
+
+  return [
+    {
+      id: 'riseset-betelgeuse',
+      units: ['u1.23'],
+      prompt: `Betelgeuse rises at 20:03 on 20 November. The data sheet gives a sidereal day of 23h 56m against a solar day of 24h 00m, so a star rises about ${dailyGainMinutes.toFixed(0)} minutes earlier each night. What time does Betelgeuse rise on 30 November, 10 nights later?`,
+      type: 'time',
+      check(value) {
+        const trueMinutes = parseClockTime('20:03') - 10 * dailyGainMinutes;
+        const correct = Math.abs(parseClockTime(value) - trueMinutes) <= 2;
+        return {
+          correct,
+          message: `10 nights × ${dailyGainMinutes.toFixed(0)} minutes = ${(10 * dailyGainMinutes).toFixed(0)} minutes earlier: 20:03 − ${(10 * dailyGainMinutes).toFixed(0)} min = ${formatClockTime(trueMinutes)}.`,
+        };
+      },
+    },
+    {
+      id: 'riseset-aldebaran',
+      units: ['u1.23'],
+      prompt: `Aldebaran culminates at 22:00 on 1 December. Using the same roughly ${dailyGainMinutes.toFixed(0)}-minute daily gain, what time does it culminate on 15 December, 14 nights later?`,
+      type: 'time',
+      check(value) {
+        const trueMinutes = parseClockTime('22:00') - 14 * dailyGainMinutes;
+        const correct = Math.abs(parseClockTime(value) - trueMinutes) <= 2;
+        return {
+          correct,
+          message: `14 nights × ${dailyGainMinutes.toFixed(0)} minutes = ${(14 * dailyGainMinutes).toFixed(0)} minutes earlier: 22:00 − ${(14 * dailyGainMinutes).toFixed(0)} min = ${formatClockTime(trueMinutes)}.`,
+        };
+      },
+    },
+    {
+      id: 'riseset-longitude',
+      units: ['u1.23'],
+      prompt: `A star culminates at the same instant for every observer on the same meridian, but a solar day of 24h 00m spread over 360° of longitude means each degree shifts the local clock time of culmination by about ${minutesPerDegreeLongitude.toFixed(0)} minutes. An observer 3° east of another sees the same star culminate how much earlier (in minutes)?`,
+      type: 'number',
+      unitLabel: 'min',
+      check(value) {
+        const trueMinutes = 3 * minutesPerDegreeLongitude;
+        const correct = Math.abs(Math.abs(value) - trueMinutes) <= 2;
+        return { correct, message: `3° × ${minutesPerDegreeLongitude.toFixed(0)} minutes/degree = ${trueMinutes.toFixed(0)} minutes earlier.` };
+      },
+    },
+  ];
+}
+
+// --- Best time and object to observe (u1.24) -----------------------------
+function makeBestTimeQuestions(Coordinates) {
+  return [
+    {
+      id: 'besttime-compare',
+      units: ['u1.24'],
+      prompt:
+        'An observer at latitude 52°N is choosing between two stars: Star A has declination +20°, Star B has declination −30°. Which is better placed for observing — i.e. which reaches the greater altitude at upper transit?',
+      type: 'choice',
+      options: ['Star A (dec +20°)', 'Star B (dec −30°)'],
+      check(value) {
+        const altA = Coordinates.getMaxAltitudeUpperTransit(52, 20);
+        const altB = Coordinates.getMaxAltitudeUpperTransit(52, -30);
+        const correctAnswer = altA >= altB ? 'Star A (dec +20°)' : 'Star B (dec −30°)';
+        return {
+          correct: value === correctAnswer,
+          message: `Maximum altitude = 90° − |latitude − declination|. Star A: 90° − |52° − 20°| = ${altA.toFixed(0)}°. Star B: 90° − |52° − (−30°)| = ${altB.toFixed(0)}°. Star A sits higher, so it's better placed — less of its light is lost through the atmosphere.`,
+        };
+      },
+    },
+    {
+      id: 'besttime-lst',
+      units: ['u1.24'],
+      prompt:
+        'A star has right ascension 5h 55m. At what local sidereal time is it best placed for observing — at its highest, on the meridian (hour angle zero)?',
+      fields: [
+        { key: 'lstHours', type: 'number', label: 'Local sidereal time — hours', unitLabel: 'h' },
+        { key: 'lstMinutes', type: 'number', label: 'Local sidereal time — minutes', unitLabel: 'm' },
+      ],
+      check(value) {
+        const givenMinutes = value.lstHours * 60 + value.lstMinutes;
+        const trueMinutes = 5 * 60 + 55;
+        const correct = Math.abs(givenMinutes - trueMinutes) <= 2;
+        return { correct, message: 'A star is best placed (at upper transit) when the local sidereal time equals its right ascension — so LST = 5h 55m.' };
+      },
+    },
+  ];
+}
+
+function makeQuestions(Coordinates, getLiveState, highlightDiurnalPoint, SpecData) {
   const questions = [];
 
   // --- Misconception 1: hour angle sign --------------------------------
@@ -160,6 +329,12 @@ function makeQuestions(Coordinates, getLiveState, highlightDiurnalPoint) {
         }
       },
     });
+  }
+
+  questions.push(...makePolarisLatitudeQuestions(Coordinates));
+  questions.push(...makeBestTimeQuestions(Coordinates));
+  if (SpecData) {
+    questions.push(...makeRiseSetQuestions(SpecData));
   }
 
   return questions;
