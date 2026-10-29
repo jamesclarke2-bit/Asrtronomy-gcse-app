@@ -1,6 +1,6 @@
 (function () {
   const YEAR = 2026;
-  const CURRICULUM_UNITS = ['u1.11', 'u2.9', 'u2.5', 'u2.11', 'u2.12', 'u2.13', 'u2.14', 'u5.4'];
+  const CURRICULUM_UNITS = ['u1.11', 'u2.9', 'u2.5', 'u2.11', 'u2.12', 'u2.13', 'u2.14', 'u2.4', 'u5.4'];
 
   const dateSlider = document.getElementById('date-slider');
   const dateLabel = document.getElementById('date-label');
@@ -371,6 +371,106 @@
     });
   }
 
+  // --- The core's panel: the proton-proton chain, step by step -----------
+  // First draft, to be checked by the teacher. Each step is drawn fresh
+  // into the same <svg> (nuclei as labelled circles, reactants on the
+  // left, products on the right of an arrow); a lane per parallel
+  // reaction, since steps 1 and 2 each happen twice to supply step 3's
+  // two helium-3 nuclei.
+  const PARTICLE_STYLE = {
+    p: { r: 18, fill: '#f5a623', stroke: 'none', label: 'p' },
+    d: { r: 18, fill: '#e8631a', stroke: 'none', label: 'd' },
+    'He-3': { r: 18, fill: '#2a6bd6', stroke: 'none', label: 'He-3' },
+    'He-4': { r: 18, fill: '#173d75', stroke: 'none', label: 'He-4' },
+    'e+': { r: 12, fill: '#c0392b', stroke: 'none', label: 'e⁺' },
+    nu: { r: 12, fill: 'none', stroke: '#8a97a5', label: 'ν' },
+    gamma: { r: 12, fill: 'none', stroke: '#444', label: 'γ' },
+  };
+
+  const FUSION_CHAIN_STEPS = [
+    {
+      caption: 'Step 1 of 3: two pairs of protons fuse into two deuterium nuclei, each releasing a positron and a neutrino.',
+      lanes: [
+        { reactants: ['p', 'p'], products: ['d', 'e+', 'nu'] },
+        { reactants: ['p', 'p'], products: ['d', 'e+', 'nu'] },
+      ],
+    },
+    {
+      caption: 'Step 2 of 3: each deuterium nucleus fuses with a proton to make helium-3 and a gamma ray.',
+      lanes: [
+        { reactants: ['d', 'p'], products: ['He-3', 'gamma'] },
+        { reactants: ['d', 'p'], products: ['He-3', 'gamma'] },
+      ],
+    },
+    {
+      caption: 'Step 3 of 3: two helium-3 nuclei fuse into one helium-4 nucleus, releasing two protons.',
+      lanes: [{ reactants: ['He-3', 'He-3'], products: ['He-4', 'p', 'p'] }],
+    },
+  ];
+
+  let fusionChainStep = 0;
+
+  function layoutCluster(keys, centerX, centerY, spacing) {
+    const totalWidth = (keys.length - 1) * spacing;
+    return keys.map((key, i) => ({ key, x: centerX - totalWidth / 2 + i * spacing, y: centerY }));
+  }
+
+  function drawFusionChainStep() {
+    const svg = document.getElementById('fusion-chain-diagram');
+    const caption = document.getElementById('fusion-chain-step-caption');
+    if (!svg || !caption) return;
+    svg.innerHTML = '';
+    const step = FUSION_CHAIN_STEPS[fusionChainStep];
+    caption.textContent = step.caption;
+
+    const laneHeight = 100;
+    const totalHeight = step.lanes.length * laneHeight + 20;
+    svg.setAttribute('viewBox', `0 0 480 ${totalHeight}`);
+
+    step.lanes.forEach((lane, i) => {
+      const laneY = 10 + laneHeight * i + laneHeight / 2;
+      sunSvgEl('line', {
+        x1: 180, y1: laneY, x2: 290, y2: laneY,
+        stroke: '#8a97a5', 'stroke-width': 2, 'marker-end': 'url(#fusion-arrowhead)',
+      }, svg);
+
+      const reactantPositions = layoutCluster(lane.reactants, 100, laneY, 55);
+      const productPositions = layoutCluster(lane.products, 370, laneY, 65);
+
+      [...reactantPositions, ...productPositions].forEach(({ key, x, y }) => {
+        const style = PARTICLE_STYLE[key];
+        sunSvgEl('circle', {
+          cx: x, cy: y, r: style.r, fill: style.fill,
+          stroke: style.stroke === 'none' ? 'none' : style.stroke,
+          'stroke-width': style.stroke === 'none' ? 0 : 2,
+          'stroke-dasharray': style.fill === 'none' ? '3 2' : 'none',
+        }, svg);
+        const label = sunSvgEl('text', {
+          x, y: y + 4, 'text-anchor': 'middle', 'font-size': style.r >= 18 ? 12 : 10,
+          fill: style.fill === 'none' ? style.stroke : (key === 'p' || key === 'd' ? '#1f2d3d' : '#fff'),
+        }, svg);
+        label.textContent = style.label;
+      });
+    });
+
+    // Arrowhead marker, defined once per redraw (the svg is cleared above).
+    const defs = sunSvgEl('defs', {}, svg);
+    const marker = sunSvgEl('marker', {
+      id: 'fusion-arrowhead', markerWidth: 8, markerHeight: 8, refX: 6, refY: 4, orient: 'auto',
+    }, defs);
+    sunSvgEl('path', { d: 'M0,0 L8,4 L0,8 Z', fill: '#8a97a5' }, marker);
+  }
+
+  function nextFusionChainStep() {
+    fusionChainStep = (fusionChainStep + 1) % FUSION_CHAIN_STEPS.length;
+    drawFusionChainStep();
+  }
+
+  const fusionChainNextButton = document.getElementById('fusion-chain-next');
+  if (fusionChainNextButton) {
+    fusionChainNextButton.addEventListener('click', nextFusionChainStep);
+  }
+
   [dateSlider, latSlider].forEach((el) => el.addEventListener('input', update));
   butterflyYearSlider.addEventListener('input', updateButterfly);
 
@@ -379,7 +479,6 @@
       "Solar wind: a continuous stream of charged particles (electrons, protons and alpha particles) escaping the corona at roughly 300-800 km/s, fast enough to overcome the Sun's gravity, flowing outward through the whole Solar System.",
     vanAllenBelts:
       "Van Allen belts: two doughnut-shaped regions where Earth's magnetic field traps charged particles from the solar wind — an inner belt (mostly protons) and an outer belt (mostly electrons).",
-    core: 'Core: where nuclear fusion turns hydrogen into helium, releasing the Sun\'s energy at around 15 million °C.',
     radiative:
       'Radiative zone: energy moves outward as radiation, bouncing between particles so slowly it can take over 100,000 years to cross.',
     convective:
@@ -395,6 +494,7 @@
   update();
   updateButterfly();
   drawSunStructureLabels();
+  drawFusionChainStep();
   renderCoverage();
   QuizUI.mount([
     ...SunDeclinationQuestions.makeQuestions(SolarPosition, Coordinates),

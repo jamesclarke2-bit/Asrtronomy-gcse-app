@@ -1846,6 +1846,33 @@ canvas {
   border: 1px solid #cdd7e1;
 }
 
+/* The core's tap-reveal panel: the proton-proton chain step-through. */
+.fusion-chain {
+  margin-top: 0.75rem;
+  max-width: 420px;
+}
+
+.fusion-chain #fusion-chain-diagram {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: #f7f7f5;
+  border-radius: 8px;
+  border: 1px solid #cdd7e1;
+}
+
+.fusion-chain-step-caption {
+  margin: 0.6rem 0;
+  font-size: 0.9rem;
+  color: #333;
+}
+
+.fusion-chain-net {
+  margin-top: 0.75rem;
+  font-size: 0.9rem;
+  color: #333;
+}
+
 /* inline-block so the wrap always shrink-fits its own canvas/SVG
    exactly — if the wrap stayed block-level (full container width) and
    its content rendered narrower (true for any <canvas>, which has no

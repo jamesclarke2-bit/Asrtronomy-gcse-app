@@ -7,7 +7,7 @@
   <meta name="referrer" content="no-referrer" />
   <meta name="robots" content="noindex, nofollow" />
   <title>Observing the Sun</title>
-  <link rel="stylesheet" href="../styles.css?v=202610291300" />
+  <link rel="stylesheet" href="../styles.css?v=202610291500" />
   <link rel="icon" type="image/svg+xml" href="../favicon.svg?v=202610130720" />
 </head>
 <body>
@@ -301,7 +301,30 @@
       <ul class="legend layer-legend">
         <li>
           <span class="legend-dot layer-dot-core"></span><strong>Core</strong>
-          <span class="glossary-definition" data-term="core" hidden></span>
+          <div class="glossary-definition" data-term="core" hidden>
+            <p>
+              Core: where nuclear fusion turns hydrogen into helium, releasing the Sun's energy
+              at around 15 million °C, via the proton-proton chain.
+            </p>
+            <div class="fusion-chain">
+              <div class="labelled-diagram-wrap" id="fusion-chain-wrap">
+                <svg
+                  id="fusion-chain-diagram"
+                  viewBox="0 0 480 240"
+                  role="img"
+                  aria-label="Step-through diagram of the proton-proton chain"
+                ></svg>
+              </div>
+              <p class="fusion-chain-step-caption" id="fusion-chain-step-caption" aria-live="polite"></p>
+              <button type="button" id="fusion-chain-next" class="secondary-button">Next step</button>
+              <p class="fusion-chain-net">
+                <strong>Net result:</strong> four protons become one helium-4 nucleus, releasing
+                two positrons, two neutrinos and energy — about 0.7% of the mass is converted
+                into energy.
+              </p>
+              <p class="note">First draft, to be checked by the teacher.</p>
+            </div>
+          </div>
         </li>
         <li>
           <span class="legend-dot layer-dot-radiative"></span><strong>Radiative zone</strong>
@@ -458,11 +481,11 @@
   <script src="../src/orbitPanel.js?v=202609221500"></script>
   <script src="../src/ringDiagramLabels.js?v=202611011000"></script>
   <script src="../src/butterflyDiagram.js?v=202609221900"></script>
-  <script src="../src/sunDeclinationQuestions.js?v=202610161036"></script>
+  <script src="../src/sunDeclinationQuestions.js?v=202610291400"></script>
   <script src="../src/solarActivityQuestions.js?v=202609221900"></script>
   <script src="../glossary.js?v=202610131052"></script>
   <script src="../quiz-ui.js?v=202610300900"></script>
-  <script src="sun-declination.js?v=202610061200"></script>
+  <script src="sun-declination.js?v=202610291400"></script>
   <script src="../nextPage.js?v=202610161057"></script>
 </body>
 </html>

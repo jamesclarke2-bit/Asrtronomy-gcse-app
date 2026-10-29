@@ -45,12 +45,33 @@ function makeQuestions(SolarPosition, Coordinates) {
 
   const CAPRICORN_LABEL = 'the Tropic of Capricorn (23.44°S)';
 
+  // In the proton-proton chain, four protons (total mass 4 x the proton
+  // mass) end up as one helium-4 nucleus plus two positrons, two
+  // neutrinos and energy — about 0.7% of the starting mass, converted
+  // to energy via E = mc^2.
+  const FUSION_MASS_TO_ENERGY_FRACTION = 0.007;
+
   return [
     makeTransitQuestion('capricorn-june-solstice', 'June solstice (21 June)', 5, 21, TROPIC_OF_CAPRICORN, CAPRICORN_LABEL),
     makeTransitQuestion('capricorn-dec-solstice', 'December solstice (21 December)', 11, 21, TROPIC_OF_CAPRICORN, CAPRICORN_LABEL),
     makeTransitQuestion('capricorn-march-equinox', 'March equinox (21 March)', 2, 21, TROPIC_OF_CAPRICORN, CAPRICORN_LABEL),
     makeTransitQuestion('capricorn-sept-equinox', 'September equinox (21 September)', 8, 21, TROPIC_OF_CAPRICORN, CAPRICORN_LABEL),
     makeTransitQuestion('sydney-equinox-transit', 'March equinox (21 March)', 2, 21, SYDNEY_LATITUDE, 'Sydney (34°S)'),
+    {
+      id: 'fusion-mass-to-energy',
+      units: ['u2.4'],
+      type: 'number',
+      unitLabel: 'g',
+      prompt:
+        "In the proton-proton chain, about 0.7% of the hydrogen's mass is converted into energy (the rest ends up as helium-4). About how many grams of a 1 kg (1000 g) sample of hydrogen become energy?",
+      check(value) {
+        const correct = 1000 * FUSION_MASS_TO_ENERGY_FRACTION;
+        return {
+          correct: Math.abs(value - correct) <= 1,
+          message: `0.7% of 1000 g = ${correct.toFixed(1)} g.`,
+        };
+      },
+    },
   ];
 }
 

@@ -52,6 +52,24 @@ test('Sydney (34°S), March equinox: altitude is about 56°, matching the coordi
   assert.equal(q.check(30).correct, false);
 });
 
+// --- Proton-proton chain mass-to-energy question (u2.4) -----------------
+
+test('fusion-mass-to-energy: 0.7% of 1000 g is 7 g', () => {
+  const questions = makeQuestions(SolarPosition, Coordinates);
+  const q = findQuestion(questions, 'fusion-mass-to-energy');
+  assert.ok(q.check(7).correct);
+  assert.ok(q.check(7.5).correct, 'within a sensible tolerance');
+  assert.equal(q.check(20).correct, false);
+  assert.equal(q.check(0).correct, false);
+});
+
+test('fusion-mass-to-energy tags u2.4 and states its own constant', () => {
+  const questions = makeQuestions(SolarPosition, Coordinates);
+  const q = findQuestion(questions, 'fusion-mass-to-energy');
+  assert.deepEqual(q.units, ['u2.4']);
+  assert.match(q.prompt, /0\.7%/);
+});
+
 test('every question re-derives its answer live, not from a hardcoded number', () => {
   // Sanity: the December-solstice and June-solstice Capricorn answers
   // must differ by roughly twice the axial tilt (~46.9°), confirming the
