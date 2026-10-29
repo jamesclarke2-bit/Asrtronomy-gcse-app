@@ -298,9 +298,149 @@
     });
   }
 
+  // --- The atmosphere: composition bar, layer ladder, and transmission ---
+  // chart. All three are original SVG diagrams, JS-drawn for the same
+  // reason the globe and "Inside the Earth" are: an empty <svg> in the
+  // static markup, filled in here.
+
+  // One horizontal bar split into nitrogen/oxygen/argon by true
+  // proportion. Carbon dioxide (0.04%) and the remaining trace gases are
+  // far too thin a sliver to draw at this width at all, so they're called
+  // out in a label instead of a segment — the full table (kept in its own
+  // tap-to-reveal in the HTML) has the exact figures.
+  const AIR_COMPOSITION = [
+    { name: 'Nitrogen', pct: 78, fill: '#2a6bd6', textFill: '#fff' },
+    { name: 'Oxygen', pct: 21, fill: '#5ea8c7', textFill: '#1f2d3d' },
+    { name: 'Argon', pct: 1, fill: '#9aa5b1', textFill: '#1f2d3d' },
+  ];
+
+  function drawCompositionBar() {
+    const svg = document.getElementById('composition-bar');
+    if (!svg) return;
+    const barX = 20;
+    const barWidth = 580;
+    const barY = 45;
+    const barHeight = 55;
+
+    svgEl('text', { x: barX, y: 22, 'font-size': 15, fill: '#333' }, svg).textContent = 'Dry air, by volume';
+
+    let x = barX;
+    AIR_COMPOSITION.forEach((gas) => {
+      const width = (gas.pct / 100) * barWidth;
+      svgEl('rect', { x, y: barY, width, height: barHeight, fill: gas.fill }, svg);
+      if (width > 40) {
+        const label = svgEl('text', {
+          x: x + width / 2, y: barY + barHeight / 2 + 5,
+          'font-size': 13, fill: gas.textFill, 'text-anchor': 'middle',
+        }, svg);
+        label.textContent = `${gas.name} ${gas.pct}%`;
+      } else {
+        const tickX = x + width / 2;
+        svgEl('line', { x1: tickX, y1: barY, x2: tickX, y2: barY - 22, stroke: '#8a97a5', 'stroke-width': 1 }, svg);
+        const label = svgEl('text', {
+          x: tickX, y: barY - 26, 'font-size': 12, fill: '#444', 'text-anchor': 'end',
+        }, svg);
+        label.textContent = `${gas.name} ${gas.pct}%`;
+      }
+      x += width;
+    });
+
+    const note = svgEl('text', { x: barX + barWidth / 2, y: 135, 'font-size': 12, fill: '#555', 'text-anchor': 'middle' }, svg);
+    note.textContent = 'Carbon dioxide (0.04%) and trace gases are far too thin to draw to scale.';
+    const note2 = svgEl('text', { x: barX + barWidth / 2, y: 152, 'font-size': 12, fill: '#555', 'text-anchor': 'middle' }, svg);
+    note2.textContent = "See the full breakdown for the exact figures.";
+  }
+
+  // A schematic vertical ladder, bottom (ground) to top (edge of space):
+  // the four bands are drawn the same height as each other for
+  // readability (the thermosphere's real thickness dwarfs the other
+  // three put together), with the real approximate altitude of each
+  // boundary labelled on the side — same "schematic, not to scale"
+  // convention as the Earth/Moon/Sun interior diagrams.
+  const ATMOSPHERE_LAYERS = [
+    { name: 'Troposphere', fill: '#8ec9e8', topAltitude: '~12 km' },
+    { name: 'Stratosphere', fill: '#5ea8c7', topAltitude: '~50 km' },
+    { name: 'Mesosphere', fill: '#3a6f95', topAltitude: '~85 km' },
+    { name: 'Thermosphere', fill: '#1f3a5f', topAltitude: '~600 km' },
+  ];
+
+  function drawAtmosphereLadder() {
+    const svg = document.getElementById('atmosphere-ladder');
+    if (!svg) return;
+    const bandWidth = 180;
+    const bandHeight = 85;
+    const bandX = 70;
+    const groundY = 380;
+
+    svgEl('text', { x: bandX, y: groundY + 18, 'font-size': 12, fill: '#4a6741', 'font-weight': 600 }, svg).textContent = "Earth's surface";
+    svgEl('line', { x1: bandX - 10, y1: groundY, x2: bandX + bandWidth + 10, y2: groundY, stroke: '#4a6741', 'stroke-width': 2 }, svg);
+
+    [...ATMOSPHERE_LAYERS].reverse().forEach((layer, i) => {
+      const bottomY = groundY - i * bandHeight;
+      const topY = bottomY - bandHeight;
+      svgEl('rect', { x: bandX, y: topY, width: bandWidth, height: bandHeight, fill: layer.fill }, svg);
+      const label = svgEl('text', {
+        x: bandX + bandWidth / 2, y: topY + bandHeight / 2 + 5,
+        'font-size': 13, fill: '#fff', 'text-anchor': 'middle',
+      }, svg);
+      label.textContent = layer.name;
+
+      svgEl('line', { x1: bandX + bandWidth, y1: topY, x2: bandX + bandWidth + 20, y2: topY, stroke: '#8a97a5', 'stroke-width': 1, 'stroke-dasharray': '3 2' }, svg);
+      const altitudeLabel = svgEl('text', {
+        x: bandX + bandWidth + 26, y: topY + 4, 'font-size': 12, fill: '#333',
+      }, svg);
+      altitudeLabel.textContent = layer.topAltitude;
+    });
+  }
+
+  // Mirrors the original div-based bar chart one-for-one: how far each
+  // part of the spectrum penetrates (bar height) and whether it's open,
+  // partly absorbed, or blocked (colour) before reaching the ground.
+  const TRANSMISSION_BANDS = [
+    { name: 'Gamma ray', heightPct: 10, category: 'blocked' },
+    { name: 'X-ray', heightPct: 16, category: 'blocked' },
+    { name: 'Ultraviolet', heightPct: 32, category: 'blocked' },
+    { name: 'Optical', heightPct: 100, category: 'open' },
+    { name: 'Infrared', heightPct: 60, category: 'partial' },
+    { name: 'Radio', heightPct: 100, category: 'open' },
+  ];
+  const TRANSMISSION_COLORS = { open: '#2a6bd6', partial: '#e8a23a', blocked: '#c0392b' };
+
+  function drawTransmissionChart() {
+    const svg = document.getElementById('transmission-chart');
+    if (!svg) return;
+    const wellHeight = 160;
+    const wellY = 30;
+    const groundY = wellY + wellHeight;
+    const bandWidth = 80;
+    const gap = 20;
+    const startX = 30;
+    const lastBandRight = startX + (TRANSMISSION_BANDS.length - 1) * (bandWidth + gap) + bandWidth;
+
+    svgEl('line', { x1: startX - 10, y1: groundY, x2: lastBandRight + 10, y2: groundY, stroke: '#4a6741', 'stroke-width': 3 }, svg);
+    svgEl('text', {
+      x: (startX + lastBandRight) / 2, y: groundY + 22,
+      'font-size': 13, fill: '#4a6741', 'font-weight': 600, 'text-anchor': 'middle',
+    }, svg).textContent = "Earth's surface";
+
+    TRANSMISSION_BANDS.forEach((band, i) => {
+      const x = startX + i * (bandWidth + gap);
+      const barHeight = (band.heightPct / 100) * wellHeight;
+      const barY = groundY - barHeight;
+      svgEl('rect', { x, y: wellY, width: bandWidth, height: wellHeight, fill: '#eef1f4', rx: 4 }, svg);
+      svgEl('rect', { x, y: barY, width: bandWidth, height: barHeight, fill: TRANSMISSION_COLORS[band.category] }, svg);
+      const label = svgEl('text', {
+        x: x + bandWidth / 2, y: groundY + 40, 'font-size': 12, fill: '#444', 'text-anchor': 'middle',
+      }, svg);
+      label.textContent = band.name;
+    });
+  }
+
   const GLOSSARY = {
     oblateSpheroid:
-      "Oblate spheroid: a sphere very slightly flattened at the poles and bulging at the equator, caused by a planet's own rotation. Earth's equatorial diameter is only about 43 km more than its polar diameter.",
+      "Oblate spheroid: a sphere very slightly flattened at the poles and bulging at the equator, caused by a planet's own rotation. Earth's mean diameter is about 13,000 km (more precisely 12,742 km), and its equatorial diameter is only about 43 km more than its polar diameter.",
+    tropicsOrigin:
+      "The tropics and polar circles aren't arbitrary: they come from Earth's 23.5° axial tilt. The tropics are 23.5° from the equator, and the polar circles are 23.5° from the poles (90° − 23.5° = 66.5°). The Prime Meridian is different — nothing in nature picks it out; it was chosen to run through Greenwich by international agreement in 1884.",
     greenhouseEffect:
       "The greenhouse effect: infrared radiation from the ground is absorbed by certain atmospheric gases (via molecular resonance) and re-emitted in all directions, warming the surface more than sunlight alone would.",
     scintillation:
@@ -331,6 +471,9 @@
 
   drawGlobe();
   drawEarthLayers();
+  drawCompositionBar();
+  drawAtmosphereLadder();
+  drawTransmissionChart();
   render();
   renderCoverage();
   Glossary.init(GLOSSARY);

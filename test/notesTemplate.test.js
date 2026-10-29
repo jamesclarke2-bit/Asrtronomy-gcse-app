@@ -44,6 +44,7 @@ const DIAGRAM_FIRST_PAGES = [
   'sims/sidereal-vs-synodic.html',
   'sims/eclipses.html',
   'notes/tides.html',
+  'notes/earth-structure.html',
   'notes/moon-structure.html',
   'notes/measuring-the-sky.html',
   'notes/scale-of-the-solar-system.html',

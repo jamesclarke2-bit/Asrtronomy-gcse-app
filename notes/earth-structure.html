@@ -7,7 +7,7 @@
   <meta name="referrer" content="no-referrer" />
   <meta name="robots" content="noindex, nofollow" />
   <title>Earth: Structure, Atmosphere and Motion</title>
-  <link rel="stylesheet" href="../styles.css?v=202611011100" />
+  <link rel="stylesheet" href="../styles.css?v=202610291300" />
   <link rel="icon" type="image/svg+xml" href="../favicon.svg?v=202610130720" />
 </head>
 <body>
@@ -21,47 +21,11 @@
       surface, and how.
     </p>
 
-    <section class="notes-section" id="shape-and-size">
-      <h2>Earth's shape and size</h2>
-      <p>
-        Earth is close to a perfect sphere, but not quite: it's an
-        <button type="button" class="glossary-toggle glossary-term-button" data-term="oblateSpheroid" aria-label="What is an oblate spheroid?" aria-expanded="false">oblate spheroid</button>
-        &mdash; very slightly flattened at the poles and slightly bulging at the equator, caused
-        by its own rotation. The flattening is tiny compared to the whole planet: Earth's mean
-        diameter is about <strong>13,000&nbsp;km</strong> (more precisely
-        <strong>12,742&nbsp;km</strong>), and the equatorial diameter is only around 43&nbsp;km
-        more than the polar diameter &mdash; a difference of roughly a third of one percent.
-      </p>
-      <span class="glossary-definition" data-term="oblateSpheroid" hidden></span>
-    </section>
-
     <section class="notes-section" id="latitude-longitude">
       <h2>Latitude, longitude and reference lines</h2>
       <p>
-        Any place on Earth's surface can be pinned down by two angles:
-      </p>
-      <ul class="tip-list">
-        <li>
-          <strong>Latitude</strong> &mdash; how far north or south of the equator a place is,
-          measured as an angle from Earth's centre: 0&deg; at the equator up to 90&deg;N or
-          90&deg;S at the poles. All places with the same latitude lie on a circle running
-          east&ndash;west, called a
-          <button type="button" class="glossary-toggle glossary-term-button" data-term="parallel" aria-label="What is a parallel?" aria-expanded="false">parallel</button>.
-        </li>
-        <li>
-          <strong>Longitude</strong> &mdash; how far east or west of the Prime Meridian a place
-          is, from 0&deg; up to 180&deg;E or 180&deg;W. All places with the same longitude lie on
-          a half-circle running from pole to pole, called a
-          <button type="button" class="glossary-toggle glossary-term-button" data-term="meridianLine" aria-label="What is a meridian?" aria-expanded="false">meridian</button>.
-        </li>
-      </ul>
-      <span class="glossary-definition" data-term="parallel" hidden></span>
-      <span class="glossary-definition" data-term="meridianLine" hidden></span>
-      <p>
-        For example, the Royal Observatory at Greenwich, London, is at about 51.5&deg;N,
-        0&deg;, and Sydney is at about 33.9&deg;S, 151.2&deg;E. A few lines of latitude and
-        longitude are special enough to have names. Click or tap one on the globe to find out
-        why.
+        Earth's surface is mapped with the same angle-based grid astronomers use for the sky.
+        Tap a line on the globe to find out what it is.
       </p>
       <div class="diagram globe-diagram">
         <div class="labelled-diagram-wrap" id="globe-wrap">
@@ -83,29 +47,65 @@
         <span class="glossary-definition" data-term="southPole" hidden></span>
         <span class="glossary-definition" data-term="primeMeridian" hidden></span>
       </div>
-      <table class="shower-table">
-        <caption>Earth's named reference lines and points</caption>
-        <thead>
-          <tr><th scope="col">Name</th><th scope="col">Position</th><th scope="col">What's special about it</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>North Pole</td><td>90&deg;N</td><td>Where Earth's rotation axis meets the surface in the north</td></tr>
-          <tr><td>Arctic Circle</td><td>~66.5&deg;N</td><td>North of it, there's at least one day a year when the Sun never sets, and one when it never rises</td></tr>
-          <tr><td>Tropic of Cancer</td><td>~23.5&deg;N</td><td>The farthest north the Sun is ever directly overhead at noon (at the June solstice)</td></tr>
-          <tr><td>Equator</td><td>0&deg; latitude</td><td>Halfway between the poles; the Sun is directly overhead here at noon at the equinoxes</td></tr>
-          <tr><td>Tropic of Capricorn</td><td>~23.5&deg;S</td><td>The farthest south the Sun is ever directly overhead at noon (at the December solstice)</td></tr>
-          <tr><td>Antarctic Circle</td><td>~66.5&deg;S</td><td>The southern match for the Arctic Circle</td></tr>
-          <tr><td>South Pole</td><td>90&deg;S</td><td>Where Earth's rotation axis meets the surface in the south</td></tr>
-          <tr><td>Prime Meridian</td><td>0&deg; longitude</td><td>The line longitude is measured from, running from pole to pole through Greenwich</td></tr>
-        </tbody>
-      </table>
-      <p>
-        The tropics and polar circles aren't arbitrary: they come from Earth's 23.5&deg; axial
-        tilt. The tropics are 23.5&deg; from the equator, and the polar circles are 23.5&deg;
-        from the poles (90&deg; &minus; 23.5&deg; = 66.5&deg;). The Prime Meridian is different.
-        Nothing in nature picks it out; it was chosen to run through Greenwich by international
-        agreement in 1884.
+      <p class="diagram-caption">
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="latLonBasics" aria-label="What do latitude and longitude mean?" aria-expanded="false">What latitude and longitude mean</button>
+        &middot;
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="referenceLinesTable" aria-label="See all eight reference lines and points" aria-expanded="false">All eight reference lines</button>
+        &middot;
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="tropicsOrigin" aria-label="Why are the tropics and polar circles where they are?" aria-expanded="false">Why the tropics are where they are</button>
       </p>
+      <div class="glossary-definition" data-term="latLonBasics" hidden>
+        <ul class="tip-list">
+          <li>
+            <strong>Latitude</strong> &mdash; how far north or south of the equator a place is,
+            measured as an angle from Earth's centre: 0&deg; at the equator up to 90&deg;N or
+            90&deg;S at the poles. All places with the same latitude lie on a circle running
+            east&ndash;west, called a
+            <button type="button" class="glossary-toggle glossary-term-button" data-term="parallel" aria-label="What is a parallel?" aria-expanded="false">parallel</button>.
+          </li>
+          <li>
+            <strong>Longitude</strong> &mdash; how far east or west of the Prime Meridian a place
+            is, from 0&deg; up to 180&deg;E or 180&deg;W. All places with the same longitude lie
+            on a half-circle running from pole to pole, called a
+            <button type="button" class="glossary-toggle glossary-term-button" data-term="meridianLine" aria-label="What is a meridian?" aria-expanded="false">meridian</button>.
+          </li>
+        </ul>
+        <span class="glossary-definition" data-term="parallel" hidden></span>
+        <span class="glossary-definition" data-term="meridianLine" hidden></span>
+        <p>
+          For example, the Royal Observatory at Greenwich, London, is at about 51.5&deg;N,
+          0&deg;, and Sydney is at about 33.9&deg;S, 151.2&deg;E.
+        </p>
+      </div>
+      <div class="glossary-definition" data-term="referenceLinesTable" hidden>
+        <table class="shower-table">
+          <caption>Earth's named reference lines and points</caption>
+          <thead>
+            <tr><th scope="col">Name</th><th scope="col">Position</th><th scope="col">What's special about it</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>North Pole</td><td>90&deg;N</td><td>Where Earth's rotation axis meets the surface in the north</td></tr>
+            <tr><td>Arctic Circle</td><td>~66.5&deg;N</td><td>North of it, there's at least one day a year when the Sun never sets, and one when it never rises</td></tr>
+            <tr><td>Tropic of Cancer</td><td>~23.5&deg;N</td><td>The farthest north the Sun is ever directly overhead at noon (at the June solstice)</td></tr>
+            <tr><td>Equator</td><td>0&deg; latitude</td><td>Halfway between the poles; the Sun is directly overhead here at noon at the equinoxes</td></tr>
+            <tr><td>Tropic of Capricorn</td><td>~23.5&deg;S</td><td>The farthest south the Sun is ever directly overhead at noon (at the December solstice)</td></tr>
+            <tr><td>Antarctic Circle</td><td>~66.5&deg;S</td><td>The southern match for the Arctic Circle</td></tr>
+            <tr><td>South Pole</td><td>90&deg;S</td><td>Where Earth's rotation axis meets the surface in the south</td></tr>
+            <tr><td>Prime Meridian</td><td>0&deg; longitude</td><td>The line longitude is measured from, running from pole to pole through Greenwich</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <span class="glossary-definition" data-term="tropicsOrigin" hidden></span>
+    </section>
+
+    <section class="notes-section" id="shape-and-size">
+      <h2>Earth's shape and size</h2>
+      <p>
+        Earth is very close to a sphere, flattened only about a third of a percent at the
+        poles &mdash; an
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="oblateSpheroid" aria-label="What is an oblate spheroid?" aria-expanded="false">oblate spheroid</button>.
+      </p>
+      <span class="glossary-definition" data-term="oblateSpheroid" hidden></span>
     </section>
 
     <section class="notes-section" id="internal-structure">
@@ -131,86 +131,102 @@
     <section class="notes-section" id="atmosphere-composition">
       <h2>The atmosphere: composition and layers</h2>
       <p>
-        By volume, dry air is overwhelmingly nitrogen and oxygen, with everything else a small
-        remainder:
+        Dry air is almost all nitrogen and oxygen, with a small remainder of other gases.
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="airComposition" aria-label="See the full breakdown of the atmosphere's composition" aria-expanded="false">Full breakdown</button>
       </p>
-      <table class="shower-table">
-        <caption>Approximate atmospheric composition by volume</caption>
-        <thead>
-          <tr>
-            <th scope="col">Gas</th>
-            <th scope="col">Proportion</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td>Nitrogen (N&#8322;)</td><td>78%</td></tr>
-          <tr><td>Oxygen (O&#8322;)</td><td>21%</td></tr>
-          <tr><td>Argon</td><td>1%</td></tr>
-          <tr><td>Carbon dioxide (CO&#8322;)</td><td>0.04%</td></tr>
-          <tr><td>Water vapour</td><td>variable, up to around 1%</td></tr>
-          <tr><td>Neon, helium, methane, etc.</td><td>trace amounts</td></tr>
-        </tbody>
-      </table>
-      <p class="note">
-        Water vapour is left out of the "dry air" percentages above because it varies so much
-        &mdash; from almost none over a cold desert to a few percent in humid tropical air.
-      </p>
+      <div class="diagram composition-bar-diagram">
+        <div class="labelled-diagram-wrap" id="composition-bar-wrap">
+          <svg
+            id="composition-bar"
+            viewBox="0 0 620 170"
+            role="img"
+            aria-label="Bar chart of dry air's composition by volume: about 78% nitrogen, 21% oxygen, 1% argon, and 0.04% carbon dioxide plus trace gases too thin to draw to scale"
+          ></svg>
+        </div>
+      </div>
+      <div class="glossary-definition" data-term="airComposition" hidden>
+        <table class="shower-table">
+          <caption>Approximate atmospheric composition by volume</caption>
+          <thead>
+            <tr>
+              <th scope="col">Gas</th>
+              <th scope="col">Proportion</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Nitrogen (N&#8322;)</td><td>78%</td></tr>
+            <tr><td>Oxygen (O&#8322;)</td><td>21%</td></tr>
+            <tr><td>Argon</td><td>1%</td></tr>
+            <tr><td>Carbon dioxide (CO&#8322;)</td><td>0.04%</td></tr>
+            <tr><td>Water vapour</td><td>variable, up to around 1%</td></tr>
+            <tr><td>Neon, helium, methane, etc.</td><td>trace amounts</td></tr>
+          </tbody>
+        </table>
+        <p class="note">
+          Water vapour is left out of the "dry air" percentages above because it varies so much
+          &mdash; from almost none over a cold desert to a few percent in humid tropical air.
+        </p>
+      </div>
+
       <p>
-        The atmosphere doesn't end sharply; it just keeps thinning until it's indistinguishable
-        from the near-vacuum of space, by around <strong>10,000&nbsp;km</strong> up. Almost all of
-        its mass, though, and everything that matters for weather and for observing, sits in a
-        thin set of layers close to the surface:
+        Almost all the atmosphere's mass sits within four layers close to the ground.
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="atmosphereLayerFacts" aria-label="What happens in each atmospheric layer?" aria-expanded="false">What happens in each layer</button>
       </p>
-      <div class="concept-grid">
-        <div class="concept-card">
-          <h3>Troposphere</h3>
-          <p>The lowest layer. All of Earth's weather happens here, and it's as high as ordinary aircraft fly.</p>
+      <div class="diagram atmosphere-ladder-diagram">
+        <div class="labelled-diagram-wrap" id="atmosphere-ladder-wrap">
+          <svg
+            id="atmosphere-ladder"
+            viewBox="0 0 345 420"
+            role="img"
+            aria-label="Vertical ladder diagram of the atmosphere's four main layers from the ground up: troposphere, stratosphere, mesosphere and thermosphere, each with the approximate height of its upper boundary"
+          ></svg>
         </div>
-        <div class="concept-card">
-          <h3>Stratosphere</h3>
-          <p>Contains the ozone layer, which absorbs harmful ultraviolet radiation from the Sun.</p>
-        </div>
-        <div class="concept-card">
-          <h3>Mesosphere</h3>
-          <p>Most meteors burn up here, heated by friction with the thin remaining air &mdash; this is what produces a "shooting star".</p>
-        </div>
-        <div class="concept-card">
-          <h3>Thermosphere</h3>
-          <p>Aurorae occur here, and it's where the International Space Station orbits.</p>
-        </div>
+      </div>
+      <p class="note">Layer heights are a first draft, to be checked by the teacher.</p>
+      <div class="glossary-definition" data-term="atmosphereLayerFacts" hidden>
+        <p>
+          The atmosphere doesn't end sharply; it just keeps thinning until it's indistinguishable
+          from the near-vacuum of space, by around <strong>10,000&nbsp;km</strong> up. Almost all
+          of its mass, though, and everything that matters for weather and for observing, sits in
+          the four layers shown.
+        </p>
+        <ul class="tip-list">
+          <li><strong>Troposphere</strong> &mdash; the lowest layer. All of Earth's weather happens here, and it's as high as ordinary aircraft fly.</li>
+          <li><strong>Stratosphere</strong> &mdash; contains the ozone layer, which absorbs harmful ultraviolet radiation from the Sun.</li>
+          <li><strong>Mesosphere</strong> &mdash; most meteors burn up here, heated by friction with the thin remaining air &mdash; this is what produces a "shooting star".</li>
+          <li><strong>Thermosphere</strong> &mdash; aurorae occur here, and it's where the International Space Station orbits.</li>
+        </ul>
       </div>
     </section>
 
     <section class="notes-section" id="atmosphere-and-astronomy">
       <h2>Why the atmosphere matters for astronomy</h2>
       <p>
-        The same atmosphere that makes Earth habitable both helps and hinders astronomy &mdash;
-        often for the same underlying reason.
+        The same atmosphere that makes Earth habitable both helps and hinders astronomy.
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="atmosphereHelps" aria-label="How does the atmosphere help astronomy?" aria-expanded="false">How it helps</button>
+        &middot;
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="atmosphereHinders" aria-label="How does the atmosphere hinder astronomy?" aria-expanded="false">How it hinders</button>
       </p>
-      <div class="concept-grid">
-        <div class="concept-card">
-          <h3>It helps</h3>
-          <p>
-            It absorbs most harmful UV, X-ray and gamma radiation before it reaches the ground
-            (ozone molecules in the stratosphere are broken apart by UV, absorbing it in the
-            process), regulates surface temperature by absorbing infrared radiation via molecular
-            resonance and re-emitting it &mdash; the
-            <button type="button" class="glossary-toggle glossary-term-button" data-term="greenhouseEffect" aria-label="What is the greenhouse effect?" aria-expanded="false">greenhouse effect</button>
-            &mdash; supplies the oxygen life depends on, and burns up most small meteoroids before
-            they reach the surface.
-          </p>
-        </div>
-        <div class="concept-card">
-          <h3>It hinders</h3>
-          <p>
-            Sunlight scattered across the whole sky means ground-based astronomy is largely
-            restricted to night-time, and constant small variations in air density and
-            temperature bend starlight unpredictably as it arrives, causing
-            <button type="button" class="glossary-toggle glossary-term-button" data-term="scintillation" aria-label="What is scintillation?" aria-expanded="false">scintillation</button>
-            &mdash; the visible "twinkling" of stars, which blurs and distorts fine detail in any
-            ground-based image or measurement.
-          </p>
-        </div>
+      <div class="glossary-definition" data-term="atmosphereHelps" hidden>
+        <p>
+          It absorbs most harmful UV, X-ray and gamma radiation before it reaches the ground
+          (ozone molecules in the stratosphere are broken apart by UV, absorbing it in the
+          process), regulates surface temperature by absorbing infrared radiation via molecular
+          resonance and re-emitting it &mdash; the
+          <button type="button" class="glossary-toggle glossary-term-button" data-term="greenhouseEffect" aria-label="What is the greenhouse effect?" aria-expanded="false">greenhouse effect</button>
+          &mdash; supplies the oxygen life depends on, and burns up most small meteoroids before
+          they reach the surface.
+        </p>
+      </div>
+      <div class="glossary-definition" data-term="atmosphereHinders" hidden>
+        <p>
+          Sunlight scattered across the whole sky means ground-based astronomy is largely
+          restricted to night-time, and constant small variations in air density and
+          temperature bend starlight unpredictably as it arrives, causing
+          <button type="button" class="glossary-toggle glossary-term-button" data-term="scintillation" aria-label="What is scintillation?" aria-expanded="false">scintillation</button>
+          &mdash; the visible "twinkling" of stars, which blurs and distorts fine detail in any
+          ground-based image or measurement.
+        </p>
       </div>
       <span class="glossary-definition" data-term="greenhouseEffect" hidden></span>
       <span class="glossary-definition" data-term="scintillation" hidden></span>
@@ -219,53 +235,21 @@
     <section class="notes-section" id="transmission-window">
       <h2>The atmospheric transmission window</h2>
       <p>
-        Different wavelengths of radiation are absorbed at very different depths in the
-        atmosphere. Only a couple of narrow
+        Only a couple of narrow
         <button type="button" class="glossary-toggle glossary-term-button" data-term="transmissionWindow" aria-label="What is an atmospheric transmission window?" aria-expanded="false">transmission windows</button>
-        &mdash; mostly optical light and radio waves &mdash; reach the ground largely unimpeded:
+        &mdash; mostly optical light and radio waves &mdash; reach the ground largely unimpeded.
       </p>
       <span class="glossary-definition" data-term="transmissionWindow" hidden></span>
 
       <div class="diagram transmission-diagram">
-        <div class="transmission-row">
-          <div class="transmission-band">
-            <div class="transmission-well">
-              <div class="transmission-bar transmission-bar-blocked" style="height: 10%;"></div>
-            </div>
-            <p class="transmission-label">Gamma ray</p>
-          </div>
-          <div class="transmission-band">
-            <div class="transmission-well">
-              <div class="transmission-bar transmission-bar-blocked" style="height: 16%;"></div>
-            </div>
-            <p class="transmission-label">X-ray</p>
-          </div>
-          <div class="transmission-band">
-            <div class="transmission-well">
-              <div class="transmission-bar transmission-bar-blocked" style="height: 32%;"></div>
-            </div>
-            <p class="transmission-label">Ultraviolet</p>
-          </div>
-          <div class="transmission-band">
-            <div class="transmission-well">
-              <div class="transmission-bar transmission-bar-open" style="height: 100%;"></div>
-            </div>
-            <p class="transmission-label">Optical</p>
-          </div>
-          <div class="transmission-band">
-            <div class="transmission-well">
-              <div class="transmission-bar transmission-bar-partial" style="height: 60%;"></div>
-            </div>
-            <p class="transmission-label">Infrared</p>
-          </div>
-          <div class="transmission-band">
-            <div class="transmission-well">
-              <div class="transmission-bar transmission-bar-open" style="height: 100%;"></div>
-            </div>
-            <p class="transmission-label">Radio</p>
-          </div>
+        <div class="labelled-diagram-wrap" id="transmission-chart-wrap">
+          <svg
+            id="transmission-chart"
+            viewBox="0 0 640 260"
+            role="img"
+            aria-label="Chart of how far each part of the electromagnetic spectrum penetrates the atmosphere before being absorbed: gamma rays, X-rays and ultraviolet are blocked high up, most infrared is absorbed, and only optical light and radio waves reach the ground"
+          ></svg>
         </div>
-        <p class="transmission-ground-label">Earth's surface</p>
         <p class="legend">
           <span class="legend-swatch legend-transmit"></span> Reaches the ground
           &nbsp; <span class="legend-swatch legend-partial"></span> Partly absorbed and re-emitted
@@ -281,14 +265,17 @@
     <section class="notes-section" id="earths-motions">
       <h2>Earth's motions</h2>
       <p>
-        Earth moves in two distinct ways at once, plus a fixed tilt that doesn't change either
-        motion but has a huge effect on what we see:
+        Earth spins once a day and orbits the Sun once a year, tilted 23.5&deg; &mdash; the
+        tilt that causes the seasons.
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="earthsMotionsDetail" aria-label="More about rotation, revolution and axial tilt" aria-expanded="false">More about rotation, revolution and tilt</button>
       </p>
-      <ul class="tip-list">
-        <li><strong>Rotation</strong> &mdash; Earth spins on its axis once every 24 hours, which is why we get day and night, and why the whole sky appears to wheel overhead through the night.</li>
-        <li><strong>Revolution</strong> &mdash; Earth orbits the Sun once every 365.25 days, which is why the night sky's visible constellations slowly change through the year.</li>
-        <li><strong>Axial tilt</strong> &mdash; Earth's axis is tilted 23.5&deg; from vertical (relative to its orbit), and keeps pointing the same direction in space all year round. That fixed tilt, not any change in distance from the Sun, is what causes the seasons.</li>
-      </ul>
+      <div class="glossary-definition" data-term="earthsMotionsDetail" hidden>
+        <ul class="tip-list">
+          <li><strong>Rotation</strong> &mdash; Earth spins on its axis once every 24 hours, which is why we get day and night, and why the whole sky appears to wheel overhead through the night.</li>
+          <li><strong>Revolution</strong> &mdash; Earth orbits the Sun once every 365.25 days, which is why the night sky's visible constellations slowly change through the year.</li>
+          <li><strong>Axial tilt</strong> &mdash; Earth's axis is tilted 23.5&deg; from vertical (relative to its orbit), and keeps pointing the same direction in space all year round. That fixed tilt, not any change in distance from the Sun, is what causes the seasons.</li>
+        </ul>
+      </div>
       <p class="note">
         The diagram below reuses the same orbit panel as the
         <a href="../sims/sun-declination.html">Observing the Sun</a> page &mdash; drag the date to
@@ -380,7 +367,7 @@
   <script src="../src/ringDiagramLabels.js?v=202611011000"></script>
   <script src="../glossary.js?v=202610131052"></script>
   <script src="../quiz-ui.js?v=202610300900"></script>
-  <script src="earth-structure.js?v=202611011000"></script>
+  <script src="earth-structure.js?v=202610291200"></script>
   <script src="../notesPage.js?v=202609270100"></script>
   <script src="../nextPage.js?v=202610161057"></script>
 </body>
