@@ -105,11 +105,22 @@
 
   // --- Browser-only: the actual drawing -----------------------------------
 
+  // labelOuterRadius is deliberately bigger than maxOuterRadiusPx (the
+  // drawn circles' own biggest radius): it only sets how far apart the
+  // 4 leader-line labels fan out vertically (layoutRingColumn's own
+  // `outerRadius` param), not how big either body is drawn. Two bodies
+  // side by side leaves each one only a narrow label column (see
+  // .body-layers-label's CSS) — on a narrow phone-width screen, a
+  // longer label like "Outer core" wraps onto 2 lines in that column,
+  // so each row needs enough height to hold 2 lines without touching
+  // its neighbour, which this wider fan radius, plus the taller canvas
+  // below, provides.
   const GEOMETRY = {
     width: 1200,
-    height: 580,
-    cy: 290,
+    height: 680,
+    cy: 340,
     maxOuterRadiusPx: 150,
+    labelOuterRadius: 270,
     earth: { key: 'earth', label: 'Earth', cx: 220, labelX: 394 },
     moon: { key: 'moon', label: 'Moon', cx: 794, labelX: 968 },
   };
@@ -145,7 +156,7 @@
     const rows = RingDiagramLabels.layoutRingColumn({
       cx: bodyGeometry.cx,
       cy: GEOMETRY.cy,
-      outerRadius: GEOMETRY.maxOuterRadiusPx,
+      outerRadius: GEOMETRY.labelOuterRadius,
       width: GEOMETRY.width,
       height: GEOMETRY.height,
       labelX: bodyGeometry.labelX,

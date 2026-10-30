@@ -109,8 +109,15 @@ VIEWPORTS.forEach((viewport) => {
         assert.equal(await highlighted.count(), 1, `expected exactly one highlighted element for ${name}`);
         assert.equal(await highlighted.getAttribute('data-term'), term, `highlighted element should be ${term}`);
 
+        // The only text the quiz marker itself is allowed to add is its
+        // own "?" (see applyFeatureQuizHighlight/drawQuizArrow) — never
+        // the feature's actual name, which would spoil the question.
         const visibleText = (await diagram.innerText()).trim();
-        assert.equal(visibleText, '', `diagram for ${name} should carry no visible label text, got "${visibleText}"`);
+        const markerText = await diagram.evaluate((el) => {
+          const text = el.querySelector('.quiz-feature-marker text');
+          return text ? text.textContent.trim() : '';
+        });
+        assert.equal(visibleText, markerText, `diagram for ${name} should carry no visible label text beyond the marker's own "?", got "${visibleText}"`);
       }
     });
   });
@@ -126,8 +133,15 @@ VIEWPORTS.forEach((viewport) => {
         assert.equal(await highlighted.count(), 1, `expected exactly one highlighted element for ${name}`);
         assert.equal(await highlighted.getAttribute('data-term'), term, `highlighted element should be ${term}`);
 
+        // The only text the quiz marker itself is allowed to add is its
+        // own "?" (see applyLineQuizHighlight/drawQuizArrow) — never the
+        // feature's actual name, which would spoil the question.
         const visibleText = (await diagram.innerText()).trim();
-        assert.equal(visibleText, '', `diagram for ${name} should carry no visible label text, got "${visibleText}"`);
+        const markerText = await diagram.evaluate((el) => {
+          const text = el.querySelector('.quiz-feature-marker text');
+          return text ? text.textContent.trim() : '';
+        });
+        assert.equal(visibleText, markerText, `diagram for ${name} should carry no visible label text beyond the marker's own "?", got "${visibleText}"`);
       }
     });
   });

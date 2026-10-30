@@ -2098,6 +2098,24 @@ canvas {
   margin-bottom: 0.75rem;
 }
 
+/* notes/moon-structure.html and notes/earth-structure.html: the shared
+   Earth-vs-Moon layers comparison (src/bodyLayersDiagram.js). Wider than
+   the single-body diagrams above since it draws both bodies side by
+   side, but needs the same width:100%/height:auto shrink-to-fit so it
+   doesn't overflow a phone-width viewport. */
+.body-layers-diagram {
+  max-width: 900px;
+  margin: 1rem 0;
+}
+
+.body-layers-diagram svg {
+  width: 100%;
+  height: auto;
+  background: #f7f7f5;
+  border-radius: 8px;
+  border: 1px solid #cdd7e1;
+}
+
 /* notes/telescopes.html: a diagram with a light background (the
    lens/mirror panel, the bench, the Galilean/Keplerian comparison)
    uses the default dark label text above; the eyepiece view keeps a
