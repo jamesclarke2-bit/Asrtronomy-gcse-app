@@ -7,7 +7,7 @@
   <meta name="referrer" content="no-referrer" />
   <meta name="robots" content="noindex, nofollow" />
   <title>Moon Phases</title>
-  <link rel="stylesheet" href="../styles.css?v=202611031600" />
+  <link rel="stylesheet" href="../styles.css?v=202611031700" />
   <link rel="icon" type="image/svg+xml" href="../favicon.svg?v=202610130720" />
 </head>
 <body>
@@ -246,18 +246,85 @@
       <p class="note" id="model-spread-note"></p>
     </section>
 
+    <section class="notes-section" id="full-moon-names">
+      <h2>Names of the full Moons</h2>
+      <p>
+        Many cultures gave each month's full Moon its own traditional name, tied to the natural
+        world around it. The wheel below shows all twelve.
+      </p>
+
+      <div class="diagram full-moon-wheel-diagram">
+        <div class="labelled-diagram-wrap" id="full-moon-wheel-wrap">
+          <svg
+            id="full-moon-wheel-svg"
+            class="responsive-svg"
+            viewBox="0 0 440 440"
+            role="img"
+            aria-label="A circular year wheel with the twelve traditional full Moon names, one per calendar month, each with a small picture"
+          ></svg>
+        </div>
+      </div>
+      <p class="note">
+        These names are a first draft, to be checked by the teacher. They come from folk
+        traditions &mdash; Native American, colonial American and farmers' almanacs &mdash; and
+        vary between sources and regions.
+      </p>
+
+      <h3>This year's full Moons</h3>
+      <div class="table-scroll">
+        <table class="shower-table">
+          <caption>Full Moons in <span id="full-moon-list-year"></span></caption>
+          <thead>
+            <tr><th scope="col">Date</th><th scope="col">Name</th><th scope="col"></th></tr>
+          </thead>
+          <tbody id="full-moon-list-body"></tbody>
+        </table>
+      </div>
+      <p class="note">
+        Computed from this page's own Moon-phase engine. A Blue Moon here uses the traditional
+        definition &mdash; the second full Moon in one calendar month. A second definition also
+        exists &mdash; the third full Moon of an astronomical season that has four &mdash; but
+        isn't marked here.
+      </p>
+
+      <p>
+        <button type="button" id="toggle-special-names" class="secondary-button" aria-pressed="false">Special names</button>
+      </p>
+      <div id="special-names-panel" hidden>
+        <dl class="readout">
+          <div class="readout-row">
+            <dt>Harvest Moon</dt>
+            <dd>The full Moon nearest the September equinox &mdash; some years that's October's full Moon instead, which then borrows the name.</dd>
+          </div>
+          <div class="readout-row">
+            <dt>Hunter's Moon</dt>
+            <dd>The next full Moon after the Harvest Moon.</dd>
+          </div>
+          <div class="readout-row">
+            <dt>Supermoon and Micromoon</dt>
+            <dd>A full Moon at its closest (perigee) or farthest (apogee) point &mdash; see the <a href="#perigee-apogee">picture above</a>.</dd>
+          </div>
+          <div class="readout-row">
+            <dt>Blood Moon</dt>
+            <dd>A full Moon during a total <a href="eclipses.html">lunar eclipse</a>, turned red by sunlight bent through Earth's atmosphere.</dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+
     <p class="next-page-link" id="next-page"></p>
   </main>
 
   <script src="../src/curriculum.js?v=202610292000"></script>
   <script src="../src/pages.js?v=202611030900"></script>
-  <script src="../src/moonPhase.js?v=202611031300"></script>
+  <script src="../src/moonPhase.js?v=202611031700"></script>
   <script src="../src/orbitalMechanics.js?v=202610100900"></script>
   <script src="../src/moonOrbitPanel.js?v=202610041201"></script>
   <script src="../src/animationTiming.js?v=202610130606"></script>
   <script src="../src/moonPhasesDiagrams.js?v=202611031300"></script>
+  <script src="../src/fullMoonNames.js?v=202611031700"></script>
   <script src="../glossary.js?v=202610131052"></script>
-  <script src="moon-phases.js?v=202611031300"></script>
+  <script src="moon-phases.js?v=202611031700"></script>
   <script src="../nextPage.js?v=202610161057"></script>
 </body>
 </html>

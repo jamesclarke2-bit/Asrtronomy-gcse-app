@@ -66,7 +66,36 @@ function makeMoonPhase() {
     return 'Waning Crescent';
   }
 
-  return { getMoonPhase, fromAgeDays, fromTheta, phaseName, SYNODIC_MONTH_DAYS };
+  // The next moment after `date` when theta reaches 180° (Full Moon) —
+  // found from the current age alone, with no dependence on the private
+  // reference date above, so any caller building on the engine (e.g.
+  // sims/moon-phases.html's full-Moon-names list) only ever goes through
+  // this public API.
+  function nextFullMoonAfter(date) {
+    const DAY_MS = 86400000;
+    const halfSynodicDays = SYNODIC_MONTH_DAYS / 2;
+    const ageDays = getMoonPhase(date).ageDays;
+    let daysUntilFull = halfSynodicDays - ageDays;
+    if (daysUntilFull <= 0) daysUntilFull += SYNODIC_MONTH_DAYS;
+    return new Date(date.getTime() + daysUntilFull * DAY_MS);
+  }
+
+  // Every Full Moon from startDate (inclusive) up to endDate (exclusive),
+  // one full lunation apart, by repeatedly stepping to the next one.
+  function fullMoonsInRange(startDate, endDate) {
+    const moons = [];
+    // Stepping back 1ms first makes a Full Moon landing exactly on
+    // startDate itself count as "after" it, so the range is properly
+    // inclusive at its start.
+    let next = nextFullMoonAfter(new Date(startDate.getTime() - 1));
+    while (next.getTime() < endDate.getTime()) {
+      moons.push(next);
+      next = nextFullMoonAfter(new Date(next.getTime() + 1));
+    }
+    return moons;
+  }
+
+  return { getMoonPhase, fromAgeDays, fromTheta, phaseName, nextFullMoonAfter, fullMoonsInRange, SYNODIC_MONTH_DAYS };
 }
 
 if (typeof module !== 'undefined' && module.exports) {

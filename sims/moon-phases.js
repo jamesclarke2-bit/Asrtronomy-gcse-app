@@ -311,6 +311,24 @@
   MoonPhasesDiagrams.mountEarthshine('earthshine-svg', 'earthshine-wrap');
   MoonPhasesDiagrams.mountOrbitScale('orbit-scale-svg', 'orbit-scale-wrap', { MoonOrbitPanel });
 
+  // --- Names of the full Moons ---------------------------------------
+
+  function setUpSpecialNamesToggle() {
+    const button = document.getElementById('toggle-special-names');
+    const panel = document.getElementById('special-names-panel');
+    button.addEventListener('click', () => {
+      const nowHidden = !panel.hidden;
+      panel.hidden = nowHidden;
+      button.setAttribute('aria-pressed', String(!nowHidden));
+    });
+  }
+
+  FullMoonNames.mountWheel('full-moon-wheel-svg', 'full-moon-wheel-wrap');
+  const fullMoonListYear = new Date().getUTCFullYear();
+  document.getElementById('full-moon-list-year').textContent = String(fullMoonListYear);
+  FullMoonNames.mountFullMoonList('full-moon-list-body', fullMoonListYear, { MoonPhase });
+  setUpSpecialNamesToggle();
+
   dateInput.value = toDateInputValue(new Date());
   render();
   renderCoverage();

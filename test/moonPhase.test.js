@@ -1,6 +1,6 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const { getMoonPhase, fromAgeDays, phaseName, SYNODIC_MONTH_DAYS } = require('../src/moonPhase');
+const { getMoonPhase, fromAgeDays, phaseName, nextFullMoonAfter, fullMoonsInRange, SYNODIC_MONTH_DAYS } = require('../src/moonPhase');
 
 test('illuminated fraction is 0 at theta=0 (new) and 1 at theta=180 (full)', () => {
   // Sanity-check the theta -> illuminated fraction formula directly,
@@ -74,4 +74,66 @@ test('fromAgeDays wraps ages outside [0, SYNODIC_MONTH_DAYS)', () => {
   const overLong = fromAgeDays(SYNODIC_MONTH_DAYS + 5);
   const short = fromAgeDays(5);
   assert.ok(Math.abs(overLong.ageDays - short.ageDays) < 1e-9);
+});
+
+// --- nextFullMoonAfter / fullMoonsInRange ---------------------------------
+
+test('nextFullMoonAfter returns a moment the engine itself agrees is Full (theta=180, illuminatedFraction=1)', () => {
+  const dates = [
+    new Date(Date.UTC(2024, 0, 1)),
+    new Date(Date.UTC(2024, 5, 15)),
+    new Date(Date.UTC(2030, 11, 31)),
+  ];
+  dates.forEach((date) => {
+    const full = nextFullMoonAfter(date);
+    const phase = getMoonPhase(full);
+    assert.ok(Math.abs(phase.theta - 180) < 1e-6, `theta ${phase.theta} not 180 for ${full.toISOString()}`);
+    assert.ok(Math.abs(phase.illuminatedFraction - 1) < 1e-9);
+  });
+});
+
+test('nextFullMoonAfter always moves strictly forward in time, by less than one synodic month', () => {
+  const start = new Date(Date.UTC(2024, 2, 10));
+  const full = nextFullMoonAfter(start);
+  const gapDays = (full.getTime() - start.getTime()) / 86400000;
+  assert.ok(gapDays > 0, 'should be after the given date');
+  assert.ok(gapDays <= SYNODIC_MONTH_DAYS, 'should be within one synodic month');
+});
+
+test('nextFullMoonAfter called again just past a Full Moon finds the next one, one full lunation later', () => {
+  const first = nextFullMoonAfter(new Date(Date.UTC(2024, 0, 1)));
+  const second = nextFullMoonAfter(new Date(first.getTime() + 1));
+  const gapDays = (second.getTime() - first.getTime()) / 86400000;
+  assert.ok(Math.abs(gapDays - SYNODIC_MONTH_DAYS) < 1e-6, `expected a full synodic month, got ${gapDays}`);
+});
+
+test('fullMoonsInRange: every date returned is independently confirmed Full by getMoonPhase', () => {
+  const moons = fullMoonsInRange(new Date(Date.UTC(2024, 0, 1)), new Date(Date.UTC(2025, 0, 1)));
+  assert.ok(moons.length > 0);
+  moons.forEach((date) => {
+    const phase = getMoonPhase(date);
+    assert.ok(Math.abs(phase.theta - 180) < 1e-6);
+  });
+});
+
+test('fullMoonsInRange: consecutive Full Moons are exactly one synodic month apart — one per lunation, none skipped or duplicated', () => {
+  const moons = fullMoonsInRange(new Date(Date.UTC(2020, 0, 1)), new Date(Date.UTC(2031, 0, 1)));
+  for (let i = 1; i < moons.length; i += 1) {
+    const gapDays = (moons[i].getTime() - moons[i - 1].getTime()) / 86400000;
+    assert.ok(Math.abs(gapDays - SYNODIC_MONTH_DAYS) < 1e-5, `gap ${gapDays} between moon ${i - 1} and ${i} isn't one synodic month`);
+  }
+});
+
+test('fullMoonsInRange over a decade gives either 12 or 13 Full Moons per calendar year, never more or fewer', () => {
+  for (let year = 2020; year <= 2030; year += 1) {
+    const moons = fullMoonsInRange(new Date(Date.UTC(year, 0, 1)), new Date(Date.UTC(year + 1, 0, 1)));
+    assert.ok(moons.length === 12 || moons.length === 13, `${year}: expected 12 or 13, got ${moons.length}`);
+  }
+});
+
+test('fullMoonsInRange: a one-day range starting exactly on a known Full Moon includes it (inclusive start)', () => {
+  const knownFull = nextFullMoonAfter(new Date(Date.UTC(2024, 0, 1)));
+  const moons = fullMoonsInRange(knownFull, new Date(knownFull.getTime() + 86400000));
+  assert.equal(moons.length, 1);
+  assert.equal(moons[0].getTime(), knownFull.getTime());
 });

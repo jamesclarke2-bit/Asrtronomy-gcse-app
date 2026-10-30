@@ -1965,6 +1965,20 @@ canvas {
   line-height: 1.5;
 }
 
+/* A small inline badge in the full-Moons table (sims/moon-phases.html),
+   not a full-width callout like .supermoon-flag above — it sits beside
+   a date and name in its own narrow table cell. */
+.blue-moon-flag {
+  display: inline-block;
+  background: #dbe8fb;
+  border: 1px solid #a8c3ea;
+  border-radius: 999px;
+  padding: 0.1rem 0.6rem;
+  color: #1f4e8c;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
 /* sims/moon-phases.html: the eight-phases grid (src/moonPhasesDiagrams.js)
    reuses .concept-grid/.concept-card (the same "short items in cards"
    pattern notes/solar-system-bodies.html etc. already use), just with
@@ -1991,7 +2005,8 @@ canvas {
 }
 
 .orbit-scale-diagram,
-.earthshine-diagram {
+.earthshine-diagram,
+.full-moon-wheel-diagram {
   max-width: 640px;
   margin: 1rem 0;
 }
@@ -2000,13 +2015,18 @@ canvas {
   max-width: 320px;
 }
 
+.full-moon-wheel-diagram {
+  max-width: 480px;
+}
+
 /* Same fix as .moon-hemisphere-figure's own .labelled-diagram-wrap
    override above: without an explicit width here, this wrap sizes to
    its own content instead of the figure, leaving the svg's width: 100%
    (from .responsive-svg) resolving against a near-zero containing
    block instead of the diagram's real available width. */
 .orbit-scale-diagram .labelled-diagram-wrap,
-.earthshine-diagram .labelled-diagram-wrap {
+.earthshine-diagram .labelled-diagram-wrap,
+.full-moon-wheel-diagram .labelled-diagram-wrap {
   display: block;
   width: 100%;
 }
@@ -2030,6 +2050,27 @@ canvas {
 
 .diagram-label--wide {
   width: 12rem;
+}
+
+/* Directional anchoring for labels fanned radially around a circle
+   (sims/moon-phases.html's full-Moon year wheel): centred text grows
+   equally both ways, so a label on the circle's own right would grow
+   left, back into the wheel, and vice versa on the left — these anchor
+   by the edge nearest the circle instead, so a label only ever grows
+   further away from it. Same left/right naming as .star-label's own
+   data-side (anchor the near edge, grow away). */
+.diagram-label--left {
+  width: auto;
+  max-width: 4.5rem;
+  transform: translate(-100%, -50%);
+  text-align: right;
+}
+
+.diagram-label--right {
+  width: auto;
+  max-width: 4.5rem;
+  transform: translate(0, -50%);
+  text-align: left;
 }
 
 .pinhole-diagram,
