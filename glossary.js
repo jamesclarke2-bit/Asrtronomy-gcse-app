@@ -1,7 +1,7 @@
 /**
  * Shared tap-to-reveal glossary mechanism, used by every page that has
  * `.glossary-toggle` elements next to a term (sliders, readouts, prose,
- * and — for sun-declination.html's interactive Sun-structure diagram —
+ * and — for sun-features.html's interactive Sun-structure diagram —
  * clickable SVG shapes). A real <button> gets a tap/click for free and
  * already fires 'click' on Enter/Space itself; an SVG shape has neither,
  * so it's given tabindex/role="button" in its markup and this also

@@ -1,6 +1,6 @@
 /**
  * Shared label geometry for a labelled concentric-ring cutaway diagram
- * (sims/sun-declination.html's Sun structure, notes/earth-structure.html's
+ * (notes/sun-features.html's Sun structure, notes/earth-structure.html's
  * and notes/moon-structure.html's Inside the Earth/Moon): one design for
  * all three. The ring sits to the left of its box; every layer's name
  * sits in a single column to the right, left-aligned at a shared x,

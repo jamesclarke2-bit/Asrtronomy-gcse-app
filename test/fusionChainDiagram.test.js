@@ -1,8 +1,8 @@
 /**
- * sims/sun-declination.html's "Inside the Sun" core panel: the
+ * notes/sun-features.html's "The Sun's structure" core panel: the
  * proton-proton chain step-through diagram. It's JS-drawn at runtime
  * (an empty <svg> in the static markup, filled in by
- * drawFusionChainStep in sims/sun-declination.js), so whether each
+ * drawFusionChainStep in notes/sun-features.js), so whether each
  * step actually draws the right number of nuclei, whether "Next step"
  * cycles correctly, and whether it stays inside its own viewBox is
  * runtime DOM state a real browser has to check — same reasoning as
@@ -13,7 +13,7 @@ const assert = require('node:assert/strict');
 const path = require('node:path');
 const { launchChromium, trackSkips } = require('./browserLaunch');
 
-const PAGE_URL = 'file://' + path.join(__dirname, '..', 'sims', 'sun-declination.html');
+const PAGE_URL = 'file://' + path.join(__dirname, '..', 'notes', 'sun-features.html');
 
 const SKIP_MESSAGE = (err) =>
   `Playwright's Chromium browser isn't installed — run "npx playwright install chromium" to enable this test (${err.message})`;
@@ -52,7 +52,7 @@ const EXPECTED_STEPS = [
   ['two helium-3 nuclei fuse into one helium-4 nucleus', 5],
 ];
 
-test('notes/sun-declination.html: the core panel opens to step 1 of 3, with no console errors', async (t) => {
+test('notes/sun-features.html: the core panel opens to step 1 of 3, with no console errors', async (t) => {
   await withPage(t, { width: 1024, height: 1000 }, async (page, consoleErrors) => {
     const caption = await page.locator('#fusion-chain-step-caption').textContent();
     assert.match(caption, /two pairs of protons fuse into two deuterium nuclei/);
@@ -62,7 +62,7 @@ test('notes/sun-declination.html: the core panel opens to step 1 of 3, with no c
   });
 });
 
-test('notes/sun-declination.html: "Next step" cycles through all three steps and loops back to step 1', async (t) => {
+test('notes/sun-features.html: "Next step" cycles through all three steps and loops back to step 1', async (t) => {
   await withPage(t, { width: 1024, height: 1000 }, async (page) => {
     for (const [expectedSubstring, expectedCircles] of EXPECTED_STEPS) {
       const caption = await page.locator('#fusion-chain-step-caption').textContent();
@@ -78,7 +78,7 @@ test('notes/sun-declination.html: "Next step" cycles through all three steps and
   });
 });
 
-test('notes/sun-declination.html: the fusion-chain diagram stays inside its own viewBox on every step', async (t) => {
+test('notes/sun-features.html: the fusion-chain diagram stays inside its own viewBox on every step', async (t) => {
   await withPage(t, { width: 1024, height: 1000 }, async (page) => {
     for (let i = 0; i < EXPECTED_STEPS.length; i += 1) {
       const result = await page.evaluate(() => {
@@ -108,7 +108,7 @@ test('notes/sun-declination.html: the fusion-chain diagram stays inside its own 
   });
 });
 
-test('notes/sun-declination.html: the net-result line and first-draft note are present', async (t) => {
+test('notes/sun-features.html: the net-result line and first-draft note are present', async (t) => {
   await withPage(t, { width: 1024, height: 1000 }, async (page) => {
     const netResult = await page.locator('.fusion-chain-net').textContent();
     assert.match(netResult, /four protons become one helium-4 nucleus/);
@@ -118,7 +118,7 @@ test('notes/sun-declination.html: the net-result line and first-draft note are p
   });
 });
 
-test('notes/sun-declination.html: "Next step" is a real keyboard-operable button', async (t) => {
+test('notes/sun-features.html: "Next step" is a real keyboard-operable button', async (t) => {
   await withPage(t, { width: 1024, height: 1000 }, async (page) => {
     const button = page.locator('#fusion-chain-next');
     assert.equal(await button.evaluate((el) => el.tagName), 'BUTTON');
@@ -130,7 +130,7 @@ test('notes/sun-declination.html: "Next step" is a real keyboard-operable button
 });
 
 [{ width: 390, height: 900, label: 'phone (390px)' }, { width: 768, height: 1024, label: 'iPad (768px)' }].forEach((viewport) => {
-  test(`sims/sun-declination.html at ${viewport.label}: the core panel opens with no horizontal scroll or console errors`, async (t) => {
+  test(`notes/sun-features.html at ${viewport.label}: the core panel opens with no horizontal scroll or console errors`, async (t) => {
     await withPage(t, viewport, async (page, consoleErrors) => {
       const scrollWidth = await page.evaluate(() => document.documentElement.scrollWidth);
       const clientWidth = await page.evaluate(() => document.documentElement.clientWidth);

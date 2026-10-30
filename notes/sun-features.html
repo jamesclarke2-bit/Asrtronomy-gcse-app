@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; form-action 'none'; base-uri 'self'" />
+  <meta name="referrer" content="no-referrer" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>The Sun: Structure and Features</title>
+  <link rel="stylesheet" href="../styles.css?v=202611021500" />
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg?v=202610130720" />
+</head>
+<body>
+  <main>
+    <p class="back-link"><a href="../index.html">&larr; Back to all tools</a></p>
+
+    <h1>The Sun: Structure and Features</h1>
+    <p class="subtitle">
+      What the Sun is made of, layer by layer, and the features that reveal it: nuclear fusion
+      at its core, sunspots and the ~11-year solar cycle, and the solar wind reaching all the
+      way to Earth.
+    </p>
+
+    <section class="notes-section" id="internal-structure">
+      <h2>The Sun's structure</h2>
+      <p>
+        The Sun is layered, from a fusion-powered core outward to a wispy outer atmosphere
+        visible only during a total eclipse or through specialised instruments.
+      </p>
+      <p class="note">Click or tap a layer below to reveal what it is.</p>
+      <div class="diagram sun-structure-diagram">
+        <div class="labelled-diagram-wrap" id="sun-structure-wrap">
+          <svg id="sun-structure" viewBox="0 0 648 580" width="648" height="580" role="group" aria-label="Interactive, labelled cutaway diagram of the Sun's layered structure. Click or tap a layer — core, radiative zone, convective zone, photosphere, chromosphere or corona — to reveal what it is">
+            <circle
+              class="glossary-toggle diagram-region" data-term="corona" tabindex="0" role="button" aria-expanded="false" aria-label="Corona"
+              cx="224" cy="290" r="200" fill="transparent" pointer-events="all"
+            />
+            <circle
+              class="glossary-toggle diagram-region" data-term="chromosphere" tabindex="0" role="button" aria-expanded="false" aria-label="Chromosphere"
+              cx="224" cy="290" r="170" fill="#fdf1e3" stroke="#e05c3e" stroke-width="4"
+            />
+            <circle
+              class="glossary-toggle diagram-region" data-term="photosphere" tabindex="0" role="button" aria-expanded="false" aria-label="Photosphere"
+              cx="224" cy="290" r="140" fill="#f5a623"
+            />
+            <circle
+              class="glossary-toggle diagram-region" data-term="convective" tabindex="0" role="button" aria-expanded="false" aria-label="Convective zone"
+              cx="224" cy="290" r="105" fill="#e8631a"
+            />
+            <circle
+              class="glossary-toggle diagram-region" data-term="radiative" tabindex="0" role="button" aria-expanded="false" aria-label="Radiative zone"
+              cx="224" cy="290" r="65" fill="#ffb347"
+            />
+            <circle
+              class="glossary-toggle diagram-region" data-term="core" tabindex="0" role="button" aria-expanded="false" aria-label="Core"
+              cx="224" cy="290" r="30" fill="#fff7d6"
+            />
+          </svg>
+        </div>
+      </div>
+      <ul class="legend layer-legend">
+        <li>
+          <span class="legend-dot layer-dot-core"></span><strong>Core</strong>
+          <div class="glossary-definition" data-term="core" hidden>
+            <p>
+              Core: where nuclear fusion turns hydrogen into helium, releasing the Sun's energy
+              at around 15 million °C, via the proton-proton chain.
+            </p>
+            <div class="fusion-chain">
+              <div class="labelled-diagram-wrap" id="fusion-chain-wrap">
+                <svg
+                  id="fusion-chain-diagram"
+                  viewBox="0 0 480 240"
+                  role="img"
+                  aria-label="Step-through diagram of the proton-proton chain"
+                ></svg>
+              </div>
+              <p class="fusion-chain-step-caption" id="fusion-chain-step-caption" aria-live="polite"></p>
+              <button type="button" id="fusion-chain-next" class="secondary-button">Next step</button>
+              <p class="fusion-chain-net">
+                <strong>Net result:</strong> four protons become one helium-4 nucleus, releasing
+                two positrons, two neutrinos and energy — about 0.7% of the mass is converted
+                into energy.
+              </p>
+              <p class="note">First draft, to be checked by the teacher.</p>
+            </div>
+          </div>
+        </li>
+        <li>
+          <span class="legend-dot layer-dot-radiative"></span><strong>Radiative zone</strong>
+          <span class="glossary-definition" data-term="radiative" hidden></span>
+        </li>
+        <li>
+          <span class="legend-dot layer-dot-convective"></span><strong>Convective zone</strong>
+          <span class="glossary-definition" data-term="convective" hidden></span>
+        </li>
+        <li>
+          <span class="legend-dot layer-dot-photosphere"></span><strong>Photosphere</strong>
+          <span class="glossary-definition" data-term="photosphere" hidden></span>
+        </li>
+        <li>
+          <span class="legend-dot layer-dot-chromosphere"></span><strong>Chromosphere</strong>
+          <span class="glossary-definition" data-term="chromosphere" hidden></span>
+        </li>
+        <li>
+          <span class="legend-dot layer-dot-corona"></span><strong>Corona</strong>
+          <span class="glossary-definition" data-term="corona" hidden></span>
+        </li>
+      </ul>
+
+      <div class="curiosity-box">
+        <button type="button" class="glossary-toggle curiosity-toggle" data-term="coronaHeating" aria-expanded="false">
+          <span class="curiosity-badge">Beyond the spec</span>
+          Curious: why is the corona so much hotter than the surface below it?
+        </button>
+        <span class="glossary-definition" data-term="coronaHeating" hidden></span>
+      </div>
+    </section>
+
+    <section class="notes-section" id="sunspots-and-solar-cycle">
+      <h2>Sunspots and the solar cycle</h2>
+      <p>
+        Sunspots are patches of the photosphere a little cooler than their surroundings &mdash;
+        around 3,500&ndash;4,000&deg;C, against the photosphere's usual 5,800&nbsp;K (about
+        5,500&deg;C) &mdash; caused by strong, tangled magnetic fields suppressing the convection
+        that would otherwise carry heat up to
+        the surface there &mdash; they look dark only by contrast with the brighter photosphere
+        around them. The number of sunspots visible rises and falls over an
+        <strong>11-year solar cycle</strong>, from a quiet solar minimum to an active solar
+        maximum and back again; sunspot number is the classic long-term index of solar activity.
+      </p>
+      <h3>The butterfly diagram</h3>
+      <p>
+        Plotting each sunspot's latitude against the date it was observed produces the
+        "butterfly diagram": every cycle, sunspots first appear at high latitude (around
+        35&deg;, in both hemispheres) and drift steadily toward the equator as the cycle
+        progresses, before the next cycle begins again at high latitude. Drag the slider to see
+        where a typical sunspot would sit at a given point in the pattern.
+      </p>
+      <canvas
+        id="butterfly-graph"
+        width="700"
+        height="300"
+        aria-label="The sunspot butterfly diagram: latitude against year, showing sunspots starting near 35 degrees at the start of each roughly 11-year cycle and drifting toward the equator as each cycle progresses"
+      ></canvas>
+      <div class="control">
+        <label for="butterfly-year-slider">Year: <span id="butterfly-year-label"></span></label>
+        <input type="range" id="butterfly-year-slider" min="0" max="33" step="1" value="0" />
+      </div>
+      <p class="eot-readout" id="butterfly-readout"></p>
+      <p class="note">
+        Two values are easy to read straight off the diagram: the gap between successive
+        high-latitude starts gives the <strong>solar cycle length</strong> (about 11 years), and
+        the latitude those starts happen at gives the <strong>latitude at cycle start</strong>
+        (about 35&deg;).
+      </p>
+
+      <h3>Worked example: estimating the Sun's rotation period</h3>
+      <p>
+        Because sunspots are carried around by the Sun's own rotation, tracking one from day to
+        day across the visible disc gives a direct measurement of that rotation &mdash; the same
+        idea as timing a rotating turntable by watching a mark on its edge.
+      </p>
+      <p class="formula">
+        A sunspot is measured at 20&deg; east of the Sun's central meridian on day 1, and at
+        32&deg; west of the central meridian on day 5.<br />
+        Angular distance moved = 20&deg; + 32&deg; = 52&deg;, over 4 days.<br />
+        Rate = 52&deg; &divide; 4 days = 13&deg; per day.<br />
+        Full rotation = 360&deg; &divide; 13&deg;/day &asymp; <strong>28 days</strong>.
+      </p>
+      <p class="note">
+        This is the Sun's <em>synodic</em> rotation period &mdash; as seen from Earth, which is
+        itself orbiting the Sun, the same distinction as the Moon's synodic month versus its
+        sidereal one. The real observed synodic period is about 27.27 days; a single worked
+        example like this rarely lands exactly on it, since it also depends on the latitude that
+        particular sunspot happens to sit at &mdash; the Sun is a ball of plasma, not a solid
+        body, and rotates faster at its equator (about 25 days, sidereal) than near its poles
+        (up to about 35 days) &mdash; a behaviour called differential rotation.
+      </p>
+
+      <h3>The Maunder Minimum</h3>
+      <p>
+        Between 1645 and 1715, the Sun went through the <strong>Maunder Minimum</strong> &mdash;
+        a prolonged dip in the solar cycle where sunspot numbers barely rose at all. At its
+        deepest, from 1672 to 1699, fewer than 50 sunspots were recorded in total, against the
+        40,000&ndash;50,000 that would normally appear over a similar stretch. It coincided with
+        the coldest part of the <strong>Little Ice Age</strong> in Europe, and &mdash;
+        independently of the historical sunspot counts &mdash; has since been confirmed by
+        isotope data: proxies like carbon-14 and beryllium-10, produced when cosmic rays strike
+        the atmosphere, spike during quiet solar periods (a weaker solar wind lets more cosmic
+        rays through), and both show exactly this signature across 1645&ndash;1715.
+      </p>
+    </section>
+
+    <section class="notes-section" id="solar-wind">
+      <h2>Solar wind and its effects</h2>
+      <p>
+        The corona is so hot that some of its charged particles &mdash; electrons, protons and
+        alpha particles &mdash; move fast enough to escape the Sun's gravity entirely, streaming
+        outward through the Solar System at typical speeds of 300&ndash;800&nbsp;km/s as the
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="solarWind" aria-label="What is the solar wind?" aria-expanded="false">solar wind</button>.
+        It constantly influences every planet's magnetosphere; a few of its effects reach all the
+        way to Earth and beyond:
+      </p>
+      <span class="glossary-definition" data-term="solarWind" hidden></span>
+      <ul class="tip-list">
+        <li><strong>Aurorae</strong> &mdash; Earth's magnetic field funnels incoming charged particles toward the poles, where they collide with atmospheric gases and make them glow, seen as the aurora borealis and aurora australis.</li>
+        <li><strong>Cometary ion tails</strong> &mdash; the solar wind pushes a comet's ionised gas directly away from the Sun, so its ion tail always points away from the Sun regardless of which way the comet itself is travelling.</li>
+        <li><strong>Geomagnetic storms</strong> &mdash; a surge in solar wind, often from a coronal mass ejection, temporarily disturbs Earth's magnetic field.</li>
+        <li><strong>Satellites, aircraft and power grids</strong> &mdash; a strong geomagnetic storm can degrade GPS accuracy, disrupt satellite electronics and radio communications, raise radiation exposure on polar flight routes, and even induce damaging currents in power grids on the ground.</li>
+      </ul>
+
+      <h3>Van Allen belts</h3>
+      <p>
+        Earth's magnetic field doesn't just deflect the solar wind &mdash; it also permanently
+        traps some of its charged particles in two doughnut-shaped regions called the
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="vanAllenBelts" aria-label="What are the Van Allen belts?" aria-expanded="false">Van Allen belts</button>:
+        an inner belt (mostly energetic protons) and an outer belt (mostly electrons). Together
+        they help shield the surface from this radiation &mdash; but pose a real risk to
+        satellites and astronauts that spend time passing through or within them, whose
+        electronics and health are both vulnerable to the trapped particles.
+      </p>
+      <span class="glossary-definition" data-term="vanAllenBelts" hidden></span>
+    </section>
+
+    <section class="notes-section" id="exam-tips">
+      <h2>Exam tips</h2>
+      <p class="exam-tip">
+        <strong>Common exam confusion:</strong> the Sun's <strong>rotation period</strong>
+        (~25&ndash;35 days, how fast it spins) and the <strong>solar cycle</strong> (~11 years,
+        how sunspot number rises and falls) are entirely different things, on wildly different
+        timescales &mdash; don't mix them up just because both are described as "a period of the
+        Sun".
+        <a href="#sunspots-and-solar-cycle">Sunspots and the solar cycle &uarr;</a>
+      </p>
+    </section>
+
+    <section class="notes-section" id="related">
+      <h2>Related pages</h2>
+      <div class="page-card-list">
+        <a class="page-card" href="../sims/sun-declination.html">
+          <h3>Observing the Sun</h3>
+          <p class="page-card-description">This page's companion: the Sun's changing altitude through the year, and how to observe it safely.</p>
+        </a>
+        <a class="page-card" href="moon-structure.html">
+          <h3>The Moon: Structure, Surface and Origin</h3>
+          <p class="page-card-description">Learn the Moon's layered interior first, the same ring-diagram idea used here for the Sun.</p>
+        </a>
+        <a class="page-card" href="../sims/sunspot-rotation.html">
+          <h3>Sunspot Rotation</h3>
+          <p class="page-card-description">Track real sunspot positions day by day to measure the Sun's own rotation period.</p>
+        </a>
+      </div>
+    </section>
+
+    <section class="questions">
+      <h2>Practice questions</h2>
+      <div id="questions-list"></div>
+    </section>
+
+    <section class="progress">
+      <h2>Your progress</h2>
+      <ul id="progress-list"></ul>
+      <p class="note">Stored in this browser only (localStorage) — no account needed.</p>
+    </section>
+
+    <p class="coverage" id="coverage"></p>
+    <p class="next-page-link" id="next-page"></p>
+  </main>
+
+  <script src="../src/curriculum.js?v=202610300900"></script>
+  <script src="../src/pages.js?v=202611030900"></script>
+  <script src="../src/ringDiagramLabels.js?v=202611021000"></script>
+  <script src="../src/butterflyDiagram.js?v=202609221900"></script>
+  <script src="../src/sunFeaturesQuestions.js?v=202610300900"></script>
+  <script src="../glossary.js?v=202610131052"></script>
+  <script src="../quiz-ui.js?v=202611021000"></script>
+  <script src="sun-features.js?v=202610300900"></script>
+  <script src="../notesPage.js?v=202610131052"></script>
+  <script src="../nextPage.js?v=202610161057"></script>
+</body>
+</html>

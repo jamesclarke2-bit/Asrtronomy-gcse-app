@@ -7,7 +7,7 @@
  * otherwise a click highlights the wrong ring or scrolls to the wrong
  * description. The diagram is drawn by notes/earth-structure.js at
  * runtime (not static markup, since its labels now use the same
- * leader-line placement as sims/sun-declination.html's Sun structure
+ * leader-line placement as notes/sun-features.html's Sun structure
  * and notes/moon-structure.html's Inside the Moon — see
  * src/ringDiagramLabels.js), so this needs a real browser rather than
  * a regex over the raw HTML, unlike this repo's usual template tests.

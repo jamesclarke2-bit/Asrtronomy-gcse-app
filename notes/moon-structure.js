@@ -104,7 +104,7 @@
     return el;
   }
 
-  // Same tap-to-reveal hookup as sims/sun-declination.html's layers:
+  // Same tap-to-reveal hookup as notes/sun-features.html's own layers:
   // glossary.js pairs each toggle with the definition sharing its term.
   function makeToggle(parent, term, name) {
     return svgEl('g', {
@@ -129,7 +129,7 @@
   // Outermost first, matching the top-to-bottom label order (outermost
   // layer to the centre) — see src/ringDiagramLabels.js, the geometry
   // shared with notes/earth-structure.html's own layers and
-  // sims/sun-declination.html's Sun structure.
+  // notes/sun-features.html's Sun structure.
   const STRUCTURE_LAYERS = [
     { term: 'moonCrust', name: 'Crust', r: 200, fill: '#5b7c99', stroke: '#3f5a70' },
     { term: 'moonMantle', name: 'Mantle', r: 182, fill: '#c17a4a' },

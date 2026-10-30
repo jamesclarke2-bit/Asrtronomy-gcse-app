@@ -70,7 +70,6 @@ const PHASES = [
   'Look up',
   'Earth, Moon and Sun',
   'Time',
-  'The Sun',
   'The Solar System and gravity',
   'Telescopes and exploring',
   'Stars and the Universe',
@@ -83,7 +82,7 @@ const PAGES = [
     href: 'sims/sun-path.html',
     units: ['u1.4', 'u1.6', 'u2.9', 'u2.10'],
     phase: 'Time',
-    position: 13,
+    position: 16,
     why: "Puts Star Coordinates' toolkit to work on one object across a day and a year, and introduces the seasons.",
   },
   {
@@ -93,7 +92,7 @@ const PAGES = [
     href: 'sims/equation-of-time.html',
     units: ['u2.10'],
     phase: 'Time',
-    position: 14,
+    position: 17,
     why: 'Goes deeper into the time ideas Sun Path just raised — why a sundial and a clock disagree.',
   },
   {
@@ -103,7 +102,7 @@ const PAGES = [
     href: 'sims/shadows-and-sundials.html',
     units: ['u2.30', 'u2.31', 'u2.32'],
     phase: 'Time',
-    position: 15,
+    position: 18,
     why: "Puts the equation of time to practical use: finding true north and your own longitude from a shadow's own shortest length, and why a sundial reads differently from a watch.",
   },
   {
@@ -114,17 +113,17 @@ const PAGES = [
     units: ['u1.7', 'u1.8', 'u1.9', 'u1.10', 'u1.11', 'u1.12', 'u1.13', 'u1.14', 'u1.21', 'u1.23', 'u1.24'],
     phase: 'Look up',
     position: 4,
-    why: "A new, more technical toolkit, building on what you've just learned to look up and recognise: right ascension, declination, hour angle, sidereal time, and finding your latitude from Polaris — the toolkit planning an observing night, next, puts to use.",
+    why: "A new, more technical toolkit, building on what you've just learned to look up and recognise: right ascension, declination, hour angle, sidereal time, and finding your latitude from Polaris — next, the altitude-at-transit idea gets put to work on the Sun itself.",
   },
   {
     title: 'Observing the Sun',
     description:
-      "How the Sun's position in the sky changes through the year, and how to observe it safely — declination and transit altitude, structure, sunspots, solar wind, and observation methods from pinhole projection to X-ray imaging.",
+      "How the Sun's position in the sky changes through the year — declination and transit altitude — and how to observe it safely: pinhole and telescope projection, H-alpha filters and X-ray imaging.",
     href: 'sims/sun-declination.html',
-    units: ['u1.11', 'u2.9', 'u2.5', 'u2.11', 'u2.12', 'u2.13', 'u2.14', 'u2.4', 'u5.4'],
-    phase: 'The Sun',
-    position: 17,
-    why: "The Sun's own structure and how to observe it safely, reusing the transit-altitude idea from Star Coordinates.",
+    units: ['u1.11', 'u2.9', 'u5.4'],
+    phase: 'Look up',
+    position: 5,
+    why: "Puts Star Coordinates' altitude-at-transit idea to work on the Sun specifically, and covers how to observe it safely.",
   },
   {
     title: 'Sunspot Rotation',
@@ -132,9 +131,9 @@ const PAGES = [
       "Tracking real sunspot positions across the disc, day by day, to measure the Sun's own rotation period — and why differential rotation and Earth's own motion mean that period is never one fixed number.",
     href: 'sims/sunspot-rotation.html',
     units: ['u2.5'],
-    phase: 'The Sun',
-    position: 18,
-    why: "Puts Observing the Sun's structure to direct use: tracking real sunspot data across the disc to measure the Sun's own rotation period, and seeing why it isn't one fixed number.",
+    phase: 'Earth, Moon and Sun',
+    position: 11,
+    why: "Uses the same idea Sidereal vs Synodic Month just raised for the Moon: the period you actually observe is longer than the Sun's true rotation, because Earth itself moves round the Sun in the meantime.",
   },
   {
     title: 'Retrograde Motion and Planetary Alignments',
@@ -142,7 +141,7 @@ const PAGES = [
     href: 'sims/solar-system-observation.html',
     units: ['u1.15', 'u1.16', 'u1.17'],
     phase: 'The Solar System and gravity',
-    position: 22,
+    position: 23,
     why: "Now that you know why planets loop and drift (Kepler's Laws and Orbits and Gravity, just covered), here's how to actually track Mercury, Venus and Mars doing it for real.",
   },
   {
@@ -172,7 +171,7 @@ const PAGES = [
     href: 'notes/measuring-the-sky.html',
     units: ['u2.6', 'u2.28', 'u2.29'],
     phase: 'Earth, Moon and Sun',
-    position: 11,
+    position: 14,
     why: "How the ancients first measured Earth, the Moon and the Sun — reusing Star Coordinates' meridian diagram directly.",
   },
   {
@@ -182,7 +181,7 @@ const PAGES = [
     href: 'notes/tides.html',
     units: ['u2.7'],
     phase: 'Earth, Moon and Sun',
-    position: 9,
+    position: 12,
     why: "Spring and neap tides, tied to the Moon's phase cycle covered earlier in this phase.",
   },
   {
@@ -192,7 +191,7 @@ const PAGES = [
     href: 'notes/archaeoastronomy.html',
     units: ['u3.5', 'u2.29'],
     phase: 'Earth, Moon and Sun',
-    position: 12,
+    position: 15,
     why: "Builds directly on Measuring the Sky's precession section — what that 26,000-year wobble meant for real ancient monuments.",
   },
   {
@@ -202,7 +201,7 @@ const PAGES = [
     href: 'notes/earth-structure.html',
     units: ['u2.1', 'u2.9', 'u2.15', 'u2.16', 'u2.28'],
     phase: 'Earth, Moon and Sun',
-    position: 5,
+    position: 6,
     why: 'Turns the lens on Earth itself: its structure, atmosphere, and the rotation and axial tilt everything later in this phase — and the seasons, later still — builds on.',
   },
   {
@@ -212,7 +211,7 @@ const PAGES = [
     href: 'notes/geocentric-to-heliocentric.html',
     units: ['u3.1', 'u3.2', 'u3.6', 'u3.7', 'u3.15'],
     phase: 'The Solar System and gravity',
-    position: 19,
+    position: 20,
     why: "A new thread: how the Earth-centred model slowly gave way to the Sun-centred one, setting up why Kepler's laws, next, were worth discovering at all.",
   },
   {
@@ -222,7 +221,7 @@ const PAGES = [
     href: 'sims/kepler.html',
     units: ['u3.9', 'u3.10', 'u3.11', 'u3.12'],
     phase: 'The Solar System and gravity',
-    position: 20,
+    position: 21,
     why: "From ancient models of the sky to the actual physics of orbits: why they're ellipses, why speed changes around one, and how period and distance relate.",
   },
   {
@@ -232,7 +231,7 @@ const PAGES = [
     href: 'sims/orbits-gravity.html',
     units: ['u3.8', 'u3.13', 'u3.14'],
     phase: 'The Solar System and gravity',
-    position: 21,
+    position: 22,
     why: "Kepler described the three laws; this is Newton explaining why they're true — simulating gravity itself, rather than assuming the ellipse Kepler's page draws.",
   },
   {
@@ -242,7 +241,7 @@ const PAGES = [
     href: 'notes/scale-of-the-solar-system.html',
     units: ['u3.3', 'u3.4'],
     phase: 'The Solar System and gravity',
-    position: 23,
+    position: 24,
     why: "Puts the distance and period figures Kepler's page introduced to a different purpose: just how big the Solar System actually is, and why AU, light years and parsecs each earn their place.",
   },
   {
@@ -264,7 +263,7 @@ const PAGES = [
     href: 'sims/moon-phases.html',
     units: ['u2.3', 'u2.18'],
     phase: 'Earth, Moon and Sun',
-    position: 6,
+    position: 7,
     why: 'Moves from Earth to the Moon: why its shape changes, and its elliptical orbit.',
   },
   {
@@ -274,7 +273,7 @@ const PAGES = [
     href: 'sims/sidereal-vs-synodic.html',
     units: ['u2.17'],
     phase: 'Earth, Moon and Sun',
-    position: 8,
+    position: 10,
     why: 'A second way to measure the Moon’s cycle: against the stars rather than against the Sun, and why the two give different lengths.',
   },
   {
@@ -284,7 +283,7 @@ const PAGES = [
     href: 'sims/eclipses.html',
     units: ['u2.8', 'u2.19'],
     phase: 'Earth, Moon and Sun',
-    position: 10,
+    position: 13,
     why: 'Needs the lunar phase and orbital-tilt ideas from earlier in this phase to make sense of.',
   },
   {
@@ -294,8 +293,18 @@ const PAGES = [
     href: 'notes/moon-structure.html',
     units: ['u2.2', 'u2.20', 'u2.21', 'u2.22', 'u2.23', 'u2.24', 'u2.25', 'u2.26', 'u2.27'],
     phase: 'Earth, Moon and Sun',
-    position: 7,
+    position: 8,
     why: "Continues straight from Moon Phases to the Moon's physical self: surface features, formation and internal structure.",
+  },
+  {
+    title: 'The Sun: Structure and Features',
+    description:
+      "The Sun's layered interior and the proton-proton chain that powers it, the photosphere's sunspots and the ~11-year solar cycle (the butterfly diagram and the Maunder Minimum), and the solar wind's effects out to Earth and beyond, including the Van Allen belts.",
+    href: 'notes/sun-features.html',
+    units: ['u2.4', 'u2.5', 'u2.11', 'u2.12', 'u2.13', 'u2.14'],
+    phase: 'Earth, Moon and Sun',
+    position: 9,
+    why: "Turns from the Moon's own structure to the Sun's: a layered interior, the fusion that powers it, sunspots and the solar cycle, and the solar wind reaching all the way to Earth.",
   },
   {
     title: 'Telescopes: Magnification, Light Grasp and Resolution',
@@ -304,7 +313,7 @@ const PAGES = [
     href: 'notes/telescopes.html',
     units: ['u5.1', 'u5.2'],
     phase: 'Telescopes and exploring',
-    position: 27,
+    position: 28,
     why: "The equipment that made everything above observable in the first place — including Galileo's own telescope, back on From Earth-Centred to Sun-Centred.",
   },
   {
@@ -314,7 +323,7 @@ const PAGES = [
     href: 'notes/solar-system-bodies.html',
     units: ['u3.16', 'u3.17', 'u3.18', 'u3.19', 'u3.20', 'u3.21', 'u3.22', 'u3.23', 'u3.24', 'u3.25', 'u3.30', 'u3.31'],
     phase: 'The Solar System and gravity',
-    position: 24,
+    position: 25,
     why: "Rounds out the Solar System itself: the same planet table compared directly, then everything smaller — asteroids, comets, meteorites — plus how a transit of Venus first measured the AU just introduced.",
   },
   {
@@ -377,35 +386,35 @@ const COMING_SOON = [
   {
     name: 'Finding longitude from the Moon and a clock',
     phase: 'Time',
-    position: 16,
+    position: 19,
     why: 'A different way to find longitude at sea, before GPS, continuing Shadows and Sundials’ own longitude problem: comparing the Moon’s position against a known clock, or Harrison’s marine chronometer solving the same problem directly.',
     specPoints: ['4.20', '4.21'],
   },
   {
     name: 'Formation of planetary systems',
     phase: 'The Solar System and gravity',
-    position: 25,
+    position: 26,
     why: "The next natural question once you know the planets themselves: how gravity actually built them, and shaped their rings, resonances and atmospheres — Bodies of the Solar System's own formation theories are only a first draft.",
     specPoints: ['12.1a', '12.1c', '12.2a', '12.2b', '12.2c'],
   },
   {
     name: 'Exoplanets and life',
     phase: 'The Solar System and gravity',
-    position: 26,
+    position: 27,
     why: "The same 'requirements for life' question Bodies of the Solar System raises for Titan, Europa and Enceladus, turned outward: how we actually find planets around other stars, and whether anyone's out there.",
     specPoints: ['12.4', '12.6', '12.7', '12.8'],
   },
   {
     name: 'Probes and Apollo',
     phase: 'Telescopes and exploring',
-    position: 28,
+    position: 29,
     why: 'How we stopped just watching and went there — the Apollo missions, and the trade-offs of every kind of robotic probe since.',
     specPoints: ['11.26', '11.27', '11.28', '11.29', '11.30'],
   },
   {
     name: 'Stars, galaxies and the Universe',
     phase: 'Stars and the Universe',
-    position: 29,
+    position: 30,
     why: "The whole rest of the sky this course hasn't reached yet: what stars are and how they live and die, our own Galaxy's structure, and the wider Universe beyond it.",
     // Topics 13-16 have no SPEC_POINTS registry entries at all yet
     // (src/specPoints.js's own header explains why), so there are no

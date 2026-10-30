@@ -1,13 +1,22 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const ButterflyDiagram = require('../src/butterflyDiagram');
-const { makeQuestions } = require('../src/solarActivityQuestions');
+const { makeQuestions } = require('../src/sunFeaturesQuestions');
 
 function findQuestion(questions, id) {
   const q = questions.find((question) => question.id === id);
   assert.ok(q, `question ${id} not found`);
   return q;
 }
+
+test('fusion-mass-to-energy: accepts ~7g, rejects a wrong guess', () => {
+  const questions = makeQuestions(ButterflyDiagram);
+  const q = findQuestion(questions, 'fusion-mass-to-energy');
+  assert.ok(q.check(7).correct);
+  assert.ok(q.check(6.5).correct);
+  assert.equal(q.check(0).correct, false);
+  assert.equal(q.check(100).correct, false);
+});
 
 test('butterfly-cycle-length: accepts ~11 years, rejects a wrong guess', () => {
   const questions = makeQuestions(ButterflyDiagram);

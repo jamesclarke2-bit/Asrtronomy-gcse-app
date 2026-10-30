@@ -18,7 +18,7 @@ const { skip } = trackSkips('test/ringDiagramVisuals.test.js');
 const DIAGRAMS = [
   {
     label: 'Sun',
-    url: 'file://' + path.join(__dirname, '..', 'sims', 'sun-declination.html'),
+    url: 'file://' + path.join(__dirname, '..', 'notes', 'sun-features.html'),
     svgId: 'sun-structure',
     // Outermost first, matching drawSunStructureLabels' own layer order.
     layers: [

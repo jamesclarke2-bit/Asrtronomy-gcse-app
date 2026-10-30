@@ -7,8 +7,8 @@
  * the two headline numbers (cycle length, starting latitude) at
  * GCSE level.
  *
- * Shared between sims/sun-declination.js (drawing the diagram) and
- * src/solarActivityQuestions.js (grading questions about it), so both
+ * Shared between notes/sun-features.js (drawing the diagram) and
+ * src/sunFeaturesQuestions.js (grading questions about it), so both
  * always agree with each other rather than keeping two independent
  * copies of the same two numbers in sync by hand.
  */

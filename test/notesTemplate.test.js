@@ -27,6 +27,7 @@ const CONFORMING_PAGES = [
   'notes/scale-of-the-solar-system.html',
   'notes/telescopes.html',
   'notes/solar-system-bodies.html',
+  'notes/sun-features.html',
 ];
 
 // Section 6 of the template ("Diagram-first"), checked only for pages
@@ -52,6 +53,8 @@ const DIAGRAM_FIRST_PAGES = [
   'notes/archaeoastronomy.html',
   'sims/sunspot-rotation.html',
   'notes/observing-techniques.html',
+  'sims/sun-declination.html',
+  'notes/sun-features.html',
 ];
 
 function read(href) {
@@ -83,12 +86,41 @@ function stripTags(s) {
 // a `hidden` element (a glossary definition, or a page-specific hidden
 // panel) carries no visible words until revealed, so it shouldn't count
 // against either word limit — that's the whole point of pushing detail
-// into one. Non-greedy and not a real parser, like sectionsOf above; it
-// assumes a hidden block doesn't nest another element of the same tag
-// name, true of every hidden panel in this codebase today.
+// into one. Not a real parser, but (unlike a single non-greedy regex)
+// nesting-aware: it walks every tag with a small stack, so a hidden
+// block that itself nests another element of the same tag name (e.g.
+// notes/sun-features.html's hidden "core" definition, which wraps its
+// own nested <div>s around the proton-proton-chain diagram) still has
+// its true matching close tag found, rather than the first same-named
+// close tag encountered — which would leave most of its real content
+// unstripped and wrongly counted as visible.
 function stripHiddenAndTags(s) {
-  const withoutHidden = s.replace(/<(\w+)[^>]*\bhidden\b[^>]*>[\s\S]*?<\/\1>/g, '');
-  return stripTags(withoutHidden);
+  const TAG_RE = /<(\/?)(\w+)([^>]*?)(\/?)>/g;
+  let result = '';
+  let lastIndex = 0;
+  let hiddenDepth = 0; // 0 = not inside a hidden element; else the stack depth it started at
+  const stack = [];
+  let match;
+  while ((match = TAG_RE.exec(s))) {
+    const [full, closingSlash, tagName, attrs, selfClosingSlash] = match;
+    if (hiddenDepth === 0) result += s.slice(lastIndex, match.index);
+    lastIndex = match.index + full.length;
+
+    if (closingSlash) {
+      if (hiddenDepth !== 0 && stack.length === hiddenDepth && stack[stack.length - 1] === tagName) {
+        hiddenDepth = 0;
+      }
+      if (stack.length && stack[stack.length - 1] === tagName) stack.pop();
+      continue;
+    }
+
+    if (selfClosingSlash) continue; // self-closing: no content, nothing to push
+
+    stack.push(tagName);
+    if (hiddenDepth === 0 && /\bhidden\b/.test(attrs)) hiddenDepth = stack.length;
+  }
+  if (hiddenDepth === 0) result += s.slice(lastIndex);
+  return stripTags(result);
 }
 
 // Position (character offset) of every <canvas> or <svg> opening tag —

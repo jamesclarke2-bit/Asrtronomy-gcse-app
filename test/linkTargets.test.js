@@ -1,7 +1,11 @@
 /**
- * Every internal link with a #fragment, on every page, should point to
- * an element id that actually exists on its target page — same-page
- * ("#epicycles") or cross-page ("../notes/data-sheet.html#planet-data").
+ * Every internal href on every page actually resolves:
+ *   - a #fragment link points to an element id that exists on its
+ *     target page — same-page ("#epicycles") or cross-page
+ *     ("../notes/data-sheet.html#planet-data");
+ *   - a plain (non-fragment) internal href — a page link, or a
+ *     stylesheet/icon/script href — resolves to a file that actually
+ *     exists on disk.
  * Parsed from the raw HTML (same convention as the rest of this repo's
  * tests), not a DOM, since this repo has no DOM-simulation dependency.
  */
@@ -62,6 +66,22 @@ function resolveFragmentLink(fromHref, link) {
   return { targetHref, fragment };
 }
 
+// Resolves an href found on `fromHref` to a repo-root-relative file
+// path, or null if it isn't an internal link to a file at all (no
+// path part — a bare "#fragment" link, already covered above — or an
+// external URL/mailto/tel with its own scheme). Any ?query or
+// #fragment suffix is stripped first, since neither affects which
+// file the browser actually requests.
+function resolvePlainLink(fromHref, link) {
+  const withoutFragment = link.split('#')[0];
+  const pathPart = withoutFragment.split('?')[0];
+  if (!pathPart) return null;
+  if (/^[a-z][a-z0-9+.-]*:/i.test(pathPart) || pathPart.startsWith('//')) return null; // external
+
+  const fromDir = path.posix.dirname(fromHref);
+  return path.posix.normalize(path.posix.join(fromDir, pathPart));
+}
+
 PAGES.forEach((fromHref) => {
   const html = readHtml(fromHref);
   const hrefs = [...html.matchAll(/\bhref="([^"]*)"/g)].map((m) => m[1]);
@@ -80,6 +100,20 @@ PAGES.forEach((fromHref) => {
         ids.has(fragment),
         `${fromHref} links to "${targetHref}#${fragment}", but ${targetHref} has no element with id="${fragment}"`
       );
+    });
+  });
+});
+
+PAGES.forEach((fromHref) => {
+  const html = readHtml(fromHref);
+  const hrefs = [...html.matchAll(/\bhref="([^"]*)"/g)].map((m) => m[1]);
+  const targets = [...new Set(hrefs.map((link) => resolvePlainLink(fromHref, link)).filter(Boolean))];
+
+  if (targets.length === 0) return;
+
+  test(`${fromHref}: every internal href (page link, stylesheet or icon) resolves to a file that exists`, () => {
+    targets.forEach((target) => {
+      assert.ok(fs.existsSync(path.join(ROOT, target)), `${fromHref} links to "${target}", which doesn't exist`);
     });
   });
 });

@@ -1,6 +1,6 @@
 /**
- * Practice questions for sims/sun-declination.html covering the
- * butterfly diagram, the solar wind and aurorae. The two
+ * Practice questions for notes/sun-features.html covering nuclear
+ * fusion, the butterfly diagram, the solar wind and aurorae. The two
  * butterfly-diagram questions check against ButterflyDiagram's own
  * constants rather than a second, independently hardcoded pair of
  * numbers, so grading always matches what the diagram itself draws —
@@ -23,7 +23,28 @@ function makeQuestions(ButterflyDiagram) {
     'helium nuclei',
   ];
 
+  // In the proton-proton chain, four protons (total mass 4 x the proton
+  // mass) end up as one helium-4 nucleus plus two positrons, two
+  // neutrinos and energy — about 0.7% of the starting mass, converted
+  // to energy via E = mc^2.
+  const FUSION_MASS_TO_ENERGY_FRACTION = 0.007;
+
   return [
+    {
+      id: 'fusion-mass-to-energy',
+      units: ['u2.4'],
+      type: 'number',
+      unitLabel: 'g',
+      prompt:
+        "In the proton-proton chain, about 0.7% of the hydrogen's mass is converted into energy (the rest ends up as helium-4). About how many grams of a 1 kg (1000 g) sample of hydrogen become energy?",
+      check(value) {
+        const correct = 1000 * FUSION_MASS_TO_ENERGY_FRACTION;
+        return {
+          correct: Math.abs(value - correct) <= 1,
+          message: `0.7% of 1000 g = ${correct.toFixed(1)} g.`,
+        };
+      },
+    },
     {
       id: 'butterfly-cycle-length',
       units: ['u2.5'],
@@ -86,10 +107,10 @@ function makeQuestions(ButterflyDiagram) {
   ];
 }
 
-const solarActivityQuestionsApi = { makeQuestions };
+const sunFeaturesQuestionsApi = { makeQuestions };
 
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = solarActivityQuestionsApi;
+  module.exports = sunFeaturesQuestionsApi;
 } else if (typeof window !== 'undefined') {
-  window.SolarActivityQuestions = solarActivityQuestionsApi;
+  window.SunFeaturesQuestions = sunFeaturesQuestionsApi;
 }

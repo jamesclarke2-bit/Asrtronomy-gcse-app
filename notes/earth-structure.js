@@ -240,7 +240,7 @@
 
   // --- "Inside the Earth": drawn here (not static markup) so its ---------
   // labels can use the same ring-sits-to-the-left, labels-in-one-column-
-  // to-the-right placement as sims/sun-declination.html's Sun structure
+  // to-the-right placement as notes/sun-features.html's Sun structure
   // diagram and notes/moon-structure.html's Inside the Moon — see
   // src/ringDiagramLabels.js, the geometry shared by all three.
   // Clicking a label highlights the matching ring and scrolls to the

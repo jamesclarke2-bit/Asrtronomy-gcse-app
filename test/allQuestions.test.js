@@ -66,9 +66,9 @@ test("getAllQuestionsNode's total is exactly the sum of every individual questio
   const { makeQuestions: makeScaleOfSolarSystem } = require('../src/scaleOfSolarSystemQuestions');
   const { makeQuestions: makeShadowsAndSundials } = require('../src/shadowsAndSundialsQuestions');
   const { makeQuestions: makeSiderealSynodic } = require('../src/siderealSynodicQuestions');
-  const { makeQuestions: makeSolarActivity } = require('../src/solarActivityQuestions');
   const { makeQuestions: makeSolarSystemBodies } = require('../src/solarSystemBodiesQuestions');
   const { makeQuestions: makeSunDeclination } = require('../src/sunDeclinationQuestions');
+  const { makeQuestions: makeSunFeatures } = require('../src/sunFeaturesQuestions');
   const { makeQuestions: makeSunspotRotation } = require('../src/sunspotRotationQuestions');
   const SunRotation = require('../src/sunRotation');
   const { makeQuestions: makeTelescope } = require('../src/telescopeQuestions');
@@ -94,9 +94,9 @@ test("getAllQuestionsNode's total is exactly the sum of every individual questio
     makeScaleOfSolarSystem(SpecData).length +
     makeShadowsAndSundials(ShadowGeometry, SolarPosition).length +
     makeSiderealSynodic(MoonPhase).length +
-    makeSolarActivity(ButterflyDiagram).length +
     makeSolarSystemBodies(SpecData).length +
     makeSunDeclination({ getSunPosition: SolarPosition.getSunPosition }, Coordinates).length +
+    makeSunFeatures(ButterflyDiagram).length +
     makeSunspotRotation(SunRotation).length +
     makeTelescope(TelescopeModel, RayOptics).length +
     makeTides(Tides).length;
