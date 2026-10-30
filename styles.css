@@ -2159,6 +2159,17 @@ canvas {
   color: #1a1a1a;
 }
 
+/* The Same-scale view's magnified-inset name ("Moon, magnified about
+   3.7 times") is long enough to wrap onto 2-3 lines at phone width —
+   anchored by its own right edge instead of centred, so a wrapped line
+   only ever grows further left (into the picture's otherwise-empty
+   margin), never sideways into the leader-line labels beside it. */
+.body-layers-body-name--left {
+  transform: translate(-100%, -50%);
+  text-align: right;
+  width: 9rem;
+}
+
 .body-layers-toggle {
   display: flex;
   gap: 0.6rem;
@@ -2181,6 +2192,44 @@ canvas {
   background: #f7f7f5;
   border-radius: 8px;
   border: 1px solid #cdd7e1;
+}
+
+/* The "Share of the radius" stacked bars under the body-layers picture
+   (src/bodyLayersDiagram.js's mountShareChart) — a plain percentage
+   chart, so it keeps the generic .diagram cap rather than the wider one
+   the two-body picture above needs. */
+.body-layers-share-diagram {
+  max-width: 560px;
+  margin: 1rem 0;
+}
+
+.body-layers-share-diagram svg {
+  background: #f7f7f5;
+  border-radius: 8px;
+  border: 1px solid #cdd7e1;
+}
+
+.body-layers-share-label {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  font-size: 0.78rem;
+  font-weight: 600;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.body-layers-share-label--inline {
+  font-size: 0.72rem;
+}
+
+.body-layers-share-label--outside {
+  color: #1a1a1a;
+}
+
+.body-layers-share-row-label {
+  transform: translate(0, -50%);
+  color: #1a1a1a;
+  font-weight: 700;
 }
 
 /* notes/telescopes.html: a diagram with a light background (the

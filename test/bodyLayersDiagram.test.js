@@ -114,3 +114,83 @@ test('sameScaleCaption and sameSizeCaption each state the right headline figure'
   assert.match(sameSize, /20%/);
   assert.match(sameSize, /55%/);
 });
+
+// --- The magnified-inset label (Same scale view) ---------------------
+
+test('sameScaleMagnification is the same ~3.7x ratio the Same-scale caption already states', () => {
+  const magnification = BodyLayersDiagram.sameScaleMagnification(SPEC_DIAMETER_KM);
+  assert.ok(Math.abs(magnification - 3.7) < 0.1, `expected ~3.7, got ${magnification.toFixed(2)}`);
+});
+
+test("magnifiedMoonLabel reads \"Moon, magnified about 3.7 times\"", () => {
+  assert.equal(BodyLayersDiagram.magnifiedMoonLabel(SPEC_DIAMETER_KM), 'Moon, magnified about 3.7 times');
+});
+
+// --- "Share of the radius": layerShareFractions -----------------------
+
+test('layerShareFractions: each share is the gap between one boundary and the next, not the cumulative boundary itself', () => {
+  const earth = BodyLayersDiagram.layerShareFractions('earth');
+  const f = BodyLayersDiagram.layerFractions('earth');
+  assert.ok(Math.abs(earth.crust - (f.crust - f.mantle)) < 1e-12);
+  assert.ok(Math.abs(earth.mantle - (f.mantle - f.outerCore)) < 1e-12);
+  assert.ok(Math.abs(earth.outerCore - (f.outerCore - f.innerCore)) < 1e-12);
+  assert.ok(Math.abs(earth.innerCore - f.innerCore) < 1e-12);
+});
+
+test('layerShareFractions: each body\'s own shares sum to exactly 1 (100%)', () => {
+  ['earth', 'moon'].forEach((bodyKey) => {
+    const shares = BodyLayersDiagram.layerShareFractions(bodyKey);
+    const sum = shares.crust + shares.mantle + shares.outerCore + shares.innerCore;
+    assert.ok(Math.abs(sum - 1) < 1e-12, `${bodyKey}: shares summed to ${sum}, not 1`);
+  });
+});
+
+test('layerShareFractions, independently recomputed from BODY_LAYERS_KM, matches the function under test for both bodies', () => {
+  ['earth', 'moon'].forEach((bodyKey) => {
+    const b = BodyLayersDiagram.BODY_LAYERS_KM[bodyKey];
+    const expected = {
+      crust: b.crustThicknessKm / b.surfaceRadiusKm,
+      mantle: (b.surfaceRadiusKm - b.crustThicknessKm - b.mantleBaseRadiusKm) / b.surfaceRadiusKm,
+      outerCore: (b.mantleBaseRadiusKm - b.innerCoreRadiusKm) / b.surfaceRadiusKm,
+      innerCore: b.innerCoreRadiusKm / b.surfaceRadiusKm,
+    };
+    const actual = BodyLayersDiagram.layerShareFractions(bodyKey);
+    ['crust', 'mantle', 'outerCore', 'innerCore'].forEach((key) => {
+      assert.ok(
+        Math.abs(actual[key] - expected[key]) < 1e-9,
+        `${bodyKey}.${key}: expected ${expected[key]}, got ${actual[key]}`
+      );
+    });
+  });
+});
+
+test('the task\'s own given percentages: Earth crust ~0.5%, mantle ~45%, outer core ~35%, inner core ~19%', () => {
+  const earth = BodyLayersDiagram.layerShareFractions('earth');
+  assert.equal(BodyLayersDiagram.formatSharePercent(earth.crust), '0.5%');
+  assert.equal(BodyLayersDiagram.formatSharePercent(earth.mantle), '45%');
+  assert.equal(BodyLayersDiagram.formatSharePercent(earth.outerCore), '35%');
+  assert.equal(BodyLayersDiagram.formatSharePercent(earth.innerCore), '19%');
+});
+
+test('the task\'s own given percentages: Moon crust ~2%, mantle ~78%, outer core ~6%, inner core ~14%', () => {
+  const moon = BodyLayersDiagram.layerShareFractions('moon');
+  assert.equal(BodyLayersDiagram.formatSharePercent(moon.crust), '2%');
+  assert.equal(BodyLayersDiagram.formatSharePercent(moon.mantle), '78%');
+  assert.equal(BodyLayersDiagram.formatSharePercent(moon.outerCore), '6%');
+  assert.equal(BodyLayersDiagram.formatSharePercent(moon.innerCore), '14%');
+});
+
+test('formatSharePercent: shows one decimal place under 1%, the nearest whole percent otherwise', () => {
+  assert.equal(BodyLayersDiagram.formatSharePercent(0.0055), '0.5%');
+  assert.equal(BodyLayersDiagram.formatSharePercent(0.009), '0.9%');
+  assert.equal(BodyLayersDiagram.formatSharePercent(0.01), '1%');
+  assert.equal(BodyLayersDiagram.formatSharePercent(0.449), '45%');
+  assert.equal(BodyLayersDiagram.formatSharePercent(1), '100%');
+});
+
+test("the Moon's core (outer + inner share) is a smaller share of its radius than Earth's, and its crust share is bigger — the chart's own takeaway", () => {
+  const earth = BodyLayersDiagram.layerShareFractions('earth');
+  const moon = BodyLayersDiagram.layerShareFractions('moon');
+  assert.ok(moon.outerCore + moon.innerCore < earth.outerCore + earth.innerCore);
+  assert.ok(moon.crust > earth.crust);
+});

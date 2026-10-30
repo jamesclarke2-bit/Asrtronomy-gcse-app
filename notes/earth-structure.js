@@ -579,6 +579,7 @@
     sameSizeButtonId: 'body-layers-same-size',
     captionId: 'body-layers-caption',
   }, { SpecData, RingDiagramLabels });
+  BodyLayersDiagram.mountShareChart('body-layers-share-svg', 'body-layers-share-wrap');
   drawCompositionBar();
   drawAtmosphereLadder();
   drawTransmissionChart();

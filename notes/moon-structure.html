@@ -7,7 +7,7 @@
   <meta name="referrer" content="no-referrer" />
   <meta name="robots" content="noindex, nofollow" />
   <title>The Moon: Structure, Surface and Origin</title>
-  <link rel="stylesheet" href="../styles.css?v=202611031500" />
+  <link rel="stylesheet" href="../styles.css?v=202611031600" />
   <link rel="icon" type="image/svg+xml" href="../favicon.svg?v=202610130720" />
 </head>
 <body>
@@ -63,8 +63,8 @@
       </p>
       <div id="layer-table-panel" hidden>
         <div class="body-layers-toggle">
-          <button type="button" id="body-layers-same-scale" class="list-view-toggle" aria-pressed="true">Same scale</button>
-          <button type="button" id="body-layers-same-size" class="list-view-toggle" aria-pressed="false">Same size</button>
+          <button type="button" id="body-layers-same-scale" class="list-view-toggle" aria-pressed="false">Same scale</button>
+          <button type="button" id="body-layers-same-size" class="list-view-toggle" aria-pressed="true">Same size</button>
         </div>
         <div class="diagram body-layers-diagram">
           <div class="labelled-diagram-wrap" id="body-layers-wrap">
@@ -74,7 +74,7 @@
               width="1200"
               height="680"
               role="img"
-              aria-label="Earth and the Moon's internal layers compared side by side, each as a labelled cutaway of its crust, mantle, outer core and inner core"
+              aria-label="Earth and the Moon's internal layers compared side by side, each drawn the same width, as a labelled cutaway of its crust, mantle, outer core and inner core"
             ></svg>
           </div>
         </div>
@@ -85,6 +85,25 @@
           above. The Same scale view's overall sizes use the exam data sheet's own diameters;
           this diagram's internal layers use more precise radii for the proportions.
         </p>
+
+        <h3>Share of the radius</h3>
+        <div class="diagram body-layers-share-diagram">
+          <div class="labelled-diagram-wrap" id="body-layers-share-wrap">
+            <svg
+              id="body-layers-share-svg"
+              class="responsive-svg"
+              viewBox="0 0 1120 280"
+              role="img"
+              aria-label="Two horizontal stacked bars, Earth and the Moon, each split into crust, mantle, outer core and inner core as a percentage of the radius"
+            ></svg>
+          </div>
+        </div>
+        <p class="diagram-caption">
+          The Moon's core is a much smaller share of its radius than Earth's, and its crust a
+          larger share.
+        </p>
+        <p class="note">These percentages come from the same first-draft radii as the picture above.</p>
+
         <table class="shower-table">
           <caption>The Moon's layers compared with Earth's</caption>
           <thead>
@@ -560,10 +579,10 @@
   <script src="../src/moonStructureQuestions.js?v=202610300900"></script>
   <script src="../src/orbitalMechanics.js?v=202610281400"></script>
   <script src="../src/ringDiagramLabels.js?v=202611021000"></script>
-  <script src="../src/bodyLayersDiagram.js?v=202611031200"></script>
+  <script src="../src/bodyLayersDiagram.js?v=202611031600"></script>
   <script src="../glossary.js?v=202610131052"></script>
   <script src="../quiz-ui.js?v=202611021000"></script>
-  <script src="moon-structure.js?v=202611031100"></script>
+  <script src="moon-structure.js?v=202611031600"></script>
   <script src="../notesPage.js?v=202609270100"></script>
   <script src="../nextPage.js?v=202610161057"></script>
 </body>

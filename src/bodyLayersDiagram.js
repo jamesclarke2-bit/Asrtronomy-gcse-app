@@ -87,8 +87,11 @@
   }
 
   // One line per body, read off to build each view's own caption.
+  function sameScaleMagnification(specDiameterKm) {
+    return specDiameterKm.earth / specDiameterKm.moon;
+  }
   function sameScaleCaption(specDiameterKm) {
-    const ratio = specDiameterKm.earth / specDiameterKm.moon;
+    const ratio = sameScaleMagnification(specDiameterKm);
     return (
       `At the same scale, from the exam data sheet's own diameters (${specDiameterKm.earth.toLocaleString()} km Earth, ` +
       `${specDiameterKm.moon.toLocaleString()} km Moon), the Moon is about ${ratio.toFixed(1)}× narrower than Earth.`
@@ -101,6 +104,35 @@
       `At the same size, the Moon's core is a much smaller fraction of its radius (about ${moonCorePercent}%) ` +
       `than Earth's (about ${earthCorePercent}%).`
     );
+  }
+  // The label on the Same-scale view's magnified inset: the real (tiny)
+  // Moon circle drawn beside a second copy, scaled up to Earth's own
+  // width, so its layers are the same ones a student can actually read.
+  function magnifiedMoonLabel(specDiameterKm) {
+    return `Moon, magnified about ${sameScaleMagnification(specDiameterKm).toFixed(1)} times`;
+  }
+
+  // Each layer's own SHARE of the radius — the width of its own band,
+  // not the cumulative boundary layerFractions() gives — found by
+  // subtracting each boundary from the next one out. Telescopes to
+  // exactly 1 (100%) by construction: (1 - mantle) + (mantle - outerCore)
+  // + (outerCore - innerCore) + innerCore = 1.
+  function layerShareFractions(bodyKey) {
+    const f = layerFractions(bodyKey);
+    return {
+      crust: f.crust - f.mantle,
+      mantle: f.mantle - f.outerCore,
+      outerCore: f.outerCore - f.innerCore,
+      innerCore: f.innerCore,
+    };
+  }
+
+  // A share as exam-style rounded text — one decimal place under 1%
+  // (Earth's crust, at ~0.5%, would otherwise round to "0%" or "1%" and
+  // lose the point), the nearest whole percent otherwise.
+  function formatSharePercent(fraction) {
+    const percent = fraction * 100;
+    return percent < 1 ? `${percent.toFixed(1)}%` : `${Math.round(percent)}%`;
   }
 
   // --- Browser-only: the actual drawing -----------------------------------
@@ -115,14 +147,24 @@
   // so each row needs enough height to hold 2 lines without touching
   // its neighbour, which this wider fan radius, plus the taller canvas
   // below, provides.
+  // sameScaleHeight is taller than height: Same-scale mode adds a second
+  // row below the first, the real Moon's own proportions magnified up to
+  // Earth's width, since at the data sheet's real size ratio the Moon's
+  // own circle is too small to read its layers or labels in. The inset
+  // sits directly below the real small Moon, sharing its cx/labelX, so
+  // its own label column reuses geometry already checked not to overflow
+  // (see labelOuterRadius's own comment below) rather than needing new,
+  // untested side-by-side spacing.
   const GEOMETRY = {
     width: 1200,
     height: 680,
+    sameScaleHeight: 1300,
     cy: 340,
     maxOuterRadiusPx: 150,
     labelOuterRadius: 270,
     earth: { key: 'earth', label: 'Earth', cx: 220, labelX: 394 },
     moon: { key: 'moon', label: 'Moon', cx: 794, labelX: 968 },
+    insetCy: 980,
   };
 
   function svgEl(tag, attrs, parent) {
@@ -132,12 +174,12 @@
     return el;
   }
 
-  function drawOneBody(svg, wrap, bodyGeometry, mode, specDiameterKm, RingDiagramLabels) {
+  function drawOneBody(svg, wrap, bodyGeometry, mode, specDiameterKm, RingDiagramLabels, cy, height) {
     const layers = computeLayersPx(bodyGeometry.key, mode, GEOMETRY.maxOuterRadiusPx, specDiameterKm);
 
     // Outermost first, so each smaller ring paints over the last.
     layers.forEach((layer) => {
-      const attrs = { cx: bodyGeometry.cx, cy: GEOMETRY.cy, r: layer.radiusPx, fill: layer.fill };
+      const attrs = { cx: bodyGeometry.cx, cy, r: layer.radiusPx, fill: layer.fill };
       if (layer.stroke) {
         attrs.stroke = layer.stroke;
         attrs['stroke-width'] = 2;
@@ -145,20 +187,35 @@
       svgEl('circle', attrs, svg);
     });
 
+    // The inset's own name ("Moon, magnified about 3.7 times") is much
+    // longer than "Earth" or "Moon": centred below the circle like
+    // theirs, it wraps onto 2-3 lines at phone width and the wrapped
+    // box — centred, so growing equally in both directions — reaches
+    // sideways into the leader-line label column next to it. Put it to
+    // the circle's own left instead, in the empty space below Earth's
+    // row, anchored so it only ever grows further left, away from
+    // everything else in the picture.
     const bodyNameLabel = document.createElement('span');
-    bodyNameLabel.className = 'body-layers-body-name';
+    const nameLeft = bodyGeometry.nameLeft;
+    if (nameLeft) {
+      bodyNameLabel.className = 'body-layers-body-name body-layers-body-name--left';
+      bodyNameLabel.style.left = `${(nameLeft.x / GEOMETRY.width) * 100}%`;
+      bodyNameLabel.style.top = `${(nameLeft.y / height) * 100}%`;
+    } else {
+      bodyNameLabel.className = 'body-layers-body-name';
+      bodyNameLabel.style.left = `${(bodyGeometry.cx / GEOMETRY.width) * 100}%`;
+      bodyNameLabel.style.top = `${((cy + GEOMETRY.maxOuterRadiusPx + 22) / height) * 100}%`;
+    }
     bodyNameLabel.textContent = bodyGeometry.label;
-    bodyNameLabel.style.left = `${(bodyGeometry.cx / GEOMETRY.width) * 100}%`;
-    bodyNameLabel.style.top = `${((GEOMETRY.cy + GEOMETRY.maxOuterRadiusPx + 22) / GEOMETRY.height) * 100}%`;
     wrap.appendChild(bodyNameLabel);
 
     const leaders = svgEl('g', { stroke: '#8a97a5', 'stroke-width': 1, 'stroke-dasharray': '3 2', 'pointer-events': 'none' }, svg);
     const rows = RingDiagramLabels.layoutRingColumn({
       cx: bodyGeometry.cx,
-      cy: GEOMETRY.cy,
+      cy,
       outerRadius: GEOMETRY.labelOuterRadius,
       width: GEOMETRY.width,
-      height: GEOMETRY.height,
+      height,
       labelX: bodyGeometry.labelX,
       layers: layers.map((layer) => ({ name: layer.name, radius: layer.radiusPx })),
     });
@@ -174,6 +231,36 @@
       wrap.appendChild(label);
     });
   }
+
+  // Same-scale only: the real Moon reads as a dot at this size ratio, so
+  // a second copy — the Moon's own proportions (computeLayersPx's
+  // "sameSize" case) drawn at Earth's own width — sits directly below
+  // it, joined by two thin lines from the real circle's own left/right
+  // edge to the magnified one's, so the "this tiny dot, blown up, looks
+  // like this" relationship reads directly off the picture.
+  function drawMagnifiedInset(svg, wrap, specDiameterKm, RingDiagramLabels) {
+    const trueMoonR = outerRadiusPx('moon', 'sameScale', GEOMETRY.maxOuterRadiusPx, specDiameterKm);
+    const { cx } = GEOMETRY.moon;
+    const cy = GEOMETRY.cy;
+    const insetCy = GEOMETRY.insetCy;
+    const insetR = GEOMETRY.maxOuterRadiusPx;
+
+    const joins = svgEl('g', { stroke: '#8a97a5', 'stroke-width': 1, 'pointer-events': 'none' }, svg);
+    svgEl('line', { x1: cx - trueMoonR, y1: cy, x2: cx - insetR, y2: insetCy }, joins);
+    svgEl('line', { x1: cx + trueMoonR, y1: cy, x2: cx + insetR, y2: insetCy }, joins);
+
+    const insetGeometry = {
+      key: 'moon', label: magnifiedMoonLabel(specDiameterKm), cx, labelX: GEOMETRY.moon.labelX,
+      nameLeft: { x: cx - insetR - 14, y: insetCy },
+    };
+    drawOneBody(svg, wrap, insetGeometry, 'sameSize', specDiameterKm, RingDiagramLabels, insetCy, GEOMETRY.sameScaleHeight);
+  }
+
+  const ARIA_LABEL = {
+    sameSize: "Earth and the Moon's internal layers compared side by side, each drawn the same width, as a labelled cutaway of its crust, mantle, outer core and inner core",
+    sameScale:
+      "Earth and the Moon's internal layers compared side by side, to the same scale, so the Moon reads as a much smaller circle — with a second, magnified copy of the Moon below it, drawn at Earth's own width and joined to the small circle by two lines, so its own crust, mantle, outer core and inner core can still be read",
+  };
 
   // Renders the comparison into an existing empty <svg>/wrap pair and
   // wires the two view-toggle buttons and the caption element, all
@@ -192,10 +279,15 @@
     const RingDiagramLabels = deps.RingDiagramLabels;
 
     function render(mode) {
+      const height = mode === 'sameScale' ? GEOMETRY.sameScaleHeight : GEOMETRY.height;
+      svg.setAttribute('viewBox', `0 0 ${GEOMETRY.width} ${height}`);
+      svg.setAttribute('height', height);
+      svg.setAttribute('aria-label', ARIA_LABEL[mode]);
       svg.innerHTML = '';
       wrap.querySelectorAll('.body-layers-label, .body-layers-body-name').forEach((el) => el.remove());
-      drawOneBody(svg, wrap, GEOMETRY.earth, mode, specDiameterKm, RingDiagramLabels);
-      drawOneBody(svg, wrap, GEOMETRY.moon, mode, specDiameterKm, RingDiagramLabels);
+      drawOneBody(svg, wrap, GEOMETRY.earth, mode, specDiameterKm, RingDiagramLabels, GEOMETRY.cy, height);
+      drawOneBody(svg, wrap, GEOMETRY.moon, mode, specDiameterKm, RingDiagramLabels, GEOMETRY.cy, height);
+      if (mode === 'sameScale') drawMagnifiedInset(svg, wrap, specDiameterKm, RingDiagramLabels);
       if (caption) caption.textContent = mode === 'sameScale' ? sameScaleCaption(specDiameterKm) : sameSizeCaption();
       if (sameScaleButton) sameScaleButton.setAttribute('aria-pressed', String(mode === 'sameScale'));
       if (sameSizeButton) sameSizeButton.setAttribute('aria-pressed', String(mode === 'sameSize'));
@@ -204,14 +296,95 @@
     if (sameScaleButton) sameScaleButton.addEventListener('click', () => render('sameScale'));
     if (sameSizeButton) sameSizeButton.addEventListener('click', () => render('sameSize'));
 
-    render('sameScale');
+    render('sameSize');
+  }
+
+  // --- "Share of the radius": two horizontal stacked bars --------------
+
+  // Below this segment width (viewBox units), its own percentage label
+  // can't fit inside it (Earth's crust is well under 1% of its radius —
+  // a sliver a few pixels wide even in a 1,000-unit-wide bar), so that
+  // label goes outside instead, under a short leader line down to the
+  // segment's own centre, rather than overlapping its neighbours.
+  const SHARE_CHART = {
+    width: 1120,
+    height: 280,
+    barX: 120,
+    barWidth: 1000,
+    barHeight: 56,
+    inlineLabelMinWidth: 70,
+    rows: [
+      { key: 'earth', label: 'Earth', y: 40 },
+      { key: 'moon', label: 'Moon', y: 170 },
+    ],
+  };
+
+  // Pale fills (inner core) need dark text; the rest read better in
+  // white. Crust is never wide enough to go inline in practice (both
+  // bodies' crusts are under the inline threshold above), so it has no
+  // entry here — addShareLabel falls back to dark for any layer this
+  // table doesn't name.
+  const SHARE_INLINE_LABEL_COLOR = { mantle: '#ffffff', outerCore: '#ffffff' };
+
+  function addShareLabel(wrap, x, y, text, extraClass) {
+    const el = document.createElement('span');
+    el.className = `body-layers-share-label${extraClass ? ` ${extraClass}` : ''}`;
+    el.style.left = `${(x / SHARE_CHART.width) * 100}%`;
+    el.style.top = `${(y / SHARE_CHART.height) * 100}%`;
+    el.textContent = text;
+    wrap.appendChild(el);
+    return el;
+  }
+
+  // Renders the "Share of the radius" bars into an existing empty
+  // <svg>/wrap pair, found by id. Unlike mount() above, this chart
+  // doesn't change with the Same scale/Same size toggle — a share of
+  // the radius is the same number either way — so it draws once and is
+  // never re-rendered.
+  function mountShareChart(svgId, wrapId) {
+    const svg = document.getElementById(svgId);
+    const wrap = document.getElementById(wrapId);
+    if (!svg || !wrap) return;
+    const { width, height, barX, barWidth, barHeight, inlineLabelMinWidth, rows } = SHARE_CHART;
+    svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+    svg.innerHTML = '';
+    wrap.querySelectorAll('.body-layers-share-label').forEach((el) => el.remove());
+
+    rows.forEach((row) => {
+      const shares = layerShareFractions(row.key);
+      let x = barX;
+      LAYER_STYLE.forEach((style) => {
+        const share = shares[style.key];
+        const segmentWidth = share * barWidth;
+        svgEl('rect', {
+          x, y: row.y, width: segmentWidth, height: barHeight,
+          fill: style.fill, stroke: '#ffffff', 'stroke-width': 1,
+        }, svg);
+
+        const text = formatSharePercent(share);
+        const segmentCx = x + segmentWidth / 2;
+        if (segmentWidth >= inlineLabelMinWidth) {
+          const inlineLabel = addShareLabel(wrap, segmentCx, row.y + barHeight / 2, text, 'body-layers-share-label--inline');
+          inlineLabel.style.color = SHARE_INLINE_LABEL_COLOR[style.key] || '#1a1a1a';
+        } else {
+          const leaderY1 = row.y + barHeight;
+          const leaderY2 = leaderY1 + 14;
+          svgEl('line', { x1: segmentCx, y1: leaderY1, x2: segmentCx, y2: leaderY2, stroke: '#8a97a5', 'stroke-width': 1 }, svg);
+          addShareLabel(wrap, segmentCx, leaderY2 + 10, text, 'body-layers-share-label--outside');
+        }
+        x += segmentWidth;
+      });
+      addShareLabel(wrap, 10, row.y + barHeight / 2, row.label, 'body-layers-share-row-label');
+    });
   }
 
   const api = {
-    BODY_LAYERS_KM, LAYER_STYLE, GEOMETRY,
-    layerFractions, outerRadiusPx, computeLayersPx,
+    BODY_LAYERS_KM, LAYER_STYLE, GEOMETRY, SHARE_CHART,
+    layerFractions, layerShareFractions, formatSharePercent,
+    outerRadiusPx, computeLayersPx,
+    sameScaleMagnification, magnifiedMoonLabel,
     sameScaleCaption, sameSizeCaption,
-    mount,
+    mount, mountShareChart,
   };
 
   if (typeof module !== 'undefined' && module.exports) {
