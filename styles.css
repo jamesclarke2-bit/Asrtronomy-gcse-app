@@ -1965,6 +1965,73 @@ canvas {
   line-height: 1.5;
 }
 
+/* sims/moon-phases.html: the eight-phases grid (src/moonPhasesDiagrams.js)
+   reuses .concept-grid/.concept-card (the same "short items in cards"
+   pattern notes/solar-system-bodies.html etc. already use), just with
+   smaller cards — 8 of them need to fit a phone-width row without each
+   one claiming .concept-grid's own 240px minimum. */
+.eight-phases-grid {
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: 0.75rem;
+}
+
+.phase-card {
+  padding: 0.6rem;
+  text-align: center;
+}
+
+.phase-card svg {
+  width: 100%;
+  height: auto;
+}
+
+.phase-card h3 {
+  margin: 0.4rem 0 0;
+  font-size: 0.85rem;
+}
+
+.orbit-scale-diagram,
+.earthshine-diagram {
+  max-width: 640px;
+  margin: 1rem 0;
+}
+
+.earthshine-diagram {
+  max-width: 320px;
+}
+
+/* Same fix as .moon-hemisphere-figure's own .labelled-diagram-wrap
+   override above: without an explicit width here, this wrap sizes to
+   its own content instead of the figure, leaving the svg's width: 100%
+   (from .responsive-svg) resolving against a near-zero containing
+   block instead of the diagram's real available width. */
+.orbit-scale-diagram .labelled-diagram-wrap,
+.earthshine-diagram .labelled-diagram-wrap {
+  display: block;
+  width: 100%;
+}
+
+/* Leader-line labels for the orbit-scale and earthshine pictures: plain
+   HTML text (never SVG <text> — see notes/TEMPLATE.md section on shared
+   CSS), positioned by percentage like .body-layers-label, just centred
+   rather than left-aligned since these sit above/below a point rather
+   than in a ring-diagram's own label column. */
+.diagram-label {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 9rem;
+  text-align: center;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  line-height: 1.25;
+  pointer-events: none;
+}
+
+.diagram-label--wide {
+  width: 12rem;
+}
+
 .pinhole-diagram,
 .telescope-projection-diagram {
   max-width: 380px;

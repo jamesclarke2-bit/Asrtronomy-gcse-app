@@ -66,7 +66,7 @@ function makeMoonPhase() {
     return 'Waning Crescent';
   }
 
-  return { getMoonPhase, fromAgeDays, phaseName, SYNODIC_MONTH_DAYS };
+  return { getMoonPhase, fromAgeDays, fromTheta, phaseName, SYNODIC_MONTH_DAYS };
 }
 
 if (typeof module !== 'undefined' && module.exports) {

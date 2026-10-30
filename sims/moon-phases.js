@@ -287,6 +287,14 @@
       "Apogee: the point in the Moon's elliptical orbit farthest from Earth, about 405,500 km away. The Moon moves slowest here.",
     supermoon:
       'A supermoon: a full (or new) Moon that falls within a few days of perigee. It is a popular term rather than a strict scientific one — the effect is real but modest.',
+    crescent:
+      'A crescent Moon: less than half lit, a thin curved sliver — seen shortly after New Moon (waxing) or shortly before it (waning).',
+    gibbous:
+      'A gibbous Moon: more than half lit but not full, a bulging shape — seen between a quarter and Full Moon.',
+    terminator:
+      "The terminator: the line between a Moon or planet's lit and dark sides — where the Sun is rising or setting as seen from that point on its surface.",
+    earthshine:
+      "Earthshine: faint light on the Moon's dark side, from sunlight reflecting off (sunlit) Earth back onto it — easiest to see as a thin crescent, within a few days of New Moon.",
   };
 
   // The headline ~14% / ~30% figures come from the most extreme real
@@ -298,6 +306,10 @@
     `the orbit enough that real perigees range from about 356,500 to 370,400 km. This page keeps the ` +
     `orbit's shape fixed, so its perigee and apogee full Moons differ by a slightly smaller ` +
     `~${Math.round((sizeRatio - 1) * 100)}% in size and ~${Math.round((sizeRatio ** 2 - 1) * 100)}% in brightness.`;
+
+  MoonPhasesDiagrams.mountEightPhases('eight-phases-grid', { MoonPhase });
+  MoonPhasesDiagrams.mountEarthshine('earthshine-svg', 'earthshine-wrap');
+  MoonPhasesDiagrams.mountOrbitScale('orbit-scale-svg', 'orbit-scale-wrap', { MoonOrbitPanel });
 
   dateInput.value = toDateInputValue(new Date());
   render();

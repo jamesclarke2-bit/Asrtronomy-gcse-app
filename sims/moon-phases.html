@@ -7,7 +7,7 @@
   <meta name="referrer" content="no-referrer" />
   <meta name="robots" content="noindex, nofollow" />
   <title>Moon Phases</title>
-  <link rel="stylesheet" href="../styles.css?v=202611031200" />
+  <link rel="stylesheet" href="../styles.css?v=202611031400" />
   <link rel="icon" type="image/svg+xml" href="../favicon.svg?v=202610130720" />
 </head>
 <body>
@@ -153,8 +153,72 @@
       </div>
     </div>
 
+    <section class="notes-section" id="eight-phases">
+      <h2>The eight phases, in order</h2>
+      <p>
+        As the Moon goes round, its lit half turns from a thin
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="crescent" aria-label="What does crescent mean?" aria-expanded="false">crescent</button>
+        to a bulging
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="gibbous" aria-label="What does gibbous mean?" aria-expanded="false">gibbous</button>
+        shape and back. Each card below shows the Moon's position in its orbit (top) beside what
+        you'd actually see from Earth that night (bottom).
+      </p>
+      <span class="glossary-definition" data-term="crescent" hidden></span>
+      <span class="glossary-definition" data-term="gibbous" hidden></span>
+
+      <div class="concept-grid eight-phases-grid" id="eight-phases-grid"></div>
+      <p class="note">
+        Reading left to right: the first four phases are waxing (the lit area growing); the last
+        four are waning (shrinking back to New Moon). The curved edge between light and dark in
+        each Earth-view disc is called the
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="terminator" aria-label="What is the terminator?" aria-expanded="false">terminator</button>
+        — straight at the quarters, bulging the rest of the time.
+      </p>
+      <span class="glossary-definition" data-term="terminator" hidden></span>
+    </section>
+
+    <section class="notes-section" id="earthshine">
+      <h2>Earthshine</h2>
+      <p>
+        Near New Moon, the Moon's dark side isn't pitch black: sunlight reflecting off Earth
+        faintly lights it, an effect called
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="earthshine" aria-label="What is earthshine?" aria-expanded="false">earthshine</button>.
+      </p>
+      <span class="glossary-definition" data-term="earthshine" hidden></span>
+      <div class="diagram earthshine-diagram">
+        <div class="labelled-diagram-wrap" id="earthshine-wrap">
+          <svg
+            id="earthshine-svg"
+            class="responsive-svg"
+            viewBox="0 0 220 260"
+            role="img"
+            aria-label="A thin crescent Moon, with its sunlit crescent bright and its dark side faintly glowing with earthshine"
+          ></svg>
+        </div>
+      </div>
+      <p class="note">
+        Easiest to see within a few days of New Moon, low in the twilight sky, when the crescent
+        is thin and Earth (as seen from the Moon) is nearly full.
+      </p>
+    </section>
+
     <section class="notes-section" id="perigee-apogee">
       <h2>Perigee, apogee and supermoons</h2>
+      <div class="diagram orbit-scale-diagram">
+        <div class="labelled-diagram-wrap" id="orbit-scale-wrap">
+          <svg
+            id="orbit-scale-svg"
+            class="responsive-svg"
+            viewBox="0 0 640 560"
+            role="img"
+            aria-label="Top-down view of the Moon's elliptical orbit, exaggerated, with perigee and apogee marked and their distances, and the Moon's largest (supermoon, at perigee) and smallest (micromoon, at apogee) apparent sizes overlaid for comparison"
+          ></svg>
+        </div>
+        <p class="diagram-caption">
+          Perigee and apogee distances, and the supermoon/micromoon size difference, are a first
+          draft, to be checked by the teacher.
+        </p>
+      </div>
       <p>
         The Moon's orbit isn't a perfect circle but a slightly stretched ellipse, with Earth
         off-centre at one focus. Its mean distance is about <strong>384,400&nbsp;km</strong>
@@ -187,12 +251,13 @@
 
   <script src="../src/curriculum.js?v=202610292000"></script>
   <script src="../src/pages.js?v=202611030900"></script>
-  <script src="../src/moonPhase.js?v=202609241000"></script>
+  <script src="../src/moonPhase.js?v=202611031300"></script>
   <script src="../src/orbitalMechanics.js?v=202610100900"></script>
   <script src="../src/moonOrbitPanel.js?v=202610041201"></script>
   <script src="../src/animationTiming.js?v=202610130606"></script>
+  <script src="../src/moonPhasesDiagrams.js?v=202611031300"></script>
   <script src="../glossary.js?v=202610131052"></script>
-  <script src="moon-phases.js?v=202610130606"></script>
+  <script src="moon-phases.js?v=202611031300"></script>
   <script src="../nextPage.js?v=202610161057"></script>
 </body>
 </html>
