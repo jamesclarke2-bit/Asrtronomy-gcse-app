@@ -26,6 +26,17 @@
   const PRIME_MERIDIAN_COLOR = '#2e8b57';
   const LABEL_X = 585;
 
+  // Quiz-only dimming (drawGlobe's dimLines param): every reference
+  // line/pole normally draws in its own distinct colour, but in the
+  // "Name that line" picture quiz every *other* feature besides the one
+  // being asked about instead draws pale grey at low opacity, so the
+  // highlighted feature's own marker (deep purple, well below) can't be
+  // confused with any of them — unlike the old design, where the
+  // marker's own accent blue was close enough to the Arctic/Antarctic
+  // Circle's own blue to be genuinely hard to tell apart.
+  const QUIZ_DIM_LINE_COLOR = '#c7cdd4';
+  const QUIZ_DIM_LINE_OPACITY = 0.3;
+
   const dateSlider = document.getElementById('date-slider');
   const dateLabel = document.getElementById('date-label');
   const orbitCanvas = document.getElementById('orbit');
@@ -100,9 +111,11 @@
   // (just below) don't change; renderLineQuizDiagram() below passes a
   // fresh svg/wrap pair instead, with idPrefix set so its <defs> id can't
   // collide with the main globe's (or another quiz instance's) when both
-  // are inlined in the same document, and showLabels off so none of its
-  // reference lines render a label at all.
-  function drawGlobe(svg = document.getElementById('globe'), wrap = document.getElementById('globe-wrap'), idPrefix = '', showLabels = true) {
+  // are inlined in the same document, showLabels off so none of its
+  // reference lines render a label at all, and dimLines on so every
+  // named parallel/meridian/pole draws pale grey instead of its own
+  // normal colour — see the quiz-marker block below for why.
+  function drawGlobe(svg = document.getElementById('globe'), wrap = document.getElementById('globe-wrap'), idPrefix = '', showLabels = true, dimLines = false) {
     const defs = svgEl('defs', {}, svg);
     const shade = svgEl('radialGradient', { id: `${idPrefix}globe-shade`, cx: '42%', cy: '40%', r: '65%' }, defs);
     svgEl('stop', { offset: '0%', 'stop-color': '#e3f0fa' }, shade);
@@ -128,7 +141,11 @@
       const east = project(line.lat, CENTRE_LONGITUDE + 90);
       const group = makeToggle(svg, line.term, line.name);
       svgEl('line', { x1: west.x, y1: west.y, x2: east.x, y2: east.y, stroke: 'transparent', 'stroke-width': 18, 'pointer-events': 'stroke' }, group);
-      const visible = { x1: west.x, y1: west.y, x2: east.x, y2: east.y, stroke: line.color, 'stroke-width': 3, 'stroke-linecap': 'round' };
+      const visible = {
+        x1: west.x, y1: west.y, x2: east.x, y2: east.y,
+        stroke: dimLines ? QUIZ_DIM_LINE_COLOR : line.color, 'stroke-width': 3, 'stroke-linecap': 'round',
+      };
+      if (dimLines) visible['stroke-opacity'] = QUIZ_DIM_LINE_OPACITY;
       if (line.dash) visible['stroke-dasharray'] = line.dash;
       svgEl('line', visible, group);
 
@@ -140,7 +157,9 @@
 
     const meridian = makeToggle(svg, 'primeMeridian', 'Prime Meridian');
     svgEl('path', { d: meridianPath(0), fill: 'none', stroke: 'transparent', 'stroke-width': 18, 'pointer-events': 'stroke' }, meridian);
-    svgEl('path', { d: meridianPath(0), fill: 'none', stroke: PRIME_MERIDIAN_COLOR, 'stroke-width': 3 }, meridian);
+    const meridianVisible = { d: meridianPath(0), fill: 'none', stroke: dimLines ? QUIZ_DIM_LINE_COLOR : PRIME_MERIDIAN_COLOR, 'stroke-width': 3 };
+    if (dimLines) meridianVisible['stroke-opacity'] = QUIZ_DIM_LINE_OPACITY;
+    svgEl('path', meridianVisible, meridian);
     if (showLabels) {
       const meridianPoint = project(-50, 0);
       const meridianLabel = { x: 95, y: 470 };
@@ -155,7 +174,9 @@
       const p = project(pole.lat, CENTRE_LONGITUDE);
       const group = makeToggle(svg, pole.term, pole.name);
       svgEl('circle', { cx: p.x, cy: p.y, r: 16, fill: 'transparent', 'pointer-events': 'all' }, group);
-      svgEl('circle', { cx: p.x, cy: p.y, r: 6, fill: '#1f2d3d', stroke: '#fff', 'stroke-width': 1.5 }, group);
+      const dotAttrs = { cx: p.x, cy: p.y, r: 6, fill: dimLines ? QUIZ_DIM_LINE_COLOR : '#1f2d3d', stroke: '#fff', 'stroke-width': 1.5 };
+      if (dimLines) dotAttrs['fill-opacity'] = QUIZ_DIM_LINE_OPACITY;
+      svgEl('circle', dotAttrs, group);
       if (showLabels) addLabel(wrap, CX, pole.labelY, pole.name, pole.value);
     });
   }
@@ -163,23 +184,67 @@
   // A CSS filter/drop-shadow doesn't render reliably on SVG shapes in
   // Safari/WebKit, so the highlight here is real SVG attributes, added
   // as one fresh marker shape on top of the globe — never a restyle of
-  // the feature's own line or dot — in the site's own accent blue with
-  // a thin white stroke underneath for contrast, same approach and same
-  // colours as notes/moon-structure.html's own quiz markers. The rest
-  // of the globe stays at normal brightness (no dimming); the marker
-  // alone shows which feature is being asked about.
-  const QUIZ_MARKER_COLOR = '#2a6bd6';
+  // the feature's own line or dot. A plain accent-blue ring used to read
+  // as just another line on the globe (close enough to the Arctic/
+  // Antarctic Circle's own blue to be genuinely hard to tell apart), so
+  // the marker is now about four times a normal line's own 3px width,
+  // in a deep purple no line on the globe ever uses, with a small arrow
+  // and a "?" pointing at it from just outside the globe — a bold dot
+  // alone for a pole, since a point doesn't need an arrow to find it.
+  // Every *other* reference line/pole now draws pale grey (drawGlobe's
+  // dimLines) so the marker reads against all of them, not just its own
+  // neighbours.
+  const QUIZ_MARKER_COLOR = '#6a1b9a';
   const QUIZ_MARKER_UNDERLAY_COLOR = '#ffffff';
-  const QUIZ_MARKER_STROKE_WIDTH = 4;
-  const QUIZ_MARKER_UNDERLAY_STROKE_WIDTH = 8;
-  const QUIZ_MARKER_POLE_RADIUS = 16;
+  const QUIZ_MARKER_STROKE_WIDTH = 12; // ~4x NAMED_PARALLELS' own 3px lines
+  const QUIZ_MARKER_UNDERLAY_STROKE_WIDTH = 16;
+  const QUIZ_MARKER_POLE_RADIUS = 11;
+  const QUIZ_ARROW_LENGTH = 22;
+  const QUIZ_ARROW_GAP = 8;
 
   function drawQuizMarkerShape(tag, attrs, parent) {
     svgEl(tag, { ...attrs, fill: 'none', stroke: QUIZ_MARKER_UNDERLAY_COLOR, 'stroke-width': QUIZ_MARKER_UNDERLAY_STROKE_WIDTH }, parent);
     svgEl(tag, { ...attrs, fill: 'none', stroke: QUIZ_MARKER_COLOR, 'stroke-width': QUIZ_MARKER_STROKE_WIDTH }, parent);
   }
 
-  function applyLineQuizHighlight(svg, highlightTerm) {
+  // A short arrow pointing in at `anchor` from just outside the globe
+  // (along the line from the globe's own centre through anchor), with a
+  // bold "?" beside its tail — the "what is this?" annotation for a
+  // highlighted line. `idPrefix` keeps the arrowhead marker's id from
+  // colliding when several quiz instances are inlined in one document.
+  function drawQuizArrow(parent, anchor, idPrefix) {
+    const dx = anchor.x - CX;
+    const dy = anchor.y - CY;
+    const dist = Math.hypot(dx, dy) || 1;
+    const ux = dx / dist;
+    const uy = dy / dist;
+    const tailX = anchor.x + ux * (QUIZ_ARROW_LENGTH + QUIZ_ARROW_GAP);
+    const tailY = anchor.y + uy * (QUIZ_ARROW_LENGTH + QUIZ_ARROW_GAP);
+    const headX = anchor.x + ux * QUIZ_ARROW_GAP;
+    const headY = anchor.y + uy * QUIZ_ARROW_GAP;
+
+    const defs = svgEl('defs', {}, parent);
+    const markerId = `${idPrefix}quiz-arrowhead`;
+    const marker = svgEl('marker', { id: markerId, markerWidth: 8, markerHeight: 8, refX: 6, refY: 4, orient: 'auto' }, defs);
+    svgEl('path', { d: 'M0,0 L8,4 L0,8 Z', fill: QUIZ_MARKER_COLOR }, marker);
+
+    svgEl('line', { x1: tailX, y1: tailY, x2: headX, y2: headY, stroke: QUIZ_MARKER_UNDERLAY_COLOR, 'stroke-width': 6, 'stroke-linecap': 'round' }, parent);
+    svgEl('line', {
+      x1: tailX, y1: tailY, x2: headX, y2: headY,
+      stroke: QUIZ_MARKER_COLOR, 'stroke-width': 3, 'stroke-linecap': 'round', 'marker-end': `url(#${markerId})`,
+    }, parent);
+
+    const qX = anchor.x + ux * (QUIZ_ARROW_LENGTH + QUIZ_ARROW_GAP + 15);
+    const qY = anchor.y + uy * (QUIZ_ARROW_LENGTH + QUIZ_ARROW_GAP + 15);
+    const text = svgEl('text', {
+      x: qX, y: qY, 'text-anchor': 'middle', 'dominant-baseline': 'middle',
+      'font-size': 20, 'font-weight': 700, fill: QUIZ_MARKER_COLOR,
+      stroke: QUIZ_MARKER_UNDERLAY_COLOR, 'stroke-width': 3, 'paint-order': 'stroke',
+    }, parent);
+    text.textContent = '?';
+  }
+
+  function applyLineQuizHighlight(svg, highlightTerm, idPrefix) {
     const region = svg.querySelector(`.diagram-region[data-term="${highlightTerm}"]`);
     if (!region) return;
     region.classList.add('diagram-feature-highlight');
@@ -188,12 +253,13 @@
 
     if (highlightTerm === 'northPole' || highlightTerm === 'southPole') {
       const p = project(highlightTerm === 'northPole' ? 90 : -90, CENTRE_LONGITUDE);
-      drawQuizMarkerShape('circle', { cx: p.x, cy: p.y, r: QUIZ_MARKER_POLE_RADIUS }, marker);
+      svgEl('circle', { cx: p.x, cy: p.y, r: QUIZ_MARKER_POLE_RADIUS, fill: QUIZ_MARKER_COLOR, stroke: QUIZ_MARKER_UNDERLAY_COLOR, 'stroke-width': 3 }, marker);
       return;
     }
 
     if (highlightTerm === 'primeMeridian') {
       drawQuizMarkerShape('path', { d: meridianPath(0), 'stroke-linecap': 'round' }, marker);
+      drawQuizArrow(marker, project(-50, 0), idPrefix);
       return;
     }
 
@@ -202,6 +268,7 @@
       const west = project(parallel.lat, CENTRE_LONGITUDE - 90);
       const east = project(parallel.lat, CENTRE_LONGITUDE + 90);
       drawQuizMarkerShape('line', { x1: west.x, y1: west.y, x2: east.x, y2: east.y, 'stroke-linecap': 'round' }, marker);
+      drawQuizArrow(marker, east, idPrefix);
     }
   }
 
@@ -210,8 +277,8 @@
   // geometry) into a fresh svg/wrap pair with showLabels off (so none of
   // the eight reference features render a label at all — stronger than
   // the Moon map's .labels-hidden CSS toggle, since there's no existing
-  // "hide labels" button on this page to reuse the class from), and
-  // highlights just the one feature being asked about.
+  // "hide labels" button on this page to reuse the class from) and
+  // dimLines on, and highlights just the one feature being asked about.
   function renderLineQuizDiagram(container, highlightTerm) {
     const wrap = document.createElement('div');
     wrap.className = 'labelled-diagram-wrap';
@@ -224,8 +291,9 @@
       'aria-label': 'Globe with labels hidden and one reference line or point highlighted to identify',
     }, wrap);
 
-    drawGlobe(svg, wrap, `quiz-${highlightTerm}-`, false);
-    applyLineQuizHighlight(svg, highlightTerm);
+    const idPrefix = `quiz-${highlightTerm}-`;
+    drawGlobe(svg, wrap, idPrefix, false, true);
+    applyLineQuizHighlight(svg, highlightTerm, idPrefix);
 
     svg.querySelectorAll('.glossary-toggle').forEach((el) => el.setAttribute('tabindex', '-1'));
 
@@ -490,8 +558,27 @@
       'An atmospheric transmission window: a range of wavelengths that passes through the atmosphere with little absorption and reaches the ground, unlike most of the electromagnetic spectrum.',
   };
 
+  function setUpBodyLayersToggle() {
+    const button = document.getElementById('toggle-body-layers');
+    const panel = document.getElementById('body-layers-panel');
+    if (!button || !panel) return;
+    button.addEventListener('click', () => {
+      const nowHidden = !panel.hidden;
+      panel.hidden = nowHidden;
+      button.setAttribute('aria-pressed', String(!nowHidden));
+    });
+  }
+
   drawGlobe();
   drawEarthLayers();
+  setUpBodyLayersToggle();
+  BodyLayersDiagram.mount({
+    svgId: 'body-layers-svg',
+    wrapId: 'body-layers-wrap',
+    sameScaleButtonId: 'body-layers-same-scale',
+    sameSizeButtonId: 'body-layers-same-size',
+    captionId: 'body-layers-caption',
+  }, { SpecData, RingDiagramLabels });
   drawCompositionBar();
   drawAtmosphereLadder();
   drawTransmissionChart();

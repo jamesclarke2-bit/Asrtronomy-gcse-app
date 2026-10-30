@@ -7,7 +7,7 @@
   <meta name="referrer" content="no-referrer" />
   <meta name="robots" content="noindex, nofollow" />
   <title>Earth: Structure, Atmosphere and Motion</title>
-  <link rel="stylesheet" href="../styles.css?v=202611021500" />
+  <link rel="stylesheet" href="../styles.css?v=202611031100" />
   <link rel="icon" type="image/svg+xml" href="../favicon.svg?v=202610130720" />
 </head>
 <body>
@@ -128,6 +128,36 @@
         <li data-layer="inner-core"><span class="legend-dot layer-dot-inner-core"></span><strong>Inner core</strong> &mdash; solid iron-nickel, despite being the hottest layer, kept solid by immense pressure.</li>
       </ul>
       <p class="note">Layer thicknesses in the diagram are schematic, not to scale.</p>
+
+      <p>
+        <button type="button" id="toggle-body-layers" class="secondary-button" aria-pressed="false">Compare with the Moon's layers</button>
+      </p>
+      <div id="body-layers-panel" hidden>
+        <div class="body-layers-toggle">
+          <button type="button" id="body-layers-same-scale" class="list-view-toggle" aria-pressed="true">Same scale</button>
+          <button type="button" id="body-layers-same-size" class="list-view-toggle" aria-pressed="false">Same size</button>
+        </div>
+        <div class="diagram">
+          <div class="labelled-diagram-wrap" id="body-layers-wrap">
+            <svg
+              id="body-layers-svg"
+              viewBox="0 0 1200 580"
+              width="1200"
+              height="580"
+              role="img"
+              aria-label="Earth and the Moon's internal layers compared side by side, each as a labelled cutaway of its crust, mantle, outer core and inner core"
+            ></svg>
+          </div>
+        </div>
+        <p class="diagram-caption" id="body-layers-caption"></p>
+        <p class="note">
+          Earth's crust, and both bodies' mantle-base and inner-core radii, are a first draft, to
+          be checked by the teacher &mdash; the Moon's crust instead uses the GRAIL figure given
+          on <a href="moon-structure.html#inside-the-moon">The Moon: Structure, Surface and
+          Origin</a>. The Same scale view's overall sizes use the exam data sheet's own diameters;
+          this diagram's internal layers use more precise radii for the proportions.
+        </p>
+      </div>
     </section>
 
     <section class="notes-section" id="atmosphere-composition">
@@ -364,6 +394,10 @@
           <h3>Formulae and Data Sheet</h3>
           <p class="page-card-description">Earth's mass and mean diameter, assumed throughout this page's look at its interior, are given on this sheet.</p>
         </a>
+        <a class="page-card" href="moon-structure.html">
+          <h3>The Moon: Structure, Surface and Origin</h3>
+          <p class="page-card-description">See Earth's own crust, mantle and core compared with the Moon's, to scale.</p>
+        </a>
       </div>
     </section>
 
@@ -379,9 +413,10 @@
   <script src="../src/earthOrbit.js?v=202609212100"></script>
   <script src="../src/orbitPanel.js?v=202609221500"></script>
   <script src="../src/ringDiagramLabels.js?v=202611021000"></script>
+  <script src="../src/bodyLayersDiagram.js?v=202611031100"></script>
   <script src="../glossary.js?v=202610131052"></script>
   <script src="../quiz-ui.js?v=202611021000"></script>
-  <script src="earth-structure.js?v=202611021000"></script>
+  <script src="earth-structure.js?v=202611031100"></script>
   <script src="../notesPage.js?v=202609270100"></script>
   <script src="../nextPage.js?v=202610161057"></script>
 </body>

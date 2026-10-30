@@ -2067,6 +2067,37 @@ canvas {
   pointer-events: none;
 }
 
+/* src/bodyLayersDiagram.js's shared Earth-vs-Moon comparison: two ring
+   diagrams side by side in one wide box, so .ring-diagram-label's own
+   30%-of-the-whole-box width would be far too wide and could overlap
+   the other body's circle — the same label look, narrowed to fit a
+   label column about a sixth of the box's width instead. */
+.body-layers-label {
+  position: absolute;
+  transform: translateY(-50%);
+  text-align: left;
+  width: 16%;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  line-height: 1.25;
+  pointer-events: none;
+}
+
+.body-layers-body-name {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  font-weight: 700;
+  font-size: 1rem;
+  color: #1a1a1a;
+}
+
+.body-layers-toggle {
+  display: flex;
+  gap: 0.6rem;
+  margin-bottom: 0.75rem;
+}
+
 /* notes/telescopes.html: a diagram with a light background (the
    lens/mirror panel, the bench, the Galilean/Keplerian comparison)
    uses the default dark label text above; the eyepiece view keeps a

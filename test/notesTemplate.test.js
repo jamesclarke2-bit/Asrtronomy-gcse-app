@@ -94,20 +94,23 @@ function stripTags(s) {
 // its true matching close tag found, rather than the first same-named
 // close tag encountered — which would leave most of its real content
 // unstripped and wrongly counted as visible.
-function stripHiddenAndTags(s) {
+//
+// Returns every hidden element's [start, end) character range in `s`
+// (the *whole* <main>, not a single before/between slice — see
+// visibleSlice below for why that distinction matters).
+function findHiddenRanges(s) {
   const TAG_RE = /<(\/?)(\w+)([^>]*?)(\/?)>/g;
-  let result = '';
-  let lastIndex = 0;
-  let hiddenDepth = 0; // 0 = not inside a hidden element; else the stack depth it started at
   const stack = [];
+  let hiddenDepth = 0; // 0 = not inside a hidden element; else the stack depth it started at
+  let hiddenStart = -1;
+  const ranges = [];
   let match;
   while ((match = TAG_RE.exec(s))) {
     const [full, closingSlash, tagName, attrs, selfClosingSlash] = match;
-    if (hiddenDepth === 0) result += s.slice(lastIndex, match.index);
-    lastIndex = match.index + full.length;
 
     if (closingSlash) {
       if (hiddenDepth !== 0 && stack.length === hiddenDepth && stack[stack.length - 1] === tagName) {
+        ranges.push([hiddenStart, match.index + full.length]);
         hiddenDepth = 0;
       }
       if (stack.length && stack[stack.length - 1] === tagName) stack.pop();
@@ -117,10 +120,35 @@ function stripHiddenAndTags(s) {
     if (selfClosingSlash) continue; // self-closing: no content, nothing to push
 
     stack.push(tagName);
-    if (hiddenDepth === 0 && /\bhidden\b/.test(attrs)) hiddenDepth = stack.length;
+    if (hiddenDepth === 0 && /\bhidden\b/.test(attrs)) {
+      hiddenDepth = stack.length;
+      hiddenStart = match.index;
+    }
   }
-  if (hiddenDepth === 0) result += s.slice(lastIndex);
-  return stripTags(result);
+  return ranges;
+}
+
+// The visible (non-hidden) text of s.slice(start, end), given hiddenRanges
+// already computed over the *whole* string s — not just this slice. A
+// slice taken in isolation can't tell whether it opens already inside a
+// hidden ancestor (the hidden element's own opening tag, and so the only
+// thing that would normally set hiddenDepth, can sit in an *earlier*
+// slice while a visual nested inside it sits in this one — exactly
+// notes/moon-structure.html's "Compare with Earth's layers" panel, whose
+// hidden comparison picture sits between two other visuals) — only a
+// hidden-range pass over the whole document can see that correctly.
+function visibleSlice(s, start, end, hiddenRanges) {
+  let result = '';
+  let cursor = start;
+  hiddenRanges.forEach(([hiddenStart, hiddenEnd]) => {
+    if (hiddenEnd <= start || hiddenStart >= end) return; // no overlap with this slice
+    const clipStart = Math.max(hiddenStart, cursor);
+    const clipEnd = Math.min(hiddenEnd, end);
+    if (clipStart > cursor) result += s.slice(cursor, clipStart);
+    cursor = Math.max(cursor, clipEnd);
+  });
+  if (cursor < end) result += s.slice(cursor, end);
+  return result;
 }
 
 // Position (character offset) of every <canvas> or <svg> opening tag —
@@ -255,6 +283,7 @@ const DIAGRAM_FIRST_BETWEEN_LIMIT = 250;
 DIAGRAM_FIRST_PAGES.forEach((href) => {
   const html = read(href);
   const main = /<main>([\s\S]*)<\/main>/.exec(html)[1];
+  const hiddenRanges = findHiddenRanges(main);
 
   test(`${href}: opens with its first diagram or simulation within ${DIAGRAM_FIRST_BEFORE_FIRST_LIMIT} words of the subtitle`, () => {
     const overview = /<\/h1>\s*<p class="subtitle">[\s\S]*?<\/p>/.exec(main);
@@ -265,8 +294,8 @@ DIAGRAM_FIRST_PAGES.forEach((href) => {
     assert.ok(visuals.length > 0, 'at least one canvas or svg on the page');
     assert.ok(visuals[0] >= afterSubtitle, 'first visual comes after the subtitle');
 
-    const before = main.slice(afterSubtitle, visuals[0]);
-    const words = NotesPage.countWords(stripHiddenAndTags(before));
+    const before = visibleSlice(main, afterSubtitle, visuals[0], hiddenRanges);
+    const words = NotesPage.countWords(stripTags(before));
     assert.ok(
       words <= DIAGRAM_FIRST_BEFORE_FIRST_LIMIT,
       `${words} words before the first visual, over the ${DIAGRAM_FIRST_BEFORE_FIRST_LIMIT}-word limit`
@@ -276,8 +305,8 @@ DIAGRAM_FIRST_PAGES.forEach((href) => {
   test(`${href}: no more than ${DIAGRAM_FIRST_BETWEEN_LIMIT} words between any two visuals`, () => {
     const visuals = visualPositions(main);
     for (let i = 1; i < visuals.length; i += 1) {
-      const between = main.slice(visuals[i - 1], visuals[i]);
-      const words = NotesPage.countWords(stripHiddenAndTags(between));
+      const between = visibleSlice(main, visuals[i - 1], visuals[i], hiddenRanges);
+      const words = NotesPage.countWords(stripTags(between));
       assert.ok(
         words <= DIAGRAM_FIRST_BETWEEN_LIMIT,
         `${words} words between visual ${i} and visual ${i + 1}, over the ${DIAGRAM_FIRST_BETWEEN_LIMIT}-word limit`

@@ -464,18 +464,22 @@
   // overlapping circles turned "highlighted" into a scribble. The rest
   // of the map stays at normal brightness (no dimming), so the surface
   // itself stays readable: the marker alone shows which feature is
-  // being asked about. One ring (circle or ellipse), sized to the
-  // feature, in the site's own accent blue with a thin white stroke
-  // underneath for contrast against the map's light and dark areas
-  // alike; the Apennines (a ridge, not a blob) get the same treatment
-  // traced along a short arc instead.
-  const QUIZ_MARKER_COLOR = '#2a6bd6';
+  // being asked about. A bigger ring (circle or ellipse), sized to the
+  // feature, in a deep purple no part of the map uses, with a thin white
+  // stroke underneath for contrast against the map's light and dark
+  // areas alike, and a small arrow and "?" pointing at it, same as
+  // notes/earth-structure.html's own quiz markers; the Apennines (a
+  // ridge, not a blob) get the same treatment traced along a short arc
+  // instead.
+  const QUIZ_MARKER_COLOR = '#6a1b9a';
   const QUIZ_MARKER_UNDERLAY_COLOR = '#ffffff';
-  const QUIZ_MARKER_STROKE_WIDTH = 4;
-  const QUIZ_MARKER_UNDERLAY_STROKE_WIDTH = 8;
-  const QUIZ_MARKER_PADDING = 10;
+  const QUIZ_MARKER_STROKE_WIDTH = 6;
+  const QUIZ_MARKER_UNDERLAY_STROKE_WIDTH = 10;
+  const QUIZ_MARKER_PADDING = 16;
+  const QUIZ_ARROW_LENGTH = 22;
+  const QUIZ_ARROW_GAP = 8;
 
-  // Draws the shape twice — a wider white underlay first, the accent-blue
+  // Draws the shape twice — a wider white underlay first, the deep-purple
   // ring on top — so the marker reads clearly against both the pale
   // highlands and the darker maria.
   function drawQuizMarkerShape(tag, attrs, parent) {
@@ -483,7 +487,43 @@
     svgEl(tag, { ...attrs, fill: 'none', stroke: QUIZ_MARKER_COLOR, 'stroke-width': QUIZ_MARKER_STROKE_WIDTH }, parent);
   }
 
-  function applyFeatureQuizHighlight(svg, highlightTerm) {
+  // A short arrow pointing in at `anchor` from just outside the map (along
+  // the line from the map's own centre through anchor), with a bold "?"
+  // beside its tail. `idPrefix` keeps the arrowhead marker's id from
+  // colliding when several quiz instances are inlined in one document.
+  function drawQuizArrow(parent, anchor, idPrefix) {
+    const dx = anchor.x - CX;
+    const dy = anchor.y - CY;
+    const dist = Math.hypot(dx, dy) || 1;
+    const ux = dx / dist;
+    const uy = dy / dist;
+    const tailX = anchor.x + ux * (QUIZ_ARROW_LENGTH + QUIZ_ARROW_GAP);
+    const tailY = anchor.y + uy * (QUIZ_ARROW_LENGTH + QUIZ_ARROW_GAP);
+    const headX = anchor.x + ux * QUIZ_ARROW_GAP;
+    const headY = anchor.y + uy * QUIZ_ARROW_GAP;
+
+    const defs = svgEl('defs', {}, parent);
+    const markerId = `${idPrefix}quiz-arrowhead`;
+    const marker = svgEl('marker', { id: markerId, markerWidth: 8, markerHeight: 8, refX: 6, refY: 4, orient: 'auto' }, defs);
+    svgEl('path', { d: 'M0,0 L8,4 L0,8 Z', fill: QUIZ_MARKER_COLOR }, marker);
+
+    svgEl('line', { x1: tailX, y1: tailY, x2: headX, y2: headY, stroke: QUIZ_MARKER_UNDERLAY_COLOR, 'stroke-width': 6, 'stroke-linecap': 'round' }, parent);
+    svgEl('line', {
+      x1: tailX, y1: tailY, x2: headX, y2: headY,
+      stroke: QUIZ_MARKER_COLOR, 'stroke-width': 3, 'stroke-linecap': 'round', 'marker-end': `url(#${markerId})`,
+    }, parent);
+
+    const qX = anchor.x + ux * (QUIZ_ARROW_LENGTH + QUIZ_ARROW_GAP + 15);
+    const qY = anchor.y + uy * (QUIZ_ARROW_LENGTH + QUIZ_ARROW_GAP + 15);
+    const text = svgEl('text', {
+      x: qX, y: qY, 'text-anchor': 'middle', 'dominant-baseline': 'middle',
+      'font-size': 20, 'font-weight': 700, fill: QUIZ_MARKER_COLOR,
+      stroke: QUIZ_MARKER_UNDERLAY_COLOR, 'stroke-width': 3, 'paint-order': 'stroke',
+    }, parent);
+    text.textContent = '?';
+  }
+
+  function applyFeatureQuizHighlight(svg, highlightTerm, idPrefix) {
     const region = svg.querySelector(`.diagram-region[data-term="${highlightTerm}"]`);
     if (!region) return;
     region.classList.add('diagram-feature-highlight');
@@ -494,6 +534,7 @@
       const ridge = APENNINES.map(([lat, lon]) => project(lat, lon));
       const d = `M${ridge.map((p) => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join('L')}`;
       drawQuizMarkerShape('path', { d, 'stroke-linecap': 'round' }, marker);
+      drawQuizArrow(marker, ridge[Math.floor(ridge.length / 2)], idPrefix);
       return;
     }
 
@@ -502,6 +543,7 @@
       const c = project(crater.lat, crater.lon);
       const trueRadiusPx = Math.max((crater.diameterKm / 2 / 1737.4) * R, 5);
       drawQuizMarkerShape('circle', { cx: c.x, cy: c.y, r: trueRadiusPx + QUIZ_MARKER_PADDING }, marker);
+      drawQuizArrow(marker, c, idPrefix);
       return;
     }
 
@@ -520,12 +562,14 @@
       const maxX = Math.max(...pieces.map((p) => p.centre.x + p.radiusPx));
       const minY = Math.min(...pieces.map((p) => p.centre.y - p.radiusPx));
       const maxY = Math.max(...pieces.map((p) => p.centre.y + p.radiusPx));
+      const ellipseCentre = { x: (minX + maxX) / 2, y: (minY + maxY) / 2 };
       drawQuizMarkerShape('ellipse', {
-        cx: (minX + maxX) / 2,
-        cy: (minY + maxY) / 2,
+        cx: ellipseCentre.x,
+        cy: ellipseCentre.y,
         rx: (maxX - minX) / 2 + QUIZ_MARKER_PADDING,
         ry: (maxY - minY) / 2 + QUIZ_MARKER_PADDING,
       }, marker);
+      drawQuizArrow(marker, ellipseCentre, idPrefix);
     }
   }
 
@@ -548,8 +592,9 @@
       'aria-label': "Map of the Moon's near side, with labels hidden and one feature highlighted to identify",
     }, wrap);
 
-    drawMoonMap(svg, wrap, `quiz-${highlightTerm}-`);
-    applyFeatureQuizHighlight(svg, highlightTerm);
+    const idPrefix = `quiz-${highlightTerm}-`;
+    drawMoonMap(svg, wrap, idPrefix);
+    applyFeatureQuizHighlight(svg, highlightTerm, idPrefix);
 
     // These toggles have no matching glossary definition in a question
     // card, so take them out of the tab order rather than leave a dead
@@ -794,6 +839,13 @@
 
   drawMoonStructure();
   setUpLayerTableToggle();
+  BodyLayersDiagram.mount({
+    svgId: 'body-layers-svg',
+    wrapId: 'body-layers-wrap',
+    sameScaleButtonId: 'body-layers-same-scale',
+    sameSizeButtonId: 'body-layers-same-size',
+    captionId: 'body-layers-caption',
+  }, { SpecData, RingDiagramLabels });
   drawMoonMap();
   setUpLabelToggle();
   setUpApolloToggle();
