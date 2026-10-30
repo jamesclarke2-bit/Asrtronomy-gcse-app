@@ -7,7 +7,7 @@
   <meta name="referrer" content="no-referrer" />
   <meta name="robots" content="noindex, nofollow" />
   <title>Archaeoastronomy: Precession and Monuments</title>
-  <link rel="stylesheet" href="../styles.css?v=202611031400" />
+  <link rel="stylesheet" href="../styles.css?v=202611031500" />
   <link rel="icon" type="image/svg+xml" href="../favicon.svg?v=202610130720" />
 </head>
 <body>
@@ -98,39 +98,49 @@
     </section>
 
     <section class="notes-section" id="stonehenge">
-      <h2>Stonehenge: the solstice-sunrise alignment</h2>
+      <h2>Stonehenge: the sunrise alignment</h2>
       <p>
-        The Avenue frames midsummer sunrise through the Heel Stone. Toggle the era: precession
-        leaves that alignment untouched.
+        Stonehenge's main axis points towards where the Sun rises at the midsummer solstice. Move
+        the slider through the year to see the sunrise direction swing between the two solstices,
+        crossing due east at the equinoxes.
       </p>
 
-      <div class="diagram stonehenge-scene-diagram">
-        <div class="labelled-diagram-wrap" id="stonehenge-scene-wrap">
+      <div class="diagram stonehenge-plan-diagram">
+        <div class="labelled-diagram-wrap" id="stonehenge-plan-wrap">
           <svg
-            id="stonehenge-scene-diagram"
+            id="stonehenge-plan-diagram"
             class="responsive-svg"
             width="320"
-            height="260"
-            viewBox="0 0 320 260"
+            height="320"
+            viewBox="0 0 320 320"
             role="img"
-            aria-label="An illustrated view at Stonehenge, looking past the stone circle and the Heel Stone towards the Sun rising at the midsummer solstice, with a small sky marker showing which star sat nearest the pole in the selected era"
+            aria-label="Top-down plan of Stonehenge: a ring of stones with its fixed main axis, and a separate line showing the direction of sunrise on the selected date"
           ></svg>
         </div>
       </div>
 
-      <div class="mode-toggle" role="group" aria-label="Choose the era">
-        <button type="button" id="stonehenge-then-button" class="mode-toggle-button" aria-pressed="true">About 2500 BCE</button>
-        <button type="button" id="stonehenge-now-button" class="mode-toggle-button" aria-pressed="false">Today</button>
+      <div class="control">
+        <label for="stonehenge-date-slider">Day of year: <span id="stonehenge-date-label"></span></label>
+        <input type="range" id="stonehenge-date-slider" min="0" max="364" step="1" value="171" />
       </div>
 
       <dl class="readout">
-        <dt>Pole star of that era</dt>
-        <dd id="stonehenge-pole-star"></dd>
+        <dt>Sunrise azimuth</dt>
+        <dd id="stonehenge-azimuth-readout"></dd>
+        <dt>Date</dt>
+        <dd id="stonehenge-date-readout"></dd>
       </dl>
 
       <p class="note">
-        The sunrise point itself doesn't move between these two buttons &mdash; only the sky
-        behind it does. That's precession's real reach here; see the exam tip below for why.
+        The main axis direction (about 50&deg; east of north) is a first draft, to be checked by
+        the teacher. The sunrise azimuth uses an ideal flat horizon, ignoring the real horizon's
+        height and atmospheric refraction, which shift the true rising point by about a degree.
+      </p>
+
+      <p>
+        Precession doesn't move this alignment &mdash; it changes <em>which star</em> sits at the
+        pole, not how far round the horizon the solstice Sun rises from a given latitude. See the
+        exam tip below.
       </p>
 
       <p>
@@ -251,10 +261,11 @@
   <script src="../src/starPatterns.js?v=202609280900"></script>
   <script src="../src/measuringTheSky.js?v=202609252300"></script>
   <script src="../src/moonPhase.js?v=202611031300"></script>
+  <script src="../src/solarPosition.js?v=202609260300"></script>
   <script src="../src/archaeoastronomyQuestions.js?v=202610292000"></script>
   <script src="../glossary.js?v=202610131052"></script>
   <script src="../quiz-ui.js?v=202611021000"></script>
-  <script src="archaeoastronomy.js?v=202610292000"></script>
+  <script src="archaeoastronomy.js?v=202611031500"></script>
   <script src="../notesPage.js?v=202609252100"></script>
   <script src="../nextPage.js?v=202610161057"></script>
 </body>

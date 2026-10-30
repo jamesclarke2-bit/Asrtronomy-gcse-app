@@ -281,70 +281,98 @@
     });
   }
 
-  // --- Stonehenge: the solstice-sunrise alignment --------------------------
+  // --- Stonehenge: the sunrise alignment ------------------------------
 
-  // The scene itself (Sun, Heel Stone, sarsen stones) never changes between
-  // these two dates — that's the whole point. Only the small pole-star
-  // marker updates, which is the one thing precession actually moves here.
-  const STONEHENGE_ERAS = { then: -2500, now: CURRENT_YEAR };
+  // Stonehenge's own latitude and its main axis's own bearing — both a
+  // first draft, to be checked by the teacher.
+  const STONEHENGE_LATITUDE = 51.2;
+  const STONEHENGE_AXIS_AZIMUTH_DEG = 50;
+  const STONEHENGE_YEAR = 2026; // any non-leap year: only day-of-year matters
+  const STONEHENGE_PLAN = { W: 320, H: 320, cx: 160, cy: 176, ringR: 66, axisR: 100, sunR: 155 };
 
-  function drawStonehengeScene(mode) {
-    const svg = document.getElementById('stonehenge-scene-diagram');
-    const wrap = document.getElementById('stonehenge-scene-wrap');
+  function dayOfYearToUTCDate(dayIndex) {
+    const d = new Date(Date.UTC(STONEHENGE_YEAR, 0, 1, 12));
+    d.setUTCDate(d.getUTCDate() + dayIndex);
+    return d;
+  }
+
+  function formatDayOfYear(dayIndex) {
+    return dayOfYearToUTCDate(dayIndex).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', timeZone: 'UTC' });
+  }
+
+  // Point at the given compass azimuth (0° = north, up on the page;
+  // clockwise), the same convention sims/sun-path.js's own polarPoint uses.
+  function azimuthPoint(cx, cy, radius, azimuthDeg) {
+    const a = (azimuthDeg * Math.PI) / 180;
+    return { x: cx + radius * Math.sin(a), y: cy - radius * Math.cos(a) };
+  }
+
+  function drawStonehengePlan(sunriseAzimuthDeg) {
+    const svg = document.getElementById('stonehenge-plan-diagram');
+    const wrap = document.getElementById('stonehenge-plan-wrap');
     if (!svg || !wrap) return;
     clearDiagram(svg, wrap);
-    const W = 320;
-    const H = 260;
-    const horizonY = 190;
+    const { W, H, cx, cy, ringR, axisR, sunR } = STONEHENGE_PLAN;
 
-    svgEl('rect', { x: 0, y: 0, width: W, height: H, rx: 8, fill: '#10141f' }, svg);
-    svgEl('rect', { x: 0, y: horizonY, width: W, height: H - horizonY, fill: '#1c2a1e' }, svg);
+    svgEl('rect', { x: 0, y: 0, width: W, height: H, rx: 8, fill: '#1c2a1e' }, svg);
 
-    // A few sarsen stones, framing the gap the Sun rises through.
-    [36, 70, 250, 284].forEach((x) => {
-      svgEl('rect', { x: x - 10, y: horizonY - 46, width: 20, height: 46, rx: 2, fill: STONE_COLOR }, svg);
-    });
+    // A simplified ring of sarsen stones, seen from above.
+    const stones = svgEl('g', { fill: STONE_COLOR }, svg);
+    const stoneCount = 16;
+    for (let i = 0; i < stoneCount; i += 1) {
+      const angle = (i / stoneCount) * 360;
+      const p = azimuthPoint(cx, cy, ringR, angle);
+      svgEl('rect', { x: p.x - 6, y: p.y - 6, width: 12, height: 12, rx: 2, transform: `rotate(${angle},${p.x},${p.y})` }, stones);
+    }
+    svgEl('circle', { cx, cy, r: 6, fill: SKY_LINE_COLOR }, svg);
 
-    // Midsummer sunrise, low over the horizon.
-    const sunX = 160;
-    const sunY = horizonY - 18;
+    // The fixed main axis, out past the ring to the Heel Stone.
+    const axisEnd = azimuthPoint(cx, cy, axisR, STONEHENGE_AXIS_AZIMUTH_DEG);
+    svgEl('line', { x1: cx, y1: cy, x2: axisEnd.x, y2: axisEnd.y, stroke: '#cdd7e1', 'stroke-width': 2.5 }, svg);
+    svgEl('rect', { x: axisEnd.x - 6, y: axisEnd.y - 9, width: 12, height: 18, rx: 2, fill: STONE_COLOR, transform: `rotate(${STONEHENGE_AXIS_AZIMUTH_DEG},${axisEnd.x},${axisEnd.y})` }, svg);
+    const axisLabel = azimuthPoint(cx, cy, axisR + 20, STONEHENGE_AXIS_AZIMUTH_DEG);
+    addLabel(wrap, axisLabel.x, axisLabel.y, W, H, 'Main axis (fixed)', 'star-label finder-pattern-label');
+
+    // The live sunrise direction for the selected date.
+    const sunEnd = azimuthPoint(cx, cy, sunR, sunriseAzimuthDeg);
+    svgEl('line', { x1: cx, y1: cy, x2: sunEnd.x, y2: sunEnd.y, stroke: SUN_COLOR, 'stroke-width': 2.5, 'stroke-dasharray': '6 4' }, svg);
     for (let i = 0; i < 8; i += 1) {
       const angle = (i / 8) * 2 * Math.PI;
       svgEl('line', {
-        x1: sunX + Math.cos(angle) * 24, y1: sunY + Math.sin(angle) * 24,
-        x2: sunX + Math.cos(angle) * 34, y2: sunY + Math.sin(angle) * 34,
-        stroke: SUN_COLOR, 'stroke-width': 3, 'stroke-linecap': 'round',
+        x1: sunEnd.x + Math.cos(angle) * 11, y1: sunEnd.y + Math.sin(angle) * 11,
+        x2: sunEnd.x + Math.cos(angle) * 17, y2: sunEnd.y + Math.sin(angle) * 17,
+        stroke: SUN_COLOR, 'stroke-width': 2.5, 'stroke-linecap': 'round',
       }, svg);
     }
-    svgEl('circle', { cx: sunX, cy: sunY, r: 18, fill: SUN_COLOR }, svg);
+    svgEl('circle', { cx: sunEnd.x, cy: sunEnd.y, r: 10, fill: SUN_COLOR }, svg);
+    const sunLabel = azimuthPoint(cx, cy, sunR + 22, sunriseAzimuthDeg);
+    const l = addLabel(wrap, sunLabel.x, sunLabel.y, W, H, 'Sunrise today', 'star-label finder-polaris-label');
+    if (sunLabel.x > cx) l.dataset.side = 'left';
 
-    // The Heel Stone, just to one side of the Sun.
-    const heelX = 118;
-    svgEl('rect', { x: heelX - 7, y: horizonY - 38, width: 14, height: 38, rx: 2, fill: STONE_COLOR }, svg);
-    addLabel(wrap, heelX, horizonY - 46, W, H, 'Heel Stone', 'star-label');
-    addLabel(wrap, sunX, sunY - 44, W, H, 'Midsummer sunrise', 'star-label finder-polaris-label');
-
-    // A small sky marker for whichever star sat nearest the pole in the
-    // selected era — the one thing that has actually moved.
-    const star = nearestMarkedStar(STONEHENGE_ERAS[mode]);
-    svgEl('circle', { cx: 44, cy: 40, r: 16, fill: 'none', stroke: SKY_LINE_COLOR, 'stroke-width': 1.2, 'stroke-dasharray': '3 4' }, svg);
-    svgEl('circle', { cx: 44, cy: 40, r: 2.4, fill: '#fdfcf5' }, svg);
-    addLabel(wrap, 44, 18, W, H, `Pole star: ${star.name}`, 'star-label');
-
-    document.getElementById('stonehenge-pole-star').textContent = star.name;
+    // Compass points, for orientation.
+    [['N', 0], ['E', 90], ['S', 180], ['W', 270]].forEach(([letter, angle]) => {
+      const p = azimuthPoint(cx, cy, ringR + 48, angle);
+      addLabel(wrap, p.x, p.y, W, H, letter, 'star-label compass-label');
+    });
   }
 
-  function setUpStonehengeToggle() {
-    const thenButton = document.getElementById('stonehenge-then-button');
-    const nowButton = document.getElementById('stonehenge-now-button');
-    function render(mode) {
-      thenButton.setAttribute('aria-pressed', String(mode === 'then'));
-      nowButton.setAttribute('aria-pressed', String(mode === 'now'));
-      drawStonehengeScene(mode);
+  function setUpStonehengeSlider() {
+    const slider = document.getElementById('stonehenge-date-slider');
+    const dateLabel = document.getElementById('stonehenge-date-label');
+    const azimuthReadout = document.getElementById('stonehenge-azimuth-readout');
+    const dateReadout = document.getElementById('stonehenge-date-readout');
+    function render() {
+      const dayIndex = Number(slider.value);
+      const dateText = formatDayOfYear(dayIndex);
+      dateLabel.textContent = dateText;
+      const declination = SolarPosition.getSunPosition(dayOfYearToUTCDate(dayIndex), STONEHENGE_LATITUDE, 0).declination;
+      const azimuth = SolarPosition.sunriseAzimuthDeg(declination, STONEHENGE_LATITUDE);
+      drawStonehengePlan(azimuth);
+      azimuthReadout.textContent = `${azimuth.toFixed(1)}°`;
+      dateReadout.textContent = dateText;
     }
-    thenButton.addEventListener('click', () => render('then'));
-    nowButton.addEventListener('click', () => render('now'));
-    render('then');
+    slider.addEventListener('input', render);
+    render();
   }
 
   // --- The Great Pyramid: fixed shafts, drifting targets -------------------
@@ -489,7 +517,7 @@
 
   setUpPrecessionSlider();
   buildAncientUsesGrid();
-  setUpStonehengeToggle();
+  setUpStonehengeSlider();
   setUpPyramidSlider();
   renderCoverage();
   Glossary.init(GLOSSARY);

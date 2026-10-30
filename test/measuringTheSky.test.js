@@ -132,6 +132,39 @@ test('Polaris is the pole star today, and Vega is the brightest of the cycle', (
   assert.equal(brightest, 'vega');
 });
 
+// --- The pea/coin arm's-length comparison --------------------------------
+
+test('armsLengthObjectDiameterM: about 6 mm at a 0.70 m arm\'s length', () => {
+  const sizeMm = M.armsLengthObjectDiameterM(0.7) * 1000;
+  assert.ok(Math.abs(sizeMm - 6) < 0.5, `expected ~6 mm, got ${sizeMm.toFixed(2)} mm`);
+});
+
+test('armsLengthObjectDiameterM grows with arm length (same angle, bigger distance, bigger object)', () => {
+  const short = M.armsLengthObjectDiameterM(0.6);
+  const long = M.armsLengthObjectDiameterM(0.75);
+  assert.ok(long > short);
+  // Linear in arm length, since it's a plain small-angle multiplication.
+  assert.ok(Math.abs(long / short - 0.75 / 0.6) < 1e-9);
+});
+
+test('armsLengthObjectDiameterM matches the task\'s own worked figure: 0.70 m × 0.52° in radians ≈ 6 mm', () => {
+  const RAD = Math.PI / 180;
+  const expected = 0.7 * (0.52 * RAD);
+  assert.ok(Math.abs(M.armsLengthObjectDiameterM(0.7) - expected) < 0.0001);
+});
+
+test('coinAngularSizeInMoons: a 20 mm coin at 0.70 m covers about 3 Moons, not 1', () => {
+  const moons = M.coinAngularSizeInMoons(0.7);
+  assert.ok(Math.abs(moons - 3) < 0.3, `expected ~3 Moons, got ${moons.toFixed(2)}`);
+  assert.ok(moons > 1.5, 'nowhere close to covering just 1 Moon');
+});
+
+test('coinAngularSizeInMoons: a bigger coin covers more Moons at the same arm length', () => {
+  const small = M.coinAngularSizeInMoons(0.7, 0.015);
+  const big = M.coinAngularSizeInMoons(0.7, 0.025);
+  assert.ok(big > small);
+});
+
 test('the new subtopics follow on from the last u2 id', () => {
   assert.ok(getSubtopic('u2.27'));
   assert.equal(getSubtopic('u2.28').title, 'Sizes and distances in the Earth-Moon-Sun system');

@@ -2910,14 +2910,14 @@ canvas {
 
 /* notes/archaeoastronomy.html */
 .precession-circle-diagram,
-.stonehenge-scene-diagram,
+.stonehenge-plan-diagram,
 .pyramid-shaft-diagram {
   max-width: 420px;
   margin: 1rem 0 0.5rem;
 }
 
 .precession-circle-diagram svg,
-.stonehenge-scene-diagram svg,
+.stonehenge-plan-diagram svg,
 .pyramid-shaft-diagram svg {
   display: block;
   width: 100%;
@@ -2925,6 +2925,14 @@ canvas {
   background: #10141f;
   border-radius: 8px;
   border: 1px solid #cdd7e1;
+}
+
+/* The N/E/S/W compass points around notes/archaeoastronomy.html's
+   Stonehenge plan — same look as .star-label, just dimmer, since they're
+   orientation, not something the diagram is actually naming. */
+.compass-label {
+  color: #7c8aa3;
+  font-size: 0.72rem;
 }
 
 /* notes/archaeoastronomy.html's "How ancient civilisations used the Sun

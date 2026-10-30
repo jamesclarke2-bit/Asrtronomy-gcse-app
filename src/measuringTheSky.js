@@ -86,6 +86,33 @@
     return diameterKm / angleRad;
   }
 
+  // The Moon's own angular diameter, fixed regardless of how far an arm
+  // is held out — about 0.52°.
+  const MOON_ANGULAR_DIAMETER_DEG = angularDiameterDeg(MOON_DIAMETER_KM, MOON_DISTANCE_KM);
+
+  // A typical small coin's diameter, for the "it looks bigger than it
+  // is" comparison below — general knowledge, not a data-sheet figure.
+  const REFERENCE_COIN_DIAMETER_M = 0.02;
+
+  // The width of an object that, held at armLengthM, exactly covers the
+  // Moon: the small-angle size-at-distance relationship, object size =
+  // distance × angle in radians. At the usual ~0.70 m arm's length this
+  // comes out to about 6 mm — roughly a pea, not a coin.
+  function armsLengthObjectDiameterM(armLengthM) {
+    return armLengthM * MOON_ANGULAR_DIAMETER_DEG * RAD;
+  }
+
+  // How many Moon-widths a coin of coinDiameterM covers, held at
+  // armLengthM — both angles taken via the same small-angle
+  // approximation, so the ratio is exact even though each angle alone is
+  // only approximate. A standard small coin (about 20 mm) at a typical
+  // 0.70 m arm's length covers about 3 Moons, not 1.
+  function coinAngularSizeInMoons(armLengthM, coinDiameterM = REFERENCE_COIN_DIAMETER_M) {
+    const coinAngularRad = coinDiameterM / armLengthM;
+    const moonAngularRad = MOON_ANGULAR_DIAMETER_DEG * RAD;
+    return coinAngularRad / moonAngularRad;
+  }
+
   // --- Precession ---------------------------------------------------------
 
   // Ecliptic longitude and latitude (degrees) of a J2000 RA/Dec.
@@ -139,6 +166,10 @@
     earthShadowAtMoon,
     angularDiameterDeg,
     distanceFromAngularSizeKm,
+    MOON_ANGULAR_DIAMETER_DEG,
+    REFERENCE_COIN_DIAMETER_M,
+    armsLengthObjectDiameterM,
+    coinAngularSizeInMoons,
     equatorialToEcliptic,
     celestialPoleAt,
   };

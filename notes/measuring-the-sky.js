@@ -194,19 +194,55 @@
     addLabel(wrap, observer.x + 48, observer.y - 20, W, H, 'angle it covers');
   }
 
-  function drawCoinComparison() {
-    const svg = document.getElementById('coin-diagram');
-    const eye = { x: 30, y: 75 };
-    const coin = { x: 230, y: 75 };
-    const coinR = 14;
-    const shoulder = { x: 15, y: 140 };
+  // A first-person view of thumb and forefinger pinching a pea-sized
+  // object at arm's length, with the Moon's own disc shown beside it at
+  // the same drawn radius — the angle is what matters here, not either
+  // object's real size, so both are drawn the same size on purpose. The
+  // live arm-length/size numbers are in the readout below, not baked
+  // into this static picture.
+  const PEBBLE_DRAWN_RADIUS = 15;
 
-    svgEl('line', { x1: shoulder.x, y1: shoulder.y, x2: coin.x, y2: coin.y, stroke: '#c9a27a', 'stroke-width': 10, 'stroke-linecap': 'round' }, svg);
-    const sightLines = svgEl('g', { stroke: ANGLE_COLOR, 'stroke-width': 1.5, 'stroke-dasharray': '3 2' }, svg);
-    svgEl('line', { x1: eye.x, y1: eye.y, x2: coin.x, y2: coin.y - coinR }, sightLines);
-    svgEl('line', { x1: eye.x, y1: eye.y, x2: coin.x, y2: coin.y + coinR }, sightLines);
-    svgEl('circle', { cx: coin.x, cy: coin.y, r: coinR, fill: '#c9a227', stroke: '#8a6d1a', 'stroke-width': 1.5 }, svg);
-    svgEl('circle', { cx: eye.x, cy: eye.y, r: 6, fill: '#1f2d3d' }, svg);
+  function drawPebbleComparison() {
+    const svg = document.getElementById('pebble-diagram');
+    const wrap = document.getElementById('pebble-wrap');
+    const W = 300;
+    const H = 150;
+    const pinch = { x: 95, y: 64 };
+    const moon = { x: 225, y: 64 };
+
+    const fingers = svgEl('g', { stroke: '#c9a27a', 'stroke-width': 13, 'stroke-linecap': 'round' }, svg);
+    svgEl('line', { x1: 35, y1: 140, x2: pinch.x, y2: pinch.y }, fingers);
+    svgEl('line', { x1: 150, y1: 140, x2: pinch.x, y2: pinch.y }, fingers);
+
+    svgEl('circle', { cx: pinch.x, cy: pinch.y, r: PEBBLE_DRAWN_RADIUS, fill: '#8a9a5b', stroke: '#5c6a3c', 'stroke-width': 1.5 }, svg);
+    svgEl('circle', { cx: moon.x, cy: moon.y, r: PEBBLE_DRAWN_RADIUS, fill: MOON_FILL, stroke: '#8a877d', 'stroke-width': 1.5 }, svg);
+
+    addLabel(wrap, pinch.x, pinch.y + 34, W, H, "Pea, at arm's length");
+    addLabel(wrap, moon.x, moon.y + 34, W, H, 'The Moon');
+  }
+
+  function setUpArmLengthSlider() {
+    const slider = document.getElementById('arm-length-slider');
+    const label = document.getElementById('arm-length-label');
+    const sizeResult = document.getElementById('pebble-size-result');
+    const coinResult = document.getElementById('coin-result');
+    const caption = document.getElementById('pebble-caption');
+    function update() {
+      const armLengthM = Number(slider.value);
+      label.textContent = `${armLengthM.toFixed(2)} m`;
+      const sizeMm = M.armsLengthObjectDiameterM(armLengthM) * 1000;
+      sizeResult.textContent =
+        `At ${armLengthM.toFixed(2)} m, an object about ${sizeMm.toFixed(1)} mm wide ` +
+        `— roughly a pea — just covers the Moon.`;
+      const coinMoons = M.coinAngularSizeInMoons(armLengthM);
+      coinResult.textContent =
+        `A 20 mm coin at that same distance covers about ${coinMoons.toFixed(1)} Moons, not one.`;
+      caption.textContent =
+        `A pea-sized object, about ${sizeMm.toFixed(0)} mm wide, held at arm's length covers ` +
+        `almost exactly the same tiny angle as the Moon.`;
+    }
+    slider.addEventListener('input', update);
+    update();
   }
 
   // Works out the "0.52° ≈ 0.0091 radians, so distance ≈ 385,000 km" worked
@@ -461,7 +497,8 @@
   setUpMeridianTieup();
   drawShadow();
   drawMoonDistanceTriangle();
-  drawCoinComparison();
+  drawPebbleComparison();
+  setUpArmLengthSlider();
   fillMoonDistanceWorked();
   drawQuarter();
   setUpQuarterSlider();

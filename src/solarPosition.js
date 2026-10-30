@@ -152,6 +152,29 @@ function getSunriseSunset(date, lat, lon) {
   };
 }
 
+/**
+ * Sunrise azimuth (degrees clockwise from north) for a given declination
+ * and latitude, ignoring the real horizon's height and atmospheric
+ * refraction (which shift the true rising point by roughly a degree) —
+ * the simplified, ideal-flat-horizon case, ie the Sun's centre crossing
+ * altitude exactly 0°, rather than getSunriseSunset's own -0.833°
+ * correction for a published rise time.
+ *
+ * At altitude 0 the general azimuth formula (see getSunPosition above)
+ * reduces to cos(azimuth) = sin(declination) / cos(latitude): zenith
+ * distance is exactly 90°, so cos(zenith) drops out and sin(zenith) = 1.
+ * Returns the eastern (rising) azimuth, 0-180°; sunset is 360 minus this,
+ * by the same east-west symmetry getSunPosition's own hour-angle sign
+ * flip relies on.
+ *
+ * @param {number} decDeg - the Sun's declination, degrees
+ * @param {number} latDeg - observer's latitude, degrees north positive
+ * @returns {number} sunrise azimuth, degrees clockwise from north
+ */
+function sunriseAzimuthDeg(decDeg, latDeg) {
+  return acosD(sinD(decDeg) / cosD(latDeg));
+}
+
 // Curriculum subtopics this simulation teaches towards — see src/curriculum.js.
 // u1.4 coordinate systems (altitude/azimuth), u1.6 observational terminology
 // (meridian, zenith, horizon, culmination), u2.9 seasons (including the
@@ -159,7 +182,7 @@ function getSunriseSunset(date, lat, lon) {
 const CURRICULUM_UNITS = ['u1.4', 'u1.6', 'u2.9', 'u2.10'];
 
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { getSunPosition, getSunriseSunset, CURRICULUM_UNITS };
+  module.exports = { getSunPosition, getSunriseSunset, sunriseAzimuthDeg, CURRICULUM_UNITS };
 } else if (typeof window !== 'undefined') {
-  window.SolarPosition = { getSunPosition, getSunriseSunset, CURRICULUM_UNITS };
+  window.SolarPosition = { getSunPosition, getSunriseSunset, sunriseAzimuthDeg, CURRICULUM_UNITS };
 }

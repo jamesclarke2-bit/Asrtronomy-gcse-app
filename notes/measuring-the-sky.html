@@ -7,7 +7,7 @@
   <meta name="referrer" content="no-referrer" />
   <meta name="robots" content="noindex, nofollow" />
   <title>Measuring the Sky</title>
-  <link rel="stylesheet" href="../styles.css?v=202611031400" />
+  <link rel="stylesheet" href="../styles.css?v=202611031500" />
   <link rel="icon" type="image/svg+xml" href="../favicon.svg?v=202610130720" />
 </head>
 <body>
@@ -212,22 +212,33 @@
           <p class="diagram-caption" id="moon-distance-worked"></p>
         </div>
         <div class="diagram diagram-pair">
-          <h3>About the size of a coin</h3>
-          <div class="labelled-diagram-wrap" id="coin-wrap">
+          <h3>About the size of a pea</h3>
+          <div class="labelled-diagram-wrap" id="pebble-wrap">
             <svg
-              id="coin-diagram"
+              id="pebble-diagram"
               class="mini-tide-svg"
               width="300"
               height="150"
               viewBox="0 0 300 150"
               role="img"
-              aria-label="A coin held at arm's length, covering about the same tiny angle in the sky as the Moon does"
+              aria-label="A first-person view of an outstretched hand pinching a pea-sized object that just covers the Moon's disc, with the Moon's own disc shown beside it at the same angular size"
             ></svg>
           </div>
-          <p class="diagram-caption">A small coin at arm's length covers about the same tiny angle as the Moon &mdash; it looks far smaller in the sky than most people expect.</p>
+          <p class="diagram-caption" id="pebble-caption"></p>
         </div>
       </div>
-      <p class="note">The coin comparison is a first draft, to be checked by the teacher.</p>
+
+      <div class="control">
+        <label for="arm-length-slider">Arm length: <span id="arm-length-label"></span></label>
+        <input type="range" id="arm-length-slider" min="0.60" max="0.75" step="0.01" value="0.70" />
+      </div>
+      <p class="eot-readout" id="pebble-size-result"></p>
+      <p class="eot-readout" id="coin-result"></p>
+      <p class="note">
+        The pea size and the coin comparison are approximate &mdash; real hands, peas and coins
+        vary &mdash; and use the small-angle approximation (object size &asymp; distance &times;
+        angle in radians).
+      </p>
 
       <h3>The Sun's distance, from the quarter Moon</h3>
       <p>
