@@ -8,12 +8,15 @@
  * The names themselves are folk tradition (Native American, colonial
  * American and farmers' almanacs), not a spec or data-sheet figure —
  * first draft, to be checked by the teacher (see sims/moon-phases.html's
- * own note). September's name is given as "Harvest or Corn" throughout:
- * traditionally the farmers'-almanac name for that calendar slot is
- * Corn Moon, but Harvest Moon — strictly the Full Moon nearest the
- * September equinox, not always September's own — is popularly used for
- * it instead; the special-names panel (built in the page script, not
- * here, since it needs real links) explains the distinction.
+ * own note). September's calendar slot is named "Harvest or Corn" on the
+ * wheel, but the LIST below doesn't just hand that name to whichever
+ * Full Moon lands in September: the real Harvest Moon is whichever Full
+ * Moon falls nearest the September equinox, which some years is
+ * October's own Full Moon instead — and Hunter's Moon is simply the next
+ * Full Moon after that, wherever it falls. Finding the equinox (via
+ * src/solarPosition.js's declination, which crosses zero there) and
+ * picking the nearest Full Moon to it is itself a first draft, to be
+ * checked by the teacher (see sims/moon-phases.html's own note).
  */
 (function () {
   const MONTH_MOON_NAMES = [
@@ -21,23 +24,59 @@
     'Buck', 'Sturgeon', 'Harvest or Corn', "Hunter's", 'Beaver', 'Cold',
   ];
 
-  // Every Full Moon in the given calendar year (UTC), each with its
-  // calendar month's traditional name and an isBlueMoon flag — true for
-  // the second Full Moon of any calendar month that has two, the
-  // standard "monthly" Blue Moon definition (see the page's own note on
-  // the other, seasonal definition). Built purely from
-  // MoonPhase.fullMoonsInRange, so the list can never name a date the
-  // engine itself wouldn't call Full.
+  // The September equinox (UTC) for a given year, found by bisecting the
+  // Sun's declination — positive in early September, negative by the end
+  // of it — down to where it crosses zero. 10-30 September safely
+  // brackets the real equinox (21-24 September) in any Gregorian year.
+  function septemberEquinoxUTC(year, deps) {
+    const declinationAt = (date) => deps.SolarPosition.getSunPosition(date, 0, 0).declination;
+    let lo = new Date(Date.UTC(year, 8, 10));
+    let hi = new Date(Date.UTC(year, 8, 30));
+    for (let i = 0; i < 40; i += 1) {
+      const mid = new Date((lo.getTime() + hi.getTime()) / 2);
+      if (declinationAt(mid) > 0) lo = mid; else hi = mid;
+    }
+    return new Date((lo.getTime() + hi.getTime()) / 2);
+  }
+
+  // Every Full Moon in the given calendar year (UTC), each with a
+  // traditional name and an isBlueMoon flag — true for the second Full
+  // Moon of any calendar month that has two, the standard "monthly" Blue
+  // Moon definition (see the page's own note on the other, seasonal
+  // definition). Built purely from MoonPhase.fullMoonsInRange, so the
+  // list can never name a date the engine itself wouldn't call Full.
+  //
+  // Every name follows the calendar except two: whichever Full Moon in
+  // this list falls nearest the September equinox is named "Harvest"
+  // instead of its own calendar month's name, and the next Full Moon
+  // after it is named "Hunter's" instead of its own — both searched
+  // within this same year's list, so they're always real entries in it.
   function buildFullMoonList(year, deps) {
     const moons = deps.MoonPhase.fullMoonsInRange(new Date(Date.UTC(year, 0, 1)), new Date(Date.UTC(year + 1, 0, 1)));
+    const equinox = septemberEquinoxUTC(year, deps);
+
+    let harvestIndex = 0;
+    let harvestDiffMs = Infinity;
+    moons.forEach((date, i) => {
+      const diffMs = Math.abs(date.getTime() - equinox.getTime());
+      if (diffMs < harvestDiffMs) {
+        harvestDiffMs = diffMs;
+        harvestIndex = i;
+      }
+    });
+    const huntersIndex = harvestIndex + 1 < moons.length ? harvestIndex + 1 : null;
+
     const countSoFarByMonth = {};
-    return moons.map((date) => {
+    return moons.map((date, i) => {
       const monthIndex = date.getUTCMonth();
       countSoFarByMonth[monthIndex] = (countSoFarByMonth[monthIndex] || 0) + 1;
+      let name = MONTH_MOON_NAMES[monthIndex];
+      if (i === harvestIndex) name = 'Harvest';
+      else if (i === huntersIndex) name = "Hunter's";
       return {
         date,
         monthIndex,
-        name: MONTH_MOON_NAMES[monthIndex],
+        name,
         isBlueMoon: countSoFarByMonth[monthIndex] === 2,
       };
     });

@@ -326,7 +326,7 @@
   FullMoonNames.mountWheel('full-moon-wheel-svg', 'full-moon-wheel-wrap');
   const fullMoonListYear = new Date().getUTCFullYear();
   document.getElementById('full-moon-list-year').textContent = String(fullMoonListYear);
-  FullMoonNames.mountFullMoonList('full-moon-list-body', fullMoonListYear, { MoonPhase });
+  FullMoonNames.mountFullMoonList('full-moon-list-body', fullMoonListYear, { MoonPhase, SolarPosition });
   setUpSpecialNamesToggle();
 
   dateInput.value = toDateInputValue(new Date());
