@@ -3459,6 +3459,133 @@ canvas {
 }
 
 /* notes/syllabus-map.html: the spec-to-page coverage map. */
+
+/* The page's own diagram-first visual: a stacked bar (covered/partly
+   covered/not built), sized by flex-grow so each segment's width is
+   exactly proportional to its count — no percentage maths duplicated
+   in CSS. The same component, compact and without its legend, sits
+   inside each topic's own <summary> line below. */
+.coverage-bar-wrap {
+  max-width: 560px;
+  margin: 0.75rem 0 1rem;
+}
+
+.coverage-bar {
+  display: flex;
+  height: 26px;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #eef1f5;
+}
+
+.coverage-bar-wrap--compact .coverage-bar {
+  height: 10px;
+  border-radius: 4px;
+}
+
+.coverage-bar-segment {
+  flex-grow: 0;
+  flex-shrink: 0;
+  flex-basis: 0;
+}
+
+.coverage-bar-segment--covered {
+  background: #2e9e58;
+}
+
+.coverage-bar-segment--partly {
+  background: #e0a630;
+}
+
+.coverage-bar-segment--not-built {
+  background: #d9534f;
+}
+
+.coverage-bar-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1rem;
+  margin-top: 0.5rem;
+  font-size: 0.88rem;
+  color: #333;
+}
+
+.coverage-bar-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.coverage-bar-legend-swatch {
+  display: inline-block;
+  width: 0.8rem;
+  height: 0.8rem;
+  border-radius: 3px;
+}
+
+.coverage-bar-legend-swatch--covered {
+  background: #2e9e58;
+}
+
+.coverage-bar-legend-swatch--partly {
+  background: #e0a630;
+}
+
+.coverage-bar-legend-swatch--not-built {
+  background: #d9534f;
+}
+
+/* Each topic's own <summary>: the text line, then the compact bar
+   beneath it, both inside the one clickable row. */
+.syllabus-topic summary {
+  display: block;
+}
+
+.syllabus-topic-summary-text {
+  display: block;
+}
+
+.syllabus-topic summary .coverage-bar-wrap--compact {
+  max-width: 220px;
+  margin: 0.4rem 0 0;
+}
+
+/* Topics 13-16: no registry built yet, so this reads the same at a
+   glance as a registered topic's own card (same border/padding),
+   without the <details> disclosure chrome it has nothing to disclose. */
+.syllabus-topic--unbuilt {
+  opacity: 0.85;
+}
+
+.syllabus-topic-unbuilt-title {
+  margin: 0;
+  font-weight: 700;
+}
+
+.syllabus-topic-unbuilt-note {
+  margin: 0.4rem 0 0;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+/* 'be able to' points are the ones a student can get practice
+   questions for — marked with a stronger, accent-coloured tag than
+   the muted 'know'/'understand' default, rather than leaving a reader
+   to notice the word alone. */
+.depth-tag[data-depth='be able to'] {
+  background: #eaf2fb;
+  color: #173d75;
+  border: 1px solid #2a6bd6;
+  font-weight: 700;
+}
+
+.syllabus-filters {
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  margin: 0.75rem 0;
+}
+
 .syllabus-summary-table td,
 .syllabus-summary-table th {
   text-align: left;

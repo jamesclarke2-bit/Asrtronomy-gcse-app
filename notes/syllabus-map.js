@@ -5,8 +5,65 @@
  * (src/syllabusMap.js), then renders the result. All the actual
  * coverage logic lives in that pure builder — this file only turns its
  * output into DOM.
+ *
+ * AllQuestions.getAllQuestionsBrowser() reads its many engine/question
+ * modules off window globals, so every one of them has to actually be
+ * <script>-tagged on this page (see notes/syllabus-map.html) — a
+ * module added to src/allQuestions.js without a matching tag here
+ * throws before anything on this page renders at all, which is exactly
+ * what happened before this file's own rewrite (see
+ * test/syllabusMap.test.js's own script-tag regression test).
  */
 (function () {
+  const STATUS_KEYS = ['covered', 'partlyCovered', 'notBuilt'];
+  const STATUS_LABELS = { covered: 'Covered', partlyCovered: 'Partly covered', notBuilt: 'Not built' };
+  const STATUS_CSS_KEY = { covered: 'covered', partlyCovered: 'partly', notBuilt: 'not-built' };
+
+  // --- The coverage bar: a stacked bar (covered/partly/not built), used
+  // both full-size for the page's own overall summary and compact
+  // inside each topic's own <summary> line. Never SVG text — plain HTML
+  // blocks sized by flex-grow, same convention as every other shared
+  // CSS component on this site (see styles.css's own note on
+  // .diagram-label and similar).
+  function buildCoverageBar(counts, { compact = false } = {}) {
+    const wrap = document.createElement('div');
+    wrap.className = compact ? 'coverage-bar-wrap coverage-bar-wrap--compact' : 'coverage-bar-wrap';
+
+    const bar = document.createElement('div');
+    bar.className = 'coverage-bar';
+    bar.setAttribute('role', 'img');
+    bar.setAttribute(
+      'aria-label',
+      `${counts.covered} covered, ${counts.partlyCovered} partly covered, ${counts.notBuilt} not built, out of ${counts.total} spec points`
+    );
+    STATUS_KEYS.forEach((key) => {
+      const value = counts[key];
+      if (value === 0) return;
+      const segment = document.createElement('div');
+      segment.className = `coverage-bar-segment coverage-bar-segment--${STATUS_CSS_KEY[key]}`;
+      segment.style.flexGrow = String(value);
+      bar.appendChild(segment);
+    });
+    wrap.appendChild(bar);
+
+    if (!compact) {
+      const legend = document.createElement('div');
+      legend.className = 'coverage-bar-legend';
+      STATUS_KEYS.forEach((key) => {
+        const item = document.createElement('span');
+        item.className = 'coverage-bar-legend-item';
+        const swatch = document.createElement('span');
+        swatch.className = `coverage-bar-legend-swatch coverage-bar-legend-swatch--${STATUS_CSS_KEY[key]}`;
+        item.appendChild(swatch);
+        item.appendChild(document.createTextNode(`${STATUS_LABELS[key]}: ${counts[key]}`));
+        legend.appendChild(item);
+      });
+      wrap.appendChild(legend);
+    }
+
+    return wrap;
+  }
+
   function renderPointPages(pages) {
     const p = document.createElement('p');
     p.className = 'spec-point-pages';
@@ -14,7 +71,7 @@
       p.textContent = 'Not built yet.';
       return p;
     }
-    p.appendChild(document.createTextNode('Covered by: '));
+    p.appendChild(document.createTextNode('Taught on: '));
     pages.forEach((page, i) => {
       if (i > 0) p.appendChild(document.createTextNode(', '));
       const a = document.createElement('a');
@@ -25,10 +82,41 @@
     return p;
   }
 
+  // A 'be able to' point's own practice-question line: links straight
+  // to each covering page's own practice-questions section (#questions
+  // — every notes/sims page has exactly one, see notesTemplate.test.js)
+  // rather than just the page itself, since that's where the questions
+  // this count describes actually live. null for a point this doesn't
+  // apply to at all (see src/syllabusMap.js's own header comment).
+  function renderPracticeQuestionsLine(point) {
+    if (point.hasPracticeQuestions === null) return null;
+    const p = document.createElement('p');
+    p.className = 'spec-point-questions';
+    if (!point.hasPracticeQuestions) {
+      p.textContent = 'No practice questions yet.';
+      return p;
+    }
+    const noun = point.questionCount === 1 ? 'question' : 'questions';
+    p.appendChild(document.createTextNode(`${point.questionCount} practice ${noun}: `));
+    point.pages.forEach((page, i) => {
+      if (i > 0) p.appendChild(document.createTextNode(', '));
+      const a = document.createElement('a');
+      a.href = `../${page.href}#questions`;
+      a.textContent = page.title;
+      p.appendChild(a);
+    });
+    return p;
+  }
+
   function renderPoint(point) {
     const li = document.createElement('li');
     li.className = 'spec-point';
     li.dataset.code = point.code;
+    li.dataset.status = point.status;
+    if (!point.isGroup) {
+      li.dataset.depth = point.depth;
+      if (point.hasPracticeQuestions !== null) li.dataset.hasQuestions = String(point.hasPracticeQuestions);
+    }
 
     const header = document.createElement('p');
     header.className = 'spec-point-header';
@@ -40,6 +128,7 @@
 
     const depth = document.createElement('span');
     depth.className = 'depth-tag';
+    depth.dataset.depth = point.depth;
     depth.textContent = point.depth;
     header.appendChild(depth);
 
@@ -63,13 +152,8 @@
     // line here would just repeat what's already shown per child.
     if (!point.isGroup) {
       li.appendChild(renderPointPages(point.pages));
-    }
-
-    if (point.hasPracticeQuestions !== null) {
-      const q = document.createElement('p');
-      q.className = 'spec-point-questions';
-      q.textContent = point.hasPracticeQuestions ? 'Has practice questions.' : 'No questions yet.';
-      li.appendChild(q);
+      const questionsLine = renderPracticeQuestionsLine(point);
+      if (questionsLine) li.appendChild(questionsLine);
     }
 
     if (point.children) {
@@ -84,10 +168,25 @@
 
   function renderTopic(topic) {
     if (!topic.registered) {
-      const p = document.createElement('p');
-      p.className = 'syllabus-unregistered-topic';
-      p.textContent = `Topic ${topic.number}: ${topic.name} — not yet added to the registry.`;
-      return p;
+      const card = document.createElement('div');
+      card.className = 'syllabus-topic syllabus-topic--unbuilt';
+
+      const title = document.createElement('p');
+      title.className = 'syllabus-topic-unbuilt-title';
+      title.appendChild(document.createTextNode(`Topic ${topic.number}: ${topic.name} `));
+      const badge = document.createElement('span');
+      badge.className = 'syllabus-status';
+      badge.dataset.status = 'not built';
+      badge.textContent = 'not built';
+      title.appendChild(badge);
+      card.appendChild(title);
+
+      const note = document.createElement('p');
+      note.className = 'syllabus-topic-unbuilt-note';
+      note.textContent = "This topic hasn't been added to the syllabus map's own registry yet, so its spec points aren't broken out individually here.";
+      card.appendChild(note);
+
+      return card;
     }
 
     const details = document.createElement('details');
@@ -95,7 +194,13 @@
     details.id = `topic-${topic.number}`;
 
     const summary = document.createElement('summary');
-    summary.textContent = `Topic ${topic.number}: ${topic.name} — ${topic.summary.covered} of ${topic.summary.total} points covered`;
+    const summaryText = document.createElement('span');
+    summaryText.className = 'syllabus-topic-summary-text';
+    summaryText.textContent =
+      `Topic ${topic.number}: ${topic.name} — ${topic.summary.covered} covered, ` +
+      `${topic.summary.partlyCovered} partly, ${topic.summary.notBuilt} not built (of ${topic.summary.total})`;
+    summary.appendChild(summaryText);
+    summary.appendChild(buildCoverageBar(topic.summary, { compact: true }));
     details.appendChild(summary);
 
     const body = document.createElement('div');
@@ -219,6 +324,80 @@
       'A reference page: maps the whole specification at once, so it sits outside the per-unit coverage figures elsewhere on the site.';
   }
 
+  // Whether `li` (a .spec-point) itself, or at least one of its direct
+  // children, matches any ACTIVE filter — the two filters are a union
+  // ("show me anything needing attention"), not an intersection: a
+  // point is never both not-built and missing questions at once
+  // (questionCount/hasPracticeQuestions is only ever computed for a
+  // covered point, see src/syllabusMap.js's own header comment), so
+  // requiring both together would make checking both boxes always show
+  // nothing at all. A group's own status/hasQuestions isn't meaningful
+  // by itself, so this always has to look at least one level down to
+  // find out whether a group is worth showing.
+  function pointMatches(li, notBuiltOnly, noQuestionsOnly) {
+    const matchesEither = (el) =>
+      (notBuiltOnly && el.dataset.status === 'not built') || (noQuestionsOnly && el.dataset.hasQuestions === 'false');
+    if (matchesEither(li)) return true;
+    const children = li.querySelectorAll(':scope > .spec-point-children > .spec-point');
+    return Array.from(children).some(matchesEither);
+  }
+
+  function setUpFilters(topicsHaveContent) {
+    const notBuiltCheckbox = document.getElementById('filter-not-built');
+    const noQuestionsCheckbox = document.getElementById('filter-no-questions');
+    const statusEl = document.getElementById('filter-status');
+    if (!topicsHaveContent) {
+      // No registered topic actually renders a .spec-point-list (e.g. a
+      // fixture or future site with every topic unbuilt) — the filters
+      // would have nothing to do, so leave them be rather than firing
+      // on an empty page.
+      return;
+    }
+
+    function applyFilters() {
+      const notBuiltOnly = notBuiltCheckbox.checked;
+      const noQuestionsOnly = noQuestionsCheckbox.checked;
+      const anyFilterActive = notBuiltOnly || noQuestionsOnly;
+
+      let visibleTopics = 0;
+      let visiblePoints = 0;
+
+      document.querySelectorAll('#topics-container > details.syllabus-topic').forEach((details) => {
+        let topicHasMatch = false;
+        details.querySelectorAll(':scope > .syllabus-topic-body > .spec-point-list > .spec-point').forEach((li) => {
+          const visible = !anyFilterActive || pointMatches(li, notBuiltOnly, noQuestionsOnly);
+          li.hidden = !visible;
+          if (visible) {
+            topicHasMatch = true;
+            visiblePoints += 1;
+          }
+        });
+
+        if (anyFilterActive) {
+          details.hidden = !topicHasMatch;
+          if (topicHasMatch) {
+            details.open = true;
+            visibleTopics += 1;
+          }
+        } else {
+          details.hidden = false;
+        }
+      });
+
+      if (anyFilterActive) {
+        const noun = visiblePoints === 1 ? 'point' : 'points';
+        statusEl.hidden = false;
+        statusEl.textContent = `Showing ${visiblePoints} matching ${noun}, across ${visibleTopics} topic${visibleTopics === 1 ? '' : 's'}.`;
+      } else {
+        statusEl.hidden = true;
+        statusEl.textContent = '';
+      }
+    }
+
+    notBuiltCheckbox.addEventListener('change', applyFilters);
+    noQuestionsCheckbox.addEventListener('change', applyFilters);
+  }
+
   function init() {
     const map = SyllabusMap.buildSyllabusMap({
       specPoints: SpecPoints.SPEC_POINTS,
@@ -231,11 +410,15 @@
       isExtensionPage: (page) => Pages.isExtensionPage(page, Curriculum.getSubtopic),
     });
 
+    document.getElementById('coverage-bar-container').appendChild(buildCoverageBar(map.summary));
     renderSummaryTable(map.topics);
     renderPartlyCoveredDetail(map.topics);
 
     const topicsContainer = document.getElementById('topics-container');
     map.topics.forEach((topic) => topicsContainer.appendChild(renderTopic(topic)));
+
+    const topicsHaveContent = map.topics.some((t) => t.registered && t.points.length > 0);
+    setUpFilters(topicsHaveContent);
 
     renderExtensionPages(map.extensionPages);
     renderCoverage();

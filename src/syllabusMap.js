@@ -14,11 +14,18 @@
  * covered, listed with its children attached so the partial state is
  * visible, not just asserted.
  *
- * "Has practice questions" is only ever computed for a 'be able to'
- * point that is itself covered (an uncovered point has no page to
- * carry a question in the first place) — true when any covering
- * subtopic's id is tagged on any question anywhere on the site (see
- * src/allQuestions.js).
+ * "Has practice questions" and the point's own `questionCount` are only
+ * ever computed for a 'be able to' point that is itself covered (an
+ * uncovered point has no page to carry a question in the first place)
+ * — the count sums every question anywhere on the site (see
+ * src/allQuestions.js) tagged with any of the point's covering
+ * subtopic ids; hasPracticeQuestions is just questionCount > 0, kept
+ * as its own field since both a non-applicable point (null) and an
+ * applicable one with zero questions (false) need to read differently.
+ *
+ * The returned `summary` totals every registered topic's own summary —
+ * the same one-stop figure notes/syllabus-map.html's own coverage bar
+ * shows, never recomputed a second way there.
  *
  * isExtensionPage is passed in (from src/pages.js) rather than
  * imported directly, matching every other pure builder in this
@@ -61,11 +68,11 @@
     return map;
   }
 
-  /** subtopic id -> true if any question anywhere tags it. */
-  function buildSubtopicHasQuestions(allQuestions) {
-    const set = new Set();
-    allQuestions.forEach((question) => (question.units || []).forEach((id) => set.add(id)));
-    return set;
+  /** subtopic id -> how many questions anywhere tag it. */
+  function buildSubtopicQuestionCount(allQuestions) {
+    const map = new Map();
+    allQuestions.forEach((question) => (question.units || []).forEach((id) => map.set(id, (map.get(id) || 0) + 1)));
+    return map;
   }
 
   function buildSyllabusMap({ specPoints, specPointGroups, topicNames, registeredTopics, units, pages, allQuestions, isExtensionPage }) {
@@ -74,7 +81,7 @@
 
     const codeToSubtopics = buildCodeToSubtopics(units);
     const subtopicToPages = buildSubtopicToPages(nonExtensionPages);
-    const subtopicHasQuestions = buildSubtopicHasQuestions(allQuestions);
+    const subtopicQuestionCount = buildSubtopicQuestionCount(allQuestions);
 
     function pagesCoveringCode(code) {
       const subtopicIds = [...(codeToSubtopics.get(code) || [])];
@@ -91,8 +98,11 @@
       const coveringPages = pagesCoveringCode(specPoint.code);
       const status = coveringPages.length > 0 ? 'covered' : 'not built';
       const subtopicIds = [...(codeToSubtopics.get(specPoint.code) || [])];
-      const hasPracticeQuestions =
-        specPoint.depth === 'be able to' && status === 'covered' ? subtopicIds.some((id) => subtopicHasQuestions.has(id)) : null;
+      const questionsApplicable = specPoint.depth === 'be able to' && status === 'covered';
+      const questionCount = questionsApplicable
+        ? subtopicIds.reduce((sum, id) => sum + (subtopicQuestionCount.get(id) || 0), 0)
+        : 0;
+      const hasPracticeQuestions = questionsApplicable ? questionCount > 0 : null;
       return {
         code: specPoint.code,
         text: specPoint.text,
@@ -101,6 +111,7 @@
         status,
         pages: coveringPages,
         hasPracticeQuestions,
+        questionCount,
         children: null,
       };
     }
@@ -164,7 +175,22 @@
       registeredTopics.includes(number) ? buildTopic(number) : { number, name: topicNames[number], registered: false }
     );
 
-    return { topics, extensionPages };
+    // Aggregated across every registered topic's own summary — topics
+    // 13-16 (not yet in the registry) contribute nothing, same as the
+    // extension pages never counting towards any topic's own summary.
+    const summary = topics
+      .filter((topic) => topic.registered)
+      .reduce(
+        (acc, topic) => ({
+          covered: acc.covered + topic.summary.covered,
+          partlyCovered: acc.partlyCovered + topic.summary.partlyCovered,
+          notBuilt: acc.notBuilt + topic.summary.notBuilt,
+          total: acc.total + topic.summary.total,
+        }),
+        { covered: 0, partlyCovered: 0, notBuilt: 0, total: 0 }
+      );
+
+    return { topics, extensionPages, summary };
   }
 
   const api = { buildSyllabusMap };

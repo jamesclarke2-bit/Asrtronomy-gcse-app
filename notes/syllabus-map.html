@@ -7,7 +7,7 @@
   <meta name="referrer" content="no-referrer" />
   <meta name="robots" content="noindex, nofollow" />
   <title>Syllabus Map</title>
-  <link rel="stylesheet" href="../styles.css?v=202610311800" />
+  <link rel="stylesheet" href="../styles.css?v=202611011000" />
   <link rel="icon" type="image/svg+xml" href="../favicon.svg?v=202610130720" />
 </head>
 <body>
@@ -18,8 +18,14 @@
     <p class="subtitle">
       Every point in the Edexcel GCSE Astronomy (1AS0) specification, matched to the page that
       teaches it &mdash; built straight from the site's own data, so it can't fall out of date.
-      Find a spec point below to jump straight to the page that covers it.
     </p>
+
+    <section class="notes-section" id="summary">
+      <h2>Coverage summary</h2>
+      <p>How much of the specification is covered, right now, across every registered point.</p>
+      <div id="coverage-bar-container"></div>
+      <div id="summary-table-container"></div>
+    </section>
 
     <section class="notes-section" id="depth-key">
       <h2>Depth key</h2>
@@ -29,18 +35,8 @@
         <dt>understand</dt>
         <dd>explain it, or reason with it.</dd>
         <dt>be able to</dt>
-        <dd>use it to work something out or carry out a task &mdash; these points also show whether the app has practice questions for it.</dd>
+        <dd>use it to work something out or carry out a task &mdash; these points also show whether the app has practice questions for it, and how many.</dd>
       </dl>
-    </section>
-
-    <section class="notes-section" id="summary">
-      <h2>Coverage summary</h2>
-      <p>
-        One row per topic: how many of its points are fully covered, partly covered (some
-        lettered sub-parts only), or not built yet. A-level extension pages don't count towards
-        any of these &mdash; see Beyond GCSE at the bottom.
-      </p>
-      <div id="summary-table-container"></div>
     </section>
 
     <section class="notes-section" id="topics">
@@ -49,6 +45,11 @@
         Topics 1&ndash;12 are checked against the full specification and open into their own
         points below; topics 13&ndash;16 don't have that registry built yet.
       </p>
+      <div class="control checkbox-control syllabus-filters" id="syllabus-filters">
+        <label><input type="checkbox" id="filter-not-built" /> Show me what isn't built</label>
+        <label><input type="checkbox" id="filter-no-questions" /> Show me points without questions</label>
+      </div>
+      <p class="note" id="filter-status" aria-live="polite" hidden></p>
       <div id="topics-container"></div>
     </section>
 
@@ -83,14 +84,23 @@
   <script src="../src/butterflyDiagram.js?v=202610161036"></script>
   <script src="../src/telescopeModel.js?v=202610161036"></script>
   <script src="../src/rayOptics.js?v=202610161036"></script>
+  <script src="../src/starPatterns.js?v=202609280900"></script>
+  <script src="../src/visibilityFactors.js?v=202610292000"></script>
+  <script src="../src/sunRotation.js?v=202610300900"></script>
 
   <script src="../src/questions.js?v=202610161036"></script>
   <script src="../src/eotQuestions.js?v=202610161036"></script>
+  <script src="../src/archaeoastronomyQuestions.js?v=202610292000"></script>
   <script src="../src/coordinatesQuestions.js?v=202610161036"></script>
+  <script src="../src/earthStructureQuestions.js?v=202610300900"></script>
   <script src="../src/geocentricHeliocentricQuestions.js?v=202610161036"></script>
   <script src="../src/gravitationalPotentialQuestions.js?v=202610161036"></script>
   <script src="../src/gravityFieldMapQuestions.js?v=202610161036"></script>
   <script src="../src/keplerQuestions.js?v=202610161036"></script>
+  <script src="../src/measuringTheSkyQuestions.js?v=202610292000"></script>
+  <script src="../src/moonStructureQuestions.js?v=202610300900"></script>
+  <script src="../src/nakedEyeSkyQuestions.js?v=202610311800"></script>
+  <script src="../src/observingTechniquesQuestions.js?v=202610292000"></script>
   <script src="../src/orbitsGravityQuestions.js?v=202610161036"></script>
   <script src="../src/planetaryMotionQuestions.js?v=202610161036"></script>
   <script src="../src/scaleOfSolarSystemQuestions.js?v=202610161036"></script>
@@ -99,11 +109,13 @@
   <script src="../src/solarSystemBodiesQuestions.js?v=202610161036"></script>
   <script src="../src/sunDeclinationQuestions.js?v=202611030900"></script>
   <script src="../src/sunFeaturesQuestions.js?v=202611030900"></script>
+  <script src="../src/sunspotRotationQuestions.js?v=202610300900"></script>
   <script src="../src/telescopeQuestions.js?v=202610161036"></script>
+  <script src="../src/tidesQuestions.js?v=202610281200"></script>
 
   <script src="../src/allQuestions.js?v=202611030900"></script>
-  <script src="../src/syllabusMap.js?v=202610161036"></script>
-  <script src="syllabus-map.js?v=202610161036"></script>
+  <script src="../src/syllabusMap.js?v=202611011000"></script>
+  <script src="syllabus-map.js?v=202611011000"></script>
   <script src="../notesPage.js?v=202609252100"></script>
   <script src="../nextPage.js?v=202610161057"></script>
 </body>

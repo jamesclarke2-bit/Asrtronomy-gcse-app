@@ -79,6 +79,29 @@ test('buildSyllabusMap: a be-able-to point with no practice questions reports fa
   const topic1 = map.topics.find((t) => t.number === 1);
   const beAbleTo = topic1.points.find((p) => p.code === '1.2');
   assert.equal(beAbleTo.hasPracticeQuestions, false);
+  assert.equal(beAbleTo.questionCount, 0, 'no questions at all should give a zero count, not null');
+});
+
+test('buildSyllabusMap: questionCount sums every question tagging any of the point\'s covering subtopics, 0 when not applicable', () => {
+  const map = fixtureMap({ allQuestions: [{ id: 'q1', units: ['uA.2'] }, { id: 'q2', units: ['uA.2'] }, { id: 'q3', units: ['uA.2'] }] });
+  const topic1 = map.topics.find((t) => t.number === 1);
+  const know = topic1.points.find((p) => p.code === '1.1');
+  const beAbleTo = topic1.points.find((p) => p.code === '1.2');
+  assert.equal(know.questionCount, 0, "a 'know' point's questionCount is always 0, not applicable");
+  assert.equal(beAbleTo.questionCount, 3, 'uA.2 is tagged on three questions');
+  assert.equal(beAbleTo.hasPracticeQuestions, true);
+});
+
+test('buildSyllabusMap: an uncovered be-able-to point has questionCount 0 even if a question happens to tag its subtopic', () => {
+  const map = fixtureMap({
+    units: [{ id: 'uA', title: 'Unit A', subtopics: [{ id: 'uA.1', title: 'Sub 1', depth: 'know', spec: ['1.1'] }] }],
+    allQuestions: [{ id: 'q1', units: ['uA.2'] }],
+  });
+  const topic1 = map.topics.find((t) => t.number === 1);
+  const beAbleTo = topic1.points.find((p) => p.code === '1.2'); // not built: no page tags uA.2
+  assert.equal(beAbleTo.status, 'not built');
+  assert.equal(beAbleTo.questionCount, 0);
+  assert.equal(beAbleTo.hasPracticeQuestions, null);
 });
 
 test('buildSyllabusMap: a group point is covered only when every child is, partly when some are, not built when none are', () => {
@@ -122,6 +145,15 @@ test('buildSyllabusMap: a topic summary counts covered/partly/not-built points, 
   assert.equal(topic1.summary.covered, 2, '1.1 and 1.2');
   assert.equal(topic1.summary.partlyCovered, 1, '1.3 (only 1.3a covered)');
   assert.equal(topic1.summary.notBuilt, 0);
+});
+
+test('buildSyllabusMap: map.summary totals every registered topic\'s own summary, ignoring unregistered topics entirely', () => {
+  const map = fixtureMap();
+  // The fixture has one registered topic (1, with total 3) and one
+  // unregistered topic (2, no points) — the overall summary should
+  // match topic 1's own summary exactly, topic 2 contributing nothing.
+  const topic1 = map.topics.find((t) => t.number === 1);
+  assert.deepEqual(map.summary, topic1.summary);
 });
 
 test('buildSyllabusMap: an unregistered topic reports registered:false and no points', () => {
@@ -240,6 +272,47 @@ test('real data: a topic summary matches an independent recount of its own point
       { covered, partlyCovered, notBuilt, total: topic.points.length },
       `Topic ${topic.number}'s summary should match its own points`
     );
+  });
+});
+
+test('real data: map.summary matches an independent recount across every registered topic', () => {
+  const map = realMap();
+  const expected = map.topics
+    .filter((t) => t.registered)
+    .reduce(
+      (acc, t) => ({
+        covered: acc.covered + t.summary.covered,
+        partlyCovered: acc.partlyCovered + t.summary.partlyCovered,
+        notBuilt: acc.notBuilt + t.summary.notBuilt,
+        total: acc.total + t.summary.total,
+      }),
+      { covered: 0, partlyCovered: 0, notBuilt: 0, total: 0 }
+    );
+  assert.deepEqual(map.summary, expected);
+  assert.equal(map.summary.covered + map.summary.partlyCovered + map.summary.notBuilt, map.summary.total);
+});
+
+test('real data: a covered be-able-to point\'s questionCount matches an independent count straight from getAllQuestionsNode', () => {
+  const map = realMap();
+  const allQuestions = getAllQuestionsNode();
+
+  function checkPoint(point) {
+    if (!point.isGroup && point.depth === 'be able to' && point.status === 'covered') {
+      const subtopicIds = new Set();
+      UNITS.forEach((unit) =>
+        unit.subtopics.forEach((sub) => {
+          if ((sub.spec || []).includes(point.code)) subtopicIds.add(sub.id);
+        })
+      );
+      const independentCount = allQuestions.filter((q) => (q.units || []).some((id) => subtopicIds.has(id))).length;
+      assert.equal(point.questionCount, independentCount, `${point.code}'s questionCount should match an independent recount`);
+      assert.equal(point.hasPracticeQuestions, independentCount > 0);
+    }
+    if (point.children) point.children.forEach(checkPoint);
+  }
+
+  map.topics.forEach((topic) => {
+    if (topic.registered) topic.points.forEach(checkPoint);
   });
 });
 
