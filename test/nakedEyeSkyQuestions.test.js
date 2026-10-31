@@ -1,6 +1,6 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const { makeQuestions, PHENOMENA, PATTERN_IDS_AND_NAMES } = require('../src/nakedEyeSkyQuestions');
+const { makeQuestions, PHENOMENA, PATTERN_IDS_AND_NAMES, PHENOMENA_GRID_ORDER } = require('../src/nakedEyeSkyQuestions');
 const StarPatterns = require('../src/starPatterns');
 
 function findQuestion(questions, id) {
@@ -9,9 +9,9 @@ function findQuestion(questions, id) {
   return q;
 }
 
-test('makeQuestions returns 25 questions, each tagged u1.1, u1.2 or u1.3', () => {
+test('makeQuestions returns 39 questions, each tagged u1.1, u1.2 or u1.3', () => {
   const questions = makeQuestions(StarPatterns);
-  assert.equal(questions.length, 25);
+  assert.equal(questions.length, 39);
   questions.forEach((q) => {
     assert.ok(Array.isArray(q.units) && q.units.length > 0, `${q.id} has no units`);
     q.units.forEach((id) => assert.ok(['u1.1', 'u1.2', 'u1.3'].includes(id), `${q.id} tags unexpected unit "${id}"`));
@@ -145,4 +145,56 @@ test('square-of-pegasus-pointers: accepts the one fully-correct mapping, rejects
   const correctValue = { westernSide: 'Fomalhaut', diagonal: 'The Andromeda Galaxy' };
   assert.ok(q.check(correctValue).correct);
   assert.equal(q.check({ ...correctValue, diagonal: 'Fomalhaut' }).correct, false);
+});
+
+// --- "Which is it?" picture-tap game --------------------------------------
+
+test('PHENOMENA_GRID_ORDER has exactly the 14 tappable grid pictures, each key unique', () => {
+  assert.equal(PHENOMENA_GRID_ORDER.length, 14);
+  assert.equal(new Set(PHENOMENA_GRID_ORDER).size, 14);
+});
+
+test('there is exactly one which-is-it-* question per grid picture, in the same order as PHENOMENA_GRID_ORDER', () => {
+  const questions = makeQuestions(StarPatterns);
+  const whichIsIt = questions.filter((q) => q.id.startsWith('which-is-it-'));
+  assert.equal(whichIsIt.length, 14);
+  assert.deepEqual(whichIsIt.map((q) => q.id), PHENOMENA_GRID_ORDER.map((key) => `which-is-it-${key}`));
+});
+
+test('every picture is the correct answer to exactly one which-is-it-* question across a full round', () => {
+  const questions = makeQuestions(StarPatterns);
+  const whichIsIt = questions.filter((q) => q.id.startsWith('which-is-it-'));
+  const correctKeys = whichIsIt.map((q) => q.correctKey);
+  assert.equal(new Set(correctKeys).size, 14, 'every correctKey should be distinct');
+  PHENOMENA_GRID_ORDER.forEach((key) => assert.ok(correctKeys.includes(key), `${key} is never a correct answer`));
+});
+
+test('each which-is-it-* question only accepts its own grid key, tagged u1.1', () => {
+  const questions = makeQuestions(StarPatterns);
+  const whichIsIt = questions.filter((q) => q.id.startsWith('which-is-it-'));
+  whichIsIt.forEach((q) => {
+    assert.deepEqual(q.units, ['u1.1']);
+    assert.ok(q.check(q.correctKey).correct);
+    PHENOMENA_GRID_ORDER.filter((key) => key !== q.correctKey).forEach((key) => {
+      assert.equal(q.check(key).correct, false, `${q.id} should reject "${key}"`);
+    });
+  });
+});
+
+test('every which-is-it-* question has a non-empty clue, and the 13 with a matching practice question reuse its exact clue text', () => {
+  const questions = makeQuestions(StarPatterns);
+  const whichIsIt = questions.filter((q) => q.id.startsWith('which-is-it-'));
+  const GRID_KEY_TO_PHENOMENON_ID = {
+    sun: 'sun', moon: 'moon', stars: 'star', satellites: 'satellite',
+    aircraft: 'aircraft', planets: 'planet', meteors: 'meteor', comets: 'comet',
+    aurorae: 'aurora', supernovae: 'supernova', doubleStar: 'doubleStar',
+    starClusters: 'starCluster', milkyWay: 'milkyWay',
+  };
+  whichIsIt.forEach((q) => {
+    assert.ok(q.prompt && q.prompt.length > 0, `${q.id} has no clue`);
+    const phenomenonId = GRID_KEY_TO_PHENOMENON_ID[q.correctKey];
+    if (!phenomenonId) return; // galaxiesNebulae: no phenomenon-* counterpart, see src/nakedEyeSkyQuestions.js
+    const phenomenon = PHENOMENA.find((p) => p.id === phenomenonId);
+    assert.equal(q.prompt, phenomenon.clue, `${q.id} should reuse the practice question's own clue text`);
+  });
 });

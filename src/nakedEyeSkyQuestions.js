@@ -27,6 +27,14 @@
  * (e.g. from a Node test, or from src/allQuestions.js's sitewide list,
  * neither of which has a DOM to draw into) — render just never gets
  * called there.
+ *
+ * The 14 which-is-it-* questions back the page's "Which is it?" picture
+ * game: tapping a picture is the answer, not choosing or typing text, so
+ * these don't go through quiz-ui.js's normal renderQuestions flow at
+ * all — the page calls check(key) itself. PHENOMENA_GRID_ORDER is the
+ * single source for which 14 pictures exist and their order; the page's
+ * own buildPhenomenaGrid() and PHENOMENA_CARDS supply each one's title,
+ * tell line, full definition and icon.
  */
 const PHENOMENA = [
   { id: 'sun', name: 'The Sun', clue: 'the only star bright enough to give daylight' },
@@ -60,6 +68,69 @@ const PHENOMENON_EXPLANATIONS = {
   supernova: "A supernova is a dying star's catastrophic explosion — briefly a dazzling new point of light, fading again over weeks. A naked-eye one in our own Galaxy is extremely rare.",
   comet: "A comet shows a fuzzy tail that always points away from the Sun (pushed by the solar wind and radiation), and drifts slowly against the stars from one night to the next.",
 };
+
+// The order shown in notes/naked-eye-sky.html's tappable picture grid —
+// the Sun, Moon and ordinary stars first, then everything else a
+// beginner might mistake for one of those three. Exported so the page's
+// own buildPhenomenaGrid() never keeps a second copy of this ordering
+// that could drift from the one the "Which is it?" game below quizzes
+// against.
+const PHENOMENA_GRID_ORDER = [
+  'sun', 'moon', 'stars',
+  'satellites', 'aircraft', 'planets', 'meteors', 'comets', 'aurorae',
+  'supernovae', 'doubleStar', 'starClusters', 'galaxiesNebulae', 'milkyWay',
+];
+
+// Most of the grid's 14 picture keys are just the plural form of one of
+// the 13 PHENOMENA ids above; this bridges the naming so the "Which is
+// it?" game's clues can reuse PHENOMENA's own clue text verbatim rather
+// than retyping it under a second set of ids.
+const GRID_KEY_TO_PHENOMENON_ID = {
+  sun: 'sun',
+  moon: 'moon',
+  stars: 'star',
+  satellites: 'satellite',
+  aircraft: 'aircraft',
+  planets: 'planet',
+  meteors: 'meteor',
+  comets: 'comet',
+  aurorae: 'aurora',
+  supernovae: 'supernova',
+  doubleStar: 'doubleStar',
+  starClusters: 'starCluster',
+  milkyWay: 'milkyWay',
+  // galaxiesNebulae deliberately has no phenomenon-* counterpart above —
+  // the ordinary practice questions never quiz it on its own, since a
+  // "fuzzy smudge" clue would be genuinely ambiguous between it and a
+  // star cluster. Its "Which is it?" clue is written fresh below.
+};
+
+const GALAXY_NEBULA_CLUE = 'a faint, fuzzy smudge: either a whole separate galaxy, or a closer cloud of gas and dust';
+
+function whichIsItClue(gridKey) {
+  const phenomenonId = GRID_KEY_TO_PHENOMENON_ID[gridKey];
+  if (!phenomenonId) return GALAXY_NEBULA_CLUE;
+  return PHENOMENA.find((p) => p.id === phenomenonId).clue;
+}
+
+// The "Which is it?" picture-tap game (notes/naked-eye-sky.html): one
+// question per grid picture, so a full round (all 14) makes every
+// picture the correct answer exactly once. Unlike the text-choice
+// phenomenon-* questions above, the "answer" is the grid picture's own
+// key, tapped from a small on-screen set of pictures rather than typed
+// or chosen from a list of names — see the page's own "Which is it?"
+// game for how check() actually gets called.
+function whichIsItQuestion(gridKey) {
+  return {
+    id: `which-is-it-${gridKey}`,
+    units: ['u1.1'],
+    prompt: whichIsItClue(gridKey),
+    correctKey: gridKey,
+    check(key) {
+      return { correct: key === gridKey };
+    },
+  };
+}
 
 function phenomenonQuestion(phenomenon) {
   return {
@@ -135,6 +206,7 @@ function makeQuestions(StarPatterns, NakedEyeSkyDiagram) {
   return [
     ...PHENOMENA.map(phenomenonQuestion),
     ...PATTERN_IDS_AND_NAMES.map((entry) => namePatternQuestion(entry, NakedEyeSkyDiagram)),
+    ...PHENOMENA_GRID_ORDER.map(whichIsItQuestion),
     {
       id: 'constellation-or-asterism',
       units: ['u1.2'],
@@ -246,7 +318,7 @@ function makeQuestions(StarPatterns, NakedEyeSkyDiagram) {
   ];
 }
 
-const nakedEyeSkyQuestionsApi = { makeQuestions, PHENOMENA, PATTERN_IDS_AND_NAMES };
+const nakedEyeSkyQuestionsApi = { makeQuestions, PHENOMENA, PATTERN_IDS_AND_NAMES, PHENOMENA_GRID_ORDER };
 
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = nakedEyeSkyQuestionsApi;

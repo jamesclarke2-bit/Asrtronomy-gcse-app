@@ -7,7 +7,7 @@
   <meta name="referrer" content="no-referrer" />
   <meta name="robots" content="noindex, nofollow" />
   <title>The Naked-Eye Sky</title>
-  <link rel="stylesheet" href="../styles.css?v=202611031700" />
+  <link rel="stylesheet" href="../styles.css?v=202610311800" />
   <link rel="icon" type="image/svg+xml" href="../favicon.svg?v=202610130720" />
 </head>
 <body>
@@ -28,34 +28,21 @@
         what, then see the table below for a quick way to tell them apart.
       </p>
 
-      <div class="diagram phenomena-grid-diagram">
-        <div class="labelled-diagram-wrap" id="phenomena-grid-wrap">
-          <svg
-            id="phenomena-grid"
-            class="responsive-svg"
-            width="640"
-            height="920"
-            viewBox="0 0 640 920"
-            role="group"
-            aria-label="A tappable picture grid of fourteen naked-eye phenomena: the Sun, the Moon, stars, satellite trail, aircraft lights, planet, meteor, comet, aurora, supernova, double star, star cluster, galaxy and nebula, and the Milky Way, each with a one-line tell and more detail on tap"
-          ></svg>
-        </div>
-      </div>
-      <div class="phenomena-grid-definitions">
-        <span class="glossary-definition" data-term="sun" hidden></span>
-        <span class="glossary-definition" data-term="moon" hidden></span>
-        <span class="glossary-definition" data-term="stars" hidden></span>
-        <span class="glossary-definition" data-term="satellites" hidden></span>
-        <span class="glossary-definition" data-term="aircraft" hidden></span>
-        <span class="glossary-definition" data-term="planets" hidden></span>
-        <span class="glossary-definition" data-term="meteors" hidden></span>
-        <span class="glossary-definition" data-term="comets" hidden></span>
-        <span class="glossary-definition" data-term="aurorae" hidden></span>
-        <span class="glossary-definition" data-term="supernovae" hidden></span>
-        <span class="glossary-definition" data-term="doubleStar" hidden></span>
-        <span class="glossary-definition" data-term="starClusters" hidden></span>
-        <span class="glossary-definition" data-term="galaxiesNebulae" hidden></span>
-        <span class="glossary-definition" data-term="milkyWay" hidden></span>
+      <div class="phenomena-grid" id="phenomena-grid" role="list" aria-label="A tappable picture grid of fourteen naked-eye phenomena: the Sun, the Moon, stars, satellite trail, aircraft lights, planet, meteor, comet, aurora, supernova, double star, star cluster, galaxy and nebula, and the Milky Way. Tap a picture to find out what's what.">
+        <button type="button" class="phenomena-tile" data-key="sun" role="listitem" aria-expanded="false"><svg class="phenomena-tile-art" viewBox="0 0 140 100" aria-hidden="true"></svg><span class="phenomena-tile-title"></span><span class="phenomena-tile-tell"></span></button>
+        <button type="button" class="phenomena-tile" data-key="moon" role="listitem" aria-expanded="false"><svg class="phenomena-tile-art" viewBox="0 0 140 100" aria-hidden="true"></svg><span class="phenomena-tile-title"></span><span class="phenomena-tile-tell"></span></button>
+        <button type="button" class="phenomena-tile" data-key="stars" role="listitem" aria-expanded="false"><svg class="phenomena-tile-art" viewBox="0 0 140 100" aria-hidden="true"></svg><span class="phenomena-tile-title"></span><span class="phenomena-tile-tell"></span></button>
+        <button type="button" class="phenomena-tile" data-key="satellites" role="listitem" aria-expanded="false"><svg class="phenomena-tile-art" viewBox="0 0 140 100" aria-hidden="true"></svg><span class="phenomena-tile-title"></span><span class="phenomena-tile-tell"></span></button>
+        <button type="button" class="phenomena-tile" data-key="aircraft" role="listitem" aria-expanded="false"><svg class="phenomena-tile-art" viewBox="0 0 140 100" aria-hidden="true"></svg><span class="phenomena-tile-title"></span><span class="phenomena-tile-tell"></span></button>
+        <button type="button" class="phenomena-tile" data-key="planets" role="listitem" aria-expanded="false"><svg class="phenomena-tile-art" viewBox="0 0 140 100" aria-hidden="true"></svg><span class="phenomena-tile-title"></span><span class="phenomena-tile-tell"></span></button>
+        <button type="button" class="phenomena-tile" data-key="meteors" role="listitem" aria-expanded="false"><svg class="phenomena-tile-art" viewBox="0 0 140 100" aria-hidden="true"></svg><span class="phenomena-tile-title"></span><span class="phenomena-tile-tell"></span></button>
+        <button type="button" class="phenomena-tile" data-key="comets" role="listitem" aria-expanded="false"><svg class="phenomena-tile-art" viewBox="0 0 140 100" aria-hidden="true"></svg><span class="phenomena-tile-title"></span><span class="phenomena-tile-tell"></span></button>
+        <button type="button" class="phenomena-tile" data-key="aurorae" role="listitem" aria-expanded="false"><svg class="phenomena-tile-art" viewBox="0 0 140 100" aria-hidden="true"></svg><span class="phenomena-tile-title"></span><span class="phenomena-tile-tell"></span></button>
+        <button type="button" class="phenomena-tile" data-key="supernovae" role="listitem" aria-expanded="false"><svg class="phenomena-tile-art" viewBox="0 0 140 100" aria-hidden="true"></svg><span class="phenomena-tile-title"></span><span class="phenomena-tile-tell"></span></button>
+        <button type="button" class="phenomena-tile" data-key="doubleStar" role="listitem" aria-expanded="false"><svg class="phenomena-tile-art" viewBox="0 0 140 100" aria-hidden="true"></svg><span class="phenomena-tile-title"></span><span class="phenomena-tile-tell"></span></button>
+        <button type="button" class="phenomena-tile" data-key="starClusters" role="listitem" aria-expanded="false"><svg class="phenomena-tile-art" viewBox="0 0 140 100" aria-hidden="true"></svg><span class="phenomena-tile-title"></span><span class="phenomena-tile-tell"></span></button>
+        <button type="button" class="phenomena-tile" data-key="galaxiesNebulae" role="listitem" aria-expanded="false"><svg class="phenomena-tile-art" viewBox="0 0 140 100" aria-hidden="true"></svg><span class="phenomena-tile-title"></span><span class="phenomena-tile-tell"></span></button>
+        <button type="button" class="phenomena-tile" data-key="milkyWay" role="listitem" aria-expanded="false"><svg class="phenomena-tile-art" viewBox="0 0 140 100" aria-hidden="true"></svg><span class="phenomena-tile-title"></span><span class="phenomena-tile-tell"></span></button>
       </div>
 
       <p>
@@ -353,6 +340,23 @@
           <div id="pattern-quiz-list"></div>
         </div>
       </details>
+      <details class="picture-quiz-panel">
+        <summary class="quiz-panel-summary" id="which-is-it-quiz-summary">
+          <svg class="quiz-panel-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8" />
+            <path d="M8 12.5l2.5 2.5L16 9.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          <span class="quiz-panel-title">Picture quiz: which is it? (14 questions)</span>
+          <span class="quiz-panel-count"></span>
+          <svg class="quiz-panel-chevron" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </summary>
+        <div class="picture-quiz-panel-body">
+          <p>A clue, then tap the matching picture from six.</p>
+          <div id="which-is-it-game"></div>
+        </div>
+      </details>
     </section>
 
     <section class="progress">
@@ -434,11 +438,11 @@
   <script src="../src/pages.js?v=202611030900"></script>
   <script src="../src/coordinates.js?v=202609212100"></script>
   <script src="../src/starPatterns.js?v=202609280900"></script>
-  <script src="../src/nakedEyeSkyQuestions.js?v=202610310900"></script>
+  <script src="../src/nakedEyeSkyQuestions.js?v=202610311800"></script>
   <script src="../glossary.js?v=202610131052"></script>
-  <script src="../quiz-ui.js?v=202611021000"></script>
+  <script src="../quiz-ui.js?v=202610311800"></script>
   <script src="../flashcards.js?v=202609281200"></script>
-  <script src="naked-eye-sky.js?v=202610291000"></script>
+  <script src="naked-eye-sky.js?v=202610311800"></script>
   <script src="../notesPage.js?v=202609252100"></script>
   <script src="../nextPage.js?v=202610161057"></script>
 </body>

@@ -27,6 +27,18 @@
  * mixed up with another question's that happens to share a unit tag).
  * #progress-list always covers every question mounted on the page, by
  * either call.
+ *
+ * A quiz whose answer isn't typed or chosen from a list at all — e.g.
+ * notes/naked-eye-sky.html's "Which is it?" game, where tapping a
+ * picture IS the answer, with feedback shown the instant it's tapped —
+ * doesn't fit renderQuestions' own render-picture-then-pick-from-a-list
+ * shape, so it doesn't go through mount()/mountGroup(). It still needs
+ * the SAME shared tally and the SAME live "X/N correct" badge every
+ * other quiz gets, so those two pieces are exposed directly:
+ * QuizUI.recordResult(question, correct) after the page decides an
+ * answer is right or wrong, and QuizUI.registerGroupSummary(...) once,
+ * the same shape mountGroup's own internal bookkeeping already uses, to
+ * keep a folded panel's own count live without mountGroup's rendering.
  */
 (function () {
   const STORAGE_KEY = 'astro-quiz-progress';
@@ -273,5 +285,18 @@
     renderGroupSummaries();
   }
 
-  window.QuizUI = { mount, mountGroup };
+  // Registers a question set's live "X/N correct" badge without also
+  // rendering them with renderQuestions — for a quiz whose own page
+  // script draws the questions itself (see the header comment). Also
+  // folds them into allMountedQuestions so #progress-list's per-unit
+  // tally covers them, exactly as mount()/mountGroup() already do for
+  // their own questions.
+  function registerGroupSummary({ questions, summaryEl, label }) {
+    allMountedQuestions = allMountedQuestions.concat(questions);
+    groupSummaries.push({ questions, summaryEl, label });
+    renderProgress();
+    renderGroupSummaries();
+  }
+
+  window.QuizUI = { mount, mountGroup, recordResult, registerGroupSummary };
 })();
