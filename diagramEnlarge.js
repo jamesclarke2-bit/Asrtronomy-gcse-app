@@ -10,8 +10,9 @@
  * .labelled-diagram-wrap or .question-diagram (the picture-quiz
  * pictures quiz-ui.js's renderQuestions() draws for a "name that
  * feature/line/pattern" question) — deduplicated so a
- * .labelled-diagram-wrap nested inside a .diagram (the usual shape)
- * only gets ONE button, on the outer .diagram, not two.
+ * .labelled-diagram-wrap nested inside a .diagram or a .question-diagram
+ * (both normal shapes) only gets ONE button, on the outer container, not
+ * two.
  *
  * Pressing the button, or tapping anywhere on the diagram that isn't
  * itself an interactive control (a link, button, glossary toggle,
@@ -141,16 +142,18 @@
     });
   }
 
-  // A .labelled-diagram-wrap nested inside a .diagram (the normal
-  // shape) shouldn't also get its own, separate button — one button
-  // per visual diagram, on the outermost match.
+  // A .labelled-diagram-wrap nested inside a .diagram or a
+  // .question-diagram (both normal shapes — a picture-quiz question
+  // wraps its own .labelled-diagram-wrap diagram in a .question-diagram
+  // card) shouldn't also get its own, separate button — one button per
+  // visual diagram, on the outermost match.
   function collectDiagramContainers() {
     const containers = new Set();
     document.querySelectorAll('.diagram').forEach((el) => containers.add(el));
-    document.querySelectorAll('.labelled-diagram-wrap').forEach((el) => {
-      if (!el.closest('.diagram')) containers.add(el);
-    });
     document.querySelectorAll('.question-diagram').forEach((el) => containers.add(el));
+    document.querySelectorAll('.labelled-diagram-wrap').forEach((el) => {
+      if (!el.closest('.diagram, .question-diagram')) containers.add(el);
+    });
     return [...containers];
   }
 

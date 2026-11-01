@@ -128,10 +128,24 @@ canvas {
   padding: 0;
   border: none;
   border-radius: 12px;
-  width: min(96vw, 1100px);
+  width: min(98vw, 1100px);
   max-height: 92vh;
   background: #fff;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
+}
+
+/* On a phone, a fixed-width box leaves too little room either side of the
+   content's own padding and (if it overflows) scrollbar for the enlarged
+   diagram to end up bigger than an already near-edge-to-edge in-page one
+   — go full-bleed instead, with no gutter to compete with. */
+@media (max-width: 600px) {
+  .diagram-enlarge-dialog {
+    width: 100vw;
+    height: 100vh;
+    max-height: 100vh;
+    margin: 0;
+    border-radius: 0;
+  }
 }
 
 .diagram-enlarge-dialog::backdrop {
@@ -170,22 +184,30 @@ canvas {
 .diagram-enlarge-content {
   flex: 1 1 auto;
   min-height: 0;
-  overflow: auto;
-  padding: 3rem 1.25rem 1.25rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 3rem 0.5rem 0.75rem;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+@media (max-width: 600px) {
+  .diagram-enlarge-content {
+    padding: 3rem 0.2rem 0.5rem;
+  }
 }
 
 /* The enlarged diagram fills the dialog rather than staying capped at
    its normal in-page max-width, and every picture inside it is forced
    to scale to fit — overriding whatever page-specific sizing that
    picture normally has (not every diagram on the site is already
-   built responsively like .responsive-svg above), since this one rule
-   has to work for all of them. */
+   built responsively like .responsive-svg above, and a few, like
+   .month-strip-card, cap it even smaller), since this one rule has to
+   beat all of them. */
 .diagram-enlarge-content > .diagram-enlarge-active {
-  max-width: 100%;
-  width: 100%;
+  max-width: 100% !important;
+  width: 100% !important;
 }
 
 .diagram-enlarge-active svg,
