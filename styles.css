@@ -139,20 +139,6 @@ canvas {
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
 }
 
-/* On a phone, a fixed-width box leaves too little room either side of the
-   content's own padding and (if it overflows) scrollbar for the enlarged
-   diagram to end up bigger than an already near-edge-to-edge in-page one
-   — go full-bleed instead, with no gutter to compete with. */
-@media (max-width: 600px) {
-  .diagram-enlarge-dialog {
-    width: 100vw;
-    height: 100vh;
-    max-height: 100vh;
-    margin: 0;
-    border-radius: 0;
-  }
-}
-
 .diagram-enlarge-dialog::backdrop {
   background: rgba(10, 14, 20, 0.75);
 }
@@ -195,12 +181,6 @@ canvas {
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-@media (max-width: 600px) {
-  .diagram-enlarge-content {
-    padding: 3rem 0.2rem 0.5rem;
-  }
 }
 
 /* The enlarged diagram fills the dialog rather than staying capped at
