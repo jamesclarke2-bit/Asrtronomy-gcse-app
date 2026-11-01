@@ -129,6 +129,11 @@ canvas {
   border: none;
   border-radius: 12px;
   width: min(98vw, 1100px);
+  /* The UA stylesheet gives <dialog> its own max-width (Chromium: calc(100%
+     - 38px)) that otherwise caps us below our own width above whenever
+     that's the tighter of the two — reset it so our width is the only one
+     that applies. */
+  max-width: none;
   max-height: 92vh;
   background: #fff;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
