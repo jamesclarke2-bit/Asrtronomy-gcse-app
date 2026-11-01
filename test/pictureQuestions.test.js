@@ -97,6 +97,23 @@ function questionDiagramLocator(page, promptPrefix, index) {
     .locator('.question-diagram');
 }
 
+// The diagram's own visible text, same as innerText(), but with
+// diagramEnlarge.js's "Enlarge" button text left out — that button is
+// unrelated UI chrome every diagram gets, not a label the quiz drew, so
+// it shouldn't count as a spoiler leak below.
+async function visibleQuizDiagramText(diagram) {
+  return (
+    await diagram.evaluate((el) => {
+      const buttons = [...el.querySelectorAll('.diagram-enlarge-button')];
+      const prevDisplay = buttons.map((b) => b.style.display);
+      buttons.forEach((b) => (b.style.display = 'none'));
+      const text = el.innerText;
+      buttons.forEach((b, i) => (b.style.display = prevDisplay[i]));
+      return text;
+    })
+  ).trim();
+}
+
 VIEWPORTS.forEach((viewport) => {
   test(`notes/moon-structure.html "name that feature" at ${viewport.label}: every feature's diagram highlights exactly that feature, with no visible label text`, async (t) => {
     await withPage(t, MOON_PAGE_URL, viewport, async (page) => {
@@ -112,7 +129,7 @@ VIEWPORTS.forEach((viewport) => {
         // The only text the quiz marker itself is allowed to add is its
         // own "?" (see applyFeatureQuizHighlight/drawQuizArrow) — never
         // the feature's actual name, which would spoil the question.
-        const visibleText = (await diagram.innerText()).trim();
+        const visibleText = await visibleQuizDiagramText(diagram);
         const markerText = await diagram.evaluate((el) => {
           const text = el.querySelector('.quiz-feature-marker text');
           return text ? text.textContent.trim() : '';
@@ -136,7 +153,7 @@ VIEWPORTS.forEach((viewport) => {
         // The only text the quiz marker itself is allowed to add is its
         // own "?" (see applyLineQuizHighlight/drawQuizArrow) — never the
         // feature's actual name, which would spoil the question.
-        const visibleText = (await diagram.innerText()).trim();
+        const visibleText = await visibleQuizDiagramText(diagram);
         const markerText = await diagram.evaluate((el) => {
           const text = el.querySelector('.quiz-feature-marker text');
           return text ? text.textContent.trim() : '';
@@ -156,7 +173,7 @@ VIEWPORTS.forEach((viewport) => {
         const starCount = await diagram.locator('circle').count();
         assert.ok(starCount > 0, `diagram for pattern #${i} should draw at least one star`);
 
-        const visibleText = (await diagram.innerText()).trim();
+        const visibleText = await visibleQuizDiagramText(diagram);
         assert.equal(visibleText, '', `diagram for pattern #${i} should carry no visible label text, got "${visibleText}"`);
       }
     });
