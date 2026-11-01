@@ -75,6 +75,127 @@ canvas {
   gap: 1.5rem;
 }
 
+/* diagramEnlarge.js: every .diagram, .labelled-diagram-wrap (that
+   isn't already inside a .diagram — see that file's own
+   collectDiagramContainers) and .question-diagram gets a small
+   "Enlarge" button in its corner, opening it in a full-screen
+   <dialog>, scaled up as large as the screen allows. */
+.diagram,
+.question-diagram {
+  position: relative;
+}
+
+.diagram-enlarge-source {
+  cursor: zoom-in;
+}
+
+.diagram-enlarge-button {
+  position: absolute;
+  top: 0.4rem;
+  right: 0.4rem;
+  z-index: 2;
+  padding: 0.2rem 0.55rem;
+  border: 1px solid #2a6bd6;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  color: #173d75;
+  font-size: 0.72rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.diagram-enlarge-button:hover,
+.diagram-enlarge-button:focus-visible {
+  background: #eaf2fb;
+}
+
+.diagram-enlarge-button:focus-visible {
+  outline: 2px solid #173d75;
+  outline-offset: 2px;
+}
+
+/* The diagram's own enlarge button would otherwise come along for the
+   ride, rendered again inside the already-enlarged dialog — pointless
+   there, since the diagram it would enlarge is itself. */
+.diagram-enlarge-active > .diagram-enlarge-button {
+  display: none;
+}
+
+.diagram-enlarge-dialog {
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  padding: 0;
+  border: none;
+  border-radius: 12px;
+  width: min(96vw, 1100px);
+  max-height: 92vh;
+  background: #fff;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
+}
+
+.diagram-enlarge-dialog::backdrop {
+  background: rgba(10, 14, 20, 0.75);
+}
+
+/* The UA default for <dialog> is display:block; flex instead so
+   .diagram-enlarge-content can fill the remaining height below the
+   close button and centre whatever picture ends up inside it. */
+.diagram-enlarge-dialog[open] {
+  display: flex;
+  flex-direction: column;
+}
+
+.diagram-enlarge-close {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+  z-index: 2;
+  width: 40px;
+  height: 40px;
+  border: 1px solid #2a6bd6;
+  border-radius: 8px;
+  background: #fff;
+  color: #173d75;
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.diagram-enlarge-close:hover,
+.diagram-enlarge-close:focus-visible {
+  background: #eaf2fb;
+}
+
+.diagram-enlarge-content {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  padding: 3rem 1.25rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* The enlarged diagram fills the dialog rather than staying capped at
+   its normal in-page max-width, and every picture inside it is forced
+   to scale to fit — overriding whatever page-specific sizing that
+   picture normally has (not every diagram on the site is already
+   built responsively like .responsive-svg above), since this one rule
+   has to work for all of them. */
+.diagram-enlarge-content > .diagram-enlarge-active {
+  max-width: 100%;
+  width: 100%;
+}
+
+.diagram-enlarge-active svg,
+.diagram-enlarge-active canvas,
+.diagram-enlarge-active img {
+  width: 100% !important;
+  height: auto !important;
+  max-width: 100% !important;
+}
+
 /* notes/scale-of-the-solar-system.html's "zoom out" picture ladder: one
    rung per body, each an icon beside its distance and light travel time. */
 .scale-ladder {
