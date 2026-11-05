@@ -100,6 +100,26 @@
   const MIN_WORTHWHILE_SCALE = 1.01;
   const CROP_MARGIN_FRACTION = 0.04;
 
+  const SVG_NS = 'http://www.w3.org/2000/svg';
+
+  // Builds a small decorative icon from a fixed, hand-authored path —
+  // never anything derived from page content — via createElementNS
+  // rather than innerHTML.
+  function buildIcon(pathD) {
+    const svg = document.createElementNS(SVG_NS, 'svg');
+    svg.setAttribute('viewBox', '0 0 24 24');
+    svg.setAttribute('aria-hidden', 'true');
+    const path = document.createElementNS(SVG_NS, 'path');
+    path.setAttribute('d', pathD);
+    path.setAttribute('fill', 'none');
+    path.setAttribute('stroke', 'currentColor');
+    path.setAttribute('stroke-width', '2.4');
+    path.setAttribute('stroke-linecap', 'round');
+    path.setAttribute('stroke-linejoin', 'round');
+    svg.appendChild(path);
+    return svg;
+  }
+
   let dialog = null;
   let contentEl = null;
   let cropBox = null;
@@ -130,8 +150,7 @@
     closeButton.type = 'button';
     closeButton.className = 'diagram-enlarge-close';
     closeButton.setAttribute('aria-label', 'Close enlarged diagram');
-    closeButton.innerHTML =
-      '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5 L19 19 M19 5 L5 19" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>';
+    closeButton.appendChild(buildIcon('M5 5 L19 19 M19 5 L5 19'));
     closeButton.addEventListener('click', () => dialog.close());
 
     contentEl = document.createElement('div');
@@ -316,8 +335,7 @@
     button.type = 'button';
     button.className = 'diagram-enlarge-button';
     button.setAttribute('aria-label', 'Enlarge diagram');
-    button.innerHTML =
-      '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5 M15 4h5v5 M20 15v5h-5 M9 20H4v-5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    button.appendChild(buildIcon('M4 9V4h5 M15 4h5v5 M20 15v5h-5 M9 20H4v-5'));
     button.addEventListener('click', (event) => {
       event.stopPropagation();
       openDiagram(container);
