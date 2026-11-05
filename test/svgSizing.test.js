@@ -23,6 +23,9 @@
  * rendered (nonzero size) once the page has loaded and every <details>
  * element has been forced open — the same opening convention
  * test/pictureQuestions.test.js uses for its own picture-quiz panels.
+ * diagramEnlarge.js's own small icon svgs (inside .diagram-enlarge-button
+ * / .diagram-enlarge-close) are excluded — they're deliberately small UI
+ * chrome living inside the same wrapper, not a diagram.
  * A diagram inside a reveal opened only by page-specific JS (a glossary
  * toggle, a custom "Compare with Earth's layers" button, and similar)
  * isn't exercised here, since there's no site-wide convention for
@@ -116,6 +119,7 @@ PAGES.forEach((href) => {
         const svgReports = await page.evaluate(
           (selector) =>
             [...document.querySelectorAll('svg')]
+              .filter((svg) => !svg.closest('.diagram-enlarge-button, .diagram-enlarge-close'))
               .map((svg) => {
                 const wrapper = svg.closest(selector);
                 if (!wrapper) return null;
@@ -125,7 +129,9 @@ PAGES.forEach((href) => {
                 const vb = svg.viewBox && svg.viewBox.baseVal;
                 let id = svg.id;
                 if (!id) {
-                  const siblingSvgs = [...wrapper.querySelectorAll('svg')];
+                  const siblingSvgs = [...wrapper.querySelectorAll('svg')].filter(
+                    (s) => !s.closest('.diagram-enlarge-button, .diagram-enlarge-close')
+                  );
                   const index = siblingSvgs.indexOf(svg);
                   const wrapperName = wrapper.id ? `#${wrapper.id}` : wrapper.className.split(' ')[0] || wrapper.tagName.toLowerCase();
                   id = `${wrapperName} svg[${index}]`;
