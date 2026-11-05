@@ -75,43 +75,62 @@ canvas {
   gap: 1.5rem;
 }
 
-/* diagramEnlarge.js: every .diagram, .labelled-diagram-wrap (that
-   isn't already inside a .diagram — see that file's own
-   collectDiagramContainers) and .question-diagram gets a small
-   "Enlarge" button in its corner, opening it in a full-screen
-   <dialog>, scaled up as large as the screen allows. */
-.diagram,
-.question-diagram {
-  position: relative;
-}
-
+/* diagramEnlarge.js: a diagram (or a grouped row of small ones — see
+   that file's own header) that's worth enlarging gets a small, quiet
+   "Enlarge" button in its corner, opening it in a full-screen <dialog>,
+   cropped to its own content and scaled up to fit the screen. JS adds
+   .diagram-enlarge-source to whatever container it picks, so this
+   doesn't need to enumerate every container type itself. */
 .diagram-enlarge-source {
+  position: relative;
   cursor: zoom-in;
 }
 
+/* 44px tap target (accessible touch-target size), but only a small 28px
+   circle of it is actually visible — a quiet corner mark, not a loud
+   control next to what's often a small picture. */
 .diagram-enlarge-button {
   position: absolute;
-  top: 0.4rem;
-  right: 0.4rem;
+  top: 0;
+  right: 0;
   z-index: 2;
-  padding: 0.2rem 0.55rem;
-  border: 1px solid #2a6bd6;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.92);
-  color: #173d75;
-  font-size: 0.72rem;
-  font-weight: 700;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: none;
+  background: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
 }
 
-.diagram-enlarge-button:hover,
-.diagram-enlarge-button:focus-visible {
+.diagram-enlarge-button::before {
+  content: '';
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid #2a6bd6;
+}
+
+.diagram-enlarge-button svg {
+  position: relative;
+  width: 14px;
+  height: 14px;
+  color: #173d75;
+}
+
+.diagram-enlarge-button:hover::before,
+.diagram-enlarge-button:focus-visible::before {
   background: #eaf2fb;
 }
 
 .diagram-enlarge-button:focus-visible {
   outline: 2px solid #173d75;
-  outline-offset: 2px;
+  outline-offset: 1px;
+  border-radius: 50%;
 }
 
 /* The diagram's own enlarge button would otherwise come along for the
@@ -128,13 +147,16 @@ canvas {
   padding: 0;
   border: none;
   border-radius: 12px;
-  width: min(98vw, 1100px);
-  /* The UA stylesheet gives <dialog> its own max-width (Chromium: calc(100%
-     - 38px)) that otherwise caps us below our own width above whenever
-     that's the tighter of the two — reset it so our width is the only one
-     that applies. */
-  max-width: none;
-  max-height: 92vh;
+  /* Sized by its content (the cropBox below, computed in JS to already
+     fit the screen) rather than to a fraction of the viewport itself —
+     a fixed-fraction dialog would leave exactly the kind of excess
+     blank chrome around a smaller diagram this feature exists to avoid.
+     The small safety margin beyond our own 94vw/88vh budget covers this
+     dialog's own chrome (the close button and content padding below). */
+  width: fit-content;
+  height: fit-content;
+  max-width: calc(100vw - 1rem);
+  max-height: calc(100vh - 1rem);
   background: #fff;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
 }
@@ -144,8 +166,8 @@ canvas {
 }
 
 /* The UA default for <dialog> is display:block; flex instead so
-   .diagram-enlarge-content can fill the remaining height below the
-   close button and centre whatever picture ends up inside it. */
+   .diagram-enlarge-content can centre the cropBox below the close
+   button. */
 .diagram-enlarge-dialog[open] {
   display: flex;
   flex-direction: column;
@@ -162,9 +184,15 @@ canvas {
   border-radius: 8px;
   background: #fff;
   color: #173d75;
-  font-size: 1.4rem;
-  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
+}
+
+.diagram-enlarge-close svg {
+  width: 18px;
+  height: 18px;
 }
 
 .diagram-enlarge-close:hover,
@@ -173,34 +201,21 @@ canvas {
 }
 
 .diagram-enlarge-content {
-  flex: 1 1 auto;
-  min-height: 0;
-  overflow-y: auto;
-  overflow-x: hidden;
-  padding: 3rem 0.5rem 0.75rem;
+  padding: 2.75rem 0.75rem 0.75rem;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-/* The enlarged diagram fills the dialog rather than staying capped at
-   its normal in-page max-width, and every picture inside it is forced
-   to scale to fit — overriding whatever page-specific sizing that
-   picture normally has (not every diagram on the site is already
-   built responsively like .responsive-svg above, and a few, like
-   .month-strip-card, cap it even smaller), since this one rule has to
-   beat all of them. */
-.diagram-enlarge-content > .diagram-enlarge-active {
-  max-width: 100% !important;
-  width: 100% !important;
-}
-
-.diagram-enlarge-active svg,
-.diagram-enlarge-active canvas,
-.diagram-enlarge-active img {
-  width: 100% !important;
-  height: auto !important;
-  max-width: 100% !important;
+/* Sized exactly (in JS, see applyFit) to the diagram's own crop-and-fit
+   target — the diagram inside it keeps its normal CSS sizing and is
+   scaled up to fill this box with a single transform, not stretched by
+   forcing its own width, which is what let a diagram with a lot of
+   blank space baked into its picture just get a bigger blank margin
+   instead of a bigger picture. */
+.diagram-enlarge-crop-box {
+  overflow: hidden;
+  position: relative;
 }
 
 /* notes/scale-of-the-solar-system.html's "zoom out" picture ladder: one

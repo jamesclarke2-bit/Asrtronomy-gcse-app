@@ -190,28 +190,40 @@
     });
   }
 
-  // --- Lunar-month strip: four phases, each with its tide type ------------
+  // --- Lunar-month strip: four phases, each with its tide type, as one
+  // annotated picture (not four separate small ones — a single <svg> reads
+  // as one figure, including to diagramEnlarge.js, rather than needing
+  // the generic "group a row of small pictures" rule to do that for it).
+
+  const MONTH_STRIP_PHASES = [
+    { elongation: 0, label: 'New Moon', tide: 'Spring' },
+    { elongation: 90, label: 'First quarter', tide: 'Neap' },
+    { elongation: 180, label: 'Full Moon', tide: 'Spring' },
+    { elongation: 270, label: 'Last quarter', tide: 'Neap' },
+  ];
+  const MONTH_STRIP_MOON_R = 30;
+  const MONTH_STRIP_SLOT_W = 130;
+  const MONTH_STRIP_CY = 50;
+  const MONTH_STRIP_W = MONTH_STRIP_SLOT_W * MONTH_STRIP_PHASES.length;
+  const MONTH_STRIP_H = 150;
 
   function buildMonthStrip() {
-    const strip = document.getElementById('month-strip');
-    const PHASES = [
-      { elongation: 0, label: 'New Moon', tide: 'Spring' },
-      { elongation: 90, label: 'First quarter', tide: 'Neap' },
-      { elongation: 180, label: 'Full Moon', tide: 'Spring' },
-      { elongation: 270, label: 'Last quarter', tide: 'Neap' },
-    ];
-    PHASES.forEach(({ elongation, label, tide }) => {
-      const card = document.createElement('div');
-      card.className = 'diagram month-strip-card';
-      const svg = document.createElementNS(SVG_NS, 'svg');
-      svg.setAttribute('viewBox', '0 0 60 60');
-      svg.setAttribute('width', '60');
-      svg.setAttribute('height', '60');
-      svg.setAttribute('role', 'img');
-      svg.setAttribute('aria-label', `${label}: ${tide} tides`);
-      const cx = 30;
-      const cy = 30;
-      const r = 24;
+    const container = document.getElementById('month-strip');
+    const svg = document.createElementNS(SVG_NS, 'svg');
+    svg.setAttribute('viewBox', `0 0 ${MONTH_STRIP_W} ${MONTH_STRIP_H}`);
+    svg.setAttribute('width', MONTH_STRIP_W);
+    svg.setAttribute('height', MONTH_STRIP_H);
+    svg.setAttribute('class', 'responsive-svg');
+    svg.setAttribute('role', 'img');
+    svg.setAttribute(
+      'aria-label',
+      'The Moon through one month, each phase labelled with its name and whether it brings spring or neap tides: New Moon (Spring), First quarter (Neap), Full Moon (Spring), Last quarter (Neap)'
+    );
+
+    MONTH_STRIP_PHASES.forEach(({ elongation, label, tide }, i) => {
+      const cx = MONTH_STRIP_SLOT_W * i + MONTH_STRIP_SLOT_W / 2;
+      const cy = MONTH_STRIP_CY;
+      const r = MONTH_STRIP_MOON_R;
       svgEl('circle', { cx, cy, r, fill: '#3b3f48', stroke: '#20242e', 'stroke-width': 1 }, svg);
       // The lit fraction: none at new Moon, half at the quarters, all at
       // full — the same simplified half-and-half convention the main
@@ -223,17 +235,21 @@
       } else if (elongation === 180) {
         svgEl('circle', { cx, cy, r, fill: '#f4f1e8', stroke: '#c9c2a5', 'stroke-width': 1 }, svg);
       }
-      card.appendChild(svg);
-      const caption = document.createElement('p');
-      caption.className = 'diagram-caption';
-      caption.appendChild(document.createTextNode(label));
-      caption.appendChild(document.createElement('br'));
-      const tideStrong = document.createElement('strong');
-      tideStrong.textContent = tide;
-      caption.appendChild(tideStrong);
-      card.appendChild(caption);
-      strip.appendChild(card);
+      const nameText = svgEl(
+        'text',
+        { x: cx, y: cy + r + 26, 'text-anchor': 'middle', 'font-size': 15, 'font-weight': 600, fill: '#1a1a1a' },
+        svg
+      );
+      nameText.textContent = label;
+      const tideText = svgEl(
+        'text',
+        { x: cx, y: cy + r + 46, 'text-anchor': 'middle', 'font-size': 15, 'font-weight': 700, fill: '#2a6bd6' },
+        svg
+      );
+      tideText.textContent = tide;
     });
+
+    container.appendChild(svg);
   }
 
   // --- Beach scene: two illustrative, not data-driven, panels of the same
