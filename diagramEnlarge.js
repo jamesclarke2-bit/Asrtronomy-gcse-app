@@ -93,11 +93,12 @@
   // On a narrow phone, a diagram is often already close to full column
   // width in-page, so even a diagram that's genuinely worth enlarging
   // (cropping its blank margins away, going full-screen with nothing
-  // else competing for attention) only computes a modest scale factor —
-  // this only needs to catch the diagrams that would gain nothing at
-  // all (the enlarged copy would come out no bigger, or smaller), not
-  // ones that merely wouldn't gain a lot.
-  const MIN_WORTHWHILE_SCALE = 1.01;
+  // else competing for attention) can compute a scale factor right
+  // around 1 — going full-screen with its surrounding page content out
+  // of the way is itself worth having, even with little or no
+  // magnification. Only skip a diagram the enlarged copy would actually
+  // come out SMALLER than, which is where there's truly nothing to gain.
+  const MIN_WORTHWHILE_SCALE = 0.97;
   const CROP_MARGIN_FRACTION = 0.04;
 
   const SVG_NS = 'http://www.w3.org/2000/svg';
