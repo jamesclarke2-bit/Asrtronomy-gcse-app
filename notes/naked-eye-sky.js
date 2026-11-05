@@ -126,6 +126,11 @@
     const pattern = PATTERNS.find((p) => p.id === patternId);
     const chart = document.createElement('div');
     chart.className = 'pattern-chart';
+    // Identifies which pattern this quiz card is testing without
+    // leaking it visibly — same purpose as data-term on the Moon/Earth
+    // picture quizzes' .diagram-feature-highlight, used by tests to find
+    // a specific question regardless of the (now shuffled) render order.
+    chart.dataset.pattern = patternId;
     const wrap = document.createElement('div');
     wrap.className = 'labelled-diagram-wrap';
     chart.appendChild(wrap);
@@ -757,21 +762,13 @@
   // quiz-ui.js's header comment on QuizUI.recordResult/
   // registerGroupSummary, added for exactly this). A full round steps
   // through all 14 questions, each picture correct exactly once, in a
-  // freshly shuffled order every round.
-
-  function shuffled(array) {
-    const copy = array.slice();
-    for (let i = copy.length - 1; i > 0; i -= 1) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [copy[i], copy[j]] = [copy[j], copy[i]];
-    }
-    return copy;
-  }
+  // freshly shuffled order every round that never follows
+  // PHENOMENA_GRID_ORDER's own adjacency (QuizUI.shuffleAvoidingAdjacent).
 
   // The correct picture plus five random decoys, in random order.
   function whichIsItOptions(correctKey) {
-    const decoys = shuffled(PHENOMENA_GRID_ORDER.filter((key) => key !== correctKey)).slice(0, 5);
-    return shuffled([correctKey, ...decoys]);
+    const decoys = QuizUI.shuffle(PHENOMENA_GRID_ORDER.filter((key) => key !== correctKey)).slice(0, 5);
+    return QuizUI.shuffle([correctKey, ...decoys]);
   }
 
   let whichIsItQuestions = [];
@@ -878,7 +875,7 @@
   }
 
   function startWhichIsItRound() {
-    whichIsItRoundOrder = shuffled(PHENOMENA_GRID_ORDER);
+    whichIsItRoundOrder = QuizUI.shuffleAvoidingAdjacent(PHENOMENA_GRID_ORDER);
     whichIsItRoundIndex = 0;
     whichIsItRoundCorrect = 0;
     renderWhichIsItRound();

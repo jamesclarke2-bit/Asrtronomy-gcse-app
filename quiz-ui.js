@@ -39,11 +39,62 @@
  * answer is right or wrong, and QuizUI.registerGroupSummary(...) once,
  * the same shape mountGroup's own internal bookkeeping already uses, to
  * keep a folded panel's own count live without mountGroup's rendering.
+ *
+ * Unpredictability: renderQuestions() (used by both mount() and
+ * mountGroup()) renders a shuffled copy of the questions it's given, a
+ * fresh order every time, and buildSingleInput() renders a shuffled copy
+ * of a 'choice' question's own options — so a reload or a page revisit
+ * never shows the same order twice. The question-order shuffle uses
+ * shuffleAvoidingAdjacent (below), which also guarantees no two
+ * questions that were adjacent in the source array stay adjacent in the
+ * same order — the property a matching game (e.g. naked-eye-sky.html's
+ * "Which is it?") needs for its own round order, so that game calls
+ * QuizUI.shuffleAvoidingAdjacent directly instead of keeping its own
+ * copy of the algorithm. Both shuffles return a new array and never
+ * mutate the one they're given, since several of these arrays (e.g. a
+ * shared FEATURE_NAMES options list) are reused across many questions.
  */
 (function () {
   const STORAGE_KEY = 'astro-quiz-progress';
   let allMountedQuestions = [];
   const groupSummaries = [];
+
+  // Plain Fisher-Yates — a new array, the input is never mutated.
+  function shuffle(array) {
+    const copy = array.slice();
+    for (let i = copy.length - 1; i > 0; i -= 1) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [copy[i], copy[j]] = [copy[j], copy[i]];
+    }
+    return copy;
+  }
+
+  // Like shuffle(), but additionally guarantees that no two items which
+  // were adjacent in the original array (in that same order) end up
+  // adjacent in the result — the "consecutive questions never follow
+  // the list order" requirement for matching games. For arrays of 2 or
+  // fewer items there's no such arrangement to avoid, so it falls back
+  // to a plain shuffle. Retries a plain shuffle a bounded number of
+  // times rather than solving this exactly — cheap and reliable for the
+  // small (under 30-item) arrays this site's quizzes use.
+  function shuffleAvoidingAdjacent(array) {
+    if (array.length <= 2) return shuffle(array);
+    const MAX_ATTEMPTS = 200;
+    for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt += 1) {
+      const candidate = shuffle(array);
+      let violatesAdjacency = false;
+      for (let i = 1; i < candidate.length; i += 1) {
+        const originalIndexOfPrev = array.indexOf(candidate[i - 1]);
+        const originalIndexOfCurrent = array.indexOf(candidate[i]);
+        if (originalIndexOfCurrent === originalIndexOfPrev + 1) {
+          violatesAdjacency = true;
+          break;
+        }
+      }
+      if (!violatesAdjacency) return candidate;
+    }
+    return shuffle(array);
+  }
 
   function loadProgress() {
     try {
@@ -143,8 +194,10 @@
       return () => input.value;
     }
 
-    // 'choice'
-    fieldSpec.options.forEach((option) => {
+    // 'choice' — a shuffled copy, so the correct answer isn't always in
+    // the same position and the source options array (often shared
+    // across several questions, e.g. FEATURE_NAMES) is never mutated.
+    shuffle(fieldSpec.options).forEach((option) => {
       const label = document.createElement('label');
       label.className = 'choice-option';
       const radio = document.createElement('input');
@@ -195,7 +248,7 @@
   }
 
   function renderQuestions(questions, container) {
-    questions.forEach((question) => {
+    shuffleAvoidingAdjacent(questions).forEach((question) => {
       const card = document.createElement('div');
       card.className = 'question-card';
 
@@ -298,5 +351,5 @@
     renderGroupSummaries();
   }
 
-  window.QuizUI = { mount, mountGroup, recordResult, registerGroupSummary };
+  window.QuizUI = { mount, mountGroup, recordResult, registerGroupSummary, shuffle, shuffleAvoidingAdjacent };
 })();

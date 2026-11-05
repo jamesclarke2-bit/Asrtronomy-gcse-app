@@ -85,17 +85,25 @@ async function withBrowser(t, browserDef, run) {
   }
 }
 
-// Reads the marker/region state of one question's diagram (the Nth
+// Reads the marker/region state of one question's diagram (a
 // .question-diagram whose prompt starts with `promptPrefix`), scoped to
 // just that diagram so a page with several such questions can't bleed
-// state from one into another.
-async function readHighlightState(page, promptPrefix, index) {
+// state from one into another. `indexOrTerm` is either a plain render
+// index (when the test doesn't care which specific feature it gets, and
+// quiz-ui.js's shuffled render order makes any index an equally valid
+// "a" question) or the .diagram-feature-highlight's own data-term value
+// (when the test needs one specific feature, regardless of where
+// shuffling happened to render it).
+async function readHighlightState(page, promptPrefix, indexOrTerm) {
   return page.evaluate(
-    ({ promptPrefix, index }) => {
+    ({ promptPrefix, indexOrTerm }) => {
       const cards = Array.from(document.querySelectorAll('.question-card')).filter((card) =>
         card.querySelector('.question-prompt').textContent.startsWith(promptPrefix)
       );
-      const diagram = cards[index].querySelector('.question-diagram');
+      const card = typeof indexOrTerm === 'number'
+        ? cards[indexOrTerm]
+        : cards.find((c) => c.querySelector('.diagram-feature-highlight').dataset.term === indexOrTerm);
+      const diagram = card.querySelector('.question-diagram');
       const regions = Array.from(diagram.querySelectorAll('.diagram-region'));
       const highlighted = regions.find((r) => r.classList.contains('diagram-feature-highlight'));
       const others = regions.filter((r) => r !== highlighted);
@@ -128,7 +136,7 @@ async function readHighlightState(page, promptPrefix, index) {
         }),
       };
     },
-    { promptPrefix, index }
+    { promptPrefix, indexOrTerm }
   );
 }
 
@@ -137,12 +145,14 @@ BROWSERS.forEach((browserDef) => {
     await withBrowser(t, browserDef, async (page) => {
       await page.goto(EARTH_URL);
       await page.waitForTimeout(300);
-      // Index 1 (Arctic Circle, see src/earthStructureQuestions.js's
-      // EIGHT_FEATURES) rather than 0 (North Pole): a pole's own marker
+      // The Arctic Circle specifically, not a pole: a pole's own marker
       // is a bold dot sized by radius, not a thick line, so the
       // stroke-width check below only makes sense for a genuine line —
-      // the pole marker gets its own size check further down.
-      const state = await readHighlightState(page, 'Name that line', 1);
+      // the pole marker gets its own size check further down. Looked up
+      // by its own data-term (see src/earthStructureQuestions.js's
+      // EIGHT_FEATURES) rather than render position, since quiz-ui.js
+      // now renders "Name that line" questions in a shuffled order.
+      const state = await readHighlightState(page, 'Name that line', 'arcticCircle');
 
       assert.equal(state.regionCount, 8, 'the globe should draw all 8 reference features');
       assert.ok(state.highlightedTerm, 'exactly one region should carry .diagram-feature-highlight');
@@ -188,8 +198,12 @@ BROWSERS.forEach((browserDef) => {
         const cards = Array.from(document.querySelectorAll('.question-card')).filter((card) =>
           card.querySelector('.question-prompt').textContent.startsWith('Name that line')
         );
-        // North Pole is the first EIGHT_FEATURES entry (see src/earthStructureQuestions.js)
-        const diagram = cards[0].querySelector('.question-diagram');
+        // Found by its own data-term rather than render position, since
+        // quiz-ui.js now renders "Name that line" questions in a
+        // shuffled order (see src/earthStructureQuestions.js's
+        // EIGHT_FEATURES for the full feature list).
+        const northPoleCard = cards.find((card) => card.querySelector('.diagram-feature-highlight').dataset.term === 'northPole');
+        const diagram = northPoleCard.querySelector('.question-diagram');
         const highlighted = diagram.querySelector('.diagram-feature-highlight');
         const marker = diagram.querySelector('.quiz-feature-marker circle');
         const visibleShapeOf = (region) => Array.from(region.children).find((el) => !el.hasAttribute('pointer-events'));

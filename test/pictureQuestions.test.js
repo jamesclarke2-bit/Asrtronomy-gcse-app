@@ -86,15 +86,19 @@ async function withPage(t, url, viewport, run) {
   }
 }
 
-// Finds the .question-card whose prompt starts with `promptPrefix` and
-// whose Nth (0-indexed) occurrence this is — the moon/earth pages each
-// render one such card per feature, in NAMED_FEATURES/EIGHT_FEATURES
-// order, so index lines up with MOON_FEATURES/EARTH_FEATURES above.
-function questionDiagramLocator(page, promptPrefix, index) {
-  return page
-    .locator('.question-card', { has: page.locator('.question-prompt', { hasText: promptPrefix }) })
-    .nth(index)
-    .locator('.question-diagram');
+// Finds the .question-card that highlights `term` (the moon/earth pages'
+// .diagram-feature-highlight[data-term]) — identifies a question by its
+// content rather than its position, since quiz-ui.js now renders
+// questions in a shuffled order every time.
+function questionDiagramLocatorByTerm(page, term) {
+  return page.locator(`.question-card:has(.diagram-feature-highlight[data-term="${term}"])`).locator('.question-diagram');
+}
+
+// Same idea for "name that pattern" cards, identified by the pattern id
+// on their .pattern-chart (see renderPatternQuizDiagram in
+// notes/naked-eye-sky.js) rather than render position.
+function questionDiagramLocatorByPattern(page, patternId) {
+  return page.locator(`.question-card:has(.pattern-chart[data-pattern="${patternId}"])`).locator('.question-diagram');
 }
 
 // The diagram's own visible text, same as innerText(), but with
@@ -119,7 +123,7 @@ VIEWPORTS.forEach((viewport) => {
     await withPage(t, MOON_PAGE_URL, viewport, async (page) => {
       for (let i = 0; i < MOON_FEATURES.length; i += 1) {
         const [term, name] = MOON_FEATURES[i];
-        const diagram = questionDiagramLocator(page, 'Name that feature', i);
+        const diagram = questionDiagramLocatorByTerm(page, term);
         await assert.doesNotReject(diagram.waitFor({ state: 'attached' }), `no diagram found for feature #${i} (${name})`);
 
         const highlighted = diagram.locator('.diagram-feature-highlight');
@@ -143,7 +147,7 @@ VIEWPORTS.forEach((viewport) => {
     await withPage(t, EARTH_PAGE_URL, viewport, async (page) => {
       for (let i = 0; i < EARTH_FEATURES.length; i += 1) {
         const [term, name] = EARTH_FEATURES[i];
-        const diagram = questionDiagramLocator(page, 'Name that line', i);
+        const diagram = questionDiagramLocatorByTerm(page, term);
         await assert.doesNotReject(diagram.waitFor({ state: 'attached' }), `no diagram found for feature #${i} (${name})`);
 
         const highlighted = diagram.locator('.diagram-feature-highlight');
@@ -166,8 +170,8 @@ VIEWPORTS.forEach((viewport) => {
   test(`notes/naked-eye-sky.html "name that pattern" at ${viewport.label}: every pattern's own chart is drawn (stars, but no star-name labels)`, async (t) => {
     await withPage(t, NAKED_EYE_SKY_PAGE_URL, viewport, async (page) => {
       for (let i = 0; i < STAR_PATTERNS.length; i += 1) {
-        const [, name] = STAR_PATTERNS[i];
-        const diagram = questionDiagramLocator(page, 'Name that pattern', i);
+        const [patternId, name] = STAR_PATTERNS[i];
+        const diagram = questionDiagramLocatorByPattern(page, patternId);
         await assert.doesNotReject(diagram.waitFor({ state: 'attached' }), `no diagram found for pattern #${i} (${name})`);
 
         const starCount = await diagram.locator('circle').count();
@@ -224,9 +228,8 @@ test('notes/earth-structure.html: answering a "name that line" question correctl
 
 test('notes/naked-eye-sky.html: answering a "name that pattern" question correctly checks out, and is recorded in the usual u1.2 tally', async (t) => {
   await withPage(t, NAKED_EYE_SKY_PAGE_URL, VIEWPORTS[0], async (page) => {
-    const index = 2; // orion, per STAR_PATTERNS order
-    const [, name] = STAR_PATTERNS[index];
-    const card = page.locator('.question-card', { has: page.locator('.question-prompt', { hasText: 'Name that pattern' }) }).nth(index);
+    const [patternId, name] = STAR_PATTERNS.find(([id]) => id === 'orion');
+    const card = page.locator(`.question-card:has(.pattern-chart[data-pattern="${patternId}"])`);
 
     const progressBefore = await page.locator('#progress-list li', { hasText: 'u1.2 ' }).first().textContent();
     const attemptsBefore = Number(progressBefore.match(/(\d+)\/(\d+) correct/)[2]);
