@@ -71,3 +71,10 @@ Static HTML/CSS/JS with no build step. Pages live in `sims/` (interactive) and `
     `PLAYWRIGHT_CHROMIUM_PATH` is the usual override) rather than merging on a suite that quietly
     skipped the one layer of checks (real rendering, layout, click behaviour) the rest of the suite
     can't cover.
+15. **Every inline SVG must have width and height attributes (or a CSS rule) so it never falls back
+    to 300 by 150.** A `<svg>` with only a `viewBox`, inside a shrink-to-fit wrapper (e.g.
+    `.labelled-diagram-wrap`, which is `display: inline-block`), has no definite containing block
+    for a percentage width to resolve against and silently renders at the browser's replaced-element
+    default instead — invisible in the page source, and in the diagram itself unless someone
+    actually measures the rendered page. This has broken several diagrams already.
+    `test/svgSizing.test.js` guards against it sitewide.
