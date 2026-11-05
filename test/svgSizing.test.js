@@ -73,7 +73,13 @@ const WIDTHS = [
 // string as this test reports it (its id, or a fallback built from its
 // wrapper and position — run the test and copy the exact string from a
 // failure message to add an entry here).
-const ALLOW_NARROW = {};
+const ALLOW_NARROW = {
+  // The three down-arrows connecting the "What makes a dwarf planet?"
+  // decision-flow cards — small by design (20x26, with their own
+  // explicit width/height, so not the sizing bug this test guards
+  // against), not a diagram in their own right.
+  'notes/solar-system-bodies.html': ['#dwarf-planet-diagram svg[0]', '#dwarf-planet-diagram svg[1]', '#dwarf-planet-diagram svg[2]'],
+};
 
 const BROWSER_DEFAULT_WIDTH = 300;
 const BROWSER_DEFAULT_HEIGHT = 150;
