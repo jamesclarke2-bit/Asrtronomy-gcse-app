@@ -18,12 +18,16 @@
 
   const daySlider = document.getElementById('day-slider');
   const dayLabel = document.getElementById('day-label');
+  const prevDayButton = document.getElementById('prev-day-button');
+  const nextDayButton = document.getElementById('next-day-button');
+  const dayVisibilityNote = document.getElementById('day-visibility-note');
   const playButton = document.getElementById('play-button');
   const discCanvas = document.getElementById('sun-disc');
   const discCtx = discCanvas.getContext('2d');
 
   const latitudeSelect = document.getElementById('latitude-select');
   const recordButton = document.getElementById('record-button');
+  const undoButton = document.getElementById('undo-button');
   const clearButton = document.getElementById('clear-button');
   const recordFeedback = document.getElementById('record-feedback');
   const readingsTbody = document.getElementById('readings-tbody');
@@ -32,12 +36,20 @@
   const limbToLimbReadout = document.getElementById('limb-to-limb-readout');
   const stretchEstimateReadout = document.getElementById('stretch-estimate-readout');
 
-  // readings[latitude] = [{ day, x }, ...], kept separately per latitude
-  // so switching the select doesn't lose a student's earlier work.
+  // readings[latitude] = [{ day, x }, ...] in the order they were
+  // recorded (not sorted by day), kept separately per latitude so
+  // switching the select doesn't lose a student's earlier work. Kept in
+  // recording order — not sorted — so "undo" can always remove exactly
+  // the last thing the student did; render functions sort a copy for
+  // display instead (see sortedReadings).
   const readings = { 0: [], 30: [], 60: [] };
 
   function currentLatitude() {
     return Number(latitudeSelect.value);
+  }
+
+  function sortedReadings(latDeg) {
+    return readings[latDeg].slice().sort((a, b) => a.day - b.day);
   }
 
   function apparentLongitude(latDeg, day) {
@@ -85,21 +97,41 @@
     });
   }
 
-  function render() {
+  // Everything that depends on "which day, at which latitude, are we
+  // looking at right now": redraws the disc, updates the day readout and
+  // the Previous/Next day buttons' disabled state, and lets the student
+  // know up front (rather than only after clicking Record) whether
+  // today's spot is even on the visible disc to record.
+  function updateDayDependentUI() {
     const day = Number(daySlider.value);
-    dayLabel.textContent = `${day.toFixed(1)}`;
+    dayLabel.textContent = String(day);
     drawSunDisc(day);
+
+    const lat = currentLatitude();
+    const visible = SunRotation.isOnVisibleDisc(apparentLongitude(lat, day));
+    recordButton.disabled = !visible;
+    dayVisibilityNote.textContent = visible
+      ? ''
+      : `This spot isn't on the visible disc on day ${day} — it's beyond the limb. Move to a different day to record it.`;
+
+    prevDayButton.disabled = day <= 0;
+    nextDayButton.disabled = day >= MAX_DAYS;
+  }
+
+  function setDay(day) {
+    daySlider.value = Math.max(0, Math.min(MAX_DAYS, day));
+    updateDayDependentUI();
   }
 
   // --- Recording a sunspot's position ---------------------------------------
 
   function renderReadingsTable() {
-    const rows = readings[currentLatitude()];
+    const rows = sortedReadings(currentLatitude());
     readingsTbody.innerHTML = '';
     rows.forEach(({ day, x }) => {
       const tr = document.createElement('tr');
       const dayTd = document.createElement('td');
-      dayTd.textContent = day.toFixed(1);
+      dayTd.textContent = String(day);
       const xTd = document.createElement('td');
       xTd.textContent = x.toFixed(1);
       tr.appendChild(dayTd);
@@ -150,7 +182,7 @@
       plotCtx.fillText(String(day), xForDay(day), height - marginBottom + 6);
     }
 
-    const rows = readings[currentLatitude()];
+    const rows = sortedReadings(currentLatitude());
     const color = SPOTS.find((s) => s.lat === currentLatitude()).color;
     rows.forEach(({ day, x }) => {
       plotCtx.beginPath();
@@ -172,10 +204,13 @@
     plotCtx.restore();
   }
 
+  // Method 2, the two-reading "stretch": needs two readings on different
+  // days (any two — the earliest and latest recorded, by day) to recover
+  // the angle moved and scale it up to a full rotation.
   function renderStretchEstimate() {
-    const rows = readings[currentLatitude()];
+    const rows = sortedReadings(currentLatitude());
     if (rows.length < 2) {
-      stretchEstimateReadout.textContent = 'Record at least two readings to see an estimate here.';
+      stretchEstimateReadout.textContent = `Record at least two readings, on different days, to see an estimate here (you have ${rows.length} so far).`;
       return;
     }
     const first = rows[0];
@@ -186,15 +221,30 @@
     }
     const estimate = SunRotation.periodFromTwoReadings(currentLatitude(), first.day, first.x, last.day, last.x, DISC_R);
     stretchEstimateReadout.textContent =
-      `From your day-${first.day.toFixed(1)} and day-${last.day.toFixed(1)} readings: an estimated period of about ${Math.abs(estimate).toFixed(1)} days.`;
+      `From your day-${first.day} and day-${last.day} readings: an estimated period of about ${Math.abs(estimate).toFixed(1)} days.`;
   }
 
+  // Method 1, limb-to-limb doubling: unlocked once the student has
+  // recorded at least one reading of this spot — a plain gate, since the
+  // model is deterministic (no measurement noise), so the limb-to-limb
+  // day count it reports is the same whichever reading unlocked it.
   function renderLimbToLimbReadout() {
     const lat = currentLatitude();
+    if (readings[lat].length === 0) {
+      limbToLimbReadout.textContent = 'Record at least one reading to see this estimate.';
+      return;
+    }
     const synodic = SunRotation.synodicPeriodDays(SunRotation.siderealPeriodDays(lat));
     const halfSynodic = synodic / 2;
+    const doubled = SunRotation.synodicPeriodFromLimbToLimbDays(halfSynodic);
     limbToLimbReadout.textContent =
-      `At latitude ${lat}°, this spot crosses from limb to limb in about ${halfSynodic.toFixed(1)} days — doubling that gives an estimated period of about ${synodic.toFixed(1)} days.`;
+      `Based on your own readings so far, this spot crosses from limb to limb in about ${halfSynodic.toFixed(1)} days — doubling that gives an estimated period of about ${doubled.toFixed(1)} days.`;
+  }
+
+  function updateReadingButtonsDisabled() {
+    const hasReadings = readings[currentLatitude()].length > 0;
+    undoButton.disabled = !hasReadings;
+    clearButton.disabled = !hasReadings;
   }
 
   function renderRecording() {
@@ -202,6 +252,7 @@
     renderPlot();
     renderStretchEstimate();
     renderLimbToLimbReadout();
+    updateReadingButtonsDisabled();
   }
 
   recordButton.addEventListener('click', () => {
@@ -209,36 +260,62 @@
     const day = Number(daySlider.value);
     const lon = apparentLongitude(lat, day);
     if (!SunRotation.isOnVisibleDisc(lon)) {
-      recordFeedback.textContent = `This spot isn't on the visible disc on day ${day.toFixed(1)} — move the day slider to a day when it's still visible.`;
+      recordFeedback.textContent = `This spot isn't on the visible disc on day ${day} — move the day control to a day when it's still visible.`;
       return;
     }
     const x = SunRotation.spotXPosition(lat, lon, DISC_R);
     readings[lat].push({ day, x });
-    readings[lat].sort((a, b) => a.day - b.day);
-    recordFeedback.textContent = `Recorded day ${day.toFixed(1)}, x = ${x.toFixed(1)}.`;
+    recordFeedback.textContent = `Recorded day ${day}, x = ${x.toFixed(1)}.`;
+    renderRecording();
+    setDay(day + 1); // move on automatically, so recording a run of days is just repeated clicks
+  });
+
+  undoButton.addEventListener('click', () => {
+    const lat = currentLatitude();
+    if (readings[lat].length === 0) return;
+    readings[lat].pop();
+    recordFeedback.textContent = 'Removed your last reading.';
     renderRecording();
   });
 
   clearButton.addEventListener('click', () => {
     readings[currentLatitude()] = [];
-    recordFeedback.textContent = '';
+    recordFeedback.textContent = 'Cleared your readings for this spot.';
     renderRecording();
   });
 
-  latitudeSelect.addEventListener('change', renderRecording);
+  latitudeSelect.addEventListener('change', () => {
+    updateDayDependentUI();
+    renderRecording();
+  });
 
-  // --- Animation: advance the day slider automatically, looping back to
-  // the start. See sims/sidereal-vs-synodic.js for the same pattern.
-  let animationFrameId = null;
-  let lastFrameTime = null;
-  const DAYS_PER_SECOND = 1.2;
+  prevDayButton.addEventListener('click', () => {
+    stopAnimation();
+    setDay(Number(daySlider.value) - 1);
+  });
+
+  nextDayButton.addEventListener('click', () => {
+    stopAnimation();
+    setDay(Number(daySlider.value) + 1);
+  });
+
+  daySlider.addEventListener('input', () => {
+    stopAnimation();
+    updateDayDependentUI();
+  });
+
+  // --- Animation: step the day on automatically, one whole day at a
+  // time (the day control is now a whole-day grid — see CLAUDE.md rule
+  // 12 — so this ticks on an interval rather than a smooth per-frame
+  // delta), looping back to the start.
+  let playIntervalId = null;
+  const PLAY_TICK_MS = 450;
 
   function stopAnimation() {
-    if (animationFrameId !== null) {
-      cancelAnimationFrame(animationFrameId);
-      animationFrameId = null;
+    if (playIntervalId !== null) {
+      clearInterval(playIntervalId);
+      playIntervalId = null;
     }
-    lastFrameTime = null;
     playButton.textContent = '▶ Play';
     playButton.setAttribute('aria-pressed', 'false');
   }
@@ -246,26 +323,15 @@
   function startAnimation() {
     playButton.textContent = '❚❚ Pause';
     playButton.setAttribute('aria-pressed', 'true');
-    function step(now) {
-      const dt = AnimationTiming.cappedElapsedSeconds(now, lastFrameTime);
-      lastFrameTime = now;
-      let next = Number(daySlider.value) + dt * DAYS_PER_SECOND;
-      if (next > MAX_DAYS) next = 0;
-      daySlider.value = next;
-      render();
-      animationFrameId = requestAnimationFrame(step);
-    }
-    animationFrameId = requestAnimationFrame(step);
+    playIntervalId = setInterval(() => {
+      const day = Number(daySlider.value);
+      setDay(day >= MAX_DAYS ? 0 : day + 1);
+    }, PLAY_TICK_MS);
   }
 
   playButton.addEventListener('click', () => {
-    if (animationFrameId !== null) stopAnimation();
+    if (playIntervalId !== null) stopAnimation();
     else startAnimation();
-  });
-
-  daySlider.addEventListener('input', () => {
-    stopAnimation();
-    render();
   });
 
   function renderCoverage() {
@@ -274,7 +340,7 @@
     coverageEl.textContent = 'Covers: ' + subtopics.map((s) => `${s.id} ${s.title}`).join(', ');
   }
 
-  render();
+  updateDayDependentUI();
   renderRecording();
   renderCoverage();
   QuizUI.mount(SunspotRotationQuestions.makeQuestions(SunRotation));
