@@ -19,7 +19,7 @@
   const ctx = canvas.getContext('2d');
   const labelsToggle = document.getElementById('labels-toggle');
 
-  const orbitCanvas = document.getElementById('orbit');
+  const seasonsContainer = document.getElementById('seasons-diagram-container');
 
   // Cache the day's culmination (max-altitude point), since it only
   // depends on date and latitude, not the time slider.
@@ -225,7 +225,7 @@
     eqTimeValue.textContent = `Sundial reads ${eqTimeAbs} min ${eqTimeDirection} clock time`;
 
     drawSky(lat, dayIndex, minutesOfDay, sun, labelsToggle.checked);
-    OrbitPanel.draw(orbitCanvas, dayIndex);
+    SeasonsDiagramView.render(seasonsContainer, { dayIndex, lat });
   }
 
   function updateLegendVisibility() {

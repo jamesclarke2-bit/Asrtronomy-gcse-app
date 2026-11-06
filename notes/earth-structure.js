@@ -39,7 +39,9 @@
 
   const dateSlider = document.getElementById('date-slider');
   const dateLabel = document.getElementById('date-label');
-  const orbitCanvas = document.getElementById('orbit');
+  const latSlider = document.getElementById('lat-slider');
+  const latLabel = document.getElementById('lat-label');
+  const seasonsContainer = document.getElementById('seasons-diagram-container');
 
   function dayOfYearToUTCDate(year, dayIndex) {
     const d = new Date(Date.UTC(year, 0, 1));
@@ -51,13 +53,16 @@
     return date.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', timeZone: 'UTC' });
   }
 
-  function render() {
+  function renderOrbit() {
     const dayIndex = Number(dateSlider.value);
+    const lat = Number(latSlider.value);
     dateLabel.textContent = formatDate(dayOfYearToUTCDate(YEAR, dayIndex));
-    OrbitPanel.draw(orbitCanvas, dayIndex);
+    latLabel.textContent = `${lat}°`;
+    SeasonsDiagramView.render(seasonsContainer, { dayIndex, lat });
   }
 
-  dateSlider.addEventListener('input', render);
+  dateSlider.addEventListener('input', renderOrbit);
+  latSlider.addEventListener('input', renderOrbit);
 
   // Orthographic projection, north up, east to the right.
   function project(latDeg, lonDeg) {
@@ -583,7 +588,7 @@
   drawCompositionBar();
   drawAtmosphereLadder();
   drawTransmissionChart();
-  render();
+  renderOrbit();
   renderCoverage();
   Glossary.init(GLOSSARY);
   const earthQuestions = EarthStructureQuestions.makeQuestions(SpecData, { renderLineQuizDiagram });

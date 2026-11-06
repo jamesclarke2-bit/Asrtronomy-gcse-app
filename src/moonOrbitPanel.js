@@ -18,7 +18,8 @@
  *
  * Drawing: Earth sits at the centre, sunlight arrives from sunAngleDeg
  * (0 = screen right, increasing counterclockwise, same convention as
- * src/orbitPanel.js), and the Moon icon sits at moonAngleDeg, always
+ * src/seasonsDiagram.js's orbitPoint), and the Moon icon sits at
+ * moonAngleDeg, always
  * shaded half-lit on the side facing sunAngleDeg. Pass perigeeAngleDeg
  * to draw the orbit as an ellipse with Earth at one focus; leave it out
  * for a plain circle (sidereal-vs-synodic.html, where orbit shape isn't

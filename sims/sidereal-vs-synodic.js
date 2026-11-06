@@ -15,7 +15,7 @@
   const daySlider = document.getElementById('day-slider');
   const dayLabel = document.getElementById('day-label');
   const playButton = document.getElementById('play-button');
-  const earthOrbitCanvas = document.getElementById('earth-orbit');
+  const seasonsContainer = document.getElementById('seasons-diagram-container');
   const moonOrbitCanvas = document.getElementById('moon-orbit');
   const siderealValue = document.getElementById('sidereal-value');
   const synodicValue = document.getElementById('synodic-value');
@@ -59,8 +59,11 @@
   const startSunDirection = (startEarthAngle + 180) % 360;
   const referenceStarAngleDeg = (startSunDirection + startTheta) % 360;
 
-  // Reuses orbitPanel.js's own orbit radius exactly (Math.min(cx,cy) - 80)
-  // so this overlay lines up with the reused diagram beneath it.
+  // Draws directly into the shared seasons diagram's own <svg>, using
+  // the exact same ellipse geometry (and screen-phase shift) its own
+  // render() just used for this frame — geom, returned by
+  // SeasonsDiagramView.render, so this overlay always lines up with
+  // the diagram beneath it.
   //
   // Earth's orbital angle only ever increases (prograde motion), but
   // EarthOrbit.computeEarthOrbitAngle wraps it into [0, 360) — so toDeg
@@ -68,24 +71,21 @@
   // (e.g. 359.9 degrees -> 26.9 degrees is +27 degrees of real travel,
   // not -333). Unwrapping toDeg forward past fromDeg before interpolating
   // keeps the arc sweeping the short, correct way.
-  function drawTravelledArc(canvas, fromDeg, toDeg) {
-    const ctx = canvas.getContext('2d');
-    const cx = canvas.width / 2;
-    const cy = canvas.height / 2;
-    const R = Math.min(cx, cy) - 80;
+  function drawTravelledArc(geom, fromDeg, toDeg) {
     const steps = 40;
     const unwrappedTo = toDeg < fromDeg ? toDeg + 360 : toDeg;
-
-    ctx.beginPath();
-    for (let i = 0; i <= steps; i++) {
+    const d = [];
+    for (let i = 0; i <= steps; i += 1) {
       const deg = fromDeg + ((unwrappedTo - fromDeg) * i) / steps;
-      const p = orbitPoint(cx, cy, R, deg);
-      if (i === 0) ctx.moveTo(p.x, p.y);
-      else ctx.lineTo(p.x, p.y);
+      const p = geom.orbitPoint(deg);
+      d.push(`${i === 0 ? 'M' : 'L'}${p.x.toFixed(1)},${p.y.toFixed(1)}`);
     }
-    ctx.strokeStyle = '#2a6bd6';
-    ctx.lineWidth = 3;
-    ctx.stroke();
+    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    path.setAttribute('d', d.join(''));
+    path.setAttribute('fill', 'none');
+    path.setAttribute('stroke', '#2a6bd6');
+    path.setAttribute('stroke-width', '3');
+    geom.svg.appendChild(path);
   }
 
   function drawReferenceStar(canvas, geom, angleDeg, outerRadius) {
@@ -202,8 +202,8 @@
     const sunDirection = (earthAngle + 180) % 360;
     const moonAbsoluteAngle = (sunDirection + theta) % 360;
 
-    OrbitPanel.draw(earthOrbitCanvas, START_DAY_INDEX + t);
-    drawTravelledArc(earthOrbitCanvas, startEarthAngle, earthAngle);
+    const seasonsGeom = SeasonsDiagramView.render(seasonsContainer, { dayIndex: START_DAY_INDEX + t });
+    drawTravelledArc(seasonsGeom, startEarthAngle, earthAngle);
 
     const geom = MoonOrbitPanel.draw(moonOrbitCanvas, {
       moonAngleDeg: moonAbsoluteAngle,

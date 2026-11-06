@@ -2890,6 +2890,82 @@ canvas {
   cursor: pointer;
 }
 
+/* src/seasonsDiagramView.js's shared "Earth's orbit and seasons"
+   diagram — notes/earth-structure.html, sims/sun-declination.html,
+   sims/sun-path.html and sims/sidereal-vs-synodic.html all draw the
+   exact same component from one place (replacing the old, much
+   smaller src/orbitPanel.js). Wide rather than square, since it's four
+   large Earths spread round an ellipse rather than one central shape. */
+.seasons-diagram {
+  max-width: 760px;
+  margin: 1rem 0;
+}
+
+.seasons-diagram svg {
+  width: 100%;
+  height: auto;
+  background: #f7f7f5;
+  border-radius: 8px;
+  border: 1px solid #cdd7e1;
+}
+
+/* Sized relative to the diagram's own 940-wide viewBox, not actual
+   screen pixels — since the whole svg scales down to fit a phone's
+   width (see .seasons-diagram svg), a label only reads at a sane size
+   on a phone if it's drawn oversized here to begin with. Scale factor
+   at a 390px phone is about 0.38x, so e.g. this 24px date label ends
+   up roughly 9px on screen — small but legible, same trade-off most of
+   this site's own large labelled diagrams make, backed up by the
+   pinch-to-zoom every page already allows (no user-scalable=no). */
+.seasons-date-label {
+  font: 600 21px sans-serif;
+  fill: #222;
+}
+
+.seasons-hemisphere-label {
+  font: 19px sans-serif;
+  fill: #333;
+}
+
+.seasons-sun-label {
+  font: 600 20px sans-serif;
+  fill: #8a5b00;
+}
+
+.seasons-today-label {
+  font: 600 19px sans-serif;
+  fill: #b5720f;
+}
+
+.seasons-polaris-label {
+  font: 600 18px sans-serif;
+  fill: #c0392b;
+}
+
+.seasons-polaris-sublabel {
+  font: italic 15px sans-serif;
+  fill: #8a97a5;
+}
+
+.seasons-takeaway {
+  font: italic 22px sans-serif;
+  fill: #444;
+}
+
+.seasons-readout {
+  margin: 0.75rem 0;
+  font-size: 0.95rem;
+}
+
+.seasons-readout dt {
+  font-weight: 600;
+  margin-top: 0.5rem;
+}
+
+.seasons-readout dd {
+  margin: 0 0 0.25rem;
+}
+
 .moon-structure-label:hover,
 .moon-structure-label:focus-visible {
   text-decoration: underline;

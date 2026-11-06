@@ -7,7 +7,7 @@
   <meta name="referrer" content="no-referrer" />
   <meta name="robots" content="noindex, nofollow" />
   <title>Earth: Structure, Atmosphere and Motion</title>
-  <link rel="stylesheet" href="../styles.css?v=202611051400" />
+  <link rel="stylesheet" href="../styles.css?v=202611061200" />
   <link rel="icon" type="image/svg+xml" href="../favicon.svg?v=202610130720" />
 </head>
 <body>
@@ -327,24 +327,33 @@
         </ul>
       </div>
       <p class="note">
-        The diagram below reuses the same orbit panel as the
+        The diagram below reuses the same shared seasons diagram as the
         <a href="../sims/sun-declination.html">Observing the Sun</a> page &mdash; drag the date to
-        see Earth's position change, while its axis (the red tick) keeps pointing the same way.
-        Seasons, from that same tilt, are covered in full there.
+        see Earth move round its orbit, its axis always tilted towards the same fixed direction in
+        space (towards Polaris), while each hemisphere's own season is labelled directly.
       </p>
 
-      <div class="orbit-panel">
-        <h3>Earth's orbit</h3>
-        <canvas
-          id="orbit"
-          width="300"
-          height="300"
-          aria-label="Schematic diagram (not to scale) of Earth's orbit around the Sun, showing Earth's current position and its fixed-direction axis"
-        ></canvas>
+      <div class="diagram seasons-diagram" id="seasons-diagram-container">
+        <h3>Earth's orbit and seasons</h3>
+        <div class="labelled-diagram-wrap">
+          <svg
+            id="seasons-diagram-svg"
+            width="1180"
+            height="620"
+            role="img"
+            aria-label="Earth's elliptical orbit around the Sun, with Earth drawn large at the June solstice, September equinox, December solstice and March equinox, each tilted 23.5 degrees towards Polaris, lit on the side facing the Sun, and labelled with each hemisphere's season"
+          ></svg>
+        </div>
       </div>
-      <div class="control">
-        <label for="date-slider">Date: <span id="date-label"></span></label>
-        <input type="range" id="date-slider" min="0" max="364" step="1" value="171" />
+      <div class="controls">
+        <div class="control">
+          <label for="date-slider">Date: <span id="date-label"></span></label>
+          <input type="range" id="date-slider" min="0" max="364" step="1" value="171" />
+        </div>
+        <div class="control">
+          <label for="lat-slider">Latitude: <span id="lat-label"></span></label>
+          <input type="range" id="lat-slider" min="-90" max="90" step="1" value="52" />
+        </div>
       </div>
     </section>
 
@@ -429,12 +438,13 @@
   <script src="../src/specData.js?v=202610051000"></script>
   <script src="../src/solarPosition.js?v=202609260300"></script>
   <script src="../src/earthOrbit.js?v=202609212100"></script>
-  <script src="../src/orbitPanel.js?v=202609221500"></script>
+  <script src="../src/seasonsDiagram.js?v=202611061200"></script>
+  <script src="../src/seasonsDiagramView.js?v=202611061200"></script>
   <script src="../src/ringDiagramLabels.js?v=202611021000"></script>
   <script src="../src/bodyLayersDiagram.js?v=202611031600"></script>
   <script src="../glossary.js?v=202610131052"></script>
   <script src="../quiz-ui.js?v=202611052116"></script>
-  <script src="earth-structure.js?v=202611031600"></script>
+  <script src="earth-structure.js?v=202611061200"></script>
   <script src="../diagramEnlarge.js?v=202611051400"></script>
   <script src="../notesPage.js?v=202609270100"></script>
   <script src="../nextPage.js?v=202610161057"></script>
