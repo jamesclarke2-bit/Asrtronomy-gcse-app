@@ -29,8 +29,8 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const path = require('node:path');
-const { chromium, webkit } = require('playwright');
-const { trackSkips } = require('./browserLaunch');
+const { webkit } = require('playwright');
+const { launchChromium, trackSkips } = require('./browserLaunch');
 
 const EARTH_URL = 'file://' + path.join(__dirname, '..', 'notes', 'earth-structure.html');
 const MOON_URL = 'file://' + path.join(__dirname, '..', 'notes', 'moon-structure.html');
@@ -56,7 +56,7 @@ const EARTH_LINE_COLORS_RGB = [
 ];
 
 const BROWSERS = [
-  { name: 'Chromium', launch: () => chromium.launch() },
+  { name: 'Chromium', launch: () => launchChromium() },
   { name: 'WebKit', launch: () => webkit.launch() },
 ];
 
