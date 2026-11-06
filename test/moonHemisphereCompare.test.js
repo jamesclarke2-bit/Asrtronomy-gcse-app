@@ -131,14 +131,14 @@ test('notes/moon-structure.html at phone width (390px): the two illustrations st
   });
 });
 
-test('notes/moon-structure.html: the near/far-side captions state the maria-coverage figures, marked first draft', async (t) => {
+test('notes/moon-structure.html: the near/far-side captions state the maria-coverage figures, confirmed (no longer a first draft)', async (t) => {
   await withPage(t, { width: 1024, height: 900 }, async (page) => {
     const captions = await page.locator('.moon-hemisphere-figure figcaption').allTextContents();
     assert.equal(captions.length, 2);
     assert.match(captions[0], /31%/);
     assert.match(captions[1], /2%/);
     captions.forEach((caption) => {
-      assert.match(caption, /first draft, to be checked by the teacher/);
+      assert.doesNotMatch(caption, /first draft, to be checked by the teacher/);
     });
   });
 });

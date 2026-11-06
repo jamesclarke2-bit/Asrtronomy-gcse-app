@@ -324,9 +324,27 @@
   }
 
   FullMoonNames.mountWheel('full-moon-wheel-svg', 'full-moon-wheel-wrap');
-  const fullMoonListYear = new Date().getUTCFullYear();
-  document.getElementById('full-moon-list-year').textContent = String(fullMoonListYear);
-  FullMoonNames.mountFullMoonList('full-moon-list-body', fullMoonListYear, { MoonPhase, SolarPosition });
+
+  // The year selector covers the past 10 and next 10 years so the list
+  // never goes stale, but still defaults to the current year on load.
+  const fullMoonYearSelect = document.getElementById('full-moon-year-select');
+  const currentYear = new Date().getUTCFullYear();
+  for (let year = currentYear - 10; year <= currentYear + 10; year += 1) {
+    const option = document.createElement('option');
+    option.value = String(year);
+    option.textContent = String(year);
+    fullMoonYearSelect.appendChild(option);
+  }
+  fullMoonYearSelect.value = String(currentYear);
+
+  function renderFullMoonList() {
+    const year = Number(fullMoonYearSelect.value);
+    document.getElementById('full-moon-list-year').textContent = String(year);
+    FullMoonNames.mountFullMoonList('full-moon-list-body', year, { MoonPhase, SolarPosition });
+  }
+
+  fullMoonYearSelect.addEventListener('change', renderFullMoonList);
+  renderFullMoonList();
   setUpSpecialNamesToggle();
 
   dateInput.value = toDateInputValue(new Date());
