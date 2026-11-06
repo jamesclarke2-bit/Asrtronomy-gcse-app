@@ -134,13 +134,7 @@
     ctx.lineTo(cx, cy);
     ctx.stroke();
     ctx.setLineDash([]);
-    ctx.beginPath();
-    ctx.arc(sunX, cy, 13, 0, Math.PI * 2);
-    ctx.fillStyle = '#f5a623';
-    ctx.fill();
-    ctx.strokeStyle = '#c9820a';
-    ctx.lineWidth = 1.5;
-    ctx.stroke();
+    SunIcon.drawSunDiscCanvas(ctx, sunX, cy, 13, { coronaScale: 1.6 });
 
     // Line of nodes, through Earth.
     const ascending = project(orbitPoint(0, nodeAngle, tilt));
@@ -313,10 +307,10 @@
     ctx.clearRect(0, 0, W, H);
     ctx.textBaseline = 'alphabetic';
 
-    ctx.beginPath();
-    ctx.arc(-38, axisY, 52, -Math.PI / 2, Math.PI / 2);
-    ctx.fillStyle = '#f5a623';
-    ctx.fill();
+    // The Sun sits off-canvas to the left — only its right edge is
+    // visible, which a full disc (rather than a half-arc) draws
+    // identically within the visible canvas area.
+    SunIcon.drawSunDiscCanvas(ctx, -38, axisY, 52, { coronaScale: 1.4 });
     drawLabel(ctx, 'Sun', 4, axisY - 60);
 
     // Penumbra: widening from the Moon's edges out past Earth.
@@ -665,4 +659,5 @@
   render();
   renderCoverage();
   Glossary.init(GLOSSARY);
+  SunIcon.enhanceStaticSuns(document);
 })();

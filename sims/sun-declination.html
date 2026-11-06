@@ -139,7 +139,7 @@
       </p>
       <div class="diagram pinhole-diagram">
         <svg viewBox="0 0 320 140" role="img" aria-label="Diagram of pinhole projection: sunlight passing through a small hole in one card forms an inverted image of the Sun on a second card held behind it">
-          <circle cx="30" cy="30" r="16" fill="#f5a623" />
+          <circle cx="30" cy="30" r="16" class="sun-disc" />
           <line x1="44" y1="42" x2="140" y2="70" stroke="#f5a623" stroke-width="1.5" />
           <line x1="16" y1="46" x2="140" y2="72" stroke="#f5a623" stroke-width="1.5" />
           <line x1="30" y1="46" x2="140" y2="71" stroke="#f5a623" stroke-width="1.5" />
@@ -148,7 +148,9 @@
           <line x1="144" y1="69" x2="270" y2="35" stroke="#f5a623" stroke-width="1" stroke-dasharray="2 2" />
           <line x1="144" y1="73" x2="270" y2="105" stroke="#f5a623" stroke-width="1" stroke-dasharray="2 2" />
           <rect x="266" y="20" width="8" height="100" fill="#efe9dc" stroke="#8a97a5" stroke-width="1.5" />
-          <circle cx="270" cy="70" r="10" fill="#f5a623" opacity="0.6" />
+          <g opacity="0.6">
+            <circle cx="270" cy="70" r="10" class="sun-disc" data-sun-corona="false" data-sun-stroke="false" />
+          </g>
         </svg>
         <p class="diagram-caption">
           Card with a pinhole (left), casting an inverted image of the Sun onto a screen card
@@ -169,7 +171,7 @@
       </p>
       <div class="diagram telescope-projection-diagram">
         <svg viewBox="0 0 320 150" role="img" aria-label="Diagram of telescope projection: sunlight entering a small refractor through its eyepiece projects a sharp, magnified image of the Sun, including sunspots, onto a card held behind it">
-          <circle cx="22" cy="30" r="14" fill="#f5a623" />
+          <circle cx="22" cy="30" r="14" class="sun-disc" />
           <line x1="34" y1="40" x2="80" y2="60" stroke="#f5a623" stroke-width="1.5" />
           <line x1="10" y1="44" x2="80" y2="63" stroke="#f5a623" stroke-width="1.5" />
           <line x1="22" y1="44" x2="80" y2="64" stroke="#f5a623" stroke-width="1.5" />
@@ -179,7 +181,9 @@
           <line x1="198" y1="60" x2="276" y2="35" stroke="#f5a623" stroke-width="1" stroke-dasharray="2 2" />
           <line x1="198" y1="70" x2="276" y2="95" stroke="#f5a623" stroke-width="1" stroke-dasharray="2 2" />
           <rect x="276" y="20" width="8" height="100" fill="#efe9dc" stroke="#8a97a5" stroke-width="1.5" />
-          <circle cx="280" cy="65" r="13" fill="#f5a623" opacity="0.7" />
+          <g opacity="0.7">
+            <circle cx="280" cy="65" r="13" class="sun-disc" data-sun-corona="false" data-sun-stroke="false" />
+          </g>
           <circle cx="276" cy="61" r="1.6" fill="#5b3a1e" />
           <circle cx="284" cy="69" r="1.3" fill="#5b3a1e" />
         </svg>
@@ -254,10 +258,11 @@
   <script src="../src/coordinates.js?v=202609212100"></script>
   <script src="../src/earthOrbit.js?v=202609212100"></script>
   <script src="../src/seasonsDiagram.js?v=202611061200"></script>
-  <script src="../src/seasonsDiagramView.js?v=202611061200"></script>
+  <script src="../src/sunIcon.js?v=202611071200"></script>
+  <script src="../src/seasonsDiagramView.js?v=202611071200"></script>
   <script src="../src/sunDeclinationQuestions.js?v=202610300900"></script>
   <script src="../quiz-ui.js?v=202611052116"></script>
-  <script src="sun-declination.js?v=202611061200"></script>
+  <script src="sun-declination.js?v=202611071200"></script>
   <script src="../diagramEnlarge.js?v=202611051400"></script>
   <script src="../nextPage.js?v=202610161057"></script>
 </body>

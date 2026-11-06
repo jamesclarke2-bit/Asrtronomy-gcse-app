@@ -35,7 +35,7 @@
             <line x1="20" y1="90" x2="382" y2="90" stroke="#cdd7e1" stroke-width="1" stroke-dasharray="4 4" />
             <polygon points="190,70 190,110 400,50 400,130" fill="#f0d38a" opacity="0.45" />
             <polygon points="190,81 190,99 348,90" fill="#2f3f55" opacity="0.8" />
-            <circle cx="30" cy="90" r="26" fill="#f5a623" stroke="#c9820a" stroke-width="1.5" />
+            <circle cx="30" cy="90" r="26" class="sun-disc" />
             <circle cx="190" cy="90" r="9" fill="#3a3f4d" stroke="#20242e" stroke-width="1" />
             <circle cx="362" cy="90" r="20" fill="#2a6bd6" stroke="#173d75" stroke-width="1.5" />
             <path d="M 344 81 A 20 20 0 0 1 344 99" fill="none" stroke="#c0392b" stroke-width="4" stroke-linecap="round" />
@@ -60,7 +60,7 @@
           >
             <line x1="20" y1="90" x2="382" y2="90" stroke="#cdd7e1" stroke-width="1" stroke-dasharray="4 4" />
             <polygon points="180,64 180,116 380,90" fill="#2f3f55" opacity="0.8" />
-            <circle cx="30" cy="90" r="22" fill="#f5a623" stroke="#c9820a" stroke-width="1.5" />
+            <circle cx="30" cy="90" r="22" class="sun-disc" />
             <circle cx="180" cy="90" r="26" fill="#2a6bd6" stroke="#173d75" stroke-width="1.5" />
             <circle cx="270" cy="90" r="11" fill="#b3261e" stroke="#7a1a12" stroke-width="1" />
             <text x="30" y="124" font-size="11" fill="#555" text-anchor="middle">Sun</text>
@@ -84,7 +84,7 @@
             role="img"
             aria-label="A dark circle completely covering a bright one, leaving only a thin glowing ring, for a total solar eclipse"
           >
-            <circle cx="40" cy="40" r="28" fill="none" stroke="#f5a623" stroke-width="3" />
+            <circle cx="40" cy="40" r="28" fill="none" stroke="#c9540a" stroke-width="3" />
             <circle cx="40" cy="40" r="26" fill="#3a3f4d" stroke="#20242e" stroke-width="1" />
           </svg>
           <p class="diagram-caption">Total</p>
@@ -97,7 +97,7 @@
             role="img"
             aria-label="A dark circle centred on a slightly larger bright circle, leaving a bright ring all the way round, for an annular solar eclipse"
           >
-            <circle cx="40" cy="40" r="28" fill="#f5a623" stroke="#c9820a" stroke-width="1.5" />
+            <circle cx="40" cy="40" r="28" class="sun-disc" data-sun-corona="false" />
             <circle cx="40" cy="40" r="20" fill="#3a3f4d" stroke="#20242e" stroke-width="1" />
           </svg>
           <p class="diagram-caption">Annular</p>
@@ -110,7 +110,7 @@
             role="img"
             aria-label="A dark circle overlapping only part of a bright circle, leaving a bright crescent, for a partial solar eclipse"
           >
-            <circle cx="36" cy="40" r="28" fill="#f5a623" stroke="#c9820a" stroke-width="1.5" />
+            <circle cx="36" cy="40" r="28" class="sun-disc" data-sun-corona="false" />
             <circle cx="56" cy="30" r="24" fill="#3a3f4d" stroke="#20242e" stroke-width="1" />
           </svg>
           <p class="diagram-caption">Partial</p>
@@ -313,10 +313,11 @@
   <script src="../src/solarPosition.js?v=202609260300"></script>
   <script src="../src/moonPhase.js?v=202611031700"></script>
   <script src="../src/orbitalMechanics.js?v=202610100900"></script>
-  <script src="../src/moonOrbitPanel.js?v=202610041201"></script>
+  <script src="../src/sunIcon.js?v=202611071200"></script>
+  <script src="../src/moonOrbitPanel.js?v=202611071200"></script>
   <script src="../src/eclipseGeometry.js?v=202609241800"></script>
   <script src="../glossary.js?v=202610131052"></script>
-  <script src="eclipses.js?v=202610271500"></script>
+  <script src="eclipses.js?v=202611071200"></script>
   <script src="../diagramEnlarge.js?v=202611051400"></script>
   <script src="../nextPage.js?v=202610161057"></script>
 </body>

@@ -332,10 +332,7 @@
     zodiacCtx.stroke();
     zodiacCtx.setLineDash([]);
 
-    zodiacCtx.beginPath();
-    zodiacCtx.arc(cx, cy, 12, 0, Math.PI * 2);
-    zodiacCtx.fillStyle = '#f5a623';
-    zodiacCtx.fill();
+    SunIcon.drawSunDiscCanvas(zodiacCtx, cx, cy, 12, { coronaScale: 1.6 });
 
     // Earth on its orbit, and an arrow from Earth outward (away from the
     // Sun) to the zodiac sign that's overhead at midnight.
@@ -379,4 +376,5 @@
   Glossary.init(GLOSSARY);
   drawVisibilityDiagram();
   QuizUI.mount(ObservingTechniquesQuestions.makeQuestions(VisibilityFactors));
+  SunIcon.enhanceStaticSuns(document);
 })();

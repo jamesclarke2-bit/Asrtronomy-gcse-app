@@ -270,7 +270,7 @@
       drawOrbitDiagram(
         heliocentricCanvas,
         [
-          { x: sun.x, y: sun.y, label: 'Sun', color: '#f5a623', strokeColor: '#ad7312', radiusPx: 10, name: 'sun' },
+          { x: sun.x, y: sun.y, label: 'Sun', color: SunIcon.MONO_COLOR, strokeColor: '#ad7312', radiusPx: 10, name: 'sun' },
           { x: earth.x, y: earth.y, label: 'Earth', color: '#2a6bd6', strokeColor: '#173d75', radiusPx: 7, name: 'earth' },
           { x: mars.x, y: mars.y, label: 'Mars', color: '#c0392b', strokeColor: '#7a2015', radiusPx: 6, name: 'mars' },
         ],
@@ -284,7 +284,7 @@
         geocentricCanvas,
         [
           { x: 0, y: 0, label: 'Earth', color: '#2a6bd6', strokeColor: '#173d75', radiusPx: 9, name: 'earth' },
-          { x: sun.x - earth.x, y: sun.y - earth.y, label: 'Sun', color: '#f5a623', strokeColor: '#ad7312', radiusPx: 8, name: 'sun' },
+          { x: sun.x - earth.x, y: sun.y - earth.y, label: 'Sun', color: SunIcon.MONO_COLOR, strokeColor: '#ad7312', radiusPx: 8, name: 'sun' },
           { x: mars.x - earth.x, y: mars.y - earth.y, label: 'Mars', color: '#c0392b', strokeColor: '#7a2015', radiusPx: 6, name: 'mars' },
         ],
         'earth'
@@ -338,7 +338,7 @@
       return (
         '<svg width="52" height="52" viewBox="0 0 52 52" aria-hidden="true">' +
         '<ellipse cx="28" cy="26" rx="21" ry="13" fill="none" stroke="#2a6bd6" stroke-width="1.5"></ellipse>' +
-        '<circle cx="13" cy="26" r="4" fill="#f5a623"></circle>' +
+        '<circle cx="13" cy="26" r="4" fill="' + SunIcon.MONO_COLOR + '"></circle>' +
         '<circle cx="45" cy="26" r="2.5" fill="#2a6bd6"></circle>' +
         '</svg>'
       );
@@ -346,7 +346,7 @@
     // 'circles': Sun-centred, still circular orbits.
     return (
       '<svg width="52" height="52" viewBox="0 0 52 52" aria-hidden="true">' +
-      '<circle cx="26" cy="26" r="4" fill="#f5a623"></circle>' +
+      '<circle cx="26" cy="26" r="4" fill="' + SunIcon.MONO_COLOR + '"></circle>' +
       '<circle cx="26" cy="26" r="13" fill="none" stroke="#2a6bd6" stroke-width="1.25"></circle>' +
       '<circle cx="26" cy="26" r="20" fill="none" stroke="#c0392b" stroke-width="1.25"></circle>' +
       '<circle cx="39" cy="26" r="2.5" fill="#2a6bd6"></circle>' +
@@ -542,7 +542,7 @@
       drawOrbitDiagram(
         venusOrbitCanvas,
         [
-          { x: sun.x, y: sun.y, label: 'Sun', color: '#f5a623', strokeColor: '#ad7312', radiusPx: 10, name: 'sun' },
+          { x: sun.x, y: sun.y, label: 'Sun', color: SunIcon.MONO_COLOR, strokeColor: '#ad7312', radiusPx: 10, name: 'sun' },
           { x: earth.x, y: earth.y, label: 'Earth', color: '#2a6bd6', strokeColor: '#173d75', radiusPx: 7, name: 'earth' },
           { x: venus.x, y: venus.y, label: 'Venus', color: '#c0392b', strokeColor: '#7a2015', radiusPx: 6, name: 'venus' },
         ],
@@ -710,13 +710,7 @@
     ctx.stroke();
 
     // The Sun, at one focus — not the ellipse's own centre.
-    ctx.beginPath();
-    ctx.arc(cx + c * scalePx, cy, 9, 0, Math.PI * 2);
-    ctx.fillStyle = '#f5a623';
-    ctx.fill();
-    ctx.strokeStyle = '#ad7312';
-    ctx.lineWidth = 1.25;
-    ctx.stroke();
+    SunIcon.drawSunDiscCanvas(ctx, cx + c * scalePx, cy, 9, { corona: false });
 
     // Several illustrative "measured" points, evenly spread by mean
     // anomaly (not true anomaly, so they bunch up near perihelion, the
@@ -783,4 +777,5 @@
   renderCoverage();
   Glossary.init(GLOSSARY);
   QuizUI.mount(GeocentricHeliocentricQuestions.makeQuestions());
+  SunIcon.enhanceStaticSuns(document);
 })();

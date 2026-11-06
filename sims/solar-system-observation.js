@@ -27,7 +27,6 @@
   const horizonCtx = horizonCanvas.getContext('2d');
 
   const EARTH_COLOR = '#2a6bd6';
-  const SUN_COLOR = '#f5a623';
   const PLANET_COLORS = {
     mercury: '#8a97a5',
     venus: '#d6c26a',
@@ -207,13 +206,7 @@
     solarSystemCtx.fillText(`${elongation.toFixed(0)}°`, earthPx.x + Math.cos(midAngle) * (arcRadius + 16), earthPx.y + Math.sin(midAngle) * (arcRadius + 16));
 
     // Sun
-    solarSystemCtx.beginPath();
-    solarSystemCtx.arc(cx, cy, 9, 0, Math.PI * 2);
-    solarSystemCtx.fillStyle = SUN_COLOR;
-    solarSystemCtx.fill();
-    solarSystemCtx.strokeStyle = '#c9820a';
-    solarSystemCtx.lineWidth = 1.5;
-    solarSystemCtx.stroke();
+    SunIcon.drawSunDiscCanvas(solarSystemCtx, cx, cy, 9, { coronaScale: 1.6 });
 
     // Earth
     solarSystemCtx.beginPath();
@@ -411,10 +404,14 @@
     // Sun
     const sunX = markerXForSide(sunSide);
     const sunY = sunAboveHorizon ? groundY - 22 : groundY + 16;
-    horizonCtx.beginPath();
-    horizonCtx.arc(sunX, sunY, 8, 0, Math.PI * 2);
-    horizonCtx.fillStyle = sunAboveHorizon ? SUN_COLOR : 'rgba(245,166,35,0.35)';
-    horizonCtx.fill();
+    if (sunAboveHorizon) {
+      SunIcon.drawSunDiscCanvas(horizonCtx, sunX, sunY, 8, { coronaScale: 1.5 });
+    } else {
+      horizonCtx.beginPath();
+      horizonCtx.arc(sunX, sunY, 8, 0, Math.PI * 2);
+      horizonCtx.fillStyle = 'rgba(201, 84, 10, 0.35)';
+      horizonCtx.fill();
+    }
 
     // Planet
     const planetX = markerXForSide(planetSide);
@@ -693,4 +690,5 @@
   renderCoverage();
   Glossary.init(GLOSSARY);
   QuizUI.mount(PlanetaryMotionQuestions.makeQuestions(PlanetaryMotion));
+  SunIcon.enhanceStaticSuns(document);
 })();

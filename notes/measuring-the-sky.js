@@ -7,7 +7,6 @@
 
   const EARTH_FILL = '#5b7c99';
   const MOON_FILL = '#d8d6cf';
-  const SUN_FILL = '#f5a623';
   const RAY_COLOR = '#e0a21a';
   const ANGLE_COLOR = '#c0392b';
 
@@ -299,7 +298,7 @@
     svgEl('path', { d: arcPath(earth.x, earth.y, 38, -QUARTER_DRAWN_DEG, 0), fill: 'none', stroke: ANGLE_COLOR, 'stroke-width': 2.5 }, svg);
 
     svgEl('circle', { cx: earth.x, cy: earth.y, r: 11, fill: EARTH_FILL }, svg);
-    svgEl('circle', { cx: sun.x, cy: sun.y, r: 24, fill: SUN_FILL }, svg);
+    SunIcon.appendSunSvg(svg, sun.x, sun.y, 24, { coronaScale: 1.5 });
     // The Moon, lit on the half facing the Sun.
     const r = 9;
     const litAngle = Math.atan2(toSun.y, toSun.x);

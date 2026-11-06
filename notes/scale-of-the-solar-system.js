@@ -292,4 +292,5 @@
   renderCoverage();
   Glossary.init(GLOSSARY);
   QuizUI.mount(ScaleOfSolarSystemQuestions.makeQuestions(SpecData));
+  SunIcon.enhanceStaticSuns(document);
 })();

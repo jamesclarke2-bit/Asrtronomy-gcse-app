@@ -132,13 +132,10 @@
     ctx.beginPath();
     ctx.moveTo(sunX, BAND_Y - BAND_HALF_HEIGHT);
     ctx.lineTo(sunX, BAND_Y + BAND_HALF_HEIGHT + 22);
-    ctx.strokeStyle = '#f5a623';
+    ctx.strokeStyle = SunIcon.EDGE_COLOR;
     ctx.lineWidth = 2;
     ctx.stroke();
-    ctx.beginPath();
-    ctx.arc(sunX, BAND_Y + BAND_HALF_HEIGHT + 30, 8, 0, Math.PI * 2);
-    ctx.fillStyle = '#f5a623';
-    ctx.fill();
+    SunIcon.drawSunDiscCanvas(ctx, sunX, BAND_Y + BAND_HALF_HEIGHT + 30, 8, { coronaScale: 1.6 });
     ctx.font = '11px sans-serif';
     ctx.fillStyle = '#8a6a1a';
     ctx.fillText('Sun', sunX, BAND_Y + BAND_HALF_HEIGHT + 52);

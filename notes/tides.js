@@ -270,7 +270,7 @@
     const seaTop = seaLevel === 'high' ? BEACH_HIGH_POST.topY : BEACH_LOW_POST.topY;
 
     svgEl('rect', { x: 0, y: 0, width: BEACH_W, height: 52, fill: '#cfe6f5' }, svg);
-    svgEl('circle', { cx: 195, cy: 20, r: 12, fill: '#f5c542' }, svg);
+    SunIcon.appendSunSvg(svg, 195, 20, 12, { coronaScale: 1.5 });
     svgEl('path', { d: BEACH_DUNE_PATH, fill: '#e8d9a8' }, svg);
     svgEl('rect', { x: 0, y: seaTop, width: BEACH_W, height: BEACH_H - seaTop, fill: '#6fa8dc' }, svg);
 
@@ -315,7 +315,7 @@
         svgEl('circle', { cx: bodyCx, cy, r: bodyRadius, fill: '#3b3f48' }, svg);
         svgEl('path', { d: `M${bodyCx},${cy - bodyRadius} A${bodyRadius},${bodyRadius} 0 0 1 ${bodyCx},${cy + bodyRadius} Z`, fill: '#f4f1e8' }, svg);
       } else {
-        svgEl('circle', { cx: bodyCx, cy, r: bodyRadius, fill: '#f5c542' }, svg);
+        SunIcon.appendSunSvg(svg, bodyCx, cy, bodyRadius, { coronaScale: 1.5 });
       }
       drawArrow(cy - 28, lengths.near, '#c0392b');
       drawArrow(cy, lengths.centre, '#555');

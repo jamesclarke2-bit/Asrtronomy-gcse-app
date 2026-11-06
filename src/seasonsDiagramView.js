@@ -31,7 +31,6 @@
   const DARK_COLOR = '#1f3a5f';
   const EARTH_OUTLINE = '#173d75';
   const AXIS_COLOR = '#c0392b';
-  const SUN_COLOR = '#ffb703';
   const TODAY_COLOR = '#f5a623';
 
   // SeasonsDiagram.orbitPoint(theta) places theta=90° (June solstice)
@@ -189,7 +188,7 @@
 
     svgNode('ellipse', { cx: CX, cy: CY, rx: RX, ry: RY, fill: 'none', stroke: '#b7c3d1', 'stroke-width': 2, 'stroke-dasharray': '7 6' }, svg);
 
-    svgNode('circle', { cx: CX, cy: CY, r: 26, fill: SUN_COLOR, stroke: '#e08e00', 'stroke-width': 2.5 }, svg);
+    SunIcon.appendSunSvg(svg, CX, CY, 26);
     textNode(svg, { x: CX, y: CY + 48, 'text-anchor': 'middle', class: 'seasons-sun-label' }, 'Sun');
 
     // "Towards Polaris": shown once, in a clear corner, rather than

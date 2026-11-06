@@ -171,13 +171,19 @@
       ? polarPoint(cx, cy, R, current.altitude, current.azimuth)
       : polarPoint(cx, cy, R, 0, current.azimuth);
 
-    ctx.beginPath();
-    ctx.arc(point.x, point.y, 8, 0, Math.PI * 2);
-    ctx.fillStyle = aboveHorizon ? '#ffb703' : '#9aa5b1';
-    ctx.fill();
-    ctx.strokeStyle = '#333';
-    ctx.lineWidth = 1.5;
-    ctx.stroke();
+    if (aboveHorizon) {
+      SunIcon.drawSunDiscCanvas(ctx, point.x, point.y, 8, { coronaScale: 1.6 });
+    } else {
+      // Below the horizon: a plain grey dot, not the Sun symbol — it
+      // isn't actually visible right now.
+      ctx.beginPath();
+      ctx.arc(point.x, point.y, 8, 0, Math.PI * 2);
+      ctx.fillStyle = '#9aa5b1';
+      ctx.fill();
+      ctx.strokeStyle = '#333';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+    }
 
     // Culmination: the day's maximum-altitude point, where the sun
     // crosses the meridian.

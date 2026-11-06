@@ -21,7 +21,11 @@
   // depend on the observer (pole, equator), amber for facts that depend
   // on the Sun (here, its declination and transit position).
   const OBSERVER_COLOR = '#2a6bd6';
-  const SUN_COLOR = '#f5a623';
+  // Drawn as the same small dot style as the pole/equator markers
+  // (drawMeridianFeature) for consistency within this one diagram, so
+  // it uses the shared monochrome Sun colour rather than the full
+  // gradient disc (see src/sunIcon.js).
+  const SUN_COLOR = SunIcon.MONO_COLOR;
 
   // Same rule as coordinates.js's getElevatedPole: whichever celestial
   // pole is actually above the horizon from this latitude.
@@ -194,4 +198,5 @@
   update();
   renderCoverage();
   QuizUI.mount(SunDeclinationQuestions.makeQuestions(SolarPosition, Coordinates));
+  SunIcon.enhanceStaticSuns(document);
 })();

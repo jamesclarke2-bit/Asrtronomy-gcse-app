@@ -97,16 +97,9 @@
   function drawSunDisc(day) {
     discCtx.clearRect(0, 0, discCanvas.width, discCanvas.height);
 
-    const gradient = discCtx.createRadialGradient(DISC_CX - 40, DISC_CY - 40, 10, DISC_CX, DISC_CY, DISC_R);
-    gradient.addColorStop(0, '#ffe3a0');
-    gradient.addColorStop(1, '#f5a623');
-    discCtx.beginPath();
-    discCtx.arc(DISC_CX, DISC_CY, DISC_R, 0, Math.PI * 2);
-    discCtx.fillStyle = gradient;
-    discCtx.fill();
-    discCtx.strokeStyle = '#c97f1e';
-    discCtx.lineWidth = 2;
-    discCtx.stroke();
+    // Fills almost the whole canvas, so no corona (there's no margin
+    // for one to show in) — just the shared gradient disc itself.
+    SunIcon.drawSunDiscCanvas(discCtx, DISC_CX, DISC_CY, DISC_R, { corona: false });
 
     // Central meridian: the line facing Earth directly.
     discCtx.strokeStyle = '#8a97a5';

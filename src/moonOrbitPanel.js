@@ -92,7 +92,6 @@ function makeMoonOrbitPanel(OM) {
   // --- Drawing -------------------------------------------------------
 
   const EARTH_COLOR = '#2a6bd6';
-  const SUN_COLOR = '#f5a623';
   const MOON_LIT_COLOR = '#f5e8c8';
   const MOON_DARK_COLOR = '#3a3f4d';
 
@@ -185,13 +184,7 @@ function makeMoonOrbitPanel(OM) {
     });
     ctx.setLineDash([]);
 
-    ctx.beginPath();
-    ctx.arc(sunPoint.x, sunPoint.y, 12, 0, Math.PI * 2);
-    ctx.fillStyle = SUN_COLOR;
-    ctx.fill();
-    ctx.strokeStyle = '#c9820a';
-    ctx.lineWidth = 1.5;
-    ctx.stroke();
+    SunIcon.drawSunDiscCanvas(ctx, sunPoint.x, sunPoint.y, 12, { coronaScale: 1.6 });
 
     ctx.beginPath();
     for (let deg = 0; deg <= 360; deg += 3) {

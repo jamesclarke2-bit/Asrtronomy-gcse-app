@@ -5,7 +5,12 @@
 
   const EARTH_COLOR = '#2a6bd6';
   const MOON_COLOR = '#8a97a5';
-  const SUN_COLOR = '#e8a23a';
+  // Every mass on this map — Sun included — is drawn as the same flat
+  // dot (drawBodyMarker), deliberately: a gravity field map treats
+  // every body as an abstract point mass, so the Sun gets the shared
+  // monochrome Sun colour rather than the full gradient disc used
+  // where the Sun is pictured as itself (see src/sunIcon.js).
+  const SUN_COLOR = SunIcon.MONO_COLOR;
   const BODY_A_COLOR = '#2a6bd6';
   const BODY_B_COLOR = '#6a3fa0';
   const ZERO_POINT_COLOR = '#c0392b';

@@ -194,15 +194,7 @@
       const svg = ancientIconSvg();
       const cx = ANCIENT_ICON_WIDTH / 2;
       const cy = ANCIENT_ICON_HEIGHT / 2;
-      for (let i = 0; i < 8; i += 1) {
-        const a = (i / 8) * 2 * Math.PI;
-        svgEl('line', {
-          x1: cx + Math.cos(a) * 22, y1: cy + Math.sin(a) * 22,
-          x2: cx + Math.cos(a) * 32, y2: cy + Math.sin(a) * 32,
-          stroke: SUN_COLOR, 'stroke-width': 3, 'stroke-linecap': 'round',
-        }, svg);
-      }
-      svgEl('circle', { cx, cy, r: 17, fill: SUN_COLOR }, svg);
+      SunIcon.appendSunSvg(svg, cx, cy, 17, { coronaScale: 1.6 });
       svgEl('circle', { cx: cx + 8, cy: cy - 4, r: 15, fill: '#10141f' }, svg);
       return svg;
     },
@@ -226,7 +218,7 @@
       svgEl('rect', { x: 30, y: 34, width: 13, height: 42, rx: 2, fill: STONE_COLOR }, svg);
       svgEl('rect', { x: 97, y: 34, width: 13, height: 42, rx: 2, fill: STONE_COLOR }, svg);
       svgEl('line', { x1: 70, y1: 22, x2: 70, y2: 76, stroke: SUN_COLOR, 'stroke-width': 2.5, 'stroke-dasharray': '4 3' }, svg);
-      svgEl('circle', { cx: 70, cy: 18, r: 10, fill: SUN_COLOR }, svg);
+      SunIcon.appendSunSvg(svg, 70, 18, 10, { coronaScale: 1.6 });
       return svg;
     },
   };
@@ -336,15 +328,7 @@
     // The live sunrise direction for the selected date.
     const sunEnd = azimuthPoint(cx, cy, sunR, sunriseAzimuthDeg);
     svgEl('line', { x1: cx, y1: cy, x2: sunEnd.x, y2: sunEnd.y, stroke: SUN_COLOR, 'stroke-width': 2.5, 'stroke-dasharray': '6 4' }, svg);
-    for (let i = 0; i < 8; i += 1) {
-      const angle = (i / 8) * 2 * Math.PI;
-      svgEl('line', {
-        x1: sunEnd.x + Math.cos(angle) * 11, y1: sunEnd.y + Math.sin(angle) * 11,
-        x2: sunEnd.x + Math.cos(angle) * 17, y2: sunEnd.y + Math.sin(angle) * 17,
-        stroke: SUN_COLOR, 'stroke-width': 2.5, 'stroke-linecap': 'round',
-      }, svg);
-    }
-    svgEl('circle', { cx: sunEnd.x, cy: sunEnd.y, r: 10, fill: SUN_COLOR }, svg);
+    SunIcon.appendSunSvg(svg, sunEnd.x, sunEnd.y, 10, { coronaScale: 1.6 });
     const sunLabel = azimuthPoint(cx, cy, sunR + 22, sunriseAzimuthDeg);
     const l = addLabel(wrap, sunLabel.x, sunLabel.y, W, H, 'Sunrise today', 'star-label finder-polaris-label');
     if (sunLabel.x > cx) l.dataset.side = 'left';

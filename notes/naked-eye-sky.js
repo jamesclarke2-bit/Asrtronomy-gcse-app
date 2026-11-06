@@ -344,15 +344,7 @@
       const svg = iconSvg();
       const cx = ICON_WIDTH / 2;
       const cy = ICON_HEIGHT / 2;
-      for (let i = 0; i < 8; i += 1) {
-        const angle = (i / 8) * 2 * Math.PI;
-        svgEl('line', {
-          x1: cx + Math.cos(angle) * 23, y1: cy + Math.sin(angle) * 23,
-          x2: cx + Math.cos(angle) * 34, y2: cy + Math.sin(angle) * 34,
-          stroke: '#ffcf5c', 'stroke-width': 3, 'stroke-linecap': 'round',
-        }, svg);
-      }
-      svgEl('circle', { cx, cy, r: 18, fill: '#ffcf5c' }, svg);
+      SunIcon.appendSunSvg(svg, cx, cy, 18, { coronaScale: 1.6 });
       return svg;
     },
     moon() {

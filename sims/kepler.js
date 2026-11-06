@@ -3,7 +3,6 @@
   const OM = OrbitalMechanics;
   const SD = SpecData;
 
-  const SUN_COLOR = '#f5a623';
   const PLANET_COLOR = '#2a6bd6';
   const ORBIT_LINE_COLOR = '#b7c3d1';
   const WEDGE_COLORS = ['rgba(42, 107, 214, 0.10)', 'rgba(42, 107, 214, 0.22)'];
@@ -104,13 +103,7 @@
 
   function drawSun(ctx, view) {
     const s = view.toScreen(0, 0);
-    ctx.beginPath();
-    ctx.arc(s.x, s.y, 11, 0, Math.PI * 2);
-    ctx.fillStyle = SUN_COLOR;
-    ctx.fill();
-    ctx.strokeStyle = '#c9820a';
-    ctx.lineWidth = 1.5;
-    ctx.stroke();
+    SunIcon.drawSunDiscCanvas(ctx, s.x, s.y, 11);
   }
 
   function isCometLike() {

@@ -156,7 +156,7 @@
             aria-label="Top-down view of the Sun, Earth and Venus at the selected date, with Earth's and Venus's orbits drawn"
           ></canvas>
           <p class="legend">
-            <span class="legend-dot" style="background:#f5a623"></span> Sun
+            <span class="legend-dot" style="background:#c9540a"></span> Sun
             &nbsp; <span class="legend-dot" style="background:#2a6bd6"></span> Earth
             &nbsp; <span class="legend-dot" style="background:#c0392b"></span> Venus
           </p>
@@ -186,7 +186,7 @@
         <svg width="90" height="70" viewBox="0 0 90 70" aria-hidden="true">
           <circle cx="20" cy="35" r="7" fill="#2a6bd6" stroke="#173d75" stroke-width="1.25"></circle>
           <line x1="27" y1="35" x2="85" y2="35" stroke="#cdd7e1" stroke-width="1" stroke-dasharray="2,2"></line>
-          <circle cx="85" cy="35" r="6" fill="#f5a623" stroke="#ad7312" stroke-width="1.25"></circle>
+          <circle cx="85" cy="35" r="6" class="sun-disc" data-sun-corona="false"></circle>
           <circle cx="56" cy="35" r="9" fill="none" stroke="#b7c3d1" stroke-width="1.25" stroke-dasharray="2,2"></circle>
           <circle cx="60" cy="31" r="3.5" fill="#c0392b" stroke="#7a2015" stroke-width="1"></circle>
         </svg>
@@ -241,7 +241,7 @@
           aria-label="Several measured Mars positions, all lying on an ellipse with the Sun at one focus, rather than on a circle"
         ></canvas>
         <p class="legend">
-          <span class="legend-dot" style="background:#f5a623"></span> Sun (at one focus)
+          <span class="legend-dot" style="background:#c9540a"></span> Sun (at one focus)
           &nbsp; <span class="legend-dot" style="background:#c0392b"></span> Mars, at measured points
         </p>
       </div>
@@ -334,9 +334,10 @@
   <script src="../src/orbitalMechanics.js?v=202610101500"></script>
   <script src="../src/galileanMoons.js?v=202610101500"></script>
   <script src="../src/animationTiming.js?v=202610130606"></script>
+  <script src="../src/sunIcon.js?v=202611071200"></script>
   <script src="../glossary.js?v=202610131052"></script>
   <script src="../quiz-ui.js?v=202611052116"></script>
-  <script src="geocentric-to-heliocentric.js?v=202610130705"></script>
+  <script src="geocentric-to-heliocentric.js?v=202611071200"></script>
   <script src="../diagramEnlarge.js?v=202611051400"></script>
   <script src="../notesPage.js?v=202609252100"></script>
   <script src="../nextPage.js?v=202610161057"></script>

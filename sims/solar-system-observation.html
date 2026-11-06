@@ -46,7 +46,7 @@
           <div class="concept-grid" id="inferior-configs">
             <button type="button" class="concept-card concept-card-button" data-jump="inferior conjunction">
               <svg viewBox="0 0 220 160" role="img" aria-label="Diagram of inferior conjunction: the planet directly between Earth and the Sun">
-                <circle cx="190" cy="80" r="26" fill="#f5a623" stroke="#c9820a" stroke-width="2" />
+                <circle cx="190" cy="80" r="26" class="sun-disc" />
                 <circle cx="120" cy="80" r="6" fill="#8a5b00" />
                 <circle cx="30" cy="80" r="9" fill="#2a6bd6" stroke="#173d75" stroke-width="1.5" />
                 <line x1="30" y1="80" x2="190" y2="80" stroke="#8a97a5" stroke-width="1.5" stroke-dasharray="3,3" />
@@ -57,7 +57,7 @@
             </button>
             <button type="button" class="concept-card concept-card-button" data-jump="superior conjunction">
               <svg viewBox="0 0 220 160" role="img" aria-label="Diagram of superior conjunction: the planet directly behind the Sun, as seen from Earth">
-                <circle cx="120" cy="80" r="26" fill="#f5a623" stroke="#c9820a" stroke-width="2" />
+                <circle cx="120" cy="80" r="26" class="sun-disc" />
                 <circle cx="190" cy="80" r="6" fill="#8a5b00" />
                 <circle cx="30" cy="80" r="9" fill="#2a6bd6" stroke="#173d75" stroke-width="1.5" />
                 <line x1="30" y1="80" x2="190" y2="80" stroke="#8a97a5" stroke-width="1.5" stroke-dasharray="3,3" />
@@ -68,7 +68,7 @@
             </button>
             <button type="button" class="concept-card concept-card-button" data-jump="greatest eastern elongation">
               <svg viewBox="0 0 220 160" role="img" aria-label="Diagram of greatest eastern elongation: the planet at its furthest angle east of the Sun, as seen from Earth">
-                <circle cx="120" cy="80" r="26" fill="#f5a623" stroke="#c9820a" stroke-width="2" />
+                <circle cx="120" cy="80" r="26" class="sun-disc" />
                 <circle cx="150" cy="35" r="6" fill="#8a5b00" />
                 <circle cx="30" cy="80" r="9" fill="#2a6bd6" stroke="#173d75" stroke-width="1.5" />
                 <line x1="30" y1="80" x2="120" y2="80" stroke="#d6c26a" stroke-width="1.5" stroke-dasharray="2,3" />
@@ -80,7 +80,7 @@
             </button>
             <button type="button" class="concept-card concept-card-button" data-jump="greatest western elongation">
               <svg viewBox="0 0 220 160" role="img" aria-label="Diagram of greatest western elongation: the planet at its furthest angle west of the Sun, as seen from Earth">
-                <circle cx="120" cy="80" r="26" fill="#f5a623" stroke="#c9820a" stroke-width="2" />
+                <circle cx="120" cy="80" r="26" class="sun-disc" />
                 <circle cx="150" cy="125" r="6" fill="#8a5b00" />
                 <circle cx="30" cy="80" r="9" fill="#2a6bd6" stroke="#173d75" stroke-width="1.5" />
                 <line x1="30" y1="80" x2="120" y2="80" stroke="#d6c26a" stroke-width="1.5" stroke-dasharray="2,3" />
@@ -95,7 +95,7 @@
           <div class="concept-grid" id="superior-configs">
             <button type="button" class="concept-card concept-card-button" data-jump="conjunction">
               <svg viewBox="0 0 220 160" role="img" aria-label="Diagram of conjunction: the planet directly behind the Sun, as seen from Earth">
-                <circle cx="120" cy="80" r="26" fill="#f5a623" stroke="#c9820a" stroke-width="2" />
+                <circle cx="120" cy="80" r="26" class="sun-disc" />
                 <circle cx="190" cy="80" r="7" fill="#c0392b" stroke="#7b2a1c" stroke-width="1.5" />
                 <circle cx="30" cy="80" r="9" fill="#2a6bd6" stroke="#173d75" stroke-width="1.5" />
                 <line x1="30" y1="80" x2="190" y2="80" stroke="#8a97a5" stroke-width="1.5" stroke-dasharray="3,3" />
@@ -106,7 +106,7 @@
             </button>
             <button type="button" class="concept-card concept-card-button" data-jump="opposition">
               <svg viewBox="0 0 220 160" role="img" aria-label="Diagram of opposition: the planet directly opposite the Sun, as seen from Earth">
-                <circle cx="50" cy="80" r="22" fill="#f5a623" stroke="#c9820a" stroke-width="2" />
+                <circle cx="50" cy="80" r="22" class="sun-disc" />
                 <circle cx="190" cy="80" r="7" fill="#c0392b" stroke="#7b2a1c" stroke-width="1.5" />
                 <circle cx="120" cy="80" r="9" fill="#2a6bd6" stroke="#173d75" stroke-width="1.5" />
                 <line x1="50" y1="80" x2="190" y2="80" stroke="#8a97a5" stroke-width="1.5" stroke-dasharray="3,3" />
@@ -326,7 +326,7 @@
       <div class="concept-grid">
         <div class="concept-card">
           <svg viewBox="0 0 220 160" role="img" aria-label="Diagram of a transit: a small dark dot of Venus crossing in front of the Sun's bright disc, as seen from Earth">
-            <circle cx="110" cy="80" r="55" fill="#f5a623" stroke="#c9820a" stroke-width="2" />
+            <circle cx="110" cy="80" r="55" class="sun-disc" data-sun-corona="false" />
             <circle cx="150" cy="58" r="7" fill="#1a1a1a" />
           </svg>
           <p class="diagram-caption">Venus, crossing the Sun's disc as seen from Earth</p>
@@ -382,9 +382,10 @@
   <script src="../src/planetaryMotion.js?v=202610161036"></script>
   <script src="../src/planetaryMotionQuestions.js?v=202610101200"></script>
   <script src="../src/animationTiming.js?v=202610130606"></script>
+  <script src="../src/sunIcon.js?v=202611071200"></script>
   <script src="../glossary.js?v=202610131052"></script>
   <script src="../quiz-ui.js?v=202611052116"></script>
-  <script src="solar-system-observation.js?v=202610130606"></script>
+  <script src="solar-system-observation.js?v=202611071200"></script>
   <script src="../diagramEnlarge.js?v=202611051400"></script>
   <script src="../nextPage.js?v=202610161057"></script>
 </body>
