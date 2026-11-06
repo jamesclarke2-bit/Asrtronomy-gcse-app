@@ -1,12 +1,18 @@
 /**
- * sims/sunspot-rotation.html's recording flow: a day control (slider +
- * Previous/Next day buttons) drives both the disc diagram and which
- * day "Record this position" reads, recording auto-advances the day so
- * a run of readings is just repeated clicks, the plot and both period
- * estimates (limb-to-limb doubling, two-reading stretch) update live as
- * rows are added, and Undo removes the last one. A real browser check
- * (Playwright, same engine scripts/screenshots.js already uses), since
- * this is all runtime DOM/canvas state a raw-HTML parse can't see.
+ * sims/sunspot-rotation.html's recording flow: "Record and next day"
+ * captures all three tracked spots (0°, 30°, 60°) for the current day
+ * in one row, shows "hidden" for any spot behind the limb that day,
+ * and auto-advances — so building a full table back is just repeated
+ * clicks of the same button, the same "click many times and the
+ * pattern appears" feel the single-spot flow lost. "Record 14 days"
+ * does the same thing fourteen times in one go. The plot and the
+ * per-latitude estimates table update live from the recorded rows,
+ * never a hardcoded answer, and a "Reveal" toggle shows the engine's
+ * own true period only once the student's made an estimate.
+ *
+ * A real browser check (Playwright, same engine scripts/screenshots.js
+ * already uses), since the table, canvas plot and live estimates are
+ * all runtime DOM/canvas state a raw-HTML parse can't see.
  *
  * Checked at a phone width (390px, same convention as
  * test/noHorizontalScroll.test.js) and an iPad width (768px).
@@ -14,6 +20,7 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const path = require('node:path');
+const SunRotation = require('../src/sunRotation');
 const { launchChromium, trackSkips } = require('./browserLaunch');
 
 const PAGE_URL = 'file://' + path.join(__dirname, '..', 'sims', 'sunspot-rotation.html');
@@ -24,9 +31,19 @@ const SKIP_MESSAGE = (err) =>
 const { skip } = trackSkips('test/sunspotRotationRecording.test.js');
 
 const WIDTHS = [
-  { label: 'phone', width: 390, height: 1400 },
-  { label: 'iPad', width: 768, height: 1400 },
+  { label: 'phone', width: 390, height: 1600 },
+  { label: 'iPad', width: 768, height: 1600 },
 ];
+
+const LATS = [0, 30, 60];
+const START_LONGITUDE_DEG = -90;
+const SPOT_COLORS = { 0: '#c0392b', 30: '#2a6bd6', 60: '#173d75' };
+// The model is exactly deterministic (no measurement noise — see
+// sims/sunspot-rotation.js), so a two-reading estimate should land
+// essentially exactly on the engine's own period; half a day is a
+// generous, clearly-stated tolerance rather than requiring bit-exact
+// floating point agreement.
+const ESTIMATE_TOLERANCE_DAYS = 0.5;
 
 async function withPage(t, width, height, run) {
   let browser;
@@ -46,118 +63,246 @@ async function withPage(t, width, height, run) {
   }
 }
 
-async function recordedRowCount(page) {
-  return page.locator('#readings-tbody tr').count();
+async function recordClicks(page, n) {
+  for (let i = 0; i < n; i += 1) {
+    await page.locator('#record-next-button').click();
+    await page.waitForTimeout(15);
+  }
+}
+
+async function readRows(page) {
+  return page.locator('#readings-tbody tr').evaluateAll((trs) => trs.map((tr) => [...tr.children].map((td) => td.textContent)));
+}
+
+function hexToRgb(hex) {
+  const n = parseInt(hex.slice(1), 16);
+  return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+}
+
+// Scans a canvas for any solid, opaque pixel close to the given colour
+// — the most direct way to check a canvas-drawn series actually got
+// drawn, short of a full pixel-diff image comparison.
+async function canvasContainsColor(page, selector, hex, tolerance = 12) {
+  const [r, g, b] = hexToRgb(hex);
+  return page.$eval(
+    selector,
+    (canvas, [rr, gg, bb, tol]) => {
+      const ctx = canvas.getContext('2d');
+      const { data } = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      for (let i = 0; i < data.length; i += 4) {
+        if (data[i + 3] > 200 && Math.abs(data[i] - rr) <= tol && Math.abs(data[i + 1] - gg) <= tol && Math.abs(data[i + 2] - bb) <= tol) {
+          return true;
+        }
+      }
+      return false;
+    },
+    [r, g, b, tolerance]
+  );
+}
+
+function parseDaysValue(text) {
+  const m = text.match(/^(-?\d+(?:\.\d+)?) days$/);
+  return m ? Number(m[1]) : null;
 }
 
 WIDTHS.forEach(({ label, width, height }) => {
-  test(`${label}: recording on three days adds three rows, auto-advancing the day each time`, async (t) => {
+  // --- (a) ---------------------------------------------------------
+
+  test(`${label}: (a) 14 clicks of 'Record and next day' gives 14 rows, each day's cell filled or 'hidden' exactly as the engine says`, async (t) => {
     await withPage(t, width, height, async (page) => {
-      assert.equal(await page.locator('#day-label').textContent(), '0', 'should start on day 0');
+      await recordClicks(page, 14);
+      const rows = await readRows(page);
+      assert.equal(rows.length, 14, 'expected exactly 14 rows after 14 clicks');
 
-      for (let i = 0; i < 3; i += 1) {
-        await page.locator('#record-button').click();
-        await page.waitForTimeout(30);
-      }
-
-      assert.equal(await recordedRowCount(page), 3, 'should have 3 recorded rows');
-      assert.equal(await page.locator('#day-label').textContent(), '3', 'day should have auto-advanced to 3 after 3 records');
-
-      const days = await page.locator('#readings-tbody tr td:first-child').allTextContents();
-      assert.deepEqual(days, ['0', '1', '2'], 'should have recorded days 0, 1 and 2, in order');
+      rows.forEach(([dayStr, x0, x30, x60], i) => {
+        assert.equal(Number(dayStr), i, 'rows should be day 0, 1, 2, ... in order');
+        const cells = { 0: x0, 30: x30, 60: x60 };
+        LATS.forEach((lat) => {
+          const lon = SunRotation.apparentLongitudeAtDay(lat, START_LONGITUDE_DEG, i);
+          const visible = SunRotation.isOnVisibleDisc(lon);
+          if (visible) assert.match(cells[lat], /^-?\d+\.\d$/, `lat ${lat} day ${i} should show a number, got "${cells[lat]}"`);
+          else assert.equal(cells[lat], 'hidden', `lat ${lat} day ${i} should show "hidden"`);
+        });
+      });
     });
   });
 
-  test(`${label}: both period estimates say what's needed before enough readings exist, then update once they do`, async (t) => {
+  test(`${label}: (a) recording for longer genuinely shows 'hidden' once a spot goes behind the limb, while the other columns stay filled`, async (t) => {
     await withPage(t, width, height, async (page) => {
-      const limbReadout = page.locator('#limb-to-limb-readout');
-      const stretchReadout = page.locator('#stretch-estimate-readout');
-
-      // Before any readings: both say what's needed, neither shows a number.
-      assert.match(await limbReadout.textContent(), /record at least one reading/i);
-      assert.match(await stretchReadout.textContent(), /record at least two readings/i);
-
-      // After one reading: limb-to-limb has enough, stretch still doesn't.
-      await page.locator('#record-button').click();
-      await page.waitForTimeout(30);
-      assert.doesNotMatch(await limbReadout.textContent(), /record at least/i);
-      assert.match(await limbReadout.textContent(), /\d+(\.\d+)? days/);
-      assert.match(await stretchReadout.textContent(), /record at least two readings/i);
-
-      // After three readings (on three different days): both show a live estimate.
-      await page.locator('#record-button').click();
-      await page.waitForTimeout(30);
-      await page.locator('#record-button').click();
-      await page.waitForTimeout(30);
-      assert.doesNotMatch(await stretchReadout.textContent(), /record at least/i);
-      assert.match(await stretchReadout.textContent(), /day-0 and day-2 readings.*estimated period of about \d+(\.\d+)? days/);
+      await recordClicks(page, 20);
+      const rows = await readRows(page);
+      assert.equal(rows.length, 20);
+      const anyHidden = rows.some((r) => r.includes('hidden'));
+      assert.ok(anyHidden, 'expected at least one spot to be behind the limb within 20 days');
+      // The slower (higher-latitude) spots should stay visible at least
+      // as long as the faster ones — 0° is never visible on a day 30°
+      // or 60° is hidden, and 30° is never visible on a day 60° is
+      // hidden, matching differential rotation (never the reverse).
+      rows.forEach(([, x0, x30, x60]) => {
+        if (x0 !== 'hidden') assert.notEqual(x30, 'hidden', '0° visible should imply 30° is too (0° crosses fastest)');
+        if (x30 !== 'hidden') assert.notEqual(x60, 'hidden', '30° visible should imply 60° is too (30° crosses faster than 60°)');
+      });
     });
   });
 
-  test(`${label}: undo removes exactly the last reading and updates the table, plot readiness and estimates`, async (t) => {
+  // --- (b) ---------------------------------------------------------
+
+  test(`${label}: (b) all three coloured series appear on the plot once recorded`, async (t) => {
     await withPage(t, width, height, async (page) => {
-      for (let i = 0; i < 3; i += 1) {
-        await page.locator('#record-button').click();
-        await page.waitForTimeout(30);
+      await recordClicks(page, 8);
+      for (const lat of LATS) {
+        const present = await canvasContainsColor(page, '#sunspot-plot', SPOT_COLORS[lat]);
+        assert.ok(present, `expected the ${lat}° series' own colour (${SPOT_COLORS[lat]}) to appear on the plot`);
       }
-      assert.equal(await recordedRowCount(page), 3);
+    });
+  });
+
+  // --- (c) ---------------------------------------------------------
+
+  test(`${label}: (c) both estimates land within half a day of the engine's true period for each latitude, and 60° is slower than 30° is slower than 0°`, async (t) => {
+    await withPage(t, width, height, async (page) => {
+      await recordClicks(page, 8);
+
+      const estimates = {};
+      for (const lat of LATS) {
+        const limbText = await page.locator(`#limb-estimate-${lat}`).textContent();
+        const stretchText = await page.locator(`#stretch-estimate-${lat}`).textContent();
+        const limb = parseDaysValue(limbText);
+        const stretch = parseDaysValue(stretchText);
+        assert.ok(limb !== null, `limb-to-limb estimate at ${lat}° should be a number by now, got "${limbText}"`);
+        assert.ok(stretch !== null, `stretch estimate at ${lat}° should be a number by now, got "${stretchText}"`);
+
+        const truePeriod = SunRotation.synodicPeriodDays(SunRotation.siderealPeriodDays(lat));
+        assert.ok(
+          Math.abs(limb - truePeriod) <= ESTIMATE_TOLERANCE_DAYS,
+          `${lat}° limb-to-limb estimate ${limb} should be within ${ESTIMATE_TOLERANCE_DAYS} days of the true ${truePeriod.toFixed(2)}`
+        );
+        assert.ok(
+          Math.abs(stretch - truePeriod) <= ESTIMATE_TOLERANCE_DAYS,
+          `${lat}° stretch estimate ${stretch} should be within ${ESTIMATE_TOLERANCE_DAYS} days of the true ${truePeriod.toFixed(2)}`
+        );
+        estimates[lat] = { limb, stretch };
+      }
+
+      assert.ok(estimates[0].limb < estimates[30].limb, '0° should rotate faster (shorter period) than 30°');
+      assert.ok(estimates[30].limb < estimates[60].limb, '30° should rotate faster (shorter period) than 60°');
+      assert.ok(estimates[0].stretch < estimates[30].stretch, '0° should rotate faster (shorter period) than 30° (stretch method)');
+      assert.ok(estimates[30].stretch < estimates[60].stretch, '30° should rotate faster (shorter period) than 60° (stretch method)');
+    });
+  });
+
+  test(`${label}: estimate cells say what's still needed before there's enough data, per spot`, async (t) => {
+    await withPage(t, width, height, async (page) => {
+      assert.match(await page.locator('#limb-estimate-0').textContent(), /need/i);
+      assert.match(await page.locator('#stretch-estimate-0').textContent(), /need/i);
+
+      await recordClicks(page, 1);
+      // One reading still isn't enough for either method, for any spot.
+      for (const lat of LATS) {
+        assert.match(await page.locator(`#limb-estimate-${lat}`).textContent(), /need/i);
+      }
+
+      await recordClicks(page, 1);
+      // Two readings, on two different days, is enough.
+      for (const lat of LATS) {
+        assert.doesNotMatch(await page.locator(`#limb-estimate-${lat}`).textContent(), /need/i);
+      }
+    });
+  });
+
+  // --- Reveal toggle -------------------------------------------------
+
+  test(`${label}: the true period stays hidden until 'Reveal' is clicked, then matches the engine for every latitude`, async (t) => {
+    await withPage(t, width, height, async (page) => {
+      await recordClicks(page, 4);
+      assert.equal(await page.locator('#true-period-row').isHidden(), true);
+
+      await page.locator('#reveal-button').click();
+      assert.equal(await page.locator('#true-period-row').isHidden(), false);
+
+      for (const lat of LATS) {
+        const text = await page.locator(`#true-period-${lat}`).textContent();
+        const value = parseDaysValue(text);
+        const truePeriod = SunRotation.synodicPeriodDays(SunRotation.siderealPeriodDays(lat));
+        assert.ok(value !== null && Math.abs(value - truePeriod) < 0.05, `true period at ${lat}° should match the engine exactly, got "${text}"`);
+      }
+    });
+  });
+
+  // --- (d) ---------------------------------------------------------
+
+  test(`${label}: (d) Undo removes the last row and restores the day control to that row's day`, async (t) => {
+    await withPage(t, width, height, async (page) => {
+      await recordClicks(page, 5);
+      assert.equal((await readRows(page)).length, 5);
+      assert.equal(await page.locator('#day-label').textContent(), '5');
+
+      await page.locator('#undo-button').click();
+      const rows = await readRows(page);
+      assert.equal(rows.length, 4, 'Undo should remove exactly one row');
+      assert.deepEqual(
+        rows.map((r) => r[0]),
+        ['0', '1', '2', '3']
+      );
+      assert.equal(await page.locator('#day-label').textContent(), '4', 'the day control should go back to the removed row\'s own day');
+      assert.equal(await page.locator('#day-slider').inputValue(), '4');
+    });
+  });
+
+  // --- (e) ---------------------------------------------------------
+
+  test(`${label}: (e) Clear resets the table, plot readiness and estimates`, async (t) => {
+    await withPage(t, width, height, async (page) => {
+      await recordClicks(page, 6);
+      assert.equal((await readRows(page)).length, 6);
       assert.equal(await page.locator('#undo-button').isDisabled(), false);
 
-      await page.locator('#undo-button').click();
-      await page.waitForTimeout(30);
-      assert.equal(await recordedRowCount(page), 2, 'undo should remove exactly one row');
-      const remainingDays = await page.locator('#readings-tbody tr td:first-child').allTextContents();
-      assert.deepEqual(remainingDays, ['0', '1'], 'should have removed the day-2 reading (the last one recorded), not an arbitrary one');
-
-      // Two readings on different days is still enough for the stretch estimate.
-      assert.doesNotMatch(await page.locator('#stretch-estimate-readout').textContent(), /record at least/i);
-
-      // Undo down to zero: both estimates revert to "not enough readings" and the buttons disable.
-      await page.locator('#undo-button').click();
-      await page.waitForTimeout(30);
-      await page.locator('#undo-button').click();
-      await page.waitForTimeout(30);
-      assert.equal(await recordedRowCount(page), 0);
-      assert.equal(await page.locator('#undo-button').isDisabled(), true, 'undo should disable once there is nothing left to undo');
+      await page.locator('#clear-button').click();
+      assert.equal((await readRows(page)).length, 0);
+      assert.equal(await page.locator('#undo-button').isDisabled(), true);
       assert.equal(await page.locator('#clear-button').isDisabled(), true);
-      assert.match(await page.locator('#limb-to-limb-readout').textContent(), /record at least one reading/i);
-      assert.match(await page.locator('#stretch-estimate-readout').textContent(), /record at least two readings/i);
+      for (const lat of LATS) {
+        assert.match(await page.locator(`#limb-estimate-${lat}`).textContent(), /need/i);
+        assert.match(await page.locator(`#stretch-estimate-${lat}`).textContent(), /need/i);
+      }
     });
   });
 
-  test(`${label}: the day control (slider, Previous/Next buttons) stays in sync and disables at the ends of its range`, async (t) => {
+  // --- (f) ---------------------------------------------------------
+
+  test(`${label}: (f) 'Record 14 days' produces exactly the same rows as 14 individual clicks`, async (t) => {
+    let singleRows;
+    let singleDay;
     await withPage(t, width, height, async (page) => {
-      assert.equal(await page.locator('#prev-day-button').isDisabled(), true, 'Previous day should be disabled on day 0');
-
-      await page.locator('#next-day-button').click();
-      assert.equal(await page.locator('#day-label').textContent(), '1');
-      assert.equal(await page.locator('#day-slider').inputValue(), '1');
-      assert.equal(await page.locator('#prev-day-button').isDisabled(), false);
-
-      await page.locator('#prev-day-button').click();
-      assert.equal(await page.locator('#day-label').textContent(), '0');
-      assert.equal(await page.locator('#prev-day-button').isDisabled(), true);
-
-      // Jump to the last day via the slider itself: Next day should disable.
-      await page.locator('#day-slider').evaluate((el) => {
-        el.value = el.max;
-        el.dispatchEvent(new Event('input'));
-      });
-      assert.equal(await page.locator('#next-day-button').isDisabled(), true);
+      await recordClicks(page, 14);
+      singleRows = await readRows(page);
+      singleDay = await page.locator('#day-label').textContent();
     });
+    if (singleRows === undefined) return; // withPage already skipped (no Chromium)
+
+    let bulkRows;
+    let bulkDay;
+    await withPage(t, width, height, async (page) => {
+      await page.locator('#record-14-button').click();
+      await page.waitForTimeout(50);
+      bulkRows = await readRows(page);
+      bulkDay = await page.locator('#day-label').textContent();
+    });
+
+    assert.deepEqual(bulkRows, singleRows, "'Record 14 days' should produce the exact same rows as 14 separate clicks");
+    assert.equal(bulkDay, singleDay);
   });
 
-  test(`${label}: a spot that's beyond the limb disables Record and explains why, instead of only erroring after the click`, async (t) => {
+  // --- Marker shapes (colour-blind-safe encoding) ---------------------
+
+  test(`${label}: each spot's legend marker carries a distinct shape class, not colour alone`, async (t) => {
     await withPage(t, width, height, async (page) => {
-      // The equatorial spot (the default selection) has left the visible
-      // disc well before day 20 — see src/sunRotation.js's own synodic
-      // period at latitude 0.
-      await page.locator('#day-slider').evaluate((el) => {
-        el.value = el.max;
-        el.dispatchEvent(new Event('input'));
-      });
-      assert.equal(await page.locator('#record-button').isDisabled(), true);
-      assert.match(await page.locator('#day-visibility-note').textContent(), /isn't on the visible disc/);
+      assert.equal(await page.locator('.spot-marker-0').count(), 1);
+      assert.equal(await page.locator('.spot-marker-30').count(), 1);
+      assert.equal(await page.locator('.spot-marker-60').count(), 1);
+      const borderRadius0 = await page.locator('.spot-marker-0').evaluate((el) => getComputedStyle(el).borderRadius);
+      const borderRadius30 = await page.locator('.spot-marker-30').evaluate((el) => getComputedStyle(el).borderRadius);
+      assert.notEqual(borderRadius0, borderRadius30, '0° (circle) and 30° (square) should render with different shapes');
     });
   });
 });

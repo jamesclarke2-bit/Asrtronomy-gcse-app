@@ -392,6 +392,47 @@ canvas {
   background: #173d75;
 }
 
+/* sims/sunspot-rotation.html's three tracked spots: colour alone isn't
+   colour-blind safe, so each latitude also gets its own marker shape —
+   circle (0°), square (30°), triangle (60°) — matching what
+   sunspot-rotation.js draws on the disc and the plot with the same
+   shape+colour pairing. */
+.spot-marker {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 0.4rem;
+  vertical-align: middle;
+}
+
+.spot-marker-0 {
+  border-radius: 50%;
+  background: #c0392b;
+}
+
+.spot-marker-30 {
+  border-radius: 2px;
+  background: #2a6bd6;
+}
+
+.spot-marker-60 {
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 9px solid #173d75;
+}
+
+/* A reading-table cell for a spot that was behind the limb that day
+   (sims/sunspot-rotation.html), and an estimates-table cell still
+   waiting on more readings — both quieter than a real value, never
+   conveyed by colour alone (the text itself already says so). */
+.hidden-cell,
+.estimate-pending {
+  color: #8a97a5;
+  font-style: italic;
+}
+
 /* Opt-in via .tool-layout, a second class alongside the shared .layout
    (so a plain .layout page is untouched): keep the control panels usable
    alongside the diagrams at every viewport size, instead of them

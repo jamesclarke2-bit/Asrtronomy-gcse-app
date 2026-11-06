@@ -7,7 +7,7 @@
   <meta name="referrer" content="no-referrer" />
   <meta name="robots" content="noindex, nofollow" />
   <title>Sunspot Rotation</title>
-  <link rel="stylesheet" href="../styles.css?v=202611061200" />
+  <link rel="stylesheet" href="../styles.css?v=202611061400" />
   <link rel="icon" type="image/svg+xml" href="../favicon.svg?v=202610130720" />
 </head>
 <body>
@@ -36,9 +36,9 @@
         ></canvas>
       </div>
       <p class="legend">
-        <span class="legend-dot legend-dot-spot-0"></span> 0&deg; (equator)
-        &nbsp; <span class="legend-dot legend-dot-spot-30"></span> 30&deg;
-        &nbsp; <span class="legend-dot legend-dot-spot-60"></span> 60&deg;
+        <span class="spot-marker spot-marker-0"></span> 0&deg; (equator)
+        &nbsp; <span class="spot-marker spot-marker-30"></span> 30&deg;
+        &nbsp; <span class="spot-marker spot-marker-60"></span> 60&deg;
       </p>
       <div class="controls">
         <div class="control checkbox-control">
@@ -53,20 +53,13 @@
     </section>
 
     <section class="notes-section" id="recording">
-      <h2>Recording a sunspot's position</h2>
+      <h2>Recording all three spots</h2>
       <p>
-        Pick a spot and a day, then record its x position to build up your own table &mdash;
-        recording moves you on to the next day automatically, so you can just keep going.
+        One button records the x position of all three spots for the current day, adds a row to
+        the table below, and moves you on to the next day &mdash; so building up a full table is
+        just repeated clicks of the same button.
       </p>
       <div class="controls">
-        <div class="control">
-          <label for="latitude-select">Spot (latitude):</label>
-          <select id="latitude-select">
-            <option value="0">0&deg; (equator)</option>
-            <option value="30">30&deg;</option>
-            <option value="60">60&deg;</option>
-          </select>
-        </div>
         <div class="control">
           <label for="day-slider">Day: <span id="day-label"></span></label>
           <input type="range" id="day-slider" min="0" max="20" step="1" value="0" />
@@ -76,45 +69,51 @@
           </div>
         </div>
       </div>
-      <p class="note" id="day-visibility-note" aria-live="polite"></p>
+      <p class="note" id="day-status-note" aria-live="polite"></p>
       <div class="controls">
         <div class="control checkbox-control">
-          <button type="button" id="record-button" class="secondary-button">Record this position</button>
+          <button type="button" id="record-next-button" class="secondary-button">Record and next day</button>
+          <button type="button" id="record-14-button" class="secondary-button">Record 14 days</button>
         </div>
         <div class="control checkbox-control">
-          <button type="button" id="undo-button" class="secondary-button">Undo last reading</button>
+          <button type="button" id="undo-button" class="secondary-button">Undo</button>
           <button type="button" id="clear-button" class="secondary-button">Clear</button>
         </div>
       </div>
       <p class="note" id="record-feedback" aria-live="polite"></p>
-      <table class="shower-table" id="readings-table">
-        <caption>Your recorded readings</caption>
-        <thead>
-          <tr><th scope="col">Day</th><th scope="col">x position</th></tr>
-        </thead>
-        <tbody id="readings-tbody"></tbody>
-      </table>
+      <div class="table-scroll">
+        <table class="shower-table" id="readings-table">
+          <caption>Your recorded readings</caption>
+          <thead>
+            <tr>
+              <th scope="col">Day</th>
+              <th scope="col">x at 0&deg;</th>
+              <th scope="col">x at 30&deg;</th>
+              <th scope="col">x at 60&deg;</th>
+            </tr>
+          </thead>
+          <tbody id="readings-tbody"></tbody>
+        </table>
+      </div>
       <div class="diagram sunspot-plot-diagram">
         <canvas
           id="sunspot-plot"
-          width="500"
-          height="300"
-          aria-label="Plot of x position against day for your recorded readings"
+          width="560"
+          height="340"
+          aria-label="Plot of x position against day for all three recorded spots, one coloured and shaped series per latitude, each labelled directly on the plot"
         ></canvas>
       </div>
     </section>
 
     <section class="notes-section" id="methods">
-      <h2>Two ways to estimate the period from your readings</h2>
+      <h2>Two ways to estimate the period, for all three spots</h2>
       <h3>Method 1: double the limb-to-limb time</h3>
       <p>
         A spot crosses the whole visible disc &mdash; east limb to west limb &mdash; in exactly
-        half a rotation (the far side, where it isn't visible, is the other half). Note the day
-        it disappears off the west limb, then double that day count to estimate the full
-        (synodic) rotation period. Record at least one reading below to see this worked through
-        with your own spot.
+        half a rotation (the far side, where it isn't visible, is the other half). From your own
+        readings, the day it reaches each limb is interpolated, and that limb-to-limb time is
+        doubled to estimate the full (synodic) rotation period.
       </p>
-      <p class="panel-note" id="limb-to-limb-readout"></p>
       <h3>Method 2: the two-reading "stretch" method</h3>
       <p>
         From any two readings, work out the angle the spot moved (its longitude on the second
@@ -122,7 +121,45 @@
         full 360&deg; rotation:
       </p>
       <p class="formula">period = 360&deg; &times; days &divide; angle moved</p>
-      <p class="panel-note" id="stretch-estimate-readout"></p>
+      <div class="table-scroll">
+        <table class="shower-table" id="estimates-table">
+          <caption>Your estimates, by latitude</caption>
+          <thead>
+            <tr>
+              <th scope="col">Method</th>
+              <th scope="col">0&deg;</th>
+              <th scope="col">30&deg;</th>
+              <th scope="col">60&deg;</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">Limb-to-limb (doubled)</th>
+              <td id="limb-estimate-0"></td>
+              <td id="limb-estimate-30"></td>
+              <td id="limb-estimate-60"></td>
+            </tr>
+            <tr>
+              <th scope="row">Two-reading stretch</th>
+              <td id="stretch-estimate-0"></td>
+              <td id="stretch-estimate-30"></td>
+              <td id="stretch-estimate-60"></td>
+            </tr>
+            <tr id="true-period-row" hidden>
+              <th scope="row">True period (engine)</th>
+              <td id="true-period-0"></td>
+              <td id="true-period-30"></td>
+              <td id="true-period-60"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="panel-note">
+        Spots nearer the poles rotate more slowly &mdash; differential rotation.
+      </p>
+      <button type="button" id="reveal-button" class="secondary-button" aria-pressed="false">
+        Reveal true period
+      </button>
       <p class="note">
         Recording a spot's position day by day like this is observation task
         <strong>A6</strong> on the specification; using that data to calculate the rotation
@@ -200,7 +237,7 @@
   <script src="../src/sunRotation.js?v=202610300900"></script>
   <script src="../src/sunspotRotationQuestions.js?v=202610300900"></script>
   <script src="../quiz-ui.js?v=202611052116"></script>
-  <script src="sunspot-rotation.js?v=202611052300"></script>
+  <script src="sunspot-rotation.js?v=202611061300"></script>
   <script src="../diagramEnlarge.js?v=202611051400"></script>
   <script src="../nextPage.js?v=202610161057"></script>
 </body>
