@@ -9,14 +9,25 @@ function findQuestion(questions, id) {
   return q;
 }
 
-test('every question tags u1.25, and states the constants it needs in its own prompt text', () => {
+test('every question tags u1.25 or u1.26, and states the constants it needs in its own prompt text', () => {
   const questions = makeQuestions(VisibilityFactors);
-  assert.ok(questions.length >= 5);
+  assert.ok(questions.length >= 6);
   questions.forEach((q) => {
-    assert.deepEqual(q.units, ['u1.25']);
+    assert.ok(
+      (q.units.length === 1 && (q.units[0] === 'u1.25' || q.units[0] === 'u1.26')),
+      `${q.id} should tag exactly one of u1.25/u1.26, got ${JSON.stringify(q.units)}`
+    );
     assert.ok(q.prompt && q.prompt.trim().length > 0, `${q.id} has no prompt`);
     assert.equal(q.type, 'choice');
-    assert.ok(Array.isArray(q.options) && q.options.length === 3, `${q.id} should offer three options`);
+    assert.ok(Array.isArray(q.options) && q.options.length >= 3, `${q.id} should offer at least three options`);
+  });
+});
+
+test('the u1.25 visibility-factors questions each offer exactly three options', () => {
+  const questions = makeQuestions(VisibilityFactors).filter((q) => q.units[0] === 'u1.25');
+  assert.ok(questions.length >= 5);
+  questions.forEach((q) => {
+    assert.equal(q.options.length, 3, `${q.id} should offer three options`);
   });
 });
 
@@ -62,6 +73,18 @@ test('weather-blocks-view: only the cloud-free window is correct', () => {
   assert.ok(q.check('Window B').correct);
   assert.equal(q.check('Window A').correct, false);
   assert.equal(q.check('Window C').correct, false);
+});
+
+test('star-opposite-sun-daytime: a star sharing the Sun\'s direction is correctly explained as up only by day', () => {
+  const questions = makeQuestions(VisibilityFactors);
+  const q = findQuestion(questions, 'star-opposite-sun-daytime');
+  assert.deepEqual(q.units, ['u1.26']);
+  assert.equal(q.options.length, 4);
+  const correctOption = "It rises and sets together with the Sun, so it's only ever above the horizon during the day, when it's lost in the Sun's glare.";
+  assert.ok(q.check(correctOption).correct);
+  q.options.filter((o) => o !== correctOption).forEach((wrongOption) => {
+    assert.equal(q.check(wrongOption).correct, false, `"${wrongOption}" should be marked wrong`);
+  });
 });
 
 test('combined-trade-off: the plan with no weak point (Plan C) beats the clouded-out and barely-clearing plans', () => {

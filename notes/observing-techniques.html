@@ -7,7 +7,7 @@
   <meta name="referrer" content="no-referrer" />
   <meta name="robots" content="noindex, nofollow" />
   <title>Observing Techniques</title>
-  <link rel="stylesheet" href="../styles.css?v=202611061400" />
+  <link rel="stylesheet" href="../styles.css?v=202611062300" />
   <link rel="icon" type="image/svg+xml" href="../favicon.svg?v=202610130720" />
 </head>
 <body>
@@ -59,10 +59,11 @@
     </section>
 
     <section class="notes-section" id="light-pollution">
-      <h2>Light pollution and skyglow</h2>
+      <h2>Light pollution and dark adaptation</h2>
       <p>
         <button type="button" class="glossary-toggle glossary-term-button" data-term="skyglow" aria-label="What is skyglow?" aria-expanded="false">Skyglow</button>
-        from towns and cities raises the sky's background brightness for miles around.
+        from towns and cities raises the sky's background brightness for miles around, and it
+        takes your eyes time to adapt once you get away from it &mdash; watch both below.
       </p>
       <span class="glossary-definition" data-term="skyglow" hidden></span>
 
@@ -110,18 +111,53 @@
         </p>
       </div>
 
-      <div class="darkness-scale">
-        <div class="darkness-scale-bar"></div>
+      <div class="diagram star-field-diagram">
+        <canvas
+          id="star-field-canvas"
+          width="420"
+          height="260"
+          aria-label="A night sky star field whose stars fade in and out as the darkness-scale and dark-adaptation-time sliders change, showing how many fewer or more stars are visible"
+        ></canvas>
+      </div>
+
+      <div class="control">
+        <label for="darkness-slider">Site darkness: <span id="darkness-label"></span></label>
+        <input type="range" id="darkness-slider" min="1" max="9" step="1" value="1" />
         <div class="darkness-scale-labels">
-          <span>City sky</span>
-          <span>Suburbs</span>
-          <span>Rural</span>
-          <span>Dark Sky Park</span>
+          <span>Dark-sky site</span>
+          <span>City centre</span>
         </div>
       </div>
+
+      <div class="control">
+        <label for="adaptation-slider">Minutes in the dark: <span id="adaptation-label"></span></label>
+        <input type="range" id="adaptation-slider" min="0" max="30" step="any" value="0" />
+      </div>
+      <div class="control checkbox-control">
+        <button type="button" id="adaptation-play-button" class="secondary-button" aria-pressed="false">&#9658; Play</button>
+      </div>
+
+      <dl class="readout">
+        <div class="readout-row">
+          <dt>Limiting magnitude</dt>
+          <dd id="limiting-magnitude-readout"></dd>
+        </div>
+        <div class="readout-row">
+          <dt>Approx. stars visible</dt>
+          <dd id="star-count-readout"></dd>
+        </div>
+      </dl>
+
       <p class="note">
-        A simplified darkness scale from a city centre to a Dark Sky Park (first draft, to be
-        checked by the teacher).
+        Limiting magnitude (about 6.5 at a dark-sky site, down to about 3 in a city centre) and
+        the approximate star counts are a first draft, to be checked by the teacher &mdash; a
+        real sky also depends on haze, Moon phase and the observer's own eyesight.
+      </p>
+      <p class="note">
+        White light resets dark adaptation almost instantly &mdash; it bleaches the same
+        rhodopsin your eyes just spent up to 30 minutes building up &mdash; while dim red light
+        barely affects it, which is why red torches and red screen modes are standard once
+        you're adapted.
       </p>
 
       <p>
@@ -145,6 +181,103 @@
           migration, foraging and breeding can all be disrupted by artificial light at night.
         </p>
       </div>
+    </section>
+
+    <section class="notes-section" id="day-and-night">
+      <h2>Day and night: why you see different stars</h2>
+      <p>
+        Earth's spin carries an observer through noon, dusk, midnight and dawn once a day &mdash;
+        and which way you face then decides which stars you can actually see.
+      </p>
+
+      <div class="diagram day-night-diagram">
+        <svg
+          viewBox="0 0 360 260"
+          width="360"
+          height="260"
+          role="img"
+          aria-label="Earth seen from above the north pole, Sun fixed to the right, lit on its sunward (right) half and dark on its far (left) half. An observer is marked at four points around Earth's edge — noon, facing the Sun on the lit side; dusk and dawn, at the day-night boundary, facing up and down; and midnight, facing away from the Sun on the dark side — each with an arrow showing the direction they face."
+        >
+          <circle cx="140" cy="130" r="55" fill="#10233f" />
+          <path d="M140,75 A55,55 0 0 1 140,185 Z" fill="#eaf2fb" />
+          <circle cx="140" cy="130" r="55" fill="none" stroke="#0a1830" stroke-width="2" />
+          <g fill="#f5a623">
+            <circle cx="300" cy="130" r="17" />
+            <g stroke="#f5a623" stroke-width="2" stroke-linecap="round">
+              <line x1="300" y1="100" x2="300" y2="90" />
+              <line x1="300" y1="160" x2="300" y2="170" />
+              <line x1="270" y1="130" x2="260" y2="130" />
+              <line x1="279" y1="109" x2="272" y2="102" />
+              <line x1="279" y1="151" x2="272" y2="158" />
+            </g>
+          </g>
+          <text x="300" y="155" text-anchor="middle" font-size="11" fill="#8a6a1a">Sun</text>
+
+          <defs>
+            <marker id="dayNightArrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L6,3 L0,6 Z" fill="#2c3e50" />
+            </marker>
+          </defs>
+
+          <g stroke="#f5a623" stroke-width="2.5" marker-end="url(#dayNightArrow)">
+            <line x1="195" y1="130" x2="214" y2="130" />
+          </g>
+          <circle cx="195" cy="130" r="4" fill="#2c3e50" />
+          <text x="222" y="120" font-size="12" font-weight="600" fill="#8a6a1a">Noon</text>
+          <text x="222" y="134" font-size="9.5" fill="#555">faces the Sun</text>
+
+          <g stroke="#8a97a5" stroke-width="2.5" marker-end="url(#dayNightArrow)">
+            <line x1="140" y1="75" x2="140" y2="56" />
+          </g>
+          <circle cx="140" cy="75" r="4" fill="#2c3e50" />
+          <text x="140" y="42" text-anchor="middle" font-size="12" font-weight="600" fill="#555">Dusk</text>
+
+          <g stroke="#2a6bd6" stroke-width="2.5" marker-end="url(#dayNightArrow)">
+            <line x1="85" y1="130" x2="66" y2="130" />
+          </g>
+          <circle cx="85" cy="130" r="4" fill="#2c3e50" />
+          <text x="60" y="120" text-anchor="end" font-size="12" font-weight="600" fill="#2a6bd6">Midnight</text>
+          <text x="60" y="134" text-anchor="end" font-size="9.5" fill="#555">faces away from the Sun</text>
+
+          <g stroke="#8a97a5" stroke-width="2.5" marker-end="url(#dayNightArrow)">
+            <line x1="140" y1="185" x2="140" y2="204" />
+          </g>
+          <circle cx="140" cy="185" r="4" fill="#2c3e50" />
+          <text x="140" y="222" text-anchor="middle" font-size="12" font-weight="600" fill="#555">Dawn</text>
+        </svg>
+        <p class="diagram-caption">
+          At midnight you face directly away from the Sun, so the stars you see are the ones
+          &ldquo;in opposition&rdquo; to it &mdash; the opposite direction in the sky. A star in
+          the Sun's own direction is up only during the day, lost in its glare, not at night at
+          all.
+        </p>
+      </div>
+
+      <p>
+        Because Earth also orbits the Sun, that away-from-the-Sun direction itself slowly sweeps
+        around the zodiacal band over a year &mdash; which is why the constellations overhead at
+        midnight change with the seasons. Try a month below.
+      </p>
+
+      <div class="diagram zodiac-wheel-diagram">
+        <canvas
+          id="zodiac-canvas"
+          width="420"
+          height="420"
+          aria-label="Top-down view of the Sun with Earth orbiting it and the twelve zodiac constellations arranged in a ring around the outside. Earth's position changes with the month slider, and an arrow from Earth points outward, away from the Sun, to whichever zodiac constellation is overhead at midnight that month."
+        ></canvas>
+      </div>
+
+      <div class="control">
+        <label for="month-slider">Month: <span id="month-label"></span></label>
+        <input type="range" id="month-slider" min="0" max="11" step="1" value="0" />
+      </div>
+      <p class="note" id="zodiac-readout" aria-live="polite"></p>
+
+      <p class="note">
+        The traditional zodiac constellations are shown as twelve equal 30&deg; slices, the
+        standard simplified model &mdash; real constellation boundaries are irregular widths.
+      </p>
     </section>
 
     <section class="notes-section" id="finding-targets">
@@ -447,6 +580,13 @@
         blurred and twinkly on a night of poor seeing.
         <a href="#visibility-factors">What decides whether you can see it? &uarr;</a>
       </p>
+      <p class="exam-tip">
+        <strong>Common exam confusion:</strong> a star in the same direction as the Sun isn't
+        merely hard to see at night &mdash; it isn't up at night at all. It rises and sets
+        together with the Sun, so it's above the horizon only during the day, lost in daytime
+        glare, until Earth's own orbit shifts the Sun's direction away from it months later.
+        <a href="#day-and-night">Day and night: why you see different stars &uarr;</a>
+      </p>
     </section>
 
     <section class="notes-section" id="related">
@@ -493,10 +633,14 @@
   <script src="../src/curriculum.js?v=202610292000"></script>
   <script src="../src/pages.js?v=202611030900"></script>
   <script src="../src/visibilityFactors.js?v=202610292000"></script>
-  <script src="../src/observingTechniquesQuestions.js?v=202610292000"></script>
+  <script src="../src/lightPollution.js?v=202611062200"></script>
+  <script src="../src/animationTiming.js?v=202610130606"></script>
+  <script src="../src/planetaryMotion.js?v=202610161036"></script>
+  <script src="../src/dayAndNight.js?v=202611062200"></script>
+  <script src="../src/observingTechniquesQuestions.js?v=202611062200"></script>
   <script src="../glossary.js?v=202610131052"></script>
   <script src="../quiz-ui.js?v=202611052116"></script>
-  <script src="observing-techniques.js?v=202611011100"></script>
+  <script src="observing-techniques.js?v=202611062200"></script>
   <script src="../diagramEnlarge.js?v=202611051400"></script>
   <script src="../notesPage.js?v=202609270100"></script>
   <script src="../nextPage.js?v=202610161057"></script>

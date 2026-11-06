@@ -190,6 +190,191 @@
   landscapeToggle.addEventListener('change', drawVisibilityDiagram);
   weatherToggle.addEventListener('change', drawVisibilityDiagram);
 
+  // --- Light pollution + dark adaptation: one shared star field -----------
+
+  const starFieldCanvas = document.getElementById('star-field-canvas');
+  const starFieldCtx = starFieldCanvas.getContext('2d');
+  const darknessSlider = document.getElementById('darkness-slider');
+  const darknessLabel = document.getElementById('darkness-label');
+  const adaptationSlider = document.getElementById('adaptation-slider');
+  const adaptationLabel = document.getElementById('adaptation-label');
+  const adaptationPlayButton = document.getElementById('adaptation-play-button');
+  const limitingMagnitudeReadout = document.getElementById('limiting-magnitude-readout');
+  const starCountReadout = document.getElementById('star-count-readout');
+
+  const DARKNESS_SCALE_WORDS = {
+    1: 'dark-sky site', 2: 'rural', 3: 'rural/suburb edge', 4: 'suburb',
+    5: 'suburb', 6: 'suburb/city edge', 7: 'city', 8: 'city', 9: 'city centre',
+  };
+
+  function drawStarField() {
+    const darknessScale = Number(darknessSlider.value);
+    const adaptationMinutes = Number(adaptationSlider.value);
+    const limitingMagnitude = LightPollution.currentLimitingMagnitude(darknessScale, adaptationMinutes);
+
+    starFieldCtx.clearRect(0, 0, starFieldCanvas.width, starFieldCanvas.height);
+    starFieldCtx.fillStyle = '#0b1220';
+    starFieldCtx.fillRect(0, 0, starFieldCanvas.width, starFieldCanvas.height);
+
+    LightPollution.STAR_CATALOG.forEach((star) => {
+      if (star.magnitude > limitingMagnitude) return; // too faint to see right now
+      const x = star.xFrac * starFieldCanvas.width;
+      const y = star.yFrac * starFieldCanvas.height;
+      // Brighter (lower-magnitude) stars draw bigger and more opaque.
+      const brightness = 1 - (star.magnitude - 0.5) / (LightPollution.LIMITING_MAGNITUDE_DARK_SITE - 0.5);
+      const radius = 0.6 + brightness * 1.8;
+      const alpha = 0.5 + brightness * 0.5;
+      starFieldCtx.beginPath();
+      starFieldCtx.arc(x, y, radius, 0, Math.PI * 2);
+      starFieldCtx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
+      starFieldCtx.fill();
+    });
+
+    darknessLabel.textContent = `${darknessScale} of 9 (${DARKNESS_SCALE_WORDS[darknessScale]})`;
+    adaptationLabel.textContent = `${Math.round(adaptationMinutes)} min`;
+    limitingMagnitudeReadout.textContent = `magnitude ${limitingMagnitude.toFixed(1)}`;
+    starCountReadout.textContent =
+      `about ${LightPollution.approxVisibleStarCount(limitingMagnitude).toLocaleString('en-GB')} (whole sky)`;
+  }
+
+  darknessSlider.addEventListener('input', drawStarField);
+  adaptationSlider.addEventListener('input', () => {
+    stopAdaptationAnimation();
+    drawStarField();
+  });
+
+  let adaptationAnimationId = null;
+  let adaptationLastFrameTime = null;
+  const ADAPTATION_MINUTES_PER_SECOND = 2;
+
+  function stopAdaptationAnimation() {
+    if (adaptationAnimationId !== null) {
+      cancelAnimationFrame(adaptationAnimationId);
+      adaptationAnimationId = null;
+    }
+    adaptationLastFrameTime = null;
+    adaptationPlayButton.textContent = '▶ Play';
+    adaptationPlayButton.setAttribute('aria-pressed', 'false');
+  }
+
+  function startAdaptationAnimation() {
+    if (Number(adaptationSlider.value) >= LightPollution.ADAPTATION_MAX_MINUTES) adaptationSlider.value = 0;
+    adaptationPlayButton.textContent = '❚❚ Pause';
+    adaptationPlayButton.setAttribute('aria-pressed', 'true');
+    function step(now) {
+      const dt = AnimationTiming.cappedElapsedSeconds(now, adaptationLastFrameTime);
+      adaptationLastFrameTime = now;
+      const next = Number(adaptationSlider.value) + dt * ADAPTATION_MINUTES_PER_SECOND;
+      if (next >= LightPollution.ADAPTATION_MAX_MINUTES) {
+        adaptationSlider.value = LightPollution.ADAPTATION_MAX_MINUTES;
+        drawStarField();
+        stopAdaptationAnimation();
+        return;
+      }
+      adaptationSlider.value = next;
+      drawStarField();
+      adaptationAnimationId = requestAnimationFrame(step);
+    }
+    adaptationAnimationId = requestAnimationFrame(step);
+  }
+
+  adaptationPlayButton.addEventListener('click', () => {
+    if (adaptationAnimationId !== null) stopAdaptationAnimation();
+    else startAdaptationAnimation();
+  });
+
+  drawStarField();
+
+  // --- Day and night: zodiac-at-midnight wheel + month slider --------------
+
+  const zodiacCanvas = document.getElementById('zodiac-canvas');
+  const zodiacCtx = zodiacCanvas.getContext('2d');
+  const monthSlider = document.getElementById('month-slider');
+  const monthLabel = document.getElementById('month-label');
+  const zodiacReadout = document.getElementById('zodiac-readout');
+
+  const ZODIAC_WHEEL = { cx: 210, cy: 210, orbitR: 80, ringR: 165 };
+  const ZODIAC_DEPS = { PlanetaryMotion };
+
+  function angleToPoint(cx, cy, r, deg) {
+    const rad = (deg * Math.PI) / 180;
+    return { x: cx + r * Math.cos(rad), y: cy - r * Math.sin(rad) };
+  }
+
+  function drawZodiacWheel() {
+    const monthIndex = Number(monthSlider.value);
+    const date = DayAndNight.dateForMonth(monthIndex, new Date().getUTCFullYear());
+    const midnightLongitude = DayAndNight.midnightEclipticLongitudeDeg(date, ZODIAC_DEPS);
+    const visibleSign = DayAndNight.zodiacVisibleAtMidnight(date, ZODIAC_DEPS);
+    const earthLongitude = PlanetaryMotion.heliocentricLongitude('earth', date);
+
+    const { cx, cy, orbitR, ringR } = ZODIAC_WHEEL;
+    zodiacCtx.clearRect(0, 0, zodiacCanvas.width, zodiacCanvas.height);
+
+    // The 12 zodiac wedge labels, equally spaced, in PlanetaryMotion's own order.
+    PlanetaryMotion.ZODIAC_SIGNS.forEach((sign, i) => {
+      const midDeg = i * 30 + 15;
+      const isVisible = sign === visibleSign;
+      const pos = angleToPoint(cx, cy, ringR, midDeg);
+      zodiacCtx.font = isVisible ? 'bold 13px sans-serif' : '11px sans-serif';
+      zodiacCtx.fillStyle = isVisible ? '#2a6bd6' : '#8a97a5';
+      zodiacCtx.textAlign = 'center';
+      zodiacCtx.textBaseline = 'middle';
+      zodiacCtx.fillText(sign, pos.x, pos.y);
+    });
+
+    // Orbit guide (dashed) and Sun at the centre.
+    zodiacCtx.setLineDash([3, 5]);
+    zodiacCtx.strokeStyle = '#cdd7e1';
+    zodiacCtx.lineWidth = 1;
+    zodiacCtx.beginPath();
+    zodiacCtx.arc(cx, cy, orbitR, 0, Math.PI * 2);
+    zodiacCtx.stroke();
+    zodiacCtx.setLineDash([]);
+
+    zodiacCtx.beginPath();
+    zodiacCtx.arc(cx, cy, 12, 0, Math.PI * 2);
+    zodiacCtx.fillStyle = '#f5a623';
+    zodiacCtx.fill();
+
+    // Earth on its orbit, and an arrow from Earth outward (away from the
+    // Sun) to the zodiac sign that's overhead at midnight.
+    const earthPos = angleToPoint(cx, cy, orbitR, earthLongitude);
+    const arrowTip = angleToPoint(cx, cy, ringR - 20, midnightLongitude);
+
+    zodiacCtx.beginPath();
+    zodiacCtx.moveTo(earthPos.x, earthPos.y);
+    zodiacCtx.lineTo(arrowTip.x, arrowTip.y);
+    zodiacCtx.strokeStyle = '#2a6bd6';
+    zodiacCtx.lineWidth = 2;
+    zodiacCtx.stroke();
+
+    const angleToArrow = Math.atan2(earthPos.y - arrowTip.y, arrowTip.x - earthPos.x);
+    const headLength = 9;
+    [angleToArrow - Math.PI / 7, angleToArrow + Math.PI / 7].forEach((wingAngle) => {
+      zodiacCtx.beginPath();
+      zodiacCtx.moveTo(arrowTip.x, arrowTip.y);
+      zodiacCtx.lineTo(
+        arrowTip.x - headLength * Math.cos(wingAngle),
+        arrowTip.y + headLength * Math.sin(wingAngle)
+      );
+      zodiacCtx.strokeStyle = '#2a6bd6';
+      zodiacCtx.lineWidth = 2;
+      zodiacCtx.stroke();
+    });
+
+    zodiacCtx.beginPath();
+    zodiacCtx.arc(earthPos.x, earthPos.y, 6, 0, Math.PI * 2);
+    zodiacCtx.fillStyle = '#2a6bd6';
+    zodiacCtx.fill();
+
+    monthLabel.textContent = DayAndNight.MONTH_NAMES[monthIndex];
+    zodiacReadout.textContent = `At midnight in ${DayAndNight.MONTH_NAMES[monthIndex]}, you face ${visibleSign} overhead.`;
+  }
+
+  monthSlider.addEventListener('input', drawZodiacWheel);
+  drawZodiacWheel();
+
   renderCoverage();
   Glossary.init(GLOSSARY);
   drawVisibilityDiagram();

@@ -93,6 +93,27 @@ function makeQuestions(VisibilityFactors) {
       },
     },
     {
+      id: 'star-opposite-sun-daytime',
+      units: ['u1.26'],
+      type: 'choice',
+      prompt:
+        "A particular star happens to lie in exactly the same direction in the sky as the Sun does today. Why can't you see that star tonight?",
+      options: [
+        "It isn't really there — a star in the Sun's exact direction has already been destroyed.",
+        "It's below the horizon all night, having set at the same time as the Sun.",
+        "It rises and sets together with the Sun, so it's only ever above the horizon during the day, when it's lost in the Sun's glare.",
+        "It's too far away to see at all, regardless of direction.",
+      ],
+      check(value) {
+        const correct = value === "It rises and sets together with the Sun, so it's only ever above the horizon during the day, when it's lost in the Sun's glare.";
+        return {
+          correct,
+          message:
+            "A star in the same direction as the Sun shares the Sun's own rising and setting times — it's up only while the Sun is up, which means it's above the horizon only during daylight, when its faint light is completely swamped by the much brighter sky. It's never above the horizon at night at all while the Sun sits in that direction, so \"can't be seen at night\" is really \"isn't up at night\" rather than \"is up but invisible\". Earth's own orbit is what eventually fixes this: a few months later, as Earth moves on, the Sun's direction shifts away from that star, and the star starts rising before the Sun sets — appearing in the evening sky, then earlier and earlier each night until it's visible all night around opposition.",
+        };
+      },
+    },
+    {
       id: 'combined-trade-off',
       units: ['u1.25'],
       type: 'choice',

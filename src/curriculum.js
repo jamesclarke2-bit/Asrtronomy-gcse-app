@@ -271,6 +271,13 @@ const UNITS = [
         notes:
           "four things decide whether a target can actually be seen on a given night, beyond just knowing where it is: whether it's risen above the horizon yet (rising and setting); how steady or turbulent the air is (seeing); cloud cover and haze (weather); and whether hills, buildings or trees block the horizon (landscape) — a low object is also dimmer, redder and twinkles more, since its light takes a longer path through the atmosphere",
       },
+      {
+        id: 'u1.26',
+        title: 'Day, night and the changing night sky',
+        depth: 'understand',
+        notes:
+          "Earth's rotation carries an observer through noon, dusk, midnight and dawn once a day; at night you face away from the Sun, so the stars overhead are the ones in the opposite direction, while stars in the Sun's own direction are lost in daytime glare and only become visible at night months later. Earth's revolution means that anti-Sun direction itself sweeps slowly around the zodiacal band over a year, which is why the constellations visible at midnight change through the seasons",
+      },
     ],
   },
   {

@@ -147,9 +147,9 @@ const PAGES = [
   {
     title: 'Observing Techniques',
     description:
-      'A planning reference for an observing session: what decides whether you can actually see a target (rising and setting, seeing, weather and landscape), dark adaptation and averted vision, finding targets with charts and apps, constellations across cultures, and meteor showers.',
+      'A planning reference for an observing session: what decides whether you can actually see a target (rising and setting, seeing, weather and landscape), light pollution and dark adaptation, why you see different stars at night and through the year, finding targets with charts and apps, constellations across cultures, and meteor showers.',
     href: 'notes/observing-techniques.html',
-    units: ['u1.5', 'u1.18', 'u1.19', 'u1.20', 'u1.22', 'u1.25'],
+    units: ['u1.5', 'u1.18', 'u1.19', 'u1.20', 'u1.22', 'u1.25', 'u1.26'],
     phase: 'Look up',
     position: 3,
     why: 'The how that goes with it: dark adaptation, star charts and apps, and catching a meteor shower.',
