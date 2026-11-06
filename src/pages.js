@@ -376,7 +376,66 @@ const PAGES = [
     kind: 'reference',
     units: [],
   },
+  {
+    title: 'Syllabus Review',
+    description:
+      "A printable, one-row-per-spec-point table for Topics 1–12, for a teacher to check: code, text, depth, the page(s) that teach it, its practice-question count, an automated thin-coverage flag, and a blank verdict column. See also docs/syllabus-review.md.",
+    href: 'notes/syllabus-review.html',
+    // A reference page: like the Syllabus Map above, it's a whole-spec
+    // report, not any one unit's own content.
+    kind: 'reference',
+    units: [],
+  },
 ];
+
+/**
+ * Pages verified (by test/notesTemplate.test.js's own word-count checks
+ * against TEMPLATE.md's "Diagram-first" section) to open with their
+ * central diagram or simulation within the house rule's word budget —
+ * never computed, only grown one retrofitted page at a time, so a page
+ * missing from this list means "not yet checked", not "has no
+ * diagram". src/syllabusReview.js uses it the same way: a spec point
+ * whose only covering page isn't on this list is flagged "no verified
+ * diagram" for a teacher to check by eye, not asserted to definitely
+ * lack one.
+ */
+const DIAGRAM_FIRST_PAGES = [
+  'notes/telescopes.html',
+  'sims/gravitational-potential.html',
+  'sims/solar-system-observation.html',
+  'notes/geocentric-to-heliocentric.html',
+  'notes/solar-system-bodies.html',
+  'sims/shadows-and-sundials.html',
+  'sims/orbits-gravity.html',
+  'sims/sidereal-vs-synodic.html',
+  'sims/eclipses.html',
+  'notes/tides.html',
+  'notes/earth-structure.html',
+  'notes/moon-structure.html',
+  'notes/measuring-the-sky.html',
+  'notes/scale-of-the-solar-system.html',
+  'notes/naked-eye-sky.html',
+  'notes/archaeoastronomy.html',
+  'sims/sunspot-rotation.html',
+  'notes/observing-techniques.html',
+  'sims/sun-declination.html',
+  'notes/sun-features.html',
+  'notes/ecliptic-zodiac.html',
+];
+
+/**
+ * Pages where more than a third of the words inside <main> live inside
+ * a .glossary-definition tap-to-reveal panel rather than always-visible
+ * prose — computed once from the real HTML (see
+ * test/syllabusReview.test.js's own recomputation of this exact ratio,
+ * which fails if a page's content drifts across the 1/3 threshold
+ * without this list being updated to match) and hand-maintained here
+ * rather than read from disk at either build or page-load time, the
+ * same convention as DIAGRAM_FIRST_PAGES above. src/syllabusReview.js
+ * flags a spec point "covered only in a tap-to-reveal" when every page
+ * covering it is on this list.
+ */
+const TAP_REVEAL_HEAVY_PAGES = ['notes/earth-structure.html'];
 
 /**
  * Topics the spec covers but no page teaches yet — see this file's own
@@ -529,12 +588,14 @@ function isReferencePage(page) {
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = {
     PAGES, PHASES, COMING_SOON, RECOMMENDED_PATH,
+    DIAGRAM_FIRST_PAGES, TAP_REVEAL_HEAVY_PAGES,
     buildJourney, buildRecommendedPath,
     computeUnitCoverage, isExtensionPage, isReferencePage,
   };
 } else if (typeof window !== 'undefined') {
   window.Pages = {
     PAGES, PHASES, COMING_SOON, RECOMMENDED_PATH,
+    DIAGRAM_FIRST_PAGES, TAP_REVEAL_HEAVY_PAGES,
     buildJourney, buildRecommendedPath,
     computeUnitCoverage, isExtensionPage, isReferencePage,
   };

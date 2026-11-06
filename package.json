@@ -6,7 +6,8 @@
   "main": "src/solarPosition.js",
   "scripts": {
     "test": "node --test test/*.test.js",
-    "screenshots": "node scripts/screenshots.js"
+    "screenshots": "node scripts/screenshots.js",
+    "generate-syllabus-review": "node scripts/generate-syllabus-review.js"
   },
   "license": "MIT",
   "devDependencies": {

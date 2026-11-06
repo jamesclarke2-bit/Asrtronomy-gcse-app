@@ -2,14 +2,15 @@
  * Checks notes pages against notes/TEMPLATE.md. Only pages listed in
  * CONFORMING_PAGES are checked; the older notes pages join the list as
  * they're retrofitted. DIAGRAM_FIRST_PAGES (template section 6) is a
- * separate, independent list for the same reason — see its own comment
- * below.
+ * separate, independent list for the same reason, and lives in
+ * src/pages.js itself (not here) since src/syllabusReview.js also
+ * reads it, as the registry of pages verified to open with a diagram.
  */
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
-const { PAGES } = require('../src/pages');
+const { PAGES, DIAGRAM_FIRST_PAGES } = require('../src/pages');
 const NotesPage = require('../notesPage');
 
 const ROOT = path.join(__dirname, '..');
@@ -32,32 +33,10 @@ const CONFORMING_PAGES = [
 ];
 
 // Section 6 of the template ("Diagram-first"), checked only for pages
-// listed here. Starts empty: nothing has been rebuilt to this standard
-// yet, and (same as CONFORMING_PAGES above) this list is never meant to
-// fail a page that hasn't been — it grows one rebuilt page at a time.
-const DIAGRAM_FIRST_PAGES = [
-  'notes/telescopes.html',
-  'sims/gravitational-potential.html',
-  'sims/solar-system-observation.html',
-  'notes/geocentric-to-heliocentric.html',
-  'notes/solar-system-bodies.html',
-  'sims/shadows-and-sundials.html',
-  'sims/orbits-gravity.html',
-  'sims/sidereal-vs-synodic.html',
-  'sims/eclipses.html',
-  'notes/tides.html',
-  'notes/earth-structure.html',
-  'notes/moon-structure.html',
-  'notes/measuring-the-sky.html',
-  'notes/scale-of-the-solar-system.html',
-  'notes/naked-eye-sky.html',
-  'notes/archaeoastronomy.html',
-  'sims/sunspot-rotation.html',
-  'notes/observing-techniques.html',
-  'sims/sun-declination.html',
-  'notes/sun-features.html',
-  'notes/ecliptic-zodiac.html',
-];
+// listed in DIAGRAM_FIRST_PAGES (imported above, from src/pages.js).
+// (Same as CONFORMING_PAGES above) that list is never meant to fail a
+// page that hasn't been rebuilt to this standard yet — it grows one
+// rebuilt page at a time.
 
 function read(href) {
   return fs.readFileSync(path.join(ROOT, href), 'utf8');

@@ -2115,6 +2115,34 @@ canvas {
   overflow-x: auto;
 }
 
+/* On paper there's no scrollbar to drag, so a .table-scroll table
+   would otherwise print with its scrolled-off columns silently
+   missing — let it spill past its own box instead, same as any other
+   overflow on a printed page, rather than clip. Sitewide, since every
+   .table-scroll table benefits equally; affects nothing on screen. */
+@media print {
+  .table-scroll {
+    overflow-x: visible;
+  }
+}
+
+/* notes/syllabus-review.html: one row per spec point. A row carrying
+   at least one automated thin-coverage flag gets a pale highlight;
+   the flags column itself reads in the same warm, non-alarming tone;
+   the blank Teacher's verdict column gets enough width to write in. */
+.spec-review-table tr.spec-review-row--flagged {
+  background: #fff8e1;
+}
+
+.spec-review-table td.spec-review-flags {
+  color: #8a5b00;
+  font-size: 0.85rem;
+}
+
+.spec-review-table td.spec-review-verdict {
+  min-width: 160px;
+}
+
 /* sims/sun-declination.html: safe-observation warning, and the Sun's
    layered-structure diagram legend. */
 .warning-box {
