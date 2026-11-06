@@ -53,6 +53,8 @@ test("getAllQuestionsNode's total is exactly the sum of every individual questio
   const { makeQuestions: makeArchaeoastronomy } = require('../src/archaeoastronomyQuestions');
   const { makeQuestions: makeCoordinates } = require('../src/coordinatesQuestions');
   const { makeQuestions: makeEarthStructure } = require('../src/earthStructureQuestions');
+  const { makeQuestions: makeEclipticZodiac } = require('../src/eclipticZodiacQuestions');
+  const EclipticZodiac = require('../src/eclipticZodiac');
   const { makeQuestions: makeGeocentricHeliocentric } = require('../src/geocentricHeliocentricQuestions');
   const { makeQuestions: makeGravitationalPotential } = require('../src/gravitationalPotentialQuestions');
   const { makeQuestions: makeGravityFieldMap } = require('../src/gravityFieldMapQuestions');
@@ -81,6 +83,7 @@ test("getAllQuestionsNode's total is exactly the sum of every individual questio
     makeArchaeoastronomy(MoonPhase).length +
     makeCoordinates(Coordinates, null, null, SpecData).length +
     makeEarthStructure(SpecData).length +
+    makeEclipticZodiac(EclipticZodiac, SolarPosition, PlanetaryMotion).length +
     makeGeocentricHeliocentric().length +
     makeGravitationalPotential(GravityField, OrbitalMechanics).length +
     makeGravityFieldMap(GravityField, OrbitalMechanics, Tides).length +

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; form-action 'none'; base-uri 'self'" />
+  <meta name="referrer" content="no-referrer" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>The Ecliptic and the Zodiac</title>
+  <link rel="stylesheet" href="../styles.css?v=202611062300" />
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg?v=202610130720" />
+</head>
+<body>
+  <main>
+    <p class="back-link"><a href="../index.html">&larr; Back to all tools</a></p>
+
+    <h1>The Ecliptic and the Zodiac</h1>
+    <p class="subtitle">
+      The Sun, Moon and planets all wander along one narrow band across the sky, the ecliptic
+      &mdash; home to the zodiac constellations. Drag the date below to see where the Sun
+      actually is along it, and why astronomy's constellations and astrology's star signs now
+      tell two different stories about it.
+    </p>
+
+    <section class="notes-section" id="ecliptic-band">
+      <h2>The ecliptic band</h2>
+
+      <div class="diagram wide-diagram ecliptic-band-diagram">
+        <canvas
+          id="ecliptic-canvas"
+          width="700"
+          height="210"
+          aria-label="A horizontal strip spanning the whole 360-degree ecliptic, divided into the thirteen real (IAU) constellations the Sun's path crosses, each labelled. The celestial equator is drawn as a wave crossing the ecliptic at the two equinoxes, 23.5 degrees out of line with it. A Sun marker and a midnight marker, directly opposite it, move along the strip as the date slider changes, and small Moon and planet markers scatter close to the band."
+        ></canvas>
+        <p class="diagram-caption">
+          The real (IAU) constellations along the ecliptic, unequal widths and all &mdash;
+          including Ophiuchus, squeezed in between Scorpius and Sagittarius.
+        </p>
+      </div>
+
+      <div class="control">
+        <label for="date-slider">Date: <span id="date-label"></span></label>
+        <input type="range" id="date-slider" min="0" max="364" step="1" value="78" />
+      </div>
+
+      <dl class="readout">
+        <div class="readout-row">
+          <dt>The Sun is in</dt>
+          <dd id="sun-constellation-readout"></dd>
+        </div>
+        <div class="readout-row">
+          <dt>Overhead at midnight</dt>
+          <dd id="midnight-constellation-readout"></dd>
+        </div>
+      </dl>
+
+      <p class="note">
+        Constellation boundary dates are a first draft, to be checked by the teacher &mdash;
+        the real IAU boundaries are irregular shapes on the sky, not single days, computed
+        here from this site's own Sun-position engine (the same one
+        <a href="../sims/sun-path.html">Sun Path</a> uses) against commonly-published crossing
+        dates.
+      </p>
+    </section>
+
+    <section class="notes-section" id="why-near-ecliptic">
+      <h2>Why the Sun, Moon and planets stay near it</h2>
+      <p>
+        The Solar System formed from one flattened, spinning disc of gas and dust, so the
+        planets still orbit close to that same plane &mdash; seen from Earth, that plane traces
+        the ecliptic, and every planet wanders close to it. The Moon's own orbit is tilted only
+        about 5&deg; to it, so the Moon stays close too.
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="eclipticOrigin" aria-label="Why does this flattened disc explain the ecliptic, in full?" aria-expanded="false">In full</button>
+      </p>
+      <span class="glossary-definition" data-term="eclipticOrigin" hidden></span>
+    </section>
+
+    <section class="notes-section" id="astronomy-vs-astrology">
+      <h2>Astronomy's constellations vs astrology's star signs</h2>
+      <p>
+        Astronomy uses the 88 official, unequal-sized IAU constellations &mdash; which is why
+        the ecliptic actually crosses thirteen of them, Ophiuchus included. Astrology instead
+        uses twelve equal 30&deg; "signs" with fixed calendar dates that haven't been updated
+        for precession's slow drift.
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="astrologyDrift" aria-label="Why have the astrology sign dates drifted out of step with the real sky?" aria-expanded="false">Why the dates have drifted</button>
+      </p>
+      <span class="glossary-definition" data-term="astrologyDrift" hidden></span>
+
+      <p>
+        <button type="button" id="toggle-astrology-dates" class="secondary-button" aria-pressed="false">Astrology sign dates</button>
+      </p>
+      <div id="astrology-dates-panel" hidden>
+        <div class="table-scroll">
+          <table class="shower-table">
+            <caption>Astrology's twelve equal 30&deg; signs (not astronomy)</caption>
+            <thead>
+              <tr><th scope="col">Sign</th><th scope="col">Dates</th></tr>
+            </thead>
+            <tbody id="astrology-dates-tbody"></tbody>
+          </table>
+        </div>
+        <p class="note">
+          These are astrology's own tropical-zodiac dates &mdash; a cultural and symbolic
+          tradition, not a scientific claim this page is evaluating. They're shown here only to
+          compare against the real (astronomy) constellation above, computed the same way, from
+          this page's own date slider.
+        </p>
+      </div>
+
+      <p>
+        <button type="button" id="toggle-astronomy-dates" class="secondary-button" aria-pressed="false">Astronomy (IAU) boundary dates</button>
+      </p>
+      <div id="astronomy-dates-panel" hidden>
+        <div class="table-scroll">
+          <table class="shower-table">
+            <caption>The real, unequal-width IAU constellations (first draft, to be checked by the teacher)</caption>
+            <thead>
+              <tr><th scope="col">Constellation</th><th scope="col">Approx. dates</th></tr>
+            </thead>
+            <tbody id="astronomy-dates-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <p class="eot-link">
+        See <a href="measuring-the-sky.html#precession">precession slowly turning Earth's axis</a>,
+        the cause of this drift, on Measuring the Sky &rarr;
+      </p>
+      <p class="eot-link">
+        See <a href="observing-techniques.html#day-and-night">which zodiac constellation is overhead at midnight, month by month</a>,
+        on Observing Techniques &rarr;
+      </p>
+    </section>
+
+    <section class="notes-section" id="exam-tips">
+      <h2>Exam tips</h2>
+      <p class="exam-tip">
+        <strong>Common exam confusion:</strong> an astrological "star sign" and an astronomical
+        constellation are not the same thing. Astrology's twelve signs are equal 30&deg; slices
+        with fixed dates; astronomy's real constellations are unequal widths, there are
+        thirteen of them along the ecliptic (Ophiuchus included), and the Sun's actual
+        constellation on a given date can disagree with the "sign" for that date.
+        <a href="#astronomy-vs-astrology">Astronomy's constellations vs astrology's star signs &uarr;</a>
+      </p>
+      <p class="exam-tip">
+        <strong>Common exam link:</strong> the zodiac signs drifting out of step with the real
+        constellations is precession in action &mdash; the same slow, ~26,000-year wobble in
+        Earth's axis that changes the pole star, covered in full on Measuring the Sky.
+        <a href="#astronomy-vs-astrology">Astronomy's constellations vs astrology's star signs &uarr;</a>
+      </p>
+    </section>
+
+    <section class="notes-section" id="related">
+      <h2>Related pages</h2>
+      <div class="page-card-list">
+        <a class="page-card" href="../sims/coordinates.html">
+          <h3>Star Coordinates</h3>
+          <p class="page-card-description">The equatorial coordinates (right ascension, declination) this page's ecliptic longitude builds on.</p>
+        </a>
+        <a class="page-card" href="../sims/sun-path.html">
+          <h3>Sun Path Simulator</h3>
+          <p class="page-card-description">The same Sun-position engine this page uses, here driving the Sun's altitude and path across your own sky.</p>
+        </a>
+        <a class="page-card" href="observing-techniques.html">
+          <h3>Observing Techniques</h3>
+          <p class="page-card-description">Which zodiac constellation is overhead at midnight, month by month, with its own wheel diagram.</p>
+        </a>
+        <a class="page-card" href="measuring-the-sky.html">
+          <h3>Measuring the Sky</h3>
+          <p class="page-card-description">Precession in full: the ~26,000-year wobble behind astrology's drifting sign dates.</p>
+        </a>
+        <a class="page-card" href="../sims/solar-system-observation.html">
+          <h3>Retrograde Motion and Planetary Alignments</h3>
+          <p class="page-card-description">Watch a real planet wander within the zodiacal band this page introduces.</p>
+        </a>
+      </div>
+    </section>
+
+    <section class="questions" id="questions">
+      <h2>Practice questions</h2>
+      <div id="questions-list"></div>
+    </section>
+
+    <section class="progress">
+      <h2>Your progress</h2>
+      <ul id="progress-list"></ul>
+      <p class="note">Stored in this browser only (localStorage) &mdash; no account needed.</p>
+    </section>
+
+    <p class="coverage" id="coverage"></p>
+    <p class="next-page-link" id="next-page"></p>
+  </main>
+
+  <script src="../src/curriculum.js?v=202610292000"></script>
+  <script src="../src/pages.js?v=202611070900"></script>
+  <script src="../src/solarPosition.js?v=202609260300"></script>
+  <script src="../src/planetaryMotion.js?v=202610161036"></script>
+  <script src="../src/eclipticZodiac.js?v=202611070900"></script>
+  <script src="../src/eclipticZodiacQuestions.js?v=202611070900"></script>
+  <script src="../glossary.js?v=202610131052"></script>
+  <script src="../quiz-ui.js?v=202611052116"></script>
+  <script src="ecliptic-zodiac.js?v=202611070900"></script>
+  <script src="../diagramEnlarge.js?v=202611051400"></script>
+  <script src="../notesPage.js?v=202609270100"></script>
+  <script src="../nextPage.js?v=202610161057"></script>
+</body>
+</html>
