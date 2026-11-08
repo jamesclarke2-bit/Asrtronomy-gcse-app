@@ -88,17 +88,34 @@ async function withPage(t, url, viewport, run) {
 
 // Finds the .question-card that highlights `term` (the moon/earth pages'
 // .diagram-feature-highlight[data-term]) — identifies a question by its
-// content rather than its position, since quiz-ui.js now renders
-// questions in a shuffled order every time.
+// own data attribute rather than its text or render position, since
+// quiz-ui.js now renders questions (and their answer options) in a
+// shuffled order every time.
+function questionCardLocatorByTerm(page, term) {
+  return page.locator(`.question-card:has(.diagram-feature-highlight[data-term="${term}"])`);
+}
+
 function questionDiagramLocatorByTerm(page, term) {
-  return page.locator(`.question-card:has(.diagram-feature-highlight[data-term="${term}"])`).locator('.question-diagram');
+  return questionCardLocatorByTerm(page, term).locator('.question-diagram');
 }
 
 // Same idea for "name that pattern" cards, identified by the pattern id
 // on their .pattern-chart (see renderPatternQuizDiagram in
 // notes/naked-eye-sky.js) rather than render position.
+function questionCardLocatorByPattern(page, patternId) {
+  return page.locator(`.question-card:has(.pattern-chart[data-pattern="${patternId}"])`);
+}
+
 function questionDiagramLocatorByPattern(page, patternId) {
-  return page.locator(`.question-card:has(.pattern-chart[data-pattern="${patternId}"])`).locator('.question-diagram');
+  return questionCardLocatorByPattern(page, patternId).locator('.question-diagram');
+}
+
+// Checks the radio whose own value is exactly `name` — not a
+// hasText-filtered label, which matches on substring (e.g. "Arctic
+// Circle" is a substring of "Antarctic Circle"), ambiguous whenever a
+// shuffled option list happens to contain both.
+async function checkChoiceByExactValue(card, name) {
+  await card.locator(`input[type="radio"][value="${name}"]`).check();
 }
 
 // The diagram's own visible text, same as innerText(), but with
@@ -186,14 +203,14 @@ VIEWPORTS.forEach((viewport) => {
 
 test('notes/moon-structure.html: answering a "name that feature" question correctly checks out, and is recorded in the usual u2.20 tally', async (t) => {
   await withPage(t, MOON_PAGE_URL, VIEWPORTS[0], async (page) => {
-    const card = page.locator('.question-card', { has: page.locator('.question-prompt', { hasText: 'Name that feature' }) }).first();
-    const term = await card.locator('.diagram-feature-highlight').getAttribute('data-term');
+    const term = 'tycho';
     const name = MOON_FEATURES.find(([t]) => t === term)[1];
+    const card = questionCardLocatorByTerm(page, term);
 
     const progressBefore = await page.locator('#progress-list li', { hasText: 'u2.20' }).textContent();
     const attemptsBefore = Number(progressBefore.match(/(\d+)\/(\d+) correct/)[2]);
 
-    await card.locator('label.choice-option', { hasText: name }).locator('input[type="radio"]').check();
+    await checkChoiceByExactValue(card, name);
     await card.locator('button', { hasText: 'Check answer' }).click();
 
     const feedback = (await card.locator('.question-feedback').textContent()).trim();
@@ -207,14 +224,17 @@ test('notes/moon-structure.html: answering a "name that feature" question correc
 
 test('notes/earth-structure.html: answering a "name that line" question correctly checks out, and is recorded in the usual u2.1 tally', async (t) => {
   await withPage(t, EARTH_PAGE_URL, VIEWPORTS[0], async (page) => {
-    const card = page.locator('.question-card', { has: page.locator('.question-prompt', { hasText: 'Name that line' }) }).first();
-    const term = await card.locator('.diagram-feature-highlight').getAttribute('data-term');
+    // Deliberately the Arctic Circle: its own name is a substring of
+    // "Antarctic Circle", so an exact-value radio check is what keeps
+    // this test correct regardless of where either option shuffles to.
+    const term = 'arcticCircle';
     const name = EARTH_FEATURES.find(([t]) => t === term)[1];
+    const card = questionCardLocatorByTerm(page, term);
 
     const progressBefore = await page.locator('#progress-list li', { hasText: 'u2.1 ' }).first().textContent();
     const attemptsBefore = Number(progressBefore.match(/(\d+)\/(\d+) correct/)[2]);
 
-    await card.locator('label.choice-option', { hasText: name }).locator('input[type="radio"]').check();
+    await checkChoiceByExactValue(card, name);
     await card.locator('button', { hasText: 'Check answer' }).click();
 
     const feedback = (await card.locator('.question-feedback').textContent()).trim();
@@ -229,12 +249,12 @@ test('notes/earth-structure.html: answering a "name that line" question correctl
 test('notes/naked-eye-sky.html: answering a "name that pattern" question correctly checks out, and is recorded in the usual u1.2 tally', async (t) => {
   await withPage(t, NAKED_EYE_SKY_PAGE_URL, VIEWPORTS[0], async (page) => {
     const [patternId, name] = STAR_PATTERNS.find(([id]) => id === 'orion');
-    const card = page.locator(`.question-card:has(.pattern-chart[data-pattern="${patternId}"])`);
+    const card = questionCardLocatorByPattern(page, patternId);
 
     const progressBefore = await page.locator('#progress-list li', { hasText: 'u1.2 ' }).first().textContent();
     const attemptsBefore = Number(progressBefore.match(/(\d+)\/(\d+) correct/)[2]);
 
-    await card.locator('label.choice-option', { hasText: name }).locator('input[type="radio"]').check();
+    await checkChoiceByExactValue(card, name);
     await card.locator('button', { hasText: 'Check answer' }).click();
 
     const feedback = (await card.locator('.question-feedback').textContent()).trim();
