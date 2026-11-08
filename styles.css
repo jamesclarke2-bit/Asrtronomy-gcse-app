@@ -1143,6 +1143,77 @@ canvas {
   color: #444;
 }
 
+/* notes/earth-structure.html's "Why does the tilt cause the seasons?"
+   scaffolded section: one idea per step, each behind its own tap-to-
+   reveal (.glossary-toggle/.glossary-definition, as elsewhere on this
+   page), ending in a one-question quick check with instant feedback. */
+.scaffold-step {
+  margin: 1.25rem 0;
+}
+
+.scaffold-prompt {
+  font-weight: 600;
+}
+
+/* Overrides .glossary-definition's italic yellow-note styling — a
+   step's reveal holds a diagram, controls and/or a table, not a short
+   italic definition, so it reads as a normal content panel instead. */
+.scaffold-reveal {
+  font-style: normal;
+  background: #f7f9fc;
+  border-color: #d7e0ec;
+  color: inherit;
+}
+
+.scaffold-reveal .labelled-diagram-wrap {
+  display: block;
+  width: 100%;
+  max-width: 640px;
+}
+
+.quick-check {
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px dashed #c7d0dc;
+}
+
+.quick-check-prompt {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.quick-check-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.quick-check-options button {
+  padding: 0.4rem 0.9rem;
+  border: 1px solid #2a6bd6;
+  border-radius: 6px;
+  background: #fff;
+  color: #2a6bd6;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.quick-check-options button:hover {
+  background: #eaf1fc;
+}
+
+.quick-check-options button.quick-check-correct {
+  background: #1a7f37;
+  border-color: #1a7f37;
+  color: #fff;
+}
+
+.quick-check-options button.quick-check-incorrect {
+  background: #b3261e;
+  border-color: #b3261e;
+  color: #fff;
+}
+
 .readout-row {
   display: contents;
 }
@@ -3019,6 +3090,20 @@ canvas {
 .seasons-takeaway {
   font: italic 22px sans-serif;
   fill: #444;
+}
+
+/* notes/earth-structure.js's "Why does the tilt cause the seasons?"
+   step diagrams (distance chart, torch beam) — smaller viewBoxes than
+   the main seasons diagram, so smaller absolute font sizes read
+   correctly at the same in-page display width. */
+.chart-axis-label {
+  font: 13px sans-serif;
+  fill: #5a6472;
+}
+
+.chart-point-label {
+  font: 600 14px sans-serif;
+  fill: #333;
 }
 
 .seasons-readout {

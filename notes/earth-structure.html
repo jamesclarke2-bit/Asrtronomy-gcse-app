@@ -7,7 +7,7 @@
   <meta name="referrer" content="no-referrer" />
   <meta name="robots" content="noindex, nofollow" />
   <title>Earth: Structure, Atmosphere and Motion</title>
-  <link rel="stylesheet" href="../styles.css?v=202611081200" />
+  <link rel="stylesheet" href="../styles.css?v=202611081300" />
   <link rel="icon" type="image/svg+xml" href="../favicon.svg?v=202610130720" />
 </head>
 <body>
@@ -357,6 +357,140 @@
       </div>
     </section>
 
+    <section class="notes-section" id="why-tilt-causes-seasons">
+      <h2>Why does the tilt cause the seasons?</h2>
+      <p>Four short steps, each with its own quick check.</p>
+
+      <div class="scaffold-step">
+        <p class="scaffold-prompt">
+          Is it summer in the UK because Earth is closer to the Sun?
+          <button type="button" class="glossary-toggle glossary-term-button" data-term="tiltStep1" aria-label="Show the evidence for step 1" aria-expanded="false">Show the evidence</button>
+        </p>
+        <div class="glossary-definition scaffold-reveal" data-term="tiltStep1" hidden>
+          <div class="labelled-diagram-wrap">
+            <svg
+              id="distance-chart-svg"
+              class="responsive-svg"
+              width="640"
+              height="280"
+              role="img"
+              aria-label="Line chart of Earth's distance from the Sun through the year: about 147 million km in early January (UK winter) and about 152 million km in early July (UK summer), a difference of only about 3 percent"
+            ></svg>
+          </div>
+          <p>
+            Earth is actually <strong>closest</strong> to the Sun in early January and
+            <strong>furthest</strong> in early July &mdash; only about 3% apart, computed from this page's
+            own orbit engine. And when it's summer in the UK, it's winter in Australia, at the very
+            same distance from the Sun. Distance can't be the answer.
+          </p>
+          <div class="quick-check" data-step="1">
+            <p class="quick-check-prompt">Quick check: is Earth closer to the Sun during UK summer (June) or UK winter (December)?</p>
+            <div class="quick-check-options">
+              <button type="button" data-correct="false">Closer in June (summer)</button>
+              <button type="button" data-correct="true">Closer in December (winter)</button>
+            </div>
+            <p class="question-feedback quick-check-feedback" aria-live="polite"></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="scaffold-step">
+        <p class="scaffold-prompt">
+          So what does the tilt actually change? How high the Sun climbs in the sky.
+          <button type="button" class="glossary-toggle glossary-term-button" data-term="tiltStep2" aria-label="Try the torch beam diagram" aria-expanded="false">Try it</button>
+        </p>
+        <div class="glossary-definition scaffold-reveal" data-term="tiltStep2" hidden>
+          <div class="labelled-diagram-wrap">
+            <svg
+              id="torch-beam-svg"
+              class="responsive-svg"
+              width="640"
+              height="320"
+              role="img"
+              aria-label="A fixed-width beam of sunlight landing on flat ground: a high Sun concentrates it onto a small bright patch, a low Sun spreads the same beam over a wider, dimmer patch"
+            ></svg>
+          </div>
+          <div class="controls">
+            <div class="control">
+              <label for="altitude-slider">Sun's altitude: <span id="altitude-label"></span></label>
+              <input type="range" id="altitude-slider" min="10" max="90" step="1" value="90" />
+            </div>
+          </div>
+          <p class="note" id="intensity-readout"></p>
+          <p>The same beam spreads over a bigger patch when the Sun is low, so each square metre gets less energy and warms less.</p>
+          <div class="quick-check" data-step="2">
+            <p class="quick-check-prompt">Quick check: which gives more energy on each square metre of ground?</p>
+            <div class="quick-check-options">
+              <button type="button" data-correct="true">A high Sun (near overhead)</button>
+              <button type="button" data-correct="false">A low Sun (near the horizon)</button>
+            </div>
+            <p class="question-feedback quick-check-feedback" aria-live="polite"></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="scaffold-step">
+        <p class="scaffold-prompt">
+          The longer the day, the longer the ground has to warm up, too.
+          <button type="button" class="glossary-toggle glossary-term-button" data-term="tiltStep3" aria-label="Show the day length readout" aria-expanded="false">Show day length</button>
+        </p>
+        <div class="glossary-definition scaffold-reveal" data-term="tiltStep3" hidden>
+          <p class="note" id="step3-day-length-readout"></p>
+          <p>
+            Drag the date or latitude slider in the diagram above &mdash; the day length here follows it
+            live, from the same engine.
+          </p>
+          <div class="quick-check" data-step="3">
+            <p class="quick-check-prompt">Quick check: in the UK, which has the longer day &mdash; the June solstice or the December solstice?</p>
+            <div class="quick-check-options">
+              <button type="button" data-correct="true">June solstice</button>
+              <button type="button" data-correct="false">December solstice</button>
+            </div>
+            <p class="question-feedback quick-check-feedback" aria-live="polite"></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="scaffold-step">
+        <p class="scaffold-prompt">
+          Putting it together: a higher noon Sun and a longer day both add up to more energy each day.
+          <button type="button" class="glossary-toggle glossary-term-button" data-term="tiltStep4" aria-label="Show the combined noon altitude and day length table" aria-expanded="false">Put it together</button>
+        </p>
+        <div class="glossary-definition scaffold-reveal" data-term="tiltStep4" hidden>
+          <div class="controls">
+            <div class="control">
+              <label for="tilt-lat-slider">Latitude: <span id="tilt-lat-label"></span></label>
+              <input type="range" id="tilt-lat-slider" min="-66" max="66" step="1" value="51" />
+            </div>
+          </div>
+          <table class="shower-table" id="tilt-combined-table">
+            <thead>
+              <tr>
+                <th scope="col">Date</th>
+                <th scope="col">Noon altitude (degrees)</th>
+                <th scope="col">Day length</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+          <p>
+            Higher Sun (Step 2) and longer days (Step 3) both pull the same way in summer, and both work
+            against the ground in winter &mdash; tilt towards the Sun gives both at once, which is why
+            summer is so much warmer than winter.
+          </p>
+          <div class="quick-check" data-step="4">
+            <p class="quick-check-prompt">Quick check: what makes a UK summer's day warmer than a UK winter's day?</p>
+            <div class="quick-check-options">
+              <button type="button" data-correct="false">A higher noon Sun only</button>
+              <button type="button" data-correct="false">A longer day only</button>
+              <button type="button" data-correct="true">Both a higher noon Sun and a longer day</button>
+            </div>
+            <p class="question-feedback quick-check-feedback" aria-live="polite"></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section class="questions" id="questions">
       <h2>Practice questions</h2>
       <div id="questions-list"></div>
@@ -434,18 +568,19 @@
 
   <script src="../src/curriculum.js?v=202610292000"></script>
   <script src="../src/pages.js?v=202611071500"></script>
-  <script src="../src/earthStructureQuestions.js?v=202610300900"></script>
+  <script src="../src/earthStructureQuestions.js?v=202611081300"></script>
   <script src="../src/specData.js?v=202610051000"></script>
   <script src="../src/solarPosition.js?v=202609260300"></script>
   <script src="../src/earthOrbit.js?v=202609212100"></script>
   <script src="../src/seasonsDiagram.js?v=202611081200"></script>
   <script src="../src/sunIcon.js?v=202611071200"></script>
   <script src="../src/seasonsDiagramView.js?v=202611081200"></script>
+  <script src="../src/seasonsIntensity.js?v=202611081300"></script>
   <script src="../src/ringDiagramLabels.js?v=202611021000"></script>
   <script src="../src/bodyLayersDiagram.js?v=202611031600"></script>
   <script src="../glossary.js?v=202610131052"></script>
   <script src="../quiz-ui.js?v=202611052116"></script>
-  <script src="earth-structure.js?v=202611061200"></script>
+  <script src="earth-structure.js?v=202611081300"></script>
   <script src="../diagramEnlarge.js?v=202611051400"></script>
   <script src="../notesPage.js?v=202609270100"></script>
   <script src="../nextPage.js?v=202610161057"></script>

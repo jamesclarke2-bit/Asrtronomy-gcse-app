@@ -9,12 +9,12 @@ function findQuestion(questions, id) {
   return q;
 }
 
-test('makeQuestions returns 15 questions, each tagged u2.1 or u2.28', () => {
+test('makeQuestions returns 18 questions, each tagged u2.1, u2.9 or u2.28', () => {
   const questions = makeQuestions(SpecData);
-  assert.equal(questions.length, 15);
+  assert.equal(questions.length, 18);
   questions.forEach((q) => {
     assert.ok(Array.isArray(q.units) && q.units.length > 0, `${q.id} has no units`);
-    q.units.forEach((id) => assert.ok(['u2.1', 'u2.28'].includes(id), `${q.id} tags unexpected unit "${id}"`));
+    q.units.forEach((id) => assert.ok(['u2.1', 'u2.9', 'u2.28'].includes(id), `${q.id} tags unexpected unit "${id}"`));
   });
 });
 
@@ -73,6 +73,34 @@ test('midnight-sun-boundary: Arctic Circle is the only correct option', () => {
   q.options.filter((o) => o !== 'Arctic Circle').forEach((o) => {
     assert.equal(q.check(o).correct, false, `"${o}" should not be marked correct`);
   });
+});
+
+test('tilt-not-distance-misconception: the tilt explanation is the only correct option, and the prompt states the distance figures the misconception needs', () => {
+  const q = findQuestion(makeQuestions(SpecData), 'tilt-not-distance-misconception');
+  assert.ok(q.prompt.includes('152 million km'));
+  assert.ok(q.prompt.includes('147 million km'));
+  const correctOption = q.options.find((o) => o.startsWith('Because the UK is tilted towards the Sun'));
+  assert.ok(correctOption);
+  assert.ok(q.check(correctOption).correct);
+  q.options.filter((o) => o !== correctOption).forEach((o) => {
+    assert.equal(q.check(o).correct, false, `"${o}" should not be marked correct`);
+  });
+});
+
+test('relative-intensity-from-altitude: accepts sin(40°) within tolerance, rejects a wrong guess', () => {
+  const q = findQuestion(makeQuestions(SpecData), 'relative-intensity-from-altitude');
+  assert.ok(q.check(0.64).correct);
+  assert.equal(q.check(1).correct, false);
+  assert.equal(q.check(0).correct, false);
+});
+
+test('noon-altitude-december-guildford: accepts 15.5° within 2° tolerance, states the formula and declination it needs', () => {
+  const q = findQuestion(makeQuestions(SpecData), 'noon-altitude-december-guildford');
+  assert.ok(q.prompt.includes('-23.5'));
+  assert.ok(q.prompt.includes('51'));
+  assert.ok(q.check(15.5).correct);
+  assert.ok(q.check(14).correct, 'within 2 degrees');
+  assert.equal(q.check(30).correct, false);
 });
 
 test('equator-latitude-value: accepts 0, rejects a non-zero value', () => {

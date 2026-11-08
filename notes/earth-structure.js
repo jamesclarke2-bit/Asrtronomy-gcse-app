@@ -87,6 +87,12 @@
     return el;
   }
 
+  function svgText(parent, attrs, content) {
+    const el = svgEl('text', attrs, parent);
+    el.textContent = content;
+    return el;
+  }
+
   // Same tap-to-reveal hookup as the Moon map on notes/moon-structure.html.
   function makeToggle(parent, term, name) {
     return svgEl('g', {
@@ -574,6 +580,270 @@
     });
   }
 
+  // --- "Why does the tilt cause the seasons?" scaffolded section ------
+  // Four tap-to-reveal steps (src/seasonsIntensity.js's own header
+  // explains the physics each one draws on): a distance-myth chart, an
+  // interactive torch-beam intensity diagram, a day-length readout that
+  // follows the main diagram's own date/latitude sliders, and a combined
+  // noon-altitude/day-length table at a latitude the student sets
+  // (defaulting to Guildford, ~51°N). Each ends in a one-question quick
+  // check — see wireQuickCheck below — with instant feedback, never
+  // tracked in the page's QuizUI progress tally, since these are
+  // comprehension checks within a step, not the page's own practice
+  // questions.
+
+  const DISTANCE_CHART_WIDTH = 640;
+  const DISTANCE_CHART_HEIGHT = 280;
+  const DISTANCE_CHART_PAD = { left: 64, right: 16, top: 34, bottom: 40 };
+
+  function formatMillionKm(km) {
+    return `${Math.round(km / 1e6)}M km`;
+  }
+
+  // Step 1: Earth's real distance from the Sun through the year, from
+  // SeasonsIntensity.yearlyDistanceSeriesKm() — drawn once (not
+  // interactive), since the point is the shape of the whole-year curve,
+  // not any one date.
+  function drawDistanceChart() {
+    const svg = document.getElementById('distance-chart-svg');
+    if (!svg) return;
+    while (svg.firstChild) svg.removeChild(svg.firstChild);
+    svg.setAttribute('viewBox', `0 0 ${DISTANCE_CHART_WIDTH} ${DISTANCE_CHART_HEIGHT}`);
+
+    const series = SeasonsIntensity.yearlyDistanceSeriesKm();
+    const distances = series.map((p) => p.distanceKm);
+    const minKm = Math.min(...distances);
+    const maxKm = Math.max(...distances);
+    const plotLeft = DISTANCE_CHART_PAD.left;
+    const plotRight = DISTANCE_CHART_WIDTH - DISTANCE_CHART_PAD.right;
+    const plotTop = DISTANCE_CHART_PAD.top;
+    const plotBottom = DISTANCE_CHART_HEIGHT - DISTANCE_CHART_PAD.bottom;
+
+    function xFor(dayIndex) {
+      return plotLeft + (dayIndex / (series.length - 1)) * (plotRight - plotLeft);
+    }
+    function yFor(km) {
+      return plotTop + (1 - (km - minKm) / (maxKm - minKm)) * (plotBottom - plotTop);
+    }
+
+    svgEl('line', { x1: plotLeft, y1: plotTop, x2: plotLeft, y2: plotBottom, stroke: '#9aa5b1', 'stroke-width': 1 }, svg);
+    svgEl('line', { x1: plotLeft, y1: plotBottom, x2: plotRight, y2: plotBottom, stroke: '#9aa5b1', 'stroke-width': 1 }, svg);
+
+    svgText(svg, { x: plotLeft - 8, y: yFor(maxKm) + 4, 'text-anchor': 'end', class: 'chart-axis-label' }, formatMillionKm(maxKm));
+    svgText(svg, { x: plotLeft - 8, y: yFor(minKm) + 4, 'text-anchor': 'end', class: 'chart-axis-label' }, formatMillionKm(minKm));
+
+    const monthTicks = [
+      { dayIndex: 0, label: 'Jan' },
+      { dayIndex: 91, label: 'Apr' },
+      { dayIndex: 182, label: 'Jul' },
+      { dayIndex: 273, label: 'Oct' },
+      { dayIndex: 364, label: 'Dec' },
+    ];
+    monthTicks.forEach(({ dayIndex, label }) => {
+      svgText(svg, { x: xFor(dayIndex), y: plotBottom + 20, 'text-anchor': 'middle', class: 'chart-axis-label' }, label);
+    });
+
+    const pathD = series.map((p, i) => `${i === 0 ? 'M' : 'L'}${xFor(p.dayIndex).toFixed(1)},${yFor(p.distanceKm).toFixed(1)}`).join('');
+    svgEl('path', { d: pathD, fill: 'none', stroke: '#2a6bd6', 'stroke-width': 2.5 }, svg);
+
+    // Both marked points sit near the curve's own peak or trough, so
+    // there's always empty space above them (below would crowd the
+    // curve's gently-sloped shoulder either side) — the top padding
+    // above leaves room for that. Anchored away from whichever
+    // vertical edge the point sits nearest, so a point near the right
+    // edge gets a leftward-flowing label, never one centred with no
+    // room to its right.
+    function markPoint(dayIndex, label) {
+      const point = series[dayIndex];
+      const x = xFor(point.dayIndex);
+      const y = yFor(point.distanceKm);
+      svgEl('circle', { cx: x, cy: y, r: 5, fill: '#c0392b' }, svg);
+      const fractionAcross = (x - plotLeft) / (plotRight - plotLeft);
+      const anchor = fractionAcross > 0.8 ? 'end' : fractionAcross < 0.2 ? 'start' : 'middle';
+      const labelX = anchor === 'end' ? x + 10 : anchor === 'start' ? x - 10 : x;
+      svgText(svg, { x: labelX, y: y - 20, 'text-anchor': anchor, class: 'chart-point-label' }, label);
+    }
+    markPoint(171, 'UK summer (June)');
+    markPoint(355, 'UK winter (December)');
+  }
+
+  // Step 2: the "torch beam" diagram. A fixed-width parallel beam
+  // (sunlight) meets flat ground at the chosen altitude; two parallel
+  // rays, offset perpendicular to the beam direction by the beam's own
+  // width, are extended to the ground, and the gap between where they
+  // land is the lit patch — this is an exact geometric derivation of
+  // width/sin(altitude) — not an approximation, exact for a beam of
+  // parallel rays. Built from the ground up (fixed hit points centred
+  // on TORCH_MID_X, rays extended backwards a fixed distance from
+  // them) rather than from a fixed source, so the lit patch always
+  // sits in the same place on screen and the rays never run off the
+  // edge of the diagram at a low altitude, however far side-on the
+  // real geometry would put a true point source.
+  const TORCH_WIDTH = 640;
+  const TORCH_HEIGHT = 320;
+  const TORCH_GROUND_Y = 260;
+  const TORCH_BEAM_WIDTH = 36;
+  const TORCH_RAY_LENGTH = 200;
+  const TORCH_MID_X = 320;
+
+  function torchBeamGeometry(altitudeDeg) {
+    const theta = (altitudeDeg * Math.PI) / 180;
+    const dir = { x: Math.cos(theta), y: Math.sin(theta) };
+    const patchWidth = TORCH_BEAM_WIDTH / Math.sin(theta);
+    const hit1 = { x: TORCH_MID_X - patchWidth / 2, y: TORCH_GROUND_Y };
+    const hit2 = { x: TORCH_MID_X + patchWidth / 2, y: TORCH_GROUND_Y };
+    const start1 = { x: hit1.x - dir.x * TORCH_RAY_LENGTH, y: hit1.y - dir.y * TORCH_RAY_LENGTH };
+    const start2 = { x: hit2.x - dir.x * TORCH_RAY_LENGTH, y: hit2.y - dir.y * TORCH_RAY_LENGTH };
+    const mid = { x: (start1.x + start2.x) / 2, y: (start1.y + start2.y) / 2 };
+    const sunPos = { x: mid.x - dir.x * 40, y: mid.y - dir.y * 40 };
+    return { start1, start2, hit1, hit2, sunPos };
+  }
+
+  function drawTorchBeam(altitudeDeg) {
+    const svg = document.getElementById('torch-beam-svg');
+    if (!svg) return;
+    while (svg.firstChild) svg.removeChild(svg.firstChild);
+    svg.setAttribute('viewBox', `0 0 ${TORCH_WIDTH} ${TORCH_HEIGHT}`);
+
+    svgEl('line', { x1: 20, y1: TORCH_GROUND_Y, x2: TORCH_WIDTH - 20, y2: TORCH_GROUND_Y, stroke: '#6b7684', 'stroke-width': 2 }, svg);
+    svgText(svg, { x: TORCH_WIDTH - 24, y: TORCH_GROUND_Y + 20, 'text-anchor': 'end', class: 'chart-axis-label' }, 'ground');
+
+    const geom = torchBeamGeometry(altitudeDeg);
+    const intensity = SeasonsIntensity.relativeIntensity(altitudeDeg);
+
+    const patchLeft = Math.min(geom.hit1.x, geom.hit2.x);
+    const patchRight = Math.max(geom.hit1.x, geom.hit2.x);
+    svgEl(
+      'rect',
+      {
+        x: patchLeft,
+        y: TORCH_GROUND_Y - 5,
+        width: patchRight - patchLeft,
+        height: 10,
+        fill: '#f5a623',
+        'fill-opacity': (0.25 + 0.65 * intensity).toFixed(2),
+      },
+      svg
+    );
+
+    svgEl('line', { x1: geom.start1.x, y1: geom.start1.y, x2: geom.hit1.x, y2: geom.hit1.y, stroke: '#e8a33d', 'stroke-width': 3 }, svg);
+    svgEl('line', { x1: geom.start2.x, y1: geom.start2.y, x2: geom.hit2.x, y2: geom.hit2.y, stroke: '#e8a33d', 'stroke-width': 3 }, svg);
+
+    SunIcon.appendSunSvg(svg, geom.sunPos.x, geom.sunPos.y, 20);
+    svgText(svg, { x: patchLeft + (patchRight - patchLeft) / 2, y: TORCH_GROUND_Y + 36, 'text-anchor': 'middle', class: 'chart-point-label' }, 'lit patch');
+  }
+
+  function updateTorchBeam() {
+    const slider = document.getElementById('altitude-slider');
+    const label = document.getElementById('altitude-label');
+    const readout = document.getElementById('intensity-readout');
+    if (!slider) return;
+    const altitudeDeg = Number(slider.value);
+    label.textContent = `${altitudeDeg}°`;
+    drawTorchBeam(altitudeDeg);
+    const intensity = SeasonsIntensity.relativeIntensity(altitudeDeg);
+    readout.textContent = `Energy on each square metre, compared with the Sun overhead: ${intensity.toFixed(2)}`;
+  }
+
+  // Step 3: day length at whatever date/latitude the main diagram's own
+  // sliders are currently set to — no separate control, so dragging
+  // either slider above visibly moves this readout too.
+  function updateStep3Readout() {
+    const readout = document.getElementById('step3-day-length-readout');
+    if (!readout) return;
+    const dayIndex = Number(dateSlider.value);
+    const lat = Number(latSlider.value);
+    const date = SeasonsDiagram.dateForDayIndex(dayIndex);
+    const dayLengthMin = SeasonsDiagram.dayLengthMinutes(date, lat);
+    const hours = Math.floor(dayLengthMin / 60);
+    const minutes = Math.round(dayLengthMin % 60);
+    readout.textContent = `Day length on ${formatDate(dayOfYearToUTCDate(YEAR, dayIndex))} at ${lat}°: ${hours}h ${minutes}m`;
+  }
+
+  // Step 4: noon altitude and day length at the three key dates
+  // (equinox, June solstice, December solstice), recomputed live for
+  // whatever latitude the student sets here (own slider, defaulting to
+  // Guildford, ~51°N) — the same engine calls seasonsDiagramView.js's
+  // own readout uses, just at three fixed reference dates instead of
+  // one slider-driven date.
+  const TILT_REFERENCE_DATES = [
+    { dayIndex: 79, label: 'March equinox' },
+    { dayIndex: 171, label: 'June solstice' },
+    { dayIndex: 355, label: 'December solstice' },
+  ];
+
+  function updateTiltCombinedTable() {
+    const slider = document.getElementById('tilt-lat-slider');
+    const label = document.getElementById('tilt-lat-label');
+    const table = document.getElementById('tilt-combined-table');
+    if (!slider || !table) return;
+    const lat = Number(slider.value);
+    label.textContent = `${lat}°`;
+    const tbody = table.querySelector('tbody');
+    tbody.innerHTML = '';
+    TILT_REFERENCE_DATES.forEach(({ dayIndex, label: dateLabel }) => {
+      const date = SeasonsDiagram.dateForDayIndex(dayIndex);
+      const declination = SolarPosition.getSunPosition(date, 0, 0).declination;
+      const noonAltitude = SeasonsDiagram.noonAltitudeDeg(declination, lat);
+      const dayLengthMin = SeasonsDiagram.dayLengthMinutes(date, lat);
+      const hours = Math.floor(dayLengthMin / 60);
+      const minutes = Math.round(dayLengthMin % 60);
+      const row = document.createElement('tr');
+      const cells = [dateLabel, `${noonAltitude.toFixed(0)}°`, `${hours}h ${minutes}m`];
+      cells.forEach((text) => {
+        const td = document.createElement('td');
+        td.textContent = text;
+        row.appendChild(td);
+      });
+      tbody.appendChild(row);
+    });
+  }
+
+  // One-question quick checks with instant feedback, inside each
+  // step's own reveal panel — never fed into QuizUI's progress tally
+  // (that's reserved for the page's own Practice questions section),
+  // just a plain correct/incorrect message the instant a choice is
+  // tapped. Every button in the same .quick-check answers the same
+  // one question, so once any button is tapped, all of them lock (no
+  // changing your answer after seeing the feedback) and the tapped one
+  // (plus, when wrong, the correct one) is colour-coded.
+  function wireQuickCheck(container) {
+    const buttons = [...container.querySelectorAll('.quick-check-options button')];
+    const feedback = container.querySelector('.quick-check-feedback');
+    buttons.forEach((button) => {
+      button.addEventListener('click', () => {
+        if (container.dataset.answered) return;
+        container.dataset.answered = 'true';
+        const correct = button.dataset.correct === 'true';
+        button.classList.add(correct ? 'quick-check-correct' : 'quick-check-incorrect');
+        if (!correct) {
+          const correctButton = buttons.find((b) => b.dataset.correct === 'true');
+          if (correctButton) correctButton.classList.add('quick-check-correct');
+        }
+        feedback.className = 'question-feedback quick-check-feedback ' + (correct ? 'correct' : 'incorrect');
+        feedback.textContent = correct ? 'Correct!' : 'Not quite — the highlighted answer is correct.';
+      });
+    });
+  }
+
+  function initWhyTiltSection() {
+    drawDistanceChart();
+    const altitudeSlider = document.getElementById('altitude-slider');
+    if (altitudeSlider) {
+      altitudeSlider.addEventListener('input', updateTorchBeam);
+      updateTorchBeam();
+    }
+    updateStep3Readout();
+    dateSlider.addEventListener('input', updateStep3Readout);
+    latSlider.addEventListener('input', updateStep3Readout);
+    const tiltLatSlider = document.getElementById('tilt-lat-slider');
+    if (tiltLatSlider) {
+      tiltLatSlider.addEventListener('input', updateTiltCombinedTable);
+      updateTiltCombinedTable();
+    }
+    document.querySelectorAll('.quick-check').forEach(wireQuickCheck);
+  }
+
   drawGlobe();
   drawEarthLayers();
   setUpBodyLayersToggle();
@@ -590,6 +860,7 @@
   drawTransmissionChart();
   renderOrbit();
   renderCoverage();
+  initWhyTiltSection();
   Glossary.init(GLOSSARY);
   const earthQuestions = EarthStructureQuestions.makeQuestions(SpecData, { renderLineQuizDiagram });
   const lineQuizQuestions = earthQuestions.filter((q) => q.id.startsWith('name-that-line-'));

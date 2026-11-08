@@ -9,6 +9,13 @@
  * section states. Greenwich and Sydney's coordinates are quoted exactly
  * as that page already states them.
  *
+ * Three more (tilt-not-distance-misconception, relative-intensity-from-
+ * altitude, noon-altitude-december-guildford; all tagged u2.9, spec
+ * 4.12/4.13) back the page's "Why does the tilt cause the seasons?"
+ * section — the same sin(altitude) and 90° - |lat - declination|
+ * formulas that section's own diagrams use, restated here as worked
+ * calculations rather than drawn.
+ *
  * The eight "name that line" questions are picture-based, as the exam
  * itself asks (spec 1.5): each one's render(container) calls back into
  * notes/earth-structure.js's own renderLineQuizDiagram (passed in as
@@ -158,6 +165,59 @@ function makeQuestions(SpecData, EarthStructureDiagram) {
           correct,
           message:
             "North of the Arctic Circle (~66.5°N, that is 90° − 23.5°), the June solstice brings a day with 24 hours of daylight (the midnight Sun) and the December solstice a day with 24 hours of darkness (polar night). The Antarctic Circle is its southern match, with the solstices swapped.",
+        };
+      },
+    },
+    {
+      id: 'tilt-not-distance-misconception',
+      units: ['u2.9'],
+      type: 'choice',
+      prompt:
+        "Earth's distance from the Sun is about 152 million km in June and about 147 million km in December — so Earth is actually slightly closer to the Sun in December. Which of these correctly explains why the UK still has summer in June, not December?",
+      options: [
+        'Because Earth is closer to the Sun in June',
+        "Because the UK is tilted towards the Sun in June, giving the Sun a higher noon altitude and a longer day",
+        "Because Earth moves faster around its orbit in June",
+        'Because the Moon blocks less sunlight in June',
+      ],
+      check(value) {
+        const correct = value === "Because the UK is tilted towards the Sun in June, giving the Sun a higher noon altitude and a longer day";
+        return {
+          correct,
+          message:
+            "Earth is actually very slightly closer to the Sun in December, the opposite of what the 'closer = warmer' idea predicts — so distance can't be the explanation. What changes with the seasons is axial tilt: in June the UK's hemisphere is tilted towards the Sun, giving a higher noon Sun (more energy per square metre) and a longer day (more hours for that energy to arrive).",
+        };
+      },
+    },
+    {
+      id: 'relative-intensity-from-altitude',
+      units: ['u2.9'],
+      type: 'number',
+      unitLabel: '(compared with the Sun overhead, where that value is 1.00)',
+      prompt:
+        'A beam of sunlight spreads over an area proportional to 1/sin(altitude) once it lands on flat ground, so the energy landing on each square metre is proportional to sin(altitude). On a day when the Sun reaches a noon altitude of 40°, how much energy lands on each square metre, compared with the Sun directly overhead (altitude 90°, where the answer is 1.00)? Give your answer to 2 decimal places.',
+      check(value) {
+        const correctValue = Math.sin((40 * Math.PI) / 180);
+        const correct = Math.abs(value - correctValue) <= 0.05;
+        return {
+          correct,
+          message: `Energy per square metre ∝ sin(altitude), so sin(40°) ≈ ${correctValue.toFixed(2)} — about ${Math.round(correctValue * 100)}% of what the same square metre gets with the Sun directly overhead.`,
+        };
+      },
+    },
+    {
+      id: 'noon-altitude-december-guildford',
+      units: ['u2.9'],
+      type: 'number',
+      unitLabel: '°',
+      prompt:
+        "At the December solstice the Sun's declination is about -23.5°. Using noon altitude = 90° - |latitude - declination|, what is the Sun's noon altitude at latitude 51°N (about Guildford) on the December solstice?",
+      check(value) {
+        const correctValue = 90 - Math.abs(51 - -23.5);
+        const correct = Math.abs(value - correctValue) <= 2;
+        return {
+          correct,
+          message: `noon altitude = 90° - |latitude - declination| = 90° - |51° - (-23.5°)| = 90° - 74.5° = ${correctValue.toFixed(1)}°.`,
         };
       },
     },
