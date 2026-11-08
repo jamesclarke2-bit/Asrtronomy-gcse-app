@@ -1,0 +1,88 @@
+name: Tests
+
+# Runs the full test/*.test.js suite (node:test) with both Chromium and
+# WebKit actually installed, so the browser-dependent tests run for real
+# instead of skipping — see README.md's "Running the tests" section for
+# why `playwright` is pinned (no caret) in package.json: `npm install`
+# installs that exact version, and `npx playwright install` below then
+# uses that same local install's CLI, so the Chromium/WebKit builds it
+# fetches always match the pinned version, never a newer one that could
+# silently drift from it.
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Install Playwright's Chromium and WebKit
+        run: npx playwright install --with-deps chromium webkit
+
+      - name: Run the test suite
+        id: run_tests
+        # PLAYWRIGHT_CHROMIUM_PATH is deliberately left unset here: that
+        # variable only exists for sandboxes with a Chromium pre-installed
+        # outside Playwright's own cache (see test/browserLaunch.js) — on
+        # a fresh runner, leaving it unset lets every browser-dependent
+        # test (Chromium and WebKit alike) find the build just installed
+        # above through Playwright's normal lookup, rather than skip.
+        run: |
+          set +e
+          npm test > test-output.log 2>&1
+          echo "exit_code=$?" >> "$GITHUB_OUTPUT"
+          cat test-output.log
+          exit 0
+
+      - name: Report passed, skipped and failed counts
+        if: always()
+        run: |
+          PASS=$(grep -E '^# pass ' test-output.log | tail -1 | awk '{print $3}')
+          FAIL=$(grep -E '^# fail ' test-output.log | tail -1 | awk '{print $3}')
+          SKIP=$(grep -E '^# skipped ' test-output.log | tail -1 | awk '{print $3}')
+          TOTAL=$(grep -E '^# tests ' test-output.log | tail -1 | awk '{print $3}')
+          {
+            echo "## Test results"
+            echo ""
+            echo "| Passed | Skipped | Failed | Total |"
+            echo "|---|---|---|---|"
+            echo "| ${PASS:-?} | ${SKIP:-?} | ${FAIL:-?} | ${TOTAL:-?} |"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          if [ -n "$FAIL" ] && [ "$FAIL" != "0" ]; then
+            {
+              echo ""
+              echo "### Failed tests"
+              echo '```'
+              grep -E '^not ok ' test-output.log || true
+              echo '```'
+            } >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+          if [ -n "$SKIP" ] && [ "$SKIP" != "0" ]; then
+            {
+              echo ""
+              echo "### Skipped tests"
+              echo '```'
+              grep -E '^ok .*# SKIP' test-output.log || true
+              echo '```'
+            } >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Fail the job if any test failed
+        if: steps.run_tests.outputs.exit_code != '0'
+        run: exit 1
