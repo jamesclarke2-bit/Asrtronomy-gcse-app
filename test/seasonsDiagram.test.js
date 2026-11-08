@@ -127,3 +127,77 @@ test('orbitPoint places the four reference angles at the expected screen compass
   assert.ok(Math.abs(left.x - (cx - rx)) < 1e-6 && Math.abs(left.y - cy) < 1e-6);
   assert.ok(Math.abs(bottom.x - cx) < 1e-6 && Math.abs(bottom.y - (cy + ry)) < 1e-6);
 });
+
+// --- The standard textbook screen layout: solstices left/right, -----------
+// equinoxes top/bottom, every Earth's axis leaning the same way (to the
+// right) reading correctly at each — fixed after the 8 November teacher
+// review found the old layout (equinoxes left/right, solstices top/
+// bottom) made September equinox, at the screen's rightmost point, read
+// as if it were Northern winter.
+
+const cx = 200;
+const cy = 150;
+const rx = 80;
+const ry = 50;
+
+function screenCompassPoint(positionId) {
+  const position = SeasonsDiagram.REFERENCE_POSITIONS.find((p) => p.id === positionId);
+  const angle = SeasonsDiagram.screenAngleForTheta(position.theta);
+  return SeasonsDiagram.orbitPoint(cx, cy, rx, ry, angle);
+}
+
+test('screenAngleForTheta places December solstice at the right, March equinox at the top, June solstice at the left, and September equinox at the bottom', () => {
+  const december = screenCompassPoint('december-solstice');
+  const march = screenCompassPoint('march-equinox');
+  const june = screenCompassPoint('june-solstice');
+  const september = screenCompassPoint('september-equinox');
+
+  assert.ok(Math.abs(december.x - (cx + rx)) < 1e-6 && Math.abs(december.y - cy) < 1e-6, 'December solstice should be at the right');
+  assert.ok(Math.abs(march.x - cx) < 1e-6 && Math.abs(march.y - (cy - ry)) < 1e-6, 'March equinox should be at the top');
+  assert.ok(Math.abs(june.x - (cx - rx)) < 1e-6 && Math.abs(june.y - cy) < 1e-6, 'June solstice should be at the left');
+  assert.ok(Math.abs(september.x - cx) < 1e-6 && Math.abs(september.y - (cy + ry)) < 1e-6, 'September equinox should be at the bottom');
+});
+
+test('screenAngleForTheta sweeps counterclockwise in real chronological order (March, June, September, December), as Earth genuinely orbits', () => {
+  const marchAngle = SeasonsDiagram.screenAngleForTheta(0);
+  const juneAngle = SeasonsDiagram.screenAngleForTheta(90);
+  const septemberAngle = SeasonsDiagram.screenAngleForTheta(180);
+  const decemberAngle = SeasonsDiagram.screenAngleForTheta(270);
+  assert.ok(marchAngle < juneAngle && juneAngle < septemberAngle && septemberAngle < decemberAngle, 'each later date should sweep to a strictly larger counterclockwise angle');
+  assert.equal(juneAngle - marchAngle, 90);
+  assert.equal(septemberAngle - juneAngle, 90);
+  assert.equal(decemberAngle - septemberAngle, 90);
+});
+
+test('tiltRelativeToSun: away at December solstice, towards at June solstice, sideways at both equinoxes', () => {
+  assert.equal(SeasonsDiagram.tiltRelativeToSun(270), 'away', 'December solstice: the right-hand Earth leans away from the Sun');
+  assert.equal(SeasonsDiagram.tiltRelativeToSun(90), 'towards', 'June solstice: the left-hand Earth leans towards the Sun');
+  assert.equal(SeasonsDiagram.tiltRelativeToSun(0), 'sideways', 'March equinox: the top Earth leans sideways to the Sun');
+  assert.equal(SeasonsDiagram.tiltRelativeToSun(180), 'sideways', 'September equinox: the bottom Earth leans sideways to the Sun');
+});
+
+test('tiltRelativeToSun agrees with each REFERENCE_POSITIONS entry\'s own Northern season: away means winter, towards means summer, sideways means an equinox', () => {
+  SeasonsDiagram.REFERENCE_POSITIONS.forEach((position) => {
+    const tilt = SeasonsDiagram.tiltRelativeToSun(position.theta);
+    const broadSeason = position.northernSeason.split(' ')[0];
+    if (tilt === 'away') assert.equal(broadSeason, 'Winter', `${position.id}: tilted away should be Northern winter`);
+    if (tilt === 'towards') assert.equal(broadSeason, 'Summer', `${position.id}: tilted towards should be Northern summer`);
+    if (tilt === 'sideways') assert.ok(broadSeason === 'Spring' || broadSeason === 'Autumn', `${position.id}: sideways should be an equinox`);
+  });
+});
+
+test('tiltCaption: plain-words captions for each of the four reference positions', () => {
+  const byId = Object.fromEntries(SeasonsDiagram.REFERENCE_POSITIONS.map((p) => [p.id, p]));
+  assert.equal(SeasonsDiagram.tiltCaption(byId['december-solstice']), 'Tilted away from the Sun: winter');
+  assert.equal(SeasonsDiagram.tiltCaption(byId['june-solstice']), 'Tilted towards the Sun: summer');
+  assert.equal(SeasonsDiagram.tiltCaption(byId['march-equinox']), 'Tilted sideways to the Sun: spring equinox');
+  assert.equal(SeasonsDiagram.tiltCaption(byId['september-equinox']), 'Tilted sideways to the Sun: autumn equinox');
+});
+
+test('tiltCaption: stays short enough to fit beside a solstice Earth without overflowing the diagram (see src/seasonsDiagramView.js\'s own rendering)', () => {
+  const MAX_CAPTION_LENGTH = 45;
+  SeasonsDiagram.REFERENCE_POSITIONS.forEach((position) => {
+    const caption = SeasonsDiagram.tiltCaption(position);
+    assert.ok(caption.length <= MAX_CAPTION_LENGTH, `${position.id}'s caption "${caption}" is ${caption.length} characters, over the ${MAX_CAPTION_LENGTH} budget`);
+  });
+});

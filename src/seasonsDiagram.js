@@ -126,6 +126,63 @@ function makeSeasonsDiagram(EarthOrbit, SolarPosition) {
     return { x: cx + rx * Math.cos(rad), y: cy - ry * Math.sin(rad) };
   }
 
+  // The fixed rotation from theta (EarthOrbit's own convention: 0 =
+  // March equinox, 90 = June solstice, 180 = September equinox, 270 =
+  // December solstice) to this diagram's own screen layout — the
+  // standard textbook one, not an arbitrary choice: solstices on the
+  // left/right (where the diagram's fixed, rightward-leaning axis
+  // reads as leaning towards/away from the Sun) and equinoxes at the
+  // top/bottom (where that same lean reads as sideways to the Sun).
+  // orbitPoint's own angle=0/90/180/270 already sit at right/top/
+  // left/bottom respectively, so adding 90 here lands March (theta=0)
+  // at the top, June (90) at the left, September (180) at the bottom,
+  // and December (270) back at the right — see tiltRelativeToSun below
+  // for why that's the layout that actually reads correctly, and
+  // test/seasonsDiagram.test.js for the four-position/anticlockwise
+  // checks against it.
+  const SCREEN_PHASE_SHIFT_DEG = 90;
+
+  function screenAngleForTheta(thetaDeg) {
+    return thetaDeg + SCREEN_PHASE_SHIFT_DEG;
+  }
+
+  /**
+   * 'away' | 'towards' | 'sideways': how this orbital angle's Earth, in
+   * this diagram's own screen layout, sits relative to the Sun — the
+   * sign of its horizontal (left/right) displacement from the Sun,
+   * since every Earth's axis leans the same fixed way on screen, to
+   * the right (see src/seasonsDiagramView.js's own
+   * AXIS_SCREEN_ANGLE_DEG). An Earth to the Sun's right has that
+   * rightward lean pointing further away from the Sun ("away"); to the
+   * left, the same rightward lean points back towards the Sun
+   * ("towards"); directly above or below, the lean has no horizontal
+   * displacement to compare against at all ("sideways").
+   */
+  function tiltRelativeToSun(thetaDeg) {
+    const screenAngle = screenAngleForTheta(thetaDeg);
+    const point = orbitPoint(0, 0, 1, 1, screenAngle);
+    if (Math.abs(point.x) < 1e-9) return 'sideways';
+    return point.x > 0 ? 'away' : 'towards';
+  }
+
+  /**
+   * The plain-language, one-line caption shown by each reference
+   * Earth — derived from its own northernSeason (already the single
+   * source of truth for which broad season this position is), never a
+   * second, separately-maintained lookup that could drift from it.
+   * Kept deliberately short (the N:/S: labels already name the
+   * hemisphere): long enough text here, at the left/right positions'
+   * screen-edge-hugging label point, has previously pushed the whole
+   * diagram's own measured content width well past its viewBox — see
+   * test/seasonsDiagram.test.js's own length check.
+   */
+  function tiltCaption(position) {
+    const broadSeason = position.northernSeason.split(' ')[0];
+    if (broadSeason === 'Summer') return 'Tilted towards the Sun: summer';
+    if (broadSeason === 'Winter') return 'Tilted away from the Sun: winter';
+    return `Tilted sideways to the Sun: ${broadSeason.toLowerCase()} equinox`;
+  }
+
   return {
     OBLIQUITY_DEG,
     REFERENCE_POSITIONS,
@@ -135,6 +192,10 @@ function makeSeasonsDiagram(EarthOrbit, SolarPosition) {
     noonAltitudeDeg,
     dayLengthMinutes,
     orbitPoint,
+    SCREEN_PHASE_SHIFT_DEG,
+    screenAngleForTheta,
+    tiltRelativeToSun,
+    tiltCaption,
   };
 }
 

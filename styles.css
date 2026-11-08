@@ -3011,9 +3011,9 @@ canvas {
   fill: #c0392b;
 }
 
-.seasons-polaris-sublabel {
-  font: italic 15px sans-serif;
-  fill: #8a97a5;
+.seasons-tilt-caption {
+  font: italic 17px sans-serif;
+  fill: #555;
 }
 
 .seasons-takeaway {

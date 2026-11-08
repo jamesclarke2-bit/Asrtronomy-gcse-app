@@ -107,7 +107,44 @@ test('the "towards Polaris" direction is shown once, not repeated per Earth', as
   await withPage(t, async (page) => {
     const count = await page.locator('.seasons-polaris-label').count();
     assert.equal(count, 1);
-    assert.equal(await page.locator('.seasons-polaris-label').textContent(), 'towards Polaris');
+    assert.equal(await page.locator('.seasons-polaris-label').textContent(), 'axis always points towards Polaris');
+  });
+});
+
+SeasonsDiagram.REFERENCE_POSITIONS.forEach((position) => {
+  test(`the ${position.id} reference position shows the correct plain-words tilt caption`, async (t) => {
+    await withPage(t, async (page) => {
+      const caption = await page.locator(`.seasons-tilt-caption[data-position="${position.id}"]`).textContent();
+      assert.equal(caption, SeasonsDiagram.tiltCaption(position));
+    });
+  });
+});
+
+// --- Rendered screen geometry: the standard textbook layout, not just
+// the pure SeasonsDiagram functions it's built from -------------------
+
+async function readSpherePosition(page, positionId) {
+  return page.evaluate((id) => {
+    const el = document.querySelector(`.seasons-earth-sphere[data-position="${id}"]`);
+    return { cx: Number(el.getAttribute('cx')), cy: Number(el.getAttribute('cy')) };
+  }, positionId);
+}
+
+test('December solstice renders to the right of June solstice, both at the same height', async (t) => {
+  await withPage(t, async (page) => {
+    const december = await readSpherePosition(page, 'december-solstice');
+    const june = await readSpherePosition(page, 'june-solstice');
+    assert.ok(december.cx > june.cx, 'December solstice should render to the right of June solstice');
+    assert.ok(Math.abs(december.cy - june.cy) < 1, 'December and June solstices should be at the same screen height as each other (and the Sun)');
+  });
+});
+
+test('March equinox renders above September equinox, with both at the same horizontal position', async (t) => {
+  await withPage(t, async (page) => {
+    const march = await readSpherePosition(page, 'march-equinox');
+    const september = await readSpherePosition(page, 'september-equinox');
+    assert.ok(march.cy < september.cy, 'March equinox should render above September equinox');
+    assert.ok(Math.abs(march.cx - september.cx) < 1, 'March and September equinoxes should be at the same horizontal position as each other (and the Sun)');
   });
 });
 
