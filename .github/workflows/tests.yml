@@ -33,6 +33,15 @@ jobs:
       - name: Install Playwright's Chromium and WebKit
         run: npx playwright install --with-deps chromium webkit
 
+      # Runs each test/*.test.js file as its own `node --test` invocation
+      # (rather than the one glob call `npm test` itself uses) so every
+      # line in test-output.log can be attributed to the file that
+      # produced it — node:test's own TAP output has no per-line file
+      # name otherwise, since `npm test`'s single glob invocation
+      # flattens every file's tests into one continuously-numbered
+      # stream. Same tests, same assertions, same coverage; only the
+      # invocation is split up, purely so the later steps can report
+      # which file a skip (or failure) came from.
       - name: Run the test suite
         id: run_tests
         # PLAYWRIGHT_CHROMIUM_PATH is deliberately left unset here: that
@@ -43,45 +52,113 @@ jobs:
         # above through Playwright's normal lookup, rather than skip.
         run: |
           set +e
-          npm test > test-output.log 2>&1
-          echo "exit_code=$?" >> "$GITHUB_OUTPUT"
+          : > test-output.log
+          exit_code=0
+          for f in test/*.test.js; do
+            echo "=== FILE: ${f} ===" >> test-output.log
+            node --test "$f" >> test-output.log 2>&1
+            if [ $? -ne 0 ]; then exit_code=1; fi
+          done
+          echo "exit_code=${exit_code}" >> "$GITHUB_OUTPUT"
           cat test-output.log
           exit 0
+
+      - name: Upload test output log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-output-log
+          path: test-output.log
+          retention-days: 14
 
       - name: Report passed, skipped and failed counts
         if: always()
         run: |
-          PASS=$(grep -E '^# pass ' test-output.log | tail -1 | awk '{print $3}')
-          FAIL=$(grep -E '^# fail ' test-output.log | tail -1 | awk '{print $3}')
-          SKIP=$(grep -E '^# skipped ' test-output.log | tail -1 | awk '{print $3}')
-          TOTAL=$(grep -E '^# tests ' test-output.log | tail -1 | awk '{print $3}')
+          # Each file's own run.js prints its own "# pass N" etc. block
+          # (see the per-file loop above), so these sum every file's
+          # block rather than reading just one.
+          PASS=$(grep -E '^# pass ' test-output.log | awk '{s+=$3} END{print s+0}')
+          FAIL=$(grep -E '^# fail ' test-output.log | awk '{s+=$3} END{print s+0}')
+          SKIP=$(grep -E '^# skipped ' test-output.log | awk '{s+=$3} END{print s+0}')
+          TOTAL=$(grep -E '^# tests ' test-output.log | awk '{s+=$3} END{print s+0}')
           {
             echo "## Test results"
             echo ""
             echo "| Passed | Skipped | Failed | Total |"
             echo "|---|---|---|---|"
-            echo "| ${PASS:-?} | ${SKIP:-?} | ${FAIL:-?} | ${TOTAL:-?} |"
+            echo "| ${PASS} | ${SKIP} | ${FAIL} | ${TOTAL} |"
           } >> "$GITHUB_STEP_SUMMARY"
 
-          if [ -n "$FAIL" ] && [ "$FAIL" != "0" ]; then
+          if [ "$FAIL" != "0" ]; then
             {
               echo ""
               echo "### Failed tests"
               echo '```'
-              grep -E '^not ok ' test-output.log || true
+              grep -E '^(=== FILE:|not ok )' test-output.log || true
               echo '```'
             } >> "$GITHUB_STEP_SUMMARY"
           fi
 
-          if [ -n "$SKIP" ] && [ "$SKIP" != "0" ]; then
-            {
-              echo ""
-              echo "### Skipped tests"
-              echo '```'
-              grep -E '^ok .*# SKIP' test-output.log || true
-              echo '```'
-            } >> "$GITHUB_STEP_SUMMARY"
-          fi
+      # Groups every skipped test by its own reason (the exact message
+      # after "# SKIP", parenthetical error detail and any per-test
+      # page-name/viewport-width wording stripped, so e.g. "<page>.html
+      # has no visible, worth-enlarging diagram at phone/iPad/1280
+      # width" collapses to one group across every page and width
+      # rather than 24 separate one-line groups) and lists which file(s)
+      # produced each group — read straight off the "=== FILE: ... ==="
+      # markers the run step above writes before each file's own test
+      # output, not a guessed or hand-maintained reason-to-file mapping.
+      - name: Report skipped tests, grouped by reason
+        if: always()
+        shell: node {0}
+        run: |
+          const fs = require('fs');
+
+          const log = fs.readFileSync('test-output.log', 'utf8');
+          const fileRe = /^=== FILE: (.*) ===$/;
+          const skipRe = /^ok \d+ - (.*) # SKIP (.*)$/;
+
+          let currentFile = '(unknown file)';
+          const skips = [];
+          for (const line of log.split('\n')) {
+            const fm = line.match(fileRe);
+            if (fm) {
+              currentFile = fm[1];
+              continue;
+            }
+            const m = line.match(skipRe);
+            if (m) skips.push({ file: currentFile, name: m[1], reason: m[2] });
+          }
+
+          function normalizeReason(reason) {
+            let core = reason.replace(/\s*\(.*$/s, '').trim();
+            core = core.replace(/^\S+\.html\s+/, ''); // drop a leading "<page>.html " (dynamic per test)
+            core = core.replace(/\s+at [\w\s]+ width$/, ''); // drop a trailing " at <viewport> width" (dynamic per test)
+            return core;
+          }
+
+          const groups = new Map(); // normalised reason -> { names: string[], files: Set<string> }
+          for (const s of skips) {
+            const key = normalizeReason(s.reason);
+            if (!groups.has(key)) groups.set(key, { names: [], files: new Set() });
+            const g = groups.get(key);
+            g.names.push(`${s.file}: ${s.name}`);
+            g.files.add(s.file);
+          }
+
+          let summary = '\n## Skipped tests, by reason\n\n';
+          if (groups.size === 0) {
+            summary += '_None skipped._\n';
+          } else {
+            summary += `${skips.length} skipped across ${groups.size} reason(s).\n`;
+            for (const [reason, g] of groups) {
+              summary += `\n### ${reason} — ${g.names.length}\n\n`;
+              summary += `Files: ${[...g.files].join(', ')}\n\n`;
+              summary += '```\n' + g.names.join('\n') + '\n```\n';
+            }
+          }
+
+          fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, summary);
 
       - name: Fail the job if any test failed
         if: steps.run_tests.outputs.exit_code != '0'
