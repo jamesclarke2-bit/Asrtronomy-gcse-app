@@ -154,25 +154,29 @@ function getSunriseSunset(date, lat, lon) {
 
 /**
  * Sunrise azimuth (degrees clockwise from north) for a given declination
- * and latitude, ignoring the real horizon's height and atmospheric
- * refraction (which shift the true rising point by roughly a degree) —
- * the simplified, ideal-flat-horizon case, ie the Sun's centre crossing
- * altitude exactly 0°, rather than getSunriseSunset's own -0.833°
- * correction for a published rise time.
+ * and latitude, at the crossing altitude altitudeDeg (default 0°, ie
+ * ignoring the real horizon's height and atmospheric refraction) — the
+ * simplified, ideal-flat-horizon case, the Sun's centre crossing altitude
+ * exactly 0°. Pass altitudeDeg: -0.833 for getSunriseSunset's own
+ * standard correction (apparent solar radius + refraction) when the
+ * rising *direction*, not just the rise *time*, needs to match it.
  *
  * At altitude 0 the general azimuth formula (see getSunPosition above)
  * reduces to cos(azimuth) = sin(declination) / cos(latitude): zenith
  * distance is exactly 90°, so cos(zenith) drops out and sin(zenith) = 1.
+ * At any other altitude it's acos((sin(dec) - sin(lat)*sin(alt)) /
+ * (cos(lat)*cos(alt))), which reduces to the same formula when alt = 0.
  * Returns the eastern (rising) azimuth, 0-180°; sunset is 360 minus this,
  * by the same east-west symmetry getSunPosition's own hour-angle sign
  * flip relies on.
  *
  * @param {number} decDeg - the Sun's declination, degrees
  * @param {number} latDeg - observer's latitude, degrees north positive
+ * @param {number} [altitudeDeg] - crossing altitude, degrees (default 0)
  * @returns {number} sunrise azimuth, degrees clockwise from north
  */
-function sunriseAzimuthDeg(decDeg, latDeg) {
-  return acosD(sinD(decDeg) / cosD(latDeg));
+function sunriseAzimuthDeg(decDeg, latDeg, altitudeDeg = 0) {
+  return acosD((sinD(decDeg) - sinD(latDeg) * sinD(altitudeDeg)) / (cosD(latDeg) * cosD(altitudeDeg)));
 }
 
 // Curriculum subtopics this simulation teaches towards — see src/curriculum.js.

@@ -51,6 +51,7 @@ test("getAllQuestionsNode's total is exactly the sum of every individual questio
   const { QUESTIONS: sunPath } = require('../src/questions');
   const { QUESTIONS: eot } = require('../src/eotQuestions');
   const { makeQuestions: makeArchaeoastronomy } = require('../src/archaeoastronomyQuestions');
+  const TunnelAlignment = require('../src/tunnelAlignment');
   const { makeQuestions: makeCoordinates } = require('../src/coordinatesQuestions');
   const { makeQuestions: makeEarthStructure } = require('../src/earthStructureQuestions');
   const { makeQuestions: makeEclipticZodiac } = require('../src/eclipticZodiacQuestions');
@@ -80,7 +81,7 @@ test("getAllQuestionsNode's total is exactly the sum of every individual questio
   const expectedTotal =
     sunPath.length +
     eot.length +
-    makeArchaeoastronomy(MoonPhase).length +
+    makeArchaeoastronomy(MoonPhase, TunnelAlignment).length +
     makeCoordinates(Coordinates, null, null, SpecData).length +
     makeEarthStructure(SpecData).length +
     makeEclipticZodiac(EclipticZodiac, SolarPosition, PlanetaryMotion).length +

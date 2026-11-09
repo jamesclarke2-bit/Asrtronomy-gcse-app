@@ -359,6 +359,348 @@
     render();
   }
 
+  // --- Alignments: when does the Sun line up? (tunnel case study) --------
+  // Shared maths lives in src/tunnelAlignment.js (TunnelAlignment below),
+  // so it's testable with node:test and usable from the practice
+  // questions too, rather than locked inside this page's own drawing code.
+
+  const TA = TunnelAlignment;
+  const TUNNEL_YEAR = 2026; // any non-leap year: only day-of-year matters
+  const TUNNEL_PLAN = { W: 320, H: 320, cx: 160, cy: 160, gridStep: 40, tunnelHalfLen: 110, sunR: 148, compassR: 148 };
+  const TUNNEL_TOLERANCE_NARROW = 0.5;
+  const TUNNEL_TOLERANCE_WIDE = 1.5;
+
+  function tunnelFormatDate(dayIndex) {
+    return TA.dayOfYearToUTCDate(dayIndex, TUNNEL_YEAR).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', timeZone: 'UTC' });
+  }
+
+  function drawTunnelPlan(bearingDeg, latDeg, dayIndex, mode, toleranceDeg) {
+    const svg = document.getElementById('tunnel-plan-diagram');
+    const wrap = document.getElementById('tunnel-plan-wrap');
+    if (!svg || !wrap) return null;
+    clearDiagram(svg, wrap);
+    const { W, H, cx, cy, gridStep, tunnelHalfLen, sunR, compassR } = TUNNEL_PLAN;
+
+    svgEl('rect', { x: 0, y: 0, width: W, height: H, rx: 8, fill: '#10141f' }, svg);
+
+    const grid = svgEl('g', { stroke: '#232c3d', 'stroke-width': 1 }, svg);
+    for (let x = gridStep; x < W; x += gridStep) svgEl('line', { x1: x, y1: 0, x2: x, y2: H }, grid);
+    for (let y = gridStep; y < H; y += gridStep) svgEl('line', { x1: 0, y1: y, x2: W, y2: y }, grid);
+
+    const sunAzimuth = mode === 'sunrise' ? TA.sunriseAzimuthOnDay(dayIndex, latDeg, TUNNEL_YEAR) : TA.sunsetAzimuthOnDay(dayIndex, latDeg, TUNNEL_YEAR);
+    const targetBearing = mode === 'sunrise' ? bearingDeg : (bearingDeg + 180) % 360;
+    const angleFromAxis = TA.angleDifferenceDeg(sunAzimuth, targetBearing);
+    const shines = angleFromAxis <= toleranceDeg;
+
+    // The straight passage, drawn both ends through the centre.
+    const nearEnd = azimuthPoint(cx, cy, tunnelHalfLen, bearingDeg + 180);
+    const farEnd = azimuthPoint(cx, cy, tunnelHalfLen, bearingDeg);
+    svgEl('line', {
+      x1: nearEnd.x, y1: nearEnd.y, x2: farEnd.x, y2: farEnd.y,
+      stroke: shines ? SUN_COLOR : STONE_COLOR, 'stroke-width': 10, 'stroke-linecap': 'round',
+    }, svg);
+    const farLabel = azimuthPoint(cx, cy, tunnelHalfLen + 20, bearingDeg);
+    addLabel(wrap, farLabel.x, farLabel.y, W, H, `Bearing ${Math.round(bearingDeg)}°`, 'star-label finder-pattern-label');
+
+    // The Sun's direction for the selected date and mode.
+    const sunEnd = azimuthPoint(cx, cy, sunR, sunAzimuth);
+    svgEl('line', { x1: cx, y1: cy, x2: sunEnd.x, y2: sunEnd.y, stroke: SUN_COLOR, 'stroke-width': 2.5, 'stroke-dasharray': '6 4' }, svg);
+    SunIcon.appendSunSvg(svg, sunEnd.x, sunEnd.y, 10, { coronaScale: 1.6 });
+    const sunLabel = azimuthPoint(cx, cy, sunR + 22, sunAzimuth);
+    const l = addLabel(wrap, sunLabel.x, sunLabel.y, W, H, mode === 'sunrise' ? 'Sunrise' : 'Sunset', 'star-label finder-polaris-label');
+    if (sunLabel.x > cx) l.dataset.side = 'left';
+
+    [['N', 0], ['E', 90], ['S', 180], ['W', 270]].forEach(([letter, angle]) => {
+      const p = azimuthPoint(cx, cy, compassR, angle);
+      addLabel(wrap, p.x, p.y, W, H, letter, 'star-label compass-label');
+    });
+
+    return { sunAzimuth, angleFromAxis, shines };
+  }
+
+  const TUNNEL_GRAPH = { W: 500, H: 260, padL: 46, padR: 14, padT: 16, padB: 34 };
+
+  function drawTunnelYearGraph(bearingDeg, latDeg, toleranceDeg) {
+    const svg = document.getElementById('tunnel-year-graph');
+    const wrap = document.getElementById('tunnel-year-graph-wrap');
+    if (!svg || !wrap) return;
+    clearDiagram(svg, wrap);
+    const { W, H, padL, padR, padT, padB } = TUNNEL_GRAPH;
+    const plotW = W - padL - padR;
+    const plotH = H - padT - padB;
+
+    svgEl('rect', { x: 0, y: 0, width: W, height: H, rx: 8, fill: '#10141f' }, svg);
+
+    const points = TA.yearSunriseAzimuths(latDeg, TUNNEL_YEAR);
+    const azimuths = points.map((p) => p.azimuth);
+    const minAz = Math.min(...azimuths) - 4;
+    const maxAz = Math.max(...azimuths) + 4;
+    const totalDays = points.length;
+
+    const xAt = (dayIndex) => padL + (dayIndex / (totalDays - 1)) * plotW;
+    const yAt = (az) => padT + (1 - (az - minAz) / (maxAz - minAz)) * plotH;
+
+    svgEl('line', { x1: padL, y1: padT, x2: padL, y2: H - padB, stroke: '#7c8aa3', 'stroke-width': 1.5 }, svg);
+    svgEl('line', { x1: padL, y1: H - padB, x2: W - padR, y2: H - padB, stroke: '#7c8aa3', 'stroke-width': 1.5 }, svg);
+    addLabel(wrap, padL - 40, padT - 6, W, H, 'Azimuth (°)', 'star-label');
+    addLabel(wrap, W - padR - 20, H - padB + 20, W, H, 'Date', 'star-label');
+
+    for (let m = 0; m < 12; m += 1) {
+      const dayIndex = Math.round((m / 12) * totalDays);
+      const x = xAt(dayIndex);
+      svgEl('line', { x1: x, y1: H - padB, x2: x, y2: H - padB + 4, stroke: '#7c8aa3', 'stroke-width': 1 }, svg);
+      if (m % 2 === 0) {
+        const label = TA.dayOfYearToUTCDate(dayIndex, TUNNEL_YEAR).toLocaleDateString('en-GB', { month: 'short', timeZone: 'UTC' });
+        addLabel(wrap, x, H - padB + 16, W, H, label, 'star-label');
+      }
+    }
+
+    const pathD = points.map((p, i) => `${i === 0 ? 'M' : 'L'}${xAt(p.dayIndex).toFixed(1)},${yAt(p.azimuth).toFixed(1)}`).join(' ');
+    svgEl('path', { d: pathD, fill: 'none', stroke: SKY_LINE_COLOR, 'stroke-width': 2 }, svg);
+
+    // Each target line (the tunnel's own bearing, for sunrise; 180° minus
+    // it, for the matching sunset alignment through the far end) crosses
+    // this same sunrise-azimuth curve twice a year — see TunnelAlignment's
+    // own header comment for why both conditions reduce to one curve.
+    function drawTargetLine(targetAz, color, label, windowsKey) {
+      if (targetAz < minAz || targetAz > maxAz) return;
+      const y = yAt(targetAz);
+      svgEl('line', { x1: padL, y1: y, x2: W - padR, y2: y, stroke: color, 'stroke-width': 1.5, 'stroke-dasharray': '6 4' }, svg);
+      const lbl = addLabel(wrap, W - padR - 4, y - 12, W, H, label, 'star-label finder-polaris-label');
+      lbl.dataset.side = 'left';
+      TA.alignmentWindows(bearingDeg, latDeg, toleranceDeg, TUNNEL_YEAR)[windowsKey].forEach((windowRange) => {
+        const midDay = Math.round((windowRange.startDay + windowRange.endDay) / 2);
+        svgEl('circle', { cx: xAt(midDay), cy: y, r: 3.5, fill: color }, svg);
+      });
+    }
+
+    drawTargetLine(bearingDeg, SUN_COLOR, 'Sunrise alignment', 'sunrise');
+    drawTargetLine(180 - bearingDeg, '#7fd1ae', 'Sunset alignment', 'sunset');
+  }
+
+  function setUpTunnelAlignmentSection() {
+    const bearingSlider = document.getElementById('tunnel-bearing-slider');
+    const latSlider = document.getElementById('tunnel-latitude-slider');
+    const dateSlider = document.getElementById('tunnel-date-slider');
+    const wideToggle = document.getElementById('tunnel-wide-toggle');
+    const sunriseBtn = document.getElementById('tunnel-sunrise-btn');
+    const sunsetBtn = document.getElementById('tunnel-sunset-btn');
+    if (!bearingSlider) return;
+    const bearingLabel = document.getElementById('tunnel-bearing-label');
+    const latLabel = document.getElementById('tunnel-latitude-label');
+    const dateLabel = document.getElementById('tunnel-date-label');
+    const azimuthReadout = document.getElementById('tunnel-azimuth-readout');
+    const angleReadout = document.getElementById('tunnel-angle-readout');
+    const shinesReadout = document.getElementById('tunnel-shines-readout');
+
+    let mode = 'sunrise';
+
+    function render() {
+      const bearing = Number(bearingSlider.value);
+      const lat = Number(latSlider.value);
+      const dayIndex = Number(dateSlider.value);
+      const tolerance = wideToggle.checked ? TUNNEL_TOLERANCE_WIDE : TUNNEL_TOLERANCE_NARROW;
+
+      bearingLabel.textContent = `${bearing}°`;
+      latLabel.textContent = `${lat.toFixed(1)}°N`;
+      dateLabel.textContent = tunnelFormatDate(dayIndex);
+
+      const result = drawTunnelPlan(bearing, lat, dayIndex, mode, tolerance);
+      azimuthReadout.textContent = `${result.sunAzimuth.toFixed(1)}°`;
+      angleReadout.textContent = `${result.angleFromAxis.toFixed(1)}°`;
+
+      if (result.shines) {
+        const windows = TA.alignmentWindows(bearing, lat, tolerance, TUNNEL_YEAR)[mode];
+        const matchingWindow = windows.find((w) => dayIndex >= w.startDay && dayIndex <= w.endDay);
+        shinesReadout.textContent = matchingWindow
+          ? `Yes — shines through for ${matchingWindow.dayCount} day${matchingWindow.dayCount === 1 ? '' : 's'} around this date.`
+          : 'Yes.';
+      } else {
+        shinesReadout.textContent = 'No.';
+      }
+
+      drawTunnelYearGraph(bearing, lat, tolerance);
+    }
+
+    function setMode(newMode) {
+      mode = newMode;
+      sunriseBtn.classList.toggle('preset-button-active', mode === 'sunrise');
+      sunriseBtn.setAttribute('aria-pressed', String(mode === 'sunrise'));
+      sunsetBtn.classList.toggle('preset-button-active', mode === 'sunset');
+      sunsetBtn.setAttribute('aria-pressed', String(mode === 'sunset'));
+      render();
+    }
+
+    bearingSlider.addEventListener('input', render);
+    latSlider.addEventListener('input', render);
+    dateSlider.addEventListener('input', render);
+    wideToggle.addEventListener('change', render);
+    sunriseBtn.addEventListener('click', () => setMode('sunrise'));
+    sunsetBtn.addEventListener('click', () => setMode('sunset'));
+    render();
+  }
+
+  // --- Worked example: a passage at 100° (a different bearing and date
+  // range than the interactive tunnel above, so it's a genuinely separate
+  // check, not the same figures re-shown) -----------------------------
+
+  const TUNNEL_EXAMPLE_BEARING = 100;
+  const TUNNEL_EXAMPLE_LATITUDE = 51.4;
+  const TUNNEL_EXAMPLE_START_DAY = 48; // 18 Feb
+  const TUNNEL_EXAMPLE_STEP_DAYS = 3;
+  const TUNNEL_EXAMPLE_POINT_COUNT = 7; // through 8 Mar
+
+  function tunnelExamplePoints() {
+    const points = [];
+    for (let i = 0; i < TUNNEL_EXAMPLE_POINT_COUNT; i += 1) {
+      const dayIndex = TUNNEL_EXAMPLE_START_DAY + i * TUNNEL_EXAMPLE_STEP_DAYS;
+      points.push({ dayIndex, azimuth: TA.sunriseAzimuthOnDay(dayIndex, TUNNEL_EXAMPLE_LATITUDE, TUNNEL_YEAR) });
+    }
+    return points;
+  }
+
+  function renderTunnelExampleTable() {
+    const body = document.getElementById('tunnel-example-table-body');
+    if (!body) return;
+    body.innerHTML = '';
+    tunnelExamplePoints().forEach((p) => {
+      const tr = document.createElement('tr');
+      const dateTd = document.createElement('td');
+      dateTd.textContent = tunnelFormatDate(p.dayIndex);
+      const azTd = document.createElement('td');
+      azTd.textContent = p.azimuth.toFixed(1);
+      tr.appendChild(dateTd);
+      tr.appendChild(azTd);
+      body.appendChild(tr);
+    });
+  }
+
+  const TUNNEL_PLOT_GRID = { W: 440, H: 300, padL: 46, padR: 14, padT: 16, padB: 34 };
+
+  function tunnelPlotScales() {
+    const points = tunnelExamplePoints();
+    const { padL, padR, padT, padB, W, H } = TUNNEL_PLOT_GRID;
+    const plotW = W - padL - padR;
+    const plotH = H - padT - padB;
+    const minDay = points[0].dayIndex;
+    const maxDay = points[points.length - 1].dayIndex;
+    const azimuths = points.map((p) => p.azimuth);
+    const minAz = Math.floor(Math.min(...azimuths)) - 1;
+    const maxAz = Math.ceil(Math.max(...azimuths)) + 1;
+    return {
+      points,
+      xAt: (dayIndex) => padL + ((dayIndex - minDay) / (maxDay - minDay)) * plotW,
+      yAt: (az) => padT + (1 - (az - minAz) / (maxAz - minAz)) * plotH,
+    };
+  }
+
+  let tunnelPlottedPoints = {}; // dayIndex -> plotted y (pixels, in the grid's own viewBox)
+  let tunnelShowCorrectPoints = false;
+
+  function drawTunnelPlotGrid() {
+    const svg = document.getElementById('tunnel-plot-grid');
+    const wrap = document.getElementById('tunnel-plot-grid-wrap');
+    if (!svg || !wrap) return;
+    clearDiagram(svg, wrap);
+    const { W, H, padL, padR, padT, padB } = TUNNEL_PLOT_GRID;
+    const scales = tunnelPlotScales();
+
+    svgEl('rect', { x: 0, y: 0, width: W, height: H, rx: 8, fill: '#10141f' }, svg);
+
+    const grid = svgEl('g', { stroke: '#232c3d', 'stroke-width': 1 }, svg);
+    scales.points.forEach((p) => {
+      const x = scales.xAt(p.dayIndex);
+      svgEl('line', { x1: x, y1: padT, x2: x, y2: H - padB }, grid);
+    });
+    for (let i = 0; i <= 4; i += 1) {
+      const y = padT + (i / 4) * (H - padT - padB);
+      svgEl('line', { x1: padL, y1: y, x2: W - padR, y2: y }, grid);
+    }
+
+    svgEl('line', { x1: padL, y1: padT, x2: padL, y2: H - padB, stroke: '#7c8aa3', 'stroke-width': 1.5 }, svg);
+    svgEl('line', { x1: padL, y1: H - padB, x2: W - padR, y2: H - padB, stroke: '#7c8aa3', 'stroke-width': 1.5 }, svg);
+    addLabel(wrap, padL - 40, padT - 6, W, H, 'Azimuth (°)', 'star-label');
+    addLabel(wrap, W - padR - 20, H - padB + 20, W, H, 'Date', 'star-label');
+    scales.points.forEach((p) => {
+      const x = scales.xAt(p.dayIndex);
+      addLabel(wrap, x, H - padB + 16, W, H, tunnelFormatDate(p.dayIndex), 'star-label');
+    });
+
+    // One invisible tap target covering the whole plotting area (not one
+    // per column — a tap between two date gridlines should still plot
+    // something, snapped to the nearest one, rather than silently doing
+    // nothing). tabindex/role="button" is also what marks a
+    // diagram-enlarge tap target as "interactive", so tapping to plot a
+    // point doesn't instead open the diagram-enlarge dialog — see
+    // diagramEnlarge.js's own INTERACTIVE_SELECTOR.
+    const hit = svgEl('rect', {
+      x: padL, y: padT, width: W - padL - padR, height: H - padT - padB, fill: 'transparent', tabindex: '0', role: 'button',
+      'aria-label': 'Tap to plot a point, snapped to the nearest date',
+    }, svg);
+    hit.style.cursor = 'pointer';
+    function nearestDayIndex(x) {
+      let best = scales.points[0];
+      let bestDist = Math.abs(scales.xAt(best.dayIndex) - x);
+      scales.points.forEach((p) => {
+        const dist = Math.abs(scales.xAt(p.dayIndex) - x);
+        if (dist < bestDist) {
+          best = p;
+          bestDist = dist;
+        }
+      });
+      return best.dayIndex;
+    }
+    function plotAt(clickX, clickY) {
+      tunnelPlottedPoints[nearestDayIndex(clickX)] = Math.max(padT, Math.min(H - padB, clickY));
+      drawTunnelPlotGrid();
+    }
+    hit.addEventListener('click', (event) => {
+      // Plotting a point redraws the whole grid, which removes this very
+      // rect from the DOM mid-click — stopPropagation first, since by the
+      // time the click would otherwise bubble to diagramEnlarge.js's own
+      // listener, the (now-detached) target no longer reads as "inside"
+      // this diagram, and it would wrongly open the enlarge dialog too.
+      event.stopPropagation();
+      const rect = svg.getBoundingClientRect();
+      const scaleX = W / rect.width;
+      const scaleY = H / rect.height;
+      plotAt((event.clientX - rect.left) * scaleX, (event.clientY - rect.top) * scaleY);
+    });
+    hit.addEventListener('keydown', (event) => {
+      if (event.key !== 'Enter' && event.key !== ' ') return;
+      event.preventDefault();
+      event.stopPropagation();
+      plotAt((padL + (W - padR)) / 2, padT + (H - padT - padB) / 2);
+    });
+
+    Object.entries(tunnelPlottedPoints).forEach(([dayIndex, y]) => {
+      svgEl('circle', { cx: scales.xAt(Number(dayIndex)), cy: y, r: 5, fill: '#2a6bd6' }, svg);
+    });
+
+    if (tunnelShowCorrectPoints) {
+      scales.points.forEach((p) => {
+        svgEl('circle', { cx: scales.xAt(p.dayIndex), cy: scales.yAt(p.azimuth), r: 4, fill: 'none', stroke: SUN_COLOR, 'stroke-width': 2 }, svg);
+      });
+    }
+  }
+
+  function setUpTunnelPlotGrid() {
+    const checkBtn = document.getElementById('tunnel-plot-check-btn');
+    const clearBtn = document.getElementById('tunnel-plot-clear-btn');
+    if (!checkBtn) return;
+    renderTunnelExampleTable();
+    drawTunnelPlotGrid();
+    checkBtn.addEventListener('click', () => {
+      tunnelShowCorrectPoints = true;
+      drawTunnelPlotGrid();
+    });
+    clearBtn.addEventListener('click', () => {
+      tunnelPlottedPoints = {};
+      tunnelShowCorrectPoints = false;
+      drawTunnelPlotGrid();
+    });
+  }
+
   // --- The Great Pyramid: fixed shafts, drifting targets -------------------
 
   const GIZA_LATITUDE = 29.9792; // Giza, Egypt — general knowledge, not a data-sheet figure
@@ -496,14 +838,16 @@
     calendar:
       "Time and calendar systems: a (lunar) month comes from counting the Moon's phases, but twelve lunar months (about 354 days) fall short of the solar year (about 365.25 days) by roughly eleven days, so a purely lunar calendar slowly drifts against the seasons. Many cultures corrected this by adding an extra ('intercalary') month every few years; the Babylonians and Greeks eventually settled on the Metonic cycle, adding seven extra months over 19 years, since 235 lunar months and 19 solar years come out to almost exactly the same length of time. First draft, to be checked by the teacher.",
     alignments:
-      "Alignments: Stonehenge's Avenue frames the midsummer sunrise (see above). Newgrange, in Ireland, is aligned so that only at the winter solstice does sunrise light reach all the way down its long entrance passage into the inner chamber. And the Maya pyramid of El Castillo at Chichen Itza is built so that, at the spring and autumn equinoxes, the Sun casts a shadow down its staircase that looks like a serpent slithering down to meet a carved snake's head at the base. First draft, to be checked by the teacher.",
+      "Alignments: Stonehenge's Avenue frames the midsummer sunrise (see above). Newgrange, in Ireland, is aligned so that only at the winter solstice does sunrise light reach all the way down its long entrance passage into the inner chamber. And the Maya pyramid of El Castillo at Chichen Itza is built so that, at the spring and autumn equinoxes, the Sun casts a shadow down its staircase that looks like a serpent slithering down to meet a carved snake's head at the base. First draft, to be checked by the teacher. See the Alignments case study below for how often, and for how many days at a time, an alignment like this actually happens.",
   };
 
   setUpPrecessionSlider();
   buildAncientUsesGrid();
   setUpStonehengeSlider();
+  setUpTunnelAlignmentSection();
+  setUpTunnelPlotGrid();
   setUpPyramidSlider();
   renderCoverage();
   Glossary.init(GLOSSARY);
-  QuizUI.mount(ArchaeoastronomyQuestions.makeQuestions(MoonPhase));
+  QuizUI.mount(ArchaeoastronomyQuestions.makeQuestions(MoonPhase, TunnelAlignment));
 })();

@@ -149,6 +149,248 @@
       <span class="glossary-definition" data-term="stonehengeDetail" hidden></span>
     </section>
 
+    <section class="notes-section" id="tunnel-alignment">
+      <h2>Alignments: when does the Sun line up?</h2>
+      <p>
+        A straight passage lines up with the Sun when its direction matches the passage's own
+        bearing, to within the passage's width. The Sun's rising point drifts all year, so that
+        match happens more than once &mdash; try the tunnel below, built in the style of exam
+        question June 2025 Paper 1 Q6.
+      </p>
+
+      <div class="diagram tunnel-plan-diagram">
+        <div class="labelled-diagram-wrap" id="tunnel-plan-wrap">
+          <svg
+            id="tunnel-plan-diagram"
+            class="responsive-svg"
+            width="320"
+            height="320"
+            viewBox="0 0 320 320"
+            role="img"
+            aria-label="Plan view, north up, of a straight tunnel on a grid, with a compass and an arrow showing the Sun's rising or setting direction on the selected date, the tunnel highlighted gold when the Sun shines all the way through it"
+          ></svg>
+        </div>
+      </div>
+
+      <div class="control-panel observer-panel">
+        <p class="panel-title">The tunnel</p>
+        <div class="control">
+          <label for="tunnel-bearing-slider">Bearing: <span id="tunnel-bearing-label"></span></label>
+          <input type="range" id="tunnel-bearing-slider" min="60" max="120" step="1" value="77" />
+        </div>
+        <div class="control">
+          <label for="tunnel-latitude-slider">Latitude: <span id="tunnel-latitude-label"></span></label>
+          <input type="range" id="tunnel-latitude-slider" min="35" max="65" step="0.1" value="51.4" />
+        </div>
+        <div class="control">
+          <label><input type="checkbox" id="tunnel-wide-toggle" /> Wide tunnel (shines through within 1.5&deg;, not 0.5&deg;)</label>
+        </div>
+      </div>
+
+      <div class="control-panel star-panel">
+        <p class="panel-title">The Sun</p>
+        <div class="control">
+          <label for="tunnel-date-slider">Day of year: <span id="tunnel-date-label"></span></label>
+          <input type="range" id="tunnel-date-slider" min="0" max="364" step="1" value="97" />
+        </div>
+        <div class="control tunnel-mode-buttons">
+          <button type="button" id="tunnel-sunrise-btn" class="preset-button preset-button-active" data-mode="sunrise" aria-pressed="true">Sunrise</button>
+          <button type="button" id="tunnel-sunset-btn" class="preset-button" data-mode="sunset" aria-pressed="false">Sunset</button>
+        </div>
+      </div>
+
+      <dl class="readout">
+        <dt>Sun's azimuth</dt>
+        <dd id="tunnel-azimuth-readout"></dd>
+        <dt>Angle from tunnel's axis</dt>
+        <dd id="tunnel-angle-readout"></dd>
+        <dt>Shines through?</dt>
+        <dd id="tunnel-shines-readout"></dd>
+      </dl>
+
+      <p class="note">
+        Switch to Sunset: the Sun sets at 360&deg; minus its sunrise azimuth, and can shine in
+        through the tunnel's other end. Near the equinoxes the azimuth shifts only about 0.6&deg;
+        a day, which is why a match lasts several days, not one. This uses the standard sunrise
+        correction for the Sun's apparent size and atmospheric refraction, unlike the simplified
+        flat-horizon case used for Stonehenge above.
+      </p>
+
+      <div class="diagram tunnel-year-graph-diagram">
+        <div class="labelled-diagram-wrap" id="tunnel-year-graph-wrap">
+          <svg
+            id="tunnel-year-graph"
+            class="responsive-svg"
+            width="500"
+            height="260"
+            viewBox="0 0 500 260"
+            role="img"
+            aria-label="Line graph of the Sun's sunrise azimuth against date through the year, with a horizontal line at the tunnel's own bearing crossing the curve twice, near spring and near autumn, and a second horizontal line for the matching sunset alignment crossing it twice more"
+          ></svg>
+        </div>
+      </div>
+
+      <p>
+        The tunnel's bearing line crosses this curve twice a year, near spring and near autumn
+        &mdash; and the matching sunset line crosses it twice more, through the tunnel's other
+        end. So a straight tunnel like this one lines up with the Sun
+        <strong>at least twice a year, on several days each time</strong>, not once.
+      </p>
+    </section>
+
+    <section class="notes-section" id="tunnel-alignment-skills">
+      <h2>How to answer a question like this</h2>
+      <p>
+        Five skills examiners expect, each worth a quick look before the exam needs them. This
+        summary is general exam technique, not specification content &mdash; first draft, to be
+        checked by the teacher.
+      </p>
+
+      <div class="scaffold-step">
+        <p class="scaffold-prompt">
+          (a) Converting degrees and minutes to decimal degrees
+          <button type="button" class="glossary-toggle glossary-term-button" data-term="tunnelSkillMinutes" aria-label="Show how to convert degrees and minutes" aria-expanded="false">Show me</button>
+        </p>
+        <div class="glossary-definition scaffold-reveal" data-term="tunnelSkillMinutes" hidden>
+          <p>
+            A degree splits into 60 minutes of arc, so divide the minutes by 60 and add them to
+            the whole degrees: 30&prime; is 0.5&deg;, 45&prime; is 0.75&deg;, and 1&deg; is
+            60&prime;.
+          </p>
+          <table class="shower-table">
+            <thead><tr><th scope="col">Degrees and minutes</th><th scope="col">Decimal degrees</th></tr></thead>
+            <tbody>
+              <tr><td>77&deg; 30&prime;</td><td>77.5&deg;</td></tr>
+              <tr><td>77&deg; 45&prime;</td><td>77.75&deg;</td></tr>
+              <tr><td>78&deg; 15&prime;</td><td>78.25&deg;</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="scaffold-step">
+        <p class="scaffold-prompt">
+          (b) Plotting a graph examiners will give credit for
+          <button type="button" class="glossary-toggle glossary-term-button" data-term="tunnelSkillGraph" aria-label="Show the graph-plotting checklist" aria-expanded="false">Show me</button>
+        </p>
+        <div class="glossary-definition scaffold-reveal" data-term="tunnelSkillGraph" hidden>
+          <ul>
+            <li>Choose a scale that uses more than half the grid in both directions &mdash; not a tiny cluster of points in one corner.</li>
+            <li>Label both axes with their units in brackets, for example "Date" and "Azimuth (degrees)".</li>
+            <li>Plot every point accurately, then draw a single smooth curve or line of best fit through them &mdash; not dot-to-dot.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="scaffold-step">
+        <p class="scaffold-prompt">
+          (c) Interpolating between two plotted points
+          <button type="button" class="glossary-toggle glossary-term-button" data-term="tunnelSkillInterpolate" aria-label="Show how to interpolate" aria-expanded="false">Show me</button>
+        </p>
+        <div class="glossary-definition scaffold-reveal" data-term="tunnelSkillInterpolate" hidden>
+          <p>
+            To estimate a value between two plotted points, read halfway between them (or use the
+            fraction of the way across, if it's not exactly halfway). If the azimuth is
+            102.2&deg; on 27 Feb and 100.4&deg; on 2 Mar, the value halfway between the dates is
+            about <strong>101.3&deg;</strong> &mdash; the mean of the two.
+          </p>
+        </div>
+      </div>
+
+      <div class="scaffold-step">
+        <p class="scaffold-prompt">
+          (d) Taking a bearing from a diagram
+          <button type="button" class="glossary-toggle glossary-term-button" data-term="tunnelSkillBearing" aria-label="Show how to take a bearing from a diagram" aria-expanded="false">Show me</button>
+        </p>
+        <div class="glossary-definition scaffold-reveal" data-term="tunnelSkillBearing" hidden>
+          <p>
+            With a protractor, measure the angle clockwise from north. From a grid, measure how
+            far across (the "run") and how far up (the "rise") the line goes, find
+            tan<sup>-1</sup>(run &divide; rise), and: if the line points into the north-east
+            quarter, that angle <em>is</em> the bearing; into the south-east quarter, the bearing
+            is 90&deg; plus the angle measured from east.
+          </p>
+        </div>
+      </div>
+
+      <div class="scaffold-step">
+        <p class="scaffold-prompt">
+          (e) "Evaluate" questions worth 6 marks
+          <button type="button" class="glossary-toggle glossary-term-button" data-term="tunnelSkillEvaluate" aria-label="Show the evaluate mark-scheme structure" aria-expanded="false">Show me</button>
+        </p>
+        <div class="glossary-definition scaffold-reveal" data-term="tunnelSkillEvaluate" hidden>
+          <p>
+            The top band needs all three: relevant knowledge used <em>throughout</em>, not just
+            the given data (for example, the Sun's declination rises through April, so it rises
+            further north of east and the sunrise azimuth falls &mdash; which is why a table's
+            azimuths decrease); a clear, logical line of reasoning connecting each point to the
+            next; and a conclusion that the reasoning actually supports, not just a repeated
+            assertion.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="notes-section" id="tunnel-alignment-example">
+      <h2>Worked example: a passage at 100&deg;</h2>
+      <p>
+        A tour guide claims a straight passage at bearing 100&deg; only lets the sunrise shine
+        through once a year, on 2 March. The table below is generated the same way as the
+        diagram above, for a different bearing and a different fortnight &mdash; plot it, then
+        evaluate the claim.
+      </p>
+
+      <div class="table-scroll">
+        <table class="shower-table" id="tunnel-example-table">
+          <thead>
+            <tr><th scope="col">Date</th><th scope="col">Azimuth (degrees)</th></tr>
+          </thead>
+          <tbody id="tunnel-example-table-body"></tbody>
+        </table>
+      </div>
+
+      <p>Tap the grid below to plot each point, then check your curve against the correct points.</p>
+
+      <div class="diagram tunnel-plot-grid-diagram">
+        <div class="labelled-diagram-wrap" id="tunnel-plot-grid-wrap">
+          <svg
+            id="tunnel-plot-grid"
+            class="responsive-svg"
+            width="440"
+            height="300"
+            viewBox="0 0 440 300"
+            role="img"
+            aria-label="A blank grid for plotting the table's azimuth-against-date points by tapping, with buttons to check the plotted points against the correct ones or clear them"
+          ></svg>
+        </div>
+      </div>
+
+      <div class="control">
+        <button type="button" id="tunnel-plot-check-btn" class="secondary-button">Check my points</button>
+        <button type="button" id="tunnel-plot-clear-btn" class="secondary-button">Clear</button>
+      </div>
+
+      <p>
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="tunnelModelAnswer" aria-label="Show the model answer" aria-expanded="false">Show the model answer</button>
+      </p>
+      <div class="glossary-definition scaffold-reveal" data-term="tunnelModelAnswer" hidden>
+        <p>
+          The passage is straight and points roughly ENE/WSW (bearing 100&deg;, close to due
+          east). The Sun's azimuth on 2 March (about 100.4&deg;) is very close to the passage's
+          bearing, so the guide's claim is plausible for that date. But the azimuth changes
+          slowly &mdash; about 0.6&deg; a day near the equinox &mdash; and the passage has width,
+          so it would shine through on several days close to 2 March, not on that single day.
+          The Sun rises at every angle between about north-east and south-east over the year, so
+          the same azimuth occurs again in autumn, around 10&ndash;11 October. And at sunset the
+          Sun can shine in from the passage's other end, when its setting azimuth lines up with
+          bearing 280&deg; (100&deg; + 180&deg;) &mdash; which happens around 3&ndash;4 April and
+          8 September. Conclusion: it's plausible that the passage lines up with the Sun close
+          to 2 March, but wrong that this happens on only one occasion a year &mdash; on this
+          evidence it happens at least four times, several days each time.
+        </p>
+      </div>
+    </section>
+
     <section class="notes-section" id="great-pyramid">
       <h2>The Great Pyramid's star shafts</h2>
       <p>
@@ -261,8 +503,9 @@
   <script src="../src/starPatterns.js?v=202609280900"></script>
   <script src="../src/measuringTheSky.js?v=202609252300"></script>
   <script src="../src/moonPhase.js?v=202611031700"></script>
-  <script src="../src/solarPosition.js?v=202609260300"></script>
-  <script src="../src/archaeoastronomyQuestions.js?v=202610292000"></script>
+  <script src="../src/solarPosition.js?v=202611091000"></script>
+  <script src="../src/tunnelAlignment.js?v=202611091000"></script>
+  <script src="../src/archaeoastronomyQuestions.js?v=202611091000"></script>
   <script src="../src/sunIcon.js?v=202611071200"></script>
   <script src="../glossary.js?v=202610131052"></script>
   <script src="../quiz-ui.js?v=202611052116"></script>
