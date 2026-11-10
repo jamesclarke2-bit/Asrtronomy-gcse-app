@@ -65,11 +65,11 @@ One row per point in the Edexcel GCSE Astronomy (1AS0) specification, Topics 1�
 | 3.3 | understand | how Eratosthenes and Aristarchus found sizes and distances | [Measuring the Sky](../notes/measuring-the-sky.html) | – |  | |
 | 3.4 | be able to | use the Sun's mean diameter (1.4 x 10^6 km) | [Measuring the Sky](../notes/measuring-the-sky.html)<br>[Earth: Structure, Atmosphere and Motion](../notes/earth-structure.html) | 9 |  | |
 | 3.5 | understand | Sun and Moon effects in spring and neap tides | [Tides](../notes/tides.html) | – |  | |
-| 3.6 | understand | precession's effect on the appearance of Sun, Moon and stars, and archaeoastronomy | [The Ecliptic and the Zodiac](../notes/ecliptic-zodiac.html)<br>[Measuring the Sky](../notes/measuring-the-sky.html)<br>[Archaeoastronomy: Precession and Monuments](../notes/archaeoastronomy.html) | – |  | |
+| 3.6 | understand | precession's effect on the appearance of Sun, Moon and stars, and archaeoastronomy | [The Ecliptic and the Zodiac](../notes/ecliptic-zodiac.html)<br>[Measuring the Sky](../notes/measuring-the-sky.html)<br>[Archaeoastronomy: Precession and Monuments](../notes/archaeoastronomy.html)<br>[Moon Phases](../sims/moon-phases.html) | – |  | |
 | 3.7 | be able to | use data on the rate of precession | [The Ecliptic and the Zodiac](../notes/ecliptic-zodiac.html)<br>[Measuring the Sky](../notes/measuring-the-sky.html)<br>[Archaeoastronomy: Precession and Monuments](../notes/archaeoastronomy.html) | 6 |  | |
 | 3.8 | understand | appearance of the Sun in solar eclipses, including umbral contacts | [Eclipses](../sims/eclipses.html) | – |  | |
 | 3.9 | understand | appearance of the Moon in lunar eclipses, including umbral contacts | [Eclipses](../sims/eclipses.html) | – |  | |
-| 3.10 | understand | causes of solar and lunar eclipses | [Eclipses](../sims/eclipses.html) | – |  | |
+| 3.10 | understand | causes of solar and lunar eclipses | [Moon Phases](../sims/moon-phases.html)<br>[Eclipses](../sims/eclipses.html) | – |  | |
 
 ## Topic 4: Time and the Earth-Moon-Sun cycles
 
@@ -140,11 +140,11 @@ One row per point in the Edexcel GCSE Astronomy (1AS0) specification, Topics 1�
 
 | Code | Depth | Spec point | Page(s) | Questions | Thin coverage | Teacher's verdict |
 |---|---|---|---|---|---|---|
-| 7.1a | understand | ancient civilisations used observations of solar and lunar cycles for agriculture | [Archaeoastronomy: Precession and Monuments](../notes/archaeoastronomy.html) | – |  | |
-| 7.1b | understand | ancient civilisations used observations of solar and lunar cycles for religion | [Archaeoastronomy: Precession and Monuments](../notes/archaeoastronomy.html) | – |  | |
-| 7.1c | understand | ancient civilisations used observations of solar and lunar cycles for time and calendars | [Archaeoastronomy: Precession and Monuments](../notes/archaeoastronomy.html) | – |  | |
-| 7.1d | understand | ancient civilisations used observations of solar and lunar cycles for aligning monuments | [Archaeoastronomy: Precession and Monuments](../notes/archaeoastronomy.html) | – |  | |
-| 7.2 | understand | monuments' present alignments differ from the original because of precession | [Archaeoastronomy: Precession and Monuments](../notes/archaeoastronomy.html) | – |  | |
+| 7.1a | understand | ancient civilisations used observations of solar and lunar cycles for agriculture | [Archaeoastronomy: Precession and Monuments](../notes/archaeoastronomy.html)<br>[Moon Phases](../sims/moon-phases.html) | – |  | |
+| 7.1b | understand | ancient civilisations used observations of solar and lunar cycles for religion | [Archaeoastronomy: Precession and Monuments](../notes/archaeoastronomy.html)<br>[Moon Phases](../sims/moon-phases.html) | – |  | |
+| 7.1c | understand | ancient civilisations used observations of solar and lunar cycles for time and calendars | [Archaeoastronomy: Precession and Monuments](../notes/archaeoastronomy.html)<br>[Moon Phases](../sims/moon-phases.html) | – |  | |
+| 7.1d | understand | ancient civilisations used observations of solar and lunar cycles for aligning monuments | [Archaeoastronomy: Precession and Monuments](../notes/archaeoastronomy.html)<br>[Moon Phases](../sims/moon-phases.html) | – |  | |
+| 7.2 | understand | monuments' present alignments differ from the original because of precession | [Archaeoastronomy: Precession and Monuments](../notes/archaeoastronomy.html)<br>[Moon Phases](../sims/moon-phases.html) | – |  | |
 | 7.3 | understand | early geocentric models | [From Earth-Centred to Sun-Centred](../notes/geocentric-to-heliocentric.html) | – |  | |
 | 7.4 | understand | the advantage of epicycles (Ptolemy) | [From Earth-Centred to Sun-Centred](../notes/geocentric-to-heliocentric.html) | – |  | |
 | 7.5 | be able to | use information about the scale of the Solar System | [The Scale of the Solar System](../notes/scale-of-the-solar-system.html) | 4 |  | |

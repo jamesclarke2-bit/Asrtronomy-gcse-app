@@ -1,5 +1,5 @@
 (function () {
-  const CURRICULUM_UNITS = ['u2.3', 'u2.18'];
+  const CURRICULUM_UNITS = ['u2.3', 'u2.18', 'u2.19', 'u3.5'];
   const SYNODIC = MoonPhase.SYNODIC_MONTH_DAYS;
   const DAY_MS = 86400000;
 
@@ -346,6 +346,313 @@
   fullMoonYearSelect.addEventListener('change', renderFullMoonList);
   renderFullMoonList();
   setUpSpecialNamesToggle();
+
+  // --- Phase detective: reading sunrise/sunset/moonrise/moonset times ---
+  // Shared maths lives in src/phaseDetective.js (PhaseDetective below), so
+  // it's testable with node:test and usable from the practice questions
+  // too, rather than locked inside this page's own drawing code.
+
+  const SVG_NS = 'http://www.w3.org/2000/svg';
+  const PD = PhaseDetective;
+  // A date close to the equinox (day length near 12h everywhere, so the
+  // skill panel's round-number lags hold up reasonably well) but with
+  // enough seasonal skew that the latitude slider still visibly shifts
+  // sunrise and sunset — see this section's own "note" paragraph.
+  const PHASE_DETECTIVE_DATE = new Date(Date.UTC(2026, 3, 1, 12));
+  const PHASE_DETECTIVE_LON = 0;
+  const PHASE_DETECTIVE_PRACTICE_LAT = 51.5;
+
+  function pdSvgEl(tag, attrs, parent) {
+    const el = document.createElementNS(SVG_NS, tag);
+    Object.entries(attrs).forEach(([key, value]) => el.setAttribute(key, value));
+    if (parent) parent.appendChild(el);
+    return el;
+  }
+
+  function pdAddLabel(wrap, x, y, width, height, text, className) {
+    const el = document.createElement('span');
+    el.className = className || 'labelled-diagram-label';
+    el.style.left = `${(x / width) * 100}%`;
+    el.style.top = `${(y / height) * 100}%`;
+    el.textContent = text;
+    wrap.appendChild(el);
+    return el;
+  }
+
+  function pdClearDiagram(svg, wrap) {
+    while (svg.firstChild) svg.removeChild(svg.firstChild);
+    wrap.querySelectorAll('.labelled-diagram-label').forEach((el) => el.remove());
+  }
+
+  const PD_STRIP = { W: 600, H: 220, plotX0: 70, plotX1: 580, sunY: 50, moonY: 120, rowHeight: 36, axisY: 190 };
+
+  function pdMinutesToX(minutes) {
+    const { plotX0, plotX1 } = PD_STRIP;
+    return plotX0 + (minutes / 1440) * (plotX1 - plotX0);
+  }
+
+  // A shaded "up" band from startMinutes to endMinutes — split into two
+  // pieces when it wraps past midnight (e.g. the Moon rising in the
+  // evening and setting after dawn).
+  function pdDrawBand(svg, y, height, startMinutes, endMinutes, fill) {
+    const { plotX0, plotX1 } = PD_STRIP;
+    if (endMinutes >= startMinutes) {
+      pdSvgEl('rect', { x: pdMinutesToX(startMinutes), y, width: pdMinutesToX(endMinutes) - pdMinutesToX(startMinutes), height, fill }, svg);
+    } else {
+      pdSvgEl('rect', { x: pdMinutesToX(startMinutes), y, width: plotX1 - pdMinutesToX(startMinutes), height, fill }, svg);
+      pdSvgEl('rect', { x: plotX0, y, width: pdMinutesToX(endMinutes) - plotX0, height, fill }, svg);
+    }
+  }
+
+  function drawPhaseDetectiveStrip(times) {
+    const svg = document.getElementById('phase-detective-strip');
+    const wrap = document.getElementById('phase-detective-strip-wrap');
+    if (!svg || !wrap) return;
+    pdClearDiagram(svg, wrap);
+    const { W, H, plotX0, plotX1, sunY, moonY, rowHeight, axisY } = PD_STRIP;
+
+    pdSvgEl('rect', { x: 0, y: 0, width: W, height: H, rx: 8, fill: '#10141f' }, svg);
+
+    for (let h = 0; h <= 24; h += 3) {
+      const x = pdMinutesToX(h * 60);
+      pdSvgEl('line', { x1: x, y1: sunY - 6, x2: x, y2: axisY, stroke: '#232c3d', 'stroke-width': 1 }, svg);
+      if (h % 6 === 0) pdAddLabel(wrap, x, axisY + 14, W, H, `${String(h % 24).padStart(2, '0')}:00`, 'star-label');
+    }
+    pdSvgEl('line', { x1: plotX0, y1: axisY, x2: plotX1, y2: axisY, stroke: '#7c8aa3', 'stroke-width': 1.5 }, svg);
+
+    pdAddLabel(wrap, 18, sunY + rowHeight / 2, W, H, 'Sun', 'star-label');
+    pdAddLabel(wrap, 18, moonY + rowHeight / 2, W, H, 'Moon', 'star-label');
+
+    pdSvgEl('rect', { x: plotX0, y: sunY, width: plotX1 - plotX0, height: rowHeight, rx: 4, fill: '#1c2430' }, svg);
+    pdSvgEl('rect', { x: plotX0, y: moonY, width: plotX1 - plotX0, height: rowHeight, rx: 4, fill: '#1c2430' }, svg);
+
+    pdDrawBand(svg, sunY, rowHeight, times.sunriseMinutes, times.sunsetMinutes, 'rgba(245,166,35,0.35)');
+    pdDrawBand(svg, moonY, rowHeight, times.moonriseMinutes, times.moonsetMinutes, 'rgba(122,162,255,0.35)');
+
+    const sunMidY = sunY + rowHeight / 2;
+    const moonMidY = moonY + rowHeight / 2;
+    SunIcon.appendSunSvg(svg, pdMinutesToX(times.sunriseMinutes), sunMidY, 9, { coronaScale: 1.5 });
+    SunIcon.appendSunSvg(svg, pdMinutesToX(times.sunsetMinutes), sunMidY, 9, { coronaScale: 1.5 });
+
+    function moonIcon(x, y) {
+      const g = pdSvgEl('g', { transform: `translate(${x},${y})` }, svg);
+      pdSvgEl('circle', { cx: 0, cy: 0, r: 9, fill: MOON_DARK_COLOR }, g);
+      const polygon = MoonPhasesDiagrams.earthViewDiscPolygon(times.theta, 9);
+      pdSvgEl('polygon', { points: polygon.map(([px, py]) => `${px},${py}`).join(' '), fill: MOON_LIT_COLOR }, g);
+      pdSvgEl('circle', { cx: 0, cy: 0, r: 9, fill: 'none', stroke: '#20242e', 'stroke-width': 1 }, g);
+    }
+    moonIcon(pdMinutesToX(times.moonriseMinutes), moonMidY);
+    moonIcon(pdMinutesToX(times.moonsetMinutes), moonMidY);
+  }
+
+  function setUpPhaseDetective() {
+    const phaseSlider = document.getElementById('phase-detective-phase-slider');
+    if (!phaseSlider) return;
+    const latSlider = document.getElementById('phase-detective-lat-slider');
+    const phaseLabel = document.getElementById('phase-detective-phase-label');
+    const latLabel = document.getElementById('phase-detective-lat-label');
+    const lagReadout = document.getElementById('phase-detective-lag-readout');
+    const ageReadout = document.getElementById('phase-detective-age-readout');
+    const tableBody = document.getElementById('phase-detective-table-body');
+
+    function render() {
+      const preset = PD.PHASE_PRESETS[Number(phaseSlider.value)];
+      const lat = Number(latSlider.value);
+      phaseLabel.textContent = preset.label;
+      latLabel.textContent = `${lat.toFixed(1)}°N`;
+
+      const { sunriseUT, sunsetUT } = SolarPosition.getSunriseSunset(PHASE_DETECTIVE_DATE, lat, PHASE_DETECTIVE_LON);
+      const lagHours = PD.lagHoursFromTheta(preset.theta);
+      const times = {
+        sunriseMinutes: PD.wrapMinutes(sunriseUT),
+        sunsetMinutes: PD.wrapMinutes(sunsetUT),
+        moonriseMinutes: PD.addLagHours(sunriseUT, lagHours),
+        moonsetMinutes: PD.addLagHours(sunsetUT, lagHours),
+        theta: preset.theta,
+      };
+
+      drawPhaseDetectiveStrip(times);
+
+      tableBody.innerHTML = '';
+      [
+        ['Sunrise', times.sunriseMinutes],
+        ['Sunset', times.sunsetMinutes],
+        ['Moonrise', times.moonriseMinutes],
+        ['Moonset', times.moonsetMinutes],
+      ].forEach(([label, minutes]) => {
+        const tr = document.createElement('tr');
+        const th = document.createElement('th');
+        th.scope = 'row';
+        th.textContent = label;
+        const td = document.createElement('td');
+        td.textContent = PD.formatClock(minutes);
+        tr.appendChild(th);
+        tr.appendChild(td);
+        tableBody.appendChild(tr);
+      });
+
+      const lagH = Math.floor(lagHours);
+      const lagM = Math.round((lagHours - lagH) * 60);
+      lagReadout.textContent = lagHours === 0 ? '0 hours (rises with the Sun)' : `${lagH}h ${String(lagM).padStart(2, '0')}m`;
+      ageReadout.textContent = `${PD.estimatedAgeDaysFromLagHours(lagHours).toFixed(1)} days`;
+    }
+
+    phaseSlider.addEventListener('input', render);
+    latSlider.addEventListener('input', render);
+    render();
+  }
+
+  // --- Detective practice: four random real dates, each with worked
+  // reasoning for the "most likely" full/crescent/eclipse pick -------
+
+  function pdFormatDate(date) {
+    return date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
+  }
+
+  function pdRandomDates(count) {
+    const dates = [];
+    for (let i = 0; i < count; i += 1) {
+      const offsetDays = (Math.random() - 0.5) * 365 * 6;
+      dates.push(new Date(Date.UTC(2024, 0, 1, 12) + offsetDays * DAY_MS));
+    }
+    return dates;
+  }
+
+  // Index of the row whose score (lower is better) is smallest.
+  function pdBestIndex(rows, scoreFn) {
+    let best = 0;
+    rows.forEach((row, i) => {
+      if (scoreFn(row) < scoreFn(rows[best])) best = i;
+    });
+    return best;
+  }
+
+  const PD_CRESCENT_THETAS = [45, 315]; // representative waxing/waning crescent points
+
+  function pdCrescentScore(theta) {
+    return Math.min(...PD_CRESCENT_THETAS.map((t) => Math.abs(theta - t)));
+  }
+
+  let phaseDetectiveRows = [];
+
+  function renderPhaseDetectiveTable() {
+    const body = document.getElementById('phase-detective-dates-body');
+    if (!body) return;
+    body.innerHTML = '';
+    const letters = ['A', 'B', 'C', 'D'];
+    phaseDetectiveRows = pdRandomDates(4).map((date, i) => ({
+      letter: letters[i],
+      date,
+      ...PD.riseSetTimesForDate(date, PHASE_DETECTIVE_PRACTICE_LAT, PHASE_DETECTIVE_LON),
+    }));
+
+    phaseDetectiveRows.forEach((row) => {
+      const tr = document.createElement('tr');
+      [
+        `${row.letter}: ${pdFormatDate(row.date)}`,
+        PD.formatClock(row.sunriseMinutes),
+        PD.formatClock(row.sunsetMinutes),
+        PD.formatClock(row.moonriseMinutes),
+        PD.formatClock(row.moonsetMinutes),
+      ].forEach((text, i) => {
+        const cell = document.createElement(i === 0 ? 'th' : 'td');
+        if (i === 0) cell.scope = 'row';
+        cell.textContent = text;
+        tr.appendChild(cell);
+      });
+      body.appendChild(tr);
+    });
+  }
+
+  function pdQuestionBlock(promptText, correctLetter, explanation) {
+    const step = document.createElement('div');
+    step.className = 'scaffold-step';
+    const prompt = document.createElement('p');
+    prompt.className = 'scaffold-prompt';
+    prompt.textContent = promptText;
+    step.appendChild(prompt);
+
+    const quickCheck = document.createElement('div');
+    quickCheck.className = 'quick-check';
+    const options = document.createElement('div');
+    options.className = 'quick-check-options';
+    ['A', 'B', 'C', 'D'].forEach((letter) => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.textContent = letter;
+      button.dataset.correct = String(letter === correctLetter);
+      options.appendChild(button);
+    });
+    const feedback = document.createElement('p');
+    feedback.className = 'question-feedback quick-check-feedback';
+    feedback.setAttribute('aria-live', 'polite');
+    quickCheck.appendChild(options);
+    quickCheck.appendChild(feedback);
+    step.appendChild(quickCheck);
+
+    [...options.children].forEach((button) => {
+      button.addEventListener('click', () => {
+        if (quickCheck.dataset.answered) return;
+        quickCheck.dataset.answered = 'true';
+        const correct = button.dataset.correct === 'true';
+        button.classList.add(correct ? 'quick-check-correct' : 'quick-check-incorrect');
+        if (!correct) {
+          const correctButton = [...options.children].find((b) => b.dataset.correct === 'true');
+          if (correctButton) correctButton.classList.add('quick-check-correct');
+        }
+        feedback.className = 'question-feedback quick-check-feedback ' + (correct ? 'correct' : 'incorrect');
+        feedback.textContent = `${correct ? 'Correct!' : 'Not quite.'} ${explanation}`;
+      });
+    });
+
+    return step;
+  }
+
+  function renderPhaseDetectiveQuestions() {
+    const container = document.getElementById('phase-detective-questions');
+    if (!container) return;
+    container.innerHTML = '';
+
+    const fullIndex = pdBestIndex(phaseDetectiveRows, (r) => Math.abs(PD.lagHoursFromTheta(r.theta) - 12));
+    const crescentIndex = pdBestIndex(phaseDetectiveRows, (r) => pdCrescentScore(r.theta));
+    const eclipseIndex = pdBestIndex(phaseDetectiveRows, (r) => PD.distanceFromNewMoonDeg(r.theta));
+
+    const fullRow = phaseDetectiveRows[fullIndex];
+    const crescentRow = phaseDetectiveRows[crescentIndex];
+    const eclipseRow = phaseDetectiveRows[eclipseIndex];
+
+    container.appendChild(pdQuestionBlock(
+      'Which date shows a full Moon?',
+      fullRow.letter,
+      `Date ${fullRow.letter}'s moonrise is ${PD.lagHoursFromTheta(fullRow.theta).toFixed(1)}h after sunrise — closest to the 12-hour, moonrise-at-sunset pattern of the four.`,
+    ));
+    container.appendChild(pdQuestionBlock(
+      'Which date shows a crescent Moon?',
+      crescentRow.letter,
+      `Date ${crescentRow.letter}'s moonrise is ${PD.lagHoursFromTheta(crescentRow.theta).toFixed(1)}h from sunrise — the closest of the four to the Sun, the crescent pattern.`,
+    ));
+    container.appendChild(pdQuestionBlock(
+      'Which date would a solar eclipse be most likely?',
+      eclipseRow.letter,
+      `Date ${eclipseRow.letter} is closest to New Moon (moonrise within ${PD.lagHoursFromTheta(eclipseRow.theta).toFixed(1)}h of sunrise) — the precondition for a solar eclipse, though most new Moons still miss (see Eclipses).`,
+    ));
+  }
+
+  function renderPhaseDetectivePractice() {
+    renderPhaseDetectiveTable();
+    renderPhaseDetectiveQuestions();
+  }
+
+  function setUpPhaseDetectivePractice() {
+    const newTableButton = document.getElementById('phase-detective-new-table-btn');
+    if (!newTableButton) return;
+    newTableButton.addEventListener('click', renderPhaseDetectivePractice);
+    renderPhaseDetectivePractice();
+  }
+
+  setUpPhaseDetective();
+  setUpPhaseDetectivePractice();
+  QuizUI.mount(MoonPhasesQuestions.makeQuestions(MoonPhase));
 
   dateInput.value = toDateInputValue(new Date());
   render();

@@ -177,6 +177,133 @@
       <span class="glossary-definition" data-term="terminator" hidden></span>
     </section>
 
+    <section class="notes-section" id="phase-detective">
+      <h2>Phase detective: reading the sky's clock</h2>
+      <p>
+        A phase isn't just a shape &mdash; it's also a <em>time</em>. Compare when the Moon rises
+        against when the Sun rises and you can work out the phase without ever seeing the Moon
+        itself, the same way as exam question June 2025 Paper 1 Q4(a). Try a phase below.
+      </p>
+
+      <div class="diagram phase-detective-strip-diagram">
+        <div class="labelled-diagram-wrap" id="phase-detective-strip-wrap">
+          <svg
+            id="phase-detective-strip"
+            class="responsive-svg"
+            width="600"
+            height="220"
+            viewBox="0 0 600 220"
+            role="img"
+            aria-label="A 24-hour timeline with a Sun row and a Moon row, each shaded from rise to set, showing the gap between when the Sun rises and when the Moon rises for the selected phase"
+          ></svg>
+        </div>
+      </div>
+
+      <div class="table-scroll">
+        <table class="shower-table" id="phase-detective-table">
+          <thead>
+            <tr><th scope="col">Event</th><th scope="col">Time (24-hour clock)</th></tr>
+          </thead>
+          <tbody id="phase-detective-table-body"></tbody>
+        </table>
+      </div>
+
+      <div class="control-panel star-panel">
+        <p class="panel-title">The Moon's phase</p>
+        <div class="control">
+          <label for="phase-detective-phase-slider">Phase: <span id="phase-detective-phase-label"></span></label>
+          <input type="range" id="phase-detective-phase-slider" min="0" max="5" step="1" value="0" />
+        </div>
+      </div>
+      <div class="control-panel observer-panel">
+        <p class="panel-title">The observer</p>
+        <div class="control">
+          <label for="phase-detective-lat-slider">Latitude: <span id="phase-detective-lat-label"></span></label>
+          <input type="range" id="phase-detective-lat-slider" min="30" max="60" step="0.5" value="51.5" />
+        </div>
+      </div>
+
+      <dl class="readout">
+        <dt>Moonrise is after sunrise by</dt>
+        <dd id="phase-detective-lag-readout"></dd>
+        <dt>Estimated Moon age (lag &divide; ~50 min a day)</dt>
+        <dd id="phase-detective-age-readout"></dd>
+      </dl>
+
+      <p class="note">
+        Uses a fixed date (1 April) close to the equinox, so day and night are close to equal
+        length and the simple hour figures below hold up reasonably well; dragging latitude still
+        shifts sunrise and sunset a little, because day length isn't <em>exactly</em> equal at
+        every latitude even then. Real times vary more with season and latitude &mdash; see the
+        note in the skills panel below.
+      </p>
+
+      <div class="scaffold-step">
+        <p class="scaffold-prompt">
+          Compare the Moon's times with the Sun's times
+          <button type="button" class="glossary-toggle glossary-term-button" data-term="phaseDetectiveSkill" aria-label="Show how to read the phase from the times" aria-expanded="false">Show me</button>
+        </p>
+        <div class="glossary-definition scaffold-reveal" data-term="phaseDetectiveSkill" hidden>
+          <ul>
+            <li>Moonrise with sunrise &mdash; New Moon (and so the chance of a solar eclipse).</li>
+            <li>Moonrise about 6 hours after sunrise &mdash; First Quarter.</li>
+            <li>Moonrise at sunset, and moonset at sunrise &mdash; Full Moon.</li>
+            <li>Moonrise about 18 hours after sunrise, or about midnight &mdash; Last Quarter.</li>
+            <li>
+              A Moon within a few hours of the Sun &mdash; a crescent: sets after the Sun means
+              waxing; rises before the Sun means waning.
+            </li>
+          </ul>
+          <p class="note">
+            Real times vary with the season and latitude: the Moon's own declination, and how
+            steeply the sky tilts at a given latitude, both shift rise and set times away from
+            these round numbers, the same way the Sun's own sunrise and sunset times do through
+            the year.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="notes-section" id="phase-detective-practice">
+      <h2>Detective practice: four dates</h2>
+      <p>
+        Four real dates, generated from this page's own engines &mdash; in the style of June 2025
+        Paper 1 Q4(a). Use the skills above to work out which is which, then check your reasoning.
+      </p>
+
+      <div class="table-scroll">
+        <table class="shower-table" id="phase-detective-dates-table">
+          <thead>
+            <tr>
+              <th scope="col">Date</th>
+              <th scope="col">Sunrise (24-hour clock)</th>
+              <th scope="col">Sunset (24-hour clock)</th>
+              <th scope="col">Moonrise (24-hour clock)</th>
+              <th scope="col">Moonset (24-hour clock)</th>
+            </tr>
+          </thead>
+          <tbody id="phase-detective-dates-body"></tbody>
+        </table>
+      </div>
+
+      <div class="control">
+        <button type="button" id="phase-detective-new-table-btn" class="secondary-button">New table</button>
+      </div>
+
+      <div id="phase-detective-questions"></div>
+    </section>
+
+    <section class="questions" id="questions">
+      <h2>Practice questions</h2>
+      <div id="questions-list"></div>
+    </section>
+
+    <section class="progress">
+      <h2>Your progress</h2>
+      <ul id="progress-list"></ul>
+      <p class="note">Stored in this browser only (localStorage) &mdash; no account needed.</p>
+    </section>
+
     <section class="notes-section" id="earthshine">
       <h2>Earthshine</h2>
       <p>
@@ -332,14 +459,17 @@
   <script src="../src/pages.js?v=202611071500"></script>
   <script src="../src/moonPhase.js?v=202611031700"></script>
   <script src="../src/solarPosition.js?v=202611091000"></script>
+  <script src="../src/phaseDetective.js?v=202611100900"></script>
   <script src="../src/orbitalMechanics.js?v=202610100900"></script>
   <script src="../src/sunIcon.js?v=202611071200"></script>
   <script src="../src/moonOrbitPanel.js?v=202611071200"></script>
   <script src="../src/animationTiming.js?v=202610130606"></script>
   <script src="../src/moonPhasesDiagrams.js?v=202611031300"></script>
   <script src="../src/fullMoonNames.js?v=202610311400"></script>
+  <script src="../src/moonPhasesQuestions.js?v=202611100900"></script>
   <script src="../glossary.js?v=202610131052"></script>
-  <script src="moon-phases.js?v=202611062300"></script>
+  <script src="../quiz-ui.js?v=202611052116"></script>
+  <script src="moon-phases.js?v=202611100900"></script>
   <script src="../diagramEnlarge.js?v=202611051400"></script>
   <script src="../nextPage.js?v=202610161057"></script>
 </body>
