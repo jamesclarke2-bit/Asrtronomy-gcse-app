@@ -158,7 +158,7 @@ function alignmentWindows(bearingDeg, latDeg, toleranceDeg, year) {
   };
 }
 
-const api = {
+const tunnelAlignmentApi = {
   SUNRISE_CROSSING_ALTITUDE_DEG,
   decimalDegrees,
   interpolate,
@@ -172,7 +172,7 @@ const api = {
 };
 
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = api;
+  module.exports = tunnelAlignmentApi;
 } else if (typeof window !== 'undefined') {
-  window.TunnelAlignment = api;
+  window.TunnelAlignment = tunnelAlignmentApi;
 }

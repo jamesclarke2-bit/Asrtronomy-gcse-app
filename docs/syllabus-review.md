@@ -148,7 +148,7 @@ One row per point in the Edexcel GCSE Astronomy (1AS0) specification, Topics 1�
 | 7.3 | understand | early geocentric models | [From Earth-Centred to Sun-Centred](../notes/geocentric-to-heliocentric.html) | – |  | |
 | 7.4 | understand | the advantage of epicycles (Ptolemy) | [From Earth-Centred to Sun-Centred](../notes/geocentric-to-heliocentric.html) | – |  | |
 | 7.5 | be able to | use information about the scale of the Solar System | [The Scale of the Solar System](../notes/scale-of-the-solar-system.html) | 4 |  | |
-| 7.6 | be able to | use the astronomical unit (1 AU = 1.5 x 10^8 km), light year and parsec | [The Scale of the Solar System](../notes/scale-of-the-solar-system.html) | 2 |  | |
+| 7.6 | be able to | use the astronomical unit (1 AU = 1.5 x 10^8 km), light year and parsec | [The Scale of the Solar System](../notes/scale-of-the-solar-system.html)<br>[Parallax and the Parsec: Measuring Distances to Stars](../notes/parallax.html) | 3 |  | |
 
 ## Topic 8: Planetary motion and gravity
 
@@ -203,7 +203,7 @@ One row per point in the Edexcel GCSE Astronomy (1AS0) specification, Topics 1�
 | 11.6 | understand | planets' principal characteristics (relative size, relative mass, surface temperature, atmospheric composition, satellites, rings) | [Bodies of the Solar System](../notes/solar-system-bodies.html) | – |  | |
 | 11.7 | understand | main theories for the formation and position of the gas giants | [Bodies of the Solar System](../notes/solar-system-bodies.html) | – |  | |
 | 11.8 | be able to | use information about the size of the Solar System | [The Scale of the Solar System](../notes/scale-of-the-solar-system.html) | 4 |  | |
-| 11.9 | be able to | use the AU, light year and parsec | [The Scale of the Solar System](../notes/scale-of-the-solar-system.html) | 2 |  | |
+| 11.9 | be able to | use the AU, light year and parsec | [The Scale of the Solar System](../notes/scale-of-the-solar-system.html)<br>[Parallax and the Parsec: Measuring Distances to Stars](../notes/parallax.html) | 3 |  | |
 | 11.10 | understand | origin and structure of meteoroids and meteorites | [Bodies of the Solar System](../notes/solar-system-bodies.html) | – |  | |
 | 11.11 | know | most bodies orbit in or near the ecliptic plane | [The Ecliptic and the Zodiac](../notes/ecliptic-zodiac.html)<br>[Bodies of the Solar System](../notes/solar-system-bodies.html) | – |  | |
 | 11.12 | understand | transits of Venus (Halley) used to find the AU | [Bodies of the Solar System](../notes/solar-system-bodies.html) | – |  | |

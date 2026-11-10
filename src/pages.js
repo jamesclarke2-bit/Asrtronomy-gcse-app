@@ -327,6 +327,16 @@ const PAGES = [
     why: "The equipment that made everything above observable in the first place — including Galileo's own telescope, back on From Earth-Centred to Sun-Centred.",
   },
   {
+    title: 'Parallax and the Parsec: Measuring Distances to Stars',
+    description:
+      "How Earth's own orbit becomes a surveying baseline: a nearby star's tiny apparent shift against far more distant background stars, six months apart, gives its distance by simple geometry. The parsec itself, defined from that shift, and why the method runs out past a few hundred parsecs.",
+    href: 'notes/parallax.html',
+    units: ['u4.5', 'u3.4'],
+    phase: 'Stars and the Universe',
+    position: 31,
+    why: "Telescopes' own resolving power turns out to set a hard distance limit here too — the first page of the sky beyond the Solar System, and the ground this phase's own magnitude page (next) builds on.",
+  },
+  {
     title: 'Bodies of the Solar System',
     description:
       "A to-scale size line-up and bar chart of the planets and dwarf planets, the larger named moons by planet, the four ringed planets drawn at relative size with Saturn's rings the most visible, Io's tidal heating (reusable diagram) from its 1:2:4 resonance with Europa and Ganymede, a temperature-against-distance chart, a planet-vs-dwarf-planet decision diagram, asteroids/meteoroids/comets, a comet-tail diagram and the Kuiper Belt/Oort Cloud on a logarithmic scale, transits of Venus and measuring the AU, and brief formation theories — a first draft pending teacher review.",
@@ -421,6 +431,7 @@ const DIAGRAM_FIRST_PAGES = [
   'sims/sun-declination.html',
   'notes/sun-features.html',
   'notes/ecliptic-zodiac.html',
+  'notes/parallax.html',
 ];
 
 /**
@@ -483,8 +494,8 @@ const COMING_SOON = [
   {
     name: 'Stars, galaxies and the Universe',
     phase: 'Stars and the Universe',
-    position: 31,
-    why: "The whole rest of the sky this course hasn't reached yet: what stars are and how they live and die, our own Galaxy's structure, and the wider Universe beyond it.",
+    position: 32,
+    why: "Now that Parallax and the Parsec can measure how far away a star is, the rest of the sky this course hasn't reached yet: what a star actually is and how it lives and dies (absolute magnitude, next, is the first piece), our own Galaxy's structure, and the wider Universe beyond it.",
     // Topics 13-16 have no SPEC_POINTS registry entries at all yet
     // (src/specPoints.js's own header explains why), so there are no
     // point-level codes to name — `topics` instead, not `specPoints`.

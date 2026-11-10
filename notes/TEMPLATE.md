@@ -22,6 +22,7 @@ every page listed as conforming below.
 | `notes/solar-system-bodies.html` | Yes (built to it from the start) |
 | `notes/sun-features.html` | Yes (built to it from the start) |
 | `notes/ecliptic-zodiac.html` | Yes (built to it from the start) |
+| `notes/parallax.html` | Yes (built to it from the start) |
 
 Every `notes/` page now conforms. When a page is retrofitted, add it to `CONFORMING_PAGES`
 in `test/notesTemplate.test.js` and update this table.

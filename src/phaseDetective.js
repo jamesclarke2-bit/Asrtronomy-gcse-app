@@ -116,7 +116,7 @@ function formatClock(minutes) {
   return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
 }
 
-const api = {
+const phaseDetectiveApi = {
   PHASE_PRESETS,
   DEG_PER_HOUR,
   MINUTES_LATER_PER_DAY,
@@ -132,7 +132,7 @@ const api = {
 };
 
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = api;
+  module.exports = phaseDetectiveApi;
 } else if (typeof window !== 'undefined') {
-  window.PhaseDetective = api;
+  window.PhaseDetective = phaseDetectiveApi;
 }

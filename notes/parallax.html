@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; form-action 'none'; base-uri 'self'" />
+  <meta name="referrer" content="no-referrer" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Parallax and the Parsec: Measuring Distances to Stars</title>
+  <link rel="stylesheet" href="../styles.css?v=202611101000" />
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg?v=202610130720" />
+</head>
+<body>
+  <main>
+    <p class="back-link"><a href="../index.html">&larr; Back to all tools</a></p>
+
+    <h1>Parallax and the Parsec: Measuring Distances to Stars</h1>
+    <p class="subtitle">
+      How astronomers actually measure the distance to a star: not by eye, but by how much its
+      position appears to shift against far more distant stars as Earth swings from one side of
+      its orbit to the other, six months later. That shift defines the parsec &mdash; the unit
+      the next page's brightness-based distances build on.
+    </p>
+
+    <section class="notes-section" id="parallax-diagram">
+      <h2>Seeing a star jump: the parallax effect</h2>
+      <p>
+        Hold a finger at arm's length. Close one eye, then the other &mdash; the finger seems to
+        jump against the background. Earth does the same trick on a far bigger scale, six months
+        apart. Drag the slider to see how the shift shrinks as the star gets farther away.
+      </p>
+
+      <div class="diagram parallax-plan-diagram">
+        <div class="labelled-diagram-wrap" id="parallax-plan-wrap">
+          <svg
+            id="parallax-plan-diagram"
+            class="responsive-svg"
+            width="380"
+            height="400"
+            viewBox="0 0 380 400"
+            role="img"
+            aria-label="Plan view with the Sun at the centre, Earth at two positions six months apart on its orbit, a nearby star, and several distant background stars. Sight lines from each Earth position to the nearby star are extended out to the background, landing at two slightly different points, showing the star's apparent shift."
+          ></svg>
+        </div>
+      </div>
+
+      <div class="control-panel star-panel">
+        <p class="panel-title">The star</p>
+        <div class="control">
+          <label for="parallax-distance-slider">Distance: <span id="parallax-distance-label"></span></label>
+          <input type="range" id="parallax-distance-slider" min="1" max="100" step="1" value="4" />
+        </div>
+      </div>
+
+      <dl class="readout">
+        <dt>Parallax angle, p</dt>
+        <dd id="parallax-angle-readout"></dd>
+        <dt>Distance</dt>
+        <dd id="parallax-distance-readout"></dd>
+      </dl>
+
+      <p class="note">
+        The baseline is 1 AU, Sun to Earth &mdash; p itself is <strong>half</strong> the total
+        apparent shift, measured from the Sun to Earth's position, not from one Earth position to
+        the other. Real stellar parallax angles are a tiny fraction of a degree, far too small to
+        draw to scale, so the angle here is exaggerated to stay visible.
+      </p>
+
+      <p>
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="thumbTrick" aria-label="Try the thumb trick yourself" aria-expanded="false">Try the thumb trick</button>
+      </p>
+      <div class="glossary-definition scaffold-reveal" data-term="thumbTrick" hidden>
+        <p>
+          Hold your thumb out at arm's length, in front of something further away &mdash; a wall,
+          a window, a tree. Close your left eye, then your right. Your thumb seems to jump back
+          and forth against the distant background, even though it hasn't moved at all: your two
+          eyes are looking at it from two slightly different positions. A nearby star does exactly
+          the same thing against the far more distant background stars, as Earth's orbit carries
+          it between two positions six months apart &mdash; just with a much, much longer
+          baseline, and a correspondingly tinier shift.
+        </p>
+      </div>
+    </section>
+
+    <section class="notes-section" id="units">
+      <h2>The units: arcseconds and parsecs</h2>
+      <p>
+        Parallax angles are far too small for degrees to be a convenient unit, so astronomers
+        split the degree much further: 1 degree is 60
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="arcminute" aria-label="What is an arcminute?" aria-expanded="false">arcminutes</button>,
+        and 1 arcminute is 60
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="arcsecond" aria-label="What is an arcsecond?" aria-expanded="false">arcseconds</button>
+        &mdash; so 1 degree is 3600 arcseconds.
+      </p>
+      <span class="glossary-definition" data-term="arcminute" hidden></span>
+      <span class="glossary-definition" data-term="arcsecond" hidden></span>
+
+      <p>
+        A
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="parsec" aria-label="What is a parsec?" aria-expanded="false">parsec</button>
+        (pc) is defined directly from this: it's the distance at which 1 AU subtends an angle of
+        exactly 1 arcsecond of parallax &mdash; <span id="units-au-per-parsec"></span> AU, about
+        <span id="units-ly-per-parsec"></span>
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="lightYear" aria-label="What is a light year?" aria-expanded="false">light years</button>,
+        or about <span id="units-m-per-parsec"></span> m.
+      </p>
+      <span class="glossary-definition" data-term="parsec" hidden></span>
+      <span class="glossary-definition" data-term="lightYear" hidden></span>
+
+      <p>
+        That definition rearranges into the formula this whole page runs on:
+      </p>
+      <p class="formula"><strong>d (pc) = 1 &divide; p (arcsec)</strong></p>
+      <p>
+        To convert a distance in parsecs to light years, multiply by <span id="units-ly-factor"></span>.
+      </p>
+
+      <div class="table-scroll">
+        <table class="shower-table" id="units-example-table">
+          <caption>Worked examples</caption>
+          <thead>
+            <tr><th scope="col">p (arcsec)</th><th scope="col">d (pc)</th><th scope="col">d (ly)</th></tr>
+          </thead>
+          <tbody id="units-example-table-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="notes-section" id="limits">
+      <h2>Limits: why parallax stops working</h2>
+      <p>
+        The further away a star is, the smaller its parallax angle &mdash; and at some point it
+        becomes too small to measure at all. From the ground, atmospheric blurring limits
+        telescopes to about <span id="limits-ground-arcsec"></span> arcsec, a distance of about
+        <span id="limits-ground-pc"></span> pc.
+      </p>
+
+      <div class="table-scroll">
+        <table class="shower-table" id="limits-satellite-table">
+          <caption>First draft, to be checked by the teacher</caption>
+          <thead>
+            <tr><th scope="col">Method</th><th scope="col">Smallest measurable p (arcsec)</th><th scope="col">Furthest distance (pc)</th></tr>
+          </thead>
+          <tbody id="limits-satellite-table-body"></tbody>
+        </table>
+      </div>
+
+      <p>
+        Beyond each limit, the angle simply can't be measured &mdash; parallax runs out, which is
+        exactly why astronomers turn to a star's <em>brightness</em> instead, on the next page.
+      </p>
+
+      <p>
+        A measured parallax always comes with an uncertainty, usually given as plus or minus half
+        the range the repeated measurements actually spread across &mdash; repeating a
+        measurement makes the uncertainty clearer, not the measurement itself more accurate. For a
+        small p, that uncertainty translates into a surprisingly wide range of possible distances.
+        Try it:
+      </p>
+
+      <div class="control-panel observer-panel">
+        <p class="panel-title">A measured parallax</p>
+        <div class="control">
+          <label for="uncertainty-parallax-input">p (arcsec)</label>
+          <input type="number" id="uncertainty-parallax-input" value="0.010" min="0.001" max="1" step="0.001" />
+        </div>
+        <div class="control">
+          <label for="uncertainty-input">Uncertainty, &plusmn; (arcsec)</label>
+          <input type="number" id="uncertainty-input" value="0.005" min="0" max="1" step="0.001" />
+        </div>
+      </div>
+
+      <dl class="readout">
+        <dt>Distance range</dt>
+        <dd id="uncertainty-range-readout"></dd>
+      </dl>
+      <div class="uncertainty-bar-track" id="uncertainty-bar-track">
+        <div class="uncertainty-bar-fill" id="uncertainty-bar-fill"></div>
+      </div>
+    </section>
+
+    <section class="notes-section" id="star-list">
+      <h2>Real stars, real parallaxes</h2>
+      <p>
+        Pick a star to see its measured parallax, and the distance it implies &mdash; computed
+        the same way as everywhere else on this page, from that one parallax figure.
+      </p>
+
+      <div class="control">
+        <label for="star-select">Star</label>
+        <select id="star-select"></select>
+      </div>
+
+      <dl class="readout">
+        <dt>Parallax, p</dt>
+        <dd id="star-parallax-readout"></dd>
+        <dt>Distance</dt>
+        <dd id="star-distance-readout"></dd>
+      </dl>
+
+      <p class="note">
+        Every parallax figure above is first draft, to be checked by the teacher.
+      </p>
+
+      <p>
+        Notice that 10 pc is exactly where the parallax would be 0.1 arcsec &mdash; a
+        round-number distance the next page uses as its own reference point, since absolute
+        magnitude is defined as how bright a star would look from exactly there.
+      </p>
+    </section>
+
+    <section class="notes-section" id="exam-tips">
+      <h2>Exam tips</h2>
+      <p class="exam-tip">
+        <strong>Common exam confusion:</strong> the parallax angle p is <em>half</em> the star's
+        total apparent shift, not the whole thing &mdash; p is measured from the Sun to one
+        Earth position, using a 1 AU baseline, even though the two observations themselves are 2
+        AU apart.
+        <a href="#parallax-diagram">Seeing a star jump &uarr;</a>
+      </p>
+      <p class="exam-tip">
+        <strong>Common exam confusion:</strong> a parsec is a distance, not a time or an angle
+        &mdash; and it's bigger than a light year (1 pc &asymp; 3.26 ly), the opposite of what
+        "parsec" sounds like.
+        <a href="#units">The units &uarr;</a>
+      </p>
+      <p class="exam-tip">
+        <strong>Common exam link:</strong> a smaller parallax angle always means a
+        <em>larger</em> distance (d = 1/p) &mdash; the two move in opposite directions, so don't
+        assume a "bigger number" story applies to both.
+        <a href="#limits">Limits &uarr;</a>
+      </p>
+    </section>
+
+    <section class="notes-section" id="related">
+      <h2>Related pages</h2>
+      <div class="page-card-list">
+        <a class="page-card" href="scale-of-the-solar-system.html">
+          <h3>The Scale of the Solar System</h3>
+          <p class="page-card-description">The AU, light year and parsec first introduced as a size ladder &mdash; this page explains where the parsec itself actually comes from.</p>
+        </a>
+        <a class="page-card" href="measuring-the-sky.html">
+          <h3>Measuring the Sky</h3>
+          <p class="page-card-description">The same small-angle idea used in degrees, for Eratosthenes' shadow and the Moon's size &mdash; parallax pushes it down to arcseconds.</p>
+        </a>
+        <a class="page-card" href="data-sheet.html">
+          <h3>Formulae and Data Sheet</h3>
+          <p class="page-card-description">The exam's own AU, light year and parsec figures, and the apparent/absolute magnitude formula the next page builds on.</p>
+        </a>
+      </div>
+    </section>
+
+    <section class="questions" id="questions">
+      <h2>Practice questions</h2>
+      <div id="questions-list"></div>
+    </section>
+
+    <section class="progress">
+      <h2>Your progress</h2>
+      <ul id="progress-list"></ul>
+      <p class="note">Stored in this browser only (localStorage) &mdash; no account needed.</p>
+    </section>
+
+    <p class="coverage" id="coverage"></p>
+    <p class="next-page-link" id="next-page"></p>
+  </main>
+
+  <script src="../src/curriculum.js?v=202611101000"></script>
+  <script src="../src/pages.js?v=202611101000"></script>
+  <script src="../src/specData.js?v=202610161036"></script>
+  <script src="../src/sunIcon.js?v=202611071200"></script>
+  <script src="../src/parallax.js?v=202611101000"></script>
+  <script src="../src/parallaxQuestions.js?v=202611101000"></script>
+  <script src="../glossary.js?v=202610131052"></script>
+  <script src="../quiz-ui.js?v=202611052116"></script>
+  <script src="parallax.js?v=202611101000"></script>
+  <script src="../diagramEnlarge.js?v=202611051400"></script>
+  <script src="../notesPage.js?v=202609252100"></script>
+  <script src="../nextPage.js?v=202610161057"></script>
+</body>
+</html>

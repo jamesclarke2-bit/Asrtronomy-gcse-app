@@ -4156,3 +4156,24 @@ canvas {
 .reference-quick-links a {
   font-weight: 600;
 }
+
+/* notes/parallax.html: the distance range a parallax measurement's own
+   uncertainty implies — a filled bar between the near and far distance
+   bounds, on a fixed 0-220 pc track so a wider uncertainty visibly
+   stretches into a wider bar rather than just changing a number. */
+.uncertainty-bar-track {
+  position: relative;
+  height: 10px;
+  margin: 0.5rem 0 1.5rem;
+  background: #e0e0e0;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.uncertainty-bar-fill {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  background: #2a6bd6;
+  border-radius: 5px;
+}
