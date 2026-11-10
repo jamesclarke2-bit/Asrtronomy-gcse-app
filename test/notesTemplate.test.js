@@ -31,6 +31,7 @@ const CONFORMING_PAGES = [
   'notes/sun-features.html',
   'notes/ecliptic-zodiac.html',
   'notes/parallax.html',
+  'notes/magnitude.html',
 ];
 
 // Section 6 of the template ("Diagram-first"), checked only for pages

@@ -4177,3 +4177,126 @@ canvas {
   background: #2a6bd6;
   border-radius: 5px;
 }
+
+/* notes/magnitude.html: a small pill before each section's h2 naming
+   which of the page's three tiers (the idea, brightness ratios, Astro
+   Challenge distance modulus) that section belongs to. Colour alone
+   never carries the meaning — the tier number and name are always in
+   the text too — and each pair reuses an existing, already-contrast-
+   checked combination from elsewhere on the site (the star-panel amber
+   and the extension-page-banner purple) rather than inventing new,
+   unchecked colours. */
+.tier-badge {
+  display: inline-block;
+  margin-bottom: 0.4rem;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.tier-badge--1 {
+  background: #e3edfb;
+  color: #1d4e89;
+}
+
+.tier-badge--2 {
+  background: #fff3da;
+  color: #8a5b00;
+}
+
+.tier-badge--3 {
+  background: #f4effa;
+  color: #4a2f7a;
+}
+
+/* Same .labelled-diagram-wrap fix as .moon-hemisphere-figure's and
+   .orbit-scale-diagram's own (see their comments): without it, the
+   wrap's default inline-block sizing leaves .responsive-svg's
+   width: 100% with no definite containing block to resolve against. */
+.magnitude-idea-diagram,
+.ratio-ladder-diagram {
+  max-width: 480px;
+  margin: 1rem 0 1.5rem;
+}
+
+.magnitude-ruler-diagram {
+  max-width: 300px;
+  margin: 1rem auto 1.5rem;
+}
+
+.magnitude-idea-diagram .labelled-diagram-wrap,
+.magnitude-ruler-diagram .labelled-diagram-wrap,
+.ratio-ladder-diagram .labelled-diagram-wrap {
+  display: block;
+  width: 100%;
+}
+
+/* .diagram-label's own default colour (#1a1a1a) assumes a light diagram
+   background — the idea and ratio-ladder diagrams are deep-space dark
+   (#0f1830) instead, so their own labels need the light colour the
+   ruler's gradient bar already earns its dark-navy text against (the
+   ruler's own labels sit on the page's ordinary light background, next
+   to the bar, so they keep the default). A text-shadow keeps a label
+   readable over a star-field dot or the glow itself, not just the plain
+   background. */
+.magnitude-idea-diagram .diagram-label,
+.ratio-ladder-diagram .diagram-label {
+  color: #eef3fb;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+/* The ratio ladder's four fixed guide callouts (styles.css's own
+   .diagram-label--left/--right were built for a single edge-anchored
+   label, not several short ones sitting close enough together that
+   growing toward one another — as those classes do — would overlap;
+   this one stays centred and short instead. */
+.diagram-label--narrow {
+  width: auto;
+  max-width: 3rem;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+/* notes/magnitude.js keeps the moving star (the idea diagram) and the
+   ratio-ladder's marker as the SAME persistent elements across every
+   slider move, only updating their attributes in place, specifically so
+   this transition can interpolate smoothly between the old and new
+   values — a full clear-and-redraw would destroy and recreate a fresh
+   element every time, which a browser can never animate between
+   (there is no "old state" left to transition from). Disabled entirely
+   under reduced motion, per this page's own design requirement. */
+.idea-star-part,
+.ladder-marker-part {
+  transition: cx 0.2s ease, r 0.2s ease, width 0.2s ease, fill 0.2s ease, left 0.2s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .idea-star-part,
+  .ladder-marker-part {
+    transition: none;
+  }
+}
+
+.calculator .panel-title {
+  margin: 0 0 0.9rem;
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.calculator select {
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 0.6rem;
+  padding: 0.4rem 0.5rem;
+  border: 1px solid #cdd7e1;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.calculator input:disabled {
+  background: #f3f6fa;
+  color: #173d75;
+  font-weight: 600;
+}

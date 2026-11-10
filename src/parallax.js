@@ -82,6 +82,21 @@ function parallaxUncertaintyToDistanceRange(parallaxArcsec, uncertaintyArcsec) {
   };
 }
 
+// Five real stars' measured parallax angles (first draft, to be checked by
+// the teacher — see notes/parallax.html's own star-list section) — the
+// distance (pc and ly) is always computed from this, never a second,
+// separately-typed figure. Kept here, rather than in notes/parallax.js's
+// own page script, so notes/magnitude.html's distance-modulus tier can
+// reuse the exact same distances (e.g. Sirius at ~2.64 pc) instead of
+// re-typing a figure that could drift out of step between the two pages.
+const STARS = [
+  { name: 'Proxima Centauri', parallaxArcsec: 0.768 },
+  { name: 'Alpha Centauri', parallaxArcsec: 0.747 },
+  { name: "Barnard's Star", parallaxArcsec: 0.547 },
+  { name: 'Sirius', parallaxArcsec: 0.379 },
+  { name: 'Vega', parallaxArcsec: 0.130 },
+];
+
 const parallaxApi = {
   ARCSECONDS_PER_DEGREE,
   ARCMINUTES_PER_DEGREE,
@@ -89,6 +104,7 @@ const parallaxApi = {
   AU_PER_PARSEC,
   PARSEC_LIGHT_YEARS,
   METRES_PER_PARSEC,
+  STARS,
   arcsecondsToRadians,
   distanceFromParallax,
   parallaxFromDistance,

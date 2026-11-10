@@ -809,7 +809,8 @@ const UNITS = [
         id: 'u4.2',
         title: 'Brightness and magnitude calculations',
         depth: 'be able to',
-        notes: 'apparent vs absolute magnitude',
+        notes:
+          "apparent magnitude (m, how bright a star looks from Earth) versus absolute magnitude (M, how bright it would look from the standard distance of 10 pc) on a scale that runs backwards — smaller, and especially negative, numbers are brighter; a magnitude difference gives an exact brightness ratio, I2/I1 = 10^(0.4(m1-m2)), with a 5-magnitude difference fixed as exactly a factor of 100 (Pogson, 1856); and the distance modulus m - M = 5 log10(d / 10 pc), which links the two via the inverse-square law. All three pieces are core 1AS0 content for Topic 13 (unregistered in src/specPoints.js, same as u4.5 — Topic 13 has no SPEC_POINTS entries yet, not because this content is beyond the spec): the distance modulus formula in particular is one of only six equations the exam's own data sheet gives directly (see notes/data-sheet.html), confirming it despite being the hardest tier on notes/magnitude.html. Only the historical colour (Hipparchus/Ptolemy's six classes, Pogson's own 1856 date) and the specific Hubble/JWST magnitude figures are general-knowledge enrichment, marked first draft on that page, not assessed spec content.",
       },
       {
         id: 'u4.3',

@@ -225,24 +225,18 @@
   }
 
   // --- Real stars, real parallaxes ------------------------------------
-  // Every parallax figure here is the one first-draft datum per star;
-  // the distance (pc and ly) is always computed from it, never a second,
-  // separately-typed figure that could drift out of step.
-
-  const STARS = [
-    { name: 'Proxima Centauri', parallaxArcsec: 0.768 },
-    { name: 'Alpha Centauri', parallaxArcsec: 0.747 },
-    { name: "Barnard's Star", parallaxArcsec: 0.547 },
-    { name: 'Sirius', parallaxArcsec: 0.379 },
-    { name: 'Vega', parallaxArcsec: 0.130 },
-  ];
+  // Every parallax figure is the one first-draft datum per star (see
+  // src/parallax.js's own STARS array, now shared with
+  // notes/magnitude.html's distance-modulus tier); the distance (pc and
+  // ly) is always computed from it, never a second, separately-typed
+  // figure that could drift out of step.
 
   function setUpStarList() {
     const select = document.getElementById('star-select');
     const parallaxReadout = document.getElementById('star-parallax-readout');
     const distanceReadout = document.getElementById('star-distance-readout');
 
-    STARS.forEach((star) => {
+    P.STARS.forEach((star) => {
       const option = document.createElement('option');
       option.value = star.name;
       option.textContent = star.name;
@@ -250,7 +244,7 @@
     });
 
     function render() {
-      const star = STARS.find((s) => s.name === select.value) || STARS[0];
+      const star = P.STARS.find((s) => s.name === select.value) || P.STARS[0];
       parallaxReadout.textContent = formatArcsec(star.parallaxArcsec);
       distanceReadout.textContent = formatDistance(P.distanceFromParallax(star.parallaxArcsec));
     }

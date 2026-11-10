@@ -337,6 +337,16 @@ const PAGES = [
     why: "Telescopes' own resolving power turns out to set a hard distance limit here too — the first page of the sky beyond the Solar System, and the ground this phase's own magnitude page (next) builds on.",
   },
   {
+    title: 'Magnitude: how bright is a star?',
+    description:
+      "Apparent versus absolute magnitude on a brightness scale that runs backwards, the exact ratio a magnitude difference implies, and — at Astro Challenge level — the distance modulus formula linking brightness to distance, reproducing the Sun's and Sirius's own absolute magnitudes.",
+    href: 'notes/magnitude.html',
+    units: ['u4.2'],
+    phase: 'Stars and the Universe',
+    position: 32,
+    why: "Parallax runs out past a few hundred parsecs; magnitude is the tool that reaches far beyond that, once a star's distance is known by any method at all.",
+  },
+  {
     title: 'Bodies of the Solar System',
     description:
       "A to-scale size line-up and bar chart of the planets and dwarf planets, the larger named moons by planet, the four ringed planets drawn at relative size with Saturn's rings the most visible, Io's tidal heating (reusable diagram) from its 1:2:4 resonance with Europa and Ganymede, a temperature-against-distance chart, a planet-vs-dwarf-planet decision diagram, asteroids/meteoroids/comets, a comet-tail diagram and the Kuiper Belt/Oort Cloud on a logarithmic scale, transits of Venus and measuring the AU, and brief formation theories — a first draft pending teacher review.",
@@ -432,6 +442,7 @@ const DIAGRAM_FIRST_PAGES = [
   'notes/sun-features.html',
   'notes/ecliptic-zodiac.html',
   'notes/parallax.html',
+  'notes/magnitude.html',
 ];
 
 /**
@@ -494,8 +505,8 @@ const COMING_SOON = [
   {
     name: 'Stars, galaxies and the Universe',
     phase: 'Stars and the Universe',
-    position: 32,
-    why: "Now that Parallax and the Parsec can measure how far away a star is, the rest of the sky this course hasn't reached yet: what a star actually is and how it lives and dies (absolute magnitude, next, is the first piece), our own Galaxy's structure, and the wider Universe beyond it.",
+    position: 33,
+    why: "Now that Parallax and the Parsec, and Magnitude, can both measure how far away a star is and how bright it really is, the rest of the sky this course hasn't reached yet: variable stars as standard candles, a star's full life cycle, our own Galaxy's structure, and the wider Universe beyond it.",
     // Topics 13-16 have no SPEC_POINTS registry entries at all yet
     // (src/specPoints.js's own header explains why), so there are no
     // point-level codes to name — `topics` instead, not `specPoints`.

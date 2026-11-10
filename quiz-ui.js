@@ -251,6 +251,7 @@
     shuffleAvoidingAdjacent(questions).forEach((question) => {
       const card = document.createElement('div');
       card.className = 'question-card';
+      card.dataset.questionId = question.id;
 
       const tags = document.createElement('div');
       tags.className = 'question-tags';

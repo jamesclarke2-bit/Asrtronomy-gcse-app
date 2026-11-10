@@ -125,7 +125,7 @@ test('computeUnitCoverage: total is the unit\'s subtopic count, covered counts d
 });
 
 test('computeUnitCoverage: a unit with no covering pages reads as 0 covered, not an error', () => {
-  const units = [{ id: 'u4', title: 'Stars', subtopics: [{ id: 'u4.1' }, { id: 'u4.2' }] }];
+  const units = [{ id: 'u4', title: 'Stars', subtopics: [{ id: 'u4.1' }, { id: 'u4.3' }] }];
   const [coverage] = computeUnitCoverage(units, PAGES);
   assert.equal(coverage.covered, 0);
   assert.equal(coverage.total, 2);

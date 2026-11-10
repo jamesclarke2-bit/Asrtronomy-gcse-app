@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; form-action 'none'; base-uri 'self'" />
+  <meta name="referrer" content="no-referrer" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Magnitude: how bright is a star?</title>
+  <link rel="stylesheet" href="../styles.css?v=202611101600" />
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg?v=202610130720" />
+</head>
+<body>
+  <main>
+    <p class="back-link"><a href="../index.html">&larr; Back to all tools</a></p>
+
+    <h1>Magnitude: how bright is a star?</h1>
+    <p class="subtitle">
+      How bright a star looks (apparent magnitude) is not the same as how bright it actually is
+      (absolute magnitude) &mdash; distance changes one but not the other. Three tiers, from the
+      idea itself up to the distance modulus formula used at Astro Challenge level. Builds on the
+      parsec from Parallax and the Parsec.
+    </p>
+
+    <section class="notes-section" id="the-idea">
+      <span class="tier-badge tier-badge--1">Tier 1 &middot; The idea</span>
+      <h2>Apparent versus absolute magnitude</h2>
+      <p>Drag the slider to move the star. Watch which number changes.</p>
+
+      <div class="diagram magnitude-idea-diagram">
+        <div class="labelled-diagram-wrap" id="idea-diagram-wrap">
+          <svg
+            id="idea-diagram"
+            class="responsive-svg"
+            width="440"
+            height="200"
+            viewBox="0 0 440 200"
+            role="img"
+            aria-label="An observer on the left and a single glowing star on a horizontal distance line, with a marked ring at the standard distance of 10 parsecs. As a slider changes the star's distance, the star's glow and size shrink or grow, and its apparent magnitude reading changes, while its absolute magnitude reading stays fixed."
+          ></svg>
+        </div>
+      </div>
+
+      <div class="control">
+        <label for="idea-distance-slider">Distance: <span id="idea-distance-label"></span></label>
+        <input type="range" id="idea-distance-slider" min="0" max="3" step="0.01" value="1" />
+      </div>
+
+      <dl class="readout">
+        <dt>Apparent magnitude, m</dt>
+        <dd id="idea-apparent-readout"></dd>
+        <dt>Absolute magnitude, M</dt>
+        <dd id="idea-absolute-readout"></dd>
+      </dl>
+
+      <p class="note">
+        Absolute magnitude never changes as the star moves &mdash; only apparent magnitude does.
+        At exactly 10 pc the two are equal: m = M, which is exactly why 10 pc is chosen as the
+        standard distance.
+      </p>
+
+      <p>
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="streetLamp" aria-label="Why compare brightness from a fixed distance?" aria-expanded="false">Why a fixed distance? The street-lamp idea</button>
+      </p>
+      <div class="glossary-definition scaffold-reveal" data-term="streetLamp" hidden></div>
+    </section>
+
+    <section class="notes-section" id="magnitude-scale">
+      <span class="tier-badge tier-badge--1">Tier 1 &middot; The idea</span>
+      <h2>The magnitude scale: smaller (even negative) means brighter</h2>
+      <p>A back-to-front ruler, from about -27 (brightest) to +31 (faintest), with familiar objects pinned on it.</p>
+
+      <div class="diagram magnitude-ruler-diagram">
+        <div class="labelled-diagram-wrap" id="ruler-diagram-wrap">
+          <svg
+            id="ruler-diagram"
+            class="responsive-svg"
+            width="300"
+            height="560"
+            viewBox="0 0 300 560"
+            role="img"
+            aria-label="A vertical ruler running from magnitude -27 at the top (brightest) to +31 at the bottom (faintest), with the Sun, the full Moon, Venus, Sirius, Vega, Polaris, the naked-eye limit, and the faintest Hubble and JWST images marked at their positions, alternating labels left and right of the bar."
+          ></svg>
+        </div>
+      </div>
+
+      <div class="table-scroll">
+        <table class="shower-table" id="ruler-object-table">
+          <caption>First draft, to be checked by the teacher</caption>
+          <thead>
+            <tr><th scope="col">Object</th><th scope="col">Apparent magnitude, m</th></tr>
+          </thead>
+          <tbody id="ruler-object-table-body"></tbody>
+        </table>
+      </div>
+
+      <p>
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="magnitudeHistory" aria-label="Where did the magnitude scale come from?" aria-expanded="false">Where this odd, backwards scale comes from</button>
+      </p>
+      <div class="glossary-definition scaffold-reveal" data-term="magnitudeHistory" hidden></div>
+    </section>
+
+    <section class="notes-section" id="brightness-ratios">
+      <span class="tier-badge tier-badge--2">Tier 2 &middot; Brightness ratios</span>
+      <h2>From a magnitude difference to a brightness ratio</h2>
+      <p>Drag to see the exact brightness ratio a magnitude difference implies.</p>
+
+      <div class="diagram ratio-ladder-diagram">
+        <div class="labelled-diagram-wrap" id="ladder-diagram-wrap">
+          <svg
+            id="ladder-diagram"
+            class="responsive-svg"
+            width="420"
+            height="170"
+            viewBox="0 0 420 170"
+            role="img"
+            aria-label="A horizontal bar whose length grows with the magnitude difference on the slider, with dashed guide lines and labels at the standard shortcut values of 2.5, 5, 7.5 and 10 magnitudes, each marked with its brightness ratio."
+          ></svg>
+        </div>
+      </div>
+
+      <div class="control">
+        <label for="ratio-delta-m-slider">Magnitude difference, &Delta;m: <span id="ratio-delta-m-label"></span></label>
+        <input type="range" id="ratio-delta-m-slider" min="0" max="10" step="0.05" value="5" />
+      </div>
+
+      <dl class="readout">
+        <dt>Exact ratio (&times;2.512 per step)</dt>
+        <dd id="ratio-exact-readout"></dd>
+        <dt>Approx. ratio (&times;2.5 per step)</dt>
+        <dd id="ratio-approx-readout"></dd>
+      </dl>
+
+      <p class="formula">
+        I<sub>2</sub> / I<sub>1</sub> = 10<sup>0.4(m<sub>1</sub> &minus; m<sub>2</sub>)</sup> = <span id="ratio-constant-readout"></span><sup>(m<sub>1</sub> &minus; m<sub>2</sub>)</sup>
+      </p>
+      <p class="formula">
+        m<sub>1</sub> &minus; m<sub>2</sub> = 2.5 log<sub>10</sub>(I<sub>2</sub> / I<sub>1</sub>)
+      </p>
+      <p class="note">
+        m<sub>1</sub> is the fainter star here (the larger magnitude) and m<sub>2</sub> the
+        brighter one, so a positive difference always gives a ratio above 1 &mdash; the brighter
+        star's own flux, I<sub>2</sub>, divided by the fainter one's, I<sub>1</sub>.
+      </p>
+
+      <div class="table-scroll">
+        <table class="shower-table" id="mental-maths-table">
+          <caption>Mental-maths shortcuts</caption>
+          <thead>
+            <tr><th scope="col">&Delta;m (mag)</th><th scope="col">Ratio</th></tr>
+          </thead>
+          <tbody id="mental-maths-table-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="notes-section" id="distance-modulus">
+      <span class="tier-badge tier-badge--3">Tier 3 &middot; Astro Challenge</span>
+      <h2>Distance modulus: linking brightness to distance</h2>
+      <p>
+        Brightness falls with the inverse-square law, so a star 10 times farther away looks
+        exactly 100 times fainter &mdash; and 100 times fainter is, by definition, exactly 5
+        magnitudes. That single link gives the formula this tier runs on:
+      </p>
+      <p class="formula">m &minus; M = 5 log<sub>10</sub>(d / 10 pc)</p>
+      <p>
+        This is one of only six equations the exam's own
+        <a href="data-sheet.html">data sheet</a> gives you directly &mdash; so although it's the
+        hardest tier on this page, it is not beyond the specification.
+      </p>
+
+      <div class="calculator" id="modulus-calculator">
+        <p class="panel-title">Distance modulus calculator</p>
+        <div class="control">
+          <label for="modulus-solve-for">Find:</label>
+          <select id="modulus-solve-for">
+            <option value="M">Absolute magnitude, M</option>
+            <option value="m">Apparent magnitude, m</option>
+            <option value="d">Distance, d (pc)</option>
+          </select>
+        </div>
+        <div class="control">
+          <label for="modulus-m-input">Apparent magnitude, m</label>
+          <input type="number" id="modulus-m-input" step="0.01" value="-26.74" />
+        </div>
+        <div class="control">
+          <label for="modulus-M-input">Absolute magnitude, M</label>
+          <input type="number" id="modulus-M-input" step="0.01" value="4.83" />
+        </div>
+        <div class="control">
+          <label for="modulus-d-input">Distance, d (pc)</label>
+          <input type="number" id="modulus-d-input" step="any" value="10" />
+        </div>
+        <p class="note" id="modulus-working" aria-live="polite"></p>
+        <div class="control checkbox-control">
+          <button type="button" id="modulus-load-sun" class="secondary-button">Load: the Sun</button>
+          <button type="button" id="modulus-load-sirius" class="secondary-button">Load: Sirius</button>
+        </div>
+      </div>
+
+      <p class="note">
+        Loading the Sun (m = -26.74 at its real distance of 1 AU) reproduces M &asymp; +4.83.
+        Loading Sirius (m = -1.46 at its
+        <a href="parallax.html">parallax</a>-derived distance of about 2.64 pc) reproduces M
+        &asymp; +1.4 &mdash; the same distance the Parallax and the Parsec page computes, reused
+        here rather than retyped.
+      </p>
+    </section>
+
+    <section class="notes-section" id="worked-examples">
+      <h2>Worked examples</h2>
+
+      <h3>A brightening nova</h3>
+      <p>
+        A nova rises from magnitude 11.2 to magnitude 3.0. By what factor has its brightness
+        increased?
+      </p>
+      <ol class="tip-list">
+        <li>&Delta;m = 11.2 &minus; 3.0 = <span id="nova-delta-m"></span> magnitudes.</li>
+        <li>Calculator method: ratio = 10<sup>0.4 &times; <span id="nova-delta-m-2"></span></sup> = <span id="nova-ratio-exact"></span>.</li>
+        <li>Mental method: split 8.2 into 7.5 (&times;1000) plus 0.7 (a little under &times;2), giving about <span id="nova-ratio-approx"></span> &mdash; close to the exact figure.</li>
+      </ol>
+
+      <h3>Two stars, one 2.5&times; farther away</h3>
+      <p>
+        Star A and Star B share the same absolute magnitude, but Star B is exactly 2.5&times;
+        farther away. How much fainter does Star B look?
+      </p>
+      <div class="table-scroll">
+        <table class="shower-table" id="distance-ratio-table">
+          <caption>Same absolute magnitude, different distance</caption>
+          <thead>
+            <tr><th scope="col">d (pc)</th><th scope="col">m (same M throughout)</th></tr>
+          </thead>
+          <tbody id="distance-ratio-table-body"></tbody>
+        </table>
+      </div>
+      <p class="note">
+        A distance ratio of 2.5 gives a magnitude difference of 5 log<sub>10</sub>(2.5) &asymp;
+        <span id="distance-ratio-delta-m"></span> magnitudes fainter &mdash; distance ratio and
+        magnitude difference follow the same formula whatever the two distances actually are.
+      </p>
+
+      <h3>Finding a distance from m and M</h3>
+      <p>A star has apparent magnitude m = +8.2 and absolute magnitude M = +1.2. How far away is it?</p>
+      <ol class="tip-list">
+        <li>m &minus; M = <span id="distance-example-modulus"></span>.</li>
+        <li>d = 10 &times; 10<sup>(m &minus; M) / 5</sup> = <span id="distance-example-distance"></span> pc.</li>
+      </ol>
+    </section>
+
+    <section class="notes-section" id="exam-tips">
+      <h2>Exam tips</h2>
+      <p class="exam-tip">
+        <strong>Common exam confusion:</strong> a <em>smaller</em> or more negative magnitude
+        means a <em>brighter</em> object &mdash; the scale runs backwards from how numbers
+        normally work. Magnitude -1 is brighter than magnitude +2.
+        <a href="#magnitude-scale">The magnitude scale &uarr;</a>
+      </p>
+      <p class="exam-tip">
+        <strong>Common exam confusion:</strong> apparent magnitude (m) depends on distance;
+        absolute magnitude (M) does not &mdash; M is defined as the apparent magnitude a star
+        would have from exactly 10 pc away, whatever its real distance actually is.
+        <a href="#the-idea">Apparent versus absolute magnitude &uarr;</a>
+      </p>
+      <p class="exam-tip">
+        <strong>Common exam link:</strong> a smaller parallax angle means a larger distance
+        (see <a href="parallax.html">Parallax and the Parsec</a>), and a larger distance means a
+        fainter apparent magnitude &mdash; the same "smaller number, farther away" direction runs
+        through both pages, just with different formulas.
+        <a href="#distance-modulus">Distance modulus &uarr;</a>
+      </p>
+    </section>
+
+    <section class="notes-section" id="related">
+      <h2>Related pages</h2>
+      <div class="page-card-list">
+        <a class="page-card" href="parallax.html">
+          <h3>Parallax and the Parsec: Measuring Distances to Stars</h3>
+          <p class="page-card-description">Where the parsec itself comes from, and the method's own distance limit &mdash; the reason magnitude takes over from here.</p>
+        </a>
+        <a class="page-card" href="observing-techniques.html">
+          <h3>Observing Techniques</h3>
+          <p class="page-card-description">Limiting magnitude in practice: how site darkness and dark adaptation decide the faintest magnitude you can actually see.</p>
+        </a>
+        <a class="page-card" href="naked-eye-sky.html">
+          <h3>The Naked-Eye Sky</h3>
+          <p class="page-card-description">Meet Sirius, Vega and Polaris by eye first &mdash; this page puts an exact number on how bright each one really is.</p>
+        </a>
+        <a class="page-card" href="data-sheet.html">
+          <h3>Formulae and Data Sheet</h3>
+          <p class="page-card-description">The exam's own distance modulus formula, reproduced here with the working filled in.</p>
+        </a>
+      </div>
+    </section>
+
+    <section class="questions" id="questions">
+      <h2>Practice questions</h2>
+      <div id="questions-list"></div>
+    </section>
+
+    <section class="progress">
+      <h2>Your progress</h2>
+      <ul id="progress-list"></ul>
+      <p class="note">Stored in this browser only (localStorage) &mdash; no account needed.</p>
+    </section>
+
+    <p class="coverage" id="coverage"></p>
+    <p class="next-page-link" id="next-page"></p>
+  </main>
+
+  <script src="../src/curriculum.js?v=202611101600"></script>
+  <script src="../src/pages.js?v=202611101600"></script>
+  <script src="../src/specData.js?v=202610161036"></script>
+  <script src="../src/parallax.js?v=202611101600"></script>
+  <script src="../src/magnitude.js?v=202611101600"></script>
+  <script src="../src/magnitudeQuestions.js?v=202611101600"></script>
+  <script src="../glossary.js?v=202610131052"></script>
+  <script src="../quiz-ui.js?v=202611101600"></script>
+  <script src="magnitude.js?v=202611101600"></script>
+  <script src="../diagramEnlarge.js?v=202611051400"></script>
+  <script src="../notesPage.js?v=202609252100"></script>
+  <script src="../nextPage.js?v=202610161057"></script>
+</body>
+</html>
