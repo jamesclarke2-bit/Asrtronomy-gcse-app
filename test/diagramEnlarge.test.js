@@ -193,8 +193,26 @@ async function captureDiagramState(page, button) {
 // signature) but well under any diagram's real rendered size on this site.
 const MIN_VISIBLE_SIZE_PX = 20;
 
+// Reported per close method (button, Escape, tap outside — double-fired
+// click has its own dedicated test further down) via node:test's nested
+// subtests, so "which pages were tested vs skipped" and "pass vs fail" can
+// be read off per method, not only per page. A page's skip reason here is
+// ALWAYS "this page has no Enlarge button to test at all" (buttonCount ===
+// 0) — never anything to do with a slider: closing, restoring and
+// redrawing have nothing to do with how many sliders share a diagram's
+// section, so that ambiguity (which the slider-redraw test further below
+// legitimately can hit) must never leak into this one. Every close method
+// subtest runs (or explicitly skips, for the same buttonCount === 0
+// reason) on every page, so the per-method tallies always cover the same
+// set of pages.
+const CLOSE_METHODS = [
+  { name: 'button', run: (page) => page.locator('.diagram-enlarge-close').click() },
+  { name: 'Escape', run: (page) => page.keyboard.press('Escape') },
+  { name: 'tap outside', run: (page) => page.mouse.click(1, 1) },
+];
+
 PAGES.forEach((href) => {
-  test(`${href}: every Enlarge closes by its own button, by Escape, and by tapping outside — and restores the diagram each time`, async (t) => {
+  test(`${href}: every Enlarge closes correctly, restoring the diagram each time`, async (t) => {
     if (launchError) {
       skip(t, SKIP_MESSAGE(launchError));
       return;
@@ -204,37 +222,34 @@ PAGES.forEach((href) => {
     page.on('pageerror', (err) => pageErrors.push(err.message));
     try {
       const buttonCount = await page.locator('.diagram-enlarge-button:visible').count();
-      if (buttonCount === 0) {
-        t.skip(`${href} has no visible, worth-enlarging diagram`);
-        return;
-      }
       const dialog = page.locator('dialog.diagram-enlarge-dialog');
-      const closeMethods = [
-        { name: 'button', run: () => page.locator('.diagram-enlarge-close').click() },
-        { name: 'Escape', run: () => page.keyboard.press('Escape') },
-        { name: 'tap outside', run: () => page.mouse.click(1, 1) },
-      ];
 
-      for (let i = 0; i < buttonCount; i += 1) {
-        const button = page.locator('.diagram-enlarge-button:visible').nth(i);
+      for (const { name, run } of CLOSE_METHODS) {
+        await t.test(`close via ${name}`, async (st) => {
+          if (buttonCount === 0) {
+            st.skip(`${href} has no visible, worth-enlarging diagram`);
+            return;
+          }
+          for (let i = 0; i < buttonCount; i += 1) {
+            const button = page.locator('.diagram-enlarge-button:visible').nth(i);
 
-        for (const { name, run } of closeMethods) {
-          await button.click();
-          await dialog.waitFor({ state: 'visible' });
-          assert.equal(await page.evaluate(() => document.querySelector('dialog.diagram-enlarge-dialog').open), true);
+            await button.click();
+            await dialog.waitFor({ state: 'visible' });
+            assert.equal(await page.evaluate(() => document.querySelector('dialog.diagram-enlarge-dialog').open), true);
 
-          await run();
-          await dialog.waitFor({ state: 'hidden' });
-          assert.equal(await page.evaluate(() => document.querySelector('dialog.diagram-enlarge-dialog').open), false);
+            await run(page);
+            await dialog.waitFor({ state: 'hidden' });
+            assert.equal(await page.evaluate(() => document.querySelector('dialog.diagram-enlarge-dialog').open), false);
 
-          const after = await captureDiagramState(page, button);
-          assert.ok(after.inMain, `${href} diagram #${i} (close via ${name}): should be back inside <main>, not left in the dialog`);
-          assert.ok(!after.inDialog, `${href} diagram #${i} (close via ${name}): should no longer be inside the dialog`);
-          assert.ok(
-            after.width > MIN_VISIBLE_SIZE_PX && after.height > MIN_VISIBLE_SIZE_PX,
-            `${href} diagram #${i} (close via ${name}): should be visible again, not collapsed (got ${after.width}x${after.height})`
-          );
-        }
+            const after = await captureDiagramState(page, button);
+            assert.ok(after.inMain, `${href} diagram #${i} (close via ${name}): should be back inside <main>, not left in the dialog`);
+            assert.ok(!after.inDialog, `${href} diagram #${i} (close via ${name}): should no longer be inside the dialog`);
+            assert.ok(
+              after.width > MIN_VISIBLE_SIZE_PX && after.height > MIN_VISIBLE_SIZE_PX,
+              `${href} diagram #${i} (close via ${name}): should be visible again, not collapsed (got ${after.width}x${after.height})`
+            );
+          }
+        });
       }
       assert.deepEqual(pageErrors, [], `${href}: no uncaught page errors during open/close`);
     } finally {
@@ -295,6 +310,27 @@ PAGES.forEach((href) => {
 // false-failing on them; see diagramEnlarge.js's own header on treating a
 // canvas as its own interactive content, never "the diagram"). -------------
 
+// A diagram container's own control(s) — the <div class="control">/
+// .control-panel block(s) holding its slider(s) — are its immediate
+// following siblings, ending as soon as another .diagram/.question-diagram/
+// .diagram-row sibling starts (that marks the START of a DIFFERENT
+// diagram's own controls). This correctly tells apart, say,
+// notes/magnitude.html's "bright but far" two-panel row (whose own next
+// siblings are its Swap button and readouts, with no slider, before the
+// NEXT diagram begins) from that same section's idea-diagram three
+// siblings later (whose own next sibling IS its slider) — both in the
+// very same <section>, sharing nothing in common except that section.
+// Defined identically inside each evaluate() callback below (not shared
+// via closure, and never via eval/new Function — every page's own CSP,
+// script-src 'self' with no unsafe-eval, would block that) since each
+// callback runs inside the browser with no access to this file's scope.
+
+// Every (non-canvas) enlargeable diagram that has a slider OF ITS OWN
+// this way is checked — not just one page-wide "unambiguous" pick, and a
+// second diagram merely sharing the same <section> no longer excuses
+// skipping either. The ONLY legitimate reason to skip is that NO
+// enlargeable diagram on the page has a slider of its own this way —
+// never "a slider exists somewhere in the same section".
 PAGES.forEach((href) => {
   test(`${href}: after Enlarge closes, a diagram's own slider (if it has one, and isn't canvas-based) still redraws it`, async (t) => {
     if (launchError) {
@@ -303,70 +339,79 @@ PAGES.forEach((href) => {
     }
     const page = await openPage(href, 390, 800);
     try {
-      const buttonCount = await page.locator('.diagram-enlarge-button:visible').count();
-      if (buttonCount === 0) {
-        t.skip(`${href} has no visible, worth-enlarging diagram`);
-        return;
-      }
       const dialog = page.locator('dialog.diagram-enlarge-dialog');
-      // Only check a button whose enclosing section pairs it unambiguously
-      // with exactly one slider and one diagram — a section with several
-      // diagrams sharing one slider (or several sliders) can't say which
-      // diagram that slider is "the diagram's own" without page-specific
-      // knowledge this generic, sitewide test doesn't have.
-      const candidate = await page.evaluateHandle(() => {
-        const buttons = [...document.querySelectorAll('.diagram-enlarge-button')].filter((b) => b.getClientRects().length > 0);
-        for (const btn of buttons) {
-          const container = btn.closest('.diagram-enlarge-source');
-          if (container.querySelector('canvas')) continue;
-          const section = container.closest('section');
-          if (!section) continue;
-          if (section.querySelectorAll('.diagram-enlarge-source').length !== 1) continue;
-          if (section.querySelectorAll('input[type="range"]').length !== 1) continue;
-          // A second, separate diagram with no button of its own (e.g. one
-          // judged not worth enlarging at this viewport — see
-          // diagramEnlarge.js's own MIN_WORTHWHILE_SCALE) can still sit in
-          // this same section, which the two checks above alone can't see
-          // (they only count .diagram-enlarge-source, i.e. containers that
-          // DID get a button). A grouped .diagram-row's own children don't
-          // count against this — they're already part of this one
-          // container, not a second, separate diagram.
-          if ([...section.querySelectorAll('.diagram, .question-diagram')].some((d) => !container.contains(d))) continue;
-          return btn;
+      const candidateIndices = await page.evaluate(() => {
+        function ownSliders(container) {
+          const sliders = [];
+          let sibling = container.nextElementSibling;
+          while (sibling) {
+            if (sibling.matches('.diagram, .question-diagram, .diagram-row')) break;
+            sliders.push(...sibling.querySelectorAll('input[type="range"]'));
+            if (sibling.matches('input[type="range"]')) sliders.push(sibling);
+            sibling = sibling.nextElementSibling;
+          }
+          return sliders;
         }
-        return null;
+        const buttons = [...document.querySelectorAll('.diagram-enlarge-button')].filter((b) => b.getClientRects().length > 0);
+        const indices = [];
+        buttons.forEach((btn, index) => {
+          const container = btn.closest('.diagram-enlarge-source');
+          if (container.querySelector('canvas')) return; // a canvas is its own interactive content, never "the diagram" a slider redraws
+          if (ownSliders(container).length === 0) return;
+          indices.push(index);
+        });
+        return indices;
       });
-      const isNull = await candidate.evaluate((el) => el === null);
-      if (isNull) {
-        t.skip(`${href} has no diagram unambiguously paired with exactly one SVG-redrawing slider in its own section`);
+      if (candidateIndices.length === 0) {
+        t.skip(`${href} has no non-canvas enlargeable diagram with a slider of its own`);
         return;
       }
-      const button = candidate.asElement();
 
-      await button.click();
-      await dialog.waitFor({ state: 'visible' });
-      await page.locator('.diagram-enlarge-close').click();
-      await dialog.waitFor({ state: 'hidden' });
+      for (const index of candidateIndices) {
+        const button = page.locator('.diagram-enlarge-button:visible').nth(index);
 
-      const responded = await button.evaluate((btn) => {
-        const container = btn.closest('.diagram-enlarge-source');
-        const section = container && container.closest('section');
-        const slider = section && section.querySelector('input[type="range"]');
-        if (!container || !slider) return null; // lost the unambiguous pairing checked above — inconclusive, not a failure
-        const before = container.outerHTML;
-        const min = Number(slider.min) || 0;
-        const max = Number(slider.max) || 100;
-        const current = Number(slider.value);
-        const target = Math.abs(current - min) > Math.abs(max - current) ? min : max;
-        slider.value = String(target);
-        slider.dispatchEvent(new Event('input', { bubbles: true }));
-        return before !== container.outerHTML;
-      });
-      if (responded === null) {
-        t.skip(`${href}: lost the diagram/slider pairing after close (inconclusive, not a failure)`);
-        return;
+        await button.click();
+        await dialog.waitFor({ state: 'visible' });
+        await page.locator('.diagram-enlarge-close').click();
+        await dialog.waitFor({ state: 'hidden' });
+
+        // Captured, dispatched and re-read as three separate round trips
+        // (not one single evaluate()), with a short settle wait in
+        // between — not because the 'input' handlers run asynchronously
+        // (they don't), but so a slow repaint/reflow under a heavily
+        // loaded browser (this file opens and closes several hundred
+        // tabs in one run) has a moment to finish before outerHTML is
+        // read, rather than racing it.
+        const before = await button.evaluate((btn) => btn.closest('.diagram-enlarge-source').outerHTML);
+        await button.evaluate((btn) => {
+          function ownSliders(container) {
+            const sliders = [];
+            let sibling = container.nextElementSibling;
+            while (sibling) {
+              if (sibling.matches('.diagram, .question-diagram, .diagram-row')) break;
+              sliders.push(...sibling.querySelectorAll('input[type="range"]'));
+              if (sibling.matches('input[type="range"]')) sliders.push(sibling);
+              sibling = sibling.nextElementSibling;
+            }
+            return sliders;
+          }
+          const container = btn.closest('.diagram-enlarge-source');
+          ownSliders(container).forEach((slider) => {
+            const min = Number(slider.min) || 0;
+            const max = Number(slider.max) || 100;
+            const current = Number(slider.value);
+            const target = Math.abs(current - min) > Math.abs(max - current) ? min : max;
+            slider.value = String(target);
+            slider.dispatchEvent(new Event('input', { bubbles: true }));
+          });
+        });
+        await page.waitForTimeout(100);
+        const after = await button.evaluate((btn) => btn.closest('.diagram-enlarge-source').outerHTML);
+        assert.ok(
+          before !== after,
+          `${href} diagram #${index}: moving its own slider(s) to their far end after a close should still redraw it`
+        );
       }
-      assert.ok(responded, `${href}: moving the diagram's own slider after a close should still redraw it`);
     } finally {
       await page.close();
     }
