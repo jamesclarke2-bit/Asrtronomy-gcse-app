@@ -9,9 +9,9 @@ function findQuestion(questions, id) {
   return q;
 }
 
-test('makeQuestions returns 10 questions, each tagged u4.2 only, with unique ids', () => {
+test('makeQuestions returns 12 questions, each tagged u4.2 only, with unique ids', () => {
   const questions = makeQuestions(Magnitude);
-  assert.equal(questions.length, 10);
+  assert.equal(questions.length, 12);
   const ids = questions.map((q) => q.id);
   assert.equal(new Set(ids).size, ids.length);
   questions.forEach((q) => {
@@ -79,6 +79,24 @@ test('absolute-from-modulus: accepts the engine value within 0.1', () => {
   const expected = Magnitude.absoluteFromApparent(7.0, 50);
   assert.ok(q.check(expected).correct);
   assert.equal(q.check(expected + 1).correct, false);
+});
+
+test('inverse-square-to-magnitude: accepts factor 9 and the engine magnitude difference', () => {
+  const q = findQuestion(makeQuestions(Magnitude), 'inverse-square-to-magnitude');
+  const expectedDeltaM = Magnitude.magnitudeDifference(9);
+  assert.ok(q.check({ factor: 9, deltaM: expectedDeltaM }).correct);
+  assert.equal(q.check({ factor: 3, deltaM: expectedDeltaM }).correct, false);
+  assert.equal(q.check({ factor: 9, deltaM: expectedDeltaM + 1 }).correct, false);
+});
+
+test('bright-but-far-real-example: Star S looks brighter, with the engine-computed apparent magnitudes', () => {
+  const q = findQuestion(makeQuestions(Magnitude), 'bright-but-far-real-example');
+  const expectedMR = Magnitude.apparentFromAbsolute(-6, 500);
+  const expectedMS = Magnitude.apparentFromAbsolute(5, 2);
+  assert.ok(expectedMS < expectedMR, 'sanity check: Star S should be the one that looks brighter');
+  assert.ok(q.check({ brighter: 'Star S', mR: expectedMR, mS: expectedMS }).correct);
+  assert.equal(q.check({ brighter: 'Star R', mR: expectedMR, mS: expectedMS }).correct, false);
+  assert.equal(q.check({ brighter: 'Star S', mR: expectedMR + 1, mS: expectedMS }).correct, false);
 });
 
 test('explain-distance-modulus: the inverse-square-law explanation is the only correct option', () => {

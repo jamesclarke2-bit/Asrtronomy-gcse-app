@@ -68,6 +68,89 @@ WIDTHS.forEach(({ name, width, height }) => {
     });
   });
 
+  test(`${name}: the "bright but far" two-panel diagram's readouts match src/magnitude.js, and Swap distances exchanges the two stars' distances`, async (t) => {
+    await withPage(t, { width, height }, async (page) => {
+      const absoluteA = -5;
+      const absoluteB = 4.83;
+      const distanceA = 1000;
+      const distanceB = 1;
+
+      const readoutABefore = await page.locator('#swap-starA-readout').textContent();
+      const readoutBBefore = await page.locator('#swap-starB-readout').textContent();
+      assert.ok(
+        Math.abs(parseLeadingNumber(readoutABefore) - Magnitude.apparentFromAbsolute(absoluteA, distanceA)) < 0.01,
+        `Star A readout before swap: "${readoutABefore}"`
+      );
+      assert.ok(
+        Math.abs(parseLeadingNumber(readoutBBefore) - Magnitude.apparentFromAbsolute(absoluteB, distanceB)) < 0.01,
+        `Star B readout before swap: "${readoutBBefore}"`
+      );
+      assert.ok(readoutABefore.includes('1,000'), `Star A readout should state its distance: "${readoutABefore}"`);
+      assert.ok(readoutBBefore.includes('1.00'), `Star B readout should state its distance: "${readoutBBefore}"`);
+
+      await page.click('#swap-distances-button');
+      const readoutAAfter = await page.locator('#swap-starA-readout').textContent();
+      const readoutBAfter = await page.locator('#swap-starB-readout').textContent();
+      assert.ok(
+        Math.abs(parseLeadingNumber(readoutAAfter) - Magnitude.apparentFromAbsolute(absoluteA, distanceB)) < 0.01,
+        `Star A readout after swap: "${readoutAAfter}"`
+      );
+      assert.ok(
+        Math.abs(parseLeadingNumber(readoutBAfter) - Magnitude.apparentFromAbsolute(absoluteB, distanceA)) < 0.01,
+        `Star B readout after swap: "${readoutBAfter}"`
+      );
+
+      await page.click('#swap-distances-button');
+      const readoutABackToStart = await page.locator('#swap-starA-readout').textContent();
+      assert.equal(readoutABackToStart, readoutABefore, 'a second click should swap back to the original arrangement');
+    });
+  });
+
+  test(`${name}: the inverse-square table's brightness fractions and magnitude changes match src/magnitude.js`, async (t) => {
+    await withPage(t, { width, height }, async (page) => {
+      const rows = await page.locator('#inverse-square-table-body tr').all();
+      assert.equal(rows.length, 3);
+      const expected = [
+        { distance: 'd', brightness: '1 (full)', deltaM: 0 },
+        { distance: '2d', brightness: '1/4', deltaM: Magnitude.magnitudeDifference(4) },
+        { distance: '3d', brightness: '1/9', deltaM: Magnitude.magnitudeDifference(9) },
+      ];
+      for (let i = 0; i < rows.length; i += 1) {
+        const cells = await rows[i].locator('td').allTextContents();
+        assert.equal(cells[0], expected[i].distance);
+        assert.equal(cells[1], expected[i].brightness);
+        if (i > 0) {
+          assert.ok(Math.abs(parseLeadingNumber(cells[2]) - expected[i].deltaM) < 0.01, `row ${i}: "${cells[2]}" vs ${expected[i].deltaM.toFixed(2)}`);
+        }
+      }
+    });
+  });
+
+  test(`${name}: the Sirius-versus-Rigel reveal's ratios match src/magnitude.js from its own stated figures`, async (t) => {
+    await withPage(t, { width, height }, async (page) => {
+      await page.click('[data-term="siriusRigel"].glossary-toggle');
+      const siriusM = -1.46;
+      const siriusD = 2.64;
+      const rigelM = 0.13;
+      const rigelD = 260;
+      const siriusAbsoluteM = Magnitude.absoluteFromApparent(siriusM, siriusD);
+      const rigelAbsoluteM = Magnitude.absoluteFromApparent(rigelM, rigelD);
+      const expectedApparentRatio = Magnitude.brightnessRatio(rigelM - siriusM);
+      const expectedLuminosityRatio = Magnitude.brightnessRatio(siriusAbsoluteM - rigelAbsoluteM);
+      const expectedDistanceRatio = rigelD / siriusD;
+
+      const apparentText = await page.locator('#sirius-rigel-apparent-ratio').textContent();
+      const luminosityText = await page.locator('#sirius-rigel-luminosity-ratio').textContent();
+      const distanceText = await page.locator('#sirius-rigel-distance-ratio').textContent();
+      assert.ok(Math.abs(parseLeadingNumber(apparentText) - expectedApparentRatio) / expectedApparentRatio < 0.02, `apparent ratio: "${apparentText}"`);
+      assert.ok(Math.abs(parseLeadingNumber(luminosityText) - expectedLuminosityRatio) / expectedLuminosityRatio < 0.02, `luminosity ratio: "${luminosityText}"`);
+      assert.ok(Math.abs(parseLeadingNumber(distanceText) - expectedDistanceRatio) / expectedDistanceRatio < 0.02, `distance ratio: "${distanceText}"`);
+      // Sirius looks brighter (smaller apparent magnitude) despite being far less luminous.
+      assert.ok(siriusM < rigelM, 'sanity check: Sirius should have the smaller (brighter-looking) apparent magnitude');
+      assert.ok(rigelAbsoluteM < siriusAbsoluteM, 'sanity check: Rigel should have the smaller (more luminous) absolute magnitude');
+    });
+  });
+
   test(`${name}: the idea diagram's apparent-magnitude readout matches src/magnitude.js across the whole distance slider`, async (t) => {
     await withPage(t, { width, height }, async (page) => {
       for (const sliderValue of [0, 0.5, 1, 1.5, 2, 2.5, 3]) {
@@ -153,6 +236,10 @@ WIDTHS.forEach(({ name, width, height }) => {
         assert.ok(scrollWidth <= clientWidth + 1, `${label}: scrollWidth=${scrollWidth}, clientWidth=${clientWidth}`);
       }
       await checkNoOverflow('default');
+      await page.click('#swap-distances-button');
+      await checkNoOverflow('swap-distances clicked');
+      await page.click('[data-term="siriusRigel"].glossary-toggle');
+      await checkNoOverflow('sirius-rigel reveal open');
       await setRange(page, '#idea-distance-slider', 0);
       await checkNoOverflow('idea-slider=min');
       await setRange(page, '#idea-distance-slider', 3);
@@ -176,6 +263,8 @@ WIDTHS.forEach(({ name, width, height }) => {
         'fading-star-factor',
         'distance-from-modulus',
         'absolute-from-modulus',
+        'inverse-square-to-magnitude',
+        'bright-but-far-real-example',
         'explain-distance-modulus',
       ];
       for (const id of expectedIds) {
@@ -187,7 +276,7 @@ WIDTHS.forEach(({ name, width, height }) => {
 
   test(`${name}: the three main diagrams each have explicit width and height attributes (rule 15)`, async (t) => {
     await withPage(t, { width, height }, async (page) => {
-      for (const id of ['idea-diagram', 'ruler-diagram', 'ladder-diagram']) {
+      for (const id of ['idea-diagram', 'ruler-diagram', 'ladder-diagram', 'equal-diagram', 'real-diagram', 'inverse-square-diagram']) {
         const size = await page.locator(`#${id}`).evaluate((svg) => ({
           width: svg.getAttribute('width'),
           height: svg.getAttribute('height'),

@@ -7,7 +7,7 @@
   <meta name="referrer" content="no-referrer" />
   <meta name="robots" content="noindex, nofollow" />
   <title>Magnitude: how bright is a star?</title>
-  <link rel="stylesheet" href="../styles.css?v=202611101600" />
+  <link rel="stylesheet" href="../styles.css?v=202611111500" />
   <link rel="icon" type="image/svg+xml" href="../favicon.svg?v=202610130720" />
 </head>
 <body>
@@ -25,7 +25,56 @@
     <section class="notes-section" id="the-idea">
       <span class="tier-badge tier-badge--1">Tier 1 &middot; The idea</span>
       <h2>Apparent versus absolute magnitude</h2>
-      <p>Drag the slider to move the star. Watch which number changes.</p>
+      <p>
+        A bright star can look dim if it's far enough away, and a dim star can look bright if it's
+        close enough. Two real stars, side by side, show exactly this.
+      </p>
+
+      <div class="diagram-row magnitude-two-panel">
+        <div class="diagram magnitude-equal-diagram">
+          <p class="diagram-caption">True brightness (both at the standard 10 pc)</p>
+          <div class="labelled-diagram-wrap" id="equal-diagram-wrap">
+            <svg
+              id="equal-diagram"
+              class="responsive-svg"
+              width="220"
+              height="200"
+              viewBox="0 0 220 200"
+              role="img"
+              aria-label="Two glowing stars side by side, both placed at the same standard distance of 10 parsecs. Star A, the far more luminous one, glows much larger and brighter than Star B."
+            ></svg>
+          </div>
+        </div>
+        <div class="diagram magnitude-real-diagram">
+          <p class="diagram-caption">Where they really are</p>
+          <div class="labelled-diagram-wrap" id="real-diagram-wrap">
+            <svg
+              id="real-diagram"
+              class="responsive-svg"
+              width="220"
+              height="200"
+              viewBox="0 0 220 200"
+              role="img"
+              aria-label="The same two stars, now each placed at its own real distance along a line from very close to very far. The far-away, truly luminous star now glows faintly, while the close, truly faint star now glows brightly &mdash; the opposite of the left-hand panel."
+            ></svg>
+          </div>
+        </div>
+      </div>
+
+      <p>
+        <button type="button" class="secondary-button" id="swap-distances-button">&#8644; Swap distances</button>
+      </p>
+
+      <dl class="readout">
+        <dt>Star A (M = &minus;5.00, very luminous), apparent magnitude now</dt>
+        <dd id="swap-starA-readout"></dd>
+        <dt>Star B (M = +4.83, Sun-like), apparent magnitude now</dt>
+        <dd id="swap-starB-readout"></dd>
+      </dl>
+
+      <p class="note">Looking bright and being bright are not the same thing: distance matters.</p>
+
+      <p>Drag the slider to move a single star and watch the same thing happen continuously.</p>
 
       <div class="diagram magnitude-idea-diagram">
         <div class="labelled-diagram-wrap" id="idea-diagram-wrap">
@@ -63,6 +112,58 @@
         <button type="button" class="glossary-toggle glossary-term-button" data-term="streetLamp" aria-label="Why compare brightness from a fixed distance?" aria-expanded="false">Why a fixed distance? The street-lamp idea</button>
       </p>
       <div class="glossary-definition scaffold-reveal" data-term="streetLamp" hidden></div>
+    </section>
+
+    <section class="notes-section" id="inverse-square">
+      <span class="tier-badge tier-badge--1">Tier 1 &middot; The idea</span>
+      <h2>Why distance matters: the inverse-square law</h2>
+      <p>The same lamp light, spread over a bigger area the farther it travels &mdash; so any one small patch of it catches less.</p>
+
+      <div class="diagram magnitude-inverse-square-diagram">
+        <div class="labelled-diagram-wrap" id="inverse-square-diagram-wrap">
+          <svg
+            id="inverse-square-diagram"
+            class="responsive-svg"
+            width="440"
+            height="200"
+            viewBox="0 0 440 200"
+            role="img"
+            aria-label="A lamp on the left, with its light spreading out through three frames at increasing distance: a single square at distance d, a 2-by-2 grid of the same-sized squares at distance 2d, and a 3-by-3 grid at distance 3d. One square is highlighted in each frame, shrinking from the whole frame to a quarter to a ninth of it, showing the same total light spread over a larger and larger area."
+          ></svg>
+        </div>
+      </div>
+
+      <div class="table-scroll">
+        <table class="shower-table" id="inverse-square-table">
+          <caption>One unit square's share of the lamp's light, at each distance</caption>
+          <thead>
+            <tr><th scope="col">Distance</th><th scope="col">Brightness (fraction of that at d)</th><th scope="col">Magnitude change from d</th></tr>
+          </thead>
+          <tbody id="inverse-square-table-body"></tbody>
+        </table>
+      </div>
+
+      <p class="note">
+        Double the distance and the same light covers 4&times; the area, so any one patch gets a
+        quarter of the brightness &mdash; a magnitude change of 2.5 log<sub>10</sub>(4), about 1.5
+        magnitudes fainter. This is the same inverse-square law behind the distance modulus formula
+        below.
+      </p>
+
+      <p>
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="siriusRigel" aria-label="A real example: Sirius versus Rigel" aria-expanded="false">A real example: Sirius versus Rigel</button>
+      </p>
+      <div class="glossary-definition scaffold-reveal" data-term="siriusRigel" hidden>
+        <p>
+          Sirius (apparent magnitude &minus;1.46) looks noticeably brighter in our sky than Rigel
+          (apparent magnitude +0.13) &mdash; about <span id="sirius-rigel-apparent-ratio"></span>
+          times brighter. But Rigel is actually around
+          <span id="sirius-rigel-luminosity-ratio"></span> times <strong>more luminous</strong>
+          than Sirius; it only looks fainter from Earth because it sits roughly
+          <span id="sirius-rigel-distance-ratio"></span> times farther away. Looking bright and
+          being bright really are different things. First draft, to be checked by the teacher.
+        </p>
+      </div>
     </section>
 
     <section class="notes-section" id="magnitude-scale">
@@ -309,16 +410,16 @@
     <p class="next-page-link" id="next-page"></p>
   </main>
 
-  <script src="../src/curriculum.js?v=202611101600"></script>
+  <script src="../src/curriculum.js?v=202611111500"></script>
   <script src="../src/pages.js?v=202611101600"></script>
   <script src="../src/specData.js?v=202610161036"></script>
-  <script src="../src/parallax.js?v=202611101600"></script>
+  <script src="../src/parallax.js?v=202611111500"></script>
   <script src="../src/magnitude.js?v=202611101600"></script>
-  <script src="../src/magnitudeQuestions.js?v=202611101600"></script>
+  <script src="../src/magnitudeQuestions.js?v=202611111500"></script>
   <script src="../glossary.js?v=202610131052"></script>
   <script src="../quiz-ui.js?v=202611101600"></script>
-  <script src="magnitude.js?v=202611101600"></script>
-  <script src="../diagramEnlarge.js?v=202611051400"></script>
+  <script src="magnitude.js?v=202611111500"></script>
+  <script src="../diagramEnlarge.js?v=202611111500"></script>
   <script src="../notesPage.js?v=202609252100"></script>
   <script src="../nextPage.js?v=202610161057"></script>
 </body>

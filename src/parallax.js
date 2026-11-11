@@ -1,17 +1,19 @@
 /**
- * Trigonometric parallax: the angle p (in arcseconds) a star's nearby
- * position appears to shift against the distant background as Earth
- * moves from one side of its orbit to the other, and the distance that
- * angle implies.
+ * Trigonometric parallax: p is the angle at the star, in the right-angled
+ * triangle Sun-Earth-star, between the direction to the Sun and the
+ * direction to the Earth (the right angle sits at the Sun, with the 1 AU
+ * Sun-Earth distance as one side). The distance that angle implies
+ * follows from the triangle's geometry.
  *
  * A parsec is, by definition, the distance at which 1 AU subtends an
  * angle of exactly 1 arcsecond — so d (pc) = 1 / p (arcsec) falls
  * straight out of that definition (opposite/adjacent = tan(p), and at
  * these tiny angles tan(p) ≈ p in radians, so d = 1 AU / p(radians) =
  * (1 / p(arcsec)) parsecs once AU_PER_PARSEC itself is defined the same
- * way). See notes/parallax.html's own opening diagram for p itself:
- * HALF the total apparent shift between the two observing positions,
- * measured from the Sun to Earth, not Earth-to-Earth.
+ * way). See notes/parallax.html's own geometry diagram for p marked at
+ * the star; two photographs six months apart (Earth at opposite sides of
+ * its orbit) show the star having moved by 2p, so p is HALF of that
+ * measured movement — a consequence of the geometry, not its definition.
  */
 const SpecData = typeof require !== 'undefined' ? require('./specData') : window.SpecData;
 

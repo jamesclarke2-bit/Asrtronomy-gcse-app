@@ -165,12 +165,95 @@ PAGES.forEach((href) => {
   });
 });
 
-// --- Close behaviour (button, Escape, outside tap) on one representative
-// diagram per page — exercised at every width in the sizing test above
-// already covers "opens correctly"; this covers all three ways to close.
+// --- Close behaviour (button, Escape, outside tap), on EVERY diagram on
+// the page, and — the actual bug this guards against (see diagramEnlarge.js's
+// own openDiagram comment) — that the diagram is genuinely restored
+// afterwards: back in <main>, not stranded inside the now-closed (display:
+// none) dialog, and visibly rendered rather than collapsed to nothing.
+// Deliberately NOT compared pixel-for-pixel against an earlier snapshot: a
+// handful of this site's diagrams (a variable-height year wheel, an
+// autoplaying sim's clock) legitimately redraw at a different size between
+// one measurement and the next for reasons that have nothing to do with
+// enlarging — the actual bug's own signature (collapsed to 0, reparented
+// into the dialog) is unambiguous enough not to need that comparison. ------
+
+// A diagram reparented back into the closed dialog (the bug) still reports
+// a non-null parent and isConnected: true — only its place in the tree and
+// its rendered size (collapsed to 0, since its ancestor dialog has no
+// `open` attribute and so is display:none) give it away.
+async function captureDiagramState(page, button) {
+  return button.evaluate((btn) => {
+    const container = btn.closest('.diagram-enlarge-source');
+    const rect = container.getBoundingClientRect();
+    return { inMain: !!container.closest('main'), inDialog: !!container.closest('dialog'), width: rect.width, height: rect.height };
+  });
+}
+
+// A minimum that's obviously not "collapsed to 0" (the bug's own
+// signature) but well under any diagram's real rendered size on this site.
+const MIN_VISIBLE_SIZE_PX = 20;
 
 PAGES.forEach((href) => {
-  test(`${href}: Enlarge closes by its own button, by Escape, and by tapping outside`, async (t) => {
+  test(`${href}: every Enlarge closes by its own button, by Escape, and by tapping outside — and restores the diagram each time`, async (t) => {
+    if (launchError) {
+      skip(t, SKIP_MESSAGE(launchError));
+      return;
+    }
+    const page = await openPage(href, 390, 800);
+    const pageErrors = [];
+    page.on('pageerror', (err) => pageErrors.push(err.message));
+    try {
+      const buttonCount = await page.locator('.diagram-enlarge-button:visible').count();
+      if (buttonCount === 0) {
+        t.skip(`${href} has no visible, worth-enlarging diagram`);
+        return;
+      }
+      const dialog = page.locator('dialog.diagram-enlarge-dialog');
+      const closeMethods = [
+        { name: 'button', run: () => page.locator('.diagram-enlarge-close').click() },
+        { name: 'Escape', run: () => page.keyboard.press('Escape') },
+        { name: 'tap outside', run: () => page.mouse.click(1, 1) },
+      ];
+
+      for (let i = 0; i < buttonCount; i += 1) {
+        const button = page.locator('.diagram-enlarge-button:visible').nth(i);
+
+        for (const { name, run } of closeMethods) {
+          await button.click();
+          await dialog.waitFor({ state: 'visible' });
+          assert.equal(await page.evaluate(() => document.querySelector('dialog.diagram-enlarge-dialog').open), true);
+
+          await run();
+          await dialog.waitFor({ state: 'hidden' });
+          assert.equal(await page.evaluate(() => document.querySelector('dialog.diagram-enlarge-dialog').open), false);
+
+          const after = await captureDiagramState(page, button);
+          assert.ok(after.inMain, `${href} diagram #${i} (close via ${name}): should be back inside <main>, not left in the dialog`);
+          assert.ok(!after.inDialog, `${href} diagram #${i} (close via ${name}): should no longer be inside the dialog`);
+          assert.ok(
+            after.width > MIN_VISIBLE_SIZE_PX && after.height > MIN_VISIBLE_SIZE_PX,
+            `${href} diagram #${i} (close via ${name}): should be visible again, not collapsed (got ${after.width}x${after.height})`
+          );
+        }
+      }
+      assert.deepEqual(pageErrors, [], `${href}: no uncaught page errors during open/close`);
+    } finally {
+      await page.close();
+    }
+  });
+});
+
+// --- The actual bug: a fast tap (or anything else) firing the enlarge
+// button's click handler twice in quick succession, before the first
+// showModal() has settled, used to re-capture originalParent/
+// originalNextSibling as the dialog's own crop box — so closing afterwards
+// reinserted the diagram into the (now display:none) dialog instead of
+// restoring it to the page, and it simply vanished. Guarded in
+// diagramEnlarge.js's openDiagram by ignoring a second open request while
+// the dialog is already open. -----------------------------------------------
+
+PAGES.forEach((href) => {
+  test(`${href}: a double-fired click on Enlarge (e.g. a fast tap) doesn't strand the diagram in the dialog`, async (t) => {
     if (launchError) {
       skip(t, SKIP_MESSAGE(launchError));
       return;
@@ -183,26 +266,107 @@ PAGES.forEach((href) => {
         return;
       }
       const button = page.locator('.diagram-enlarge-button:visible').first();
+
+      await button.evaluate((btn) => {
+        btn.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true }));
+        btn.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true }));
+      });
+      await page.locator('dialog.diagram-enlarge-dialog').waitFor({ state: 'visible' });
+      await page.locator('.diagram-enlarge-close').click();
+      await page.locator('dialog.diagram-enlarge-dialog').waitFor({ state: 'hidden' });
+
+      const after = await captureDiagramState(page, button);
+      assert.ok(after.inMain, `${href}: the double-clicked diagram should be back inside <main>, not stranded in the dialog`);
+      assert.ok(!after.inDialog, `${href}: the double-clicked diagram should no longer be inside the dialog`);
+      assert.ok(
+        after.width > MIN_VISIBLE_SIZE_PX && after.height > MIN_VISIBLE_SIZE_PX,
+        `${href}: the double-clicked diagram should be visible again, not collapsed (got ${after.width}x${after.height})`
+      );
+    } finally {
+      await page.close();
+    }
+  });
+});
+
+// --- Interactivity survives restore: for a diagram with its own slider,
+// moving it after a close still redraws — a generic DOM-diff check (not
+// pixel comparison, so it also catches a <canvas>-based diagram, whose
+// content never shows up in any DOM diff at all, and skips those instead of
+// false-failing on them; see diagramEnlarge.js's own header on treating a
+// canvas as its own interactive content, never "the diagram"). -------------
+
+PAGES.forEach((href) => {
+  test(`${href}: after Enlarge closes, a diagram's own slider (if it has one, and isn't canvas-based) still redraws it`, async (t) => {
+    if (launchError) {
+      skip(t, SKIP_MESSAGE(launchError));
+      return;
+    }
+    const page = await openPage(href, 390, 800);
+    try {
+      const buttonCount = await page.locator('.diagram-enlarge-button:visible').count();
+      if (buttonCount === 0) {
+        t.skip(`${href} has no visible, worth-enlarging diagram`);
+        return;
+      }
       const dialog = page.locator('dialog.diagram-enlarge-dialog');
+      // Only check a button whose enclosing section pairs it unambiguously
+      // with exactly one slider and one diagram — a section with several
+      // diagrams sharing one slider (or several sliders) can't say which
+      // diagram that slider is "the diagram's own" without page-specific
+      // knowledge this generic, sitewide test doesn't have.
+      const candidate = await page.evaluateHandle(() => {
+        const buttons = [...document.querySelectorAll('.diagram-enlarge-button')].filter((b) => b.getClientRects().length > 0);
+        for (const btn of buttons) {
+          const container = btn.closest('.diagram-enlarge-source');
+          if (container.querySelector('canvas')) continue;
+          const section = container.closest('section');
+          if (!section) continue;
+          if (section.querySelectorAll('.diagram-enlarge-source').length !== 1) continue;
+          if (section.querySelectorAll('input[type="range"]').length !== 1) continue;
+          // A second, separate diagram with no button of its own (e.g. one
+          // judged not worth enlarging at this viewport — see
+          // diagramEnlarge.js's own MIN_WORTHWHILE_SCALE) can still sit in
+          // this same section, which the two checks above alone can't see
+          // (they only count .diagram-enlarge-source, i.e. containers that
+          // DID get a button). A grouped .diagram-row's own children don't
+          // count against this — they're already part of this one
+          // container, not a second, separate diagram.
+          if ([...section.querySelectorAll('.diagram, .question-diagram')].some((d) => !container.contains(d))) continue;
+          return btn;
+        }
+        return null;
+      });
+      const isNull = await candidate.evaluate((el) => el === null);
+      if (isNull) {
+        t.skip(`${href} has no diagram unambiguously paired with exactly one SVG-redrawing slider in its own section`);
+        return;
+      }
+      const button = candidate.asElement();
 
       await button.click();
       await dialog.waitFor({ state: 'visible' });
-      assert.equal(await page.evaluate(() => document.querySelector('dialog.diagram-enlarge-dialog').open), true);
       await page.locator('.diagram-enlarge-close').click();
       await dialog.waitFor({ state: 'hidden' });
-      assert.equal(await page.evaluate(() => document.querySelector('dialog.diagram-enlarge-dialog').open), false);
 
-      await button.click();
-      await dialog.waitFor({ state: 'visible' });
-      await page.keyboard.press('Escape');
-      await dialog.waitFor({ state: 'hidden' });
-      assert.equal(await page.evaluate(() => document.querySelector('dialog.diagram-enlarge-dialog').open), false);
-
-      await button.click();
-      await dialog.waitFor({ state: 'visible' });
-      await page.mouse.click(1, 1);
-      await dialog.waitFor({ state: 'hidden' });
-      assert.equal(await page.evaluate(() => document.querySelector('dialog.diagram-enlarge-dialog').open), false);
+      const responded = await button.evaluate((btn) => {
+        const container = btn.closest('.diagram-enlarge-source');
+        const section = container && container.closest('section');
+        const slider = section && section.querySelector('input[type="range"]');
+        if (!container || !slider) return null; // lost the unambiguous pairing checked above — inconclusive, not a failure
+        const before = container.outerHTML;
+        const min = Number(slider.min) || 0;
+        const max = Number(slider.max) || 100;
+        const current = Number(slider.value);
+        const target = Math.abs(current - min) > Math.abs(max - current) ? min : max;
+        slider.value = String(target);
+        slider.dispatchEvent(new Event('input', { bubbles: true }));
+        return before !== container.outerHTML;
+      });
+      if (responded === null) {
+        t.skip(`${href}: lost the diagram/slider pairing after close (inconclusive, not a failure)`);
+        return;
+      }
+      assert.ok(responded, `${href}: moving the diagram's own slider after a close should still redraw it`);
     } finally {
       await page.close();
     }

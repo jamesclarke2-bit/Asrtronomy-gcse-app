@@ -308,6 +308,18 @@
 
   function openDiagram(diagramEl) {
     if (!dialog) buildDialog();
+    // A fast tap can fire two 'click' events in quick succession (a known
+    // touchscreen quirk, and reproducible from any double-fired click
+    // handler) before the first call's showModal() has even rendered. A
+    // second, overlapping call would re-capture originalParent/
+    // originalNextSibling as the dialog's own crop box (where the first
+    // call already moved diagramEl), not the diagram's real home — so
+    // closing afterwards reinserts it into the closed (display:none)
+    // dialog instead of restoring it to the page, and the diagram simply
+    // vanishes. Ignoring any open request while the dialog is already open
+    // is enough: there is nothing a second, redundant open would do that
+    // the first hasn't already done.
+    if (dialog.open) return;
     previouslyFocused = document.activeElement;
     originalParent = diagramEl.parentNode;
     originalNextSibling = diagramEl.nextSibling;

@@ -155,6 +155,50 @@
         },
       },
       {
+        id: 'inverse-square-to-magnitude',
+        units: ['u4.2'],
+        prompt:
+          'Star P is exactly 3 times farther from Earth than Star Q, and both stars have the same actual luminosity (the same absolute magnitude). By what factor does Star P look fainter than Star Q, and what magnitude difference (to 1 decimal place) does that factor correspond to?',
+        fields: [
+          { key: 'factor', type: 'number', label: 'Brightness factor', unitLabel: '×' },
+          { key: 'deltaM', type: 'number', label: 'Magnitude difference', unitLabel: 'mag' },
+        ],
+        check(value) {
+          const expectedFactor = 3 * 3; // inverse-square law: a ×3 distance is a ÷9 brightness
+          const expectedDeltaM = Magnitude.magnitudeDifference(expectedFactor);
+          const factorOk = Math.abs(value.factor - expectedFactor) / expectedFactor < 0.02;
+          const deltaMOk = Math.abs(value.deltaM - expectedDeltaM) < 0.1;
+          return {
+            correct: factorOk && deltaMOk,
+            message: `Brightness falls with the inverse-square law, so 3× the distance means 1/3² = 1/9 the brightness — Star P looks ${expectedFactor}× fainter, a magnitude difference of 2.5 log10(9) ≈ ${expectedDeltaM.toFixed(1)}.`,
+          };
+        },
+      },
+      {
+        id: 'bright-but-far-real-example',
+        units: ['u4.2'],
+        prompt:
+          'Star R has absolute magnitude -6 and sits 500 pc away. Star S has absolute magnitude +5 (much less luminous) and sits only 2 pc away. Which one looks brighter from Earth, and what is each one’s apparent magnitude (to 1 decimal place)?',
+        fields: [
+          { key: 'brighter', type: 'choice', label: 'Looks brighter from Earth', options: ['Star R', 'Star S'] },
+          { key: 'mR', type: 'number', label: 'Star R apparent magnitude' },
+          { key: 'mS', type: 'number', label: 'Star S apparent magnitude' },
+        ],
+        check(value) {
+          const expectedMR = Magnitude.apparentFromAbsolute(-6, 500);
+          const expectedMS = Magnitude.apparentFromAbsolute(5, 2);
+          const brighterStar = expectedMS < expectedMR ? 'Star S' : 'Star R';
+          const correct =
+            value.brighter === brighterStar &&
+            Math.abs(value.mR - expectedMR) < 0.1 &&
+            Math.abs(value.mS - expectedMS) < 0.1;
+          return {
+            correct,
+            message: `m = M + 5 log10(d / 10): Star R gives ${expectedMR.toFixed(1)}, Star S gives ${expectedMS.toFixed(1)} — the smaller (here, ${brighterStar}'s) apparent magnitude looks brighter, even though Star R is the truly more luminous star. Being close beats being luminous here.`,
+          };
+        },
+      },
+      {
         id: 'explain-distance-modulus',
         units: ['u4.2'],
         prompt: "Why does moving a star 10 times farther away make it exactly 5 magnitudes fainter, not some other number?",

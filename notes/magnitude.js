@@ -55,6 +55,152 @@
     return `${r.toFixed(2)}×`;
   }
 
+  // A star's on-screen glow (radius and opacity), from its apparent
+  // magnitude, relative to a magnitude-0 reference — shared by both the
+  // single-star idea diagram and the two-panel "bright but far" diagram,
+  // so the same magnitude always draws the same-looking glow everywhere
+  // on this page.
+  function starGlow(apparentM) {
+    const fluxRatio = Mag.brightnessRatio(0 - apparentM);
+    return {
+      radius: Math.min(22, Math.max(2, 6 + 6 * Math.log10(fluxRatio + 0.01))),
+      opacity: Math.min(0.9, Math.max(0.08, 0.5 * Math.sqrt(fluxRatio))),
+    };
+  }
+
+  // ------------------------------------------------------------------
+  // Section 0: two-panel "bright but far vs faint but near" diagram
+  // ------------------------------------------------------------------
+
+  const SWAP_PANEL_W = 220;
+  const SWAP_PANEL_H = 200;
+  const SWAP_AXIS_Y = 120;
+  const SWAP_STAR_A = { name: 'Star A', absoluteM: -5, color: '#8fd3ff' };
+  const SWAP_STAR_B = { name: 'Star B', absoluteM: 4.83, color: '#ffb703' };
+  // The real, un-swapped arrangement: the very luminous star (A) sits
+  // far away and so looks faint; the faint, Sun-like star (B) sits close
+  // and so looks bright — see this section's own readouts for the exact
+  // apparent magnitudes that arrangement gives (computed, never typed).
+  const SWAP_DISTANCE_A = 1000;
+  const SWAP_DISTANCE_B = 1;
+
+  function drawStarGlowGroup(svg, star) {
+    const glow3 = svgEl('circle', { class: 'swap-star-part', cy: SWAP_AXIS_Y, r: 0, fill: star.color, opacity: 0 });
+    const glow2 = svgEl('circle', { class: 'swap-star-part', cy: SWAP_AXIS_Y, r: 0, fill: star.color, opacity: 0 });
+    const core = svgEl('circle', { class: 'swap-star-part', cy: SWAP_AXIS_Y, r: 2, fill: star.color });
+    [glow3, glow2, core].forEach((el) => svg.appendChild(el));
+    return { glow3, glow2, core };
+  }
+
+  function positionStarGlowGroup(group, x, apparentM) {
+    const { radius, opacity } = starGlow(apparentM);
+    [[group.glow3, radius * 2.2, opacity * 0.18], [group.glow2, radius * 1.5, opacity * 0.35]].forEach(([el, r, op]) => {
+      el.setAttribute('cx', x);
+      el.setAttribute('r', r);
+      el.setAttribute('opacity', op);
+    });
+    group.core.setAttribute('cx', x);
+    group.core.setAttribute('r', radius);
+  }
+
+  // --- Left panel: both stars at the standard 10 pc (static) -----------
+
+  function drawEqualDiagram() {
+    const svg = document.getElementById('equal-diagram');
+    const wrap = document.getElementById('equal-diagram-wrap');
+    clearDiagram(svg, wrap);
+    svg.appendChild(svgEl('rect', { x: 0, y: 0, width: SWAP_PANEL_W, height: SWAP_PANEL_H, fill: '#0f1830', rx: 10 }));
+
+    const xA = SWAP_PANEL_W * 0.32;
+    const xB = SWAP_PANEL_W * 0.68;
+    // At exactly 10 pc, apparent magnitude equals absolute magnitude —
+    // this panel needs no distance-modulus call at all, just each star's
+    // own fixed M.
+    const groupA = drawStarGlowGroup(svg, SWAP_STAR_A);
+    positionStarGlowGroup(groupA, xA, SWAP_STAR_A.absoluteM);
+    const groupB = drawStarGlowGroup(svg, SWAP_STAR_B);
+    positionStarGlowGroup(groupB, xB, SWAP_STAR_B.absoluteM);
+
+    // Not sideClassForFraction: that helper grows a label back TOWARD the
+    // centre, which is right for a single marker that might sit near
+    // either edge, but wrong here — these two fixed, centrally-placed
+    // labels need to grow apart from each other instead, or they collide
+    // in the middle.
+    addLabel(wrap, `Star A (M ${formatMag(SWAP_STAR_A.absoluteM)})`, (xA / SWAP_PANEL_W) * 100, ((SWAP_AXIS_Y + 26) / SWAP_PANEL_H) * 100, 'diagram-label--left');
+    addLabel(wrap, `Star B (M ${formatMag(SWAP_STAR_B.absoluteM)})`, (xB / SWAP_PANEL_W) * 100, ((SWAP_AXIS_Y + 26) / SWAP_PANEL_H) * 100, 'diagram-label--right');
+  }
+
+  // --- Right panel: each star at its own real distance (swappable) -----
+
+  const SWAP_AXIS_X0 = 30;
+  const SWAP_AXIS_X1 = 190;
+  const SWAP_LOG_MIN = 0; // 10^0 = 1 pc
+  const SWAP_LOG_MAX = 3; // 10^3 = 1000 pc
+
+  function swapX(distancePc) {
+    const t = (Math.log10(distancePc) - SWAP_LOG_MIN) / (SWAP_LOG_MAX - SWAP_LOG_MIN);
+    return SWAP_AXIS_X0 + t * (SWAP_AXIS_X1 - SWAP_AXIS_X0);
+  }
+
+  let swapParts = null;
+
+  function drawRealDiagramOnce() {
+    if (swapParts) return swapParts;
+    const svg = document.getElementById('real-diagram');
+    const wrap = document.getElementById('real-diagram-wrap');
+    clearDiagram(svg, wrap);
+    svg.appendChild(svgEl('rect', { x: 0, y: 0, width: SWAP_PANEL_W, height: SWAP_PANEL_H, fill: '#0f1830', rx: 10 }));
+    svg.appendChild(svgEl('line', { x1: SWAP_AXIS_X0, y1: SWAP_AXIS_Y, x2: SWAP_AXIS_X1, y2: SWAP_AXIS_Y, stroke: '#3a4d73', 'stroke-width': 1.5 }));
+
+    const groupA = drawStarGlowGroup(svg, SWAP_STAR_A);
+    const groupB = drawStarGlowGroup(svg, SWAP_STAR_B);
+    const labelA = addLabel(wrap, 'Star A', 0, ((SWAP_AXIS_Y + 26) / SWAP_PANEL_H) * 100);
+    labelA.classList.add('swap-star-part');
+    const labelB = addLabel(wrap, 'Star B', 0, ((SWAP_AXIS_Y - 38) / SWAP_PANEL_H) * 100);
+    labelB.classList.add('swap-star-part');
+
+    swapParts = { groupA, groupB, labelA, labelB };
+    return swapParts;
+  }
+
+  function setUpSwapDiagram() {
+    drawEqualDiagram();
+    const parts = drawRealDiagramOnce();
+    const button = document.getElementById('swap-distances-button');
+    const readoutA = document.getElementById('swap-starA-readout');
+    const readoutB = document.getElementById('swap-starB-readout');
+    let swapped = false;
+
+    function render() {
+      const distanceA = swapped ? SWAP_DISTANCE_B : SWAP_DISTANCE_A;
+      const distanceB = swapped ? SWAP_DISTANCE_A : SWAP_DISTANCE_B;
+      const mA = Mag.apparentFromAbsolute(SWAP_STAR_A.absoluteM, distanceA);
+      const mB = Mag.apparentFromAbsolute(SWAP_STAR_B.absoluteM, distanceB);
+      const xA = swapX(distanceA);
+      const xB = swapX(distanceB);
+
+      positionStarGlowGroup(parts.groupA, xA, mA);
+      positionStarGlowGroup(parts.groupB, xB, mB);
+      const fractionA = xA / SWAP_PANEL_W;
+      const fractionB = xB / SWAP_PANEL_W;
+      parts.labelA.style.left = `${fractionA * 100}%`;
+      parts.labelA.classList.remove('diagram-label--left', 'diagram-label--right');
+      parts.labelA.classList.add(sideClassForFraction(fractionA));
+      parts.labelB.style.left = `${fractionB * 100}%`;
+      parts.labelB.classList.remove('diagram-label--left', 'diagram-label--right');
+      parts.labelB.classList.add(sideClassForFraction(fractionB));
+
+      readoutA.textContent = `${formatMag(mA)} (at ${formatDistancePc(distanceA)})`;
+      readoutB.textContent = `${formatMag(mB)} (at ${formatDistancePc(distanceB)})`;
+    }
+
+    button.addEventListener('click', () => {
+      swapped = !swapped;
+      render();
+    });
+    render();
+  }
+
   // ------------------------------------------------------------------
   // Section 1: apparent versus absolute magnitude
   // ------------------------------------------------------------------
@@ -171,6 +317,128 @@
     }
     slider.addEventListener('input', render);
     render();
+  }
+
+  // ------------------------------------------------------------------
+  // Section 0b: the inverse-square law, as spreading lamp light
+  // ------------------------------------------------------------------
+
+  const SQUARE_W = 440;
+  const SQUARE_H = 200;
+  const SQUARE_LAMP = { x: 20, y: 100 };
+  const SQUARE_CELL = 24;
+  // One frame per step away (1×, 2×, 3× the distance), each a grid of
+  // the SAME-sized unit cells — so the frame itself grows (2×2, then
+  // 3×3) to hold the same total light the single d-frame caught, and one
+  // highlighted cell shows what share of that total any one patch gets.
+  const SQUARE_STEPS = [
+    { n: 1, centerX: 140, distanceLabel: 'd' },
+    { n: 2, centerX: 260, distanceLabel: '2d' },
+    { n: 3, centerX: 380, distanceLabel: '3d' },
+  ];
+
+  function drawInverseSquareDiagram() {
+    const svg = document.getElementById('inverse-square-diagram');
+    const wrap = document.getElementById('inverse-square-diagram-wrap');
+    clearDiagram(svg, wrap);
+    svg.appendChild(svgEl('rect', { x: 0, y: 0, width: SQUARE_W, height: SQUARE_H, fill: '#0f1830', rx: 10 }));
+
+    // Two diverging guide lines from the lamp through the left edge of
+    // the farthest (biggest) frame, suggesting the cone of light
+    // spreading out — not to scale, just the shape of the idea.
+    const farthest = SQUARE_STEPS[SQUARE_STEPS.length - 1];
+    const farthestHalf = (farthest.n * SQUARE_CELL) / 2;
+    const farthestLeftX = farthest.centerX - farthestHalf;
+    [SQUARE_LAMP.y - farthestHalf, SQUARE_LAMP.y + farthestHalf].forEach((cornerY) => {
+      svg.appendChild(svgEl('line', {
+        x1: SQUARE_LAMP.x, y1: SQUARE_LAMP.y, x2: farthestLeftX, y2: cornerY,
+        stroke: '#5a7ab0', 'stroke-width': 1, 'stroke-dasharray': '3 3', opacity: 0.6,
+      }));
+    });
+
+    svg.appendChild(svgEl('circle', { cx: SQUARE_LAMP.x, cy: SQUARE_LAMP.y, r: 7, fill: '#fff8e3' }));
+    svg.appendChild(svgEl('circle', { cx: SQUARE_LAMP.x, cy: SQUARE_LAMP.y, r: 13, fill: 'none', stroke: '#fff8e3', 'stroke-width': 1, opacity: 0.4 }));
+
+    SQUARE_STEPS.forEach((step) => {
+      const size = step.n * SQUARE_CELL;
+      const x0 = step.centerX - size / 2;
+      const y0 = SQUARE_LAMP.y - size / 2;
+
+      for (let row = 0; row < step.n; row += 1) {
+        for (let col = 0; col < step.n; col += 1) {
+          const isHighlighted = row === 0 && col === 0;
+          svg.appendChild(svgEl('rect', {
+            x: x0 + col * SQUARE_CELL,
+            y: y0 + row * SQUARE_CELL,
+            width: SQUARE_CELL,
+            height: SQUARE_CELL,
+            fill: isHighlighted ? '#ffd27a' : 'none',
+            'fill-opacity': isHighlighted ? 0.85 : 0,
+            stroke: '#8fa6cf',
+            'stroke-width': 1,
+          }));
+        }
+      }
+
+      // Short, single-word labels, centred and narrow (not edge-anchored)
+      // — see the ratio ladder's own identical choice above for why: a
+      // fixed-width 9rem default label, centred this close to a 440px
+      // diagram's own edge (step 3's 'distance' label sits at 86% across),
+      // would overflow a narrow phone's viewport even though its own
+      // short text never would.
+      const distanceLabel = addLabel(wrap, step.distanceLabel, (step.centerX / SQUARE_W) * 100, ((y0 - 14) / SQUARE_H) * 100);
+      distanceLabel.classList.add('diagram-label--narrow');
+      const brightnessLabel = addLabel(
+        wrap,
+        step.n === 1 ? '1' : `1/${step.n * step.n}`,
+        (step.centerX / SQUARE_W) * 100,
+        ((y0 + size + 16) / SQUARE_H) * 100
+      );
+      brightnessLabel.classList.add('diagram-label--narrow');
+    });
+  }
+
+  function renderInverseSquareTable() {
+    const tbody = document.getElementById('inverse-square-table-body');
+    tbody.innerHTML = '';
+    SQUARE_STEPS.forEach((step) => {
+      const ratio = step.n * step.n;
+      const tr = document.createElement('tr');
+      const distanceTd = document.createElement('td');
+      distanceTd.textContent = step.distanceLabel;
+      const brightnessTd = document.createElement('td');
+      brightnessTd.textContent = step.n === 1 ? '1 (full)' : `1/${ratio}`;
+      const magTd = document.createElement('td');
+      magTd.textContent = step.n === 1 ? '0.00 (reference)' : `+${Mag.magnitudeDifference(ratio).toFixed(2)} (fainter)`;
+      tr.appendChild(distanceTd);
+      tr.appendChild(brightnessTd);
+      tr.appendChild(magTd);
+      tbody.appendChild(tr);
+    });
+  }
+
+  // --- A real example: Sirius versus Rigel ------------------------------
+  // First draft, general-knowledge figures (to be checked by the
+  // teacher) — Rigel's own apparent magnitude and distance; Sirius's
+  // apparent magnitude and distance are the same figures already used
+  // elsewhere on this page (and on Parallax and the Parsec). Every ratio
+  // shown is then computed from Magnitude, never typed as a finished
+  // number.
+  const SIRIUS_APPARENT_M = -1.46;
+  const SIRIUS_DISTANCE_PC = 2.64;
+  const RIGEL_APPARENT_M = 0.13;
+  const RIGEL_DISTANCE_PC = 260;
+
+  function renderSiriusRigelExample() {
+    const siriusAbsoluteM = Mag.absoluteFromApparent(SIRIUS_APPARENT_M, SIRIUS_DISTANCE_PC);
+    const rigelAbsoluteM = Mag.absoluteFromApparent(RIGEL_APPARENT_M, RIGEL_DISTANCE_PC);
+    const apparentRatio = Mag.brightnessRatio(RIGEL_APPARENT_M - SIRIUS_APPARENT_M);
+    const luminosityRatio = Mag.brightnessRatio(siriusAbsoluteM - rigelAbsoluteM);
+    const distanceRatio = RIGEL_DISTANCE_PC / SIRIUS_DISTANCE_PC;
+
+    document.getElementById('sirius-rigel-apparent-ratio').textContent = formatRatio(apparentRatio);
+    document.getElementById('sirius-rigel-luminosity-ratio').textContent = formatRatio(luminosityRatio);
+    document.getElementById('sirius-rigel-distance-ratio').textContent = formatRatio(distanceRatio);
   }
 
   // ------------------------------------------------------------------
@@ -475,6 +743,10 @@
   };
 
   setUpIdeaDiagram();
+  setUpSwapDiagram();
+  drawInverseSquareDiagram();
+  renderInverseSquareTable();
+  renderSiriusRigelExample();
   drawRuler();
   renderRulerTable();
   setUpRatioLadder();

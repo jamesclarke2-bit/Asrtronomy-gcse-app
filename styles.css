@@ -4178,6 +4178,32 @@ canvas {
   border-radius: 5px;
 }
 
+/* The single best estimate (1 / p) marked on the same track — a thin,
+   high-contrast line rather than a second fill colour, so "the range" and
+   "the single best guess within it" stay visually distinct at a glance. */
+.uncertainty-bar-best {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: #173d75;
+  transform: translateX(-1px);
+}
+
+.uncertainty-bar-axis {
+  position: relative;
+  height: 1.2rem;
+  margin: 0 0 1rem;
+}
+
+.uncertainty-bar-axis-tick {
+  position: absolute;
+  top: 0;
+  transform: translateX(-50%);
+  font-size: 0.75rem;
+  color: #666;
+}
+
 /* notes/magnitude.html: a small pill before each section's h2 naming
    which of the page's three tiers (the idea, brightness ratios, Astro
    Challenge distance modulus) that section belongs to. Colour alone
@@ -4242,9 +4268,50 @@ canvas {
    readable over a star-field dot or the glow itself, not just the plain
    background. */
 .magnitude-idea-diagram .diagram-label,
-.ratio-ladder-diagram .diagram-label {
+.ratio-ladder-diagram .diagram-label,
+.magnitude-equal-diagram .diagram-label,
+.magnitude-real-diagram .diagram-label,
+.magnitude-inverse-square-diagram .diagram-label {
   color: #eef3fb;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+/* The "bright but far" two-panel diagram sits side by side like
+   notes/parallax.html's own orbit/sky panels (same .diagram-row
+   pattern); each panel is narrower than the single-star idea diagram,
+   since there are two of them per row. */
+.magnitude-two-panel .diagram {
+  flex: 1 1 200px;
+  max-width: 240px;
+  margin: 1rem 0 0.5rem;
+}
+
+.magnitude-equal-diagram .labelled-diagram-wrap,
+.magnitude-real-diagram .labelled-diagram-wrap,
+.magnitude-inverse-square-diagram .labelled-diagram-wrap {
+  display: block;
+  width: 100%;
+}
+
+.magnitude-inverse-square-diagram {
+  max-width: 480px;
+  margin: 1rem 0 1.5rem;
+}
+
+/* The right-hand "where they really are" panel keeps Star A/B's glow
+   circles and labels as the same persistent elements across a swap
+   (never removed and recreated), exactly like .idea-star-part above —
+   see that rule's own comment for why only a persistent element can be
+   animated between its old and new values. Disabled under reduced
+   motion, same guard. */
+.swap-star-part {
+  transition: cx 0.2s ease, r 0.2s ease, opacity 0.2s ease, left 0.2s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .swap-star-part {
+    transition: none;
+  }
 }
 
 /* The ratio ladder's four fixed guide callouts (styles.css's own
@@ -4299,4 +4366,60 @@ canvas {
   background: #f3f6fa;
   color: #173d75;
   font-weight: 600;
+}
+
+/* notes/parallax.html's opening two-panel diagram (the orbit view and the
+   night-sky view) needs more width than the default .notes-section's
+   column to sit side by side — same "retrograde-section" pattern as
+   sims/solar-system-observation.html's own .diagram-row: .diagram-row's
+   flex-wrap alone still stacks them, fully visible, once the column is
+   too narrow, down to a phone. */
+#parallax-diagram,
+#parallax-geometry {
+  max-width: 900px;
+}
+
+.parallax-two-panel .diagram {
+  flex: 1 1 280px;
+  max-width: 320px;
+}
+
+.parallax-orbit-diagram .labelled-diagram-wrap,
+.parallax-sky-diagram .labelled-diagram-wrap,
+.parallax-triangle-diagram .labelled-diagram-wrap {
+  display: block;
+  width: 100%;
+}
+
+/* The orbit and sky panels are deep-space dark backgrounds (like
+   notes/magnitude.html's own idea/ratio-ladder diagrams) — same light
+   label colour and shadow for the same reason (see that file's own CSS
+   comment); the triangle diagram keeps the default dark-on-light colour
+   since its own background is light. */
+.parallax-orbit-diagram .diagram-label,
+.parallax-sky-diagram .diagram-label {
+  color: #eef3fb;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+/* The orbit panel's Earth marker/line and the sky panel's current-
+   position marker(s) are kept as the same persistent elements across
+   every month change (see notes/parallax.js's own comment on this,
+   mirroring notes/magnitude.js's .idea-star-part), so this transition can
+   interpolate smoothly between months — disabled entirely under reduced
+   motion, same as that page's own guard. */
+.orbit-earth-part,
+.sky-marker-part {
+  transition: cx 0.2s ease, cy 0.2s ease, x1 0.2s ease, y1 0.2s ease, left 0.2s ease, top 0.2s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orbit-earth-part,
+  .sky-marker-part {
+    transition: none;
+  }
+}
+
+.parallax-triangle-diagram {
+  max-width: 420px;
 }
