@@ -172,6 +172,44 @@ function makeQuestions(SpecData) {
         };
       },
     },
+    {
+      id: 'water-origin-internal-vs-delivered',
+      units: ['u3.25'],
+      type: 'choice',
+      prompt:
+        "Of the three candidate sources for Earth's water in the diagram above, which one comes from WITHIN Earth itself, rather than being delivered by an impact from space?",
+      options: ['Comets', 'Water-rich asteroids', 'Volcanic outgassing', 'The solar wind'],
+      check(value) {
+        const correct = value === 'Volcanic outgassing';
+        return {
+          correct,
+          message:
+            "Comets and water-rich asteroids both deliver water from outside, by colliding with the early Earth. Volcanic outgassing is different: it releases water vapour that was already locked inside Earth's own interior as the planet cooled — no impact or delivery from space needed.",
+        };
+      },
+    },
+    {
+      id: 'water-origin-isotope-comparison',
+      units: ['u3.25'],
+      type: 'choice',
+      prompt:
+        "Scientists compare the hydrogen isotope ratio (the proportion of deuterium, 'heavy hydrogen', to ordinary hydrogen) in Earth's oceans against the same ratio measured in comets and in water-rich asteroids. What is this comparison actually used for?",
+      options: [
+        "To judge how closely each candidate source's water matches Earth's own, as evidence for how much each may have contributed",
+        "To measure exactly how old Earth's oceans are",
+        'To prove that comets contributed none of the water at all',
+        "To measure the total mass of Earth's oceans",
+      ],
+      check(value) {
+        const correct =
+          value === "To judge how closely each candidate source's water matches Earth's own, as evidence for how much each may have contributed";
+        return {
+          correct,
+          message:
+            "A closer isotope match between a candidate source and Earth's actual ocean water is evidence — not proof — that source contributed more. None of the three theories (comets, water-rich asteroids, volcanic outgassing) is ruled out entirely; isotope ratios are one of the main ways scientists weigh how much each one most likely contributed.",
+        };
+      },
+    },
   ];
 }
 

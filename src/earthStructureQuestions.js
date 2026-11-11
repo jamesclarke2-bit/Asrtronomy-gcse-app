@@ -235,6 +235,47 @@ function makeQuestions(SpecData, EarthStructureDiagram) {
         };
       },
     },
+    // 13.22: the atmosphere blocks almost all radiation except visible
+    // light and radio waves — read directly off the transmission chart.
+    {
+      id: 'transmission-chart-open-bands',
+      units: ['u2.16'],
+      type: 'choice',
+      prompt:
+        "Looking at the atmospheric transmission chart above (the one with gamma ray, X-ray, ultraviolet, optical, infrared and radio bars): besides radio waves, which part of the spectrum is shown reaching the ground largely unblocked?",
+      options: ['Gamma ray', 'X-ray', 'Ultraviolet', 'Optical', 'Infrared'],
+      check(value) {
+        const correct = value === 'Optical';
+        return {
+          correct,
+          message:
+            "The chart shows gamma ray, X-ray and ultraviolet all absorbed high up (blocked, red), infrared only partly getting through (orange), and only optical light and radio waves reaching the ground largely unimpeded (blue) — exactly the two transmission windows the spec names.",
+        };
+      },
+    },
+    // 13.30: the atmosphere's detrimental effect on image quality
+    // (scintillation/twinkling), and why it matters for ground telescopes.
+    {
+      id: 'scintillation-and-ground-telescopes',
+      units: ['u2.33'],
+      type: 'choice',
+      prompt:
+        "Constantly shifting pockets of different density and temperature in the atmosphere bend starlight unpredictably as it arrives, making stars visibly twinkle. What is this effect called, and why does it matter for a ground-based telescope?",
+      options: [
+        'Scintillation — it blurs and distorts fine detail in any ground-based image or measurement',
+        'Refraction — it bends starlight so much that stars appear in the wrong place in the sky',
+        'Extinction — it dims every star by exactly the same amount, with no effect on image sharpness',
+        'Diffraction — it is caused by the telescope\'s own aperture, not by the atmosphere at all',
+      ],
+      check(value) {
+        const correct = value === 'Scintillation — it blurs and distorts fine detail in any ground-based image or measurement';
+        return {
+          correct,
+          message:
+            "This is scintillation: unpredictable bending of starlight by small, constantly shifting pockets of different air density and temperature. It blurs and distorts fine detail in any ground-based image or measurement — one of the main reasons the very largest, most detail-hungry telescopes (and anything needing the sharpest possible resolution) are instead placed above the atmosphere, in space.",
+        };
+      },
+    },
     ...EIGHT_FEATURES.map((feature) => namedLineQuestion(feature, EarthStructureDiagram)),
   ];
 }

@@ -22,6 +22,10 @@ function makeQuestions(TelescopeModel, RayOptics) {
   const lightGraspVsEyeAnswer = TelescopeModel.lightGraspRatio(70, EYE_MM);
   const resolutionAnswer = TelescopeModel.resolutionArcsec(500, 60);
 
+  const TRUE_FIELD_APPARENT_DEG = 50;
+  const TRUE_FIELD_MAGNIFICATION = 60;
+  const trueFieldAnswer = RayOptics.trueFieldOfViewDeg(TRUE_FIELD_APPARENT_DEG, TRUE_FIELD_MAGNIFICATION);
+
   return [
     {
       id: 'magnification-calculation',
@@ -188,6 +192,133 @@ function makeQuestions(TelescopeModel, RayOptics) {
             `magnification = f(objective) / f(eyepiece) = ${COMPARE_F_OBJECTIVE_MM} / ${COMPARE_F_EYEPIECE_MM} = ${keplerianCompare.magnification.toFixed(0)}x (inverted). ` +
             `Galilean (diverging eyepiece, f = -${COMPARE_F_EYEPIECE_MM} mm): tube length = ${COMPARE_F_OBJECTIVE_MM} + (-${COMPARE_F_EYEPIECE_MM}) = ${galileanCompare.eyepiecePositionMm.toFixed(0)} mm; ` +
             `magnification = ${COMPARE_F_OBJECTIVE_MM} / (-${COMPARE_F_EYEPIECE_MM}) = ${galileanCompare.magnification.toFixed(0)}x (upright). Same formula both times — only the eyepiece focal length's sign changes.`,
+        };
+      },
+    },
+    // 11.16: convex lenses and concave mirrors collect and focus light.
+    {
+      id: 'lens-mirror-collect-focus-light',
+      units: ['u5.1'],
+      type: 'choice',
+      prompt: "A telescope's objective has to be one of two shapes to collect and focus starlight. Which pair are they?",
+      options: [
+        'A convex lens and a concave mirror',
+        'A concave lens and a convex mirror',
+        'A flat mirror and a glass prism',
+        'Only a convex lens — a mirror can reflect light but never bring it to a focus',
+      ],
+      check(value) {
+        const correct = value === 'A convex lens and a concave mirror';
+        return {
+          correct,
+          message:
+            "A convex (converging) lens bends parallel light inward to a focal point by refraction; a concave mirror does the same job by reflection, curving inward to reflect parallel light to a focal point in front of it. Every telescope objective on the bench above is built from one or the other.",
+        };
+      },
+    },
+    // 11.20: aperture is related to the diameter of the objective.
+    {
+      id: 'aperture-is-objective-diameter',
+      units: ['u5.2'],
+      type: 'choice',
+      prompt: "What does a telescope's \"aperture\" actually measure?",
+      options: [
+        'The diameter of its objective — the main light-collecting lens or mirror',
+        "The eyepiece's own focal length",
+        'The total length of the telescope tube',
+        'How many times the telescope magnifies the image',
+      ],
+      check(value) {
+        const correct = value === 'The diameter of its objective — the main light-collecting lens or mirror';
+        return {
+          correct,
+          message:
+            "Aperture is the diameter of the objective, lens or mirror, whichever a telescope uses to collect light. It's this one number — not the tube length, the eyepiece, or the magnification — that sets both light grasp and resolution, as the readouts above show.",
+        };
+      },
+    },
+    // 11.21: field of view is the circle of sky seen through the eyepiece,
+    // in degrees or arcminutes.
+    {
+      id: 'true-field-of-view-calculation',
+      units: ['u5.2'],
+      type: 'number',
+      unitLabel: '°',
+      prompt: `An eyepiece has an apparent field of view of ${TRUE_FIELD_APPARENT_DEG}°, and is used at a magnification of ${TRUE_FIELD_MAGNIFICATION}×. Using true field of view = apparent field / magnification, calculate the true field of view — the actual circle of sky you can see — in degrees.`,
+      check(value) {
+        const correct = Math.abs(value - trueFieldAnswer) <= 0.05;
+        return {
+          correct,
+          message: `true field of view = apparent field / magnification = ${TRUE_FIELD_APPARENT_DEG} / ${TRUE_FIELD_MAGNIFICATION} ≈ ${trueFieldAnswer.toFixed(2)}°.`,
+        };
+      },
+    },
+    // 11.25b: advantages of reflectors over refractors — very long focal lengths.
+    {
+      id: 'reflector-advantage-long-focal-length',
+      units: ['u5.1'],
+      type: 'choice',
+      prompt:
+        "Because a reflector's light path can be folded back on itself, it can reach a very long effective focal length without needing a correspondingly long tube. For a fixed eyepiece, what does that very long focal length let a reflector do?",
+      options: [
+        'Reach much higher magnification than a short-focal-length design, since magnification = f(objective) / f(eyepiece)',
+        'Collect more light, since light grasp depends on focal length',
+        'Resolve finer detail, since resolution depends on focal length',
+        'Nothing — focal length only changes the eyepiece, not the objective',
+      ],
+      check(value) {
+        const correct =
+          value === 'Reach much higher magnification than a short-focal-length design, since magnification = f(objective) / f(eyepiece)';
+        return {
+          correct,
+          message:
+            "Magnification = f(objective) / f(eyepiece), so a very long objective focal length gives high magnification for any given eyepiece. A refractor needing the same focal length would need an equally long tube; a Cassegrain reaches it by folding the light path, in a tube only about as long as the primary mirror's own mount. Light grasp and resolution depend only on aperture (diameter), not on focal length at all.",
+        };
+      },
+    },
+    // 11.25c: advantages of reflectors over refractors — large apertures.
+    {
+      id: 'reflector-advantage-large-aperture',
+      units: ['u5.1'],
+      type: 'choice',
+      prompt: 'Why can a mirror be built to a much larger aperture than a lens of the same telescope class?',
+      options: [
+        "A mirror can be supported across its whole rear surface; a lens that large can only be held at its rim, and would sag or crack under its own weight",
+        'A mirror is always cheaper to manufacture than a lens of any size',
+        'A larger mirror automatically has a shorter focal length',
+        'It can\'t — lenses and mirrors reach the same maximum practical diameter',
+      ],
+      check(value) {
+        const correct =
+          value ===
+          "A mirror can be supported across its whole rear surface; a lens that large can only be held at its rim, and would sag or crack under its own weight";
+        return {
+          correct,
+          message:
+            "A lens has to be gripped at its rim, and glass that thick and heavy sags or cracks under its own weight once it gets large. A mirror only needs to reflect light off its front surface, so it can be supported across its entire back — which is exactly why every one of the largest telescopes ever built is a reflector, not a refractor.",
+        };
+      },
+    },
+    // 11.25d: advantages of reflectors over refractors — multiple mirrors can be combined.
+    {
+      id: 'reflector-advantage-multiple-mirrors',
+      units: ['u5.1'],
+      type: 'choice',
+      prompt:
+        "Some of the largest ground-based observatories use a primary built from many smaller hexagonal mirror segments acting together, rather than one single giant mirror. What is the main benefit of this?",
+      options: [
+        'It reaches a much larger effective aperture than a single mirror could practically be cast, polished and supported as one piece',
+        'It removes the need for an eyepiece entirely',
+        'It eliminates chromatic aberration, which a single large mirror would otherwise suffer from',
+        'It directly increases magnification, independent of any eyepiece',
+      ],
+      check(value) {
+        const correct =
+          value === 'It reaches a much larger effective aperture than a single mirror could practically be cast, polished and supported as one piece';
+        return {
+          correct,
+          message:
+            "Several smaller segments, aligned to act as one surface, reach a far larger effective aperture than casting, polishing and supporting one single mirror that size would allow — segmented-mirror designs are how observatories keep pushing to bigger apertures (and so better light grasp and resolution) past what a single mirror could practically be built to. A mirror of any size already has no chromatic aberration, since reflection doesn't depend on wavelength.",
         };
       },
     },

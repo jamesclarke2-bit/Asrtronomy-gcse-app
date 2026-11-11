@@ -248,11 +248,38 @@ const SPEC_POINTS = [
   },
   { code: '11.23', topic: 11, depth: 'be able to', text: 'use magnification = focal length of objective / focal length of eyepiece' },
   { code: '11.24', topic: 11, depth: 'understand', text: "Galileo's early telescopic observations and the Sun-centred model" },
+  // 11.25 is a multi-part spec point, split into its own lettered
+  // sub-codes (matching 1.6/7.1/12.1/12.2's own convention, not Topic
+  // 11's usual un-split one — see SPEC_POINT_GROUPS below) so a page
+  // can be tagged to exactly the sub-part(s) it actually teaches rather
+  // than claiming credit for all four by tagging the bare parent code.
   {
-    code: '11.25',
+    code: '11.25a',
     topic: 11,
     depth: 'understand',
-    text: 'advantages of reflectors over refractors (chromatic aberration, very long focal lengths, large apertures, multiple mirrors)',
+    group: '11.25',
+    text: 'advantages of reflectors over refractors: no chromatic aberration',
+  },
+  {
+    code: '11.25b',
+    topic: 11,
+    depth: 'understand',
+    group: '11.25',
+    text: 'advantages of reflectors over refractors: very long focal lengths',
+  },
+  {
+    code: '11.25c',
+    topic: 11,
+    depth: 'understand',
+    group: '11.25',
+    text: 'advantages of reflectors over refractors: large apertures',
+  },
+  {
+    code: '11.25d',
+    topic: 11,
+    depth: 'understand',
+    group: '11.25',
+    text: 'advantages of reflectors over refractors: multiple mirrors can be combined',
   },
   {
     code: '11.26',
@@ -352,11 +379,11 @@ const SPEC_POINTS = [
   // 13.14, 13.34) is kept as ONE code with all its parts folded into one
   // `text`, not split into its own lettered sub-codes the way 1.6/7.1/12.1/
   // 12.2 are — so none of these are in SPEC_POINT_GROUPS below.
-  { code: '13.1', topic: 13, depth: 'know', text: 'the astronomical magnitude scale; apparent magnitude is how bright a star looks as viewed from Earth' },
-  { code: '13.2', topic: 13, depth: 'know', text: 'absolute magnitude' },
+  { code: '13.1', topic: 13, depth: 'understand', text: 'the astronomical magnitude scale; apparent magnitude is how bright a star looks as viewed from Earth' },
+  { code: '13.2', topic: 13, depth: 'understand', text: 'absolute magnitude' },
   { code: '13.3', topic: 13, depth: 'be able to', text: 'the distance modulus formula M = m + 5 - 5 log d (d in parsecs); determine M or m given the distance' },
-  { code: '13.4', topic: 13, depth: 'know', text: 'what can be learned from a stellar spectrum: chemical composition, temperature and radial velocity' },
-  { code: '13.5', topic: 13, depth: 'be able to', text: 'classify stars by spectral type' },
+  { code: '13.4', topic: 13, depth: 'understand', text: 'what can be learned from a stellar spectrum: chemical composition, temperature and radial velocity' },
+  { code: '13.5', topic: 13, depth: 'understand', text: 'classify stars by spectral type' },
   { code: '13.6', topic: 13, depth: 'understand', text: "how a star's colour and spectral type relate to its surface temperature" },
   {
     code: '13.7',
@@ -366,20 +393,20 @@ const SPEC_POINTS = [
   },
   { code: '13.8', topic: 13, depth: 'understand', text: "how a star's life cycle relates to its position on the HR diagram, for Sun-like stars and for much more massive ones" },
   { code: '13.9', topic: 13, depth: 'understand', text: 'the inverse-square relationship between distance and brightness/intensity' },
-  { code: '13.10', topic: 13, depth: 'know', text: '1 degree = 60 arcminutes, 1 arcminute = 60 arcseconds' },
-  { code: '13.11', topic: 13, depth: 'know', text: 'the parsec' },
+  { code: '13.10', topic: 13, depth: 'understand', text: '1 degree = 60 arcminutes, 1 arcminute = 60 arcseconds' },
+  { code: '13.11', topic: 13, depth: 'understand', text: 'the parsec' },
   { code: '13.12', topic: 13, depth: 'be able to', text: 'determine distances using heliocentric parallax' },
-  { code: '13.13', topic: 13, depth: 'be able to', text: 'use an HR diagram to determine distances to stars' },
+  { code: '13.13', topic: 13, depth: 'understand', text: 'use an HR diagram to determine distances to stars' },
   {
     code: '13.14',
     topic: 13,
-    depth: 'know',
+    depth: 'understand',
     text: 'light curves of variable stars: short/long period, eclipsing binary, Cepheid, and novae/supernovae',
   },
   { code: '13.15', topic: 13, depth: 'understand', text: "causes of variability in an eclipsing binary's light curve" },
   { code: '13.16', topic: 13, depth: 'understand', text: 'how Cepheid variables are used to determine distances' },
   { code: '13.17', topic: 13, depth: 'understand', text: 'the structure of gravitationally bound groupings such as binary stars and clusters' },
-  { code: '13.18', topic: 13, depth: 'be able to', text: "deduce the period of an eclipsing binary from its light curve" },
+  { code: '13.18', topic: 13, depth: 'understand', text: "deduce the period of an eclipsing binary from its light curve" },
   { code: '13.19', topic: 13, depth: 'be able to', text: 'use star trail photographs to determine the length of the sidereal day' },
   {
     code: '13.20',
@@ -417,7 +444,7 @@ const SPEC_POINTS = [
   {
     code: '13.33',
     topic: 13,
-    depth: 'know',
+    depth: 'understand',
     text: "gamma ray, X-ray and ultraviolet astronomy's role in the discovery of gamma ray bursts, black hole accretion discs, and the corona/chromosphere structure of young stars",
   },
   {
@@ -472,6 +499,7 @@ const TOPIC_NAMES = {
 const SPEC_POINT_GROUPS = {
   '1.6': ['1.6a', '1.6b', '1.6c'],
   '7.1': ['7.1a', '7.1b', '7.1c', '7.1d'],
+  '11.25': ['11.25a', '11.25b', '11.25c', '11.25d'],
   '12.1': ['12.1a', '12.1b', '12.1c', '12.1d', '12.1e'],
   '12.2': ['12.2a', '12.2b', '12.2c'],
 };

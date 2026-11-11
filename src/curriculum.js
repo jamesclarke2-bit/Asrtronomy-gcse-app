@@ -404,6 +404,7 @@ const UNITS = [
         id: 'u2.16',
         title: 'Atmospheric transmission window',
         depth: 'understand',
+        spec: ['13.22'],
         notes:
           "which wavelengths reach the ground (mainly radio and optical, and some IR) versus get absorbed high up (UV, X-ray and gamma by the ozone layer and upper atmosphere; most IR by greenhouse gases); the reason ground-based astronomy is largely limited to optical/radio/near-IR, and why X-ray, gamma-ray and much of the IR/UV spectrum need a space telescope",
       },
@@ -533,6 +534,14 @@ const UNITS = [
         spec: ['4.19'],
         notes:
           'timing local apparent noon (u2.30) gives its UT clock time; combined with that date\'s equation of time (u2.10), the observer\'s longitude follows from UT of local noon = 12:00 − equation of time − longitude/15 hours (east positive), rearranged to longitude = 15 × (12:00 − equation of time − UT of noon) — the same relationship src/solarPosition.js already uses to find a solar-noon time from a known longitude, solved the other way round',
+      },
+      {
+        id: 'u2.33',
+        title: 'Why the atmosphere matters for astronomy',
+        depth: 'understand',
+        spec: ['13.30'],
+        notes:
+          "the same atmosphere that makes Earth habitable also hinders ground-based astronomy: scattered sunlight limits observing to night-time, and constant small variations in air density and temperature bend starlight unpredictably as it arrives (scintillation, the visible 'twinkling' of stars), blurring and distorting fine detail in any ground-based image or measurement",
       },
     ],
   },
@@ -831,7 +840,7 @@ const UNITS = [
         depth: 'be able to',
         spec: ['13.10', '13.11', '13.12'],
         notes:
-          "the parallax angle p is the angle at a nearby star, in the right-angled triangle Sun-Earth-star, between the directions to the Sun and to the Earth (1 AU, the right angle at the Sun); two observations six months apart (Earth at opposite ends of its orbit, the longest baseline available) show the star having moved by 2p against the far more distant background stars, so p is HALF that observed shift; a parsec is defined as the distance at which 1 AU subtends 1 arcsecond of parallax (about 206,265 AU, 3.26 light years), giving d (pc) = 1 / p (arcsec); ground-based telescopes resolve down to about 0.01 arcsec (about 100 pc), with space telescopes (Hipparcos, then Gaia) reaching much further before the angle becomes too small to measure at all, which is why absolute magnitude (u4.2) becomes the next tool. The geometric measurement method itself, and the Hipparcos/Gaia figures, aren't numbered points in src/specPoints.js — stretch content, built to set up u4.2 but beyond what 13.12 itself asks for; the pc/light-year/AU unit definitions and conversions it uses are u3.4's own spec 7.6/11.9, already covered there.",
+          "the parallax angle p is the angle at a nearby star, in the right-angled triangle Sun-Earth-star, between the directions to the Sun and to the Earth (1 AU, the right angle at the Sun); two observations six months apart (Earth at opposite ends of its orbit, the longest baseline available) show the star having moved by 2p against the far more distant background stars, so p is HALF that observed shift; a parsec is defined as the distance at which 1 AU subtends 1 arcsecond of parallax (about 206,265 AU, 3.26 light years), giving d (pc) = 1 / p (arcsec); ground-based telescopes resolve down to about 0.01 arcsec (about 100 pc), with space telescopes (Hipparcos, then Gaia) reaching much further before the angle becomes too small to measure at all, which is why absolute magnitude (u4.2) becomes the next tool. The geometric measurement method itself (two photographs six months apart, 2p, p = half that shift) is exactly what 13.12's own \"determine distances using heliocentric parallax\" asks for, not beyond it; only the specific Hipparcos/Gaia mission figures go beyond any numbered point in src/specPoints.js — stretch content, built to set up u4.2. The pc/light-year/AU unit definitions and conversions it uses are u3.4's own spec 7.6/11.9, already covered there.",
       },
     ],
   },
@@ -852,7 +861,7 @@ const UNITS = [
         // (11.25). The calculation/skill half of the page (light
         // grasp, aperture, field of view, resolution, magnification)
         // is u5.2's, not this subtopic's — see its own comment.
-        spec: ['11.15', '11.16', '11.17', '11.18', '11.25'],
+        spec: ['11.15', '11.16', '11.17', '11.18', '11.25a', '11.25b', '11.25c', '11.25d'],
         notes:
           "refracting designs (Galilean: a diverging eyepiece lens, giving an upright image but a narrow field of view — what Galileo himself used; Keplerian: a converging eyepiece lens, giving a wider field of view but an inverted image — the layout almost all modern refractors use) and reflecting designs (Newtonian: a parabolic primary mirror reflects light back up to a flat secondary mirror, out to an eyepiece on the side of the tube; Cassegrain: a parabolic primary mirror reflects light up to a convex secondary, back down through a hole in the primary to an eyepiece behind it); reflectors' advantages over refractors: no chromatic aberration (mirrors reflect every wavelength the same way, with nothing to focus differently by colour), mirrors can be made far larger than lenses (supported across their whole back, not just gripped at the rim), a long focal length folds into a short tube (most dramatically in the Cassegrain), and multiple mirrors can be combined",
       },

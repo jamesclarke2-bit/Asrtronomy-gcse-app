@@ -209,7 +209,7 @@ const PAGES = [
     description:
       "Earth's shape and layered interior, latitude, longitude and the named reference lines on a labelled globe, the atmosphere's composition and layers, why it both helps and hinders astronomy, the transmission window that limits ground-based telescopes, and Earth's own rotation, revolution and tilt.",
     href: 'notes/earth-structure.html',
-    units: ['u2.1', 'u2.9', 'u2.15', 'u2.16', 'u2.28'],
+    units: ['u2.1', 'u2.9', 'u2.15', 'u2.16', 'u2.28', 'u2.33'],
     phase: 'Earth, Moon and Sun',
     position: 7,
     why: 'Turns the lens on Earth itself: its structure, atmosphere, and the rotation and axial tilt everything later in this phase — and the seasons, later still — builds on.',

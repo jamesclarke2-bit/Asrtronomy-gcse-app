@@ -9,12 +9,12 @@ function findQuestion(questions, id) {
   return q;
 }
 
-test('makeQuestions returns 18 questions, each tagged u2.1, u2.9 or u2.28', () => {
+test('makeQuestions returns 20 questions, each tagged u2.1, u2.9, u2.16, u2.28 or u2.33', () => {
   const questions = makeQuestions(SpecData);
-  assert.equal(questions.length, 18);
+  assert.equal(questions.length, 20);
   questions.forEach((q) => {
     assert.ok(Array.isArray(q.units) && q.units.length > 0, `${q.id} has no units`);
-    q.units.forEach((id) => assert.ok(['u2.1', 'u2.9', 'u2.28'].includes(id), `${q.id} tags unexpected unit "${id}"`));
+    q.units.forEach((id) => assert.ok(['u2.1', 'u2.9', 'u2.16', 'u2.28', 'u2.33'].includes(id), `${q.id} tags unexpected unit "${id}"`));
   });
 });
 
