@@ -482,9 +482,9 @@ const UNITS = [
         id: 'u2.26',
         title: 'Escape velocity and rockets',
         depth: 'understand',
-        spec: ['9.4'],
+        spec: ['9.4', '11.28'],
         notes:
-          "reaching the Moon means reaching (nearly) Earth's escape velocity, ~11.2 km/s; only rockets can supply the sustained thrust to do this in a vacuum, because they carry their own oxidiser and push by throwing exhaust backwards rather than pushing on air",
+          "reaching the Moon means reaching (nearly) Earth's escape velocity, ~11.2 km/s; only rockets can supply the sustained thrust to do this in a vacuum, because they carry their own oxidiser and push by throwing exhaust backwards rather than pushing on air — the same explanation 11.28 (Topic 11) asks for, not just 9.4's own Moon-specific framing",
       },
       {
         id: 'u2.27',
@@ -809,8 +809,9 @@ const UNITS = [
         id: 'u4.2',
         title: 'Brightness and magnitude calculations',
         depth: 'be able to',
+        spec: ['13.1', '13.2', '13.3', '13.9'],
         notes:
-          "apparent magnitude (m, how bright a star looks from Earth) versus absolute magnitude (M, how bright it would look from the standard distance of 10 pc) on a scale that runs backwards — smaller, and especially negative, numbers are brighter; a magnitude difference gives an exact brightness ratio, I2/I1 = 10^(0.4(m1-m2)), with a 5-magnitude difference fixed as exactly a factor of 100 (Pogson, 1856); and the distance modulus m - M = 5 log10(d / 10 pc), which links the two via the inverse-square law. All three pieces are core 1AS0 content for Topic 13 (unregistered in src/specPoints.js, same as u4.5 — Topic 13 has no SPEC_POINTS entries yet, not because this content is beyond the spec): the distance modulus formula in particular is one of only six equations the exam's own data sheet gives directly (see notes/data-sheet.html), confirming it despite being the hardest tier on notes/magnitude.html. Only the historical colour (Hipparchus/Ptolemy's six classes, Pogson's own 1856 date) and the specific Hubble/JWST magnitude figures are general-knowledge enrichment, marked first draft on that page, not assessed spec content.",
+          "apparent magnitude (m, how bright a star looks from Earth) versus absolute magnitude (M, how bright it would look from the standard distance of 10 pc) on a scale that runs backwards — smaller, and especially negative, numbers are brighter; a magnitude difference gives an exact brightness ratio, I2/I1 = 10^(0.4(m1-m2)), with a 5-magnitude difference fixed as exactly a factor of 100 (Pogson, 1856); and the distance modulus m - M = 5 log10(d / 10 pc), which links the two via the inverse-square law. The distance modulus formula in particular is one of only six equations the exam's own data sheet gives directly (see notes/data-sheet.html), confirming it despite being the hardest tier on notes/magnitude.html. Only the historical colour (Hipparchus/Ptolemy's six classes, Pogson's own 1856 date) and the specific Hubble/JWST magnitude figures are general-knowledge enrichment, marked first draft on that page, not assessed spec content.",
       },
       {
         id: 'u4.3',
@@ -828,8 +829,9 @@ const UNITS = [
         id: 'u4.5',
         title: 'Trigonometric parallax: measuring distance to stars',
         depth: 'be able to',
+        spec: ['13.10', '13.11', '13.12'],
         notes:
-          "the parallax angle p is the angle at a nearby star, in the right-angled triangle Sun-Earth-star, between the directions to the Sun and to the Earth (1 AU, the right angle at the Sun); two observations six months apart (Earth at opposite ends of its orbit, the longest baseline available) show the star having moved by 2p against the far more distant background stars, so p is HALF that observed shift; a parsec is defined as the distance at which 1 AU subtends 1 arcsecond of parallax (about 206,265 AU, 3.26 light years), giving d (pc) = 1 / p (arcsec); ground-based telescopes resolve down to about 0.01 arcsec (about 100 pc), with space telescopes (Hipparcos, then Gaia) reaching much further before the angle becomes too small to measure at all, which is why absolute magnitude (u4.2) becomes the next tool. The geometric measurement method itself, and the Hipparcos/Gaia figures, aren't numbered points in src/specPoints.js (Topic 13 has none registered yet) — stretch content, built to set up u4.2; the pc/light-year/AU unit definitions and conversions it uses are u3.4's own spec 7.6/11.9, already covered there.",
+          "the parallax angle p is the angle at a nearby star, in the right-angled triangle Sun-Earth-star, between the directions to the Sun and to the Earth (1 AU, the right angle at the Sun); two observations six months apart (Earth at opposite ends of its orbit, the longest baseline available) show the star having moved by 2p against the far more distant background stars, so p is HALF that observed shift; a parsec is defined as the distance at which 1 AU subtends 1 arcsecond of parallax (about 206,265 AU, 3.26 light years), giving d (pc) = 1 / p (arcsec); ground-based telescopes resolve down to about 0.01 arcsec (about 100 pc), with space telescopes (Hipparcos, then Gaia) reaching much further before the angle becomes too small to measure at all, which is why absolute magnitude (u4.2) becomes the next tool. The geometric measurement method itself, and the Hipparcos/Gaia figures, aren't numbered points in src/specPoints.js — stretch content, built to set up u4.2 but beyond what 13.12 itself asks for; the pc/light-year/AU unit definitions and conversions it uses are u3.4's own spec 7.6/11.9, already covered there.",
       },
     ],
   },

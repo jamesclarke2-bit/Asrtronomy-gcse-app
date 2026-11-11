@@ -1,6 +1,6 @@
 # Syllabus Coverage Review
 
-One row per point in the Edexcel GCSE Astronomy (1AS0) specification, Topics 1–12, built straight from src/specPoints.js, src/curriculum.js, src/pages.js and the site's own practice questions — regenerate with `npm run generate-syllabus-review` whenever those change (see test/syllabusReview.test.js's "docs/syllabus-review.md stays fresh" check). The same data, rendered live, is also at notes/syllabus-review.html.
+One row per point in the Edexcel GCSE Astronomy (1AS0) specification, Topics 1–13, built straight from src/specPoints.js, src/curriculum.js, src/pages.js and the site's own practice questions — regenerate with `npm run generate-syllabus-review` whenever those change (see test/syllabusReview.test.js's "docs/syllabus-review.md stays fresh" check). The same data, rendered live, is also at notes/syllabus-review.html.
 
 ## Summary by topic
 
@@ -16,9 +16,10 @@ One row per point in the Edexcel GCSE Astronomy (1AS0) specification, Topics 1�
 | 8 | Planetary motion and gravity | 9 | 9 | 0 | 3 |
 | 9 | Exploring the Moon | 5 | 5 | 0 | 0 |
 | 10 | Solar astronomy | 12 | 12 | 0 | 0 |
-| 11 | Exploring the Solar System | 30 | 25 | 5 | 0 |
+| 11 | Exploring the Solar System | 30 | 26 | 4 | 0 |
 | 12 | Formation of planetary systems | 14 | 5 | 9 | 1 |
-| **Total** | | **155** | **138** | **17** | **28** |
+| 13 | Exploring starlight | 34 | 7 | 27 | 0 |
+| **Total** | | **189** | **146** | **43** | **28** |
 
 ## Methodology
 
@@ -222,7 +223,7 @@ One row per point in the Edexcel GCSE Astronomy (1AS0) specification, Topics 1�
 | 11.25 | understand | advantages of reflectors over refractors (chromatic aberration, very long focal lengths, large apertures, multiple mirrors) | [Telescopes: Magnification, Light Grasp and Resolution](../notes/telescopes.html) | – |  | |
 | 11.26 | understand | advantages and disadvantages of fly-by, orbiter, impactor and lander probes | *not built* | – |  | |
 | 11.27 | know | an example of each (New Horizons; Juno or Dawn; Deep Impact; Philae) with target and major discoveries | *not built* | – |  | |
-| 11.28 | understand | a probe must reach escape velocity, which needs rockets | *not built* | – |  | |
+| 11.28 | understand | a probe must reach escape velocity, which needs rockets | [The Moon: Structure, Surface and Origin](../notes/moon-structure.html) | – |  | |
 | 11.29 | understand | advantages and disadvantages of manned missions | *not built* | – |  | |
 | 11.30 | understand | main features of the Apollo programme | *not built* | – |  | |
 
@@ -244,3 +245,42 @@ One row per point in the Edexcel GCSE Astronomy (1AS0) specification, Topics 1�
 | 12.6 | understand | Goldilocks (habitable) zones | *not built* | – |  | |
 | 12.7 | understand | the Drake equation | *not built* | – |  | |
 | 12.8 | understand | SETI by radio, and the benefits and dangers of finding extraterrestrial life | *not built* | – |  | |
+
+## Topic 13: Exploring starlight
+
+| Code | Depth | Spec point | Page(s) | Questions | Thin coverage | Teacher's verdict |
+|---|---|---|---|---|---|---|
+| 13.1 | know | the astronomical magnitude scale; apparent magnitude is how bright a star looks as viewed from Earth | [Magnitude: how bright is a star?](../notes/magnitude.html) | – |  | |
+| 13.2 | know | absolute magnitude | [Magnitude: how bright is a star?](../notes/magnitude.html) | – |  | |
+| 13.3 | be able to | the distance modulus formula M = m + 5 - 5 log d (d in parsecs); determine M or m given the distance | [Magnitude: how bright is a star?](../notes/magnitude.html) | 12 |  | |
+| 13.4 | know | what can be learned from a stellar spectrum: chemical composition, temperature and radial velocity | *not built* | – |  | |
+| 13.5 | be able to | classify stars by spectral type | *not built* | – |  | |
+| 13.6 | understand | how a star's colour and spectral type relate to its surface temperature | *not built* | – |  | |
+| 13.7 | be able to | sketch a simple Hertzsprung-Russell diagram, with labelled axes and the positions of the main sequence, the Sun, red and blue giants, white dwarfs and supergiants | *not built* | – |  | |
+| 13.8 | understand | how a star's life cycle relates to its position on the HR diagram, for Sun-like stars and for much more massive ones | *not built* | – |  | |
+| 13.9 | understand | the inverse-square relationship between distance and brightness/intensity | [Magnitude: how bright is a star?](../notes/magnitude.html) | – |  | |
+| 13.10 | know | 1 degree = 60 arcminutes, 1 arcminute = 60 arcseconds | [Parallax and the Parsec: Measuring Distances to Stars](../notes/parallax.html) | – |  | |
+| 13.11 | know | the parsec | [Parallax and the Parsec: Measuring Distances to Stars](../notes/parallax.html) | – |  | |
+| 13.12 | be able to | determine distances using heliocentric parallax | [Parallax and the Parsec: Measuring Distances to Stars](../notes/parallax.html) | 8 |  | |
+| 13.13 | be able to | use an HR diagram to determine distances to stars | *not built* | – |  | |
+| 13.14 | know | light curves of variable stars: short/long period, eclipsing binary, Cepheid, and novae/supernovae | *not built* | – |  | |
+| 13.15 | understand | causes of variability in an eclipsing binary's light curve | *not built* | – |  | |
+| 13.16 | understand | how Cepheid variables are used to determine distances | *not built* | – |  | |
+| 13.17 | understand | the structure of gravitationally bound groupings such as binary stars and clusters | *not built* | – |  | |
+| 13.18 | be able to | deduce the period of an eclipsing binary from its light curve | *not built* | – |  | |
+| 13.19 | be able to | use star trail photographs to determine the length of the sidereal day | *not built* | – |  | |
+| 13.20 | know | modern observations are recorded with digital sensors converting light to electrical signals, processed and stored as data files | *not built* | – |  | |
+| 13.21 | understand | how astronomers obtain and study patterns of spectral lines in light from astronomical objects | *not built* | – |  | |
+| 13.22 | know | the atmosphere blocks almost all radiation except visible light and radio waves | *not built* | – |  | |
+| 13.23 | know | only optical and radio telescopes should be at sea level | *not built* | – |  | |
+| 13.24 | understand | how a simple radio telescope operates | *not built* | – |  | |
+| 13.25 | understand | why radio telescopes need extremely large apertures to maintain useful resolution | *not built* | – |  | |
+| 13.26 | understand | how multiple radio telescopes work together as an aperture synthesis array | *not built* | – |  | |
+| 13.27 | know | radio astronomy's role in the discovery of quasars, jets from black holes, the Milky Way's structure and protoplanetary discs | *not built* | – |  | |
+| 13.28 | understand | why some infrared telescopes can operate at high altitude on Earth's surface | *not built* | – |  | |
+| 13.29 | know | infrared astronomy's role in the discovery of protostars, dust and molecular clouds, and hotspots on moons | *not built* | – |  | |
+| 13.30 | understand | the atmosphere's detrimental effect on image quality | *not built* | – |  | |
+| 13.31 | understand | why telescopes outside the optical and radio windows must be above the atmosphere | *not built* | – |  | |
+| 13.32 | understand | advantages and disadvantages of space telescopes and detectors, including orbital observing platforms | *not built* | – |  | |
+| 13.33 | know | gamma ray, X-ray and ultraviolet astronomy's role in the discovery of gamma ray bursts, black hole accretion discs, and the corona/chromosphere structure of young stars | *not built* | – |  | |
+| 13.34 | understand | how a telescope alters the appearance of stars, double stars, binary stars, open clusters, globular clusters, nebulae and galaxies | *not built* | – |  | |

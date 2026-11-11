@@ -1,5 +1,5 @@
 /**
- * Pearson Edexcel GCSE Astronomy (1AS0) specification points, Topics 1-12
+ * Pearson Edexcel GCSE Astronomy (1AS0) specification points, Topics 1-13
  * — a registry separate from src/curriculum.js's own unit/subtopic
  * structure (u1-u6), which predates this file and was never built
  * topic-by-topic against the real spec. This file exists so that
@@ -7,15 +7,24 @@
  * target to point at and be checked against.
  *
  * The wording in `text` below is paraphrased, not a verbatim quote of
- * the spec document; `code` and `depth` are taken from the spec as
- * given. `depth` uses the same three values as curriculum.js's own
- * subtopics ('know', 'understand', 'be able to') — not difficulty, see
- * that file's header.
+ * the spec document; `code` is taken from the spec as given. `depth`
+ * uses the same three values as curriculum.js's own subtopics ('know',
+ * 'understand', 'be able to') — not difficulty, see that file's header.
+ * For Topics 1-12, `depth` was taken directly from the spec document's
+ * own tag for that point; Topic 13 was registered from a paraphrased
+ * spec-text summary that doesn't always carry its own explicit
+ * know/understand/be-able-to verb, so each of its `depth` values was
+ * inferred by matching that point's phrasing against how an
+ * identically-phrased Topic 11 point was already tagged (e.g. a plain
+ * "X is Y" statement matches 11.16/11.20/11.21's 'know'; an explicit
+ * skill verb like "use" or "determine" matches 11.23's 'be able to') —
+ * worth checking against the exam board's own depth tag if that's
+ * available, rather than treated as equally authoritative as 1-12's.
  *
- * Topics 13-16 are out of scope for this file (no spec-tagged content
- * yet at all — see the site inventory report). Adding those as their
- * own topics' worth of SPEC_POINTS, the same way this file does for
- * 1-12, is future work, not done here.
+ * Topics 14-16 remain out of scope for this file (no spec-tagged
+ * content yet at all — see the site inventory report). Adding those as
+ * their own topics' worth of SPEC_POINTS, the same way this file does
+ * for 1-13, is future work, not done here.
  *
  * A spec point that bundles several distinct things under one code in
  * the real spec document (e.g. 1.6's "sky colour, skyglow, twinkling",
@@ -336,11 +345,92 @@ const SPEC_POINTS = [
   { code: '12.6', topic: 12, depth: 'understand', text: 'Goldilocks (habitable) zones' },
   { code: '12.7', topic: 12, depth: 'understand', text: 'the Drake equation' },
   { code: '12.8', topic: 12, depth: 'understand', text: 'SETI by radio, and the benefits and dangers of finding extraterrestrial life' },
+
+  // --- Topic 13: Exploring starlight -------------------------------------------
+  // Same convention as Topic 11's own multi-part points (11.18, 11.25-11.27):
+  // a point with several lettered sub-parts in the real spec (13.4, 13.7,
+  // 13.14, 13.34) is kept as ONE code with all its parts folded into one
+  // `text`, not split into its own lettered sub-codes the way 1.6/7.1/12.1/
+  // 12.2 are — so none of these are in SPEC_POINT_GROUPS below.
+  { code: '13.1', topic: 13, depth: 'know', text: 'the astronomical magnitude scale; apparent magnitude is how bright a star looks as viewed from Earth' },
+  { code: '13.2', topic: 13, depth: 'know', text: 'absolute magnitude' },
+  { code: '13.3', topic: 13, depth: 'be able to', text: 'the distance modulus formula M = m + 5 - 5 log d (d in parsecs); determine M or m given the distance' },
+  { code: '13.4', topic: 13, depth: 'know', text: 'what can be learned from a stellar spectrum: chemical composition, temperature and radial velocity' },
+  { code: '13.5', topic: 13, depth: 'be able to', text: 'classify stars by spectral type' },
+  { code: '13.6', topic: 13, depth: 'understand', text: "how a star's colour and spectral type relate to its surface temperature" },
+  {
+    code: '13.7',
+    topic: 13,
+    depth: 'be able to',
+    text: 'sketch a simple Hertzsprung-Russell diagram, with labelled axes and the positions of the main sequence, the Sun, red and blue giants, white dwarfs and supergiants',
+  },
+  { code: '13.8', topic: 13, depth: 'understand', text: "how a star's life cycle relates to its position on the HR diagram, for Sun-like stars and for much more massive ones" },
+  { code: '13.9', topic: 13, depth: 'understand', text: 'the inverse-square relationship between distance and brightness/intensity' },
+  { code: '13.10', topic: 13, depth: 'know', text: '1 degree = 60 arcminutes, 1 arcminute = 60 arcseconds' },
+  { code: '13.11', topic: 13, depth: 'know', text: 'the parsec' },
+  { code: '13.12', topic: 13, depth: 'be able to', text: 'determine distances using heliocentric parallax' },
+  { code: '13.13', topic: 13, depth: 'be able to', text: 'use an HR diagram to determine distances to stars' },
+  {
+    code: '13.14',
+    topic: 13,
+    depth: 'know',
+    text: 'light curves of variable stars: short/long period, eclipsing binary, Cepheid, and novae/supernovae',
+  },
+  { code: '13.15', topic: 13, depth: 'understand', text: "causes of variability in an eclipsing binary's light curve" },
+  { code: '13.16', topic: 13, depth: 'understand', text: 'how Cepheid variables are used to determine distances' },
+  { code: '13.17', topic: 13, depth: 'understand', text: 'the structure of gravitationally bound groupings such as binary stars and clusters' },
+  { code: '13.18', topic: 13, depth: 'be able to', text: "deduce the period of an eclipsing binary from its light curve" },
+  { code: '13.19', topic: 13, depth: 'be able to', text: 'use star trail photographs to determine the length of the sidereal day' },
+  {
+    code: '13.20',
+    topic: 13,
+    depth: 'know',
+    text: 'modern observations are recorded with digital sensors converting light to electrical signals, processed and stored as data files',
+  },
+  { code: '13.21', topic: 13, depth: 'understand', text: 'how astronomers obtain and study patterns of spectral lines in light from astronomical objects' },
+  { code: '13.22', topic: 13, depth: 'know', text: 'the atmosphere blocks almost all radiation except visible light and radio waves' },
+  { code: '13.23', topic: 13, depth: 'know', text: 'only optical and radio telescopes should be at sea level' },
+  { code: '13.24', topic: 13, depth: 'understand', text: 'how a simple radio telescope operates' },
+  { code: '13.25', topic: 13, depth: 'understand', text: 'why radio telescopes need extremely large apertures to maintain useful resolution' },
+  { code: '13.26', topic: 13, depth: 'understand', text: 'how multiple radio telescopes work together as an aperture synthesis array' },
+  {
+    code: '13.27',
+    topic: 13,
+    depth: 'know',
+    text: "radio astronomy's role in the discovery of quasars, jets from black holes, the Milky Way's structure and protoplanetary discs",
+  },
+  { code: '13.28', topic: 13, depth: 'understand', text: "why some infrared telescopes can operate at high altitude on Earth's surface" },
+  {
+    code: '13.29',
+    topic: 13,
+    depth: 'know',
+    text: "infrared astronomy's role in the discovery of protostars, dust and molecular clouds, and hotspots on moons",
+  },
+  { code: '13.30', topic: 13, depth: 'understand', text: "the atmosphere's detrimental effect on image quality" },
+  { code: '13.31', topic: 13, depth: 'understand', text: 'why telescopes outside the optical and radio windows must be above the atmosphere' },
+  {
+    code: '13.32',
+    topic: 13,
+    depth: 'understand',
+    text: 'advantages and disadvantages of space telescopes and detectors, including orbital observing platforms',
+  },
+  {
+    code: '13.33',
+    topic: 13,
+    depth: 'know',
+    text: "gamma ray, X-ray and ultraviolet astronomy's role in the discovery of gamma ray bursts, black hole accretion discs, and the corona/chromosphere structure of young stars",
+  },
+  {
+    code: '13.34',
+    topic: 13,
+    depth: 'understand',
+    text: 'how a telescope alters the appearance of stars, double stars, binary stars, open clusters, globular clusters, nebulae and galaxies',
+  },
 ];
 
 /**
- * Every topic's own title, 1-16 — the first 12 are exactly the section
- * headers above (this registry's own Topics 1-12); 13-16 have no
+ * Every topic's own title, 1-16 — the first 13 are exactly the section
+ * headers above (this registry's own Topics 1-13); 14-16 have no
  * SPEC_POINTS entries yet (see this file's header), but still have
  * real titles in the spec document, needed anywhere a page lists every
  * topic by name regardless of registry status (e.g. notes/syllabus-
@@ -409,7 +499,7 @@ function getGroupCoverageStatus(parentCode, taggedCodes) {
 
 const SPEC_POINT_CODES = SPEC_POINTS.map((point) => point.code);
 
-// Topics 1-12 (this file's own registry) vs 13-16 (name only, no points
+// Topics 1-13 (this file's own registry) vs 14-16 (name only, no points
 // yet) — used anywhere that distinction matters (e.g. "not yet added to
 // the registry" on notes/syllabus-map.html) without hardcoding the
 // boundary a second time.

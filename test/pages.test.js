@@ -199,6 +199,21 @@ test('every COMING_SOON step has a name, a phase (one of PHASES), an integer pos
   });
 });
 
+test('every COMING_SOON specPoints code, and every topic it names, actually exists in src/specPoints.js', () => {
+  const realCodes = new Set(SPEC_POINTS.map((p) => p.code));
+  COMING_SOON.forEach((step) => {
+    (step.specPoints || []).forEach((code) => {
+      assert.ok(realCodes.has(code), `"${step.name}" names spec point "${code}", which doesn't exist in src/specPoints.js`);
+    });
+    (step.topics || []).forEach((topicNumber) => {
+      assert.ok(
+        !REGISTERED_TOPICS.includes(topicNumber),
+        `"${step.name}" names Topic ${topicNumber} as wholly unregistered via \`topics\`, but src/specPoints.js now has entries for it — use \`specPoints\` to name its still-unbuilt codes instead`
+      );
+    });
+  });
+});
+
 test('every position (PAGES and COMING_SOON together) is unique, and the whole set runs 1..N with no gaps', () => {
   const positions = [
     ...PAGES.filter((p) => typeof p.position === 'number').map((p) => p.position),
@@ -284,7 +299,7 @@ test('buildRecommendedPath reproduces the precomputed RECOMMENDED_PATH exactly',
 
 // --- COMING_SOON accounts for every spec point the syllabus map marks ------
 // "not built yet", across every registered topic (not just the ones a
-// coming-soon step is named after) — plus Topics 13-16, which have no
+// coming-soon step is named after) — plus Topics 14-16, which have no
 // SPEC_POINTS registry entries at all yet. src/pages.js's own header
 // explains why this is the thing that keeps COMING_SOON honest as
 // pages get built and the syllabus map's own coverage shifts.
@@ -354,7 +369,7 @@ test('no coming-soon step lists only spec points that are already covered by a b
   });
 
   COMING_SOON.forEach((step) => {
-    if (!step.specPoints || step.specPoints.length === 0) return; // a topics-only step (13-16) is never "already covered"
+    if (!step.specPoints || step.specPoints.length === 0) return; // a topics-only step (14-16) is never "already covered"
     const allCovered = step.specPoints.every((code) => statusByCode.get(code) === 'covered');
     assert.ok(
       !allCovered,
@@ -363,7 +378,7 @@ test('no coming-soon step lists only spec points that are already covered by a b
   });
 });
 
-test('every unregistered topic (13-16, no SPEC_POINTS entries at all) is named in some coming-soon step\'s topics list', () => {
+test('every unregistered topic (14-16, no SPEC_POINTS entries at all) is named in some coming-soon step\'s topics list', () => {
   const namedTopics = new Set(COMING_SOON.flatMap((step) => step.topics || []));
   const unregistered = Object.keys(TOPIC_NAMES).map(Number).filter((n) => !REGISTERED_TOPICS.includes(n));
   assert.ok(unregistered.length > 0, 'there should be at least one unregistered topic to check against (test fixture assumption)');

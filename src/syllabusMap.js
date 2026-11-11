@@ -176,7 +176,7 @@
     );
 
     // Aggregated across every registered topic's own summary — topics
-    // 13-16 (not yet in the registry) contribute nothing, same as the
+    // 14-16 (not yet in the registry) contribute nothing, same as the
     // extension pages never counting towards any topic's own summary.
     const summary = topics
       .filter((topic) => topic.registered)

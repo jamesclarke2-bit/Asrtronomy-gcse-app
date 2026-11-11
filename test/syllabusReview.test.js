@@ -201,7 +201,7 @@ function realReview() {
   });
 }
 
-test('real data: every Topics 1-12 SPEC_POINTS entry appears exactly once', () => {
+test('real data: every Topics 1-13 SPEC_POINTS entry appears exactly once', () => {
   const review = realReview();
   const seen = review.rows.map((row) => row.code);
   assert.deepEqual(seen.sort(), SPEC_POINTS.map((p) => p.code).sort());
@@ -209,11 +209,11 @@ test('real data: every Topics 1-12 SPEC_POINTS entry appears exactly once', () =
   assert.equal(review.rows.length, SPEC_POINTS.length);
 });
 
-test('real data: every topic 1-12 appears exactly once in the summary, named from TOPIC_NAMES', () => {
+test('real data: every topic 1-13 appears exactly once in the summary, named from TOPIC_NAMES', () => {
   const review = realReview();
   assert.deepEqual(
     review.topics.map((t) => t.number),
-    Array.from({ length: 12 }, (_, i) => i + 1)
+    Array.from({ length: 13 }, (_, i) => i + 1)
   );
   review.topics.forEach((topic) => assert.ok(TOPIC_NAMES[topic.number], `topic ${topic.number} should have a name`));
 });

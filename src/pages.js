@@ -506,11 +506,28 @@ const COMING_SOON = [
     name: 'Stars, galaxies and the Universe',
     phase: 'Stars and the Universe',
     position: 33,
-    why: "Now that Parallax and the Parsec, and Magnitude, can both measure how far away a star is and how bright it really is, the rest of the sky this course hasn't reached yet: variable stars as standard candles, a star's full life cycle, our own Galaxy's structure, and the wider Universe beyond it.",
-    // Topics 13-16 have no SPEC_POINTS registry entries at all yet
+    why: "Now that Parallax and the Parsec, and Magnitude, can both measure how far away a star is and how bright it really is, the rest of Topic 13 this course hasn't reached yet: stellar spectra and the HR diagram, variable stars as standard candles, gravitationally bound groupings, the sidereal day by star trail, and seeing beyond the optical/radio windows (digital sensors, radio and infrared telescopes, space telescopes).",
+    // Topic 13 now has a src/specPoints.js registry (unlike Topics 14-16,
+    // just below) — 13.1, 13.2, 13.3 and 13.9 are covered by
+    // notes/magnitude.html, 13.10, 13.11 and 13.12 by notes/parallax.html
+    // (see src/curriculum.js's u4.2/u4.5), so only the remaining 27
+    // codes are named here, not the whole topic.
+    specPoints: [
+      '13.4', '13.5', '13.6', '13.7', '13.8',
+      '13.13', '13.14', '13.15', '13.16', '13.17', '13.18', '13.19',
+      '13.20', '13.21', '13.22', '13.23', '13.24', '13.25', '13.26', '13.27', '13.28', '13.29',
+      '13.30', '13.31', '13.32', '13.33', '13.34',
+    ],
+  },
+  {
+    name: 'Stellar Evolution, the Galaxy and Cosmology',
+    phase: 'Stars and the Universe',
+    position: 34,
+    why: 'The rest of the course past Topic 13: a star\'s full life cycle, our own Galaxy\'s structure, and the wider Universe beyond it.',
+    // Topics 14-16 have no SPEC_POINTS registry entries at all yet
     // (src/specPoints.js's own header explains why), so there are no
     // point-level codes to name — `topics` instead, not `specPoints`.
-    topics: [13, 14, 15, 16],
+    topics: [14, 15, 16],
   },
 ];
 
