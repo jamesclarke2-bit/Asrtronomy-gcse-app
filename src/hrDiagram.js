@@ -6,10 +6,12 @@
  * main-sequence star's absolute magnitude off the band to find its
  * distance with the data sheet's M = m + 5 - 5 log d.
  *
- * Luminosity and absolute magnitude are tied by M = 4.8 - 2.5 log10 L,
- * which counts visible light: a very hot or very cool star gives out
- * much of its energy outside the visible band, so its total output is
- * higher than this axis shows (the page says so beside the star data).
+ * The two y-axis scales are tied by M = 4.8 - 2.5 log10 L. Stars are
+ * plotted by absolute magnitude, which here measures visible light only,
+ * so for very hot and very cool stars the luminosity scale lines up only
+ * roughly; each star's own luminosity shown on the page is its usual
+ * approximate TOTAL luminosity (totalLuminosity below), not one worked
+ * out from M.
  *
  * The main-sequence centre line and its 2-magnitude thickness are
  * approximate, drawn to match standard dwarf-star sequences; star
@@ -195,11 +197,26 @@
     Betelgeuse: { absoluteMagnitude: -5.9, group: 'supergiants', description: 'red supergiant' },
   };
 
+  // Approximate total luminosities (all wavelengths, Sun = 1), as usually
+  // quoted; shown on the page marked approximate. Betelgeuse's varies.
+  const TOTAL_LUMINOSITY = {
+    Spica: { totalLuminosity: 20000 },
+    Rigel: { totalLuminosity: 120000 },
+    Vega: { totalLuminosity: 40 },
+    Sirius: { totalLuminosity: 25 },
+    Procyon: { totalLuminosity: 7 },
+    'the Sun': { totalLuminosity: 1 },
+    Arcturus: { totalLuminosity: 170 },
+    Betelgeuse: { totalLuminosity: 100000, varies: true },
+    'Sirius B': { totalLuminosity: 0.056 },
+    'Proxima Centauri': { totalLuminosity: 0.0017 },
+  };
+
   const STARS = [
     ...Spectra.REAL_STARS.map((s) => ({ name: s.name, type: s.type, temperatureK: s.temperatureK, ...EXTRA[s.name] })),
     { name: 'Sirius B', type: 'white dwarf', temperatureK: 25000, absoluteMagnitude: 11.2, group: 'white-dwarfs', description: 'white dwarf' },
     { name: 'Proxima Centauri', type: 'M5.5', temperatureK: 3000, absoluteMagnitude: 15.5, group: 'main-sequence', description: 'red dwarf (main sequence)' },
-  ].map((s) => ({ ...s, luminosity: luminosityFromMagnitude(s.absoluteMagnitude) }));
+  ].map((s) => ({ ...s, ...TOTAL_LUMINOSITY[s.name] }));
 
   // Main-sequence types offered for the distance tool, at temperatures
   // inside their own spectral class on notes/spectral-types.html.
@@ -250,11 +267,15 @@
     return v > 0 ? `+${v.toFixed(dp)}` : `−${Math.abs(v).toFixed(dp)}`;
   }
 
-  /** A luminosity for display: two significant figures, plain or with commas. */
+  /** A luminosity for display, as given: plain, with commas from 1,000 up. */
   function formatLuminosity(L) {
-    if (L >= 100) return Number(L.toPrecision(2)).toLocaleString('en-GB');
-    if (L >= 1) return Number(L.toPrecision(2)).toString();
-    return Number(L.toPrecision(2)).toString();
+    return L >= 1000 ? L.toLocaleString('en-GB') : String(L);
+  }
+
+  /** A star's approximate total luminosity as the page shows it. */
+  function luminosityText(star) {
+    const value = formatLuminosity(star.totalLuminosity);
+    return star.varies ? `about ${value} (varies)` : `about ${value}`;
   }
 
   const api = {
@@ -278,6 +299,7 @@
     distanceFromMainSequence,
     signed,
     formatLuminosity,
+    luminosityText,
   };
 
   if (isNode && module.exports) {

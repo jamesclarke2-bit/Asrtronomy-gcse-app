@@ -1228,34 +1228,8 @@
     { xArcsec: 0, yArcsec: -0.5, revealDiameterMm: 340 }, // never appears in this slider's range
   ];
 
-  function drawStarView(canvas, stars, fieldArcsec, diameterMm, wavelengthNm) {
-    const ctx = canvas.getContext('2d');
-    ctx.fillStyle = '#060a16';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    const pxPerArcsec = canvas.width / fieldArcsec;
-    const resolutionArcsec = TelescopeModel.resolutionArcsec(wavelengthNm, diameterMm);
-    const cappedArcsec = Math.min(resolutionArcsec, fieldArcsec * 0.22);
-    const blurRadiusPx = Math.max(cappedArcsec * pxPerArcsec, 2.5);
-
-    let visibleCount = 0;
-    stars.forEach((star) => {
-      if (diameterMm < star.revealDiameterMm) return;
-      visibleCount += 1;
-      const x = canvas.width / 2 + star.xArcsec * pxPerArcsec;
-      const y = canvas.height / 2 + star.yArcsec * pxPerArcsec;
-      const gradient = ctx.createRadialGradient(x, y, 0, x, y, blurRadiusPx);
-      gradient.addColorStop(0, 'rgba(255,255,255,0.95)');
-      gradient.addColorStop(0.3, 'rgba(255,255,255,0.45)');
-      gradient.addColorStop(1, 'rgba(255,255,255,0)');
-      ctx.fillStyle = gradient;
-      ctx.beginPath();
-      ctx.arc(x, y, blurRadiusPx, 0, Math.PI * 2);
-      ctx.fill();
-    });
-
-    return visibleCount;
-  }
+  // Shared with notes/binaries-and-clusters.html's eyepiece simulator.
+  const { drawStarView } = window.StarView;
 
   function updateStarViews() {
     const { objectiveDiameterMm, wavelengthNm } = state;

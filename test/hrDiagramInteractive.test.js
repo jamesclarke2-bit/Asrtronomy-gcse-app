@@ -114,7 +114,7 @@ WIDTHS.forEach(({ name, width, height }) => {
     await withPage(t, { width, height }, async (page) => {
       const wrap = page.locator('#hr-main-diagram-wrap');
       const titles = await wrap.locator('.hr-axis-title').allTextContents();
-      assert.ok(titles.includes('Luminosity (Sun = 1)'));
+      assert.ok(titles.includes('Luminosity (Sun = 1), approximate'));
       assert.ok(titles.includes('Absolute magnitude'));
       assert.ok(titles.some((x) => /hotter.*Surface temperature \(K\).*cooler/.test(x)));
       assert.equal(await wrap.locator('.hr-tick-l').count(), 7);
@@ -146,7 +146,8 @@ WIDTHS.forEach(({ name, width, height }) => {
         const text = await card.textContent();
         assert.ok(text.includes(star.temperatureK.toLocaleString('en-GB')), star.name);
         assert.ok(text.includes(H.signed(star.absoluteMagnitude)), star.name);
-        assert.ok(text.includes(H.formatLuminosity(star.luminosity)), star.name);
+        assert.ok(text.includes(H.luminosityText(star)), star.name);
+        assert.match(text, /Luminosity \(Sun = 1\), approximate/);
         const markup = await page.locator('#hr-stars-diagram').evaluate((el) => el.innerHTML);
         assert.notEqual(markup, lastMarkup, `selecting ${star.name} redraws the ring`);
         lastMarkup = markup;

@@ -4628,3 +4628,33 @@ canvas {
 .hr-question-diagram {
   margin: 0;
 }
+
+/* notes/binaries-and-clusters.html */
+.bc-eyepiece {
+  max-width: 320px;
+  margin: 1rem auto;
+}
+
+.bc-eyepiece canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 50%;
+  background: #000;
+}
+
+.bc-facts {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 0.2rem 0.9rem;
+  margin: 0.75rem 0;
+}
+
+.bc-facts:empty {
+  display: none;
+}
+
+.bc-facts h3 {
+  margin: 0.5rem 0 0.2rem;
+}

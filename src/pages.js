@@ -377,6 +377,16 @@ const PAGES = [
     why: 'Colour, temperature and spectral type gave every star a temperature; this page plots that temperature against luminosity, and uses the result to measure distances.',
   },
   {
+    title: 'Binaries, clusters and the view through a telescope',
+    description:
+      'Optical doubles against true binaries, a binary orbiting its centre of mass with its spectral lines shifting, open and globular clusters compared, and an eyepiece simulator: how aperture and magnification change the look of a star, a double, a binary, a cluster, a nebula and a galaxy.',
+    href: 'notes/binaries-and-clusters.html',
+    units: ['u4.10'],
+    phase: 'Stars and the Universe',
+    position: 36,
+    why: 'The Hertzsprung-Russell diagram treated stars one at a time; this page looks at stars in pairs and clusters, and at how a telescope shows them.',
+  },
+  {
     title: 'Bodies of the Solar System',
     description:
       "A to-scale size line-up and bar chart of the planets and dwarf planets, the larger named moons by planet, the four ringed planets drawn at relative size with Saturn's rings the most visible, Io's tidal heating (reusable diagram) from its 1:2:4 resonance with Europa and Ganymede, a temperature-against-distance chart, a planet-vs-dwarf-planet decision diagram, asteroids/meteoroids/comets, a comet-tail diagram and the Kuiper Belt/Oort Cloud on a logarithmic scale, transits of Venus and measuring the AU, and brief formation theories — a first draft pending teacher review.",
@@ -476,6 +486,7 @@ const DIAGRAM_FIRST_PAGES = [
   'notes/reading-a-spectrum.html',
   'notes/spectral-types.html',
   'notes/hr-diagram.html',
+  'notes/binaries-and-clusters.html',
 ];
 
 /**
@@ -538,29 +549,30 @@ const COMING_SOON = [
   {
     name: 'Stars, galaxies and the Universe',
     phase: 'Stars and the Universe',
-    position: 36,
-    why: "Now that Parallax and the Parsec, and Magnitude, can both measure how far away a star is and how bright it really is, the rest of Topic 13 this course hasn't reached yet: how a star's life moves it across the HR diagram, variable stars as standard candles, gravitationally bound groupings, the sidereal day by star trail, and seeing beyond the optical/radio windows (radio and infrared telescopes, space telescopes).",
+    position: 37,
+    why: "Now that Parallax and the Parsec, and Magnitude, can both measure how far away a star is and how bright it really is, the rest of Topic 13 this course hasn't reached yet: how a star's life moves it across the HR diagram, variable stars as standard candles, the sidereal day by star trail, and seeing beyond the optical/radio windows (radio and infrared telescopes, space telescopes).",
     // Topic 13 has a src/specPoints.js registry: 13.1, 13.2, 13.3 and
     // 13.9 are covered by notes/magnitude.html, 13.10-13.12 by
     // notes/parallax.html, 13.22 by notes/earth-structure.html, and
     // 13.4a-c, 13.20 and 13.21 by notes/reading-a-spectrum.html, 13.5
     // and 13.6 by notes/spectral-types.html, and 13.7a-e and 13.13 by
-    // notes/hr-diagram.html (see src/curriculum.js's
-    // u4.2/u4.5/u2.16/u4.6/u4.7/u4.8/u4.9). 13.30 is named here, not left off:
+    // notes/hr-diagram.html, and 13.17 and 13.34a-g by
+    // notes/binaries-and-clusters.html (see src/curriculum.js's
+    // u4.2/u4.5/u2.16/u4.6/u4.7/u4.8/u4.9/u4.10). 13.30 is named here, not left off:
     // notes/earth-structure.html's u2.33 names it in text, but it's still
     // PARTIAL under docs/topic-11-16-audit.md's bar (no dedicated
     // diagram), so it's untagged in curriculum.js until a page gives it one.
     specPoints: [
       '13.8',
-      '13.14', '13.15', '13.16', '13.17', '13.18', '13.19',
+      '13.14', '13.15', '13.16', '13.18', '13.19',
       '13.23', '13.24', '13.25', '13.26', '13.27', '13.28', '13.29',
-      '13.30', '13.31', '13.32', '13.33', '13.34',
+      '13.30', '13.31', '13.32', '13.33',
     ],
   },
   {
     name: 'Stellar Evolution, the Galaxy and Cosmology',
     phase: 'Stars and the Universe',
-    position: 37,
+    position: 38,
     why: 'The rest of the course past Topic 13: a star\'s full life cycle, our own Galaxy\'s structure, and the wider Universe beyond it.',
     // Topics 14-16 have a src/specPoints.js registry too, but nothing on
     // the site meets docs/topic-11-16-audit.md's COVERED bar for any of
@@ -574,7 +586,7 @@ const COMING_SOON = [
   {
     name: 'Redshift',
     phase: 'Stars and the Universe',
-    position: 38,
+    position: 39,
     why: "Reading a spectrum's Doppler shift for single stars, scaled up to whole galaxies: redshift as evidence that they are moving away from us.",
     specPoints: ['16.1', '16.2', '16.3'],
   },

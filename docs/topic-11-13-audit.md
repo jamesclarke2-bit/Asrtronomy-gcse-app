@@ -57,7 +57,7 @@ that point.
 | 13.14 | MISSING | — | No light curves (short/long-period, eclipsing binary, Cepheid, nova/supernova) anywhere | New page (see §2) |
 | 13.15 | MISSING | — | No explanation of eclipsing-binary variability | New page |
 | 13.16 | MISSING | — | No Cepheid period–luminosity distance method | New page |
-| 13.17 | MISSING in substance | `notes/naked-eye-sky.html` `doubleStar`/`starCluster` phenomena-grid entries (`src/nakedEyeSkyQuestions.js`) describe what they look like by eye, not their gravitationally-bound structure | Naked-eye identification only — not the spec point | New page; link back to this as "what you'd actually see" |
+| 13.17 | COVERED (2026-11-13) | `notes/binaries-and-clusters.html` §`double-or-binary` (optical double against true binary), §`binaries` (orbit about the centre of mass, spectral line shifts; visual, spectroscopic and eclipsing binaries) and §`clusters` (open against globular, art, Galaxy disc/halo, table); five questions. `notes/naked-eye-sky.html`'s phenomena grid stays the "what you'd see by eye" link | — | — |
 | 13.18 | MISSING | — | No light curve to practice reading a period from | New page |
 | 13.19 | PARTIAL | `sims/coordinates.html` §`sidereal-day-section` (h2 "Sidereal day vs solar day": definition, 23h56m, formula, exam tip); question in `src/coordinatesQuestions.js` tests the nightly 4-minute gain | The specific star-trail-photograph measurement method (maths skills 5a–5c: measuring an arc angle, converting to a rotation rate) is not covered at all | Extend `coordinates.html`'s sidereal-day section with a star-trail-photo mini-diagram and a question |
 | 13.20 | COVERED (2026-11-12) | `notes/reading-a-spectrum.html` §`digital-sensors` (photons to charge to numbers to data file, exposure toggle); questions `digital-sensor-stages`, `exposure-time-count` | — | — |
@@ -74,7 +74,7 @@ that point.
 | 13.31 | PARTIAL | `notes/earth-structure.html` §`exam-tips` ("X-ray telescopes have to be space-based... however large") | States X-ray only, as a one-line exam-tip link, not a general explanation covering gamma-ray/UV | Extend into a full paragraph once the space-telescope page exists |
 | 13.32 | MISSING | — | No space-telescope advantages/disadvantages content | New page |
 | 13.33 | MISSING | — | No gamma/X-ray/UV-astronomy-discoveries content; the site's existing "corona"/"chromosphere" content (`sun-features.html` etc.) is about the Sun specifically, a different spec area, not this point | New page |
-| 13.34 | PARTIAL | `notes/telescopes.html` §`resolving-power` (double-star canvas = (b) directly; star-cluster canvas loosely covers (d)) | (a) stars, (c) binary stars specifically, (e) globular clusters, (f) nebulae, (g) galaxies not addressed | Extend `#resolving-power` or fold into a new page once built |
+| 13.34 (a-g) | COVERED (2026-11-13) | `notes/binaries-and-clusters.html` §`eyepiece` (eyepiece simulator: a star, Mizar, a simulated close binary, the Pleiades, M13, M42, M31, with aperture, magnification, sky and photograph controls); split into 13.34a-g, each with at least one question. Reuses `notes/telescopes.html` §`resolving-power`'s star-view drawing (now `src/starView.js`) and links to it | — | — |
 
 ## 1. specPoints.js registration
 

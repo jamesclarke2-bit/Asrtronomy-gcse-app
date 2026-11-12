@@ -144,7 +144,7 @@
       label.dataset.class = c.letter;
     });
     if (titles) {
-      addLabel(svg, wrap, 'Luminosity (Sun = 1)', 8, 26, 'diagram-label--tick diagram-label--right hr-axis-title');
+      addLabel(svg, wrap, 'Luminosity (Sun = 1), approximate', 8, 26, 'diagram-label--tick diagram-label--right hr-axis-title');
       addLabel(svg, wrap, 'Absolute magnitude', 596, 26, 'diagram-label--tick diagram-label--left hr-axis-title');
       addLabel(svg, wrap, '← hotter   Surface temperature (K)   cooler →', (p.x0 + p.x1) / 2, p.yBottom + 78, 'diagram-label--tick hr-axis-title');
     }
@@ -337,7 +337,7 @@
       ['Type', star.type === 'white dwarf' ? 'white dwarf' : `${star.type}, ${groupName(star)}`],
       ['Surface temperature', `${fmtInt(star.temperatureK)} K`],
       ['Absolute magnitude', signed(star.absoluteMagnitude)],
-      ['Luminosity (Sun = 1)', H.formatLuminosity(star.luminosity)],
+      ['Luminosity (Sun = 1), approximate', H.luminosityText(star)],
     ];
     rows.forEach(([k, v]) => {
       const dt = document.createElement('dt');
@@ -374,7 +374,7 @@
     const body = document.getElementById('hr-star-table-body');
     H.STARS.forEach((star) => {
       const tr = document.createElement('tr');
-      [capitalise(star.name), star.type, fmtInt(star.temperatureK), signed(star.absoluteMagnitude), H.formatLuminosity(star.luminosity)].forEach((v) => {
+      [capitalise(star.name), star.type, fmtInt(star.temperatureK), signed(star.absoluteMagnitude), H.luminosityText(star)].forEach((v) => {
         const td = document.createElement('td');
         td.textContent = v;
         tr.appendChild(td);

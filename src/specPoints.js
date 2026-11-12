@@ -375,11 +375,12 @@ const SPEC_POINTS = [
 
   // --- Topic 13: Exploring starlight -------------------------------------------
   // Same convention as Topic 11's own multi-part points (11.18, 11.26-11.27):
-  // a point with several lettered sub-parts in the real spec (13.14,
-  // 13.34) is kept as ONE code with all its parts folded into one `text`.
-  // The exceptions are 13.4, split into 13.4a/b/c (like 11.25), and 13.7,
-  // split into 13.7a-e, so a page and its questions can be tagged to the
-  // exact sub-part each one teaches — see SPEC_POINT_GROUPS below.
+  // a point with several lettered sub-parts in the real spec (13.14) is
+  // kept as ONE code with all its parts folded into one `text`. The
+  // exceptions are 13.4, split into 13.4a/b/c (like 11.25), 13.7, split
+  // into 13.7a-e, and 13.34, split into 13.34a-g, so a page and its
+  // questions can be tagged to the exact sub-part each one teaches — see
+  // SPEC_POINT_GROUPS below.
   { code: '13.1', topic: 13, depth: 'understand', text: 'the astronomical magnitude scale; apparent magnitude is how bright a star looks as viewed from Earth' },
   { code: '13.2', topic: 13, depth: 'understand', text: 'absolute magnitude' },
   { code: '13.3', topic: 13, depth: 'be able to', text: 'the distance modulus formula M = m + 5 - 5 log d (d in parsecs); determine M or m given the distance' },
@@ -480,10 +481,53 @@ const SPEC_POINTS = [
     text: "gamma ray, X-ray and ultraviolet astronomy's role in the discovery of gamma ray bursts, black hole accretion discs, and the corona/chromosphere structure of young stars",
   },
   {
-    code: '13.34',
+    code: '13.34a',
     topic: 13,
     depth: 'understand',
-    text: 'how a telescope alters the appearance of stars, double stars, binary stars, open clusters, globular clusters, nebulae and galaxies',
+    group: '13.34',
+    text: 'how a telescope alters the appearance of stars',
+  },
+  {
+    code: '13.34b',
+    topic: 13,
+    depth: 'understand',
+    group: '13.34',
+    text: 'how a telescope alters the appearance of double stars',
+  },
+  {
+    code: '13.34c',
+    topic: 13,
+    depth: 'understand',
+    group: '13.34',
+    text: 'how a telescope alters the appearance of binary stars',
+  },
+  {
+    code: '13.34d',
+    topic: 13,
+    depth: 'understand',
+    group: '13.34',
+    text: 'how a telescope alters the appearance of open clusters',
+  },
+  {
+    code: '13.34e',
+    topic: 13,
+    depth: 'understand',
+    group: '13.34',
+    text: 'how a telescope alters the appearance of globular clusters',
+  },
+  {
+    code: '13.34f',
+    topic: 13,
+    depth: 'understand',
+    group: '13.34',
+    text: 'how a telescope alters the appearance of nebulae',
+  },
+  {
+    code: '13.34g',
+    topic: 13,
+    depth: 'understand',
+    group: '13.34',
+    text: 'how a telescope alters the appearance of galaxies',
   },
 
   // --- Topic 14: Stellar evolution ---------------------------------------
@@ -611,6 +655,7 @@ const SPEC_POINT_GROUPS = {
   '12.2': ['12.2a', '12.2b', '12.2c'],
   '13.4': ['13.4a', '13.4b', '13.4c'],
   '13.7': ['13.7a', '13.7b', '13.7c', '13.7d', '13.7e'],
+  '13.34': ['13.34a', '13.34b', '13.34c', '13.34d', '13.34e', '13.34f', '13.34g'],
 };
 
 function getSpecPoint(code) {

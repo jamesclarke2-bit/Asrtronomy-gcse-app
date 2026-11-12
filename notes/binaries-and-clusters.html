@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; form-action 'none'; base-uri 'self'" />
+  <meta name="referrer" content="no-referrer" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Binaries, clusters and the view through a telescope</title>
+  <link rel="stylesheet" href="../styles.css?v=202611131500" />
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg?v=202610130720" />
+</head>
+<body>
+  <main>
+    <p class="back-link"><a href="../index.html">&larr; Back to all tools</a></p>
+
+    <h1>Binaries, clusters and the view through a telescope</h1>
+    <p class="subtitle">
+      Many stars are not alone: they come in pairs and in clusters, held together by gravity.
+    </p>
+
+    <section class="notes-section" id="double-or-binary">
+      <h2>Double star or binary?</h2>
+      <p>Two pairs of stars that look the same in the sky can be very different in space.</p>
+
+      <div class="diagram spectrum-panel bc-panel">
+        <div class="labelled-diagram-wrap" id="pair-diagram-wrap">
+          <svg
+            id="pair-diagram"
+            class="responsive-svg"
+            width="640"
+            height="380"
+            viewBox="0 0 640 380"
+            role="img"
+            aria-label="Two columns. Top of each: a circle of night sky with two stars close together, looking the same in both. Below, seen side-on from space: on the left, an optical double, where Earth's line of sight passes a near star and then a much more distant one; on the right, a true binary, where two stars at the same distance circle their shared centre of mass."
+          ></svg>
+        </div>
+      </div>
+
+      <p>
+        An
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="opticalDouble" aria-label="What is an optical double?" aria-expanded="false">optical double</button>
+        is a chance line-up. A
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="binary" aria-label="What is a binary star?" aria-expanded="false">binary star</button>
+        is two stars held together by gravity, each orbiting their shared
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="centreOfMass" aria-label="What is the centre of mass?" aria-expanded="false">centre of mass</button>.
+      </p>
+      <span class="glossary-definition" data-term="opticalDouble" hidden></span>
+      <span class="glossary-definition" data-term="binary" hidden></span>
+      <span class="glossary-definition" data-term="centreOfMass" hidden></span>
+    </section>
+
+    <section class="notes-section" id="binaries">
+      <h2>Binary stars</h2>
+      <p>The heavier star moves on the smaller orbit. Change the masses and watch.</p>
+
+      <div class="control">
+        <label for="mass-ratio-slider">Heavier star's mass: <span id="mass-ratio-label"></span> the lighter star's</label>
+        <input type="range" id="mass-ratio-slider" min="10" max="40" step="1" value="20" />
+      </div>
+      <div class="control">
+        <label for="orbit-phase-slider">Position around the orbit: <span id="orbit-phase-label"></span></label>
+        <input type="range" id="orbit-phase-slider" min="0" max="359" step="1" value="30" />
+      </div>
+      <button type="button" class="secondary-button" id="orbit-play" aria-pressed="false">Play</button>
+
+      <div class="diagram spectrum-panel bc-panel">
+        <div class="labelled-diagram-wrap" id="orbit-diagram-wrap">
+          <svg
+            id="orbit-diagram"
+            class="responsive-svg"
+            width="640"
+            height="420"
+            viewBox="0 0 640 420"
+            role="img"
+            aria-label="Left: two stars circling their centre of mass, marked with a cross; the heavier star, A, on the smaller circle. Earth is far away below. Right: each star's spectrum with one hydrogen line, which moves to longer wavelengths while that star moves away from Earth and to shorter wavelengths while it moves towards Earth."
+          ></svg>
+        </div>
+      </div>
+
+      <dl class="readout">
+        <dt>Orbit sizes</dt>
+        <dd id="orbit-size-readout"></dd>
+        <dt>Star A</dt>
+        <dd id="star-a-readout" aria-live="polite"></dd>
+        <dt>Star B</dt>
+        <dd id="star-b-readout"></dd>
+      </dl>
+
+      <ul>
+        <li>
+          <strong>Visual binary:</strong> both stars can be seen through a telescope, and
+          measurements over years show them moving around each other.
+        </li>
+        <li>
+          <strong>Spectroscopic binary:</strong> too close to split, but the spectral lines shift
+          back and forth as each star moves towards us and away (see
+          <a href="reading-a-spectrum.html">Reading a spectrum</a>).
+        </li>
+        <li>
+          <strong>Eclipsing binary:</strong> seen edge-on, each star passes in front of the other,
+          so the total brightness dips regularly. Eclipsing binaries: coming soon.
+        </li>
+      </ul>
+      <p class="note">Line shifts on the diagram are exaggerated so they can be seen.</p>
+    </section>
+
+    <section class="notes-section" id="clusters">
+      <h2>Star clusters</h2>
+      <p>
+        A star cluster is a group of stars that formed together and are held together by gravity.
+        There are two kinds.
+      </p>
+
+      <div class="diagram spectrum-panel bc-panel">
+        <div class="labelled-diagram-wrap" id="cluster-diagram-wrap">
+          <svg
+            id="cluster-diagram"
+            class="responsive-svg"
+            width="640"
+            height="500"
+            viewBox="0 0 640 500"
+            role="img"
+            aria-label="Top left: an open cluster, a loose, irregular scattering of bright blue-white stars. Top right: a globular cluster, a dense ball of many yellow-orange stars, crowded towards the centre. Below: our Galaxy seen edge-on, a thin disc with a bulge, with open clusters marked as small rings in the disc and globular clusters as dots in the halo around it."
+          ></svg>
+        </div>
+      </div>
+
+      <div class="table-scroll">
+        <table class="shower-table" id="cluster-table">
+          <caption>Open and globular clusters</caption>
+          <thead>
+            <tr><th scope="col">Feature</th><th scope="col">Open cluster</th><th scope="col">Globular cluster</th></tr>
+          </thead>
+          <tbody id="cluster-table-body"></tbody>
+        </table>
+      </div>
+      <p class="note">
+        Where the clusters sit in the Galaxy is covered on Our Galaxy: coming soon. Cluster
+        numbers and ages: first draft, to be checked by the teacher.
+      </p>
+    </section>
+
+    <section class="notes-section" id="eyepiece">
+      <h2>Through the eyepiece</h2>
+      <p>
+        Pick an object, then change the aperture (the width of the main lens or mirror) and the
+        magnification. How fine a detail can be split depends on the aperture&rsquo;s
+        <a href="telescopes.html">resolution</a>.
+      </p>
+
+      <div class="preset-list bc-object-list" role="group" aria-label="Choose an object" id="object-buttons"></div>
+      <div class="preset-list" role="group" aria-label="Choose an instrument" id="instrument-buttons"></div>
+
+      <div class="control">
+        <label for="aperture-slider">Aperture: <span id="aperture-label"></span></label>
+        <input type="range" id="aperture-slider" min="7" max="300" step="1" value="50" />
+      </div>
+      <div class="control">
+        <label for="magnification-slider">Magnification: <span id="magnification-label"></span></label>
+        <input type="range" id="magnification-slider" min="1" max="250" step="1" value="10" />
+      </div>
+      <div class="control checkbox-control">
+        <label><input type="checkbox" id="dark-sky" checked /> Dark country sky (untick for a town sky)</label>
+      </div>
+      <div class="control checkbox-control">
+        <label><input type="checkbox" id="photograph" /> Long-exposure photograph instead of the eye</label>
+      </div>
+
+      <div class="diagram bc-eyepiece">
+        <canvas id="eyepiece-view" width="320" height="320" aria-label="The view through the eyepiece for the chosen object, aperture and magnification." aria-describedby="eyepiece-seen-readout"></canvas>
+      </div>
+
+      <dl class="readout">
+        <dt>What you see</dt>
+        <dd id="eyepiece-seen-readout" aria-live="polite"></dd>
+        <dt>Faintest stars visible</dt>
+        <dd id="eyepiece-limit-readout"></dd>
+        <dt>Resolution</dt>
+        <dd id="eyepiece-resolution-readout"></dd>
+        <dt>Sky in view</dt>
+        <dd id="eyepiece-field-readout"></dd>
+        <dt>Brightness of a faint glow</dt>
+        <dd id="eyepiece-brightness-readout"></dd>
+      </dl>
+      <div class="bc-facts" id="object-facts"></div>
+      <p class="note">
+        A drawing, not a photograph. Close pairs are drawn wider apart than life so a split shows.
+        Object facts: first draft, to be checked by the teacher. By eye, these objects look like
+        <a href="naked-eye-sky.html">The Naked-Eye Sky</a> shows.
+      </p>
+    </section>
+
+    <section class="notes-section" id="exam-tips">
+      <h2>Exam tips</h2>
+      <p class="exam-tip">
+        <strong>Common exam confusion:</strong> a double star is not always a binary; it may be a
+        chance line-up.
+        <a href="#double-or-binary">Double star or binary? &uarr;</a>
+      </p>
+      <p class="exam-tip">
+        <strong>Common exam confusion:</strong> more magnification never turns a star into a disc,
+        and it makes a nebula or galaxy look dimmer.
+        <a href="#eyepiece">Through the eyepiece &uarr;</a>
+      </p>
+    </section>
+
+    <section class="notes-section" id="related">
+      <h2>Related pages</h2>
+      <div class="page-card-list">
+        <a class="page-card" href="telescopes.html">
+          <h3>Telescopes: Magnification, Light Grasp and Resolution</h3>
+          <p class="page-card-description">Resolution, with a double star and a cluster.</p>
+        </a>
+        <a class="page-card" href="reading-a-spectrum.html">
+          <h3>Reading a spectrum</h3>
+          <p class="page-card-description">Doppler shifts of spectral lines.</p>
+        </a>
+        <a class="page-card" href="naked-eye-sky.html">
+          <h3>The Naked-Eye Sky</h3>
+          <p class="page-card-description">Double stars, clusters and nebulae by eye.</p>
+        </a>
+      </div>
+    </section>
+
+    <section class="questions" id="questions">
+      <h2>Practice questions</h2>
+      <div id="questions-list"></div>
+    </section>
+
+    <section class="progress">
+      <h2>Your progress</h2>
+      <ul id="progress-list"></ul>
+      <p class="note">Stored in this browser only (localStorage) &mdash; no account needed.</p>
+    </section>
+
+    <p class="coverage" id="coverage"></p>
+    <p class="next-page-link" id="next-page"></p>
+  </main>
+
+  <script src="../src/curriculum.js?v=202611131500"></script>
+  <script src="../src/pages.js?v=202611131500"></script>
+  <script src="../src/specData.js?v=202610161036"></script>
+  <script src="../src/spectra.js?v=202611131200"></script>
+  <script src="../src/telescopeModel.js?v=202610071800"></script>
+  <script src="../src/starPatterns.js?v=202609280900"></script>
+  <script src="../src/starView.js?v=202611131500"></script>
+  <script src="../src/spectrumDrawing.js?v=202611130900"></script>
+  <script src="../src/binariesClusters.js?v=202611131500"></script>
+  <script src="../src/binariesClustersQuestions.js?v=202611131500"></script>
+  <script src="../glossary.js?v=202610131052"></script>
+  <script src="../quiz-ui.js?v=202611121900"></script>
+  <script src="binaries-and-clusters.js?v=202611131500"></script>
+  <script src="../diagramEnlarge.js?v=202611111500"></script>
+  <script src="../notesPage.js?v=202609252100"></script>
+  <script src="../nextPage.js?v=202610161057"></script>
+</body>
+</html>

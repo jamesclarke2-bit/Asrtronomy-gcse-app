@@ -18,11 +18,11 @@ One row per point in the Edexcel GCSE Astronomy (1AS0) specification, Topics 1�
 | 10 | Solar astronomy | 12 | 12 | 0 | 0 |
 | 11 | Exploring the Solar System | 33 | 29 | 4 | 0 |
 | 12 | Formation of planetary systems | 14 | 5 | 9 | 1 |
-| 13 | Exploring starlight | 40 | 21 | 19 | 1 |
+| 13 | Exploring starlight | 46 | 29 | 17 | 1 |
 | 14 | Stellar evolution | 11 | 0 | 11 | 0 |
 | 15 | Our place in the Galaxy | 14 | 0 | 14 | 0 |
 | 16 | Cosmology | 12 | 0 | 12 | 0 |
-| **Total** | | **235** | **163** | **72** | **29** |
+| **Total** | | **241** | **171** | **70** | **29** |
 
 ## Methodology
 
@@ -278,7 +278,7 @@ One row per point in the Edexcel GCSE Astronomy (1AS0) specification, Topics 1�
 | 13.14 | understand | light curves of variable stars: short/long period, eclipsing binary, Cepheid, and novae/supernovae | *not built* | – |  | |
 | 13.15 | understand | causes of variability in an eclipsing binary's light curve | *not built* | – |  | |
 | 13.16 | understand | how Cepheid variables are used to determine distances | *not built* | – |  | |
-| 13.17 | understand | the structure of gravitationally bound groupings such as binary stars and clusters | *not built* | – |  | |
+| 13.17 | understand | the structure of gravitationally bound groupings such as binary stars and clusters | [Binaries, clusters and the view through a telescope](../notes/binaries-and-clusters.html) | – |  | |
 | 13.18 | understand | deduce the period of an eclipsing binary from its light curve | *not built* | – |  | |
 | 13.19 | be able to | use star trail photographs to determine the length of the sidereal day | *not built* | – |  | |
 | 13.20 | know | modern observations are recorded with digital sensors converting light to electrical signals, processed and stored as data files | [Reading a spectrum](../notes/reading-a-spectrum.html) | – |  | |
@@ -295,7 +295,13 @@ One row per point in the Edexcel GCSE Astronomy (1AS0) specification, Topics 1�
 | 13.31 | understand | why telescopes outside the optical and radio windows must be above the atmosphere | *not built* | – |  | |
 | 13.32 | understand | advantages and disadvantages of space telescopes and detectors, including orbital observing platforms | *not built* | – |  | |
 | 13.33 | understand | gamma ray, X-ray and ultraviolet astronomy's role in the discovery of gamma ray bursts, black hole accretion discs, and the corona/chromosphere structure of young stars | *not built* | – |  | |
-| 13.34 | understand | how a telescope alters the appearance of stars, double stars, binary stars, open clusters, globular clusters, nebulae and galaxies | *not built* | – |  | |
+| 13.34a | understand | how a telescope alters the appearance of stars | [Binaries, clusters and the view through a telescope](../notes/binaries-and-clusters.html) | – |  | |
+| 13.34b | understand | how a telescope alters the appearance of double stars | [Binaries, clusters and the view through a telescope](../notes/binaries-and-clusters.html) | – |  | |
+| 13.34c | understand | how a telescope alters the appearance of binary stars | [Binaries, clusters and the view through a telescope](../notes/binaries-and-clusters.html) | – |  | |
+| 13.34d | understand | how a telescope alters the appearance of open clusters | [Binaries, clusters and the view through a telescope](../notes/binaries-and-clusters.html) | – |  | |
+| 13.34e | understand | how a telescope alters the appearance of globular clusters | [Binaries, clusters and the view through a telescope](../notes/binaries-and-clusters.html) | – |  | |
+| 13.34f | understand | how a telescope alters the appearance of nebulae | [Binaries, clusters and the view through a telescope](../notes/binaries-and-clusters.html) | – |  | |
+| 13.34g | understand | how a telescope alters the appearance of galaxies | [Binaries, clusters and the view through a telescope](../notes/binaries-and-clusters.html) | – |  | |
 
 ## Topic 14: Stellar evolution
 

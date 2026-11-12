@@ -887,6 +887,14 @@ const UNITS = [
         notes:
           "an HR diagram plots stars by surface temperature across (hottest on the LEFT, the standard way round, often with the spectral classes O B A F G K M along it) against luminosity (Sun = 1, log scale) or absolute magnitude up (brightest at the top, so the most negative magnitudes at the top); most stars, including the Sun (in the middle), lie on the main sequence, a diagonal band from top left (hot, luminous) to bottom right (cool, dim); red giants sit top right (cool but luminous, so very large), blue giants top left above the main sequence, supergiants across the top at every temperature, and white dwarfs bottom left (hot but dim, so very small); a main-sequence star's spectral type gives its absolute magnitude M from the diagram, and comparing M with its apparent magnitude m in M = m + 5 - 5 log d gives its distance; because the main sequence is a band about 2 magnitudes thick, M is known only to within about 1 magnitude, so the distance comes with a range and an uncertainty of half that range, and the method only works if the star is known to be on the main sequence",
       },
+      {
+        id: 'u4.10',
+        title: 'Binaries, clusters and the view through a telescope',
+        depth: 'understand',
+        spec: ['13.17', '13.34a', '13.34b', '13.34c', '13.34d', '13.34e', '13.34f', '13.34g'],
+        notes:
+          "an optical double is a chance line-up of two stars at very different distances, while a binary is two stars bound by gravity orbiting their common centre of mass, the heavier star on the smaller orbit (orbit radius inversely proportional to mass); visual binaries are seen to orbit over years, spectroscopic binaries are found from spectral lines shifting back and forth (Doppler), eclipsing binaries from regular dips in brightness; open clusters are loose, irregular, young groups of tens to a few thousand stars in the Galaxy's disc (the Pleiades), globular clusters are dense, spherical, very old groups of hundreds of thousands of stars in the halo (M13); through a telescope stars stay points at any magnification and a larger aperture shows fainter ones, a close double splits only when the aperture's resolution is finer than the separation, a binary looks just like a double, an open cluster resolves even in binoculars, a globular cluster is a fuzzy ball whose edges resolve with larger apertures while its core stays crowded, a nebula is a faint grey-green glow (colours come from long-exposure photographs), a galaxy is a faint smudge, mostly its core, with spiral arms needing large apertures, dark skies or photographs; higher magnification spreads an extended object's light over a larger area so it looks dimmer",
+      },
     ],
   },
   {

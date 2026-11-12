@@ -70,8 +70,17 @@ test('the ten stars: the eight from Colour, temperature and spectral type, plus 
   assert.equal(Spectra.classForTemperature(proxima.temperatureK).letter, 'M');
   const sun = H.STARS.find((s) => s.name === 'the Sun');
   assert.equal(sun.absoluteMagnitude, 4.8);
-  close(sun.luminosity, 1, 1e-12, 'Sun luminosity');
-  H.STARS.forEach((s) => close(s.luminosity, H.luminosityFromMagnitude(s.absoluteMagnitude), 1e-12, s.name));
+  assert.equal(sun.totalLuminosity, 1);
+  // Approximate total luminosities, as usually quoted (not worked out from M).
+  const expected = {
+    Spica: 20000, Rigel: 120000, Vega: 40, Sirius: 25, Procyon: 7, 'the Sun': 1,
+    Arcturus: 170, Betelgeuse: 100000, 'Sirius B': 0.056, 'Proxima Centauri': 0.0017,
+  };
+  H.STARS.forEach((s) => assert.equal(s.totalLuminosity, expected[s.name], s.name));
+  assert.equal(H.luminosityText(H.STARS.find((s) => s.name === 'Betelgeuse')), 'about 100,000 (varies)');
+  assert.equal(H.luminosityText(H.STARS.find((s) => s.name === 'Sirius B')), 'about 0.056');
+  // No star carries a luminosity worked out from M any more.
+  H.STARS.forEach((s) => assert.equal(s.luminosity, undefined, s.name));
 });
 
 test('sketch feedback: each label is right in its region and wrong in the others\' centres', () => {
