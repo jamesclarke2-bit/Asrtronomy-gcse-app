@@ -25,20 +25,30 @@ function arcsecondsToRadians(arcsec) {
   return (arcsec / ARCSECONDS_PER_DEGREE) * (Math.PI / 180);
 }
 
-// 1 AU, in AU, subtends exactly 1 arcsecond at this many AU — the
-// precise geometric definition of the parsec, computed rather than
-// hand-typed so "206,265" is always derivable, never just asserted.
-// tan, not the small-angle approximation, since this is the one place
-// the exact definition matters; everywhere else (d = 1/p) the
-// small-angle approximation this value itself justifies is used directly.
-const AU_PER_PARSEC = 1 / Math.tan(arcsecondsToRadians(1));
+// The precise geometric definition of the parsec: 1 AU, in AU, subtends
+// exactly 1 arcsecond at this many AU. tan, not the small-angle
+// approximation, since this is the one place the exact definition
+// matters; everywhere else (d = 1/p) the small-angle approximation
+// this value itself justifies is used directly. Kept only as a
+// reference check (see the test asserting it's close to the data
+// sheet's own figure below) — not exported, since nothing on the page
+// uses it; see AU_PER_PARSEC just below for what actually is.
+const AU_PER_PARSEC_PRECISE = 1 / Math.tan(arcsecondsToRadians(1));
 
 // The exam data sheet's own figures (src/specData.js) — reused here
 // rather than re-declared, so a pc-to-ly conversion can never disagree
-// with what the rest of the site already states.
+// with what the rest of the site already states. AU_PER_PARSEC and
+// METRES_PER_PARSEC are likewise derived from the data sheet's own
+// rounded parsecKm (3.1 x 10^13 km), not from AU_PER_PARSEC_PRECISE
+// above — about 206,667 AU, not the geometrically precise ~206,265 —
+// so that notes/parallax.html's own worked figures always match what
+// the data sheet gives students, the same convention PARSEC_LIGHT_YEARS
+// already follows. The ~0.2% gap between the two is explained on the
+// page itself, next to where this figure is shown.
 const PARSEC_LIGHT_YEARS = SpecData.CONSTANTS.parsecLightYears;
 const METRES_PER_AU = SpecData.CONSTANTS.auKm * 1000;
-const METRES_PER_PARSEC = AU_PER_PARSEC * METRES_PER_AU;
+const AU_PER_PARSEC = SpecData.CONSTANTS.parsecKm / SpecData.CONSTANTS.auKm;
+const METRES_PER_PARSEC = SpecData.CONSTANTS.parsecKm * 1000;
 
 /**
  * d (pc) = 1 / p (arcsec) — the defining relationship of the parsec.

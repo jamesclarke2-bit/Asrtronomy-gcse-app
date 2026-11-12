@@ -237,8 +237,10 @@ function makeQuestions(TelescopeModel, RayOptics) {
         };
       },
     },
-    // 11.21: field of view is the circle of sky seen through the eyepiece,
-    // in degrees or arcminutes.
+    // Stretch, beyond 11.21 itself (a 'know' fact, not a calculation) —
+    // see the matching "(Stretch, beyond the specification: ...)" note
+    // on notes/telescopes.html next to the live true-field-of-view
+    // readout this question's formula is based on.
     {
       id: 'true-field-of-view-calculation',
       units: ['u5.2'],

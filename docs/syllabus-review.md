@@ -16,13 +16,13 @@ One row per point in the Edexcel GCSE Astronomy (1AS0) specification, Topics 1�
 | 8 | Planetary motion and gravity | 9 | 9 | 0 | 3 |
 | 9 | Exploring the Moon | 5 | 5 | 0 | 0 |
 | 10 | Solar astronomy | 12 | 12 | 0 | 0 |
-| 11 | Exploring the Solar System | 33 | 26 | 7 | 0 |
+| 11 | Exploring the Solar System | 33 | 29 | 4 | 0 |
 | 12 | Formation of planetary systems | 14 | 5 | 9 | 1 |
 | 13 | Exploring starlight | 34 | 9 | 25 | 2 |
 | 14 | Stellar evolution | 11 | 0 | 11 | 0 |
 | 15 | Our place in the Galaxy | 14 | 0 | 14 | 0 |
 | 16 | Cosmology | 12 | 0 | 12 | 0 |
-| **Total** | | **229** | **148** | **81** | **30** |
+| **Total** | | **229** | **151** | **78** | **30** |
 
 ## Methodology
 
@@ -199,13 +199,13 @@ One row per point in the Edexcel GCSE Astronomy (1AS0) specification, Topics 1�
 
 | Code | Depth | Spec point | Page(s) | Questions | Thin coverage | Teacher's verdict |
 |---|---|---|---|---|---|---|
-| 11.1 | be able to | use data on the names and relative locations of planets, dwarf planets and small Solar System objects | *not built* | – |  | |
+| 11.1 | be able to | use data on the names and relative locations of planets, dwarf planets and small Solar System objects | [Bodies of the Solar System](../notes/solar-system-bodies.html) | 3 |  | |
 | 11.2 | understand | comet structure (nucleus, coma, tails) | [Bodies of the Solar System](../notes/solar-system-bodies.html) | – |  | |
 | 11.3 | understand | short-period comet orbits and their origin in the Kuiper Belt | [Bodies of the Solar System](../notes/solar-system-bodies.html) | – |  | |
 | 11.4 | understand | long-period comet orbits and their origin in the Oort Cloud | [Bodies of the Solar System](../notes/solar-system-bodies.html) | – |  | |
-| 11.5 | understand | location and nature of the Kuiper Belt, Oort Cloud and heliosphere | *not built* | – |  | |
+| 11.5 | understand | location and nature of the Kuiper Belt, Oort Cloud and heliosphere | [Bodies of the Solar System](../notes/solar-system-bodies.html) | – |  | |
 | 11.6 | understand | planets' principal characteristics (relative size, relative mass, surface temperature, atmospheric composition, satellites, rings) | [Bodies of the Solar System](../notes/solar-system-bodies.html) | – |  | |
-| 11.7 | understand | main theories for the formation and position of the gas giants | *not built* | – |  | |
+| 11.7 | understand | main theories for the formation and position of the gas giants | [Bodies of the Solar System](../notes/solar-system-bodies.html) | – |  | |
 | 11.8 | be able to | use information about the size of the Solar System | [The Scale of the Solar System](../notes/scale-of-the-solar-system.html) | 4 |  | |
 | 11.9 | be able to | use the AU, light year and parsec | [The Scale of the Solar System](../notes/scale-of-the-solar-system.html)<br>[Parallax and the Parsec: Measuring Distances to Stars](../notes/parallax.html) | 3 |  | |
 | 11.10 | understand | origin and structure of meteoroids and meteorites | [Bodies of the Solar System](../notes/solar-system-bodies.html) | – |  | |

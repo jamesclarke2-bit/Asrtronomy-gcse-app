@@ -16,21 +16,25 @@ MISSING point is never tagged as covered on any curriculum subtopic.
 
 | Status | Topic 11 (of 12) | Topic 14 (of 11) | Topic 15 (of 14) | Topic 16 (of 12) | Total (of 49) |
 |---|---|---|---|---|---|
-| COVERED | 9 | 0 | 0 | 0 | 9 |
-| PARTIAL | 3 | 2 | 2 | 0 | 7 |
+| COVERED | 12 | 0 | 0 | 0 | 12 |
+| PARTIAL | 0 | 2 | 2 | 0 | 4 |
 | MISSING | 0 | 9 | 12 | 12 | 33 |
+
+Updated 2026-11-12: 11.1, 11.5 and 11.7 moved PARTIAL &rarr; COVERED after dedicated questions
+(and, for 11.7, migration content) closed each gap below — see the full table's `where` column
+for each.
 
 ## Full table
 
 | id | status | where | gap | recommendation |
 |---|---|---|---|---|
-| 11.1 | PARTIAL | `notes/solar-system-bodies.html` §`planet-data` (planet table distinguishes Planet/Dwarf planet) and §`small-bodies` (asteroids/meteoroids/comets concept-grid) | No question tests naming, ordering or classifying bodies — the two nearby questions (`relative-size-calculation`, `relative-mass-comparison`) test size/mass ratios, not this point | Add a naming/classification question to `src/solarSystemBodiesQuestions.js` |
+| 11.1 | COVERED | `notes/solar-system-bodies.html` §`planet-data`/§`small-bodies`; question `relative-location-ordering` (orders Earth, the asteroid belt and Pluto by distance, reading the temperature-distance chart) | — | — |
 | 11.2 | COVERED | `notes/solar-system-bodies.html` §`comets` (nucleus/coma/tail glossary defs, `comet-diagram` canvas); question `comet-tail-direction` | — | — |
 | 11.3 | COVERED | §`comets` (`comet-diagram`, `kuiper-oort-diagram`); question `comet-origin` | — | — |
 | 11.4 | COVERED | §`comets`; question `ecliptic-oort-cloud` (u3.23) | — | — |
-| 11.5 | PARTIAL | §`comets` note on the heliosphere; `kuiper-oort-diagram` shows the heliopause | No question specifically on the heliosphere/Kuiper Belt/Oort Cloud's own nature or location — the nearby question (`ecliptic-oort-cloud`) tests why long-period comets differ, not this | Add a dedicated question |
+| 11.5 | COVERED | §`comets` note on the heliosphere; `kuiper-oort-diagram`; question `heliosphere-kuiper-oort-nature` (which region is the roughly spherical shell) | — | — |
 | 11.6 | COVERED | §`planet-data` (size bar chart, temperature chart, moons/rings diagrams); questions `relative-size-calculation`, `relative-mass-comparison`. Coverage is uneven across the six sub-characteristics (temperature/satellites/rings are diagram-rich but question-thin) but the point as a whole clears the bar | Atmosphere column flagged "first draft, not from the data sheet" | Could use a question on temperature or satellites/rings specifically |
-| 11.7 | PARTIAL | §`formation` h3 "Why gas giants are gas giants" (`gas-giant-formation-diagram`: core accretion + disc instability); question `gas-giant-core-accretion` | Nothing addresses the gas giants' CURRENT POSITION (migration isn't mentioned anywhere on the site) — only the formation-theory half of the point is covered | Add one sentence on current position being an open question; no new diagram needed |
+| 11.7 | COVERED | §`formation` h3 "Why gas giants are gas giants" (`gas-giant-formation-diagram`, now with a migration note); migration text (first-draft); question `gas-giant-formation-and-current-position` (tests both formation and current position, via "hot Jupiters") | — | — |
 | 11.8 | COVERED | `notes/scale-of-the-solar-system.html` (log-scale distance ladder); questions `convert-km-to-au`, `convert-au-to-km` etc. (`src/scaleOfSolarSystemQuestions.js`), tagged `spec: ['7.5', '11.8']` on u3.3 | — | — |
 | 11.9 | COVERED | Same page, §`distance-units` table; questions `convert-ly-to-km`, `convert-parsec-to-ly`, light-travel-time questions, tagged `spec: ['7.6', '11.9']` on u3.4 | — | — |
 | 11.10 | COVERED | `notes/solar-system-bodies.html` §`meteoroids-ecliptic` (stony/iron/stony-iron classification); question `meteoroid-meteor-meteorite` | — | — |
@@ -108,6 +112,12 @@ Covered dropped by 3 (151 → 148) from un-tagging 11.1/11.5/11.7. Not built ros
 still-unbuilt Topic 14–16 points) plus 3 (11.1/11.5/11.7, now correctly "not built" instead of
 miscounted as covered) = +40, landing at 81. Flagged thin is unaffected (it only ever applies to
 covered points).
+
+**Update 2026-11-12:** 11.1, 11.5 and 11.7 each gained a dedicated question (11.7 also gained
+migration text), closing the gap the `where`/`gap` columns above described. All three now clear
+the strict COVERED bar and are re-tagged in `src/curriculum.js`. Covered: 148 → 151; not built:
+81 → 78 (229 total, 30 flagged thin, unchanged) — matching `docs/syllabus-review.md`'s own
+regenerated totals.
 
 ## Part 3 — overlaps: who should own each idea
 

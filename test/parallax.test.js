@@ -6,8 +6,8 @@ test('1 arcsecond of parallax gives exactly 1 parsec', () => {
   assert.equal(Parallax.distanceFromParallax(1), 1);
 });
 
-test('1 parsec is 206,265 AU (within 0.1%) and 3.26 light years (within 0.1%)', () => {
-  assert.ok(Math.abs(Parallax.AU_PER_PARSEC - 206265) / 206265 < 0.001, `AU_PER_PARSEC = ${Parallax.AU_PER_PARSEC}`);
+test('1 parsec is 206,667 AU (within 0.1%, the data sheet\'s own rounded parsecKm/auKm ratio) and 3.26 light years (within 0.1%)', () => {
+  assert.ok(Math.abs(Parallax.AU_PER_PARSEC - 206667) / 206667 < 0.001, `AU_PER_PARSEC = ${Parallax.AU_PER_PARSEC}`);
   const ly = Parallax.parsecToLightYears(1);
   assert.ok(Math.abs(ly - 3.26) / 3.26 < 0.001, `1 pc in ly = ${ly}`);
 });

@@ -17,6 +17,7 @@ function makeQuestions(SpecData) {
   const earth = SpecData.PLANETARY_DATA.find((body) => body.name === 'Earth');
   const saturn = SpecData.PLANETARY_DATA.find((body) => body.name === 'Saturn');
   const uranus = SpecData.PLANETARY_DATA.find((body) => body.name === 'Uranus');
+  const pluto = SpecData.PLANETARY_DATA.find((body) => body.name === 'Pluto');
 
   const sizeRatio = jupiter.diameterThousandKm / earth.diameterThousandKm;
   const massRatio = saturn.massEarthMasses / uranus.massEarthMasses;
@@ -47,6 +48,37 @@ function makeQuestions(SpecData) {
         return {
           correct,
           message: `mass ratio = ${saturn.massEarthMasses} / ${uranus.massEarthMasses} = ${massRatio.toFixed(1)}× — both masses are already given relative to Earth, so this is a straightforward division of the two data-sheet figures.`,
+        };
+      },
+    },
+    {
+      id: 'relative-location-ordering',
+      units: ['u3.16'],
+      type: 'choice',
+      prompt:
+        "Using the temperature-against-distance chart above, and knowing the asteroid belt (where most asteroids, a Small Solar System Object, orbit) sits between Mars and Jupiter: which of these three is positioned furthest from the Sun?",
+      options: ['Earth, a planet', 'The asteroid belt', 'Pluto, a dwarf planet'],
+      check(value) {
+        const correct = value === 'Pluto, a dwarf planet';
+        return {
+          correct,
+          message: `The chart places Earth at ${earth.distanceAU} AU from the Sun and Pluto at ${pluto.distanceAU} AU — much further out — while the asteroid belt, between Mars and Jupiter, sits at only a few AU. Ordered by distance from the Sun: Earth (a planet), then the asteroid belt (an SSSO), then Pluto (a dwarf planet), the furthest of the three.`,
+        };
+      },
+    },
+    {
+      id: 'heliosphere-kuiper-oort-nature',
+      units: ['u3.20'],
+      type: 'choice',
+      prompt:
+        "The diagram above places the Kuiper Belt, the heliopause (the heliosphere's own outer edge) and the Oort Cloud at increasing distances out from the Sun. Which one of the three is a roughly SPHERICAL shell surrounding the whole Solar System, rather than a flattened disc or the edge of a bubble?",
+      options: ['The Kuiper Belt', "The heliopause (the heliosphere's own edge)", 'The Oort Cloud', 'All three are flattened discs in the same plane as the planets'],
+      check(value) {
+        const correct = value === 'The Oort Cloud';
+        return {
+          correct,
+          message:
+            "The Kuiper Belt (roughly 30-50 AU out) is a disc of icy bodies in the same flattened plane as the planets. The heliopause (roughly 120 AU) is just the outer edge of the heliosphere, the bubble the solar wind inflates around the Sun — not a belt of material at all. The Oort Cloud, thought to extend from a few thousand AU out to perhaps 100,000 AU, is instead a far larger, roughly spherical shell — which is exactly why long-period comets, unlike short-period ones from the flattened Kuiper Belt, can arrive from any direction at all.",
         };
       },
     },
@@ -190,6 +222,27 @@ function makeQuestions(SpecData) {
           correct,
           message:
             "In core accretion, a solid core of ice and rock grows large enough, far enough from the young Sun for ices to survive its heat, to gravitationally capture a massive envelope of hydrogen and helium gas directly from the surrounding disc. (A less-favoured alternative, disc instability, skips this slow core-building step entirely — part of the disc itself becomes gravitationally unstable and collapses directly into a gas giant.)",
+        };
+      },
+    },
+    {
+      id: 'gas-giant-formation-and-current-position',
+      units: ['u3.21'],
+      type: 'choice',
+      prompt:
+        "A gas giant needs to form beyond the frost line, where it's cold enough for ice to help build a large enough core or clump. But some gas giants found around other stars (\"hot Jupiters\") orbit extremely close to their star, in a region far too hot for that to have happened. What best explains this?",
+      options: [
+        "The gas giant formed beyond the frost line, then migrated inward through the disc to its present close orbit",
+        "The frost line can sit right next to a star in some systems, so the gas giant simply formed exactly where it is now",
+        'A hot Jupiter is not actually a gas giant, despite the name',
+        "Core accretion doesn't need a frost line at all — only disc instability does",
+      ],
+      check(value) {
+        const correct = value === 'The gas giant formed beyond the frost line, then migrated inward through the disc to its present close orbit';
+        return {
+          correct,
+          message:
+            "A gas giant still needs to form beyond the frost line, however close to its star it ends up today — that part of the theory doesn't change. What can change afterwards is its position: giant planets are thought to migrate, drifting inward or outward through the disc after forming. A \"hot Jupiter\" is exactly this: a gas giant that formed far out, then migrated inward to its current scorching, close-in orbit.",
         };
       },
     },
