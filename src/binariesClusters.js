@@ -18,7 +18,7 @@
  * rule of thumb, and an extended object's surface brightness is taken to
  * scale with the exit pupil (aperture / magnification) squared, capped at
  * the eye's own pupil. Facts about the real objects are general knowledge,
- * shown on the page as a first draft for the teacher to check.
+ * checked by the teacher.
  */
 (function () {
   const isNode = typeof require !== 'undefined' && typeof module !== 'undefined';
@@ -166,7 +166,7 @@
         'The Pleiades (M45) is in Taurus, about 440 light years away.',
         'It is about 100 million years old: young for a star cluster.',
         'It has over 1,000 member stars; 6 or 7 can be seen with the naked eye.',
-        'It spans about 2 degrees of sky, four times the width of the full Moon.',
+        'It spans about 2 degrees of sky, about three and a half times the full Moon\u2019s width.',
       ],
     },
     {

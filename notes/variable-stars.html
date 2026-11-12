@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; form-action 'none'; base-uri 'self'" />
+  <meta name="referrer" content="no-referrer" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Variable stars and Cepheids</title>
+  <link rel="stylesheet" href="../styles.css?v=202611131800" />
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg?v=202610130720" />
+</head>
+<body>
+  <main>
+    <p class="back-link"><a href="../index.html">&larr; Back to all tools</a></p>
+
+    <h1>Variable stars and Cepheids</h1>
+    <p class="subtitle">
+      Some stars change in brightness. How they change tells us what they are, and one kind
+      tells us how far away it is.
+    </p>
+
+    <section class="notes-section" id="light-curve">
+      <h2>What a light curve is</h2>
+      <p>
+        A
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="lightCurve" aria-label="What is a light curve?" aria-expanded="false">light curve</button>
+        is a graph of a star's brightness against time.
+      </p>
+      <span class="glossary-definition" data-term="lightCurve" hidden></span>
+
+      <div class="diagram spectrum-panel vs-panel">
+        <div class="labelled-diagram-wrap" id="intro-diagram-wrap">
+          <svg
+            id="intro-diagram"
+            class="responsive-svg"
+            width="640"
+            height="350"
+            viewBox="0 0 640 350"
+            role="img"
+            aria-label="A light curve of Delta Cephei over about 15 days: apparent magnitude up the side, from 3.4 at the top to 4.5 at the bottom, so brighter is higher; time in days along the bottom. The curve rises quickly to each maximum and falls more slowly, repeating about every 5.4 days. Small drawings of the star above the graph show it bright at each peak and dim at each dip."
+          ></svg>
+        </div>
+      </div>
+
+      <p>
+        The brightness is given as
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="apparentMagnitude" aria-label="What is apparent magnitude?" aria-expanded="false">apparent magnitude</button>.
+        On the magnitude scale smaller numbers mean brighter stars, so the axis runs
+        &ldquo;upside down&rdquo;: the smallest numbers go at the top, so that a brighter star is
+        higher on the graph.
+      </p>
+      <span class="glossary-definition" data-term="apparentMagnitude" hidden></span>
+    </section>
+
+    <section class="notes-section" id="gallery">
+      <h2>Six kinds of light curve</h2>
+      <p>
+        Match each curve to its star. Read the time axis to find each period, and look at the
+        shape.
+      </p>
+
+      <div class="vs-gallery" id="gallery-cards"></div>
+
+      <button type="button" class="secondary-button" id="gallery-check">Check my matches</button>
+      <label class="checkbox-control vs-answers-toggle"><input type="checkbox" id="gallery-answers" /> Show the answers</label>
+      <p class="note" id="gallery-feedback" aria-live="polite"></p>
+
+      <div class="table-scroll">
+        <table class="shower-table" id="gallery-table">
+          <caption>The six stars</caption>
+          <thead>
+            <tr><th scope="col">Star</th><th scope="col">Kind</th><th scope="col">Period (days)</th><th scope="col">Brightness range (magnitude)</th></tr>
+          </thead>
+          <tbody id="gallery-table-body"></tbody>
+        </table>
+      </div>
+      <p>
+        <strong>Novae and supernovae are one-off outbursts</strong>, not regular cycles: they do
+        not repeat with a period. Why an eclipsing binary dips is covered on Eclipsing binaries:
+        coming soon.
+      </p>
+    </section>
+
+    <section class="notes-section" id="pulsation">
+      <h2>Why Cepheids vary</h2>
+      <p>
+        A Cepheid is a giant star that swells and shrinks, getting brighter and dimmer as it
+        pulsates.
+      </p>
+
+      <div class="control">
+        <label for="pulse-slider">Through one pulsation: <span id="pulse-label"></span></label>
+        <input type="range" id="pulse-slider" min="0" max="99" step="1" value="0" />
+      </div>
+      <button type="button" class="secondary-button" id="pulse-play" aria-pressed="false">Play</button>
+
+      <div class="diagram spectrum-panel vs-panel">
+        <div class="labelled-diagram-wrap" id="pulse-diagram-wrap">
+          <svg
+            id="pulse-diagram"
+            class="responsive-svg"
+            width="640"
+            height="280"
+            viewBox="0 0 640 280"
+            role="img"
+            aria-label="Left: a Cepheid drawn swelling and shrinking. Right: its size and its brightness over one pulsation, with a marker at the chosen moment."
+          ></svg>
+        </div>
+      </div>
+    </section>
+
+    <section class="notes-section" id="distance">
+      <h2>Measuring distance with a Cepheid</h2>
+      <p>
+        The longer a Cepheid's period, the more luminous it is. So its period gives its absolute
+        magnitude M, and comparing M with its average apparent magnitude m gives its distance, using
+        the data sheet formula M = m + 5 &minus; 5 log d (see
+        <a href="magnitude.html">Magnitude: how bright is a star?</a>).
+      </p>
+      <p>
+        <strong>Worked example:</strong> a Cepheid in the Large Magellanic Cloud has period 10 days,
+        so the graph gives M &asymp; &minus;4.0, and average m = +14.5. Then m &minus; M = 18.5,
+        5 log d = 23.5, log d = 4.7 and d &asymp; 50,000 pc. Reading M as &minus;4.2 to &minus;3.8
+        gives 45,700 to 55,000 pc, so the uncertainty is half that range, about &plusmn;4,600 pc.
+      </p>
+
+      <div class="control">
+        <label for="cepheid-select">Cepheid</label>
+        <select id="cepheid-select"></select>
+      </div>
+
+      <h3>Step 1: time several cycles</h3>
+      <p>Line the two markers up with peaks, and count the whole cycles between them.</p>
+      <div class="control">
+        <label for="t1-slider">First marker: <span id="t1-label"></span></label>
+        <input type="range" id="t1-slider" min="0" max="630" step="1" value="18" />
+      </div>
+      <div class="control">
+        <label for="t2-slider">Second marker: <span id="t2-label"></span></label>
+        <input type="range" id="t2-slider" min="0" max="630" step="1" value="618" />
+      </div>
+      <div class="control">
+        <label for="cycles-select">Whole cycles between the markers</label>
+        <select id="cycles-select"></select>
+      </div>
+
+      <div class="diagram spectrum-panel vs-panel">
+        <div class="labelled-diagram-wrap" id="period-diagram-wrap">
+          <svg
+            id="period-diagram"
+            class="responsive-svg"
+            width="640"
+            height="330"
+            viewBox="0 0 640 330"
+            role="img"
+            aria-label="The chosen Cepheid's light curve, with two marker lines for timing whole cycles, and dashed lines across at its brightest, its faintest and halfway between, its average apparent magnitude."
+          ></svg>
+        </div>
+      </div>
+      <p class="note" id="period-readout" aria-live="polite"></p>
+
+      <h3>Step 2: read M from the period-luminosity graph</h3>
+      <div class="diagram spectrum-panel vs-panel">
+        <div class="labelled-diagram-wrap" id="pl-diagram-wrap">
+          <svg
+            id="pl-diagram"
+            class="responsive-svg"
+            width="640"
+            height="340"
+            viewBox="0 0 640 340"
+            role="img"
+            aria-label="The period-luminosity graph for Cepheids: absolute magnitude up the side, brighter (more negative) at the top, against period in days on a log scale from 1 to 100. A straight band rises from short dim Cepheids to long bright ones. A line up from the measured period meets the band, and a line across reads off M."
+          ></svg>
+        </div>
+      </div>
+
+      <h3>Steps 3 and 4: average m, then the distance</h3>
+      <ol class="hr-working" id="distance-working" aria-live="polite"></ol>
+    </section>
+
+    <section class="notes-section" id="standard-candles">
+      <h2>Why it matters</h2>
+      <div class="diagram spectrum-panel vs-panel">
+        <div class="labelled-diagram-wrap" id="candle-diagram-wrap">
+          <svg
+            id="candle-diagram"
+            class="responsive-svg"
+            width="640"
+            height="220"
+            viewBox="0 0 640 220"
+            role="img"
+            aria-label="Three identical candles at increasing distances, each looking dimmer the further away it is. Because all three give out the same light, how dim one looks tells you how far away it is."
+          ></svg>
+        </div>
+      </div>
+      <p>
+        Cepheids are
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="standardCandle" aria-label="What is a standard candle?" aria-expanded="false">standard candles</button>.
+        Henrietta Leavitt found the period-luminosity link in 1912. In the 1920s Edwin Hubble
+        used Cepheids in the Andromeda Galaxy to show that it lies far outside our Galaxy. Galaxies
+        and the expanding Universe (Topics 15 and 16): coming soon.
+      </p>
+      <span class="glossary-definition" data-term="standardCandle" hidden></span>
+    </section>
+
+    <section class="notes-section" id="exam-tips">
+      <h2>Exam tips</h2>
+      <p class="exam-tip">
+        <strong>Common exam confusion:</strong> on a light curve, the top is brighter, because the
+        magnitude axis runs upside down.
+        <a href="#light-curve">What a light curve is &uarr;</a>
+      </p>
+      <p class="exam-tip">
+        <strong>Common exam confusion:</strong> time several whole cycles, not one, then divide.
+        <a href="#distance">Measuring distance &uarr;</a>
+      </p>
+    </section>
+
+    <section class="notes-section" id="related">
+      <h2>Related pages</h2>
+      <div class="page-card-list">
+        <a class="page-card" href="magnitude.html">
+          <h3>Magnitude: how bright is a star?</h3>
+          <p class="page-card-description">The distance modulus formula.</p>
+        </a>
+        <a class="page-card" href="binaries-and-clusters.html">
+          <h3>Binaries, clusters and the view through a telescope</h3>
+          <p class="page-card-description">Binary stars, including eclipsing ones.</p>
+        </a>
+      </div>
+    </section>
+
+    <section class="questions" id="questions">
+      <h2>Practice questions</h2>
+      <div id="questions-list"></div>
+    </section>
+
+    <section class="progress">
+      <h2>Your progress</h2>
+      <ul id="progress-list"></ul>
+      <p class="note">Stored in this browser only (localStorage) &mdash; no account needed.</p>
+    </section>
+
+    <p class="coverage" id="coverage"></p>
+    <p class="next-page-link" id="next-page"></p>
+  </main>
+
+  <script src="../src/curriculum.js?v=202611131800"></script>
+  <script src="../src/pages.js?v=202611131800"></script>
+  <script src="../src/specData.js?v=202610161036"></script>
+  <script src="../src/spectra.js?v=202611131200"></script>
+  <script src="../src/magnitude.js?v=202611101600"></script>
+  <script src="../src/spectrumDrawing.js?v=202611130900"></script>
+  <script src="../src/variableStars.js?v=202611131800"></script>
+  <script src="../src/variableStarsQuestions.js?v=202611131800"></script>
+  <script src="../glossary.js?v=202610131052"></script>
+  <script src="../quiz-ui.js?v=202611121900"></script>
+  <script src="variable-stars.js?v=202611131800"></script>
+  <script src="../diagramEnlarge.js?v=202611111500"></script>
+  <script src="../notesPage.js?v=202609252100"></script>
+  <script src="../nextPage.js?v=202610161057"></script>
+</body>
+</html>

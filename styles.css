@@ -4658,3 +4658,42 @@ canvas {
 .bc-facts h3 {
   margin: 0.5rem 0 0.2rem;
 }
+
+/* notes/variable-stars.html */
+.vs-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 0.9rem;
+  margin: 1rem 0;
+}
+
+.vs-card {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 0.5rem 0.7rem 0.7rem;
+}
+
+.vs-card h3 {
+  margin: 0.2rem 0 0.4rem;
+}
+
+.vs-card .spectrum-panel {
+  margin: 0 0 0.5rem;
+}
+
+.vs-card select {
+  margin-left: 0.25rem;
+  max-width: 100%;
+}
+
+.vs-card-facts {
+  margin: 0.5rem 0 0;
+  padding-left: 1.1rem;
+  font-size: 0.85rem;
+}
+
+.vs-answers-toggle {
+  display: inline-block;
+  margin-left: 0.75rem;
+}

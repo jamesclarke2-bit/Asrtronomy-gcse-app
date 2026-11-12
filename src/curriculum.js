@@ -895,6 +895,14 @@ const UNITS = [
         notes:
           "an optical double is a chance line-up of two stars at very different distances, while a binary is two stars bound by gravity orbiting their common centre of mass, the heavier star on the smaller orbit (orbit radius inversely proportional to mass); visual binaries are seen to orbit over years, spectroscopic binaries are found from spectral lines shifting back and forth (Doppler), eclipsing binaries from regular dips in brightness; open clusters are loose, irregular, young groups of tens to a few thousand stars in the Galaxy's disc (the Pleiades), globular clusters are dense, spherical, very old groups of hundreds of thousands of stars in the halo (M13); through a telescope stars stay points at any magnification and a larger aperture shows fainter ones, a close double splits only when the aperture's resolution is finer than the separation, a binary looks just like a double, an open cluster resolves even in binoculars, a globular cluster is a fuzzy ball whose edges resolve with larger apertures while its core stays crowded, a nebula is a faint grey-green glow (colours come from long-exposure photographs), a galaxy is a faint smudge, mostly its core, with spiral arms needing large apertures, dark skies or photographs; higher magnification spreads an extended object's light over a larger area so it looks dimmer",
       },
+      {
+        id: 'u4.11',
+        title: 'Variable stars and Cepheids',
+        depth: 'understand',
+        spec: ['13.14a', '13.14b', '13.14c', '13.14d', '13.16'],
+        notes:
+          "a light curve plots a star's apparent magnitude against time, with the magnitude axis drawn upside down (smaller, brighter numbers at the top); short-period variables such as RR Lyrae (about 0.57 days, about 1 magnitude) and long-period variables such as Mira (about 330 days, several magnitudes, a pulsating red giant); eclipsing binaries such as Algol (about 2.9 days, flat with sharp regular dips); Cepheids such as Delta Cephei (about 5.4 days, a quick rise and slower fall), giant stars that swell and shrink as they pulsate; novae (a sudden rise of many magnitudes on a white dwarf in a close binary that pulls gas from its companion, fading over weeks to months) and supernovae (a huge rise that can outshine a galaxy, fading over months) are one-off outbursts, not cycles; a Cepheid's period, timed over several cycles to cut the percentage uncertainty, gives its absolute magnitude from the period-luminosity relation (M = -2.43 log P - 1.62), and with its average apparent magnitude the distance modulus M = m + 5 - 5 log d gives its distance, with the uncertainty taken as half the range a graph reading allows; Cepheids are standard candles (Leavitt, 1912; Hubble used them to show the Andromeda Galaxy lies outside our Galaxy in the 1920s)",
+      },
     ],
   },
   {

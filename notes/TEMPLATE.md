@@ -28,6 +28,7 @@ every page listed as conforming below.
 | `notes/spectral-types.html` | Yes (built to it from the start) |
 | `notes/hr-diagram.html` | Yes (built to it from the start) |
 | `notes/binaries-and-clusters.html` | Yes (built to it from the start) |
+| `notes/variable-stars.html` | Yes (built to it from the start) |
 
 Every `notes/` page now conforms. When a page is retrofitted, add it to `CONFORMING_PAGES`
 in `test/notesTemplate.test.js` and update this table.

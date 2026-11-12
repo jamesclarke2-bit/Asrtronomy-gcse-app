@@ -18,11 +18,11 @@ One row per point in the Edexcel GCSE Astronomy (1AS0) specification, Topics 1�
 | 10 | Solar astronomy | 12 | 12 | 0 | 0 |
 | 11 | Exploring the Solar System | 33 | 29 | 4 | 0 |
 | 12 | Formation of planetary systems | 14 | 5 | 9 | 1 |
-| 13 | Exploring starlight | 46 | 29 | 17 | 1 |
+| 13 | Exploring starlight | 49 | 34 | 15 | 1 |
 | 14 | Stellar evolution | 11 | 0 | 11 | 0 |
 | 15 | Our place in the Galaxy | 14 | 0 | 14 | 0 |
 | 16 | Cosmology | 12 | 0 | 12 | 0 |
-| **Total** | | **241** | **171** | **70** | **29** |
+| **Total** | | **244** | **176** | **68** | **29** |
 
 ## Methodology
 
@@ -275,9 +275,12 @@ One row per point in the Edexcel GCSE Astronomy (1AS0) specification, Topics 1�
 | 13.11 | understand | the parsec | [Parallax and the Parsec: Measuring Distances to Stars](../notes/parallax.html) | – |  | |
 | 13.12 | be able to | determine distances using heliocentric parallax | [Parallax and the Parsec: Measuring Distances to Stars](../notes/parallax.html) | 8 |  | |
 | 13.13 | understand | use an HR diagram to determine distances to stars | [The Hertzsprung-Russell diagram](../notes/hr-diagram.html) | – |  | |
-| 13.14 | understand | light curves of variable stars: short/long period, eclipsing binary, Cepheid, and novae/supernovae | *not built* | – |  | |
+| 13.14a | understand | the light curves of short-period and long-period variable stars | [Variable stars and Cepheids](../notes/variable-stars.html) | – |  | |
+| 13.14b | understand | the light curves of eclipsing binary stars | [Variable stars and Cepheids](../notes/variable-stars.html) | – |  | |
+| 13.14c | understand | the light curves of Cepheid variables | [Variable stars and Cepheids](../notes/variable-stars.html) | – |  | |
+| 13.14d | understand | the light curves of novae and supernovae | [Variable stars and Cepheids](../notes/variable-stars.html) | – |  | |
 | 13.15 | understand | causes of variability in an eclipsing binary's light curve | *not built* | – |  | |
-| 13.16 | understand | how Cepheid variables are used to determine distances | *not built* | – |  | |
+| 13.16 | understand | how Cepheid variables are used to determine distances | [Variable stars and Cepheids](../notes/variable-stars.html) | – |  | |
 | 13.17 | understand | the structure of gravitationally bound groupings such as binary stars and clusters | [Binaries, clusters and the view through a telescope](../notes/binaries-and-clusters.html) | – |  | |
 | 13.18 | understand | deduce the period of an eclipsing binary from its light curve | *not built* | – |  | |
 | 13.19 | be able to | use star trail photographs to determine the length of the sidereal day | *not built* | – |  | |

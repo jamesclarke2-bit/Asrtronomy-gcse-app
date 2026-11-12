@@ -36,6 +36,7 @@ const CONFORMING_PAGES = [
   'notes/spectral-types.html',
   'notes/hr-diagram.html',
   'notes/binaries-and-clusters.html',
+  'notes/variable-stars.html',
 ];
 
 // Section 6 of the template ("Diagram-first"), checked only for pages

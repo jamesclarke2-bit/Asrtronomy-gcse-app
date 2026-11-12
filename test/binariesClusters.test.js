@@ -110,3 +110,11 @@ test('shared star view: the blur radius is the resolution, capped at a fifth of 
   assert.equal(StarView.blurRadiusPx(1, 6, 50), 50);
   assert.equal(StarView.blurRadiusPx(0.01, 6, 50), 2.5);
 });
+
+test('the Pleiades fact compares its 110 arcminutes with the full Moon’s 31: about three and a half times', () => {
+  const pleiades = B.objectById('pleiades');
+  assert.equal(pleiades.sizeArcmin, 110);
+  close(pleiades.sizeArcmin / 31, 3.5, 0.1, 'ratio');
+  assert.ok(pleiades.facts.some((f) => f.includes('about three and a half times the full Moon')));
+  assert.ok(!pleiades.facts.some((f) => /four times/.test(f)));
+});

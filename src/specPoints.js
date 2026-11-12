@@ -375,12 +375,10 @@ const SPEC_POINTS = [
 
   // --- Topic 13: Exploring starlight -------------------------------------------
   // Same convention as Topic 11's own multi-part points (11.18, 11.26-11.27):
-  // a point with several lettered sub-parts in the real spec (13.14) is
-  // kept as ONE code with all its parts folded into one `text`. The
-  // exceptions are 13.4, split into 13.4a/b/c (like 11.25), 13.7, split
-  // into 13.7a-e, and 13.34, split into 13.34a-g, so a page and its
-  // questions can be tagged to the exact sub-part each one teaches — see
-  // SPEC_POINT_GROUPS below.
+  // a point with several lettered sub-parts in the real spec is split into
+  // its sub-parts: 13.4a/b/c (like 11.25), 13.7a-e, 13.14a-d and
+  // 13.34a-g, so a page and its questions can be tagged to the exact
+  // sub-part each one teaches — see SPEC_POINT_GROUPS below.
   { code: '13.1', topic: 13, depth: 'understand', text: 'the astronomical magnitude scale; apparent magnitude is how bright a star looks as viewed from Earth' },
   { code: '13.2', topic: 13, depth: 'understand', text: 'absolute magnitude' },
   { code: '13.3', topic: 13, depth: 'be able to', text: 'the distance modulus formula M = m + 5 - 5 log d (d in parsecs); determine M or m given the distance' },
@@ -431,10 +429,32 @@ const SPEC_POINTS = [
   { code: '13.12', topic: 13, depth: 'be able to', text: 'determine distances using heliocentric parallax' },
   { code: '13.13', topic: 13, depth: 'understand', text: 'use an HR diagram to determine distances to stars' },
   {
-    code: '13.14',
+    code: '13.14a',
     topic: 13,
     depth: 'understand',
-    text: 'light curves of variable stars: short/long period, eclipsing binary, Cepheid, and novae/supernovae',
+    group: '13.14',
+    text: 'the light curves of short-period and long-period variable stars',
+  },
+  {
+    code: '13.14b',
+    topic: 13,
+    depth: 'understand',
+    group: '13.14',
+    text: 'the light curves of eclipsing binary stars',
+  },
+  {
+    code: '13.14c',
+    topic: 13,
+    depth: 'understand',
+    group: '13.14',
+    text: 'the light curves of Cepheid variables',
+  },
+  {
+    code: '13.14d',
+    topic: 13,
+    depth: 'understand',
+    group: '13.14',
+    text: 'the light curves of novae and supernovae',
   },
   { code: '13.15', topic: 13, depth: 'understand', text: "causes of variability in an eclipsing binary's light curve" },
   { code: '13.16', topic: 13, depth: 'understand', text: 'how Cepheid variables are used to determine distances' },
@@ -655,6 +675,7 @@ const SPEC_POINT_GROUPS = {
   '12.2': ['12.2a', '12.2b', '12.2c'],
   '13.4': ['13.4a', '13.4b', '13.4c'],
   '13.7': ['13.7a', '13.7b', '13.7c', '13.7d', '13.7e'],
+  '13.14': ['13.14a', '13.14b', '13.14c', '13.14d'],
   '13.34': ['13.34a', '13.34b', '13.34c', '13.34d', '13.34e', '13.34f', '13.34g'],
 };
 
