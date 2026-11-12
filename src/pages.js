@@ -347,6 +347,16 @@ const PAGES = [
     why: "Parallax runs out past a few hundred parsecs; magnitude is the tool that reaches far beyond that, once a star's distance is known by any method at all.",
   },
   {
+    title: 'Reading a spectrum',
+    description:
+      "A spectrograph spreads starlight into a spectrum. A switchable continuous, emission and absorption set-up; a match-the-lines puzzle for hydrogen, helium, sodium and calcium; how temperature changes a star's colour and lines; a Doppler slider for radial velocity; and how a digital sensor turns photons into a data file.",
+    href: 'notes/reading-a-spectrum.html',
+    units: ['u4.6', 'u4.7'],
+    phase: 'Stars and the Universe',
+    position: 33,
+    why: 'Magnitude: how bright is a star? measures how much light a star sends us; this page reads what that light is made of, how hot the star is and how it moves.',
+  },
+  {
     title: 'Bodies of the Solar System',
     description:
       "A to-scale size line-up and bar chart of the planets and dwarf planets, the larger named moons by planet, the four ringed planets drawn at relative size with Saturn's rings the most visible, Io's tidal heating (reusable diagram) from its 1:2:4 resonance with Europa and Ganymede, a temperature-against-distance chart, a planet-vs-dwarf-planet decision diagram, asteroids/meteoroids/comets, a comet-tail diagram and the Kuiper Belt/Oort Cloud on a logarithmic scale, transits of Venus and measuring the AU, and brief formation theories — a first draft pending teacher review.",
@@ -443,6 +453,7 @@ const DIAGRAM_FIRST_PAGES = [
   'notes/ecliptic-zodiac.html',
   'notes/parallax.html',
   'notes/magnitude.html',
+  'notes/reading-a-spectrum.html',
 ];
 
 /**
@@ -503,40 +514,53 @@ const COMING_SOON = [
     specPoints: ['11.26', '11.27', '11.28', '11.29', '11.30'],
   },
   {
+    name: 'Colour, temperature and spectral type',
+    phase: 'Stars and the Universe',
+    position: 34,
+    why: "Reading a spectrum shows that a star's colour and its lines both depend on temperature; this step sorts stars into spectral types by exactly those clues.",
+    specPoints: ['13.5', '13.6'],
+  },
+  {
     name: 'Stars, galaxies and the Universe',
     phase: 'Stars and the Universe',
-    position: 33,
-    why: "Now that Parallax and the Parsec, and Magnitude, can both measure how far away a star is and how bright it really is, the rest of Topic 13 this course hasn't reached yet: stellar spectra and the HR diagram, variable stars as standard candles, gravitationally bound groupings, the sidereal day by star trail, and seeing beyond the optical/radio windows (digital sensors, radio and infrared telescopes, space telescopes).",
-    // Topic 13 now has a src/specPoints.js registry — 13.1, 13.2, 13.3
-    // and 13.9 are covered by notes/magnitude.html, and 13.10, 13.11
-    // and 13.12 by notes/parallax.html (see src/curriculum.js's
-    // u4.2/u4.5/u2.16), so only the remaining 26 codes are named here,
-    // not the whole topic. 13.30 is named here too, not left off like
-    // those: notes/earth-structure.html's u2.33 names it in text, but
-    // it's still PARTIAL under docs/topic-11-16-audit.md's bar — no
-    // dedicated diagram — so it's untagged in curriculum.js until this
-    // page (or earth-structure.html) gives it one.
+    position: 35,
+    why: "Now that Parallax and the Parsec, and Magnitude, can both measure how far away a star is and how bright it really is, the rest of Topic 13 this course hasn't reached yet: the HR diagram, variable stars as standard candles, gravitationally bound groupings, the sidereal day by star trail, and seeing beyond the optical/radio windows (radio and infrared telescopes, space telescopes).",
+    // Topic 13 has a src/specPoints.js registry: 13.1, 13.2, 13.3 and
+    // 13.9 are covered by notes/magnitude.html, 13.10-13.12 by
+    // notes/parallax.html, 13.22 by notes/earth-structure.html, and
+    // 13.4a-c, 13.20 and 13.21 by notes/reading-a-spectrum.html (see
+    // src/curriculum.js's u4.2/u4.5/u2.16/u4.6/u4.7); 13.5 and 13.6 have
+    // their own step just above. 13.30 is named here, not left off:
+    // notes/earth-structure.html's u2.33 names it in text, but it's still
+    // PARTIAL under docs/topic-11-16-audit.md's bar (no dedicated
+    // diagram), so it's untagged in curriculum.js until a page gives it one.
     specPoints: [
-      '13.4', '13.5', '13.6', '13.7', '13.8',
+      '13.7', '13.8',
       '13.13', '13.14', '13.15', '13.16', '13.17', '13.18', '13.19',
-      '13.20', '13.21', '13.23', '13.24', '13.25', '13.26', '13.27', '13.28', '13.29',
+      '13.23', '13.24', '13.25', '13.26', '13.27', '13.28', '13.29',
       '13.30', '13.31', '13.32', '13.33', '13.34',
     ],
   },
   {
     name: 'Stellar Evolution, the Galaxy and Cosmology',
     phase: 'Stars and the Universe',
-    position: 34,
+    position: 36,
     why: 'The rest of the course past Topic 13: a star\'s full life cycle, our own Galaxy\'s structure, and the wider Universe beyond it.',
-    // Topics 14-16 now have a src/specPoints.js registry too, but
-    // nothing on the site meets this audit's COVERED bar for any of
-    // them yet (see docs/topic-11-16-audit.md), so every one of their
-    // 37 points is named here.
+    // Topics 14-16 have a src/specPoints.js registry too, but nothing on
+    // the site meets docs/topic-11-16-audit.md's COVERED bar for any of
+    // them yet; 16.1-16.3 (redshift) have their own step just below.
     specPoints: [
       '14.1', '14.2', '14.3', '14.4', '14.5', '14.6', '14.7', '14.8', '14.9', '14.10', '14.11',
       '15.1', '15.2', '15.3', '15.4', '15.5', '15.6', '15.7', '15.8', '15.9', '15.10', '15.11', '15.12', '15.13', '15.14',
-      '16.1', '16.2', '16.3', '16.4', '16.5', '16.6', '16.7', '16.8', '16.9', '16.10', '16.11', '16.12',
+      '16.4', '16.5', '16.6', '16.7', '16.8', '16.9', '16.10', '16.11', '16.12',
     ],
+  },
+  {
+    name: 'Redshift',
+    phase: 'Stars and the Universe',
+    position: 37,
+    why: "Reading a spectrum's Doppler shift for single stars, scaled up to whole galaxies: redshift as evidence that they are moving away from us.",
+    specPoints: ['16.1', '16.2', '16.3'],
   },
 ];
 

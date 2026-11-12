@@ -374,15 +374,18 @@ const SPEC_POINTS = [
   { code: '12.8', topic: 12, depth: 'understand', text: 'SETI by radio, and the benefits and dangers of finding extraterrestrial life' },
 
   // --- Topic 13: Exploring starlight -------------------------------------------
-  // Same convention as Topic 11's own multi-part points (11.18, 11.25-11.27):
-  // a point with several lettered sub-parts in the real spec (13.4, 13.7,
-  // 13.14, 13.34) is kept as ONE code with all its parts folded into one
-  // `text`, not split into its own lettered sub-codes the way 1.6/7.1/12.1/
-  // 12.2 are — so none of these are in SPEC_POINT_GROUPS below.
+  // Same convention as Topic 11's own multi-part points (11.18, 11.26-11.27):
+  // a point with several lettered sub-parts in the real spec (13.7, 13.14,
+  // 13.34) is kept as ONE code with all its parts folded into one `text`.
+  // The exception is 13.4, split into 13.4a/b/c (like 11.25) so a page and
+  // its questions can be tagged to the exact sub-part each one teaches —
+  // see SPEC_POINT_GROUPS below.
   { code: '13.1', topic: 13, depth: 'understand', text: 'the astronomical magnitude scale; apparent magnitude is how bright a star looks as viewed from Earth' },
   { code: '13.2', topic: 13, depth: 'understand', text: 'absolute magnitude' },
   { code: '13.3', topic: 13, depth: 'be able to', text: 'the distance modulus formula M = m + 5 - 5 log d (d in parsecs); determine M or m given the distance' },
-  { code: '13.4', topic: 13, depth: 'understand', text: 'what can be learned from a stellar spectrum: chemical composition, temperature and radial velocity' },
+  { code: '13.4a', topic: 13, depth: 'understand', group: '13.4', text: 'what can be learned from a stellar spectrum: chemical composition' },
+  { code: '13.4b', topic: 13, depth: 'understand', group: '13.4', text: 'what can be learned from a stellar spectrum: temperature' },
+  { code: '13.4c', topic: 13, depth: 'understand', group: '13.4', text: 'what can be learned from a stellar spectrum: radial velocity' },
   { code: '13.5', topic: 13, depth: 'understand', text: 'classify stars by spectral type' },
   { code: '13.6', topic: 13, depth: 'understand', text: "how a star's colour and spectral type relate to its surface temperature" },
   {
@@ -577,6 +580,7 @@ const SPEC_POINT_GROUPS = {
   '11.25': ['11.25a', '11.25b', '11.25c', '11.25d'],
   '12.1': ['12.1a', '12.1b', '12.1c', '12.1d', '12.1e'],
   '12.2': ['12.2a', '12.2b', '12.2c'],
+  '13.4': ['13.4a', '13.4b', '13.4c'],
 };
 
 function getSpecPoint(code) {

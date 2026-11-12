@@ -855,6 +855,22 @@ const UNITS = [
         notes:
           "the parallax angle p is the angle at a nearby star, in the right-angled triangle Sun-Earth-star, between the directions to the Sun and to the Earth (1 AU, the right angle at the Sun); two observations six months apart (Earth at opposite ends of its orbit, the longest baseline available) show the star having moved by 2p against the far more distant background stars, so p is HALF that observed shift; a parsec is defined as the distance at which 1 AU subtends 1 arcsecond of parallax (about 206,265 AU, 3.26 light years), giving d (pc) = 1 / p (arcsec); ground-based telescopes resolve down to about 0.01 arcsec (about 100 pc), with space telescopes (Hipparcos, then Gaia) reaching much further before the angle becomes too small to measure at all, which is why absolute magnitude (u4.2) becomes the next tool. The geometric measurement method itself (two photographs six months apart, 2p, p = half that shift) is exactly what 13.12's own \"determine distances using heliocentric parallax\" asks for, not beyond it; only the specific Hipparcos/Gaia mission figures go beyond any numbered point in src/specPoints.js — stretch content, built to set up u4.2. The pc/light-year/AU unit definitions and conversions it uses are u3.4's own spec 7.6/11.9, already covered there.",
       },
+      {
+        id: 'u4.6',
+        title: 'Reading a stellar spectrum',
+        depth: 'understand',
+        spec: ['13.4a', '13.4b', '13.4c', '13.21'],
+        notes:
+          "a spectrograph (slit, then prism or diffraction grating, then detector) spreads starlight out by wavelength, shown either as a coloured strip or as a graph of intensity against wavelength; a hot, dense source gives a continuous spectrum, a glowing thin gas bright emission lines, and cooler gas in front of a hot source dark absorption lines at the same wavelengths, which is why a star's absorption lines come from cooler gas in its outer layers; each element has its own pattern of lines, so matching every line of a laboratory pattern (hydrogen 656.3, 486.1, 434.0, 410.2 nm; sodium 589.0, 589.6 nm) identifies the star's composition; a hotter star's continuous spectrum peaks at a shorter wavelength so it looks bluer, and which lines appear, and how strongly, depends on temperature; motion along the line of sight shifts every line, to longer wavelengths if receding (redshift) and shorter if approaching (blueshift), a bigger shift meaning a faster speed",
+      },
+      {
+        id: 'u4.7',
+        title: 'Digital sensors and data files',
+        depth: 'know',
+        spec: ['13.20'],
+        notes:
+          'modern observations are recorded with digital sensors: photons arriving at each pixel are converted into electrical charge, which builds up during the exposure; the charges are read out as numbers and stored as a data file that astronomers process by computer; a longer exposure collects more light, so every count rises in proportion until a pixel fills',
+      },
     ],
   },
   {

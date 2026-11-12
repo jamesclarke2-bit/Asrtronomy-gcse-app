@@ -32,6 +32,7 @@ const CONFORMING_PAGES = [
   'notes/ecliptic-zodiac.html',
   'notes/parallax.html',
   'notes/magnitude.html',
+  'notes/reading-a-spectrum.html',
 ];
 
 // Section 6 of the template ("Diagram-first"), checked only for pages

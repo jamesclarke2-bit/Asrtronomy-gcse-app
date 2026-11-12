@@ -255,12 +255,23 @@
 
       const tags = document.createElement('div');
       tags.className = 'question-tags';
-      tags.textContent = question.units.map(tagLabel).join(' · ');
+      // Optional exam-style extras: `spec` (a spec point or sub-part,
+      // e.g. '13.4a') joins the tag line, and `marks` is shown after the
+      // prompt the way an exam paper shows it.
+      const tagParts = question.units.map(tagLabel);
+      if (question.spec) tagParts.push(`Spec ${question.spec}`);
+      tags.textContent = tagParts.join(' · ');
       card.appendChild(tags);
 
       const prompt = document.createElement('p');
       prompt.className = 'question-prompt';
       prompt.textContent = question.prompt;
+      if (question.marks) {
+        const marks = document.createElement('span');
+        marks.className = 'question-marks';
+        marks.textContent = ` [${question.marks} mark${question.marks === 1 ? '' : 's'}]`;
+        prompt.appendChild(marks);
+      }
       card.appendChild(prompt);
 
       // Optional picture-based question: question.render(container) draws

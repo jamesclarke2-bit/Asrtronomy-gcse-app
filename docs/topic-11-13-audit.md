@@ -44,7 +44,7 @@ that point.
 | 13.1 | COVERED | `notes/magnitude.html` §`the-idea` (idea-diagram, "bright but far" two-panel diagram); multiple questions (u4.2) | — | — |
 | 13.2 | COVERED | `notes/magnitude.html` §`the-idea` (absolute-magnitude-fixed-at-10pc readout); questions (u4.2) | — | — |
 | 13.3 | COVERED | `notes/magnitude.html` §`distance-modulus` (calculator, worked examples); `notes/data-sheet.html` formula row; questions `distance-from-modulus`, `absolute-from-modulus`, `explain-distance-modulus`; formula algebraically equivalent to spec form (see physics check 5) (u4.2) | — | — |
-| 13.4 | MISSING | — | No stellar-spectroscopy content (composition, temperature or radial velocity from a spectrum) anywhere | New page (see §2) |
+| 13.4 | COVERED (2026-11-12) | `notes/reading-a-spectrum.html`, now split into 13.4a composition (line-matching puzzle), 13.4b temperature (peak and line strengths by star) and 13.4c radial velocity (Doppler slider), each with its own questions | — | — |
 | 13.5 | MISSING | — | No spectral classification (O B A F G K M) | New page |
 | 13.6 | MISSING | — | No colour/spectral-type/temperature relationship | New page |
 | 13.7 | MISSING | — | No Hertzsprung–Russell diagram anywhere on the site | New page |
@@ -60,8 +60,8 @@ that point.
 | 13.17 | MISSING in substance | `notes/naked-eye-sky.html` `doubleStar`/`starCluster` phenomena-grid entries (`src/nakedEyeSkyQuestions.js`) describe what they look like by eye, not their gravitationally-bound structure | Naked-eye identification only — not the spec point | New page; link back to this as "what you'd actually see" |
 | 13.18 | MISSING | — | No light curve to practice reading a period from | New page |
 | 13.19 | PARTIAL | `sims/coordinates.html` §`sidereal-day-section` (h2 "Sidereal day vs solar day": definition, 23h56m, formula, exam tip); question in `src/coordinatesQuestions.js` tests the nightly 4-minute gain | The specific star-trail-photograph measurement method (maths skills 5a–5c: measuring an arc angle, converting to a rotation rate) is not covered at all | Extend `coordinates.html`'s sidereal-day section with a star-trail-photo mini-diagram and a question |
-| 13.20 | MISSING | — | No mention of digital sensors/CCDs or data files anywhere | Fold into the radio/infrared/space-telescope page (see §2) |
-| 13.21 | MISSING | — | No mention of spectrographs, diffraction gratings or obtaining a stellar spectrum | New page (with 13.4–13.6) |
+| 13.20 | COVERED (2026-11-12) | `notes/reading-a-spectrum.html` §`digital-sensors` (photons to charge to numbers to data file, exposure toggle); questions `digital-sensor-stages`, `exposure-time-count` | — | — |
+| 13.21 | COVERED (2026-11-12) | `notes/reading-a-spectrum.html` §`spectrograph` and §`three-spectra` (spectrograph schematic, two views, Kirchhoff sim); four questions | — | — |
 | 13.22 | PARTIAL | `notes/earth-structure.html` §`transmission-window` (h2 "The atmospheric transmission window", full SVG chart + legend); exam tip in §`exam-tips` ("X-ray telescopes have to be space-based") (u2.16) | No dedicated question | Add a question to `src/earthStructureQuestions.js` |
 | 13.23 | MISSING | — | The "only optical and radio telescopes should be at sea level" framing (distinct from 13.28's altitude point) isn't stated | Fold into the radio/infrared page, cross-link from `#transmission-window` |
 | 13.24 | MISSING | — | No content on how a radio telescope operates | New page |

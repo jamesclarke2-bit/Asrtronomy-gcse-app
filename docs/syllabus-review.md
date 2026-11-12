@@ -18,11 +18,11 @@ One row per point in the Edexcel GCSE Astronomy (1AS0) specification, Topics 1�
 | 10 | Solar astronomy | 12 | 12 | 0 | 0 |
 | 11 | Exploring the Solar System | 33 | 29 | 4 | 0 |
 | 12 | Formation of planetary systems | 14 | 5 | 9 | 1 |
-| 13 | Exploring starlight | 34 | 8 | 26 | 1 |
+| 13 | Exploring starlight | 36 | 13 | 23 | 1 |
 | 14 | Stellar evolution | 11 | 0 | 11 | 0 |
 | 15 | Our place in the Galaxy | 14 | 0 | 14 | 0 |
 | 16 | Cosmology | 12 | 0 | 12 | 0 |
-| **Total** | | **229** | **150** | **79** | **29** |
+| **Total** | | **231** | **155** | **76** | **29** |
 
 ## Methodology
 
@@ -259,7 +259,9 @@ One row per point in the Edexcel GCSE Astronomy (1AS0) specification, Topics 1�
 | 13.1 | understand | the astronomical magnitude scale; apparent magnitude is how bright a star looks as viewed from Earth | [Magnitude: how bright is a star?](../notes/magnitude.html) | – |  | |
 | 13.2 | understand | absolute magnitude | [Magnitude: how bright is a star?](../notes/magnitude.html) | – |  | |
 | 13.3 | be able to | the distance modulus formula M = m + 5 - 5 log d (d in parsecs); determine M or m given the distance | [Magnitude: how bright is a star?](../notes/magnitude.html) | 12 |  | |
-| 13.4 | understand | what can be learned from a stellar spectrum: chemical composition, temperature and radial velocity | *not built* | – |  | |
+| 13.4a | understand | what can be learned from a stellar spectrum: chemical composition | [Reading a spectrum](../notes/reading-a-spectrum.html) | – |  | |
+| 13.4b | understand | what can be learned from a stellar spectrum: temperature | [Reading a spectrum](../notes/reading-a-spectrum.html) | – |  | |
+| 13.4c | understand | what can be learned from a stellar spectrum: radial velocity | [Reading a spectrum](../notes/reading-a-spectrum.html) | – |  | |
 | 13.5 | understand | classify stars by spectral type | *not built* | – |  | |
 | 13.6 | understand | how a star's colour and spectral type relate to its surface temperature | *not built* | – |  | |
 | 13.7 | be able to | sketch a simple Hertzsprung-Russell diagram, with labelled axes and the positions of the main sequence, the Sun, red and blue giants, white dwarfs and supergiants | *not built* | – |  | |
@@ -275,8 +277,8 @@ One row per point in the Edexcel GCSE Astronomy (1AS0) specification, Topics 1�
 | 13.17 | understand | the structure of gravitationally bound groupings such as binary stars and clusters | *not built* | – |  | |
 | 13.18 | understand | deduce the period of an eclipsing binary from its light curve | *not built* | – |  | |
 | 13.19 | be able to | use star trail photographs to determine the length of the sidereal day | *not built* | – |  | |
-| 13.20 | know | modern observations are recorded with digital sensors converting light to electrical signals, processed and stored as data files | *not built* | – |  | |
-| 13.21 | understand | how astronomers obtain and study patterns of spectral lines in light from astronomical objects | *not built* | – |  | |
+| 13.20 | know | modern observations are recorded with digital sensors converting light to electrical signals, processed and stored as data files | [Reading a spectrum](../notes/reading-a-spectrum.html) | – |  | |
+| 13.21 | understand | how astronomers obtain and study patterns of spectral lines in light from astronomical objects | [Reading a spectrum](../notes/reading-a-spectrum.html) | – |  | |
 | 13.22 | know | the atmosphere blocks almost all radiation except visible light and radio waves | [Earth: Structure, Atmosphere and Motion](../notes/earth-structure.html) | – | ⚠ covered only on a page where tap-to-reveal content outweighs visible prose | |
 | 13.23 | know | only optical and radio telescopes should be at sea level | *not built* | – |  | |
 | 13.24 | understand | how a simple radio telescope operates | *not built* | – |  | |

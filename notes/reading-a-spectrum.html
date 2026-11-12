@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; form-action 'none'; base-uri 'self'" />
+  <meta name="referrer" content="no-referrer" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Reading a spectrum</title>
+  <link rel="stylesheet" href="../styles.css?v=202611121900" />
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg?v=202610130720" />
+</head>
+<body>
+  <main>
+    <p class="back-link"><a href="../index.html">&larr; Back to all tools</a></p>
+
+    <h1>Reading a spectrum</h1>
+    <p class="subtitle">
+      Spread a star's light out into its colours and it carries a code: which elements the star
+      contains, how hot it is, and whether it is moving towards or away from us. How astronomers
+      record that code, and how to read it.
+    </p>
+
+    <section class="notes-section" id="spectrograph">
+      <h2>From starlight to spectrum</h2>
+      <p>
+        A
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="spectrograph" aria-label="What is a spectrograph?" aria-expanded="false">spectrograph</button>
+        on a telescope turns starlight into a
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="spectrum" aria-label="What is a spectrum?" aria-expanded="false">spectrum</button>.
+      </p>
+      <span class="glossary-definition" data-term="spectrograph" hidden></span>
+      <span class="glossary-definition" data-term="spectrum" hidden></span>
+
+      <div class="diagram spectrum-panel spectrograph-diagram">
+        <div class="labelled-diagram-wrap" id="spectrograph-diagram-wrap">
+          <svg
+            id="spectrograph-diagram"
+            class="responsive-svg"
+            width="640"
+            height="250"
+            viewBox="0 0 640 250"
+            role="img"
+            aria-label="A spectrograph. Starlight from a star on the left passes through a narrow slit, then a triangular prism spreads it out into a fan of colours, from violet to red, which lands on a detector on the right. A few narrow gaps in the fan show where wavelengths are missing."
+          ></svg>
+        </div>
+      </div>
+
+      <ol class="tip-list">
+        <li>A narrow
+          <button type="button" class="glossary-toggle glossary-term-button" data-term="slit" aria-label="Why does a spectrograph need a slit?" aria-expanded="false">slit</button>
+          lets in a thin strip of light, so each wavelength lands as a sharp line.</li>
+        <li>A prism or
+          <button type="button" class="glossary-toggle glossary-term-button" data-term="grating" aria-label="What is a diffraction grating?" aria-expanded="false">diffraction grating</button>
+          spreads the light out by
+          <button type="button" class="glossary-toggle glossary-term-button" data-term="wavelength" aria-label="What is wavelength?" aria-expanded="false">wavelength</button>.</li>
+        <li>A digital detector records how much light arrives at each wavelength (see
+          <a href="#digital-sensors">Recording the light</a>).</li>
+      </ol>
+      <span class="glossary-definition" data-term="slit" hidden></span>
+      <span class="glossary-definition" data-term="grating" hidden></span>
+      <span class="glossary-definition" data-term="wavelength" hidden></span>
+
+      <p>Two views of the same spectrum:</p>
+
+      <div class="diagram spectrum-panel two-views-diagram">
+        <div class="labelled-diagram-wrap" id="two-views-diagram-wrap">
+          <svg
+            id="two-views-diagram"
+            class="responsive-svg"
+            width="640"
+            height="300"
+            viewBox="0 0 640 300"
+            role="img"
+            aria-label="Top: a coloured strip running from violet at 380 nanometres to red at 700 nanometres, crossed by narrow dark lines. Bottom: a graph of intensity against wavelength for the same light, with a sharp dip at exactly the wavelength of each dark line. Dashed lines join each dark line to its dip."
+          ></svg>
+        </div>
+      </div>
+
+      <p class="note">
+        Each dark line in the strip is a dip in the graph at the same wavelength. Wavelengths are
+        in
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="nanometre" aria-label="What is a nanometre?" aria-expanded="false">nanometres (nm)</button>;
+        visible light runs from about 380 nm (violet) to 700 nm (red).
+      </p>
+      <span class="glossary-definition" data-term="nanometre" hidden></span>
+    </section>
+
+    <section class="notes-section" id="three-spectra">
+      <h2>Three kinds of spectrum</h2>
+      <p>Switch the parts on and off and watch which spectrum the spectrograph records.</p>
+
+      <div class="diagram spectrum-panel kirchhoff-setup-diagram">
+        <div class="labelled-diagram-wrap" id="kirchhoff-setup-diagram-wrap">
+          <svg
+            id="kirchhoff-setup-diagram"
+            class="responsive-svg"
+            width="640"
+            height="240"
+            viewBox="0 0 640 240"
+            role="img"
+            aria-label="The set-up: a hot, dense glowing source on the left, an optional cooler cloud of hydrogen gas in the middle, and a spectrograph either straight in line with the source or off to one side looking only at the cloud. The controls below change which parts are present and where the spectrograph looks."
+          ></svg>
+        </div>
+      </div>
+
+      <div class="control checkbox-control">
+        <label><input type="checkbox" id="kirchhoff-source" checked /> Hot, dense source switched on</label>
+      </div>
+      <div class="control checkbox-control">
+        <label><input type="checkbox" id="kirchhoff-cloud" /> Put a cooler hydrogen gas cloud in front</label>
+      </div>
+      <div class="control">
+        <label for="kirchhoff-view">Spectrograph looks</label>
+        <select id="kirchhoff-view">
+          <option value="through">straight at the source (through any cloud)</option>
+          <option value="side">at the cloud from one side</option>
+        </select>
+      </div>
+
+      <div class="diagram spectrum-panel kirchhoff-result-diagram">
+        <div class="labelled-diagram-wrap" id="kirchhoff-result-diagram-wrap">
+          <svg
+            id="kirchhoff-result-diagram"
+            class="responsive-svg"
+            width="640"
+            height="230"
+            viewBox="0 0 640 230"
+            role="img"
+            aria-label="The spectrum the spectrograph records for the current set-up, as a coloured strip and as a graph of intensity against wavelength."
+          ></svg>
+        </div>
+      </div>
+
+      <dl class="readout">
+        <dt>Result</dt>
+        <dd id="kirchhoff-result-readout" aria-live="polite"></dd>
+      </dl>
+
+      <ul class="tip-list">
+        <li><strong>Continuous:</strong> a hot, dense source gives every wavelength.</li>
+        <li><strong>Emission:</strong> a glowing thin gas, seen against a dark background, gives bright lines only.</li>
+        <li><strong>Absorption:</strong> cooler gas in front of a hot source removes the same wavelengths, leaving dark lines.</li>
+      </ul>
+
+      <div class="diagram spectrum-panel star-layers-diagram">
+        <div class="labelled-diagram-wrap" id="star-layers-diagram-wrap">
+          <svg
+            id="star-layers-diagram"
+            class="responsive-svg"
+            width="640"
+            height="200"
+            viewBox="0 0 640 200"
+            role="img"
+            aria-label="Part of a star in cross-section: a bright, hot, dense interior surrounded by a thin, cooler outer layer of gas. An arrow of light leaves the star towards an observer on the right, whose spectrum shows dark absorption lines."
+          ></svg>
+        </div>
+      </div>
+
+      <p>
+        A star's absorption lines come from cooler gas in its outer layers: the hot, dense inside
+        shines with a continuous spectrum, and the thinner, cooler gas above absorbs particular
+        wavelengths on the way out.
+      </p>
+      <p>
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="whyLines" aria-label="Why does gas absorb only particular wavelengths?" aria-expanded="false">Why only particular wavelengths?</button>
+      </p>
+      <div class="glossary-definition scaffold-reveal" data-term="whyLines" hidden></div>
+    </section>
+
+    <section class="notes-section" id="composition">
+      <h2>Composition: every element has its own pattern</h2>
+      <p>
+        Each element absorbs at its own set of wavelengths, like a barcode. Match a star's dark
+        lines against each element's pattern: an element is present only if all of its lines are
+        there.
+      </p>
+
+      <div class="control">
+        <label for="puzzle-star">Unknown star</label>
+        <select id="puzzle-star">
+          <option value="x">Star X</option>
+          <option value="y">Star Y</option>
+        </select>
+      </div>
+
+      <div class="diagram spectrum-panel composition-diagram">
+        <div class="labelled-diagram-wrap" id="composition-diagram-wrap">
+          <svg
+            id="composition-diagram"
+            class="responsive-svg"
+            width="640"
+            height="330"
+            viewBox="0 0 640 330"
+            role="img"
+            aria-label="The unknown star's absorption spectrum on the top row, and below it four reference patterns, one each for hydrogen, helium, sodium and calcium, shown as white marks at each element's own wavelengths. All five rows share the same wavelength scale, so a line in the star lines up with the matching mark."
+          ></svg>
+        </div>
+      </div>
+
+      <div class="control checkbox-control">
+        <label><input type="checkbox" id="puzzle-guides" /> Show guide lines from the star's lines</label>
+      </div>
+      <p class="note">Helium and calcium wavelengths: first draft, to be checked by the teacher.</p>
+
+      <div class="calculator" id="puzzle-answer">
+        <p class="panel-title">Which elements are present?</p>
+        <div class="control checkbox-control"><label><input type="checkbox" value="hydrogen" class="puzzle-element" /> Hydrogen</label></div>
+        <div class="control checkbox-control"><label><input type="checkbox" value="helium" class="puzzle-element" /> Helium</label></div>
+        <div class="control checkbox-control"><label><input type="checkbox" value="sodium" class="puzzle-element" /> Sodium</label></div>
+        <div class="control checkbox-control"><label><input type="checkbox" value="calcium" class="puzzle-element" /> Calcium</label></div>
+        <button type="button" class="secondary-button" id="puzzle-check">Check my answer</button>
+        <p class="note" id="puzzle-feedback" aria-live="polite"></p>
+      </div>
+
+      <p>
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="referenceTable" aria-label="Which wavelengths does each element absorb?" aria-expanded="false">Reference wavelengths (nm)</button>
+      </p>
+      <div class="glossary-definition scaffold-reveal" data-term="referenceTable" hidden>
+        <div class="table-scroll">
+          <table class="shower-table" id="reference-table">
+            <caption>Laboratory wavelengths used on this page</caption>
+            <thead>
+              <tr><th scope="col">Element</th><th scope="col">Lines (nm)</th></tr>
+            </thead>
+            <tbody id="reference-table-body"></tbody>
+          </table>
+        </div>
+        <p class="note">Helium and calcium values: first draft, to be checked by the teacher.</p>
+      </div>
+    </section>
+
+    <section class="notes-section" id="temperature">
+      <h2>Temperature: colour and which lines appear</h2>
+      <p>Pick a star and compare where its light peaks and which lines it shows.</p>
+
+      <div class="control">
+        <label for="temperature-star">Star</label>
+        <select id="temperature-star">
+          <option value="cool">Cool red star</option>
+          <option value="sun" selected>Sun-like star</option>
+          <option value="white">White star</option>
+          <option value="hot">Hot blue-white star</option>
+        </select>
+      </div>
+
+      <div class="diagram spectrum-panel temperature-curve-diagram">
+        <div class="labelled-diagram-wrap" id="temperature-curve-diagram-wrap">
+          <svg
+            id="temperature-curve-diagram"
+            class="responsive-svg"
+            width="640"
+            height="260"
+            viewBox="0 0 640 260"
+            role="img"
+            aria-label="Left: the chosen star drawn in the colour it looks. Right: its continuous spectrum as a curve of intensity against wavelength from 300 to 1000 nanometres, with the visible band marked and a dashed line at the peak. Hotter stars peak further left, at shorter wavelengths."
+          ></svg>
+        </div>
+      </div>
+
+      <div class="diagram spectrum-panel temperature-lines-diagram">
+        <div class="labelled-diagram-wrap" id="temperature-lines-diagram-wrap">
+          <svg
+            id="temperature-lines-diagram"
+            class="responsive-svg"
+            width="640"
+            height="150"
+            viewBox="0 0 640 150"
+            role="img"
+            aria-label="The chosen star's absorption lines in the visible range, labelled by element, with deeper lines drawn darker and longer."
+          ></svg>
+        </div>
+      </div>
+
+      <dl class="readout">
+        <dt>Peak of its light</dt>
+        <dd id="temperature-peak-readout"></dd>
+        <dt>Looks</dt>
+        <dd id="temperature-colour-readout"></dd>
+        <dt>Strongest lines</dt>
+        <dd id="temperature-lines-readout"></dd>
+      </dl>
+
+      <p>
+        A hotter star's light peaks at a shorter wavelength, so it looks bluer. Which lines appear,
+        and how strong they are, also depends on temperature. Example temperatures, colours and
+        line strengths: first draft, to be checked by the teacher. Sorting stars into classes by these
+        clues is for a later page, Colour, temperature and spectral type (coming soon).
+      </p>
+    </section>
+
+    <section class="notes-section" id="radial-velocity">
+      <h2>Radial velocity: lines that shift</h2>
+      <p>
+        Motion along our line of sight (the star's
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="radialVelocity" aria-label="What is radial velocity?" aria-expanded="false">radial velocity</button>)
+        shifts the whole line pattern.
+      </p>
+      <span class="glossary-definition" data-term="radialVelocity" hidden></span>
+
+      <div class="diagram spectrum-panel doppler-diagram">
+        <div class="labelled-diagram-wrap" id="doppler-diagram-wrap">
+          <svg
+            id="doppler-diagram"
+            class="responsive-svg"
+            width="640"
+            height="240"
+            viewBox="0 0 640 240"
+            role="img"
+            aria-label="Top strip: hydrogen's absorption lines measured in a laboratory, not moving. Bottom strip: the same pattern in a moving star's light, shifted by the slider. Arrows join each laboratory line to its shifted position, pointing right towards red for a receding star and left towards blue for an approaching one."
+          ></svg>
+        </div>
+      </div>
+
+      <div class="control">
+        <label for="doppler-slider">Star's motion: approaching &larr; &rarr; receding (exaggerated for visibility)</label>
+        <input type="range" id="doppler-slider" min="-100" max="100" step="1" value="60" />
+      </div>
+
+      <dl class="readout">
+        <dt>Shift of the 656.3 nm line</dt>
+        <dd id="doppler-shift-readout"></dd>
+        <dt>Direction</dt>
+        <dd id="doppler-direction-readout" aria-live="polite"></dd>
+      </dl>
+
+      <p>
+        Lines move to longer wavelengths if the star is receding (a
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="redshift" aria-label="What is redshift?" aria-expanded="false">redshift</button>),
+        and to shorter wavelengths if it is approaching (a
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="blueshift" aria-label="What is blueshift?" aria-expanded="false">blueshift</button>).
+        A bigger shift means a faster speed.
+      </p>
+      <span class="glossary-definition" data-term="redshift" hidden></span>
+      <span class="glossary-definition" data-term="blueshift" hidden></span>
+      <p class="note" id="doppler-real-note"></p>
+    </section>
+
+    <section class="notes-section" id="digital-sensors">
+      <h2>Recording the light: digital sensors</h2>
+      <p>
+        Modern telescopes record light with a digital sensor, not photographic film or the eye.
+        Each
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="pixel" aria-label="What is a pixel?" aria-expanded="false">pixel</button>
+        turns arriving
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="photon" aria-label="What is a photon?" aria-expanded="false">photons</button>
+        into electrical charge; the charges are read out as numbers and stored as a data file
+        that astronomers process on a computer. On a spectrograph, each column of pixels sees one
+        wavelength, so the stored numbers are the intensity graph. A longer exposure collects
+        more light.
+      </p>
+      <span class="glossary-definition" data-term="pixel" hidden></span>
+      <span class="glossary-definition" data-term="photon" hidden></span>
+
+      <div class="control">
+        <label for="sensor-exposure">Exposure time</label>
+        <select id="sensor-exposure">
+          <option value="1">1 second</option>
+          <option value="3">3 seconds</option>
+        </select>
+      </div>
+
+      <div class="diagram spectrum-panel sensor-diagram">
+        <div class="labelled-diagram-wrap" id="sensor-diagram-wrap">
+          <svg
+            id="sensor-diagram"
+            class="responsive-svg"
+            width="640"
+            height="270"
+            viewBox="0 0 640 270"
+            role="img"
+            aria-label="Photons falling onto a row of eight pixels, each drawn as a container whose fill shows how much charge it has built up. One pixel, at the wavelength of an absorption line, has far less. Arrows lead to the read-out numbers and then to a stored data file. A longer exposure fills every pixel more."
+          ></svg>
+        </div>
+      </div>
+    </section>
+
+    <section class="notes-section" id="exam-tips">
+      <h2>Exam tips</h2>
+      <p class="exam-tip">
+        <strong>Common exam confusion:</strong> a star gives an absorption spectrum (dark lines on
+        a continuous background), not an emission spectrum &mdash; the dark lines are missing
+        light. <a href="#three-spectra">Three kinds of spectrum &uarr;</a>
+      </p>
+      <p class="exam-tip">
+        <strong>Common exam confusion:</strong> redshift means the lines have moved to longer
+        wavelengths because the star is moving away, not that the star looks red.
+        <a href="#radial-velocity">Radial velocity &uarr;</a>
+      </p>
+    </section>
+
+    <section class="notes-section" id="related">
+      <h2>Related pages</h2>
+      <div class="page-card-list">
+        <a class="page-card" href="magnitude.html">
+          <h3>Magnitude: how bright is a star?</h3>
+          <p class="page-card-description">How bright a star is; this page adds what its light is made of.</p>
+        </a>
+        <a class="page-card" href="telescopes.html">
+          <h3>Telescopes: Magnification, Light Grasp and Resolution</h3>
+          <p class="page-card-description">The telescope a spectrograph is fitted to.</p>
+        </a>
+      </div>
+    </section>
+
+    <section class="questions" id="questions">
+      <h2>Practice questions</h2>
+      <div id="questions-list"></div>
+    </section>
+
+    <section class="progress">
+      <h2>Your progress</h2>
+      <ul id="progress-list"></ul>
+      <p class="note">Stored in this browser only (localStorage) &mdash; no account needed.</p>
+    </section>
+
+    <p class="coverage" id="coverage"></p>
+    <p class="next-page-link" id="next-page"></p>
+  </main>
+
+  <script src="../src/curriculum.js?v=202611121900"></script>
+  <script src="../src/pages.js?v=202611121900"></script>
+  <script src="../src/specData.js?v=202610161036"></script>
+  <script src="../src/spectra.js?v=202611121900"></script>
+  <script src="../src/spectraQuestions.js?v=202611121900"></script>
+  <script src="../glossary.js?v=202610131052"></script>
+  <script src="../quiz-ui.js?v=202611121900"></script>
+  <script src="reading-a-spectrum.js?v=202611121900"></script>
+  <script src="../diagramEnlarge.js?v=202611111500"></script>
+  <script src="../notesPage.js?v=202609252100"></script>
+  <script src="../nextPage.js?v=202610161057"></script>
+</body>
+</html>
