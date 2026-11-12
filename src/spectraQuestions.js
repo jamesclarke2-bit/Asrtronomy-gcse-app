@@ -266,9 +266,11 @@
         prompt: `In a ${EXPOSURE_1}-second exposure of a steady star, one pixel builds up a count of ${COUNT_1.toLocaleString('en-GB')}. What count would you expect from a ${EXPOSURE_2}-second exposure, assuming the pixel does not fill up?`,
         type: 'number',
         check(value) {
+          const factor = EXPOSURE_2 / EXPOSURE_1;
+          const working = `${expectedCount.toLocaleString('en-GB')}: the exposure is ${factor} times as long, so it collects ${factor} times as much light: ${COUNT_1.toLocaleString('en-GB')} × ${factor} = ${expectedCount.toLocaleString('en-GB')}`;
           return {
             correct: Math.abs(value - expectedCount) / expectedCount < 0.02,
-            message: `${markScheme([`${expectedCount.toLocaleString('en-GB')}: the exposure is ${EXPOSURE_2 / EXPOSURE_1} times as long, so it collects ${EXPOSURE_2 / EXPOSURE_1} times as much light: ${COUNT_1.toLocaleString('en-GB')} × ${EXPOSURE_2 / EXPOSURE_1} = ${expectedCount.toLocaleString('en-GB')}`])}`,
+            message: markScheme([working]),
           };
         },
       },
