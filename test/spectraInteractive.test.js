@@ -115,6 +115,38 @@ WIDTHS.forEach(({ name, width, height }) => {
     });
   });
 
+  test(`${name}: the puzzle's zoomed view separates helium 587.6 nm from sodium, and sodium's two lines from each other, by clearly visible gaps`, async (t) => {
+    await withPage(t, { width, height }, async (page) => {
+      const centres = await page.evaluate(() => {
+        const svg = document.getElementById('composition-zoom-diagram');
+        const k = svg.getBoundingClientRect().width / 640;
+        return [...svg.querySelectorAll('.reference-mark')].map((r) => (Number(r.getAttribute('x')) + Number(r.getAttribute('width')) / 2) * k);
+      });
+      assert.equal(centres.length, 3, 'helium 587.6 and sodium 589.0, 589.6 are the only reference lines in 580-600 nm');
+      const [he, na1, na2] = centres;
+      assert.ok(na1 - he >= 15, `helium to sodium gap ${na1 - he}px`);
+      assert.ok(na2 - na1 >= 6, `sodium doublet gap ${na2 - na1}px`);
+      const labels = await page.locator('#composition-zoom-diagram-wrap .zoom-line-label').allTextContents();
+      assert.deepEqual(labels, ['587.6 nm', '589.0 and 589.6 nm']);
+      // On the full-range view, sodium's pair is drawn as a double mark.
+      assert.equal(await page.locator('#composition-diagram .reference-mark--doublet').count(), 2);
+    });
+  });
+
+  test(`${name}: a star whose peak is off the temperature graph gets an "off the graph" arrow and label`, async (t) => {
+    await withPage(t, { width, height }, async (page) => {
+      for (const star of Spectra.EXAMPLE_STARS) {
+        await page.selectOption('#temperature-star', star.id);
+        const peak = Spectra.peakWavelengthNm(star.temperatureK);
+        const where = await page.locator('#temperature-curve-diagram').getAttribute('data-peak');
+        assert.equal(where, peak < 300 ? 'ultraviolet' : 'on', star.id);
+        const label = await page.locator('#temperature-curve-diagram-wrap .glow-peak-label').textContent();
+        if (where === 'ultraviolet') assert.match(label, new RegExp(`peak is in the ultraviolet, off the graph \\(about ${Math.round(peak)} nm\\)`));
+        else assert.equal(label, 'peak');
+      }
+    });
+  });
+
   test(`${name}: choosing a hotter star moves the peak marker to a shorter wavelength and redraws the lines; readouts match the engine`, async (t) => {
     await withPage(t, { width, height }, async (page) => {
       let lastPeakNm = Infinity;
@@ -127,7 +159,7 @@ WIDTHS.forEach(({ name, width, height }) => {
         const readout = await page.locator('#temperature-peak-readout').textContent();
         assert.match(readout, new RegExp(`about ${Math.round(peak).toLocaleString('en-GB')} nm`));
         assert.equal(await page.locator('#temperature-colour-readout').textContent(), Spectra.starColourName(star.temperatureK));
-        assert.equal(await page.locator('#temperature-curve-diagram .temperature-peak-marker').count(), 1);
+        assert.equal(await page.locator('#temperature-curve-diagram .glow-peak-marker').count(), 1);
         const lines = await markup(page, 'temperature-lines-diagram');
         if (lastLines) assert.notEqual(lines, lastLines, `${star.id}: line strip unchanged`);
         lastLines = lines;

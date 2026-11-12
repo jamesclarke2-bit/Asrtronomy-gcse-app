@@ -1,12 +1,9 @@
 (function () {
   const S = window.Spectra;
-  const SVG_NS = 'http://www.w3.org/2000/svg';
+  const D = window.SpectrumDrawing;
+  const { INK, MUTED, svgEl, clearDiagram, addLabel, panel, rgbString, stripColour, makeScale, drawStrip, drawWavelengthAxis, drawGraph, continuumFor } = D;
 
   const CURRICULUM_UNITS = ['u4.6', 'u4.7'];
-  const PANEL_FILL = '#0f1830';
-  const STRIP_EMPTY = '#1b2438';
-  const INK = '#eef3fb';
-  const MUTED = '#9aa7bd';
 
   const GLOSSARY = {
     spectrograph:
@@ -32,117 +29,6 @@
       'A pixel: one tiny light-sensitive element of a digital sensor. A sensor holds millions of them in a grid, each recording its own small part of the image.',
     photon: 'A photon: a single tiny packet of light energy.',
   };
-
-  function svgEl(tag, attrs, parent) {
-    const el = document.createElementNS(SVG_NS, tag);
-    Object.entries(attrs || {}).forEach(([key, value]) => el.setAttribute(key, value));
-    if (parent) parent.appendChild(el);
-    return el;
-  }
-
-  function clearDiagram(svg, wrap) {
-    while (svg.firstChild) svg.removeChild(svg.firstChild);
-    wrap.querySelectorAll('.labelled-diagram-label, .diagram-label').forEach((el) => el.remove());
-  }
-
-  function viewBoxSize(svg) {
-    const [, , w, h] = svg.getAttribute('viewBox').split(/\s+/).map(Number);
-    return { w, h };
-  }
-
-  // Labels are HTML, positioned by percentage of the svg's own viewBox
-  // so they stay put as the diagram scales (see notes/TEMPLATE.md).
-  function addLabel(svg, wrap, text, x, y, extraClass) {
-    const { w, h } = viewBoxSize(svg);
-    const label = document.createElement('span');
-    label.className = `diagram-label${extraClass ? ` ${extraClass}` : ''}`;
-    label.style.left = `${(x / w) * 100}%`;
-    label.style.top = `${(y / h) * 100}%`;
-    label.textContent = text;
-    wrap.appendChild(label);
-    return label;
-  }
-
-  function panel(svg) {
-    const { w, h } = viewBoxSize(svg);
-    svgEl('rect', { x: 0, y: 0, width: w, height: h, rx: 10, fill: PANEL_FILL }, svg);
-  }
-
-  function rgbString([r, g, b], scale = 1) {
-    return `rgb(${Math.round(r * scale)}, ${Math.round(g * scale)}, ${Math.round(b * scale)})`;
-  }
-
-  // The strip keeps the violet end bright enough that a dark line there
-  // still shows against it.
-  function stripColour(nm) {
-    const [r, g, b] = S.wavelengthToRgb(nm);
-    const lift = 70;
-    return [r, g, b].map((c) => lift + ((255 - lift) * c) / 255);
-  }
-
-  function makeScale(x0, x1, minNm = S.RANGE_NM.min, maxNm = S.RANGE_NM.max) {
-    return (nm) => x0 + ((nm - minNm) / (maxNm - minNm)) * (x1 - x0);
-  }
-
-  // A coloured strip for a continuous, absorption or emission spectrum,
-  // with a small white tick under each line so the line positions never
-  // rely on colour or darkness alone.
-  function drawStrip(svg, { x0, x1, y, h, type, lines, ticks = true }) {
-    const xFor = makeScale(x0, x1);
-    svgEl('rect', { x: x0, y, width: x1 - x0, height: h, fill: type === 'emission' || type === 'none' ? '#05070d' : STRIP_EMPTY }, svg);
-    if (type === 'none') return;
-    const step = 1;
-    for (let nm = S.RANGE_NM.min; nm < S.RANGE_NM.max; nm += step) {
-      const centre = nm + step / 2;
-      const brightness = S.intensityAt(centre, { type, lines, widthNm: 0.9 });
-      if (brightness < 0.02) continue;
-      svgEl('rect', {
-        x: xFor(nm).toFixed(2),
-        y,
-        width: (xFor(nm + step) - xFor(nm) + 0.6).toFixed(2),
-        height: h,
-        fill: rgbString(stripColour(centre), brightness),
-      }, svg);
-    }
-    if (ticks && type !== 'continuous') {
-      lines.forEach((line) => {
-        const x = xFor(line.nm);
-        svgEl('line', { x1: x, x2: x, y1: y + h + 2, y2: y + h + 4 + 8 * line.depth, stroke: INK, 'stroke-width': 1.5 }, svg);
-      });
-    }
-  }
-
-  function drawWavelengthAxis(svg, wrap, { x0, x1, y, ticks = [400, 500, 600, 700], minNm, maxNm, title = true }) {
-    const xFor = makeScale(x0, x1, minNm, maxNm);
-    svgEl('line', { x1: x0, x2: x1, y1: y, y2: y, stroke: MUTED, 'stroke-width': 1 }, svg);
-    ticks.forEach((nm) => {
-      const x = xFor(nm);
-      svgEl('line', { x1: x, x2: x, y1: y, y2: y + 5, stroke: MUTED, 'stroke-width': 1 }, svg);
-      addLabel(svg, wrap, String(nm), x, y + 14, 'diagram-label--tick');
-    });
-    if (title) addLabel(svg, wrap, 'Wavelength (nm)', (x0 + x1) / 2, y + 40, 'diagram-label--tick');
-  }
-
-  // Intensity against wavelength, as a single path.
-  function drawGraph(svg, { x0, x1, yTop, yBottom, sample, minNm = S.RANGE_NM.min, maxNm = S.RANGE_NM.max, stroke = '#ffe08a' }) {
-    const xFor = makeScale(x0, x1, minNm, maxNm);
-    svgEl('line', { x1: x0, x2: x0, y1: yTop - 6, y2: yBottom, stroke: MUTED, 'stroke-width': 1 }, svg);
-    const points = [];
-    for (let nm = minNm; nm <= maxNm; nm += 0.5) {
-      const v = Math.max(0, Math.min(1, sample(nm)));
-      points.push(`${xFor(nm).toFixed(1)},${(yBottom - v * (yBottom - yTop)).toFixed(1)}`);
-    }
-    svgEl('polyline', { points: points.join(' '), fill: 'none', stroke, 'stroke-width': 2, 'stroke-linejoin': 'round' }, svg);
-    return (nm) => ({ x: xFor(nm), y: yBottom - Math.max(0, Math.min(1, sample(nm))) * (yBottom - yTop) });
-  }
-
-  function continuumFor(temperatureK, minNm = S.RANGE_NM.min, maxNm = S.RANGE_NM.max) {
-    const curve = S.blackbodyCurve(temperatureK, minNm, maxNm, maxNm - minNm);
-    return (nm) => {
-      const i = Math.max(0, Math.min(curve.length - 1, Math.round(nm - minNm)));
-      return 0.15 + 0.8 * curve[i].value;
-    };
-  }
 
   const SUN_STAR = S.EXAMPLE_STARS.find((s) => s.id === 'sun');
   const SUN_LINES = S.linesForStrengths(SUN_STAR.strengths);
@@ -377,11 +263,14 @@
     S.ELEMENT_KEYS.forEach((key, i) => {
       const y = firstRefY + i * gap;
       svgEl('rect', { x: x0, y, width: x1 - x0, height: rowH, fill: '#05070d', stroke: '#2a3550' }, svg);
-      S.ELEMENTS[key].lines.forEach((nm) => {
-        svgEl('rect', { x: xFor(nm) - 1.25, y: y + 3, width: 2.5, height: rowH - 6, fill: INK }, svg);
-      });
+      drawReferenceMarks(svg, key, xFor, y, rowH, true);
       addLabel(svg, wrap, S.ELEMENTS[key].symbol, 46, y + rowH / 2, 'diagram-label--tick diagram-label--strong');
     });
+
+    // Outline the stretch the zoomed view below magnifies.
+    const zx0 = xFor(ZOOM_RANGE.min);
+    const zx1 = xFor(ZOOM_RANGE.max);
+    svgEl('rect', { class: 'puzzle-zoom-box', x: zx0, y: starY - 6, width: zx1 - zx0, height: firstRefY + 3 * gap + rowH + 6 - (starY - 6), fill: 'none', stroke: '#ffe08a', 'stroke-width': 1.2, 'stroke-dasharray': '2 3' }, svg);
 
     if (document.getElementById('puzzle-guides').checked) {
       const bottom = firstRefY + 3 * gap + rowH;
@@ -390,6 +279,68 @@
       });
     }
     drawWavelengthAxis(svg, wrap, { x0, x1, y: 300, title: false });
+    drawCompositionZoom(star, starLines);
+  }
+
+  const ZOOM_RANGE = { min: 580, max: 600 };
+
+  // Lines of one element closer than this are drawn as a visibly double
+  // mark on the full-range view (sodium's 589.0/589.6 nm pair would
+  // otherwise merge into one thin mark); the zoomed view shows true spacing.
+  const DOUBLET_NM = 1.5;
+
+  function drawReferenceMarks(svg, key, xFor, y, rowH, spreadDoublets) {
+    const lines = S.ELEMENTS[key].lines;
+    lines.forEach((nm) => {
+      const partner = lines.find((other) => other !== nm && Math.abs(other - nm) < DOUBLET_NM);
+      if (spreadDoublets && partner !== undefined) {
+        const offset = nm < partner ? -2.2 : 2.2;
+        const centre = xFor((nm + partner) / 2);
+        svgEl('rect', { class: 'reference-mark reference-mark--doublet', x: centre + offset - 0.8, y: y + 3, width: 1.6, height: rowH - 6, fill: INK }, svg);
+      } else {
+        svgEl('rect', { class: 'reference-mark', x: xFor(nm) - 1.25, y: y + 3, width: 2.5, height: rowH - 6, fill: INK }, svg);
+      }
+    });
+  }
+
+  function drawCompositionZoom(star, starLines) {
+    const svg = document.getElementById('composition-zoom-diagram');
+    const wrap = document.getElementById('composition-zoom-diagram-wrap');
+    clearDiagram(svg, wrap);
+    panel(svg);
+    const x0 = 92;
+    const x1 = 610;
+    const starY = 24;
+    const rowH = 30;
+    const firstRefY = 80;
+    const gap = 46;
+    const xFor = makeScale(x0, x1, ZOOM_RANGE.min, ZOOM_RANGE.max);
+    const inRange = (nm) => nm >= ZOOM_RANGE.min && nm <= ZOOM_RANGE.max;
+
+    drawStrip(svg, { x0, x1, y: starY, h: rowH, type: 'absorption', lines: starLines, minNm: ZOOM_RANGE.min, maxNm: ZOOM_RANGE.max, step: 0.05, widthNm: 0.08 });
+    addLabel(svg, wrap, star.label, 46, starY + rowH / 2, 'diagram-label--tick diagram-label--strong');
+
+    S.ELEMENT_KEYS.forEach((key, i) => {
+      const y = firstRefY + i * gap;
+      svgEl('rect', { x: x0, y, width: x1 - x0, height: rowH, fill: '#05070d', stroke: '#2a3550' }, svg);
+      addLabel(svg, wrap, S.ELEMENTS[key].symbol, 46, y + rowH / 2, 'diagram-label--tick diagram-label--strong');
+      const lines = S.ELEMENTS[key].lines.filter(inRange);
+      lines.forEach((nm) => svgEl('rect', { class: 'reference-mark', x: xFor(nm) - 1.25, y: y + 3, width: 2.5, height: rowH - 6, fill: INK }, svg));
+      if (lines.length) {
+        const text = `${listWithAnd(lines.map((nm) => nm.toFixed(1)))} nm`;
+        addLabel(svg, wrap, text, xFor(Math.max(...lines)) + 8, y + rowH / 2, 'diagram-label--right diagram-label--tick zoom-line-label');
+      } else {
+        addLabel(svg, wrap, 'no lines here', x1 - 8, y + rowH / 2, 'diagram-label--left diagram-label--tick');
+      }
+    });
+
+    if (document.getElementById('puzzle-guides').checked) {
+      const bottom = firstRefY + 3 * gap + rowH;
+      starLines.filter((line) => inRange(line.nm)).forEach((line) => {
+        svgEl('line', { class: 'puzzle-guide', x1: xFor(line.nm), x2: xFor(line.nm), y1: starY + rowH + 12, y2: bottom, stroke: '#ffe08a', 'stroke-width': 1, 'stroke-dasharray': '4 3' }, svg);
+      });
+    }
+    drawWavelengthAxis(svg, wrap, { x0, x1, y: 256, ticks: [580, 585, 590, 595, 600], minNm: ZOOM_RANGE.min, maxNm: ZOOM_RANGE.max });
   }
 
   function listWithAnd(items) {
@@ -452,37 +403,11 @@
     const wrap = document.getElementById('temperature-curve-diagram-wrap');
     clearDiagram(svg, wrap);
     panel(svg);
-    // Star colours are very pale in reality; push them away from white so
-    // the difference between examples is visible (the label says it too).
-    const colour = S.starRgb(star.temperatureK).map((c) => Math.max(0, 255 - (255 - c) * 1.5));
+    const colour = D.starDisplayRgb(star.temperatureK);
     svgEl('circle', { cx: 80, cy: 94, r: 50, fill: rgbString(colour), opacity: 0.25 }, svg);
     svgEl('circle', { cx: 80, cy: 94, r: 38, fill: rgbString(colour), class: 'temperature-star-disc' }, svg);
     addLabel(svg, wrap, `Looks ${S.starColourName(star.temperatureK)}`, 14, 160, 'diagram-label--right diagram-label--tick');
-
-    const x0 = 180;
-    const x1 = 620;
-    const yTop = 30;
-    const yBottom = 186;
-    const xFor = makeScale(x0, x1, CURVE_RANGE.min, CURVE_RANGE.max);
-    for (let nm = S.RANGE_NM.min; nm < S.RANGE_NM.max; nm += 2) {
-      svgEl('rect', { x: xFor(nm), y: yBottom + 28, width: xFor(nm + 2) - xFor(nm) + 0.5, height: 7, fill: rgbString(stripColour(nm + 1)) }, svg);
-    }
-    const curve = S.blackbodyCurve(star.temperatureK, CURVE_RANGE.min, CURVE_RANGE.max, 700);
-    drawGraph(svg, {
-      x0, x1, yTop, yBottom, minNm: CURVE_RANGE.min, maxNm: CURVE_RANGE.max,
-      sample: (nm) => curve[Math.round(nm - CURVE_RANGE.min)].value,
-    });
-    const peak = S.peakWavelengthNm(star.temperatureK);
-    if (peak >= CURVE_RANGE.min) {
-      const x = xFor(peak);
-      svgEl('line', { class: 'temperature-peak-marker', x1: x, x2: x, y1: yTop - 6, y2: yBottom, stroke: INK, 'stroke-width': 1.5, 'stroke-dasharray': '5 4' }, svg);
-      addLabel(svg, wrap, 'peak', x, yTop - 14, 'diagram-label--tick');
-    } else {
-      svgEl('polygon', { class: 'temperature-peak-marker', points: `${x0 + 4},${yTop + 8} ${x0 + 16},${yTop + 2} ${x0 + 16},${yTop + 14}`, fill: INK }, svg);
-      addLabel(svg, wrap, 'peak: off to the left (ultraviolet)', x0 + 22, yTop + 8, 'diagram-label--right diagram-label--tick');
-    }
-    drawWavelengthAxis(svg, wrap, { x0, x1, y: yBottom, ticks: [300, 500, 700, 900], minNm: CURVE_RANGE.min, maxNm: CURVE_RANGE.max, title: false });
-    addLabel(svg, wrap, 'visible light', (xFor(S.RANGE_NM.min) + xFor(S.RANGE_NM.max)) / 2, yBottom + 52, 'diagram-label--tick');
+    D.drawGlowCurve(svg, wrap, { temperatureK: star.temperatureK, x0: 180, x1: 620, yTop: 66, yBottom: 186, minNm: CURVE_RANGE.min, maxNm: CURVE_RANGE.max });
   }
 
   function groupLabels(lines) {

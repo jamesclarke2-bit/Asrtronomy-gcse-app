@@ -7,7 +7,7 @@
   <meta name="referrer" content="no-referrer" />
   <meta name="robots" content="noindex, nofollow" />
   <title>Reading a spectrum</title>
-  <link rel="stylesheet" href="../styles.css?v=202611121900" />
+  <link rel="stylesheet" href="../styles.css?v=202611130900" />
   <link rel="icon" type="image/svg+xml" href="../favicon.svg?v=202610130720" />
 </head>
 <body>
@@ -172,8 +172,8 @@
       <h2>Composition: every element has its own pattern</h2>
       <p>
         Each element absorbs at its own set of wavelengths, like a barcode. Match a star's dark
-        lines against each element's pattern: an element is present only if all of its lines are
-        there.
+        lines against each element's pattern. In this puzzle, count an element as present when all
+        its reference lines appear.
       </p>
 
       <div class="control">
@@ -201,7 +201,24 @@
       <div class="control checkbox-control">
         <label><input type="checkbox" id="puzzle-guides" /> Show guide lines from the star's lines</label>
       </div>
-      <p class="note">Helium and calcium wavelengths: first draft, to be checked by the teacher.</p>
+      <p class="note">
+        Sodium's two lines, only 0.6 nm apart, are drawn as a double mark. The dashed box is
+        zoomed in below, at true spacing.
+      </p>
+
+      <div class="diagram spectrum-panel composition-zoom-diagram">
+        <div class="labelled-diagram-wrap" id="composition-zoom-diagram-wrap">
+          <svg
+            id="composition-zoom-diagram"
+            class="responsive-svg"
+            width="640"
+            height="310"
+            viewBox="0 0 640 310"
+            role="img"
+            aria-label="A zoomed view of 580 to 600 nanometres for the same five rows. Helium's line at 587.6 nanometres and sodium's two lines at 589.0 and 589.6 nanometres are clearly separate, each labelled with its wavelength; hydrogen and calcium have no lines in this range."
+          ></svg>
+        </div>
+      </div>
 
       <div class="calculator" id="puzzle-answer">
         <p class="panel-title">Which elements are present?</p>
@@ -226,7 +243,6 @@
             <tbody id="reference-table-body"></tbody>
           </table>
         </div>
-        <p class="note">Helium and calcium values: first draft, to be checked by the teacher.</p>
       </div>
     </section>
 
@@ -283,9 +299,9 @@
 
       <p>
         A hotter star's light peaks at a shorter wavelength, so it looks bluer. Which lines appear,
-        and how strong they are, also depends on temperature. Example temperatures, colours and
-        line strengths: first draft, to be checked by the teacher. Sorting stars into classes by these
-        clues is for a later page, Colour, temperature and spectral type (coming soon).
+        and how strong they are, also depends on temperature. Sorting stars into classes by these
+        clues is the next page,
+        <a href="spectral-types.html">Colour, temperature and spectral type</a>.
       </p>
     </section>
 
@@ -396,6 +412,10 @@
           <h3>Magnitude: how bright is a star?</h3>
           <p class="page-card-description">How bright a star is; this page adds what its light is made of.</p>
         </a>
+        <a class="page-card" href="spectral-types.html">
+          <h3>Colour, temperature and spectral type</h3>
+          <p class="page-card-description">Sort stars into classes O to M using exactly these clues: colour, temperature and lines.</p>
+        </a>
         <a class="page-card" href="telescopes.html">
           <h3>Telescopes: Magnification, Light Grasp and Resolution</h3>
           <p class="page-card-description">The telescope a spectrograph is fitted to.</p>
@@ -418,14 +438,15 @@
     <p class="next-page-link" id="next-page"></p>
   </main>
 
-  <script src="../src/curriculum.js?v=202611121900"></script>
-  <script src="../src/pages.js?v=202611121900"></script>
+  <script src="../src/curriculum.js?v=202611130900"></script>
+  <script src="../src/pages.js?v=202611130900"></script>
   <script src="../src/specData.js?v=202610161036"></script>
-  <script src="../src/spectra.js?v=202611121900"></script>
-  <script src="../src/spectraQuestions.js?v=202611122000"></script>
+  <script src="../src/spectra.js?v=202611130900"></script>
+  <script src="../src/spectrumDrawing.js?v=202611130900"></script>
+  <script src="../src/spectraQuestions.js?v=202611130900"></script>
   <script src="../glossary.js?v=202610131052"></script>
   <script src="../quiz-ui.js?v=202611121900"></script>
-  <script src="reading-a-spectrum.js?v=202611121900"></script>
+  <script src="reading-a-spectrum.js?v=202611130900"></script>
   <script src="../diagramEnlarge.js?v=202611111500"></script>
   <script src="../notesPage.js?v=202609252100"></script>
   <script src="../nextPage.js?v=202610161057"></script>

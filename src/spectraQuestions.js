@@ -131,7 +131,7 @@
         prompt:
           `A star's spectrum has dark lines at ${unknown.lines.map((nm) => nm.toFixed(1)).join(', ')} nm. ` +
           `Laboratory line patterns: ${referenceText}. ` +
-          'An element is present only if all of its lines appear. For each element, say whether it is present.',
+          'In this question, count an element as present when all its reference lines appear. For each element, say whether it is present.',
         fields: Spectra.ELEMENT_KEYS.map((key) => ({ key, type: 'choice', label: E[key].name, options: ['Present', 'Not present'] })),
         check(value) {
           const results = Spectra.ELEMENT_KEYS.map((key) => (value[key] === 'Present') === unknownPresent.has(key));

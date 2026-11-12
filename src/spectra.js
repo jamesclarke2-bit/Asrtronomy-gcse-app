@@ -129,7 +129,15 @@
     }
     const base = continuum(nm);
     if (type === 'continuous') return base;
-    return lines.reduce((value, line) => value * (1 - line.depth * lineProfile(nm, line.nm, widthNm)), base);
+    return lines.reduce((value, line) => value * (1 - line.depth * (line.kind === 'band' ? bandProfile(nm, line.nm) : lineProfile(nm, line.nm, widthNm))), base);
+  }
+
+  // A molecular band: a sharp edge (the band head) on the short-wavelength
+  // side, fading out over the next few nanometres towards the red.
+  function bandProfile(nm, headNm) {
+    if (nm < headNm - 0.3) return 0;
+    if (nm < headNm) return (nm - (headNm - 0.3)) / 0.3;
+    return Math.exp(-(nm - headNm) / 9);
   }
 
   /** Approximate visible colour of a wavelength, as [r, g, b] 0-255 (Bruton's approximation). */
@@ -163,26 +171,74 @@
     return [clamp(r), clamp(g), clamp(b)];
   }
 
-  // First draft, to be checked by the teacher: a qualitative colour name
-  // for a star of this surface temperature.
-  function starColourName(temperatureK) {
-    if (temperatureK < 3700) return 'red';
-    if (temperatureK < 5200) return 'orange';
-    if (temperatureK < 6000) return 'yellow';
-    if (temperatureK < 7500) return 'yellow-white';
-    if (temperatureK < 10500) return 'white';
-    return 'blue-white';
+  /**
+   * The spectral classes, hottest first, with the approximate surface
+   * temperature range of each (upper bound included: 10,000 K is A,
+   * 30,000 K is B), the colour a star of that class looks, and which
+   * lines are strongest. `strengths` uses the four elements above;
+   * `molecules` marks the molecular bands (such as titanium oxide) of
+   * the coolest stars.
+   */
+  const SPECTRAL_CLASSES = [
+    { letter: 'O', minK: 30000, maxK: null, colour: 'blue', strengths: { helium: 'moderate', hydrogen: 'weak' }, strongest: 'ionised helium' },
+    { letter: 'B', minK: 10000, maxK: 30000, colour: 'blue-white', strengths: { helium: 'strong', hydrogen: 'moderate' }, strongest: 'helium' },
+    { letter: 'A', minK: 7500, maxK: 10000, colour: 'white', strengths: { hydrogen: 'strong', calcium: 'weak' }, strongest: 'hydrogen' },
+    { letter: 'F', minK: 6000, maxK: 7500, colour: 'yellow-white', strengths: { hydrogen: 'moderate', calcium: 'moderate' }, strongest: 'hydrogen and calcium' },
+    { letter: 'G', minK: 5200, maxK: 6000, colour: 'yellow', strengths: { hydrogen: 'moderate', sodium: 'strong', calcium: 'strong' }, strongest: 'calcium and sodium' },
+    { letter: 'K', minK: 3700, maxK: 5200, colour: 'orange', strengths: { hydrogen: 'weak', sodium: 'strong', calcium: 'strong' }, strongest: 'calcium and sodium' },
+    { letter: 'M', minK: 2400, maxK: 3700, colour: 'red', strengths: { hydrogen: 'weak', sodium: 'strong', calcium: 'strong' }, molecules: true, strongest: 'molecules such as titanium oxide' },
+  ];
+  const CLASS_LETTERS = SPECTRAL_CLASSES.map((c) => c.letter);
+
+  function classForTemperature(temperatureK) {
+    return SPECTRAL_CLASSES.find((c) => temperatureK > c.minK) || SPECTRAL_CLASSES[SPECTRAL_CLASSES.length - 1];
   }
+
+  function classByLetter(letter) {
+    return SPECTRAL_CLASSES.find((c) => c.letter === letter);
+  }
+
+  /** The colour a star of this surface temperature looks: its spectral class's colour. */
+  function starColourName(temperatureK) {
+    return classForTemperature(temperatureK).colour;
+  }
+
+  // Approximate titanium oxide band heads, drawn as bands, not exact lines.
+  const MOLECULE_BANDS_NM = [476.1, 495.4, 516.7, 544.8, 615.9, 666.2];
 
   const STRENGTH_DEPTH = { strong: 0.85, moderate: 0.55, weak: 0.25 };
 
-  // First draft, to be checked by the teacher: which lines show up, and
-  // roughly how strongly, in four example stars. Qualitative only.
+  /** Every line and band a star of this temperature shows, for drawing. */
+  function linesForTemperature(temperatureK) {
+    const cls = classForTemperature(temperatureK);
+    const lines = linesForStrengths(cls.strengths);
+    if (cls.molecules) MOLECULE_BANDS_NM.forEach((nm) => lines.push({ nm, depth: 0.75, element: 'molecules', kind: 'band' }));
+    return lines;
+  }
+
+  // Four example stars for the "Reading a spectrum" temperature section;
+  // their line strengths come from their own spectral class.
   const EXAMPLE_STARS = [
-    { id: 'cool', label: 'Cool red star', temperatureK: 3500, strengths: { hydrogen: 'weak', sodium: 'strong', calcium: 'strong' } },
-    { id: 'sun', label: 'Sun-like star', temperatureK: SpecData.CONSTANTS.photosphereTemperatureK, strengths: { hydrogen: 'moderate', sodium: 'strong', calcium: 'strong' } },
-    { id: 'white', label: 'White star', temperatureK: 10000, strengths: { hydrogen: 'strong', calcium: 'weak' } },
-    { id: 'hot', label: 'Hot blue-white star', temperatureK: 20000, strengths: { hydrogen: 'moderate', helium: 'strong' } },
+    { id: 'cool', label: 'Cool red star', temperatureK: 3500 },
+    { id: 'sun', label: 'Sun-like star', temperatureK: SpecData.CONSTANTS.photosphereTemperatureK },
+    { id: 'white', label: 'White star', temperatureK: 10000 },
+    { id: 'hot', label: 'Hot blue-white star', temperatureK: 20000 },
+  ].map((star) => ({ ...star, strengths: classForTemperature(star.temperatureK).strengths }));
+
+  /**
+   * Eight real stars for the sorting activity: spectral type (letter and
+   * subclass), an approximate surface temperature, and which clue the
+   * activity shows first. The Sun's temperature is the data sheet's.
+   */
+  const REAL_STARS = [
+    { name: 'Spica', type: 'B1', temperatureK: 22000, clue: 'lines' },
+    { name: 'Rigel', type: 'B8', temperatureK: 12000, clue: 'colour' },
+    { name: 'Vega', type: 'A0', temperatureK: 9600, clue: 'colour' },
+    { name: 'Sirius', type: 'A1', temperatureK: 9900, clue: 'lines' },
+    { name: 'Procyon', type: 'F5', temperatureK: 6500, clue: 'temperature' },
+    { name: 'the Sun', type: 'G2', temperatureK: SpecData.CONSTANTS.photosphereTemperatureK, clue: 'temperature' },
+    { name: 'Arcturus', type: 'K1', temperatureK: 4300, clue: 'colour' },
+    { name: 'Betelgeuse', type: 'M2', temperatureK: 3600, clue: 'lines' },
   ];
 
   function linesForStrengths(strengths) {
@@ -211,6 +267,13 @@
     SPEED_OF_LIGHT_M_PER_S,
     EXAMPLE_STARS,
     PUZZLE_STARS,
+    SPECTRAL_CLASSES,
+    CLASS_LETTERS,
+    MOLECULE_BANDS_NM,
+    REAL_STARS,
+    classForTemperature,
+    classByLetter,
+    linesForTemperature,
     STRENGTH_DEPTH,
     linesFor,
     linesForStrengths,

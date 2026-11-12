@@ -45,8 +45,8 @@ that point.
 | 13.2 | COVERED | `notes/magnitude.html` §`the-idea` (absolute-magnitude-fixed-at-10pc readout); questions (u4.2) | — | — |
 | 13.3 | COVERED | `notes/magnitude.html` §`distance-modulus` (calculator, worked examples); `notes/data-sheet.html` formula row; questions `distance-from-modulus`, `absolute-from-modulus`, `explain-distance-modulus`; formula algebraically equivalent to spec form (see physics check 5) (u4.2) | — | — |
 | 13.4 | COVERED (2026-11-12) | `notes/reading-a-spectrum.html`, now split into 13.4a composition (line-matching puzzle), 13.4b temperature (peak and line strengths by star) and 13.4c radial velocity (Doppler slider), each with its own questions | — | — |
-| 13.5 | MISSING | — | No spectral classification (O B A F G K M) | New page |
-| 13.6 | MISSING | — | No colour/spectral-type/temperature relationship | New page |
+| 13.5 | COVERED (2026-11-13) | `notes/spectral-types.html` §`classes` (O-M strip and table), §`slider` (class from temperature) and §`sort-stars` (eight real stars); six questions | — | — |
+| 13.6 | COVERED (2026-11-13) | `notes/spectral-types.html` §`slider` (colour and glow curve against temperature) and §`why-colour` (three glow curves); five questions | — | — |
 | 13.7 | MISSING | — | No Hertzsprung–Russell diagram anywhere on the site | New page |
 | 13.8 | MISSING | — | `curriculum.js` `u4.1` "Stellar evolution" is an unbuilt stub (no `spec` field, registered to no page) | New page |
 | 13.9 | COVERED | `notes/magnitude.html` §`inverse-square` (lamp/squares diagram, table); questions `inverse-square-to-magnitude`, `bright-but-far-real-example` (u4.2) | — | — |

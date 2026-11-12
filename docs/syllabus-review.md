@@ -18,11 +18,11 @@ One row per point in the Edexcel GCSE Astronomy (1AS0) specification, Topics 1�
 | 10 | Solar astronomy | 12 | 12 | 0 | 0 |
 | 11 | Exploring the Solar System | 33 | 29 | 4 | 0 |
 | 12 | Formation of planetary systems | 14 | 5 | 9 | 1 |
-| 13 | Exploring starlight | 36 | 13 | 23 | 1 |
+| 13 | Exploring starlight | 36 | 15 | 21 | 1 |
 | 14 | Stellar evolution | 11 | 0 | 11 | 0 |
 | 15 | Our place in the Galaxy | 14 | 0 | 14 | 0 |
 | 16 | Cosmology | 12 | 0 | 12 | 0 |
-| **Total** | | **231** | **155** | **76** | **29** |
+| **Total** | | **231** | **157** | **74** | **29** |
 
 ## Methodology
 
@@ -262,8 +262,8 @@ One row per point in the Edexcel GCSE Astronomy (1AS0) specification, Topics 1�
 | 13.4a | understand | what can be learned from a stellar spectrum: chemical composition | [Reading a spectrum](../notes/reading-a-spectrum.html) | – |  | |
 | 13.4b | understand | what can be learned from a stellar spectrum: temperature | [Reading a spectrum](../notes/reading-a-spectrum.html) | – |  | |
 | 13.4c | understand | what can be learned from a stellar spectrum: radial velocity | [Reading a spectrum](../notes/reading-a-spectrum.html) | – |  | |
-| 13.5 | understand | classify stars by spectral type | *not built* | – |  | |
-| 13.6 | understand | how a star's colour and spectral type relate to its surface temperature | *not built* | – |  | |
+| 13.5 | understand | classify stars by spectral type | [Colour, temperature and spectral type](../notes/spectral-types.html) | – |  | |
+| 13.6 | understand | how a star's colour and spectral type relate to its surface temperature | [Colour, temperature and spectral type](../notes/spectral-types.html) | – |  | |
 | 13.7 | be able to | sketch a simple Hertzsprung-Russell diagram, with labelled axes and the positions of the main sequence, the Sun, red and blue giants, white dwarfs and supergiants | *not built* | – |  | |
 | 13.8 | understand | how a star's life cycle relates to its position on the HR diagram, for Sun-like stars and for much more massive ones | *not built* | – |  | |
 | 13.9 | understand | the inverse-square relationship between distance and brightness/intensity | [Magnitude: how bright is a star?](../notes/magnitude.html) | – |  | |

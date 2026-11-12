@@ -357,6 +357,16 @@ const PAGES = [
     why: 'Magnitude: how bright is a star? measures how much light a star sends us; this page reads what that light is made of, how hot the star is and how it moves.',
   },
   {
+    title: 'Colour, temperature and spectral type',
+    description:
+      'The O B A F G K M classes on one strip, a temperature slider from 2,500 K to 40,000 K that changes colour, glow curve, class and strongest lines together, why a hotter star looks bluer, and eight real stars to sort by type.',
+    href: 'notes/spectral-types.html',
+    units: ['u4.8'],
+    phase: 'Stars and the Universe',
+    position: 34,
+    why: "Reading a spectrum showed that a star's colour and lines both depend on temperature; this page sorts stars into spectral classes by exactly those clues.",
+  },
+  {
     title: 'Bodies of the Solar System',
     description:
       "A to-scale size line-up and bar chart of the planets and dwarf planets, the larger named moons by planet, the four ringed planets drawn at relative size with Saturn's rings the most visible, Io's tidal heating (reusable diagram) from its 1:2:4 resonance with Europa and Ganymede, a temperature-against-distance chart, a planet-vs-dwarf-planet decision diagram, asteroids/meteoroids/comets, a comet-tail diagram and the Kuiper Belt/Oort Cloud on a logarithmic scale, transits of Venus and measuring the AU, and brief formation theories — a first draft pending teacher review.",
@@ -454,6 +464,7 @@ const DIAGRAM_FIRST_PAGES = [
   'notes/parallax.html',
   'notes/magnitude.html',
   'notes/reading-a-spectrum.html',
+  'notes/spectral-types.html',
 ];
 
 /**
@@ -514,13 +525,6 @@ const COMING_SOON = [
     specPoints: ['11.26', '11.27', '11.28', '11.29', '11.30'],
   },
   {
-    name: 'Colour, temperature and spectral type',
-    phase: 'Stars and the Universe',
-    position: 34,
-    why: "Reading a spectrum shows that a star's colour and its lines both depend on temperature; this step sorts stars into spectral types by exactly those clues.",
-    specPoints: ['13.5', '13.6'],
-  },
-  {
     name: 'Stars, galaxies and the Universe',
     phase: 'Stars and the Universe',
     position: 35,
@@ -528,9 +532,9 @@ const COMING_SOON = [
     // Topic 13 has a src/specPoints.js registry: 13.1, 13.2, 13.3 and
     // 13.9 are covered by notes/magnitude.html, 13.10-13.12 by
     // notes/parallax.html, 13.22 by notes/earth-structure.html, and
-    // 13.4a-c, 13.20 and 13.21 by notes/reading-a-spectrum.html (see
-    // src/curriculum.js's u4.2/u4.5/u2.16/u4.6/u4.7); 13.5 and 13.6 have
-    // their own step just above. 13.30 is named here, not left off:
+    // 13.4a-c, 13.20 and 13.21 by notes/reading-a-spectrum.html, and 13.5
+    // and 13.6 by notes/spectral-types.html (see src/curriculum.js's
+    // u4.2/u4.5/u2.16/u4.6/u4.7/u4.8). 13.30 is named here, not left off:
     // notes/earth-structure.html's u2.33 names it in text, but it's still
     // PARTIAL under docs/topic-11-16-audit.md's bar (no dedicated
     // diagram), so it's untagged in curriculum.js until a page gives it one.

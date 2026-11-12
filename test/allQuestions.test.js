@@ -77,6 +77,7 @@ test("getAllQuestionsNode's total is exactly the sum of every individual questio
   const { makeQuestions: makeSolarSystemBodies } = require('../src/solarSystemBodiesQuestions');
   const { makeQuestions: makeSpectra } = require('../src/spectraQuestions');
   const Spectra = require('../src/spectra');
+  const { makeQuestions: makeSpectralTypes } = require('../src/spectralTypesQuestions');
   const { makeQuestions: makeSunDeclination } = require('../src/sunDeclinationQuestions');
   const { makeQuestions: makeSunFeatures } = require('../src/sunFeaturesQuestions');
   const { makeQuestions: makeSunspotRotation } = require('../src/sunspotRotationQuestions');
@@ -110,6 +111,7 @@ test("getAllQuestionsNode's total is exactly the sum of every individual questio
     makeSiderealSynodic(MoonPhase).length +
     makeSolarSystemBodies(SpecData).length +
     makeSpectra(Spectra).length +
+    makeSpectralTypes(Spectra).length +
     makeSunDeclination({ getSunPosition: SolarPosition.getSunPosition }, Coordinates).length +
     makeSunFeatures(ButterflyDiagram).length +
     makeSunspotRotation(SunRotation).length +

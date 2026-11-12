@@ -25,6 +25,7 @@ every page listed as conforming below.
 | `notes/parallax.html` | Yes (built to it from the start) |
 | `notes/magnitude.html` | Yes (built to it from the start) |
 | `notes/reading-a-spectrum.html` | Yes (built to it from the start) |
+| `notes/spectral-types.html` | Yes (built to it from the start) |
 
 Every `notes/` page now conforms. When a page is retrofitted, add it to `CONFORMING_PAGES`
 in `test/notesTemplate.test.js` and update this table.

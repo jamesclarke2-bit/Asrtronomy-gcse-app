@@ -33,6 +33,7 @@ const CONFORMING_PAGES = [
   'notes/parallax.html',
   'notes/magnitude.html',
   'notes/reading-a-spectrum.html',
+  'notes/spectral-types.html',
 ];
 
 // Section 6 of the template ("Diagram-first"), checked only for pages

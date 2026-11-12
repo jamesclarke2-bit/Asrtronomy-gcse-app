@@ -4466,3 +4466,69 @@ canvas {
   font-weight: 600;
   white-space: nowrap;
 }
+
+/* An off-the-graph peak label (src/spectrumDrawing.js) may wrap onto a
+   second line on a phone rather than run past the panel's edge. */
+.diagram-label--tick.glow-peak-label--off {
+  white-space: normal;
+  max-width: none;
+}
+
+.diagram-label--tick.glow-peak-label--off.diagram-label--left {
+  text-align: right;
+}
+
+/* notes/spectral-types.html: letters and colour names drawn on top of
+   each class's own coloured box, so dark text with a light halo reads on
+   every box from blue to red. */
+.spectrum-panel .diagram-label.class-box-letter,
+.spectrum-panel .diagram-label.class-box-colour {
+  color: #10131c;
+  text-shadow: 0 0 3px rgba(255, 255, 255, 0.85);
+}
+
+.class-box-letter {
+  width: auto;
+  font-size: 1.15rem;
+  font-weight: 800;
+}
+
+.class-box-letter--small {
+  font-size: 0.8rem;
+}
+
+.class-box-colour {
+  font-size: 0.62rem;
+  font-weight: 600;
+  line-height: 1.1;
+  overflow-wrap: anywhere;
+}
+
+.sort-star-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 0.75rem;
+  margin: 1rem 0;
+}
+
+.sort-star {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 0.6rem 0.75rem;
+}
+
+.sort-star-name {
+  margin: 0 0 0.25rem;
+  font-weight: 700;
+}
+
+.sort-star-clues {
+  margin: 0 0 0.5rem;
+  padding-left: 1.1rem;
+  font-size: 0.85rem;
+}
+
+.sort-star select {
+  margin-left: 0.25rem;
+}

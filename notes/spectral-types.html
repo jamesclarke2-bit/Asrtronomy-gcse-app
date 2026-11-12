@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; form-action 'none'; base-uri 'self'" />
+  <meta name="referrer" content="no-referrer" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Colour, temperature and spectral type</title>
+  <link rel="stylesheet" href="../styles.css?v=202611130900" />
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg?v=202610130720" />
+</head>
+<body>
+  <main>
+    <p class="back-link"><a href="../index.html">&larr; Back to all tools</a></p>
+
+    <h1>Colour, temperature and spectral type</h1>
+    <p class="subtitle">
+      A star's colour and the lines in its spectrum both depend on how hot its surface is, so
+      astronomers sort stars into seven spectral classes by temperature.
+    </p>
+
+    <section class="notes-section" id="classes">
+      <h2>The spectral classes</h2>
+      <p>
+        Every star gets a
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="spectralType" aria-label="What is a spectral type?" aria-expanded="false">spectral type</button>,
+        a letter from O (hottest) to M (coolest).
+      </p>
+      <span class="glossary-definition" data-term="spectralType" hidden></span>
+
+      <div class="diagram spectrum-panel class-strip-diagram">
+        <div class="labelled-diagram-wrap" id="class-strip-diagram-wrap">
+          <svg
+            id="class-strip-diagram"
+            class="responsive-svg"
+            width="640"
+            height="212"
+            viewBox="0 0 640 212"
+            role="img"
+            aria-label="The seven spectral classes as a row of coloured boxes, hottest on the left: O blue, B blue-white, A white, F yellow-white, G yellow, K orange and M red. Under the row, the approximate surface temperature at each boundary: 30,000, 10,000, 7,500, 6,000, 5,200, 3,700 and 2,400 kelvin."
+          ></svg>
+        </div>
+      </div>
+
+      <p>
+        To remember the order: <strong>O</strong>nly <strong>B</strong>right
+        <strong>A</strong>stronomers <strong>F</strong>eel <strong>G</strong>ood
+        <strong>K</strong>nowing <strong>M</strong>ore. Each class also splits into
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="subclass" aria-label="What is a subclass?" aria-expanded="false">subclasses</button>
+        0 to 9, hottest first: the Sun is a G2 star.
+      </p>
+      <span class="glossary-definition" data-term="subclass" hidden></span>
+
+      <div class="table-scroll">
+        <table class="shower-table" id="class-table">
+          <caption>Spectral classes (temperatures approximate)</caption>
+          <thead>
+            <tr><th scope="col">Class</th><th scope="col">Colour</th><th scope="col">Surface temperature (K)</th><th scope="col">Strongest lines</th></tr>
+          </thead>
+          <tbody id="class-table-body"></tbody>
+        </table>
+      </div>
+      <p class="note">
+        Temperatures are in
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="kelvin" aria-label="What is a kelvin?" aria-expanded="false">kelvin (K)</button>.
+        Colours, and the O and F line notes: first draft, to be checked by the teacher.
+      </p>
+      <span class="glossary-definition" data-term="kelvin" hidden></span>
+    </section>
+
+    <section class="notes-section" id="slider">
+      <h2>Slide the temperature</h2>
+      <p>Drag from a cool 2,500 K star to a 40,000 K one and watch every clue change together.</p>
+
+      <div class="control">
+        <label for="temperature-slider">Surface temperature: <span id="temperature-slider-label"></span></label>
+        <input type="range" id="temperature-slider" min="0" max="1000" step="1" value="304" />
+      </div>
+
+      <div class="diagram spectrum-panel sim-diagram">
+        <div class="labelled-diagram-wrap" id="sim-diagram-wrap">
+          <svg
+            id="sim-diagram"
+            class="responsive-svg"
+            width="640"
+            height="330"
+            viewBox="0 0 640 330"
+            role="img"
+            aria-label="Top: the seven spectral classes, with a pointer at the chosen temperature's class. Left: the star drawn in the colour it looks, named underneath. Right: its glow curve, intensity against wavelength from 300 to 1000 nanometres, with the visible band marked and the peak shown, or an arrow when the peak is off the graph in the ultraviolet or infrared."
+          ></svg>
+        </div>
+      </div>
+
+      <div class="diagram spectrum-panel sim-lines-diagram">
+        <div class="labelled-diagram-wrap" id="sim-lines-diagram-wrap">
+          <svg
+            id="sim-lines-diagram"
+            class="responsive-svg"
+            width="640"
+            height="150"
+            viewBox="0 0 640 150"
+            role="img"
+            aria-label="The star's visible spectrum: dark absorption lines labelled by element, and for the coolest stars, broad dark molecular bands."
+          ></svg>
+        </div>
+      </div>
+
+      <dl class="readout">
+        <dt>Spectral class</dt>
+        <dd id="sim-class-readout" aria-live="polite"></dd>
+        <dt>Looks</dt>
+        <dd id="sim-colour-readout"></dd>
+        <dt>Strongest lines</dt>
+        <dd id="sim-lines-readout"></dd>
+        <dt>Peak of its light</dt>
+        <dd id="sim-peak-readout"></dd>
+      </dl>
+      <p class="note">
+        Molecular bands are drawn as broad shaded bands at approximate positions.
+      </p>
+    </section>
+
+    <section class="notes-section" id="why-colour">
+      <h2>Why colour tells you temperature</h2>
+      <p>Three stars' glow curves, each scaled to the same height, against the visible band.</p>
+
+      <div class="diagram spectrum-panel three-curves-diagram">
+        <div class="labelled-diagram-wrap" id="three-curves-diagram-wrap">
+          <svg
+            id="three-curves-diagram"
+            class="responsive-svg"
+            width="640"
+            height="304"
+            viewBox="0 0 640 304"
+            role="img"
+            aria-label="Three glow curves on one graph of intensity against wavelength: a hot star's curve, drawn solid, falls from the violet end towards the red; a Sun-like star's curve, dashed, is fairly flat across the visible band; a cool star's curve, dotted, rises towards the red."
+          ></svg>
+        </div>
+      </div>
+
+      <p>
+        A hotter star gives out more of its light at shorter wavelengths, so across the visible
+        band its blue end is brighter and it looks bluer. A cooler star gives out more of its light
+        at longer wavelengths, so it looks redder. Colour is a thermometer you can read from
+        trillions of kilometres away.
+      </p>
+    </section>
+
+    <section class="notes-section" id="sort-stars">
+      <h2>Sort the stars</h2>
+      <p>
+        Give each star its spectral class from the clue shown. Each star appears in the row you
+        choose; check to see which are right.
+      </p>
+
+      <div class="diagram spectrum-panel sort-board-diagram">
+        <div class="labelled-diagram-wrap" id="sort-board-diagram-wrap">
+          <svg
+            id="sort-board-diagram"
+            class="responsive-svg"
+            width="640"
+            height="300"
+            viewBox="0 0 640 300"
+            role="img"
+            aria-label="A sorting board with one row per spectral class, O at the top to M at the bottom. Each star appears as a coloured dot with its name in the row chosen for it, marked with a tick or a cross once checked."
+          ></svg>
+        </div>
+      </div>
+
+      <div class="control checkbox-control">
+        <label><input type="checkbox" id="sort-all-clues" /> Show all three clues for every star</label>
+      </div>
+      <div class="sort-star-list" id="sort-star-list"></div>
+      <button type="button" class="secondary-button" id="sort-check">Check my sorting</button>
+      <p class="note" id="sort-feedback" aria-live="polite"></p>
+      <p class="note">Star temperatures and subclasses: first draft, to be checked by the teacher.</p>
+    </section>
+
+    <section class="notes-section" id="exam-tips">
+      <h2>Exam tips</h2>
+      <p class="exam-tip">
+        <strong>Common exam confusion:</strong> the classes run in temperature order, O B A F G K
+        M, hottest first; they are not in alphabetical order.
+        <a href="#classes">The spectral classes &uarr;</a>
+      </p>
+      <p class="exam-tip">
+        <strong>Common exam confusion:</strong> a blue star is hotter than a red one. The colour
+        comes from where most of its light is given out, not from the star's size.
+        <a href="#why-colour">Why colour tells you temperature &uarr;</a>
+      </p>
+    </section>
+
+    <section class="notes-section" id="related">
+      <h2>Related pages</h2>
+      <div class="page-card-list">
+        <a class="page-card" href="reading-a-spectrum.html">
+          <h3>Reading a spectrum</h3>
+          <p class="page-card-description">Where the lines come from, and how each element's pattern is matched.</p>
+        </a>
+        <a class="page-card" href="magnitude.html">
+          <h3>Magnitude: how bright is a star?</h3>
+          <p class="page-card-description">How bright a star is, alongside how hot it is.</p>
+        </a>
+      </div>
+    </section>
+
+    <section class="questions" id="questions">
+      <h2>Practice questions</h2>
+      <div id="questions-list"></div>
+    </section>
+
+    <section class="progress">
+      <h2>Your progress</h2>
+      <ul id="progress-list"></ul>
+      <p class="note">Stored in this browser only (localStorage) &mdash; no account needed.</p>
+    </section>
+
+    <p class="coverage" id="coverage"></p>
+    <p class="next-page-link" id="next-page"></p>
+  </main>
+
+  <script src="../src/curriculum.js?v=202611130900"></script>
+  <script src="../src/pages.js?v=202611130900"></script>
+  <script src="../src/specData.js?v=202610161036"></script>
+  <script src="../src/spectra.js?v=202611130900"></script>
+  <script src="../src/spectrumDrawing.js?v=202611130900"></script>
+  <script src="../src/spectralTypesQuestions.js?v=202611130900"></script>
+  <script src="../glossary.js?v=202610131052"></script>
+  <script src="../quiz-ui.js?v=202611121900"></script>
+  <script src="spectral-types.js?v=202611130900"></script>
+  <script src="../diagramEnlarge.js?v=202611111500"></script>
+  <script src="../notesPage.js?v=202609252100"></script>
+  <script src="../nextPage.js?v=202610161057"></script>
+</body>
+</html>
