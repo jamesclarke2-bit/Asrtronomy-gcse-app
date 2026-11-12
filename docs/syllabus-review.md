@@ -18,11 +18,11 @@ One row per point in the Edexcel GCSE Astronomy (1AS0) specification, Topics 1�
 | 10 | Solar astronomy | 12 | 12 | 0 | 0 |
 | 11 | Exploring the Solar System | 33 | 29 | 4 | 0 |
 | 12 | Formation of planetary systems | 14 | 5 | 9 | 1 |
-| 13 | Exploring starlight | 36 | 15 | 21 | 1 |
+| 13 | Exploring starlight | 40 | 21 | 19 | 1 |
 | 14 | Stellar evolution | 11 | 0 | 11 | 0 |
 | 15 | Our place in the Galaxy | 14 | 0 | 14 | 0 |
 | 16 | Cosmology | 12 | 0 | 12 | 0 |
-| **Total** | | **231** | **157** | **74** | **29** |
+| **Total** | | **235** | **163** | **72** | **29** |
 
 ## Methodology
 
@@ -264,13 +264,17 @@ One row per point in the Edexcel GCSE Astronomy (1AS0) specification, Topics 1�
 | 13.4c | understand | what can be learned from a stellar spectrum: radial velocity | [Reading a spectrum](../notes/reading-a-spectrum.html) | – |  | |
 | 13.5 | understand | classify stars by spectral type | [Colour, temperature and spectral type](../notes/spectral-types.html) | – |  | |
 | 13.6 | understand | how a star's colour and spectral type relate to its surface temperature | [Colour, temperature and spectral type](../notes/spectral-types.html) | – |  | |
-| 13.7 | be able to | sketch a simple Hertzsprung-Russell diagram, with labelled axes and the positions of the main sequence, the Sun, red and blue giants, white dwarfs and supergiants | *not built* | – |  | |
+| 13.7a | be able to | sketch a simple Hertzsprung-Russell diagram with labelled axes, showing the position of main sequence stars | [The Hertzsprung-Russell diagram](../notes/hr-diagram.html) | 14 |  | |
+| 13.7b | be able to | sketch a simple Hertzsprung-Russell diagram with labelled axes, showing the position of the Sun | [The Hertzsprung-Russell diagram](../notes/hr-diagram.html) | 14 |  | |
+| 13.7c | be able to | sketch a simple Hertzsprung-Russell diagram with labelled axes, showing the position of red and blue giants | [The Hertzsprung-Russell diagram](../notes/hr-diagram.html) | 14 |  | |
+| 13.7d | be able to | sketch a simple Hertzsprung-Russell diagram with labelled axes, showing the position of white dwarfs | [The Hertzsprung-Russell diagram](../notes/hr-diagram.html) | 14 |  | |
+| 13.7e | be able to | sketch a simple Hertzsprung-Russell diagram with labelled axes, showing the position of supergiants | [The Hertzsprung-Russell diagram](../notes/hr-diagram.html) | 14 |  | |
 | 13.8 | understand | how a star's life cycle relates to its position on the HR diagram, for Sun-like stars and for much more massive ones | *not built* | – |  | |
 | 13.9 | understand | the inverse-square relationship between distance and brightness/intensity | [Magnitude: how bright is a star?](../notes/magnitude.html) | – |  | |
 | 13.10 | understand | 1 degree = 60 arcminutes, 1 arcminute = 60 arcseconds | [Parallax and the Parsec: Measuring Distances to Stars](../notes/parallax.html) | – |  | |
 | 13.11 | understand | the parsec | [Parallax and the Parsec: Measuring Distances to Stars](../notes/parallax.html) | – |  | |
 | 13.12 | be able to | determine distances using heliocentric parallax | [Parallax and the Parsec: Measuring Distances to Stars](../notes/parallax.html) | 8 |  | |
-| 13.13 | understand | use an HR diagram to determine distances to stars | *not built* | – |  | |
+| 13.13 | understand | use an HR diagram to determine distances to stars | [The Hertzsprung-Russell diagram](../notes/hr-diagram.html) | – |  | |
 | 13.14 | understand | light curves of variable stars: short/long period, eclipsing binary, Cepheid, and novae/supernovae | *not built* | – |  | |
 | 13.15 | understand | causes of variability in an eclipsing binary's light curve | *not built* | – |  | |
 | 13.16 | understand | how Cepheid variables are used to determine distances | *not built* | – |  | |

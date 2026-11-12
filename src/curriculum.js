@@ -879,6 +879,14 @@ const UNITS = [
         notes:
           "stars are sorted into spectral classes O, B, A, F, G, K, M by the lines in their spectra, which depend on surface temperature, so the order is hottest to coolest (approximately O above 30,000 K; B 10,000-30,000 K; A 7,500-10,000 K; F 6,000-7,500 K; G 5,200-6,000 K; K 3,700-5,200 K; M 2,400-3,700 K); each class splits into subclasses 0-9, hottest first (the Sun is G2); helium lines are strongest in B stars, hydrogen in A, calcium and sodium in G and K, and molecular bands such as titanium oxide in M; a hotter star gives out more of its light at shorter wavelengths, so it looks bluer, and a cooler star looks redder (O blue, B blue-white, A white, F yellow-white, G yellow, K orange, M red)",
       },
+      {
+        id: 'u4.9',
+        title: 'The Hertzsprung-Russell diagram',
+        depth: 'be able to',
+        spec: ['13.7a', '13.7b', '13.7c', '13.7d', '13.7e', '13.13'],
+        notes:
+          "an HR diagram plots stars by surface temperature across (hottest on the LEFT, the standard way round, often with the spectral classes O B A F G K M along it) against luminosity (Sun = 1, log scale) or absolute magnitude up (brightest at the top, so the most negative magnitudes at the top); most stars, including the Sun (in the middle), lie on the main sequence, a diagonal band from top left (hot, luminous) to bottom right (cool, dim); red giants sit top right (cool but luminous, so very large), blue giants top left above the main sequence, supergiants across the top at every temperature, and white dwarfs bottom left (hot but dim, so very small); a main-sequence star's spectral type gives its absolute magnitude M from the diagram, and comparing M with its apparent magnitude m in M = m + 5 - 5 log d gives its distance; because the main sequence is a band about 2 magnitudes thick, M is known only to within about 1 magnitude, so the distance comes with a range and an uncertainty of half that range, and the method only works if the star is known to be on the main sequence",
+      },
     ],
   },
   {

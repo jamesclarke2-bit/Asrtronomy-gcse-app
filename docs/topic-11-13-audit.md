@@ -47,13 +47,13 @@ that point.
 | 13.4 | COVERED (2026-11-12) | `notes/reading-a-spectrum.html`, now split into 13.4a composition (line-matching puzzle), 13.4b temperature (peak and line strengths by star) and 13.4c radial velocity (Doppler slider), each with its own questions | — | — |
 | 13.5 | COVERED (2026-11-13) | `notes/spectral-types.html` §`classes` (O-M strip and table), §`slider` (class from temperature) and §`sort-stars` (eight real stars); six questions | — | — |
 | 13.6 | COVERED (2026-11-13) | `notes/spectral-types.html` §`slider` (colour and glow curve against temperature) and §`why-colour` (three glow curves); five questions | — | — |
-| 13.7 | MISSING | — | No Hertzsprung–Russell diagram anywhere on the site | New page |
+| 13.7 (a-e) | COVERED (2026-11-13) | `notes/hr-diagram.html` §`the-diagram` (both y-axes, hottest left, all five regions and the Sun), §`real-stars` (ten stars) and §`sketch` (axes, place the five regions and the Sun, checklist); split into 13.7a-e, each with its own questions (3, 1, 2, 2, 2) | — | — |
 | 13.8 | MISSING | — | `curriculum.js` `u4.1` "Stellar evolution" is an unbuilt stub (no `spec` field, registered to no page) | New page |
 | 13.9 | COVERED | `notes/magnitude.html` §`inverse-square` (lamp/squares diagram, table); questions `inverse-square-to-magnitude`, `bright-but-far-real-example` (u4.2) | — | — |
 | 13.10 | COVERED | `notes/parallax.html` glossary `arcminute`/`arcsecond` (exact 60/60/3600 relationship); question `degrees-to-arcseconds` (u4.5) | — | — |
 | 13.11 | COVERED | `notes/parallax.html` §`units` (parsec definition, AU/ly table); question `parsecs-to-light-years` (u4.5) | — | — |
 | 13.12 | COVERED | `notes/parallax.html` (whole page: orbit/sky panels, geometry triangle); questions `distance-from-parallax`, `parallax-from-distance` etc. (u4.5) | — | — |
-| 13.13 | MISSING | — | Needs an HR diagram (13.7), which doesn't exist | New page (after 13.7) |
+| 13.13 | COVERED (2026-11-13) | `notes/hr-diagram.html` §`distance` (read M off the main-sequence band, M = m + 5 − 5 log d, range and uncertainty, main sequence only); four questions, two reading M off a drawn diagram | — | — |
 | 13.14 | MISSING | — | No light curves (short/long-period, eclipsing binary, Cepheid, nova/supernova) anywhere | New page (see §2) |
 | 13.15 | MISSING | — | No explanation of eclipsing-binary variability | New page |
 | 13.16 | MISSING | — | No Cepheid period–luminosity distance method | New page |

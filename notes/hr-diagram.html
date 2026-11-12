@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; form-action 'none'; base-uri 'self'" />
+  <meta name="referrer" content="no-referrer" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>The Hertzsprung-Russell diagram</title>
+  <link rel="stylesheet" href="../styles.css?v=202611131200" />
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg?v=202610130720" />
+</head>
+<body>
+  <main>
+    <p class="back-link"><a href="../index.html">&larr; Back to all tools</a></p>
+
+    <h1>The Hertzsprung-Russell diagram</h1>
+    <p class="subtitle">
+      Plot every star by how hot it is and how much light it gives out, and the stars fall into a
+      few clear groups.
+    </p>
+
+    <section class="notes-section" id="the-diagram">
+      <h2>The diagram</h2>
+      <p>
+        Each star is one point: surface temperature across, and
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="luminosity" aria-label="What is luminosity?" aria-expanded="false">luminosity</button>
+        or
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="absoluteMagnitude" aria-label="What is absolute magnitude?" aria-expanded="false">absolute magnitude</button>
+        up.
+      </p>
+      <span class="glossary-definition" data-term="luminosity" hidden></span>
+      <span class="glossary-definition" data-term="absoluteMagnitude" hidden></span>
+
+      <div class="diagram spectrum-panel hr-diagram-panel">
+        <div class="labelled-diagram-wrap" id="hr-main-diagram-wrap">
+          <svg
+            id="hr-main-diagram"
+            class="responsive-svg"
+            width="640"
+            height="536"
+            viewBox="0 0 640 536"
+            role="img"
+            aria-label="A Hertzsprung-Russell diagram. Across: surface temperature in kelvin on a log scale, hottest on the left at 40,000 K and coolest on the right at 2,400 K, with the spectral classes O B A F G K M along it. Up the left: luminosity compared with the Sun, from a millionth at the bottom to a million at the top. Up the right: absolute magnitude, from about +20 at the bottom to about minus 10 at the top. Shaded regions: the main sequence, a diagonal band from top left to bottom right; supergiants across the top; blue giants top left above the main sequence; red giants top right above the main sequence; white dwarfs bottom left. The Sun is marked in the middle of the main sequence."
+          ></svg>
+        </div>
+      </div>
+
+      <p class="note">
+        Exam questions may use either y-axis: luminosity (Sun = 1) or absolute magnitude. Both put
+        the brightest stars at the top, so on the magnitude scale the most negative values are at
+        the top. Temperature increasing to the left is the standard way round.
+      </p>
+
+      <p>
+        Most stars, including the Sun, lie on the
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="mainSequence" aria-label="What is the main sequence?" aria-expanded="false">main sequence</button>.
+        Above it are
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="giant" aria-label="What is a giant star?" aria-expanded="false">giants</button>
+        and
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="supergiant" aria-label="What is a supergiant?" aria-expanded="false">supergiants</button>;
+        below it,
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="whiteDwarf" aria-label="What is a white dwarf?" aria-expanded="false">white dwarfs</button>.
+      </p>
+      <span class="glossary-definition" data-term="mainSequence" hidden></span>
+      <span class="glossary-definition" data-term="giant" hidden></span>
+      <span class="glossary-definition" data-term="supergiant" hidden></span>
+      <span class="glossary-definition" data-term="whiteDwarf" hidden></span>
+    </section>
+
+    <section class="notes-section" id="real-stars">
+      <h2>Ten real stars</h2>
+      <p>Tap a star, or its name below, to see its details.</p>
+
+      <div class="diagram spectrum-panel hr-diagram-panel">
+        <div class="labelled-diagram-wrap" id="hr-stars-diagram-wrap">
+          <svg
+            id="hr-stars-diagram"
+            class="responsive-svg"
+            width="640"
+            height="536"
+            viewBox="0 0 640 536"
+            role="img"
+            aria-label="The same HR diagram with ten real stars plotted and named: Rigel and Betelgeuse among the supergiants, Spica a blue giant, Arcturus a red giant, Vega, Sirius, Procyon, the Sun and Proxima Centauri on the main sequence, and Sirius B a white dwarf."
+          ></svg>
+        </div>
+      </div>
+
+      <div class="hr-star-buttons" id="hr-star-buttons"></div>
+      <div class="hr-star-card" id="hr-star-card" aria-live="polite"></div>
+
+      <div class="table-scroll">
+        <table class="shower-table" id="hr-star-table">
+          <caption>The ten stars</caption>
+          <thead>
+            <tr><th scope="col">Star</th><th scope="col">Type</th><th scope="col">Surface temperature (K)</th><th scope="col">Absolute magnitude</th><th scope="col">Luminosity (Sun = 1)</th></tr>
+          </thead>
+          <tbody id="hr-star-table-body"></tbody>
+        </table>
+      </div>
+      <p class="note">
+        Luminosity here is matched to absolute magnitude, so it counts visible light. Very hot and
+        very cool stars give out much of their energy as ultraviolet or infrared, so their total
+        output is higher. Absolute magnitudes and luminosities: first draft, to be checked by the
+        teacher.
+      </p>
+    </section>
+
+    <section class="notes-section" id="sketch">
+      <h2>Sketch it</h2>
+      <p>Step 1: choose the labels and directions for both axes.</p>
+
+      <div class="hr-axis-choices">
+        <div class="control">
+          <label for="sketch-x-quantity">Across (x-axis)</label>
+          <select id="sketch-x-quantity">
+            <option value="">Choose&hellip;</option>
+            <option value="temperature">Surface temperature (K)</option>
+            <option value="luminosity">Luminosity (Sun = 1)</option>
+            <option value="apparent">Apparent magnitude</option>
+            <option value="distance">Distance (pc)</option>
+          </select>
+          <select id="sketch-x-direction" aria-label="x-axis direction">
+            <option value="">Choose&hellip;</option>
+            <option value="hot-left">Hottest on the left</option>
+            <option value="hot-right">Hottest on the right</option>
+          </select>
+        </div>
+        <div class="control">
+          <label for="sketch-y-quantity">Up (y-axis)</label>
+          <select id="sketch-y-quantity">
+            <option value="">Choose&hellip;</option>
+            <option value="luminosity">Luminosity (Sun = 1)</option>
+            <option value="absolute">Absolute magnitude</option>
+            <option value="apparent">Apparent magnitude</option>
+            <option value="temperature">Surface temperature (K)</option>
+          </select>
+          <select id="sketch-y-direction" aria-label="y-axis direction">
+            <option value="">Choose&hellip;</option>
+            <option value="bright-top">Brightest at the top</option>
+            <option value="bright-bottom">Brightest at the bottom</option>
+          </select>
+        </div>
+        <button type="button" class="secondary-button" id="sketch-axes-check">Check my axes</button>
+        <p class="note" id="sketch-axes-feedback" aria-live="polite"></p>
+      </div>
+
+      <p>
+        Step 2: pick a label, then tap where it goes on the blank diagram (or drag it there).
+      </p>
+      <div class="hr-chip-list" id="sketch-chips"></div>
+
+      <div class="diagram spectrum-panel hr-diagram-panel">
+        <div class="labelled-diagram-wrap" id="hr-sketch-diagram-wrap">
+          <svg
+            id="hr-sketch-diagram"
+            class="responsive-svg"
+            width="640"
+            height="536"
+            viewBox="0 0 640 536"
+            role="application"
+            tabindex="0"
+            aria-label="A blank HR diagram to place labels on. With a label chosen, tap a point to place it, or use the arrow keys to move the cross and Enter to place."
+          ></svg>
+        </div>
+      </div>
+
+      <ul class="hr-sketch-feedback" id="sketch-feedback" aria-live="polite"></ul>
+      <button type="button" class="secondary-button" id="sketch-show-answer" aria-pressed="false">Show the answer</button>
+
+      <h3>Checklist for a sketched answer</h3>
+      <ul class="hr-checklist">
+        <li>Both axes labelled with quantities: surface temperature across; luminosity or absolute magnitude up.</li>
+        <li>Temperature decreasing to the right.</li>
+        <li>Main sequence: a diagonal band from top left to bottom right.</li>
+        <li>Giants top right; supergiants across the top.</li>
+        <li>White dwarfs bottom left.</li>
+        <li>The Sun in the middle of the main sequence.</li>
+      </ul>
+    </section>
+
+    <section class="notes-section" id="distance">
+      <h2>Distances from the HR diagram</h2>
+      <p>
+        If a star is on the main sequence, its spectral type tells you where it sits on the band,
+        so you can read its absolute magnitude M off the diagram. Comparing M with its measured
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="apparentMagnitude" aria-label="What is apparent magnitude?" aria-expanded="false">apparent magnitude</button>
+        m gives its distance d, in
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="parsec" aria-label="What is a parsec?" aria-expanded="false">parsecs</button>,
+        from the data sheet formula M = m + 5 &minus; 5 log d (see
+        <a href="magnitude.html">Magnitude: how bright is a star?</a>).
+      </p>
+      <span class="glossary-definition" data-term="apparentMagnitude" hidden></span>
+      <span class="glossary-definition" data-term="parsec" hidden></span>
+      <p>
+        <strong>Worked example:</strong> a G2 main-sequence star has m = +9.8. The band gives
+        M &asymp; +4.8, so m &minus; M = 5. Then 5 log d = 5 + 5 = 10, log d = 2 and
+        d = 100 pc. The band runs from M = +3.8 to +5.8, giving 63 pc to 158 pc: a range of 95 pc,
+        so the uncertainty is half of it, about &plusmn;48 pc.
+      </p>
+
+      <div class="control">
+        <label for="distance-type">Main-sequence star of type</label>
+        <select id="distance-type"></select>
+      </div>
+      <div class="control">
+        <label for="distance-m">Apparent magnitude m: <span id="distance-m-label"></span></label>
+        <input type="range" id="distance-m" min="0" max="200" step="1" value="98" />
+      </div>
+
+      <div class="diagram spectrum-panel hr-diagram-panel">
+        <div class="labelled-diagram-wrap" id="hr-distance-diagram-wrap">
+          <svg
+            id="hr-distance-diagram"
+            class="responsive-svg"
+            width="640"
+            height="420"
+            viewBox="0 0 640 420"
+            role="img"
+            aria-label="Top: the main sequence band, with a line up from the chosen type's temperature to the band and its absolute magnitude read off. Bottom: a distance scale from 1 to 100,000 parsecs, log scale, with the best estimate marked and the range the band's thickness allows drawn as a bar."
+          ></svg>
+        </div>
+      </div>
+
+      <ol class="hr-working" id="distance-working" aria-live="polite"></ol>
+      <p class="note">
+        This only works if we know the star is on the main sequence: a giant of the same type is
+        far more luminous, so its distance would come out much too small.
+      </p>
+    </section>
+
+    <section class="notes-section" id="next-steps">
+      <h2>Coming next</h2>
+      <p>How stars move on this diagram during their lives (Topic 14 pages): coming soon.</p>
+    </section>
+
+    <section class="notes-section" id="exam-tips">
+      <h2>Exam tips</h2>
+      <p class="exam-tip">
+        <strong>Common exam confusion:</strong> temperature runs backwards, hottest on the left.
+        <a href="#the-diagram">The diagram &uarr;</a>
+      </p>
+      <p class="exam-tip">
+        <strong>Common exam confusion:</strong> on an absolute magnitude axis, negative numbers are
+        at the top.
+        <a href="#the-diagram">The diagram &uarr;</a>
+      </p>
+    </section>
+
+    <section class="notes-section" id="related">
+      <h2>Related pages</h2>
+      <div class="page-card-list">
+        <a class="page-card" href="spectral-types.html">
+          <h3>Colour, temperature and spectral type</h3>
+          <p class="page-card-description">The temperature scale along the bottom.</p>
+        </a>
+        <a class="page-card" href="magnitude.html">
+          <h3>Magnitude: how bright is a star?</h3>
+          <p class="page-card-description">Absolute magnitude and the distance formula.</p>
+        </a>
+      </div>
+    </section>
+
+    <section class="questions" id="questions">
+      <h2>Practice questions</h2>
+      <div id="questions-list"></div>
+    </section>
+
+    <section class="progress">
+      <h2>Your progress</h2>
+      <ul id="progress-list"></ul>
+      <p class="note">Stored in this browser only (localStorage) &mdash; no account needed.</p>
+    </section>
+
+    <p class="coverage" id="coverage"></p>
+    <p class="next-page-link" id="next-page"></p>
+  </main>
+
+  <script src="../src/curriculum.js?v=202611131200"></script>
+  <script src="../src/pages.js?v=202611131200"></script>
+  <script src="../src/specData.js?v=202610161036"></script>
+  <script src="../src/spectra.js?v=202611131200"></script>
+  <script src="../src/magnitude.js?v=202611101600"></script>
+  <script src="../src/spectrumDrawing.js?v=202611130900"></script>
+  <script src="../src/hrDiagram.js?v=202611131200"></script>
+  <script src="../src/hrDiagramQuestions.js?v=202611131200"></script>
+  <script src="../glossary.js?v=202610131052"></script>
+  <script src="../quiz-ui.js?v=202611121900"></script>
+  <script src="hr-diagram.js?v=202611131200"></script>
+  <script src="../diagramEnlarge.js?v=202611111500"></script>
+  <script src="../notesPage.js?v=202609252100"></script>
+  <script src="../nextPage.js?v=202610161057"></script>
+</body>
+</html>

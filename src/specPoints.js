@@ -375,11 +375,11 @@ const SPEC_POINTS = [
 
   // --- Topic 13: Exploring starlight -------------------------------------------
   // Same convention as Topic 11's own multi-part points (11.18, 11.26-11.27):
-  // a point with several lettered sub-parts in the real spec (13.7, 13.14,
+  // a point with several lettered sub-parts in the real spec (13.14,
   // 13.34) is kept as ONE code with all its parts folded into one `text`.
-  // The exception is 13.4, split into 13.4a/b/c (like 11.25) so a page and
-  // its questions can be tagged to the exact sub-part each one teaches —
-  // see SPEC_POINT_GROUPS below.
+  // The exceptions are 13.4, split into 13.4a/b/c (like 11.25), and 13.7,
+  // split into 13.7a-e, so a page and its questions can be tagged to the
+  // exact sub-part each one teaches — see SPEC_POINT_GROUPS below.
   { code: '13.1', topic: 13, depth: 'understand', text: 'the astronomical magnitude scale; apparent magnitude is how bright a star looks as viewed from Earth' },
   { code: '13.2', topic: 13, depth: 'understand', text: 'absolute magnitude' },
   { code: '13.3', topic: 13, depth: 'be able to', text: 'the distance modulus formula M = m + 5 - 5 log d (d in parsecs); determine M or m given the distance' },
@@ -389,10 +389,39 @@ const SPEC_POINTS = [
   { code: '13.5', topic: 13, depth: 'understand', text: 'classify stars by spectral type' },
   { code: '13.6', topic: 13, depth: 'understand', text: "how a star's colour and spectral type relate to its surface temperature" },
   {
-    code: '13.7',
+    code: '13.7a',
     topic: 13,
     depth: 'be able to',
-    text: 'sketch a simple Hertzsprung-Russell diagram, with labelled axes and the positions of the main sequence, the Sun, red and blue giants, white dwarfs and supergiants',
+    group: '13.7',
+    text: 'sketch a simple Hertzsprung-Russell diagram with labelled axes, showing the position of main sequence stars',
+  },
+  {
+    code: '13.7b',
+    topic: 13,
+    depth: 'be able to',
+    group: '13.7',
+    text: 'sketch a simple Hertzsprung-Russell diagram with labelled axes, showing the position of the Sun',
+  },
+  {
+    code: '13.7c',
+    topic: 13,
+    depth: 'be able to',
+    group: '13.7',
+    text: 'sketch a simple Hertzsprung-Russell diagram with labelled axes, showing the position of red and blue giants',
+  },
+  {
+    code: '13.7d',
+    topic: 13,
+    depth: 'be able to',
+    group: '13.7',
+    text: 'sketch a simple Hertzsprung-Russell diagram with labelled axes, showing the position of white dwarfs',
+  },
+  {
+    code: '13.7e',
+    topic: 13,
+    depth: 'be able to',
+    group: '13.7',
+    text: 'sketch a simple Hertzsprung-Russell diagram with labelled axes, showing the position of supergiants',
   },
   { code: '13.8', topic: 13, depth: 'understand', text: "how a star's life cycle relates to its position on the HR diagram, for Sun-like stars and for much more massive ones" },
   { code: '13.9', topic: 13, depth: 'understand', text: 'the inverse-square relationship between distance and brightness/intensity' },
@@ -581,6 +610,7 @@ const SPEC_POINT_GROUPS = {
   '12.1': ['12.1a', '12.1b', '12.1c', '12.1d', '12.1e'],
   '12.2': ['12.2a', '12.2b', '12.2c'],
   '13.4': ['13.4a', '13.4b', '13.4c'],
+  '13.7': ['13.7a', '13.7b', '13.7c', '13.7d', '13.7e'],
 };
 
 function getSpecPoint(code) {

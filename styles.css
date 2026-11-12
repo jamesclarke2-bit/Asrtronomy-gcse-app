@@ -4532,3 +4532,99 @@ canvas {
 .sort-star select {
   margin-left: 0.25rem;
 }
+
+/* notes/hr-diagram.html */
+.hr-star-buttons,
+.hr-chip-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0.75rem 0;
+}
+
+.hr-star-button[aria-pressed='true'],
+.hr-chip[aria-pressed='true'] {
+  outline: 3px solid #1d4ed8;
+  outline-offset: 1px;
+}
+
+.hr-chip {
+  touch-action: none;
+}
+
+.hr-chip[aria-pressed='true']::before {
+  content: '\2192 ';
+}
+
+.hr-star-card {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 0.6rem 0.9rem;
+  margin: 0.5rem 0 1rem;
+  max-width: 640px;
+}
+
+.hr-star-card h3 {
+  margin: 0 0 0.3rem;
+}
+
+.hr-axis-choices select {
+  margin: 0.25rem 0.4rem 0.25rem 0;
+  max-width: 100%;
+}
+
+#hr-sketch-diagram {
+  cursor: crosshair;
+}
+
+#hr-sketch-diagram:focus-visible {
+  outline: 3px solid #1d4ed8;
+  outline-offset: 2px;
+}
+
+.hr-sketch-feedback,
+.hr-checklist {
+  padding-left: 1.2rem;
+}
+
+.hr-sketch-feedback li {
+  margin: 0.2rem 0;
+}
+
+.hr-working li {
+  margin: 0.3rem 0;
+}
+
+.hr-drag-ghost {
+  position: fixed;
+  z-index: 50;
+  transform: translate(-50%, -130%);
+  background: #10131c;
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.15rem 0.45rem;
+  border-radius: 4px;
+  pointer-events: none;
+}
+
+.hr-star-hit {
+  cursor: pointer;
+}
+
+.hr-star-hit:focus-visible {
+  outline: none;
+  stroke: #ffe08a;
+  stroke-width: 2;
+}
+
+/* The HR read-off question diagrams need more room than the default
+   picture-question width, so their labels stay legible on a phone. */
+.question-diagram:has(> .hr-question-diagram) {
+  max-width: 420px;
+}
+
+.hr-question-diagram {
+  margin: 0;
+}

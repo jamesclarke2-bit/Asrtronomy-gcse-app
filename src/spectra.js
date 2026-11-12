@@ -204,7 +204,11 @@
   }
 
   // Approximate titanium oxide band heads, drawn as bands, not exact lines.
-  const MOLECULE_BANDS_NM = [476.1, 495.4, 516.7, 544.8, 615.9, 666.2];
+  // The red heads at 615.9 and 665.1 nm (6159 and 6651 Angstroms) are the
+  // standard values in M-star feature lists (e.g. I. N. Reid's STScI
+  // notes "M dwarfs, L dwarfs and T dwarfs", which give 6651 A; the
+  // 516.7 nm head sits beside, and blends with, the magnesium b lines).
+  const MOLECULE_BANDS_NM = [476.1, 495.4, 516.7, 544.8, 615.9, 665.1];
 
   const STRENGTH_DEPTH = { strong: 0.85, moderate: 0.55, weak: 0.25 };
 

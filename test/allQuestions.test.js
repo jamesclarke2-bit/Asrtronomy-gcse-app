@@ -78,6 +78,8 @@ test("getAllQuestionsNode's total is exactly the sum of every individual questio
   const { makeQuestions: makeSpectra } = require('../src/spectraQuestions');
   const Spectra = require('../src/spectra');
   const { makeQuestions: makeSpectralTypes } = require('../src/spectralTypesQuestions');
+  const { makeQuestions: makeHRDiagram } = require('../src/hrDiagramQuestions');
+  const HRDiagram = require('../src/hrDiagram');
   const { makeQuestions: makeSunDeclination } = require('../src/sunDeclinationQuestions');
   const { makeQuestions: makeSunFeatures } = require('../src/sunFeaturesQuestions');
   const { makeQuestions: makeSunspotRotation } = require('../src/sunspotRotationQuestions');
@@ -112,6 +114,7 @@ test("getAllQuestionsNode's total is exactly the sum of every individual questio
     makeSolarSystemBodies(SpecData).length +
     makeSpectra(Spectra).length +
     makeSpectralTypes(Spectra).length +
+    makeHRDiagram(HRDiagram).length +
     makeSunDeclination({ getSunPosition: SolarPosition.getSunPosition }, Coordinates).length +
     makeSunFeatures(ButterflyDiagram).length +
     makeSunspotRotation(SunRotation).length +
