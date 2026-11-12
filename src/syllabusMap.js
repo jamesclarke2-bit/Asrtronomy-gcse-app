@@ -175,9 +175,10 @@
       registeredTopics.includes(number) ? buildTopic(number) : { number, name: topicNames[number], registered: false }
     );
 
-    // Aggregated across every registered topic's own summary — topics
-    // 14-16 (not yet in the registry) contribute nothing, same as the
-    // extension pages never counting towards any topic's own summary.
+    // Aggregated across every registered topic's own summary — every
+    // topic 1-16 is registered now, so an unregistered topic can only
+    // arise again if the spec itself grows a Topic 17+. Extension pages
+    // never count towards any topic's own summary either way.
     const summary = topics
       .filter((topic) => topic.registered)
       .reduce(

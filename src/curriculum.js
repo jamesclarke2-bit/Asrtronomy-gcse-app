@@ -673,7 +673,12 @@ const UNITS = [
         id: 'u3.16',
         title: 'Planets and dwarf planets: comparing key data',
         depth: 'be able to',
-        spec: ['11.1', '11.6'],
+        // 11.1 (names/relative locations) is NOT tagged here: the page's
+        // own questions (relative-size-calculation, relative-mass-
+        // comparison) test size/mass ratios, not naming or location —
+        // see docs/topic-11-16-audit.md. Only 11.6 (the characteristics
+        // those questions do test) stays.
+        spec: ['11.6'],
         notes:
           'use given data — the exam data sheet’s own table (src/specData.js) — to compare the planets and dwarf planets by relative size, relative mass, temperature, moons and rings; a to-scale size line-up and a temperature-against-distance chart (both built from that same data) make the size and temperature trends visible at a glance, including Venus sitting far hotter than its distance alone would suggest, because of its thick CO₂ atmosphere; a three-question decision diagram (does it orbit the Sun? is it nearly round? has it cleared its orbit?) gives the IAU’s own criteria separating a planet from a dwarf planet and from everything smaller',
       },
@@ -681,7 +686,9 @@ const UNITS = [
         id: 'u3.17',
         title: 'Small Solar System objects',
         depth: 'know',
-        spec: ['11.1'],
+        // 11.1 untagged: this page explains what asteroids/meteoroids/
+        // comets ARE, but no question tests naming or relative location —
+        // see docs/topic-11-16-audit.md.
         notes:
           'besides the planets and dwarf planets, the Solar System holds asteroids (small rocky bodies, mostly orbiting in the asteroid belt between Mars and Jupiter), meteoroids (much smaller fragments of rock or dust) and comets (small bodies of ice, dust and rock that develop a glowing coma and tail(s) as they near the Sun)',
       },
@@ -705,7 +712,9 @@ const UNITS = [
         id: 'u3.20',
         title: 'The Kuiper Belt, Oort Cloud and heliosphere',
         depth: 'know',
-        spec: ['11.5'],
+        // 11.5 untagged: no question tests the heliosphere/Kuiper Belt/
+        // Oort Cloud's own nature or location specifically — see
+        // docs/topic-11-16-audit.md.
         notes:
           'the Kuiper Belt (a disc of icy bodies from roughly 30 to 50 AU, beyond Neptune, in the same plane as the planets); the heliosphere (the vast bubble the solar wind inflates around the Sun, with its outer edge, the heliopause, at roughly 120 AU — Voyager 1 crossed it in 2012); and the Oort Cloud (a far larger, roughly spherical shell of icy bodies thought to extend from a few thousand AU out to perhaps 100,000 AU, around a third of the way to the nearest star)',
       },
@@ -717,8 +726,10 @@ const UNITS = [
         // core accretion, one of 12.3's "main theories" (plural) for
         // gas giant formation, even though it doesn't also name disc
         // instability, the other — only dropping 12.3 if it named
-        // neither.
-        spec: ['11.7', '12.3'],
+        // neither. 11.7 untagged: nothing on this page addresses the
+        // gas giants' CURRENT POSITION (migration isn't mentioned
+        // anywhere on the site) — see docs/topic-11-16-audit.md.
+        spec: ['12.3'],
         notes:
           'brief overview only — covered in depth on the Topic 12 formation-of-planetary-systems page (not yet built): the leading model, core accretion, has a solid core of ice and rock grow large enough, far enough from the young Sun for ices to survive, to gravitationally capture a massive envelope of hydrogen and helium gas directly from the surrounding protoplanetary disc',
       },

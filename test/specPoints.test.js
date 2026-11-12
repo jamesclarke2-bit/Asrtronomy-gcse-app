@@ -3,7 +3,7 @@ const assert = require('node:assert/strict');
 const { SPEC_POINTS, SPEC_POINT_CODES, SPEC_POINT_GROUPS, getSpecPoint, getGroupCoverageStatus } = require('../src/specPoints');
 
 const VALID_DEPTHS = ['know', 'understand', 'be able to'];
-const REGISTERED_TOPICS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
+const REGISTERED_TOPICS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
 
 test('all codes in specPoints.js are unique', () => {
   assert.equal(new Set(SPEC_POINT_CODES).size, SPEC_POINT_CODES.length);
@@ -39,7 +39,7 @@ test('getSpecPoint resolves a known code and returns undefined for an unknown on
   });
 });
 
-test('Topics 1-13 are each present, with no gaps or extras in scope', () => {
+test('Topics 1-16 are each present, with no gaps or extras in scope', () => {
   const topics = [...new Set(SPEC_POINTS.map((p) => p.topic))].sort((a, b) => a - b);
   assert.deepEqual(topics, REGISTERED_TOPICS);
 });

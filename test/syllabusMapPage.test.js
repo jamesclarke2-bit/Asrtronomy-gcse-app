@@ -92,7 +92,7 @@ VIEWPORTS.forEach((viewport) => {
   });
 });
 
-test('notes/syllabus-map.html: every topic 1-16 appears exactly once, registered ones as an expandable card, 14-16 clearly marked not built', async (t) => {
+test('notes/syllabus-map.html: every topic 1-16 appears exactly once, each as an expandable card', async (t) => {
   await withPage(t, VIEWPORTS[0], async (page) => {
     const { SPEC_POINTS, TOPIC_NAMES, REGISTERED_TOPICS } = require('../src/specPoints');
 

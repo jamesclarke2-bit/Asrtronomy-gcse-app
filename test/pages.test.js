@@ -299,10 +299,9 @@ test('buildRecommendedPath reproduces the precomputed RECOMMENDED_PATH exactly',
 
 // --- COMING_SOON accounts for every spec point the syllabus map marks ------
 // "not built yet", across every registered topic (not just the ones a
-// coming-soon step is named after) — plus Topics 14-16, which have no
-// SPEC_POINTS registry entries at all yet. src/pages.js's own header
-// explains why this is the thing that keeps COMING_SOON honest as
-// pages get built and the syllabus map's own coverage shifts.
+// coming-soon step is named after). src/pages.js's own header explains
+// why this is the thing that keeps COMING_SOON honest as pages get
+// built and the syllabus map's own coverage shifts.
 
 function notBuiltLeafCodes(points, topicNumber, out) {
   points.forEach((point) => {
@@ -378,11 +377,9 @@ test('no coming-soon step lists only spec points that are already covered by a b
   });
 });
 
-test('every unregistered topic (14-16, no SPEC_POINTS entries at all) is named in some coming-soon step\'s topics list', () => {
-  const namedTopics = new Set(COMING_SOON.flatMap((step) => step.topics || []));
-  const unregistered = Object.keys(TOPIC_NAMES).map(Number).filter((n) => !REGISTERED_TOPICS.includes(n));
-  assert.ok(unregistered.length > 0, 'there should be at least one unregistered topic to check against (test fixture assumption)');
-  unregistered.forEach((topicNumber) => {
-    assert.ok(namedTopics.has(topicNumber), `Topic ${topicNumber} (${TOPIC_NAMES[topicNumber]}, unregistered) is not named in any coming-soon step`);
-  });
-});
+// Every topic 1-16 now has a src/specPoints.js registry entry (Topics
+// 14-16 were the last to be added — see docs/topic-11-16-audit.md), so
+// there is currently no unregistered topic left for a coming-soon
+// step's `topics` field to name. The field (and the structural test
+// above requiring exactly one of specPoints/topics) stays supported
+// for if the spec ever grows a Topic 17+.

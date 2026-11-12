@@ -1,6 +1,6 @@
 # Syllabus Coverage Review
 
-One row per point in the Edexcel GCSE Astronomy (1AS0) specification, Topics 1–13, built straight from src/specPoints.js, src/curriculum.js, src/pages.js and the site's own practice questions — regenerate with `npm run generate-syllabus-review` whenever those change (see test/syllabusReview.test.js's "docs/syllabus-review.md stays fresh" check). The same data, rendered live, is also at notes/syllabus-review.html.
+One row per point in the Edexcel GCSE Astronomy (1AS0) specification, Topics 1–16, built straight from src/specPoints.js, src/curriculum.js, src/pages.js and the site's own practice questions — regenerate with `npm run generate-syllabus-review` whenever those change (see test/syllabusReview.test.js's "docs/syllabus-review.md stays fresh" check). The same data, rendered live, is also at notes/syllabus-review.html.
 
 ## Summary by topic
 
@@ -16,10 +16,13 @@ One row per point in the Edexcel GCSE Astronomy (1AS0) specification, Topics 1�
 | 8 | Planetary motion and gravity | 9 | 9 | 0 | 3 |
 | 9 | Exploring the Moon | 5 | 5 | 0 | 0 |
 | 10 | Solar astronomy | 12 | 12 | 0 | 0 |
-| 11 | Exploring the Solar System | 33 | 29 | 4 | 0 |
+| 11 | Exploring the Solar System | 33 | 26 | 7 | 0 |
 | 12 | Formation of planetary systems | 14 | 5 | 9 | 1 |
 | 13 | Exploring starlight | 34 | 9 | 25 | 2 |
-| **Total** | | **192** | **151** | **41** | **30** |
+| 14 | Stellar evolution | 11 | 0 | 11 | 0 |
+| 15 | Our place in the Galaxy | 14 | 0 | 14 | 0 |
+| 16 | Cosmology | 12 | 0 | 12 | 0 |
+| **Total** | | **229** | **148** | **81** | **30** |
 
 ## Methodology
 
@@ -196,13 +199,13 @@ One row per point in the Edexcel GCSE Astronomy (1AS0) specification, Topics 1�
 
 | Code | Depth | Spec point | Page(s) | Questions | Thin coverage | Teacher's verdict |
 |---|---|---|---|---|---|---|
-| 11.1 | be able to | use data on the names and relative locations of planets, dwarf planets and small Solar System objects | [Bodies of the Solar System](../notes/solar-system-bodies.html) | 2 |  | |
+| 11.1 | be able to | use data on the names and relative locations of planets, dwarf planets and small Solar System objects | *not built* | – |  | |
 | 11.2 | understand | comet structure (nucleus, coma, tails) | [Bodies of the Solar System](../notes/solar-system-bodies.html) | – |  | |
 | 11.3 | understand | short-period comet orbits and their origin in the Kuiper Belt | [Bodies of the Solar System](../notes/solar-system-bodies.html) | – |  | |
 | 11.4 | understand | long-period comet orbits and their origin in the Oort Cloud | [Bodies of the Solar System](../notes/solar-system-bodies.html) | – |  | |
-| 11.5 | understand | location and nature of the Kuiper Belt, Oort Cloud and heliosphere | [Bodies of the Solar System](../notes/solar-system-bodies.html) | – |  | |
+| 11.5 | understand | location and nature of the Kuiper Belt, Oort Cloud and heliosphere | *not built* | – |  | |
 | 11.6 | understand | planets' principal characteristics (relative size, relative mass, surface temperature, atmospheric composition, satellites, rings) | [Bodies of the Solar System](../notes/solar-system-bodies.html) | – |  | |
-| 11.7 | understand | main theories for the formation and position of the gas giants | [Bodies of the Solar System](../notes/solar-system-bodies.html) | – |  | |
+| 11.7 | understand | main theories for the formation and position of the gas giants | *not built* | – |  | |
 | 11.8 | be able to | use information about the size of the Solar System | [The Scale of the Solar System](../notes/scale-of-the-solar-system.html) | 4 |  | |
 | 11.9 | be able to | use the AU, light year and parsec | [The Scale of the Solar System](../notes/scale-of-the-solar-system.html)<br>[Parallax and the Parsec: Measuring Distances to Stars](../notes/parallax.html) | 3 |  | |
 | 11.10 | understand | origin and structure of meteoroids and meteorites | [Bodies of the Solar System](../notes/solar-system-bodies.html) | – |  | |
@@ -287,3 +290,55 @@ One row per point in the Edexcel GCSE Astronomy (1AS0) specification, Topics 1�
 | 13.32 | understand | advantages and disadvantages of space telescopes and detectors, including orbital observing platforms | *not built* | – |  | |
 | 13.33 | understand | gamma ray, X-ray and ultraviolet astronomy's role in the discovery of gamma ray bursts, black hole accretion discs, and the corona/chromosphere structure of young stars | *not built* | – |  | |
 | 13.34 | understand | how a telescope alters the appearance of stars, double stars, binary stars, open clusters, globular clusters, nebulae and galaxies | *not built* | – |  | |
+
+## Topic 14: Stellar evolution
+
+| Code | Depth | Spec point | Page(s) | Questions | Thin coverage | Teacher's verdict |
+|---|---|---|---|---|---|---|
+| 14.1 | be able to | use the Messier and NGC (New General Catalogue) catalogues of nebulae, clusters and galaxies | *not built* | – |  | |
+| 14.2 | be able to | use the Bayer system for naming the brightest stars in a constellation | *not built* | – |  | |
+| 14.3 | understand | the balance between radiation pressure and gravity in a main sequence star | *not built* | – |  | |
+| 14.4 | understand | how that radiation-pressure/gravity balance changes through a Sun-like star's life cycle | *not built* | – |  | |
+| 14.5 | understand | the balance between electron pressure and gravity in a white dwarf | *not built* | – |  | |
+| 14.6 | understand | how the radiation-pressure/gravity balance changes through the life cycle of a star much more massive than the Sun | *not built* | – |  | |
+| 14.7 | understand | the balance between neutron pressure and gravity in a neutron star | *not built* | – |  | |
+| 14.8 | understand | how the Chandrasekhar Limit affects the final stages of a star's life cycle | *not built* | – |  | |
+| 14.9 | understand | stages and timescales of a Sun-like star's life cycle: emission/absorption nebula, main sequence star, planetary nebula, red giant, white dwarf, black dwarf | *not built* | – |  | |
+| 14.10 | understand | stages and timescales of a much more massive star's life cycle: emission/absorption nebula, main sequence star, red supergiant, supernova, neutron star, black hole | *not built* | – |  | |
+| 14.11 | understand | how astronomers study and gather evidence for black holes | *not built* | – |  | |
+
+## Topic 15: Our place in the Galaxy
+
+| Code | Depth | Spec point | Page(s) | Questions | Thin coverage | Teacher's verdict |
+|---|---|---|---|---|---|---|
+| 15.1 | understand | the Milky Way's appearance from Earth, through binoculars or a small telescope | *not built* | – |  | |
+| 15.2 | know | the size and shape of our Galaxy, and where the Sun, dust, sites of star formation and globular clusters sit within it | *not built* | – |  | |
+| 15.3 | understand | how 21 cm radio waves, not visible light, are used to map our Galaxy's structure and rotation | *not built* | – |  | |
+| 15.4 | know | the Local Group is the group of galaxies gravitationally linked to the Milky Way | *not built* | – |  | |
+| 15.5 | know | the Local Group's composition and scale: the Andromeda Galaxy (M31), the Large and Small Magellanic Clouds (LMC and SMC), and the Triangulum Galaxy (M33) | *not built* | – |  | |
+| 15.6 | be able to | classify galaxies by the Hubble classification: spiral, barred spiral, elliptical, irregular | *not built* | – |  | |
+| 15.7 | know | how Hubble placed the different galaxy types on his 'Tuning Fork' diagram | *not built* | – |  | |
+| 15.8 | know | the Milky Way is a barred spiral (SBb) galaxy | *not built* | – |  | |
+| 15.9 | know | some galaxies emit large quantities of radiation beyond visible light | *not built* | – |  | |
+| 15.10 | know | an Active Galactic Nucleus (AGN) is powered by matter falling onto a supermassive black hole | *not built* | – |  | |
+| 15.11 | know | types of active galaxy: Seyfert galaxies, quasars, blazars | *not built* | – |  | |
+| 15.12 | know | information about AGNs comes from many regions of the electromagnetic spectrum | *not built* | – |  | |
+| 15.13 | understand | why galaxies are grouped into larger clusters and superclusters | *not built* | – |  | |
+| 15.14 | understand | main theories for the formation and evolution of galaxies | *not built* | – |  | |
+
+## Topic 16: Cosmology
+
+| Code | Depth | Spec point | Page(s) | Questions | Thin coverage | Teacher's verdict |
+|---|---|---|---|---|---|---|
+| 16.1 | know | galaxies outside the Local Group show redshift: light shifted to longer wavelengths | *not built* | – |  | |
+| 16.2 | understand | redshift is caused by galaxies receding from us | *not built* | – |  | |
+| 16.3 | be able to | use (wavelength shift)/(emitted wavelength) = v/c to find a galaxy's recession velocity from its redshift | *not built* | – |  | |
+| 16.4 | understand | the evidence that confirmed the discovery of the expanding universe | *not built* | – |  | |
+| 16.5 | be able to | use Hubble's law, v = H0 x d, to relate a galaxy's recession velocity to its distance | *not built* | – |  | |
+| 16.6 | understand | estimating the age and size of the Universe from the Hubble constant | *not built* | – |  | |
+| 16.7 | understand | how the expanding universe supports both the Big Bang theory and the Steady State theory | *not built* | – |  | |
+| 16.8 | understand | the main observational evidence for the Big Bang: quasars (QSOs), cosmic microwave background (CMB) radiation, the Hubble Deep Field image | *not built* | – |  | |
+| 16.9 | understand | why fluctuations in the CMB radiation matter for theories of the Universe's evolution, including WMAP and Planck | *not built* | – |  | |
+| 16.10 | understand | the significance and possible nature of dark matter and dark energy | *not built* | – |  | |
+| 16.11 | understand | the difficulties in detecting dark matter and dark energy | *not built* | – |  | |
+| 16.12 | understand | current models predict different possible future evolutionary paths for the Universe | *not built* | – |  | |

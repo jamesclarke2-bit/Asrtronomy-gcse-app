@@ -1,5 +1,5 @@
 /**
- * Pearson Edexcel GCSE Astronomy (1AS0) specification points, Topics 1-13
+ * Pearson Edexcel GCSE Astronomy (1AS0) specification points, Topics 1-16
  * — a registry separate from src/curriculum.js's own unit/subtopic
  * structure (u1-u6), which predates this file and was never built
  * topic-by-topic against the real spec. This file exists so that
@@ -21,10 +21,10 @@
  * worth checking against the exam board's own depth tag if that's
  * available, rather than treated as equally authoritative as 1-12's.
  *
- * Topics 14-16 remain out of scope for this file (no spec-tagged
- * content yet at all — see the site inventory report). Adding those as
- * their own topics' worth of SPEC_POINTS, the same way this file does
- * for 1-13, is future work, not done here.
+ * Topics 14-16 were registered from the same paraphrased spec-text
+ * summary as Topic 13, with their `depth` taken directly from the
+ * exam board's own verb for each point (not inferred by phrasing-match,
+ * unlike Topic 13 — see docs/topic-11-16-audit.md).
  *
  * A spec point that bundles several distinct things under one code in
  * the real spec document (e.g. 1.6's "sky colour, skyglow, twinkling",
@@ -453,15 +453,90 @@ const SPEC_POINTS = [
     depth: 'understand',
     text: 'how a telescope alters the appearance of stars, double stars, binary stars, open clusters, globular clusters, nebulae and galaxies',
   },
+
+  // --- Topic 14: Stellar evolution ---------------------------------------
+  { code: '14.1', topic: 14, depth: 'be able to', text: 'use the Messier and NGC (New General Catalogue) catalogues of nebulae, clusters and galaxies' },
+  { code: '14.2', topic: 14, depth: 'be able to', text: 'use the Bayer system for naming the brightest stars in a constellation' },
+  { code: '14.3', topic: 14, depth: 'understand', text: 'the balance between radiation pressure and gravity in a main sequence star' },
+  { code: '14.4', topic: 14, depth: 'understand', text: "how that radiation-pressure/gravity balance changes through a Sun-like star's life cycle" },
+  { code: '14.5', topic: 14, depth: 'understand', text: 'the balance between electron pressure and gravity in a white dwarf' },
+  {
+    code: '14.6',
+    topic: 14,
+    depth: 'understand',
+    text: 'how the radiation-pressure/gravity balance changes through the life cycle of a star much more massive than the Sun',
+  },
+  { code: '14.7', topic: 14, depth: 'understand', text: 'the balance between neutron pressure and gravity in a neutron star' },
+  { code: '14.8', topic: 14, depth: 'understand', text: "how the Chandrasekhar Limit affects the final stages of a star's life cycle" },
+  {
+    code: '14.9',
+    topic: 14,
+    depth: 'understand',
+    text: "stages and timescales of a Sun-like star's life cycle: emission/absorption nebula, main sequence star, planetary nebula, red giant, white dwarf, black dwarf",
+  },
+  {
+    code: '14.10',
+    topic: 14,
+    depth: 'understand',
+    text: 'stages and timescales of a much more massive star\'s life cycle: emission/absorption nebula, main sequence star, red supergiant, supernova, neutron star, black hole',
+  },
+  { code: '14.11', topic: 14, depth: 'understand', text: 'how astronomers study and gather evidence for black holes' },
+
+  // --- Topic 15: Our place in the Galaxy ----------------------------------
+  { code: '15.1', topic: 15, depth: 'understand', text: "the Milky Way's appearance from Earth, through binoculars or a small telescope" },
+  {
+    code: '15.2',
+    topic: 15,
+    depth: 'know',
+    text: "the size and shape of our Galaxy, and where the Sun, dust, sites of star formation and globular clusters sit within it",
+  },
+  { code: '15.3', topic: 15, depth: 'understand', text: "how 21 cm radio waves, not visible light, are used to map our Galaxy's structure and rotation" },
+  { code: '15.4', topic: 15, depth: 'know', text: 'the Local Group is the group of galaxies gravitationally linked to the Milky Way' },
+  {
+    code: '15.5',
+    topic: 15,
+    depth: 'know',
+    text: "the Local Group's composition and scale: the Andromeda Galaxy (M31), the Large and Small Magellanic Clouds (LMC and SMC), and the Triangulum Galaxy (M33)",
+  },
+  { code: '15.6', topic: 15, depth: 'be able to', text: 'classify galaxies by the Hubble classification: spiral, barred spiral, elliptical, irregular' },
+  { code: '15.7', topic: 15, depth: 'know', text: "how Hubble placed the different galaxy types on his 'Tuning Fork' diagram" },
+  { code: '15.8', topic: 15, depth: 'know', text: 'the Milky Way is a barred spiral (SBb) galaxy' },
+  { code: '15.9', topic: 15, depth: 'know', text: 'some galaxies emit large quantities of radiation beyond visible light' },
+  { code: '15.10', topic: 15, depth: 'know', text: 'an Active Galactic Nucleus (AGN) is powered by matter falling onto a supermassive black hole' },
+  { code: '15.11', topic: 15, depth: 'know', text: 'types of active galaxy: Seyfert galaxies, quasars, blazars' },
+  { code: '15.12', topic: 15, depth: 'know', text: 'information about AGNs comes from many regions of the electromagnetic spectrum' },
+  { code: '15.13', topic: 15, depth: 'understand', text: 'why galaxies are grouped into larger clusters and superclusters' },
+  { code: '15.14', topic: 15, depth: 'understand', text: 'main theories for the formation and evolution of galaxies' },
+
+  // --- Topic 16: Cosmology -------------------------------------------------
+  { code: '16.1', topic: 16, depth: 'know', text: 'galaxies outside the Local Group show redshift: light shifted to longer wavelengths' },
+  { code: '16.2', topic: 16, depth: 'understand', text: 'redshift is caused by galaxies receding from us' },
+  { code: '16.3', topic: 16, depth: 'be able to', text: "use (wavelength shift)/(emitted wavelength) = v/c to find a galaxy's recession velocity from its redshift" },
+  { code: '16.4', topic: 16, depth: 'understand', text: 'the evidence that confirmed the discovery of the expanding universe' },
+  { code: '16.5', topic: 16, depth: 'be able to', text: "use Hubble's law, v = H0 x d, to relate a galaxy's recession velocity to its distance" },
+  { code: '16.6', topic: 16, depth: 'understand', text: 'estimating the age and size of the Universe from the Hubble constant' },
+  { code: '16.7', topic: 16, depth: 'understand', text: 'how the expanding universe supports both the Big Bang theory and the Steady State theory' },
+  {
+    code: '16.8',
+    topic: 16,
+    depth: 'understand',
+    text: 'the main observational evidence for the Big Bang: quasars (QSOs), cosmic microwave background (CMB) radiation, the Hubble Deep Field image',
+  },
+  {
+    code: '16.9',
+    topic: 16,
+    depth: 'understand',
+    text: "why fluctuations in the CMB radiation matter for theories of the Universe's evolution, including WMAP and Planck",
+  },
+  { code: '16.10', topic: 16, depth: 'understand', text: 'the significance and possible nature of dark matter and dark energy' },
+  { code: '16.11', topic: 16, depth: 'understand', text: 'the difficulties in detecting dark matter and dark energy' },
+  { code: '16.12', topic: 16, depth: 'understand', text: "current models predict different possible future evolutionary paths for the Universe" },
 ];
 
 /**
- * Every topic's own title, 1-16 — the first 13 are exactly the section
- * headers above (this registry's own Topics 1-13); 14-16 have no
- * SPEC_POINTS entries yet (see this file's header), but still have
- * real titles in the spec document, needed anywhere a page lists every
- * topic by name regardless of registry status (e.g. notes/syllabus-
- * map.html).
+ * Every topic's own title, 1-16 — exactly the section headers above
+ * (this registry's own Topics 1-16), needed anywhere a page lists
+ * every topic by name (e.g. notes/syllabus-map.html).
  */
 const TOPIC_NAMES = {
   1: 'Planet Earth',
@@ -527,10 +602,10 @@ function getGroupCoverageStatus(parentCode, taggedCodes) {
 
 const SPEC_POINT_CODES = SPEC_POINTS.map((point) => point.code);
 
-// Topics 1-13 (this file's own registry) vs 14-16 (name only, no points
-// yet) — used anywhere that distinction matters (e.g. "not yet added to
-// the registry" on notes/syllabus-map.html) without hardcoding the
-// boundary a second time.
+// Every topic this file's own registry actually has SPEC_POINTS entries
+// for — all of 1-16, now that Topic 14-16 are registered too. Used
+// anywhere that distinction matters without hardcoding the set a
+// second time.
 const REGISTERED_TOPICS = [...new Set(SPEC_POINTS.map((point) => point.topic))].sort((a, b) => a - b);
 
 const specPointsApi = { SPEC_POINTS, SPEC_POINT_CODES, SPEC_POINT_GROUPS, TOPIC_NAMES, REGISTERED_TOPICS, getSpecPoint, getGroupCoverageStatus };

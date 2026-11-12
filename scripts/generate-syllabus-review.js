@@ -4,7 +4,7 @@
  * ---------------------------------
  * Regenerates docs/syllabus-review.md from the site's own data (never
  * hand-typed) — one row per src/specPoints.js SPEC_POINTS entry across
- * Topics 1-13, via src/syllabusReview.js's buildSyllabusReview, the
+ * Topics 1-16, via src/syllabusReview.js's buildSyllabusReview, the
  * same builder test/syllabusReview.test.js checks and the live
  * notes/syllabus-review.html page (notes/syllabus-review.js) renders
  * from in the browser.
@@ -95,7 +95,7 @@ function renderMarkdown(review) {
   const sections = [];
   sections.push('# Syllabus Coverage Review');
   sections.push(
-    'One row per point in the Edexcel GCSE Astronomy (1AS0) specification, Topics 1–13, built straight ' +
+    'One row per point in the Edexcel GCSE Astronomy (1AS0) specification, Topics 1–16, built straight ' +
       'from src/specPoints.js, src/curriculum.js, src/pages.js and the site\'s own practice questions — ' +
       'regenerate with `npm run generate-syllabus-review` whenever those change ' +
       '(see test/syllabusReview.test.js\'s "docs/syllabus-review.md stays fresh" check). ' +

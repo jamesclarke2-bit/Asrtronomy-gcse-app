@@ -1,6 +1,6 @@
 /**
  * A flat, one-row-per-spec-point review of the whole specification
- * (Topics 1-13), for a teacher to check by eye — deliberately not the
+ * (Topics 1-16), for a teacher to check by eye — deliberately not the
  * same shape as src/syllabusMap.js's own report, which rolls a grouped
  * point's lettered sub-codes (see specPoints.js's SPEC_POINT_GROUPS) up
  * under their shared parent so a progress bar reads sensibly. This
