@@ -539,7 +539,11 @@ const UNITS = [
         id: 'u2.33',
         title: 'Why the atmosphere matters for astronomy',
         depth: 'understand',
-        spec: ['13.30'],
+        // 13.30 untagged: tagged covered but rated PARTIAL in
+        // docs/topic-11-16-audit.md — no dedicated diagram, only this
+        // page's text. Re-tag once the Infrared and high-altitude
+        // telescopes page (not yet built) gives it one, or this page
+        // gains its own.
         notes:
           "the same atmosphere that makes Earth habitable also hinders ground-based astronomy: scattered sunlight limits observing to night-time, and constant small variations in air density and temperature bend starlight unpredictably as it arrives (scintillation, the visible 'twinkling' of stars), blurring and distorting fine detail in any ground-based image or measurement",
       },

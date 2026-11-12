@@ -119,6 +119,14 @@ the strict COVERED bar and are re-tagged in `src/curriculum.js`. Covered: 148 �
 81 → 78 (229 total, 30 flagged thin, unchanged) — matching `docs/syllabus-review.md`'s own
 regenerated totals.
 
+**Update 2026-11-12 (later same day):** `13.30` (Topic 13, audited separately in
+`docs/topic-11-13-audit.md`, rated PARTIAL there — `notes/earth-structure.html` names it but has
+no dedicated diagram) was still tagged covered in `src/curriculum.js`. Untagged on u2.33 and
+added back to the "Stars, galaxies and the Universe" coming-soon step's `specPoints`, until
+either that page or `earth-structure.html` gives it a diagram. Covered: 151 → 150; not built:
+78 → 79; flagged thin: 30 → 29 (229 total) — the tap-reveal-heavy flag no longer applies to an
+un-covered point.
+
 ## Part 3 — overlaps: who should own each idea
 
 - **Stellar life cycle — 13.8 vs 14.3–14.10.** `13.8` ("how a star's life cycle relates to its

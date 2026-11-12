@@ -18,11 +18,11 @@ One row per point in the Edexcel GCSE Astronomy (1AS0) specification, Topics 1�
 | 10 | Solar astronomy | 12 | 12 | 0 | 0 |
 | 11 | Exploring the Solar System | 33 | 29 | 4 | 0 |
 | 12 | Formation of planetary systems | 14 | 5 | 9 | 1 |
-| 13 | Exploring starlight | 34 | 9 | 25 | 2 |
+| 13 | Exploring starlight | 34 | 8 | 26 | 1 |
 | 14 | Stellar evolution | 11 | 0 | 11 | 0 |
 | 15 | Our place in the Galaxy | 14 | 0 | 14 | 0 |
 | 16 | Cosmology | 12 | 0 | 12 | 0 |
-| **Total** | | **229** | **151** | **78** | **30** |
+| **Total** | | **229** | **150** | **79** | **29** |
 
 ## Methodology
 
@@ -285,7 +285,7 @@ One row per point in the Edexcel GCSE Astronomy (1AS0) specification, Topics 1�
 | 13.27 | know | radio astronomy's role in the discovery of quasars, jets from black holes, the Milky Way's structure and protoplanetary discs | *not built* | – |  | |
 | 13.28 | understand | why some infrared telescopes can operate at high altitude on Earth's surface | *not built* | – |  | |
 | 13.29 | know | infrared astronomy's role in the discovery of protostars, dust and molecular clouds, and hotspots on moons | *not built* | – |  | |
-| 13.30 | understand | the atmosphere's detrimental effect on image quality | [Earth: Structure, Atmosphere and Motion](../notes/earth-structure.html) | – | ⚠ covered only on a page where tap-to-reveal content outweighs visible prose | |
+| 13.30 | understand | the atmosphere's detrimental effect on image quality | *not built* | – |  | |
 | 13.31 | understand | why telescopes outside the optical and radio windows must be above the atmosphere | *not built* | – |  | |
 | 13.32 | understand | advantages and disadvantages of space telescopes and detectors, including orbital observing platforms | *not built* | – |  | |
 | 13.33 | understand | gamma ray, X-ray and ultraviolet astronomy's role in the discovery of gamma ray bursts, black hole accretion discs, and the corona/chromosphere structure of young stars | *not built* | – |  | |

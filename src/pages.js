@@ -508,16 +508,19 @@ const COMING_SOON = [
     position: 33,
     why: "Now that Parallax and the Parsec, and Magnitude, can both measure how far away a star is and how bright it really is, the rest of Topic 13 this course hasn't reached yet: stellar spectra and the HR diagram, variable stars as standard candles, gravitationally bound groupings, the sidereal day by star trail, and seeing beyond the optical/radio windows (digital sensors, radio and infrared telescopes, space telescopes).",
     // Topic 13 now has a src/specPoints.js registry — 13.1, 13.2, 13.3
-    // and 13.9 are covered by notes/magnitude.html, 13.10, 13.11 and
-    // 13.12 by notes/parallax.html, and 13.22/13.30 by
-    // notes/earth-structure.html (see src/curriculum.js's u4.2/u4.5/
-    // u2.16/u2.33), so only the remaining 25 codes are named here, not
-    // the whole topic.
+    // and 13.9 are covered by notes/magnitude.html, and 13.10, 13.11
+    // and 13.12 by notes/parallax.html (see src/curriculum.js's
+    // u4.2/u4.5/u2.16), so only the remaining 26 codes are named here,
+    // not the whole topic. 13.30 is named here too, not left off like
+    // those: notes/earth-structure.html's u2.33 names it in text, but
+    // it's still PARTIAL under docs/topic-11-16-audit.md's bar — no
+    // dedicated diagram — so it's untagged in curriculum.js until this
+    // page (or earth-structure.html) gives it one.
     specPoints: [
       '13.4', '13.5', '13.6', '13.7', '13.8',
       '13.13', '13.14', '13.15', '13.16', '13.17', '13.18', '13.19',
       '13.20', '13.21', '13.23', '13.24', '13.25', '13.26', '13.27', '13.28', '13.29',
-      '13.31', '13.32', '13.33', '13.34',
+      '13.30', '13.31', '13.32', '13.33', '13.34',
     ],
   },
   {

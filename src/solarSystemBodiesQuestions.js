@@ -230,19 +230,19 @@ function makeQuestions(SpecData) {
       units: ['u3.21'],
       type: 'choice',
       prompt:
-        "A gas giant needs to form beyond the frost line, where it's cold enough for ice to help build a large enough core or clump. But some gas giants found around other stars (\"hot Jupiters\") orbit extremely close to their star, in a region far too hot for that to have happened. What best explains this?",
+        "By core accretion, a gas giant's solid core needs to grow beyond the frost line, where it's cold enough for ice, not just rock, to add to the growing mass. But some gas giants found around other stars (\"hot Jupiters\") orbit extremely close to their star, in a region far too hot for that core to have formed. What best explains this?",
       options: [
         "The gas giant formed beyond the frost line, then migrated inward through the disc to its present close orbit",
         "The frost line can sit right next to a star in some systems, so the gas giant simply formed exactly where it is now",
         'A hot Jupiter is not actually a gas giant, despite the name',
-        "Core accretion doesn't need a frost line at all — only disc instability does",
+        'Hot Jupiters are rogue planets from outside the Solar System, captured into orbit rather than formed in place',
       ],
       check(value) {
         const correct = value === 'The gas giant formed beyond the frost line, then migrated inward through the disc to its present close orbit';
         return {
           correct,
           message:
-            "A gas giant still needs to form beyond the frost line, however close to its star it ends up today — that part of the theory doesn't change. What can change afterwards is its position: giant planets are thought to migrate, drifting inward or outward through the disc after forming. A \"hot Jupiter\" is exactly this: a gas giant that formed far out, then migrated inward to its current scorching, close-in orbit.",
+            "A gas giant formed by core accretion still needs to form beyond the frost line, however close to its star it ends up today — that part of the theory doesn't change. What can change afterwards is its position: giant planets are thought to migrate, drifting inward or outward through the disc after forming. A \"hot Jupiter\" is exactly this: a gas giant that formed far out, then migrated inward to its current scorching, close-in orbit.",
         };
       },
     },
