@@ -173,6 +173,27 @@ function makeQuestions(SpecData) {
       },
     },
     {
+      id: 'gas-giant-core-accretion',
+      units: ['u3.21'],
+      type: 'choice',
+      prompt:
+        "Beyond the frost line, where ices can survive the young Sun's heat, the leading theory for how a gas giant forms is core accretion. What does it say happens once a solid core of ice and rock grows large enough?",
+      options: [
+        'It gravitationally pulls in a massive envelope of hydrogen and helium gas straight from the surrounding disc',
+        'It melts entirely into one large rocky planet, with no gas envelope at all',
+        'It breaks apart under its own gravity into a belt of smaller asteroids',
+        'It migrates inward until it collides with the Sun',
+      ],
+      check(value) {
+        const correct = value === 'It gravitationally pulls in a massive envelope of hydrogen and helium gas straight from the surrounding disc';
+        return {
+          correct,
+          message:
+            "In core accretion, a solid core of ice and rock grows large enough, far enough from the young Sun for ices to survive its heat, to gravitationally capture a massive envelope of hydrogen and helium gas directly from the surrounding disc. (A less-favoured alternative, disc instability, skips this slow core-building step entirely — part of the disc itself becomes gravitationally unstable and collapses directly into a gas giant.)",
+        };
+      },
+    },
+    {
       id: 'water-origin-internal-vs-delivered',
       units: ['u3.25'],
       type: 'choice',

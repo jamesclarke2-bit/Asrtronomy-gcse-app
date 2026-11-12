@@ -253,6 +253,21 @@ function makeQuestions(TelescopeModel, RayOptics) {
         };
       },
     },
+    // 11.21 (spec-level): the field of view is measured in degrees or arcminutes.
+    {
+      id: 'degrees-to-arcminutes-conversion',
+      units: ['u5.2'],
+      type: 'number',
+      unitLabel: 'arcmin',
+      prompt: "The field of view is usually given in degrees or arcminutes. How many arcminutes are there in 1 degree?",
+      check(value) {
+        const correct = Math.abs(value - 60) <= 1;
+        return {
+          correct,
+          message: '1 degree = 60 arcminutes — the unit a narrow field of view (like a telescope eyepiece\'s) is usually given in, since a whole degree is often too coarse.',
+        };
+      },
+    },
     // 11.25b: advantages of reflectors over refractors — very long focal lengths.
     {
       id: 'reflector-advantage-long-focal-length',

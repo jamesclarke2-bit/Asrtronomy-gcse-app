@@ -218,7 +218,7 @@ One row per point in the Edexcel GCSE Astronomy (1AS0) specification, Topics 1�
 | 11.20 | know | aperture is related to the diameter of the objective | [Telescopes: Magnification, Light Grasp and Resolution](../notes/telescopes.html) | – |  | |
 | 11.21 | know | field of view is the circle of sky seen through the eyepiece, in degrees or arcminutes | [Telescopes: Magnification, Light Grasp and Resolution](../notes/telescopes.html) | – |  | |
 | 11.22 | understand | resolution depends on the objective's diameter and is reduced at a longer observing wavelength | [Telescopes: Magnification, Light Grasp and Resolution](../notes/telescopes.html) | – |  | |
-| 11.23 | be able to | use magnification = focal length of objective / focal length of eyepiece | [Telescopes: Magnification, Light Grasp and Resolution](../notes/telescopes.html) | 8 |  | |
+| 11.23 | be able to | use magnification = focal length of objective / focal length of eyepiece | [Telescopes: Magnification, Light Grasp and Resolution](../notes/telescopes.html) | 9 |  | |
 | 11.24 | understand | Galileo's early telescopic observations and the Sun-centred model | [From Earth-Centred to Sun-Centred](../notes/geocentric-to-heliocentric.html) | – |  | |
 | 11.25a | understand | advantages of reflectors over refractors: no chromatic aberration | [Telescopes: Magnification, Light Grasp and Resolution](../notes/telescopes.html) | – |  | |
 | 11.25b | understand | advantages of reflectors over refractors: very long focal lengths | [Telescopes: Magnification, Light Grasp and Resolution](../notes/telescopes.html) | – |  | |

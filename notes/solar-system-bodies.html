@@ -370,8 +370,8 @@
       <p class="note">
         The heliosphere &mdash; the bubble the solar wind inflates around the Sun &mdash; and the
         Oort Cloud's own outer edge aren't on the exam data sheet; the distances above are
-        separately sourced (Voyager 1 crossed the heliopause, the heliosphere's outer edge, in
-        2012) and are rough figures, not precise boundaries.
+        separately sourced (Voyager 1 crossed the heliopause in 2012) and are rough figures, not
+        precise boundaries.
       </p>
     </section>
 
@@ -402,11 +402,53 @@
 
     <section class="notes-section" id="transits-of-venus">
       <h2>Transits of Venus and measuring the AU</h2>
+
+      <div class="diagram transit-of-venus-diagram">
+        <svg
+          id="transit-of-venus-diagram"
+          class="responsive-svg"
+          width="460"
+          height="300"
+          viewBox="0 0 460 300"
+          role="img"
+          aria-label="Earth on the left with two observers at different latitudes, the Sun on the right with Venus silhouetted in front of it; two dashed sightlines from the observers cross the Sun's disc at slightly different points. Below, an inset shows the Sun's disc as seen from Earth, with the two observers' slightly different tracks of Venus drawn across it. Not to scale."
+        >
+          <circle cx="60" cy="110" r="30" fill="#3b6fb0" stroke="#24456f" stroke-width="2" />
+          <text x="60" y="114" font-size="11" fill="#fff" text-anchor="middle" font-weight="600">Earth</text>
+          <circle cx="60" cy="86" r="3.5" fill="#222" />
+          <text x="60" y="68" font-size="11" fill="#333" text-anchor="middle">Observer A</text>
+          <circle cx="60" cy="134" r="3.5" fill="#222" />
+          <text x="60" y="158" font-size="11" fill="#333" text-anchor="middle">Observer B</text>
+
+          <circle cx="390" cy="110" r="55" fill="#e8a23a" stroke="#9c6a1d" stroke-width="2" />
+          <text x="390" y="114" font-size="11" fill="#5c3c0e" text-anchor="middle" font-weight="600">Sun</text>
+          <circle cx="335" cy="98" r="7" fill="#4a3c28" />
+          <text x="335" y="80" font-size="11" fill="#333" text-anchor="middle">Venus</text>
+
+          <line x1="63" y1="86" x2="345" y2="92" stroke="#555" stroke-width="1.5" stroke-dasharray="5,4" />
+          <line x1="63" y1="134" x2="345" y2="106" stroke="#555" stroke-width="1.5" stroke-dasharray="5,4" />
+
+          <text x="230" y="195" font-size="12" fill="#333" text-anchor="middle" font-style="italic">Not to scale</text>
+
+          <text x="230" y="225" font-size="12" fill="#333" text-anchor="middle">The Sun's disc, as seen from Earth:</text>
+          <circle cx="230" cy="260" r="35" fill="#fdf3e0" stroke="#9c6a1d" stroke-width="2" />
+          <line x1="198" y1="250" x2="262" y2="254" stroke="#2a6bd6" stroke-width="2.5" />
+          <line x1="198" y1="268" x2="262" y2="266" stroke="#c0392b" stroke-width="2.5" />
+          <text x="280" y="253" font-size="11" fill="#2a6bd6" text-anchor="start">Track A</text>
+          <text x="280" y="269" font-size="11" fill="#c0392b" text-anchor="start">Track B</text>
+        </svg>
+      </div>
+      <p class="diagram-caption">
+        First draft, to be checked by the teacher &mdash; comparing the two tracks measures
+        Venus's shift against the Sun, which (with Venus's own orbital distance, already known
+        from Kepler's third law) gives the astronomical unit.
+      </p>
+
       <p>
         A transit of Venus is Venus passing directly across the Sun's disc, as seen from Earth
-        &mdash; rare, because Venus's orbit is tilted about 3.4&deg; to Earth's, so the two
-        usually miss each other from our point of view. Transits come in pairs eight years apart,
-        then nothing for over a century (roughly 105 or 121 years) before the next pair.
+        &mdash; rare, because Venus's orbit is tilted about 3.4&deg; to Earth's. Transits come in
+        pairs eight years apart, then nothing for over a century (roughly 105 or 121 years)
+        before the next pair.
       </p>
       <p>
         In the 18th century, the astronomer Edmond Halley proposed using a transit of Venus to
@@ -417,30 +459,69 @@
         latitudes see Venus trace very slightly different paths across the Sun, timed to start
         and end at slightly different moments. That tiny measured difference, combined with the
         precisely known distance between the two observers on Earth's surface, gives enough
-        geometry to triangulate the real Sun-Earth distance &mdash; exactly the way nearby and
-        distant objects shift against each other when you view them from two different places.
+        geometry to triangulate the real Sun-Earth distance.
       </p>
       <span class="glossary-definition" data-term="parallax" hidden></span>
-      <p class="note">
-        Expeditions to observe the 1761 and 1769 transits (and later ones in 1874 and 1882) for
-        exactly this reason are a famous episode in the history of astronomy &mdash; this page
-        gives the principle only; the historical expeditions themselves aren't covered here yet.
+      <p>
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="venusTransitHistory" aria-label="The historical expeditions to observe a transit of Venus" aria-expanded="false">The historical expeditions</button>
       </p>
+      <div class="glossary-definition" data-term="venusTransitHistory" hidden>
+        <p>
+          Expeditions to observe the 1761 and 1769 transits (and later ones in 1874 and 1882) for
+          exactly this reason are a famous episode in the history of astronomy &mdash; this page
+          gives the principle only; the historical expeditions themselves aren't covered here yet.
+        </p>
+      </div>
     </section>
 
     <section class="notes-section" id="formation">
       <h2>Formation theories (brief)</h2>
       <p>
-        Two open questions about where things came from, covered only briefly here &mdash; both
-        are covered in full on the planetary-formation page (Topic 12, not yet built on this
-        site).
+        Two open questions, covered only briefly here &mdash; both are covered in full on the
+        planetary-formation page (Topic 12, not yet built on this site).
       </p>
       <h3>Why gas giants are gas giants</h3>
+
+      <div class="diagram gas-giant-formation-diagram">
+        <svg
+          id="gas-giant-formation-diagram"
+          class="responsive-svg"
+          width="440"
+          height="210"
+          viewBox="0 0 440 210"
+          role="img"
+          aria-label="A young Sun with its surrounding disc of gas and dust. A dashed line, the frost line, divides the warmer inner disc from the colder outer disc where ices survive. Beyond it, two routes to a gas giant are shown: core accretion, a small core slowly pulling in a gas envelope, and disc instability, a clump of the disc collapsing directly."
+        >
+          <rect x="55" y="80" width="365" height="50" fill="#e4d9c0" />
+          <rect x="180" y="80" width="240" height="50" fill="#cfe3ef" />
+          <circle cx="40" cy="105" r="20" fill="#e8a23a" stroke="#9c6a1d" stroke-width="2" />
+          <text x="40" y="109" font-size="10" fill="#5c3c0e" text-anchor="middle" font-weight="600">Sun</text>
+
+          <line x1="180" y1="65" x2="180" y2="145" stroke="#555" stroke-width="1.5" stroke-dasharray="5,4" />
+          <text x="180" y="58" font-size="12" fill="#333" text-anchor="middle">Frost line</text>
+
+          <circle cx="260" cy="105" r="8" fill="#6e5a40" />
+          <circle cx="260" cy="105" r="22" fill="none" stroke="#2a6bd6" stroke-width="2" stroke-dasharray="3,3" />
+          <text x="260" y="150" font-size="11" fill="#333" text-anchor="middle">Core accretion</text>
+          <text x="260" y="164" font-size="10" fill="#666" text-anchor="middle">(slow core, then gas capture)</text>
+
+          <ellipse cx="365" cy="105" rx="22" ry="16" fill="#8fa9c9" stroke="#45628f" stroke-width="2" />
+          <text x="365" y="150" font-size="11" fill="#333" text-anchor="middle">Disc instability</text>
+          <text x="365" y="164" font-size="10" fill="#666" text-anchor="middle">(disc collapses directly)</text>
+        </svg>
+      </div>
+      <p class="diagram-caption">
+        First draft, to be checked by the teacher &mdash; beyond the frost line, ices can survive
+        the young Sun's heat, which is where both proposed routes to a gas giant happen.
+      </p>
+
       <p>
         The leading theory, <strong>core accretion</strong>, has a solid core of ice and rock grow
         large enough, far enough out for ices to survive the Sun's heat, to gravitationally pull
         in a massive envelope of hydrogen and helium gas straight from the disc of material the
-        young Sun was still surrounded by.
+        young Sun was still surrounded by. A less-favoured alternative, <strong>disc
+        instability</strong>, has part of the disc itself become gravitationally unstable and
+        collapse directly into a gas giant, skipping the slow core-building step.
       </p>
       <h3>Where Earth's water came from</h3>
 
