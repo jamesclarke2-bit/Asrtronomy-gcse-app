@@ -323,7 +323,7 @@ const PAGES = [
     href: 'notes/telescopes.html',
     units: ['u5.1', 'u5.2'],
     phase: 'Telescopes and exploring',
-    position: 30,
+    position: 29,
     why: "The equipment that made everything above observable in the first place — including Galileo's own telescope, back on From Earth-Centred to Sun-Centred.",
   },
   {
@@ -333,7 +333,7 @@ const PAGES = [
     href: 'notes/parallax.html',
     units: ['u4.5', 'u3.4'],
     phase: 'Stars and the Universe',
-    position: 32,
+    position: 31,
     why: "Telescopes' own resolving power turns out to set a hard distance limit here too — the first page of the sky beyond the Solar System, and the ground this phase's own magnitude page (next) builds on.",
   },
   {
@@ -343,7 +343,7 @@ const PAGES = [
     href: 'notes/magnitude.html',
     units: ['u4.2'],
     phase: 'Stars and the Universe',
-    position: 33,
+    position: 32,
     why: "Parallax runs out past a few hundred parsecs; magnitude is the tool that reaches far beyond that, once a star's distance is known by any method at all.",
   },
   {
@@ -482,37 +482,30 @@ const COMING_SOON = [
     specPoints: ['4.20', '4.21'],
   },
   {
-    name: 'Rounding out the Solar System overview',
-    phase: 'The Solar System and gravity',
-    position: 27,
-    why: "Bodies of the Solar System names, locates and explains almost everything it covers, but three points still need a little more: a dedicated question on naming and locating every kind of body, a dedicated question on the heliosphere/Kuiper Belt/Oort Cloud's own nature, and a sentence on why gas giants sit where they do today (not just how they formed).",
-    specPoints: ['11.1', '11.5', '11.7'],
-  },
-  {
     name: 'Formation of planetary systems',
     phase: 'The Solar System and gravity',
-    position: 28,
+    position: 27,
     why: "The next natural question once you know the planets themselves: how gravity actually built them, and shaped their rings, resonances and atmospheres — Bodies of the Solar System's own formation theories are only a first draft.",
     specPoints: ['12.1a', '12.1c', '12.2a', '12.2b', '12.2c'],
   },
   {
     name: 'Exoplanets and life',
     phase: 'The Solar System and gravity',
-    position: 29,
+    position: 28,
     why: "The same 'requirements for life' question Bodies of the Solar System raises for Titan, Europa and Enceladus, turned outward: how we actually find planets around other stars, and whether anyone's out there.",
     specPoints: ['12.4', '12.6', '12.7', '12.8'],
   },
   {
     name: 'Probes and Apollo',
     phase: 'Telescopes and exploring',
-    position: 31,
+    position: 30,
     why: 'How we stopped just watching and went there — the Apollo missions, and the trade-offs of every kind of robotic probe since.',
     specPoints: ['11.26', '11.27', '11.28', '11.29', '11.30'],
   },
   {
     name: 'Stars, galaxies and the Universe',
     phase: 'Stars and the Universe',
-    position: 34,
+    position: 33,
     why: "Now that Parallax and the Parsec, and Magnitude, can both measure how far away a star is and how bright it really is, the rest of Topic 13 this course hasn't reached yet: stellar spectra and the HR diagram, variable stars as standard candles, gravitationally bound groupings, the sidereal day by star trail, and seeing beyond the optical/radio windows (digital sensors, radio and infrared telescopes, space telescopes).",
     // Topic 13 now has a src/specPoints.js registry — 13.1, 13.2, 13.3
     // and 13.9 are covered by notes/magnitude.html, 13.10, 13.11 and
@@ -530,7 +523,7 @@ const COMING_SOON = [
   {
     name: 'Stellar Evolution, the Galaxy and Cosmology',
     phase: 'Stars and the Universe',
-    position: 35,
+    position: 34,
     why: 'The rest of the course past Topic 13: a star\'s full life cycle, our own Galaxy\'s structure, and the wider Universe beyond it.',
     // Topics 14-16 now have a src/specPoints.js registry too, but
     // nothing on the site meets this audit's COVERED bar for any of
