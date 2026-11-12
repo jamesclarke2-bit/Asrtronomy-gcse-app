@@ -1,5 +1,5 @@
 (function () {
-  const H = window.HRDiagram;
+  const H = window.HrDiagram;
   const SpecData = window.SpecData;
   const S = window.Spectra;
   const D = window.SpectrumDrawing;
@@ -791,5 +791,5 @@
   wireDistance();
   renderCoverage();
   Glossary.init(GLOSSARY);
-  QuizUI.mount(HRDiagramQuestions.makeQuestions(H));
+  QuizUI.mount(HrDiagramQuestions.makeQuestions(H));
 })();

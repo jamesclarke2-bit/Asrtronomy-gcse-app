@@ -2,7 +2,7 @@
  * Exam-style practice questions for notes/hr-diagram.html, each with
  * `marks`, a `spec` tag (13.7a-e or 13.13) and a full mark scheme in its
  * feedback. Regions, the main sequence and the star data come from
- * HRDiagram (src/hrDiagram.js), never typed separately. The two
+ * HrDiagram (src/hrDiagram.js), never typed separately. The two
  * read-from-the-diagram distance questions draw their own small HR
  * diagram (render), so the value is read off a picture, not given.
  */
@@ -318,6 +318,6 @@
   if (typeof module !== 'undefined' && module.exports) {
     module.exports = api;
   } else {
-    window.HRDiagramQuestions = api;
+    window.HrDiagramQuestions = api;
   }
 })();

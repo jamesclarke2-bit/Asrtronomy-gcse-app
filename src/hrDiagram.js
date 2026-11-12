@@ -283,6 +283,6 @@
   if (isNode && module.exports) {
     module.exports = api;
   } else {
-    window.HRDiagram = api;
+    window.HrDiagram = api;
   }
 })();
