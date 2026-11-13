@@ -191,7 +191,7 @@ WIDTHS.forEach(({ name, width, height }) => {
       assert.deepEqual(titles, ['Quasar', 'Black-hole jets', 'Milky Way structure', 'Protoplanetary disc']);
       assert.equal(await page.locator('.rt-finds li').count(), 4);
       // Each section that uses general-knowledge values or facts labels them.
-      for (const section of ['big-dishes', 'arrays', 'discoveries']) {
+      for (const section of ['how-it-works', 'big-dishes', 'arrays', 'discoveries']) {
         const notes = (await page.locator(`#${section} .note`).allTextContents()).map((n) => n.replace(/\s+/g, ' '));
         assert.ok(notes.some((n) => /first draft, to be checked by the teacher/.test(n)), section);
       }
