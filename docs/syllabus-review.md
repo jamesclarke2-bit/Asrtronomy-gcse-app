@@ -18,11 +18,11 @@ One row per point in the Edexcel GCSE Astronomy (1AS0) specification, Topics 1�
 | 10 | Solar astronomy | 12 | 12 | 0 | 0 |
 | 11 | Exploring the Solar System | 33 | 29 | 4 | 0 |
 | 12 | Formation of planetary systems | 14 | 5 | 9 | 1 |
-| 13 | Exploring starlight | 49 | 34 | 15 | 1 |
+| 13 | Exploring starlight | 49 | 36 | 13 | 1 |
 | 14 | Stellar evolution | 11 | 0 | 11 | 0 |
 | 15 | Our place in the Galaxy | 14 | 0 | 14 | 0 |
 | 16 | Cosmology | 12 | 0 | 12 | 0 |
-| **Total** | | **244** | **176** | **68** | **29** |
+| **Total** | | **244** | **178** | **66** | **29** |
 
 ## Methodology
 
@@ -279,10 +279,10 @@ One row per point in the Edexcel GCSE Astronomy (1AS0) specification, Topics 1�
 | 13.14b | understand | the light curves of eclipsing binary stars | [Variable stars and Cepheids](../notes/variable-stars.html) | – |  | |
 | 13.14c | understand | the light curves of Cepheid variables | [Variable stars and Cepheids](../notes/variable-stars.html) | – |  | |
 | 13.14d | understand | the light curves of novae and supernovae | [Variable stars and Cepheids](../notes/variable-stars.html) | – |  | |
-| 13.15 | understand | causes of variability in an eclipsing binary's light curve | *not built* | – |  | |
+| 13.15 | understand | causes of variability in an eclipsing binary's light curve | [Eclipsing binaries](../notes/eclipsing-binaries.html) | – |  | |
 | 13.16 | understand | how Cepheid variables are used to determine distances | [Variable stars and Cepheids](../notes/variable-stars.html) | – |  | |
 | 13.17 | understand | the structure of gravitationally bound groupings such as binary stars and clusters | [Binaries, clusters and the view through a telescope](../notes/binaries-and-clusters.html) | – |  | |
-| 13.18 | understand | deduce the period of an eclipsing binary from its light curve | *not built* | – |  | |
+| 13.18 | understand | deduce the period of an eclipsing binary from its light curve | [Eclipsing binaries](../notes/eclipsing-binaries.html) | – |  | |
 | 13.19 | be able to | use star trail photographs to determine the length of the sidereal day | *not built* | – |  | |
 | 13.20 | know | modern observations are recorded with digital sensors converting light to electrical signals, processed and stored as data files | [Reading a spectrum](../notes/reading-a-spectrum.html) | – |  | |
 | 13.21 | understand | how astronomers obtain and study patterns of spectral lines in light from astronomical objects | [Reading a spectrum](../notes/reading-a-spectrum.html) | – |  | |

@@ -84,6 +84,8 @@ test("getAllQuestionsNode's total is exactly the sum of every individual questio
   const BinariesClusters = require('../src/binariesClusters');
   const { makeQuestions: makeVariableStars } = require('../src/variableStarsQuestions');
   const VariableStars = require('../src/variableStars');
+  const { makeQuestions: makeEclipsingBinaries } = require('../src/eclipsingBinariesQuestions');
+  const EclipsingBinaries = require('../src/eclipsingBinaries');
   const { makeQuestions: makeSunDeclination } = require('../src/sunDeclinationQuestions');
   const { makeQuestions: makeSunFeatures } = require('../src/sunFeaturesQuestions');
   const { makeQuestions: makeSunspotRotation } = require('../src/sunspotRotationQuestions');
@@ -121,6 +123,7 @@ test("getAllQuestionsNode's total is exactly the sum of every individual questio
     makeHrDiagram(HrDiagram).length +
     makeBinariesClusters(BinariesClusters).length +
     makeVariableStars(VariableStars).length +
+    makeEclipsingBinaries(EclipsingBinaries).length +
     makeSunDeclination({ getSunPosition: SolarPosition.getSunPosition }, Coordinates).length +
     makeSunFeatures(ButterflyDiagram).length +
     makeSunspotRotation(SunRotation).length +

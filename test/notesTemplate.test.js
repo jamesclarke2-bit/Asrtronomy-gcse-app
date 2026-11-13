@@ -37,6 +37,7 @@ const CONFORMING_PAGES = [
   'notes/hr-diagram.html',
   'notes/binaries-and-clusters.html',
   'notes/variable-stars.html',
+  'notes/eclipsing-binaries.html',
 ];
 
 // Section 6 of the template ("Diagram-first"), checked only for pages

@@ -4697,3 +4697,23 @@ canvas {
   display: inline-block;
   margin-left: 0.75rem;
 }
+
+/* notes/eclipsing-binaries.html */
+.eb-key {
+  padding-left: 1.4rem;
+}
+
+.eb-callout {
+  background: #fff4d6;
+  border-left: 4px solid #b7791f;
+  border-radius: 6px;
+  padding: 0.6rem 0.8rem;
+}
+
+.eb-readouts {
+  padding-left: 1.2rem;
+}
+
+.eb-readouts li {
+  margin: 0.3rem 0;
+}

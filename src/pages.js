@@ -397,6 +397,16 @@ const PAGES = [
     why: 'Binaries, clusters and the view through a telescope met stars that change as they orbit; this page reads the light curves of stars that change in brightness, and uses Cepheids to measure distances.',
   },
   {
+    title: 'Eclipsing binaries',
+    description:
+      'Two stars taking turns to hide each other: four positions linked to the light curve, why the hotter star\'s eclipse is the deeper dip, flat-bottomed against V-shaped dips, a build-your-own pair (with Algol as a preset) whose light curve redraws as sizes, temperatures and tilt change, and finding the period from deep dip to deep dip.',
+    href: 'notes/eclipsing-binaries.html',
+    units: ['u4.12'],
+    phase: 'Stars and the Universe',
+    position: 38,
+    why: "Variable stars and Cepheids showed Algol's dips among six kinds of light curve; this page explains what causes them and how to find the period from them.",
+  },
+  {
     title: 'Bodies of the Solar System',
     description:
       "A to-scale size line-up and bar chart of the planets and dwarf planets, the larger named moons by planet, the four ringed planets drawn at relative size with Saturn's rings the most visible, Io's tidal heating (reusable diagram) from its 1:2:4 resonance with Europa and Ganymede, a temperature-against-distance chart, a planet-vs-dwarf-planet decision diagram, asteroids/meteoroids/comets, a comet-tail diagram and the Kuiper Belt/Oort Cloud on a logarithmic scale, transits of Venus and measuring the AU, and brief formation theories — a first draft pending teacher review.",
@@ -498,6 +508,7 @@ const DIAGRAM_FIRST_PAGES = [
   'notes/hr-diagram.html',
   'notes/binaries-and-clusters.html',
   'notes/variable-stars.html',
+  'notes/eclipsing-binaries.html',
 ];
 
 /**
@@ -560,8 +571,8 @@ const COMING_SOON = [
   {
     name: 'Stars, galaxies and the Universe',
     phase: 'Stars and the Universe',
-    position: 38,
-    why: "Now that Parallax and the Parsec, and Magnitude, can both measure how far away a star is and how bright it really is, the rest of Topic 13 this course hasn't reached yet: how a star's life moves it across the HR diagram, eclipsing binaries' own dips, the sidereal day by star trail, and seeing beyond the optical/radio windows (radio and infrared telescopes, space telescopes).",
+    position: 39,
+    why: "Now that Parallax and the Parsec, and Magnitude, can both measure how far away a star is and how bright it really is, the rest of Topic 13 this course hasn't reached yet: how a star's life moves it across the HR diagram, the sidereal day by star trail, and seeing beyond the optical/radio windows (radio and infrared telescopes, space telescopes).",
     // Topic 13 has a src/specPoints.js registry: 13.1, 13.2, 13.3 and
     // 13.9 are covered by notes/magnitude.html, 13.10-13.12 by
     // notes/parallax.html, 13.22 by notes/earth-structure.html, and
@@ -569,14 +580,15 @@ const COMING_SOON = [
     // and 13.6 by notes/spectral-types.html, and 13.7a-e and 13.13 by
     // notes/hr-diagram.html, and 13.17 and 13.34a-g by
     // notes/binaries-and-clusters.html, and 13.14a-d and 13.16 by
-    // notes/variable-stars.html (see src/curriculum.js's
-    // u4.2/u4.5/u2.16/u4.6/u4.7/u4.8/u4.9/u4.10/u4.11). 13.30 is named here, not left off:
+    // notes/variable-stars.html, and 13.15 and 13.18 by
+    // notes/eclipsing-binaries.html (see src/curriculum.js's
+    // u4.2/u4.5/u2.16/u4.6/u4.7/u4.8/u4.9/u4.10/u4.11/u4.12). 13.30 is named here, not left off:
     // notes/earth-structure.html's u2.33 names it in text, but it's still
     // PARTIAL under docs/topic-11-16-audit.md's bar (no dedicated
     // diagram), so it's untagged in curriculum.js until a page gives it one.
     specPoints: [
       '13.8',
-      '13.15', '13.18', '13.19',
+      '13.19',
       '13.23', '13.24', '13.25', '13.26', '13.27', '13.28', '13.29',
       '13.30', '13.31', '13.32', '13.33',
     ],
@@ -584,7 +596,7 @@ const COMING_SOON = [
   {
     name: 'Stellar Evolution, the Galaxy and Cosmology',
     phase: 'Stars and the Universe',
-    position: 39,
+    position: 40,
     why: 'The rest of the course past Topic 13: a star\'s full life cycle, our own Galaxy\'s structure, and the wider Universe beyond it.',
     // Topics 14-16 have a src/specPoints.js registry too, but nothing on
     // the site meets docs/topic-11-16-audit.md's COVERED bar for any of
@@ -598,7 +610,7 @@ const COMING_SOON = [
   {
     name: 'Redshift',
     phase: 'Stars and the Universe',
-    position: 40,
+    position: 41,
     why: "Reading a spectrum's Doppler shift for single stars, scaled up to whole galaxies: redshift as evidence that they are moving away from us.",
     specPoints: ['16.1', '16.2', '16.3'],
   },

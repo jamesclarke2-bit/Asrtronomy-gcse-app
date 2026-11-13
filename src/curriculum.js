@@ -903,6 +903,14 @@ const UNITS = [
         notes:
           "a light curve plots a star's apparent magnitude against time, with the magnitude axis drawn upside down (smaller, brighter numbers at the top); short-period variables such as RR Lyrae (about 0.57 days, about 1 magnitude) and long-period variables such as Mira (about 330 days, several magnitudes, a pulsating red giant); eclipsing binaries such as Algol (about 2.9 days, flat with sharp regular dips); Cepheids such as Delta Cephei (about 5.4 days, a quick rise and slower fall), giant stars that swell and shrink as they pulsate; novae (a sudden rise of many magnitudes on a white dwarf in a close binary that pulls gas from its companion, fading over weeks to months) and supernovae (a huge rise that can outshine a galaxy, fading over months) are one-off outbursts, not cycles; a Cepheid's period, timed over several cycles to cut the percentage uncertainty, gives its absolute magnitude from the period-luminosity relation (M = -2.43 log P - 1.62), and with its average apparent magnitude the distance modulus M = m + 5 - 5 log d gives its distance, with the uncertainty taken as half the range a graph reading allows; Cepheids are standard candles (Leavitt, 1912; Hubble used them to show the Andromeda Galaxy lies outside our Galaxy in the 1920s)",
       },
+      {
+        id: 'u4.12',
+        title: 'Eclipsing binaries',
+        depth: 'understand',
+        spec: ['13.15', '13.18'],
+        notes:
+          "two stars orbiting each other, seen nearly edge-on, take turns to pass in front of each other; the light curve is flat and brightest while both are fully visible, with a deep (primary) dip when the hotter star is hidden and a shallow (secondary) dip when the cooler star is hidden, because when the same area is covered more light is lost from the hotter star (each square metre of a hotter star gives out more light); eclipses only happen if the orbit is nearly edge-on, and tilting it shrinks the dips until they vanish, so most binaries show no eclipses; a flat-bottomed dip means the smaller star is completely hidden behind (or completely in front of) the larger one, a rounded or V-shaped dip a partial eclipse; the period is the time from one primary dip to the next (deep dip to shallow dip is only half the period), found by timing several whole cycles and dividing, which cuts the percentage uncertainty, with the uncertainty taken as half the range a graph reading allows; Algol (period 2.87 days) is the classic example",
+      },
     ],
   },
   {

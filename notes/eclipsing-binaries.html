@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; form-action 'none'; base-uri 'self'" />
+  <meta name="referrer" content="no-referrer" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Eclipsing binaries</title>
+  <link rel="stylesheet" href="../styles.css?v=202611140900" />
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg?v=202610130720" />
+</head>
+<body>
+  <main>
+    <p class="back-link"><a href="../index.html">&larr; Back to all tools</a></p>
+
+    <h1>Eclipsing binaries</h1>
+    <p class="subtitle">
+      When two stars orbit each other edge-on to us, each passes in front of the other, and the
+      light we receive dips.
+    </p>
+
+    <section class="notes-section" id="eclipses">
+      <h2>Eclipses make the dips</h2>
+      <p>
+        Star A is the hotter star; star B is larger and cooler. Follow positions 1 to 4 down to the
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="lightCurve" aria-label="What is a light curve?" aria-expanded="false">light curve</button>.
+      </p>
+      <span class="glossary-definition" data-term="lightCurve" hidden></span>
+
+      <div class="diagram spectrum-panel eb-panel">
+        <div class="labelled-diagram-wrap" id="intro-diagram-wrap">
+          <svg
+            id="intro-diagram"
+            class="responsive-svg"
+            width="640"
+            height="470"
+            viewBox="0 0 640 470"
+            role="img"
+            aria-label="Top: four views of the two stars as we see them, numbered 1 to 4. In 1 and 3 both stars are fully visible. In 2 the smaller, hotter star A is hidden behind the larger, cooler star B. In 4 star A passes in front of star B. Below: the light curve, apparent magnitude against time in days, flat and brightest at 1 and 3, with a deep dip at 2, the primary eclipse, and a shallow dip at 4, the secondary eclipse."
+          ></svg>
+        </div>
+      </div>
+
+      <ol class="eb-key">
+        <li>Both stars fully visible: the brightest.</li>
+        <li>The hotter star hidden: the deep dip, the primary eclipse.</li>
+        <li>Both stars visible again.</li>
+        <li>The cooler star hidden: the shallow dip, the secondary eclipse.</li>
+      </ol>
+    </section>
+
+    <section class="notes-section" id="why-dips-differ">
+      <h2>Why the dips differ</h2>
+      <p>
+        When the same area of star is covered, more light is lost if the hidden star is the hotter
+        one, because each square metre of a hotter star gives out more light. So the deeper dip is
+        when the hotter star is behind.
+      </p>
+
+      <div class="diagram spectrum-panel eb-panel">
+        <div class="labelled-diagram-wrap" id="why-diagram-wrap">
+          <svg
+            id="why-diagram"
+            class="responsive-svg"
+            width="640"
+            height="430"
+            viewBox="0 0 640 430"
+            role="img"
+            aria-label="Top: the same area covered on a hotter star and on a cooler star, with a bar under each showing the light lost: much more for the hotter star. Bottom: two dips. A flat-bottomed dip, where the smaller star is completely hidden for a while, and a V-shaped dip, where it is only ever partly hidden."
+          ></svg>
+        </div>
+      </div>
+
+      <p>
+        A <strong>flat-bottomed dip</strong> means the smaller star is completely hidden behind the
+        larger one, or completely in front of it, for a while. A <strong>rounded or V-shaped
+        dip</strong> means a partial eclipse. Eclipses only happen if we see the orbit nearly
+        edge-on; tilt it and the dips shrink, then vanish. Most binaries are not lined up like this,
+        so most show no eclipses at all.
+      </p>
+    </section>
+
+    <section class="notes-section" id="build">
+      <h2>Build an eclipsing binary</h2>
+      <div class="preset-list" role="group" aria-label="Choose a starting pair" id="preset-buttons"></div>
+
+      <div class="eb-controls">
+        <div class="control">
+          <label for="a-radius">Star A's radius: <span id="a-radius-label"></span></label>
+          <input type="range" id="a-radius" min="5" max="50" step="1" value="28" />
+        </div>
+        <div class="control">
+          <label for="a-temp">Star A's temperature: <span id="a-temp-label"></span></label>
+          <input type="range" id="a-temp" min="30" max="300" step="1" value="100" />
+        </div>
+        <div class="control">
+          <label for="b-radius">Star B's radius: <span id="b-radius-label"></span></label>
+          <input type="range" id="b-radius" min="5" max="50" step="1" value="42" />
+        </div>
+        <div class="control">
+          <label for="b-temp">Star B's temperature: <span id="b-temp-label"></span></label>
+          <input type="range" id="b-temp" min="30" max="300" step="1" value="70" />
+        </div>
+        <div class="control">
+          <label for="tilt">Tilt of the orbit (90&deg; is edge-on): <span id="tilt-label"></span></label>
+          <input type="range" id="tilt" min="0" max="900" step="1" value="880" />
+        </div>
+        <div class="control">
+          <label for="phase">Position around the orbit: <span id="phase-label"></span></label>
+          <input type="range" id="phase" min="0" max="99" step="1" value="10" />
+        </div>
+        <button type="button" class="secondary-button" id="play" aria-pressed="false">Play</button>
+      </div>
+
+      <div class="diagram spectrum-panel eb-panel">
+        <div class="labelled-diagram-wrap" id="sky-diagram-wrap">
+          <svg
+            id="sky-diagram"
+            class="responsive-svg"
+            width="640"
+            height="240"
+            viewBox="0 0 640 240"
+            role="img"
+            aria-label="The two stars as we see them, at the chosen point in their orbit, with their paths drawn as dashed ovals: flatter the closer the orbit is to edge-on."
+          ></svg>
+        </div>
+      </div>
+
+      <div class="diagram spectrum-panel eb-panel">
+        <div class="labelled-diagram-wrap" id="curve-diagram-wrap">
+          <svg
+            id="curve-diagram"
+            class="responsive-svg"
+            width="640"
+            height="300"
+            viewBox="0 0 640 300"
+            role="img"
+            aria-label="The pair's light curve over two orbits, redrawn as the stars and the tilt change, with a marker at the chosen point in the orbit."
+          ></svg>
+        </div>
+      </div>
+
+      <ul class="eb-readouts">
+        <li><strong>Deep dip:</strong> <span id="deep-readout" aria-live="polite"></span></li>
+        <li><strong>Shallow dip:</strong> <span id="shallow-readout"></span></li>
+        <li><strong>Eclipses happen:</strong> <span id="tilt-readout"></span></li>
+      </ul>
+      <div class="bc-facts" id="preset-facts"></div>
+    </section>
+
+    <section class="notes-section" id="period">
+      <h2>Finding the period</h2>
+      <p class="eb-callout">
+        <strong>Common mistake:</strong> the period is the time from one deep (primary) dip to the
+        next deep dip. From a deep dip to the next shallow dip is only half the period.
+      </p>
+      <p>Drag the markers to two deep dips, count the whole cycles between them, and divide.</p>
+
+      <div class="control">
+        <label for="period-system">Light curve</label>
+        <select id="period-system"></select>
+      </div>
+      <div class="control">
+        <label for="m1">First marker: <span id="m1-label"></span></label>
+        <input type="range" id="m1" min="0" max="160" step="1" value="10" />
+      </div>
+      <div class="control">
+        <label for="m2">Second marker: <span id="m2-label"></span></label>
+        <input type="range" id="m2" min="0" max="160" step="1" value="154" />
+      </div>
+      <div class="control">
+        <label for="cycles">Whole cycles between the markers</label>
+        <select id="cycles"></select>
+      </div>
+
+      <div class="diagram spectrum-panel eb-panel">
+        <div class="labelled-diagram-wrap" id="period-diagram-wrap">
+          <svg
+            id="period-diagram"
+            class="responsive-svg"
+            width="640"
+            height="300"
+            viewBox="0 0 640 300"
+            role="img"
+            aria-label="A light curve with deep and shallow dips, and two marker lines for timing whole cycles between deep dips."
+          ></svg>
+        </div>
+      </div>
+      <p class="note" id="period-readout" aria-live="polite"></p>
+      <p>
+        Algol's curve is on <a href="variable-stars.html">Variable stars and Cepheids</a>; binaries
+        found from spectral line shifts are on
+        <a href="binaries-and-clusters.html">Binaries, clusters and the view through a telescope</a>.
+      </p>
+    </section>
+
+    <section class="notes-section" id="exam-tips">
+      <h2>Exam tips</h2>
+      <p class="exam-tip">
+        <strong>Common exam confusion:</strong> the deep dip is when the hotter star is hidden,
+        whichever star is bigger.
+        <a href="#why-dips-differ">Why the dips differ &uarr;</a>
+      </p>
+      <p class="exam-tip">
+        <strong>Common exam confusion:</strong> measure from deep dip to deep dip, over several
+        cycles.
+        <a href="#period">Finding the period &uarr;</a>
+      </p>
+    </section>
+
+    <section class="notes-section" id="related">
+      <h2>Related pages</h2>
+      <div class="page-card-list">
+        <a class="page-card" href="variable-stars.html">
+          <h3>Variable stars and Cepheids</h3>
+          <p class="page-card-description">Algol among six kinds of light curve.</p>
+        </a>
+        <a class="page-card" href="binaries-and-clusters.html">
+          <h3>Binaries, clusters and the view through a telescope</h3>
+          <p class="page-card-description">Visual and spectroscopic binaries.</p>
+        </a>
+      </div>
+    </section>
+
+    <section class="questions" id="questions">
+      <h2>Practice questions</h2>
+      <div id="questions-list"></div>
+    </section>
+
+    <section class="progress">
+      <h2>Your progress</h2>
+      <ul id="progress-list"></ul>
+      <p class="note">Stored in this browser only (localStorage) &mdash; no account needed.</p>
+    </section>
+
+    <p class="coverage" id="coverage"></p>
+    <p class="next-page-link" id="next-page"></p>
+  </main>
+
+  <script src="../src/curriculum.js?v=202611140900"></script>
+  <script src="../src/pages.js?v=202611140900"></script>
+  <script src="../src/specData.js?v=202610161036"></script>
+  <script src="../src/spectra.js?v=202611131200"></script>
+  <script src="../src/magnitude.js?v=202611101600"></script>
+  <script src="../src/telescopeModel.js?v=202610071800"></script>
+  <script src="../src/starPatterns.js?v=202609280900"></script>
+  <script src="../src/spectrumDrawing.js?v=202611130900"></script>
+  <script src="../src/lightCurveDrawing.js?v=202611140900"></script>
+  <script src="../src/binariesClusters.js?v=202611131800"></script>
+  <script src="../src/variableStars.js?v=202611131800"></script>
+  <script src="../src/eclipsingBinaries.js?v=202611140900"></script>
+  <script src="../src/eclipsingBinariesQuestions.js?v=202611140900"></script>
+  <script src="../glossary.js?v=202610131052"></script>
+  <script src="../quiz-ui.js?v=202611121900"></script>
+  <script src="eclipsing-binaries.js?v=202611140900"></script>
+  <script src="../diagramEnlarge.js?v=202611111500"></script>
+  <script src="../notesPage.js?v=202609252100"></script>
+  <script src="../nextPage.js?v=202610161057"></script>
+</body>
+</html>
