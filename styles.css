@@ -4717,3 +4717,35 @@ canvas {
 .eb-readouts li {
   margin: 0.3rem 0;
 }
+
+/* notes/radio-telescopes.html */
+.rt-key,
+.rt-readouts,
+.rt-finds {
+  padding-left: 1.3rem;
+}
+
+.rt-readouts li,
+.rt-finds li {
+  margin: 0.3rem 0;
+}
+
+.rt-wave {
+  stroke-dasharray: 12 6;
+  animation: rt-wave-flow 1.2s linear infinite;
+}
+
+@keyframes rt-wave-flow {
+  from {
+    stroke-dashoffset: 18;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rt-wave {
+    animation: none;
+  }
+}

@@ -963,6 +963,14 @@ const UNITS = [
         notes:
           'telescope projection (safe; reveals sunspots and rotation); H-alpha filters (front-mounted only, isolating the 656.28nm line to reveal prominences, filaments, plage and spicules); X-ray imaging (must be done from space, since the atmosphere absorbs X-rays; bright patches are active regions linked to flares)',
       },
+      {
+        id: 'u5.5',
+        title: 'Radio telescopes',
+        depth: 'understand',
+        spec: ['13.24', '13.25', '13.26', '13.27'],
+        notes:
+          "a simple radio telescope is a curved dish that reflects radio waves to a receiver at its focus, which turns them into a weak electrical signal; an amplifier strengthens it and a computer records its strength, and because a dish measures one small patch of sky at a time it builds a picture by scanning point by point; the detail a telescope can resolve depends on wavelength divided by aperture, and radio wavelengths (centimetres to metres) are vastly longer than light's, so radio dishes need extremely large apertures (matching a 10 cm optical telescope at 21 cm needs a dish tens of kilometres wide); an aperture synthesis array links dishes spread over many kilometres, a computer combining their exactly timed signals, so they resolve detail like one dish as wide as the farthest-apart pair, with the Earth's rotation swinging each pair round to fill in more of that giant dish; radio astronomy found quasars (strong radio sources that look like faint stars), jets from black holes at the centres of galaxies, the Milky Way's spiral structure (radio from hydrogen passing through dust) and protoplanetary discs around young stars. General-knowledge values and the four discoveries are a first draft, to be checked by the teacher.",
+      },
     ],
   },
   {

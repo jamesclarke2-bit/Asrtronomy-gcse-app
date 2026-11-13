@@ -38,6 +38,7 @@ const CONFORMING_PAGES = [
   'notes/binaries-and-clusters.html',
   'notes/variable-stars.html',
   'notes/eclipsing-binaries.html',
+  'notes/radio-telescopes.html',
 ];
 
 // Section 6 of the template ("Diagram-first"), checked only for pages

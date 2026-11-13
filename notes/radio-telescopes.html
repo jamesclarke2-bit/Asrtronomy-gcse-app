@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; form-action 'none'; base-uri 'self'" />
+  <meta name="referrer" content="no-referrer" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Radio telescopes</title>
+  <link rel="stylesheet" href="../styles.css?v=202611141200" />
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg?v=202610130720" />
+</head>
+<body>
+  <main>
+    <p class="back-link"><a href="../index.html">&larr; Back to all tools</a></p>
+
+    <h1>Radio telescopes</h1>
+    <p class="subtitle">
+      A radio telescope is a giant curved dish that collects radio waves from space instead of light.
+    </p>
+
+    <section class="notes-section" id="how-it-works">
+      <h2>How a simple radio telescope works</h2>
+      <p>
+        The dish focuses radio waves in the same way that a curved mirror focuses light. Follow steps
+        1 to 4.
+      </p>
+
+      <div class="diagram spectrum-panel rt-panel">
+        <div class="labelled-diagram-wrap" id="dish-diagram-wrap">
+          <svg
+            id="dish-diagram"
+            class="responsive-svg"
+            width="640"
+            height="400"
+            viewBox="0 0 640 400"
+            role="img"
+            aria-label="A radio telescope seen from the side. Wavy radio waves come down from space, hit the curved dish and reflect to a receiver held at the dish's focus. A cable runs from the receiver to an amplifier and then to a computer, which shows a map. The steps are numbered 1 to 4."
+          ></svg>
+        </div>
+      </div>
+
+      <ol class="rt-key">
+        <li>The dish collects radio waves and reflects them to one point, its focus.</li>
+        <li>A receiver at the focus turns the radio waves into a tiny electrical signal.</li>
+        <li>An amplifier makes this very weak signal stronger.</li>
+        <li>A computer records how strong the signal is.</li>
+      </ol>
+
+      <p>
+        A dish measures the signal from one small patch of sky at a time. To make a picture, it scans
+        across the sky point by point, and the computer shades each point by its signal strength:
+        brighter for a stronger signal.
+      </p>
+
+      <div class="diagram spectrum-panel rt-panel">
+        <div class="labelled-diagram-wrap" id="scan-diagram-wrap">
+          <svg
+            id="scan-diagram"
+            class="responsive-svg"
+            width="640"
+            height="300"
+            viewBox="0 0 640 300"
+            role="img"
+            aria-label="Left: the patch of sky as a grid of points, with an arrow showing the dish's path along each row in turn. Right: the map the computer builds, filled in point by point, each point shaded by its signal strength. A bright source in the middle and two fainter ones either side appear as the scan goes on."
+          ></svg>
+        </div>
+      </div>
+
+      <div class="control">
+        <label for="scan">Points scanned so far: <span id="scan-label"></span></label>
+        <input type="range" id="scan" aria-controls="scan-diagram" min="0" max="160" step="1" value="60" />
+      </div>
+      <button type="button" class="secondary-button" id="scan-play" aria-pressed="false">Play</button>
+    </section>
+
+    <section class="notes-section" id="big-dishes">
+      <h2>Why radio dishes are so big</h2>
+      <p>
+        How fine a detail a telescope can pick out, its
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="resolution" aria-label="What is resolution?" aria-expanded="false">resolution</button>,
+        depends on the wavelength divided by the diameter of its dish or lens, its
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="aperture" aria-label="What is aperture?" aria-expanded="false">aperture</button>.
+        The smaller wavelength &divide; diameter is, the finer the detail (see
+        <a href="telescopes.html#resolving-power">resolving power in optical telescopes</a>). Radio waves are far longer
+        than light waves, so a radio telescope needs an extremely large aperture to see useful detail.
+      </p>
+      <span class="glossary-definition" data-term="resolution" hidden></span>
+      <span class="glossary-definition" data-term="aperture" hidden></span>
+
+      <div class="control">
+        <label for="diameter">Dish diameter: <span id="diameter-label"></span></label>
+        <input type="range" id="diameter" aria-controls="sources-diagram" min="0" max="100" step="1" value="44" />
+      </div>
+      <div class="control">
+        <label for="wavelength">Wavelength: <span id="wavelength-label"></span></label>
+        <input type="range" id="wavelength" aria-controls="sources-diagram" min="0" max="100" step="1" value="66" />
+      </div>
+
+      <div class="diagram spectrum-panel rt-panel">
+        <div class="labelled-diagram-wrap" id="sources-diagram-wrap">
+          <svg
+            id="sources-diagram"
+            class="responsive-svg"
+            width="640"
+            height="260"
+            viewBox="0 0 640 260"
+            role="img"
+            aria-label="Two radio sources close together on the sky, as the chosen dish sees them: two separate spots when the dish is big enough for the wavelength, or one merged blob when it is not."
+          ></svg>
+        </div>
+      </div>
+
+      <ul class="rt-readouts">
+        <li><strong>Wavelength &divide; diameter:</strong> <span id="ratio-readout" aria-live="polite"></span></li>
+        <li><strong>The two sources:</strong> <span id="separate-readout"></span></li>
+        <li><strong>The same detail in light:</strong> <span id="optical-readout"></span></li>
+      </ul>
+
+      <div class="diagram spectrum-panel rt-panel">
+        <div class="labelled-diagram-wrap" id="compare-diagram-wrap">
+          <svg
+            id="compare-diagram"
+            class="responsive-svg"
+            width="640"
+            height="240"
+            viewBox="0 0 640 240"
+            role="img"
+            aria-label="Not to scale. Left: a small optical telescope 10 centimetres across, observing light. Right: the radio dish that would see the same detail at a wavelength of 21 centimetres, about 38 kilometres across, drawn far wider."
+          ></svg>
+        </div>
+      </div>
+      <p class="note">
+        The wavelengths here (yellow-green light about 550 nm, or 0.00055 mm; radio waves from about
+        1 cm to 1 m; cold hydrogen gas at 21 cm): first draft, to be checked by the teacher.
+      </p>
+    </section>
+
+    <section class="notes-section" id="arrays">
+      <h2>Many dishes working as one</h2>
+      <p>
+        Several dishes spread over many kilometres can be linked. A computer combines their signals,
+        timed exactly, so together they pick out detail like a single dish as wide as the
+        farthest-apart pair. This is an <strong>aperture synthesis array</strong>.
+      </p>
+      <p>
+        Each pair of dishes fills in part of that giant dish. As the Earth turns, each pair swings
+        round and fills in more of it.
+      </p>
+
+      <div class="control">
+        <label for="hours">Hours the Earth has turned: <span id="hours-label"></span></label>
+        <input type="range" id="hours" aria-controls="array-diagram" min="0" max="12" step="1" value="2" />
+      </div>
+
+      <div class="diagram spectrum-panel rt-panel">
+        <div class="labelled-diagram-wrap" id="array-diagram-wrap">
+          <svg
+            id="array-diagram"
+            class="responsive-svg"
+            width="640"
+            height="340"
+            viewBox="0 0 640 340"
+            role="img"
+            aria-label="Left: five radio dishes spread out on the ground, each cabled to one computer, with the farthest-apart pair marked. Right: the giant dish they act like, as wide as that pair, with arcs showing how much of it the pairs of dishes have filled in. The arcs grow as the Earth turns."
+          ></svg>
+        </div>
+      </div>
+      <p class="note" id="array-readout" aria-live="polite"></p>
+      <p class="note">
+        The array here is made up. That the Earth turns about 15&deg; an hour, and that an array
+        collects only the radio waves landing on its real dishes: first draft, to be checked by the
+        teacher.
+      </p>
+    </section>
+
+    <section class="notes-section" id="discoveries">
+      <h2>What radio astronomy found</h2>
+      <div class="diagram spectrum-panel rt-panel">
+        <div class="labelled-diagram-wrap" id="discoveries-diagram-wrap">
+          <svg
+            id="discoveries-diagram"
+            class="responsive-svg"
+            width="640"
+            height="440"
+            viewBox="0 0 640 440"
+            role="img"
+            aria-label="Four drawings. A quasar: a star-like point with two radio clouds either side. Jets from a black hole: a galaxy with two narrow jets shooting out of its centre. The Milky Way's structure: a spiral galaxy with its arms traced by radio waves from hydrogen gas. A protoplanetary disc: a young star surrounded by a disc of dust with dark gaps."
+          ></svg>
+        </div>
+      </div>
+      <ul class="rt-finds">
+        <li><strong>Quasars:</strong> found as strong radio sources that look like faint stars; they are the bright centres of very distant galaxies.</li>
+        <li><strong>Jets from black holes:</strong> radio maps show narrow jets shooting out from black holes at the centres of some galaxies.</li>
+        <li><strong>The Milky Way's structure:</strong> radio waves from hydrogen gas pass through the dust that hides much of our Galaxy, so radio maps traced its spiral arms.</li>
+        <li><strong>Protoplanetary discs:</strong> radio arrays have pictured discs of dust and gas around young stars, with gaps where planets may be forming.</li>
+      </ul>
+      <p class="note">These four discoveries: first draft, to be checked by the teacher.</p>
+    </section>
+
+    <section class="notes-section" id="exam-tips">
+      <h2>Exam tips</h2>
+      <p class="exam-tip">
+        <strong>Common exam confusion:</strong> radio dishes are huge because radio wavelengths are
+        long, not because radio waves are faint.
+        <a href="#big-dishes">Why radio dishes are so big &uarr;</a>
+      </p>
+      <p class="exam-tip">
+        <strong>Common exam confusion:</strong> an array sees detail like one dish as wide as its
+        farthest-apart pair.
+        <a href="#arrays">Many dishes working as one &uarr;</a>
+      </p>
+    </section>
+
+    <section class="notes-section" id="related">
+      <h2>Related pages</h2>
+      <div class="page-card-list">
+        <a class="page-card" href="telescopes.html">
+          <h3>Telescopes: Magnification, Light Grasp and Resolution</h3>
+          <p class="page-card-description">Resolution in optical telescopes.</p>
+        </a>
+      </div>
+    </section>
+
+    <section class="questions" id="questions">
+      <h2>Practice questions</h2>
+      <div id="questions-list"></div>
+    </section>
+
+    <section class="progress">
+      <h2>Your progress</h2>
+      <ul id="progress-list"></ul>
+      <p class="note">Stored in this browser only (localStorage) &mdash; no account needed.</p>
+    </section>
+
+    <p class="coverage" id="coverage"></p>
+    <p class="next-page-link" id="next-page"></p>
+  </main>
+
+  <script src="../src/curriculum.js?v=202611141200"></script>
+  <script src="../src/pages.js?v=202611141200"></script>
+  <script src="../src/specData.js?v=202610161036"></script>
+  <script src="../src/spectra.js?v=202611131200"></script>
+  <script src="../src/spectrumDrawing.js?v=202611130900"></script>
+  <script src="../src/telescopeModel.js?v=202610071800"></script>
+  <script src="../src/radioTelescopes.js?v=202611141200"></script>
+  <script src="../src/radioTelescopesQuestions.js?v=202611141200"></script>
+  <script src="../glossary.js?v=202610131052"></script>
+  <script src="../quiz-ui.js?v=202611121900"></script>
+  <script src="radio-telescopes.js?v=202611141200"></script>
+  <script src="../diagramEnlarge.js?v=202611111500"></script>
+  <script src="../notesPage.js?v=202609252100"></script>
+  <script src="../nextPage.js?v=202610161057"></script>
+</body>
+</html>

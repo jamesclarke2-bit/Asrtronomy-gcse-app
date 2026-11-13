@@ -64,10 +64,10 @@ that point.
 | 13.21 | COVERED (2026-11-12) | `notes/reading-a-spectrum.html` §`spectrograph` and §`three-spectra` (spectrograph schematic, two views, Kirchhoff sim); four questions | — | — |
 | 13.22 | PARTIAL | `notes/earth-structure.html` §`transmission-window` (h2 "The atmospheric transmission window", full SVG chart + legend); exam tip in §`exam-tips` ("X-ray telescopes have to be space-based") (u2.16) | No dedicated question | Add a question to `src/earthStructureQuestions.js` |
 | 13.23 | MISSING | — | The "only optical and radio telescopes should be at sea level" framing (distinct from 13.28's altitude point) isn't stated | Fold into the radio/infrared page, cross-link from `#transmission-window` |
-| 13.24 | MISSING | — | No content on how a radio telescope operates | New page |
-| 13.25 | MISSING | — | No radio-telescope-resolution content | **Overlap** — see §3; link to `notes/telescopes.html` §`resolving-power` rather than re-deriving |
-| 13.26 | MISSING | — | No aperture-synthesis content | New page |
-| 13.27 | MISSING | — | No radio-astronomy-discoveries content (quasars, jets, Milky Way structure, protoplanetary discs) | New page |
+| 13.24 | COVERED (2026-11-14) | `notes/radio-telescopes.html` §`how-it-works` (dish, receiver at the focus, amplifier, computer: four numbered steps; scanning point by point to build a map, with a scan slider); three questions | — |
+| 13.25 | COVERED (2026-11-14) | `notes/radio-telescopes.html` §`big-dishes` (resolution depends on wavelength ÷ aperture, stated qualitatively; dish-diameter and wavelength sliders merge or separate two sources; the dish that matches a 10 cm optical telescope at 21 cm); links to `notes/telescopes.html` §`resolving-power` and reuses its resolution model; three questions, including why a radio dish must be bigger than an optical one | — |
+| 13.26 | COVERED (2026-11-14) | `notes/radio-telescopes.html` §`arrays` (linked dishes, signals combined by computer, detail like one dish as wide as the farthest-apart pair; an hours slider shows the Earth's rotation filling in the giant dish); three questions | — |
+| 13.27 | COVERED (2026-11-14) | `notes/radio-telescopes.html` §`discoveries` (four drawn panels and a list: quasars, jets from black holes, the Milky Way's structure, protoplanetary discs; first draft); three questions covering all four | — |
 | 13.28 | MISSING | — | No infrared-telescope-altitude content | New page |
 | 13.29 | MISSING | — | No infrared-astronomy-discoveries content | New page |
 | 13.30 | PARTIAL | `notes/earth-structure.html` §`atmosphere-and-astronomy`, tap-reveal "How it hinders" (scintillation/twinkling blurs fine detail) | No diagram specific to this point; no question | Add a question |

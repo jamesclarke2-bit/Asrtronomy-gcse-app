@@ -61,7 +61,7 @@ for each.
 | 15.8 | MISSING | — | "Barred spiral"/"SBb" not found anywhere; the site states no galaxy type for the Milky Way at all | Same new page |
 | 15.9 | MISSING | — | No AGN/radiation-beyond-visible content anywhere | New page (radio astronomy + AGN/quasars — overlaps 13.27, see Part 3) |
 | 15.10 | MISSING | — | "AGN"/"active galactic" not found anywhere | Same new page |
-| 15.11 | MISSING | — | "Seyfert" and "blazar" appear nowhere; "quasar" is registered as 13.27 but that point is itself unbuilt | Same new page |
+| 15.11 | MISSING | — | "Seyfert" and "blazar" appear nowhere; "quasar" appears for 13.27 on `notes/radio-telescopes.html` (2026-11-14), but only as a radio discovery, not as an active galaxy | Same new page |
 | 15.12 | MISSING | — | No content | Same new page |
 | 15.13 | MISSING | — | "Supercluster" doesn't appear anywhere; overlaps the also-unbuilt 13.17 (clusters) — see Part 3 | Could be satisfied by one new treatment of "clusters" broadly alongside 15.2's globular clusters, or kept separate |
 | 15.14 | MISSING | — | No galaxy-formation-theory content anywhere | New page |

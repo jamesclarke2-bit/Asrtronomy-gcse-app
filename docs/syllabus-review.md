@@ -18,11 +18,11 @@ One row per point in the Edexcel GCSE Astronomy (1AS0) specification, Topics 1�
 | 10 | Solar astronomy | 12 | 12 | 0 | 0 |
 | 11 | Exploring the Solar System | 33 | 29 | 4 | 0 |
 | 12 | Formation of planetary systems | 14 | 5 | 9 | 1 |
-| 13 | Exploring starlight | 49 | 36 | 13 | 1 |
+| 13 | Exploring starlight | 49 | 40 | 9 | 1 |
 | 14 | Stellar evolution | 11 | 0 | 11 | 0 |
 | 15 | Our place in the Galaxy | 14 | 0 | 14 | 0 |
 | 16 | Cosmology | 12 | 0 | 12 | 0 |
-| **Total** | | **244** | **178** | **66** | **29** |
+| **Total** | | **244** | **182** | **62** | **29** |
 
 ## Methodology
 
@@ -288,10 +288,10 @@ One row per point in the Edexcel GCSE Astronomy (1AS0) specification, Topics 1�
 | 13.21 | understand | how astronomers obtain and study patterns of spectral lines in light from astronomical objects | [Reading a spectrum](../notes/reading-a-spectrum.html) | – |  | |
 | 13.22 | know | the atmosphere blocks almost all radiation except visible light and radio waves | [Earth: Structure, Atmosphere and Motion](../notes/earth-structure.html) | – | ⚠ covered only on a page where tap-to-reveal content outweighs visible prose | |
 | 13.23 | know | only optical and radio telescopes should be at sea level | *not built* | – |  | |
-| 13.24 | understand | how a simple radio telescope operates | *not built* | – |  | |
-| 13.25 | understand | why radio telescopes need extremely large apertures to maintain useful resolution | *not built* | – |  | |
-| 13.26 | understand | how multiple radio telescopes work together as an aperture synthesis array | *not built* | – |  | |
-| 13.27 | know | radio astronomy's role in the discovery of quasars, jets from black holes, the Milky Way's structure and protoplanetary discs | *not built* | – |  | |
+| 13.24 | understand | how a simple radio telescope operates | [Radio telescopes](../notes/radio-telescopes.html) | – |  | |
+| 13.25 | understand | why radio telescopes need extremely large apertures to maintain useful resolution | [Radio telescopes](../notes/radio-telescopes.html) | – |  | |
+| 13.26 | understand | how multiple radio telescopes work together as an aperture synthesis array | [Radio telescopes](../notes/radio-telescopes.html) | – |  | |
+| 13.27 | know | radio astronomy's role in the discovery of quasars, jets from black holes, the Milky Way's structure and protoplanetary discs | [Radio telescopes](../notes/radio-telescopes.html) | – |  | |
 | 13.28 | understand | why some infrared telescopes can operate at high altitude on Earth's surface | *not built* | – |  | |
 | 13.29 | know | infrared astronomy's role in the discovery of protostars, dust and molecular clouds, and hotspots on moons | *not built* | – |  | |
 | 13.30 | understand | the atmosphere's detrimental effect on image quality | *not built* | – |  | |
