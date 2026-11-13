@@ -65,7 +65,7 @@ async function withBrowser(t, browserDef, run) {
   try {
     browser = await browserDef.launch();
   } catch (err) {
-    skip(t, `${browserDef.name} isn't available in this environment (${err.message})`);
+    skip(t, `${browserDef.name} isn't available in this environment (${err.message})`, browserDef.name);
     return;
   }
   try {

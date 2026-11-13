@@ -21,30 +21,47 @@ function launchChromium() {
   return chromium.launch(executablePath ? { executablePath } : {});
 }
 
+// The one warning a test file prints when any of its browser tests
+// skipped, naming each browser that was missing and how many of its tests
+// skipped. `counts` maps a browser name ('Chromium', 'WebKit', ...) to a
+// skip count. PLAYWRIGHT_CHROMIUM_PATH only ever helps Chromium, so its
+// hint is given only when Chromium tests skipped.
+function skipWarning(fileLabel, counts, chromiumPath) {
+  const browsers = Object.keys(counts).filter((name) => counts[name] > 0);
+  if (browsers.length === 0) return null;
+  const parts = browsers.map((name) => {
+    let part = `${counts[name]} ${name} test(s) skipped because ${name} isn't available to Playwright here`;
+    if (name === 'Chromium') {
+      part += chromiumPath
+        ? ` (PLAYWRIGHT_CHROMIUM_PATH (${chromiumPath}) was tried and still didn't work)`
+        : " (set PLAYWRIGHT_CHROMIUM_PATH to an installed Chromium executable's path to run them anyway)";
+    }
+    return part;
+  });
+  return `\n⚠  BROWSER TESTS SKIPPED — ${fileLabel}: ${parts.join('; ')}. See README.md's "Running the tests" section.\n`;
+}
+
 // Call once per test file, right after computing SKIP_MESSAGE. Returns
-// a `skip(t, message)` to call in place of `t.skip(message)` at every
-// "if (launchError)" guard — same behaviour, except this file's
+// a `skip(t, message, browser)` to call in place of `t.skip(message)` at
+// every "if (launchError)" guard — same behaviour, except this file's
 // test.after also prints one unmissable warning if any of its tests
 // actually skipped, instead of that only showing up as a terse
-// "# skipped N" buried in node:test's own run-wide summary.
+// "# skipped N" buried in node:test's own run-wide summary. `browser`
+// names the browser that was missing; it defaults to 'Chromium', which
+// is what every file but test/pictureHighlightVisibility.test.js
+// launches.
 function trackSkips(fileLabel) {
-  let count = 0;
+  const counts = {};
   test.after(() => {
-    if (count === 0) return;
-    const hint = process.env.PLAYWRIGHT_CHROMIUM_PATH
-      ? `PLAYWRIGHT_CHROMIUM_PATH (${process.env.PLAYWRIGHT_CHROMIUM_PATH}) was tried and still didn't work`
-      : "set PLAYWRIGHT_CHROMIUM_PATH to an installed Chromium executable's path to run them anyway";
-    console.warn(
-      `\n⚠  BROWSER TESTS SKIPPED — ${fileLabel}: ${count} test(s) skipped because Chromium isn't ` +
-        `available to Playwright here. ${hint}. See README.md's "Running the tests" section.\n`
-    );
+    const warning = skipWarning(fileLabel, counts, process.env.PLAYWRIGHT_CHROMIUM_PATH);
+    if (warning) console.warn(warning);
   });
   return {
-    skip(t, message) {
-      count += 1;
+    skip(t, message, browser = 'Chromium') {
+      counts[browser] = (counts[browser] || 0) + 1;
       t.skip(message);
     },
   };
 }
 
-module.exports = { launchChromium, trackSkips };
+module.exports = { launchChromium, trackSkips, skipWarning };
