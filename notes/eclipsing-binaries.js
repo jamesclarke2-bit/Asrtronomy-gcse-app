@@ -186,7 +186,10 @@
         li.textContent = f;
         ul.appendChild(li);
       });
-      facts.append(h, ul);
+      const draft = document.createElement('p');
+      draft.className = 'note';
+      draft.textContent = 'The star sizes, temperatures, separation and tilt are a first draft, to be checked by the teacher. The period and magnitudes match the Algol curve on Variable stars and Cepheids.';
+      facts.append(h, ul, draft);
     }
     drawSim();
   }
