@@ -227,7 +227,7 @@ PAGES.forEach((href) => {
       for (const { name, run } of CLOSE_METHODS) {
         await t.test(`close via ${name}`, async (st) => {
           if (buttonCount === 0) {
-            st.skip(`${href} has no visible, worth-enlarging diagram`);
+            st.skip(`${href} has no visible, worth-enlarging diagram at phone width`);
             return;
           }
           for (let i = 0; i < buttonCount; i += 1) {
@@ -277,7 +277,7 @@ PAGES.forEach((href) => {
     try {
       const buttonCount = await page.locator('.diagram-enlarge-button:visible').count();
       if (buttonCount === 0) {
-        t.skip(`${href} has no visible, worth-enlarging diagram`);
+        t.skip(`${href} has no visible, worth-enlarging diagram at phone width`);
         return;
       }
       const button = page.locator('.diagram-enlarge-button:visible').first();

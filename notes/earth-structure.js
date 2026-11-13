@@ -493,47 +493,12 @@
     });
   }
 
-  // Mirrors the original div-based bar chart one-for-one: how far each
-  // part of the spectrum penetrates (bar height) and whether it's open,
-  // partly absorbed, or blocked (colour) before reaching the ground.
-  const TRANSMISSION_BANDS = [
-    { name: 'Gamma ray', heightPct: 10, category: 'blocked' },
-    { name: 'X-ray', heightPct: 16, category: 'blocked' },
-    { name: 'Ultraviolet', heightPct: 32, category: 'blocked' },
-    { name: 'Optical', heightPct: 100, category: 'open' },
-    { name: 'Infrared', heightPct: 60, category: 'partial' },
-    { name: 'Radio', heightPct: 100, category: 'open' },
-  ];
-  const TRANSMISSION_COLORS = { open: '#2a6bd6', partial: '#e8a23a', blocked: '#c0392b' };
-
+  // The transmission-window chart lives in src/atmosphereWindows.js,
+  // shared with notes/infrared-telescopes.html.
   function drawTransmissionChart() {
     const svg = document.getElementById('transmission-chart');
     if (!svg) return;
-    const wellHeight = 160;
-    const wellY = 30;
-    const groundY = wellY + wellHeight;
-    const bandWidth = 80;
-    const gap = 20;
-    const startX = 30;
-    const lastBandRight = startX + (TRANSMISSION_BANDS.length - 1) * (bandWidth + gap) + bandWidth;
-
-    svgEl('line', { x1: startX - 10, y1: groundY, x2: lastBandRight + 10, y2: groundY, stroke: '#4a6741', 'stroke-width': 3 }, svg);
-    svgEl('text', {
-      x: (startX + lastBandRight) / 2, y: groundY + 22,
-      'font-size': 13, fill: '#4a6741', 'font-weight': 600, 'text-anchor': 'middle',
-    }, svg).textContent = "Earth's surface";
-
-    TRANSMISSION_BANDS.forEach((band, i) => {
-      const x = startX + i * (bandWidth + gap);
-      const barHeight = (band.heightPct / 100) * wellHeight;
-      const barY = groundY - barHeight;
-      svgEl('rect', { x, y: wellY, width: bandWidth, height: wellHeight, fill: '#eef1f4', rx: 4 }, svg);
-      svgEl('rect', { x, y: barY, width: bandWidth, height: barHeight, fill: TRANSMISSION_COLORS[band.category] }, svg);
-      const label = svgEl('text', {
-        x: x + bandWidth / 2, y: groundY + 40, 'font-size': 12, fill: '#444', 'text-anchor': 'middle',
-      }, svg);
-      label.textContent = band.name;
-    });
+    window.AtmosphereWindows.draw(svg);
   }
 
   const GLOSSARY = {

@@ -4749,3 +4749,18 @@ canvas {
     animation: none;
   }
 }
+
+/* notes/infrared-telescopes.html */
+.ir-finds,
+.ir-effects {
+  padding-left: 1.3rem;
+}
+
+.ir-finds li,
+.ir-effects li {
+  margin: 0.3rem 0;
+}
+
+.ir-mark {
+  font-size: 0.95rem;
+}

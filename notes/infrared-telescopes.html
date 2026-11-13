@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; form-action 'none'; base-uri 'self'" />
+  <meta name="referrer" content="no-referrer" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Infrared telescopes and high-altitude sites</title>
+  <link rel="stylesheet" href="../styles.css?v=202611141300" />
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg?v=202610130720" />
+</head>
+<body>
+  <main>
+    <p class="back-link"><a href="../index.html">&larr; Back to all tools</a></p>
+
+    <h1>Infrared telescopes and high-altitude sites</h1>
+    <p class="subtitle">
+      Where a telescope can work depends on which waves get through the atmosphere, and how much the
+      air spoils the view.
+    </p>
+
+    <section class="notes-section" id="windows">
+      <h2>Which telescopes can sit at sea level</h2>
+      <p>
+        Each bar shows how far that kind of wave gets down through the atmosphere. Only the full bars
+        reach the ground.
+      </p>
+
+      <div class="diagram transmission-diagram">
+        <div class="labelled-diagram-wrap" id="windows-chart-wrap">
+          <svg
+            width="640"
+            height="260"
+            id="windows-chart"
+            viewBox="0 0 640 260"
+            role="img"
+            aria-label="Chart of how far each part of the electromagnetic spectrum gets down through the atmosphere: gamma rays, X-rays and ultraviolet are absorbed high up, infrared is partly absorbed, and only visible light and radio waves reach the ground. A tick marks each that reaches the ground, a wavy line the one partly absorbed, and a cross each absorbed high up."
+          ></svg>
+        </div>
+        <p class="legend">
+          <span class="legend-swatch legend-transmit"></span> &#10003; Reaches the ground
+          &nbsp; <span class="legend-swatch legend-partial"></span> &sim; Partly absorbed
+          &nbsp; <span class="legend-swatch legend-block"></span> &#10007; Absorbed high in the atmosphere
+        </p>
+      </div>
+
+      <p>
+        The atmosphere lets visible light and radio waves through to the ground, but absorbs most
+        other wavelengths. So only optical and radio telescopes work well at sea level (see
+        <a href="radio-telescopes.html">Radio telescopes</a>). Infrared telescopes need a high, dry
+        site. Ultraviolet, X-ray and gamma-ray telescopes must go into space, because those rays are
+        absorbed high in the atmosphere, far above the highest mountains. The same chart is on
+        <a href="earth-structure.html#transmission-window">Earth: Structure, Atmosphere and Motion</a>.
+      </p>
+
+      <div class="diagram spectrum-panel ir-panel">
+        <div class="labelled-diagram-wrap" id="sites-diagram-wrap">
+          <svg
+            id="sites-diagram"
+            class="responsive-svg"
+            width="640"
+            height="320"
+            viewBox="0 0 640 320"
+            role="img"
+            aria-label="Not to scale. Where each kind of telescope works: optical and radio telescopes at sea level, an infrared telescope on a high, dry mountain, and an X-ray telescope in space, above the height where X-rays are absorbed, far above the mountain top."
+          ></svg>
+        </div>
+      </div>
+      <p class="note">
+        Where infrared, ultraviolet, X-ray and gamma-ray telescopes have to go, and how high X-rays
+        are absorbed: first draft, to be checked by the teacher.
+      </p>
+    </section>
+
+    <section class="notes-section" id="high-dry">
+      <h2>Why infrared telescopes go up mountains</h2>
+      <p>
+        Water vapour in the air absorbs much of the infrared coming from space. Most water vapour is
+        in the lowest few kilometres of the atmosphere, so a telescope high on a dry mountain is above
+        most of it, and more infrared gets through.
+      </p>
+
+      <div class="preset-list" role="group" aria-label="Choose a site" id="site-buttons"></div>
+      <div class="control">
+        <label for="altitude">Height above sea level: <span id="altitude-label"></span></label>
+        <input type="range" id="altitude" aria-controls="altitude-diagram" min="0" max="50" step="1" value="0" />
+      </div>
+
+      <div class="diagram spectrum-panel ir-panel">
+        <div class="labelled-diagram-wrap" id="altitude-diagram-wrap">
+          <svg
+            id="altitude-diagram"
+            class="responsive-svg"
+            width="640"
+            height="360"
+            viewBox="0 0 640 360"
+            role="img"
+            aria-label="A mountain with an infrared telescope at the chosen height. Dots show water vapour, crowded near the ground and thinning out higher up. Ten arrows of infrared come down from space; those that hit water vapour above the telescope stop, and the rest reach it. A bar shows how much infrared gets through."
+          ></svg>
+        </div>
+      </div>
+      <p class="note" id="altitude-readout" aria-live="polite"></p>
+      <p class="note">
+        A simplified model: the share of water vapour above you roughly halves for every 1.4 km you
+        climb. The sites, their heights (Mauna Kea, Hawaii, about 4.2 km; the Chajnantor plateau,
+        Chile, about 5.0 km) and the model's numbers: first draft, to be checked by the teacher.
+      </p>
+    </section>
+
+    <section class="notes-section" id="discoveries">
+      <h2>What infrared astronomy found</h2>
+      <p>
+        Infrared passes through dust that blocks visible light, and cool things glow in infrared even
+        when they are too cool to glow in visible light.
+      </p>
+      <div class="diagram spectrum-panel ir-panel">
+        <div class="labelled-diagram-wrap" id="discoveries-diagram-wrap">
+          <svg
+            id="discoveries-diagram"
+            class="responsive-svg"
+            width="640"
+            height="520"
+            viewBox="0 0 640 520"
+            role="img"
+            aria-label="Three pairs of drawings, visible light on the left and infrared on the right. Protostars: a dark dust cloud, then the same cloud see-through with young stars inside. Dust and molecular clouds: a dark patch among stars, then the same place glowing with wisps of cool dust. Hotspots on a moon: a plain moon, then the same moon with bright volcanic hotspots."
+          ></svg>
+        </div>
+      </div>
+      <ul class="ir-finds">
+        <li><strong>Protostars:</strong> stars still forming, hidden inside clouds of dust, show up in infrared because it passes through the dust.</li>
+        <li><strong>Dust and molecular clouds:</strong> cold clouds of dust and gas, where stars form, glow in infrared though they give out no visible light.</li>
+        <li><strong>Hotspots on moons:</strong> infrared shows hot volcanic spots, such as those on Jupiter's moon Io.</li>
+      </ul>
+      <p class="note">These three discoveries, and Io as the example: first draft, to be checked by the teacher.</p>
+    </section>
+
+    <section class="notes-section" id="image-quality">
+      <h2>How the atmosphere spoils images</h2>
+      <p>
+        Pockets of warmer and cooler air are always moving, and each bends starlight slightly
+        differently. So a star's image dances about and spreads into a larger blur, which is why stars
+        <strong>twinkle</strong>. The air also harms images in other ways:
+      </p>
+      <ul class="ir-effects">
+        <li><strong>Clouds</strong> block the light completely.</li>
+        <li><strong>Scattering:</strong> air scatters light, so sunlight makes the day sky bright, and scattered street lighting (light pollution) brightens the night sky, hiding faint objects.</li>
+        <li><strong>Absorption:</strong> the air absorbs some light, dimming stars, most of all near the horizon, where the light passes through more air.</li>
+      </ul>
+
+      <div class="control">
+        <label for="turbulence">How turbulent the air is: <span id="turbulence-label"></span></label>
+        <input type="range" id="turbulence" aria-controls="seeing-diagram" min="0" max="10" step="1" value="5" />
+      </div>
+      <button type="button" class="secondary-button" id="twinkle" aria-pressed="false">Twinkle</button>
+
+      <div class="diagram spectrum-panel ir-panel">
+        <div class="labelled-diagram-wrap" id="seeing-diagram-wrap">
+          <svg
+            id="seeing-diagram"
+            class="responsive-svg"
+            width="640"
+            height="280"
+            viewBox="0 0 640 280"
+            role="img"
+            aria-label="The same star twice. Left, from above the atmosphere: one small, sharp point. Right, through the air: a larger blob broken into several bright speckles, bigger and more broken up the more turbulent the air."
+          ></svg>
+        </div>
+      </div>
+      <p class="note" id="seeing-readout" aria-live="polite"></p>
+      <p class="note">
+        A high site is also above much of the turbulent air, many clouds and most light pollution.
+        These effects: first draft, to be checked by the teacher.
+      </p>
+    </section>
+
+    <section class="notes-section" id="exam-tips">
+      <h2>Exam tips</h2>
+      <p class="exam-tip">
+        <strong>Common exam confusion:</strong> X-ray, ultraviolet and gamma-ray telescopes must be in
+        space; even the highest mountain is far below where those rays are absorbed.
+        <a href="#windows">Which telescopes can sit at sea level &uarr;</a>
+      </p>
+      <p class="exam-tip">
+        <strong>Common exam confusion:</strong> a high site helps infrared because it is above most of
+        the water vapour, not because it is nearer the stars.
+        <a href="#high-dry">Why infrared telescopes go up mountains &uarr;</a>
+      </p>
+    </section>
+
+    <section class="notes-section" id="related">
+      <h2>Related pages</h2>
+      <div class="page-card-list">
+        <a class="page-card" href="radio-telescopes.html">
+          <h3>Radio telescopes</h3>
+          <p class="page-card-description">The other window that reaches the ground.</p>
+        </a>
+        <a class="page-card" href="earth-structure.html">
+          <h3>Earth: Structure, Atmosphere and Motion</h3>
+          <p class="page-card-description">The atmosphere's layers and windows.</p>
+        </a>
+      </div>
+    </section>
+
+    <section class="questions" id="questions">
+      <h2>Practice questions</h2>
+      <div id="questions-list"></div>
+    </section>
+
+    <section class="progress">
+      <h2>Your progress</h2>
+      <ul id="progress-list"></ul>
+      <p class="note">Stored in this browser only (localStorage) &mdash; no account needed.</p>
+    </section>
+
+    <p class="coverage" id="coverage"></p>
+    <p class="next-page-link" id="next-page"></p>
+  </main>
+
+  <script src="../src/curriculum.js?v=202611141300"></script>
+  <script src="../src/pages.js?v=202611141300"></script>
+  <script src="../src/specData.js?v=202610161036"></script>
+  <script src="../src/spectra.js?v=202611131200"></script>
+  <script src="../src/spectrumDrawing.js?v=202611130900"></script>
+  <script src="../src/atmosphereWindows.js?v=202611141300"></script>
+  <script src="../src/infraredSites.js?v=202611141300"></script>
+  <script src="../src/infraredTelescopesQuestions.js?v=202611141300"></script>
+  <script src="../glossary.js?v=202610131052"></script>
+  <script src="../quiz-ui.js?v=202611121900"></script>
+  <script src="infrared-telescopes.js?v=202611141300"></script>
+  <script src="../diagramEnlarge.js?v=202611111500"></script>
+  <script src="../notesPage.js?v=202609252100"></script>
+  <script src="../nextPage.js?v=202610161057"></script>
+</body>
+</html>

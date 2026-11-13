@@ -539,11 +539,10 @@ const UNITS = [
         id: 'u2.33',
         title: 'Why the atmosphere matters for astronomy',
         depth: 'understand',
-        // 13.30 untagged: tagged covered but rated PARTIAL in
-        // docs/topic-11-16-audit.md — no dedicated diagram, only this
-        // page's text. Re-tag once the Infrared and high-altitude
-        // telescopes page (not yet built) gives it one, or this page
-        // gains its own.
+        // 13.30 is not tagged here: this page has text on it but no
+        // dedicated diagram (rated PARTIAL in docs/topic-11-13-audit.md).
+        // It is covered by u5.6 on notes/infrared-telescopes.html, which
+        // has a sharp-against-blurred star diagram and questions.
         notes:
           "the same atmosphere that makes Earth habitable also hinders ground-based astronomy: scattered sunlight limits observing to night-time, and constant small variations in air density and temperature bend starlight unpredictably as it arrives (scintillation, the visible 'twinkling' of stars), blurring and distorting fine detail in any ground-based image or measurement",
       },
@@ -969,7 +968,15 @@ const UNITS = [
         depth: 'understand',
         spec: ['13.24', '13.25', '13.26', '13.27'],
         notes:
-          "a simple radio telescope is a curved dish that reflects radio waves to a receiver at its focus, which turns them into a weak electrical signal; an amplifier strengthens it and a computer records its strength, and because a dish measures one small patch of sky at a time it builds a picture by scanning point by point; the detail a telescope can resolve depends on wavelength divided by aperture, and radio wavelengths (centimetres to metres) are vastly longer than light's, so radio dishes need extremely large apertures (matching a 10 cm optical telescope at 21 cm needs a dish tens of kilometres wide); an aperture synthesis array links dishes spread over many kilometres, a computer combining their exactly timed signals, so they resolve detail like one dish as wide as the farthest-apart pair, with the Earth's rotation swinging each pair round to fill in more of that giant dish; radio astronomy found quasars (strong radio sources that look like faint stars), jets from black holes at the centres of galaxies, the Milky Way's spiral structure (radio from hydrogen passing through dust) and protoplanetary discs around young stars. General-knowledge values and the four discoveries are a first draft, to be checked by the teacher.",
+          "a simple radio telescope is a curved dish that reflects radio waves to a receiver at its focus, which turns them into a weak electrical signal; an amplifier strengthens it and a computer records its strength, and because a dish measures one small patch of sky at a time it builds a picture by scanning point by point; the detail a telescope can resolve depends on wavelength divided by aperture, and the radio wavelengths radio telescopes typically observe (about a centimetre to a metre) are vastly longer than light's, so radio dishes need extremely large apertures (matching a 10 cm optical telescope in 550 nm light at 21 cm needs a dish about 38 km wide); an aperture synthesis array links dishes spread over many kilometres, a computer combining their exactly timed signals, so they resolve detail like one dish as wide as the farthest-apart pair, with the Earth's rotation swinging each pair round to fill in more of that giant dish; radio astronomy found quasars (strong radio sources that look like faint stars), jets from black holes at the centres of galaxies, the Milky Way's spiral structure (radio from hydrogen passing through dust) and protoplanetary discs around young stars. General-knowledge values and the four discoveries are a first draft, to be checked by the teacher.",
+      },
+      {
+        id: 'u5.6',
+        title: 'Infrared telescopes and observing sites',
+        depth: 'understand',
+        spec: ['13.23', '13.28', '13.29', '13.30'],
+        notes:
+          "the atmosphere lets visible light and radio waves through to the ground but absorbs most other wavelengths, so only optical and radio telescopes work well at sea level, infrared telescopes need high, dry sites and ultraviolet, X-ray and gamma-ray telescopes must be in space (those rays are absorbed high in the atmosphere, far above any mountain); water vapour absorbs much infrared and most of it lies in the lowest few kilometres, so a telescope high on a dry mountain is above most of it and more infrared gets through (a simplified model: the share above you roughly halves every 1.4 km); infrared astronomy found protostars hidden in dust (infrared passes through the dust), cold dust and molecular clouds (too cool to glow in visible light) and hotspots on moons such as Io's volcanoes; the atmosphere spoils images: turbulent air bends starlight unevenly, spreading a star into a moving blur and making it twinkle, clouds block light, scattering brightens the sky (including light pollution) and absorption dims stars, most near the horizon. General-knowledge values, sites and the three discoveries are a first draft, to be checked by the teacher.",
       },
     ],
   },

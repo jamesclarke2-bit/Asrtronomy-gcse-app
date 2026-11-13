@@ -66,9 +66,10 @@
     const DISCS = 'Discs of dust and gas around young stars, with gaps where planets may be forming';
 
     // The dish-size calculation: an optical telescope 0.10 m across in
-    // light of wavelength 500 nm, against a radio dish at 21 cm.
+    // yellow-green light (550 nm, the same light the page compares with),
+    // against a radio dish at 21 cm.
     const OPTICAL_M = 0.1;
-    const LIGHT_M = 5e-7;
+    const LIGHT_M = R.OPTICAL_NM * 1e-9;
     const RADIO_M = 0.21;
     const neededM = R.dishNeededM(RADIO_M, OPTICAL_M, LIGHT_M * 1e9);
     const neededKm = neededM / 1000;
@@ -103,7 +104,7 @@
         units: UNITS,
         spec: '13.25',
         marks: 2,
-        prompt: `An optical telescope ${OPTICAL_M.toFixed(2)} m across observes light of wavelength 500 nm (0.000 000 5 m). A radio telescope observes at a wavelength of 21 cm (0.21 m). The detail a telescope can see depends on wavelength ÷ diameter. How wide must the radio dish be to see the same detail as the optical telescope? Give your answer in km.`,
+        prompt: `An optical telescope ${OPTICAL_M.toFixed(2)} m across observes yellow-green light of wavelength 550 nm (0.000 000 55 m). A radio telescope observes at a wavelength of 21 cm (0.21 m). The detail a telescope can see depends on wavelength ÷ diameter. How wide must the radio dish be to see the same detail as the optical telescope? Give your answer in km.`,
         type: 'number',
         unitLabel: 'km',
         check(value) {
@@ -111,8 +112,8 @@
           // 2% either side, inclusive (the tiny extra stops rounding error rejecting exactly 2%).
           const correct = Number.isFinite(v) && Math.abs(v - neededKm) <= 0.02 * neededKm * (1 + 1e-9);
           const scheme = markScheme([
-            `same detail means the same wavelength ÷ diameter: 0.000 000 5 ÷ ${OPTICAL_M.toFixed(2)} = 0.21 ÷ diameter`,
-            `diameter = 0.21 × ${OPTICAL_M.toFixed(2)} ÷ 0.000 000 5 = ${Math.round(neededM).toLocaleString('en-GB')} m ≈ ${neededKm.toFixed(0)} km (accept ${(0.98 * neededKm).toFixed(1)} to ${(1.02 * neededKm).toFixed(1)})`,
+            `same detail means the same wavelength ÷ diameter: 0.000 000 55 ÷ ${OPTICAL_M.toFixed(2)} = 0.21 ÷ diameter`,
+            `diameter = 0.21 × ${OPTICAL_M.toFixed(2)} ÷ 0.000 000 55 = ${Math.round(neededM).toLocaleString('en-GB')} m ≈ ${neededKm.toFixed(0)} km (accept ${(0.98 * neededKm).toFixed(1)} to ${(1.02 * neededKm).toFixed(1)})`,
           ]);
           return { correct, message: `${correct ? 'Correct.' : 'Not quite.'} ${scheme}` };
         },

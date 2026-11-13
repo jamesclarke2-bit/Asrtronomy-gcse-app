@@ -47,23 +47,25 @@ test('every choice or multi-field question has exactly one fully-correct answer,
 
 test('every answer, right or wrong, shows the mark scheme', () => {
   questions.forEach((q) => {
-    const samples = q.type === 'number' ? ['1', '42', 'abc'] : q.fields ? fieldCombos(q.fields).slice(0, 3) : q.options;
+    const samples = q.type === 'number' ? ['1', '38', 'abc'] : q.fields ? fieldCombos(q.fields).slice(0, 3) : q.options;
     samples.forEach((value) => assert.match(q.check(value).message, /Mark scheme:/, q.id));
   });
 });
 
 test('the dish-size calculation states every value it needs, accepts 2% either side and shows the full working', () => {
   const q = questions.find((x) => x.id === 'rt-dish-size-calc');
-  for (const given of ['0.10 m', '500 nm', '0.000 000 5 m', '21 cm', '0.21 m', 'wavelength ÷ diameter']) assert.ok(q.prompt.includes(given), given);
+  for (const given of ['0.10 m', '550 nm', '0.000 000 55 m', '21 cm', '0.21 m', 'wavelength ÷ diameter']) assert.ok(q.prompt.includes(given), given);
   const km = q.answer.km;
-  assert.ok(Math.abs(km - 42) < 1e-9, `${km}`);
-  assert.equal(q.check('42').correct, true);
+  // The same 550 nm light the page's own comparison uses, so both say about 38 km.
+  assert.ok(Math.abs(km - R.dishNeededM(0.21, 0.1) / 1000) < 1e-9, `${km}`);
+  assert.ok(Math.abs(km - 38.18) < 0.01, `${km}`);
+  assert.equal(q.check('38').correct, true);
   assert.equal(q.check(String(km * 1.02)).correct, true, '+2%');
   assert.equal(q.check(String(km * 0.98)).correct, true, '-2%');
-  assert.equal(q.check('42000').correct, false, 'metres, not km');
-  assert.equal(q.check('38').correct, false);
+  assert.equal(q.check('38182').correct, false, 'metres, not km');
+  assert.equal(q.check('42').correct, false, '500 nm light would give 42 km');
   const message = q.check('1').message;
-  assert.match(message, /0\.21 × 0\.10 ÷ 0\.000 000 5 = 42,000 m ≈ 42 km/);
+  assert.match(message, /0\.21 × 0\.10 ÷ 0\.000 000 55 = 38,182 m ≈ 38 km \(accept 37\.4 to 38\.9\)/);
 });
 
 test('the four 13.27 discoveries are all asked about', () => {
