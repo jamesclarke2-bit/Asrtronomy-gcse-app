@@ -88,27 +88,27 @@
       <div class="eb-controls">
         <div class="control">
           <label for="a-radius">Star A's radius: <span id="a-radius-label"></span></label>
-          <input type="range" id="a-radius" min="5" max="50" step="1" value="28" />
+          <input type="range" id="a-radius" aria-controls="sky-diagram curve-diagram" min="5" max="50" step="1" value="28" />
         </div>
         <div class="control">
           <label for="a-temp">Star A's temperature: <span id="a-temp-label"></span></label>
-          <input type="range" id="a-temp" min="30" max="300" step="1" value="100" />
+          <input type="range" id="a-temp" aria-controls="sky-diagram curve-diagram" min="30" max="300" step="1" value="100" />
         </div>
         <div class="control">
           <label for="b-radius">Star B's radius: <span id="b-radius-label"></span></label>
-          <input type="range" id="b-radius" min="5" max="50" step="1" value="42" />
+          <input type="range" id="b-radius" aria-controls="sky-diagram curve-diagram" min="5" max="50" step="1" value="42" />
         </div>
         <div class="control">
           <label for="b-temp">Star B's temperature: <span id="b-temp-label"></span></label>
-          <input type="range" id="b-temp" min="30" max="300" step="1" value="70" />
+          <input type="range" id="b-temp" aria-controls="sky-diagram curve-diagram" min="30" max="300" step="1" value="70" />
         </div>
         <div class="control">
           <label for="tilt">Tilt of the orbit (90&deg; is edge-on): <span id="tilt-label"></span></label>
-          <input type="range" id="tilt" min="0" max="900" step="1" value="880" />
+          <input type="range" id="tilt" aria-controls="sky-diagram curve-diagram" min="0" max="900" step="1" value="880" />
         </div>
         <div class="control">
           <label for="phase">Position around the orbit: <span id="phase-label"></span></label>
-          <input type="range" id="phase" min="0" max="99" step="1" value="10" />
+          <input type="range" id="phase" aria-controls="sky-diagram curve-diagram" min="0" max="99" step="1" value="10" />
         </div>
         <button type="button" class="secondary-button" id="play" aria-pressed="false">Play</button>
       </div>
@@ -163,11 +163,11 @@
       </div>
       <div class="control">
         <label for="m1">First marker: <span id="m1-label"></span></label>
-        <input type="range" id="m1" min="0" max="160" step="1" value="10" />
+        <input type="range" id="m1" aria-controls="period-diagram" min="0" max="160" step="1" value="10" />
       </div>
       <div class="control">
         <label for="m2">Second marker: <span id="m2-label"></span></label>
-        <input type="range" id="m2" min="0" max="160" step="1" value="154" />
+        <input type="range" id="m2" aria-controls="period-diagram" min="0" max="160" step="1" value="154" />
       </div>
       <div class="control">
         <label for="cycles">Whole cycles between the markers</label>
@@ -253,7 +253,7 @@
   <script src="../src/eclipsingBinariesQuestions.js?v=202611140900"></script>
   <script src="../glossary.js?v=202610131052"></script>
   <script src="../quiz-ui.js?v=202611121900"></script>
-  <script src="eclipsing-binaries.js?v=202611141000"></script>
+  <script src="eclipsing-binaries.js?v=202611141100"></script>
   <script src="../diagramEnlarge.js?v=202611111500"></script>
   <script src="../notesPage.js?v=202609252100"></script>
   <script src="../nextPage.js?v=202610161057"></script>

@@ -314,7 +314,10 @@ PAGES.forEach((href) => {
 // .control-panel block(s) holding its slider(s) — are its immediate
 // following siblings, ending as soon as another .diagram/.question-diagram/
 // .diagram-row sibling starts (that marks the START of a DIFFERENT
-// diagram's own controls). This correctly tells apart, say,
+// diagram's own controls). A slider placed anywhere else (above the
+// diagram, say, or in a shared control block) also counts as the diagram's
+// own when its aria-controls names the diagram or something inside it. This
+// correctly tells apart, say,
 // notes/magnitude.html's "bright but far" two-panel row (whose own next
 // siblings are its Swap button and readouts, with no slider, before the
 // NEXT diagram begins) from that same section's idea-diagram three
@@ -337,10 +340,16 @@ PAGES.forEach((href) => {
       skip(t, SKIP_MESSAGE(launchError));
       return;
     }
-    const page = await openPage(href, 390, 800);
-    try {
-      const dialog = page.locator('dialog.diagram-enlarge-dialog');
-      const candidateIndices = await page.evaluate(() => {
+    // Phone width first. A wide, short diagram gains nothing from Enlarge
+    // on a phone, so gets no Enlarge button there; if no diagram has one
+    // with a slider of its own at phone width, try again at iPad width
+    // before skipping.
+    let page = null;
+    let candidateIndices = [];
+    for (const [width, height] of [[390, 800], [768, 1024]]) {
+      if (page) await page.close();
+      page = await openPage(href, width, height);
+      candidateIndices = await page.evaluate(() => {
         function ownSliders(container) {
           const sliders = [];
           let sibling = container.nextElementSibling;
@@ -350,6 +359,13 @@ PAGES.forEach((href) => {
             if (sibling.matches('input[type="range"]')) sliders.push(sibling);
             sibling = sibling.nextElementSibling;
           }
+          // Wherever it sits, a slider whose aria-controls names this diagram
+          // (or anything inside it) is one of its own too.
+          const ids = [container, ...container.querySelectorAll('[id]')].map((el) => el.id).filter(Boolean);
+          document.querySelectorAll('input[type="range"][aria-controls]').forEach((slider) => {
+            const named = slider.getAttribute('aria-controls').split(/\s+/);
+            if (named.some((id) => ids.includes(id)) && !sliders.includes(slider)) sliders.push(slider);
+          });
           return sliders;
         }
         const buttons = [...document.querySelectorAll('.diagram-enlarge-button')].filter((b) => b.getClientRects().length > 0);
@@ -362,10 +378,14 @@ PAGES.forEach((href) => {
         });
         return indices;
       });
+      if (candidateIndices.length > 0) break;
+    }
+    try {
       if (candidateIndices.length === 0) {
         t.skip(`${href} has no non-canvas enlargeable diagram with a slider of its own`);
         return;
       }
+      const dialog = page.locator('dialog.diagram-enlarge-dialog');
 
       for (const index of candidateIndices) {
         const button = page.locator('.diagram-enlarge-button:visible').nth(index);
@@ -393,6 +413,13 @@ PAGES.forEach((href) => {
               if (sibling.matches('input[type="range"]')) sliders.push(sibling);
               sibling = sibling.nextElementSibling;
             }
+            // Wherever it sits, a slider whose aria-controls names this diagram
+            // (or anything inside it) is one of its own too.
+            const ids = [container, ...container.querySelectorAll('[id]')].map((el) => el.id).filter(Boolean);
+            document.querySelectorAll('input[type="range"][aria-controls]').forEach((slider) => {
+              const named = slider.getAttribute('aria-controls').split(/\s+/);
+              if (named.some((id) => ids.includes(id)) && !sliders.includes(slider)) sliders.push(slider);
+            });
             return sliders;
           }
           const container = btn.closest('.diagram-enlarge-source');

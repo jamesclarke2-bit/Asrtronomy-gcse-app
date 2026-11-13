@@ -151,7 +151,7 @@
     `Star A: a hot blue-white star, about ${fmtK(ALGOL.A.temperatureK)}, about ${ALGOL.A.radius} times the Sun\u2019s radius.`,
     `Star B: a larger, cooler, dimmer companion, about ${fmtK(ALGOL.B.temperatureK)}, about ${ALGOL.B.radius} times the Sun\u2019s radius.`,
     `The stars are about ${ALGOL.separation} times the Sun\u2019s radius apart, with the orbit tilted about ${Math.round(ALGOL.inclinationDeg)}\u00b0: nearly edge-on.`,
-    `Normally magnitude ${ALGOL.brightestMag}; at the deep dip about ${(ALGOL.brightestMag + E.dips(ALGOL).primaryDepth).toFixed(1)}. The shallow dip is so slight it is hard to see at all.`,
+    `Normally magnitude ${ALGOL.brightestMag}; at the deep dip about ${(ALGOL.brightestMag + E.dips(ALGOL).primaryDepth).toFixed(1)}. The shallow dip in this model is only ${E.dips(ALGOL).secondaryDepth.toFixed(3)} magnitudes; the real one is about 0.06 magnitudes, because the model leaves out some smaller effects.`,
   ];
 
   const SLIDERS = {
@@ -188,7 +188,7 @@
       });
       const draft = document.createElement('p');
       draft.className = 'note';
-      draft.textContent = 'The star sizes, temperatures, separation and tilt are a first draft, to be checked by the teacher. The period and magnitudes match the Algol curve on Variable stars and Cepheids.';
+      draft.textContent = 'Algol\u2019s star sizes, temperatures, separation and tilt, and the real shallow-dip depth: first draft, to be checked by the teacher. The period and magnitudes match the Algol curve on Variable stars and Cepheids.';
       facts.append(h, ul, draft);
     }
     drawSim();
