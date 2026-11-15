@@ -15,7 +15,7 @@
 (function () {
   const WATER_VAPOUR_SCALE_HEIGHT_KM = 2;
   const SEA_LEVEL_ABSORPTION = 3;
-  const ALTITUDE_RANGE_KM = { min: 0, max: 5 };
+  const ALTITUDE_RANGE_KM = { min: 0, max: 6 };
 
   /** Share (0-1) of the atmosphere's water vapour still above this height. */
   function waterVapourAbove(altitudeKm) {
@@ -31,7 +31,7 @@
   const SITES = [
     { id: 'sea-level', name: 'Sea level', altitudeKm: 0 },
     { id: 'mauna-kea', name: 'Mauna Kea, Hawaii', altitudeKm: 4.2 },
-    { id: 'chajnantor', name: 'Chajnantor plateau, Chile', altitudeKm: 5.0 },
+    { id: 'cerro-chajnantor', name: 'Cerro Chajnantor summit, Chile', altitudeKm: 5.6 },
   ];
 
   function site(id) {

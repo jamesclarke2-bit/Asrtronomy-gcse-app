@@ -347,13 +347,23 @@ const PAGES = [
     why: 'Radio telescopes use one of the two windows that reach the ground; this page explains why only optical and radio telescopes can sit at sea level, and where infrared telescopes have to go instead.',
   },
   {
+    title: 'Space telescopes',
+    description:
+      'Which kinds of wave never reach the ground and so need a telescope in space, what an orbital observing platform is (a low orbit against a far one), the advantages and disadvantages of space telescopes weighed up on a balance for each kind of wave, and what gamma-ray, X-ray and ultraviolet astronomy found.',
+    href: 'notes/space-telescopes.html',
+    units: ['u5.7'],
+    phase: 'Telescopes and exploring',
+    position: 32,
+    why: 'Infrared telescopes and high-altitude sites showed how far up a mountain gets you; for gamma rays, X-rays and ultraviolet that is not far enough, so the telescope has to go into space.',
+  },
+  {
     title: 'Parallax and the Parsec: Measuring Distances to Stars',
     description:
       "How Earth's own orbit becomes a surveying baseline: a nearby star's tiny apparent shift against far more distant background stars, six months apart, gives its distance by simple geometry. The parsec itself, defined from that shift, and why the method runs out past a few hundred parsecs.",
     href: 'notes/parallax.html',
     units: ['u4.5', 'u3.4'],
     phase: 'Stars and the Universe',
-    position: 33,
+    position: 34,
     why: "Telescopes' own resolving power turns out to set a hard distance limit here too — the first page of the sky beyond the Solar System, and the ground this phase's own magnitude page (next) builds on.",
   },
   {
@@ -363,7 +373,7 @@ const PAGES = [
     href: 'notes/magnitude.html',
     units: ['u4.2'],
     phase: 'Stars and the Universe',
-    position: 34,
+    position: 35,
     why: "Parallax runs out past a few hundred parsecs; magnitude is the tool that reaches far beyond that, once a star's distance is known by any method at all.",
   },
   {
@@ -373,7 +383,7 @@ const PAGES = [
     href: 'notes/reading-a-spectrum.html',
     units: ['u4.6', 'u4.7'],
     phase: 'Stars and the Universe',
-    position: 35,
+    position: 36,
     why: 'Magnitude: how bright is a star? measures how much light a star sends us; this page reads what that light is made of, how hot the star is and how it moves.',
   },
   {
@@ -383,7 +393,7 @@ const PAGES = [
     href: 'notes/spectral-types.html',
     units: ['u4.8'],
     phase: 'Stars and the Universe',
-    position: 36,
+    position: 37,
     why: "Reading a spectrum showed that a star's colour and lines both depend on temperature; this page sorts stars into spectral classes by exactly those clues.",
   },
   {
@@ -393,7 +403,7 @@ const PAGES = [
     href: 'notes/hr-diagram.html',
     units: ['u4.9'],
     phase: 'Stars and the Universe',
-    position: 37,
+    position: 38,
     why: 'Colour, temperature and spectral type gave every star a temperature; this page plots that temperature against luminosity, and uses the result to measure distances.',
   },
   {
@@ -403,7 +413,7 @@ const PAGES = [
     href: 'notes/binaries-and-clusters.html',
     units: ['u4.10'],
     phase: 'Stars and the Universe',
-    position: 38,
+    position: 39,
     why: 'The Hertzsprung-Russell diagram treated stars one at a time; this page looks at stars in pairs and clusters, and at how a telescope shows them.',
   },
   {
@@ -413,7 +423,7 @@ const PAGES = [
     href: 'notes/variable-stars.html',
     units: ['u4.11'],
     phase: 'Stars and the Universe',
-    position: 39,
+    position: 40,
     why: 'Binaries, clusters and the view through a telescope met stars that change as they orbit; this page reads the light curves of stars that change in brightness, and uses Cepheids to measure distances.',
   },
   {
@@ -423,7 +433,7 @@ const PAGES = [
     href: 'notes/eclipsing-binaries.html',
     units: ['u4.12'],
     phase: 'Stars and the Universe',
-    position: 40,
+    position: 41,
     why: "Variable stars and Cepheids showed Algol's dips among six kinds of light curve; this page explains what causes them and how to find the period from them.",
   },
   {
@@ -531,6 +541,7 @@ const DIAGRAM_FIRST_PAGES = [
   'notes/eclipsing-binaries.html',
   'notes/radio-telescopes.html',
   'notes/infrared-telescopes.html',
+  'notes/space-telescopes.html',
 ];
 
 /**
@@ -586,15 +597,15 @@ const COMING_SOON = [
   {
     name: 'Probes and Apollo',
     phase: 'Telescopes and exploring',
-    position: 32,
+    position: 33,
     why: 'How we stopped just watching and went there — the Apollo missions, and the trade-offs of every kind of robotic probe since.',
     specPoints: ['11.26', '11.27', '11.28', '11.29', '11.30'],
   },
   {
     name: 'Stars, galaxies and the Universe',
     phase: 'Stars and the Universe',
-    position: 41,
-    why: "Now that Parallax and the Parsec, and Magnitude, can both measure how far away a star is and how bright it really is, the rest of Topic 13 this course hasn't reached yet: how a star's life moves it across the HR diagram, the sidereal day by star trail, and seeing beyond the windows that reach the ground (space telescopes).",
+    position: 42,
+    why: "Now that Parallax and the Parsec, and Magnitude, can both measure how far away a star is and how bright it really is, the rest of Topic 13 this course hasn't reached yet: how a star's life moves it across the HR diagram, and the sidereal day by star trail.",
     // Topic 13 has a src/specPoints.js registry: 13.1, 13.2, 13.3 and
     // 13.9 are covered by notes/magnitude.html, 13.10-13.12 by
     // notes/parallax.html, 13.22 by notes/earth-structure.html, and
@@ -604,19 +615,20 @@ const COMING_SOON = [
     // notes/binaries-and-clusters.html, and 13.14a-d and 13.16 by
     // notes/variable-stars.html, and 13.15 and 13.18 by
     // notes/eclipsing-binaries.html, 13.24-13.27 by
-    // notes/radio-telescopes.html, and 13.23 and 13.28-13.30 by
-    // notes/infrared-telescopes.html (see src/curriculum.js's
-    // u4.2/u4.5/u2.16/u4.6/u4.7/u4.8/u4.9/u4.10/u4.11/u4.12/u5.5/u5.6).
+    // notes/radio-telescopes.html, 13.23 and 13.28-13.30 by
+    // notes/infrared-telescopes.html, and 13.31-13.33 by
+    // notes/space-telescopes.html (see src/curriculum.js's
+    // u4.2/u4.5/u2.16/u4.6/u4.7/u4.8/u4.9/u4.10/u4.11/u4.12/u5.5/u5.6/u5.7).
+    // 13.8 is to be tagged on "Massive stars and their ends".
     specPoints: [
       '13.8',
       '13.19',
-      '13.31', '13.32', '13.33',
     ],
   },
   {
     name: 'Stellar Evolution, the Galaxy and Cosmology',
     phase: 'Stars and the Universe',
-    position: 42,
+    position: 43,
     why: 'The rest of the course past Topic 13: a star\'s full life cycle, our own Galaxy\'s structure, and the wider Universe beyond it.',
     // Topics 14-16 have a src/specPoints.js registry too, but nothing on
     // the site meets docs/topic-11-16-audit.md's COVERED bar for any of
@@ -630,7 +642,7 @@ const COMING_SOON = [
   {
     name: 'Redshift',
     phase: 'Stars and the Universe',
-    position: 43,
+    position: 44,
     why: "Reading a spectrum's Doppler shift for single stars, scaled up to whole galaxies: redshift as evidence that they are moving away from us.",
     specPoints: ['16.1', '16.2', '16.3'],
   },

@@ -4764,3 +4764,34 @@ canvas {
 .ir-mark {
   font-size: 0.95rem;
 }
+
+/* notes/space-telescopes.html */
+.sp-orbit-facts,
+.sp-finds,
+.sp-for,
+.sp-against {
+  padding-left: 1.3rem;
+}
+
+.sp-for,
+.sp-against {
+  list-style: none;
+  padding-left: 0;
+}
+
+.sp-orbit-facts li,
+.sp-finds li,
+.sp-for li,
+.sp-against li {
+  margin: 0.3rem 0;
+}
+
+.sp-columns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: 0 1.5rem;
+}
+
+.sp-mark {
+  font-size: 0.95rem;
+}

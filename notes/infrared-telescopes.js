@@ -124,7 +124,7 @@
       const reaches = order.indexOf(k) < reaching;
       // An absorbed arrow stops where the water vapour is: mostly just above
       // the telescope, rarely high up, where there is little vapour left.
-      const span = 1 - Math.exp(-(5.6 - km) / I.WATER_VAPOUR_SCALE_HEIGHT_KM);
+      const span = 1 - Math.exp(-(I.ALTITUDE_RANGE_KM.max + 0.6 - km) / I.WATER_VAPOUR_SCALE_HEIGHT_KM);
       const absorbedKm = km + 0.25 - I.WATER_VAPOUR_SCALE_HEIGHT_KM * Math.log(1 - arrowRand() * span);
       const endY = reaches ? ty - 32 : Math.max(30, Math.min(ty - 40, yForKm(absorbedKm)));
       svgEl('line', { class: reaches ? 'ir-arrow ir-arrow--through' : 'ir-arrow ir-arrow--absorbed', x1: x, y1: 18, x2: x, y2: endY, stroke: IR, 'stroke-width': 2.5 }, svg);
@@ -135,7 +135,7 @@
       }
     }
     // Height ticks.
-    for (let h = 0; h <= 5; h += 1) {
+    for (let h = 0; h <= I.ALTITUDE_RANGE_KM.max; h += 1) {
       svgEl('line', { x1: 8, y1: yForKm(h), x2: 16, y2: yForKm(h), stroke: MUTED, 'stroke-width': 1.5 }, svg);
       addLabel(svg, wrap, `${h} km`, 20, yForKm(h), 'diagram-label--tick diagram-label--right');
     }

@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; form-action 'none'; base-uri 'self'" />
+  <meta name="referrer" content="no-referrer" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Space telescopes</title>
+  <link rel="stylesheet" href="../styles.css?v=202611151000" />
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg?v=202610130720" />
+</head>
+<body>
+  <main>
+    <p class="back-link"><a href="../index.html">&larr; Back to all tools</a></p>
+
+    <h1>Space telescopes</h1>
+    <p class="subtitle">
+      Some of the sky can only be seen from above the atmosphere, so astronomers put telescopes in
+      space.
+    </p>
+
+    <section class="notes-section" id="above-the-air">
+      <h2>Why some telescopes must be in space</h2>
+      <p>
+        Each bar shows how far that kind of wave gets down through the atmosphere. The three marked
+        &ldquo;need space&rdquo; never reach the ground.
+      </p>
+
+      <div class="diagram transmission-diagram">
+        <div class="labelled-diagram-wrap" id="space-chart-wrap">
+          <svg
+            width="640"
+            height="260"
+            id="space-chart"
+            viewBox="0 0 640 260"
+            role="img"
+            aria-label="Chart of how far each part of the electromagnetic spectrum gets down through the atmosphere: gamma rays, X-rays and ultraviolet are absorbed high up and are marked as needing space, infrared is partly absorbed, and visible light and radio waves reach the ground. A tick marks each that reaches the ground, a wavy line the one partly absorbed, and a cross each absorbed high up."
+          ></svg>
+        </div>
+        <p class="legend">
+          <span class="legend-swatch legend-transmit"></span> &#10003; Reaches the ground
+          &nbsp; <span class="legend-swatch legend-partial"></span> &sim; Partly absorbed
+          &nbsp; <span class="legend-swatch legend-block"></span> &#10007; Absorbed high in the atmosphere
+        </p>
+      </div>
+
+      <p>
+        Gamma rays, X-rays and ultraviolet are absorbed high in the atmosphere, far above the highest
+        mountain. So a telescope for them must be above the atmosphere, in space. Much infrared is
+        absorbed too: a high, dry mountain gets some of it (see
+        <a href="infrared-telescopes.html">Infrared telescopes and high-altitude sites</a>), but only
+        space gets all of it. Visible light and radio waves reach the ground.
+      </p>
+      <p class="note">
+        That ultraviolet, X-rays and gamma rays are absorbed far above any mountain, and that space
+        gets all of the infrared: first draft, to be checked by the teacher.
+      </p>
+    </section>
+
+    <section class="notes-section" id="orbits">
+      <h2>Telescopes in orbit</h2>
+      <p>
+        An <strong>orbital observing platform</strong> is a telescope or detector carried in an
+        orbit: it travels round and round the Earth, or the Sun, above the atmosphere, without needing
+        fuel to stay up. Compare a low orbit with a far one.
+      </p>
+
+      <div class="preset-list" role="group" aria-label="Choose an orbit" id="orbit-buttons"></div>
+
+      <div class="diagram spectrum-panel sp-panel">
+        <div class="labelled-diagram-wrap" id="orbit-diagram-wrap">
+          <svg
+            id="orbit-diagram"
+            class="responsive-svg"
+            width="640"
+            height="300"
+            viewBox="0 0 640 300"
+            role="img"
+            aria-label="Not to scale. The Sun far off to the left, the Earth with a low orbit close around it, the Moon further out, and a far orbit beyond the Moon on the side away from the Sun. The chosen orbit is drawn as a thick solid line with a telescope on it; the other is thin and dashed."
+          ></svg>
+        </div>
+      </div>
+      <ul class="sp-orbit-facts" id="orbit-facts" aria-live="polite"></ul>
+      <p class="note">
+        The example heights and times (a low orbit about 540 km up, going round in about 95 minutes;
+        a far orbit about 1.5 million km away): first draft, to be checked by the teacher. The Moon's
+        distance is the data sheet's 380,000 km.
+      </p>
+    </section>
+
+    <section class="notes-section" id="trade-offs">
+      <h2>Space or the ground?</h2>
+      <div class="sp-columns">
+        <div>
+          <h3>For a space telescope</h3>
+          <ul class="sp-for">
+            <li>&#10003; Every wavelength is available: nothing is absorbed.</li>
+            <li>&#10003; No turbulence, so images are sharp.</li>
+            <li>&#10003; No weather or clouds.</li>
+            <li>&#10003; No day and night: it can observe all the time.</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Against a space telescope</h3>
+          <ul class="sp-against">
+            <li>&#10007; It costs far more to build and launch.</li>
+            <li>&#10007; The launch can fail.</li>
+            <li>&#10007; Its size is limited by the rocket.</li>
+            <li>&#10007; It is hard, or impossible, to repair.</li>
+            <li>&#10007; It works for a limited time.</li>
+          </ul>
+        </div>
+      </div>
+      <p>
+        The same holds for space <strong>detectors</strong>: gamma rays pass straight through mirrors
+        and lenses, so gamma-ray instruments record each ray and the direction it came from instead of
+        forming an image. Weigh it up for one kind of wave:
+      </p>
+
+      <div class="preset-list" role="group" aria-label="Choose a kind of wave" id="band-buttons"></div>
+
+      <div class="diagram spectrum-panel sp-panel">
+        <div class="labelled-diagram-wrap" id="balance-diagram-wrap">
+          <svg
+            id="balance-diagram"
+            class="responsive-svg"
+            width="640"
+            height="300"
+            viewBox="0 0 640 300"
+            role="img"
+            aria-label="A balance with a ground telescope in one pan and a space telescope in the other. It tips down on the side that wins for the chosen kind of wave, or stays level when each has real advantages."
+          ></svg>
+        </div>
+      </div>
+      <p class="note" id="balance-readout" aria-live="polite"></p>
+      <p class="note">
+        These advantages and disadvantages, and how gamma-ray detectors work: first draft, to be
+        checked by the teacher.
+      </p>
+    </section>
+
+    <section class="notes-section" id="discoveries">
+      <h2>What gamma-ray, X-ray and ultraviolet astronomy found</h2>
+      <div class="diagram spectrum-panel sp-panel">
+        <div class="labelled-diagram-wrap" id="discoveries-diagram-wrap">
+          <svg
+            id="discoveries-diagram"
+            class="responsive-svg"
+            width="640"
+            height="520"
+            viewBox="0 0 640 520"
+            role="img"
+            aria-label="Three drawings. Gamma-ray bursts: a sudden flash on the sky, and a graph of gamma rays against time with a sharp spike. A black hole accretion disc: gas pulled off a star spirals into a hot disc around a black hole, which gives out X-rays. A young star: a thin, hot chromosphere just above its surface and huge loops of hot corona around it."
+          ></svg>
+        </div>
+      </div>
+      <ul class="sp-finds">
+        <li><strong>Gamma-ray bursts:</strong> brief, extremely powerful flashes of gamma rays from very distant galaxies, first picked up by detectors on satellites (the Vela satellites, 1967).</li>
+        <li><strong>Black hole accretion discs:</strong> gas pulled towards a black hole spirals into a disc and is heated to millions of degrees, so it gives out X-rays (Cygnus X-1 was an early example).</li>
+        <li><strong>Young stars:</strong> ultraviolet and X-rays show the structure of a young star's chromosphere (a thin, hot layer above its surface) and corona (its very hot outer atmosphere), far more active than the Sun's (see <a href="sun-features.html">The Sun: Structure and Features</a>).</li>
+      </ul>
+      <p class="note">These three discoveries, the Vela satellites (1967) and Cygnus X-1: first draft, to be checked by the teacher.</p>
+    </section>
+
+    <section class="notes-section" id="exam-tips">
+      <h2>Exam tips</h2>
+      <p class="exam-tip">
+        <strong>Common exam confusion:</strong> a space telescope is not closer to the stars in any
+        useful way; it wins because it is above the atmosphere.
+        <a href="#above-the-air">Why some telescopes must be in space &uarr;</a>
+      </p>
+      <p class="exam-tip">
+        <strong>Common exam confusion:</strong> for visible light, give both sides: sharper images in
+        space, but bigger, cheaper, repairable telescopes on the ground.
+        <a href="#trade-offs">Space or the ground? &uarr;</a>
+      </p>
+    </section>
+
+    <section class="notes-section" id="related">
+      <h2>Related pages</h2>
+      <div class="page-card-list">
+        <a class="page-card" href="infrared-telescopes.html">
+          <h3>Infrared telescopes and high-altitude sites</h3>
+          <p class="page-card-description">Which telescopes can sit at sea level.</p>
+        </a>
+        <a class="page-card" href="radio-telescopes.html">
+          <h3>Radio telescopes</h3>
+          <p class="page-card-description">Why radio dishes stay on the ground.</p>
+        </a>
+        <a class="page-card" href="sun-features.html">
+          <h3>The Sun: Structure and Features</h3>
+          <p class="page-card-description">The Sun's chromosphere and corona.</p>
+        </a>
+      </div>
+    </section>
+
+    <section class="questions" id="questions">
+      <h2>Practice questions</h2>
+      <div id="questions-list"></div>
+    </section>
+
+    <section class="progress">
+      <h2>Your progress</h2>
+      <ul id="progress-list"></ul>
+      <p class="note">Stored in this browser only (localStorage) &mdash; no account needed.</p>
+    </section>
+
+    <p class="coverage" id="coverage"></p>
+    <p class="next-page-link" id="next-page"></p>
+  </main>
+
+  <script src="../src/curriculum.js?v=202611151000"></script>
+  <script src="../src/pages.js?v=202611151000"></script>
+  <script src="../src/specData.js?v=202610161036"></script>
+  <script src="../src/spectra.js?v=202611131200"></script>
+  <script src="../src/spectrumDrawing.js?v=202611130900"></script>
+  <script src="../src/atmosphereWindows.js?v=202611141300"></script>
+  <script src="../src/spaceTelescopes.js?v=202611151000"></script>
+  <script src="../src/spaceTelescopesQuestions.js?v=202611151000"></script>
+  <script src="../glossary.js?v=202610131052"></script>
+  <script src="../quiz-ui.js?v=202611121900"></script>
+  <script src="space-telescopes.js?v=202611151000"></script>
+  <script src="../diagramEnlarge.js?v=202611111500"></script>
+  <script src="../notesPage.js?v=202609252100"></script>
+  <script src="../nextPage.js?v=202610161057"></script>
+</body>
+</html>

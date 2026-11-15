@@ -18,11 +18,11 @@ One row per point in the Edexcel GCSE Astronomy (1AS0) specification, Topics 1�
 | 10 | Solar astronomy | 12 | 12 | 0 | 0 |
 | 11 | Exploring the Solar System | 33 | 29 | 4 | 0 |
 | 12 | Formation of planetary systems | 14 | 5 | 9 | 1 |
-| 13 | Exploring starlight | 49 | 44 | 5 | 1 |
+| 13 | Exploring starlight | 49 | 47 | 2 | 1 |
 | 14 | Stellar evolution | 11 | 0 | 11 | 0 |
 | 15 | Our place in the Galaxy | 14 | 0 | 14 | 0 |
 | 16 | Cosmology | 12 | 0 | 12 | 0 |
-| **Total** | | **244** | **186** | **58** | **29** |
+| **Total** | | **244** | **189** | **55** | **29** |
 
 ## Methodology
 
@@ -295,9 +295,9 @@ One row per point in the Edexcel GCSE Astronomy (1AS0) specification, Topics 1�
 | 13.28 | understand | why some infrared telescopes can operate at high altitude on Earth's surface | [Infrared telescopes and high-altitude sites](../notes/infrared-telescopes.html) | – |  | |
 | 13.29 | know | infrared astronomy's role in the discovery of protostars, dust and molecular clouds, and hotspots on moons | [Infrared telescopes and high-altitude sites](../notes/infrared-telescopes.html) | – |  | |
 | 13.30 | understand | the atmosphere's detrimental effect on image quality | [Infrared telescopes and high-altitude sites](../notes/infrared-telescopes.html) | – |  | |
-| 13.31 | understand | why telescopes outside the optical and radio windows must be above the atmosphere | *not built* | – |  | |
-| 13.32 | understand | advantages and disadvantages of space telescopes and detectors, including orbital observing platforms | *not built* | – |  | |
-| 13.33 | understand | gamma ray, X-ray and ultraviolet astronomy's role in the discovery of gamma ray bursts, black hole accretion discs, and the corona/chromosphere structure of young stars | *not built* | – |  | |
+| 13.31 | understand | why telescopes outside the optical and radio windows must be above the atmosphere | [Space telescopes](../notes/space-telescopes.html) | – |  | |
+| 13.32 | understand | advantages and disadvantages of space telescopes and detectors, including orbital observing platforms | [Space telescopes](../notes/space-telescopes.html) | – |  | |
+| 13.33 | understand | gamma ray, X-ray and ultraviolet astronomy's role in the discovery of gamma ray bursts, black hole accretion discs, and the corona/chromosphere structure of young stars | [Space telescopes](../notes/space-telescopes.html) | – |  | |
 | 13.34a | understand | how a telescope alters the appearance of stars | [Binaries, clusters and the view through a telescope](../notes/binaries-and-clusters.html) | – |  | |
 | 13.34b | understand | how a telescope alters the appearance of double stars | [Binaries, clusters and the view through a telescope](../notes/binaries-and-clusters.html) | – |  | |
 | 13.34c | understand | how a telescope alters the appearance of binary stars | [Binaries, clusters and the view through a telescope](../notes/binaries-and-clusters.html) | – |  | |

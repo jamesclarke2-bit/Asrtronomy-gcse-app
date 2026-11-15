@@ -112,7 +112,7 @@ WIDTHS.forEach(({ name, width, height }) => {
   test(`${name}: higher sites let more infrared through, matching the engine; the sites land on the step grid`, async (t) => {
     await withPage(t, still, async (page) => {
       let last = -1;
-      for (const tenths of [0, 10, 20, 30, 42, 50]) {
+      for (const tenths of [0, 10, 20, 30, 42, 50, 56, 60]) {
         await setRange(page, 'altitude', tenths);
         const d = await data(page, 'altitude-diagram');
         const km = tenths / 10;
@@ -199,7 +199,7 @@ WIDTHS.forEach(({ name, width, height }) => {
   test(`${name}: in every state, no diagram label overlaps another or spills outside its panel`, async (t) => {
     await withPage(t, still, async (page) => {
       const found = [...(await labelProblems(page, 'default'))];
-      for (const tenths of [0, 25, 42, 50]) {
+      for (const tenths of [0, 25, 42, 56, 60]) {
         await setRange(page, 'altitude', tenths);
         found.push(...(await labelProblems(page, `altitude ${tenths}`)));
       }
