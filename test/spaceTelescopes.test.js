@@ -15,7 +15,11 @@ test('every band of the chart has a verdict, and the balance tips the right way'
     assert.ok(v.tilt >= -1 && v.tilt <= 1, b.name);
     assert.ok(v.reason.length > 20, b.name);
   });
-  T.spaceOnlyBands().forEach((name) => assert.equal(T.verdict(name).tilt, 1, `${name} needs space`));
+  ['Gamma ray', 'X-ray'].forEach((name) => assert.equal(T.verdict(name).tilt, 1, `${name} needs space`));
+  // Most ultraviolet needs space, but the near ultraviolet reaches the ground.
+  assert.ok(T.verdict('Ultraviolet').tilt > 0.75 && T.verdict('Ultraviolet').tilt < 1);
+  assert.match(T.verdict('Ultraviolet').reason, /^Most ultraviolet/);
+  assert.match(T.verdict('Ultraviolet').reason, /near ultraviolet, down to about 300 nm, reaches the ground/);
   assert.equal(T.verdict('Radio').tilt, -1);
   assert.equal(T.verdict('Optical').tilt, 0, 'visible light: both have a case');
   assert.ok(T.verdict('Infrared').tilt > 0 && T.verdict('Infrared').tilt < 1, 'infrared: mostly space');

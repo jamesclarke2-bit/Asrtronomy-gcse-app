@@ -52,7 +52,7 @@
     const ABSORBED = 'They are absorbed high in the atmosphere and never reach the ground';
     const ABOVE = 'Above the atmosphere, in space';
     const XRAY = 'An X-ray telescope';
-    const UV_HIGH = 'Ultraviolet is absorbed far above the top of any mountain';
+    const UV_HIGH = 'Most ultraviolet is absorbed far above the top of any mountain';
     const SHARP = 'No turbulence, so its images are sharper';
     const ALL_WAVES = 'Every wavelength reaches it, because nothing is absorbed';
     const REPAIR = 'It is hard or impossible to repair if something goes wrong';
@@ -70,16 +70,16 @@
       multi(
         'sp-why-space',
         '13.31',
-        'Gamma-ray, X-ray and ultraviolet telescopes cannot work on the ground. (a) What happens to these waves from space? (b) So where must these telescopes be?',
+        'Gamma-ray and X-ray telescopes, and most ultraviolet telescopes, cannot work on the ground. (a) What happens to these waves from space? (b) So where must these telescopes be?',
         [
           { key: 'happens', type: 'choice', label: '(a) These waves', options: [ABSORBED, 'They pass straight through the Earth', 'They are too faint to detect anywhere'] },
           { key: 'where', type: 'choice', label: '(b) The telescopes must be', options: [ABOVE, 'On the highest mountains', 'Underground, away from light pollution'] },
         ],
         [ABSORBED, ABOVE],
-        ['(a) they are absorbed high in the atmosphere and never reach the ground', '(b) so the telescopes must be above the atmosphere, in space'],
+        ['(a) they are absorbed high in the atmosphere and never reach the ground (for ultraviolet, all but the near ultraviolet)', '(b) so the telescopes must be above the atmosphere, in space'],
       ),
       single('sp-which-needs-space', '13.31', 'Which of these must be in space to work at all?', [XRAY, 'A radio telescope', 'An optical telescope', 'A telescope for visible light from the Moon'], XRAY, `an X-ray telescope (${xray.where}): X-rays are absorbed high in the atmosphere, far above any mountain; visible light and radio waves reach the ground`),
-      single('sp-uv-mountain', '13.31', 'Why does building an ultraviolet telescope on a high mountain not help?', [UV_HIGH, 'Mountains are too cold for ultraviolet', 'Ultraviolet is blocked only by clouds', 'Ultraviolet reaches the ground anyway'], UV_HIGH, 'ultraviolet is absorbed high in the atmosphere, far above the top of any mountain, so the telescope must be in space'),
+      single('sp-uv-mountain', '13.31', 'Why does building an ultraviolet telescope on a high mountain not help?', [UV_HIGH, 'Mountains are too cold for ultraviolet', 'Ultraviolet is blocked only by clouds', 'All ultraviolet reaches the ground anyway'], UV_HIGH, 'most ultraviolet is absorbed high in the atmosphere, far above the top of any mountain (only the near ultraviolet, down to about 300 nm, reaches the ground), so the telescope must be in space'),
       multi(
         'sp-advantages',
         '13.32',

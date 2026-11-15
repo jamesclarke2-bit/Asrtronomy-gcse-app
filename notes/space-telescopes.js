@@ -188,8 +188,8 @@
     });
     svg.dataset.tilt = String(v.tilt);
     svg.dataset.band = v.band;
-    const heading = v.tilt > 0.75 ? 'space only' : v.tilt > 0 ? 'mostly space' : v.tilt < -0.75 ? 'the ground' : 'both have a case';
-    addLabel(svg, wrap, `${BAND_LABELS[v.band]}: ${heading}`, 320, 278, 'diagram-label--tick diagram-label--strong');
+    const heading = v.tilt === 1 ? 'space only' : v.tilt > 0 ? 'mostly space' : v.tilt < -0.75 ? 'the ground' : 'both have a case';
+    addLabel(svg, wrap, `${BAND_LABELS[v.band]}: ${heading}`, 320, 24, 'diagram-label--tick diagram-label--strong');
     document.getElementById('balance-readout').textContent = `${BAND_LABELS[v.band]}: ${v.where}. ${v.reason}`;
     document.querySelectorAll('#band-buttons button').forEach((b) => {
       const on = b.dataset.band === v.band;

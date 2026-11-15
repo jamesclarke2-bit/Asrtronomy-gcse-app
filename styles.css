@@ -4795,3 +4795,20 @@ canvas {
 .sp-mark {
   font-size: 0.95rem;
 }
+
+/* notes/star-trails.html */
+.st-tables {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: 0 1.5rem;
+}
+
+.st-table tfoot th {
+  text-align: left;
+  font-weight: 600;
+}
+
+.st-anomaly td {
+  font-style: italic;
+  text-decoration: line-through;
+}

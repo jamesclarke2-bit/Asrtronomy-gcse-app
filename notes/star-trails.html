@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; form-action 'none'; base-uri 'self'" />
+  <meta name="referrer" content="no-referrer" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Star trails and the sidereal day</title>
+  <link rel="stylesheet" href="../styles.css?v=202611151400" />
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg?v=202610130720" />
+</head>
+<body>
+  <main>
+    <p class="back-link"><a href="../index.html">&larr; Back to all tools</a></p>
+
+    <h1>Star trails and the sidereal day</h1>
+    <p class="subtitle">
+      Leave a camera pointing at the night sky, and the stars draw arcs: a record of the Earth
+      turning.
+    </p>
+
+    <section class="notes-section" id="star-trails">
+      <h2>What a star trail is</h2>
+      <p>
+        A star trail image is a long exposure: the camera stays still while the Earth turns, so each
+        star draws an arc around the
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="celestialPole" aria-label="What is the celestial pole?" aria-expanded="false">celestial pole</button>.
+        Drag the exposure time and watch the arcs grow.
+      </p>
+      <span class="glossary-definition" data-term="celestialPole" hidden></span>
+
+      <div class="control">
+        <label for="exposure">Exposure time: <span id="exposure-label"></span></label>
+        <input type="range" id="exposure" aria-controls="trail-diagram measure-diagram" min="10" max="240" step="10" value="120" />
+      </div>
+
+      <div class="diagram spectrum-panel st-panel">
+        <div class="labelled-diagram-wrap" id="trail-diagram-wrap">
+          <svg
+            id="trail-diagram"
+            class="responsive-svg"
+            width="640"
+            height="400"
+            viewBox="0 0 640 400"
+            role="img"
+            aria-label="A drawn star-trail image of the northern sky above dark hills and a tree. Every star has drawn an arc around one point, the celestial pole, near the bright Pole Star. The longer the exposure, the longer every arc."
+          ></svg>
+        </div>
+      </div>
+      <p class="note">
+        A drawn image, not a photograph. That stars circle the celestial pole, near the Pole Star in
+        the northern sky: first draft, to be checked by the teacher.
+      </p>
+    </section>
+
+    <section class="notes-section" id="measure">
+      <h2>Measure the angle, find the sidereal day</h2>
+      <p>
+        In the exposure time <em>t</em>, the Earth turns through the angle &theta; that every arc
+        covers. One full turn, 360&deg;, relative to the stars is a
+        <strong>sidereal day</strong>. So:
+      </p>
+      <p class="formula">sidereal day = (360 &divide; &theta;) &times; t</p>
+      <p>
+        Line the two arms up with the two ends of the marked arc, and read &theta;.
+      </p>
+
+      <div class="control">
+        <label for="arm-start">First arm: <span id="arm-start-label"></span></label>
+        <input type="range" id="arm-start" aria-controls="measure-diagram" min="0" max="360" step="0.5" value="0" />
+      </div>
+      <div class="control">
+        <label for="arm-end">Second arm: <span id="arm-end-label"></span></label>
+        <input type="range" id="arm-end" aria-controls="measure-diagram" min="0" max="360" step="0.5" value="90" />
+      </div>
+
+      <div class="diagram spectrum-panel st-panel">
+        <div class="labelled-diagram-wrap" id="measure-diagram-wrap">
+          <svg
+            id="measure-diagram"
+            class="responsive-svg"
+            width="640"
+            height="400"
+            viewBox="0 0 640 400"
+            role="img"
+            aria-label="One star's arc, thick, around the celestial pole, with an angle scale around it and two arms from the pole that you line up with the two ends of the arc. The angle between the arms is shown."
+          ></svg>
+        </div>
+      </div>
+      <p class="note" id="measure-readout" aria-live="polite"></p>
+    </section>
+
+    <section class="notes-section" id="uncertainty">
+      <h2>How sure is the answer?</h2>
+      <p>
+        Five students read the same arc. Their readings spread a little, so the uncertainty is
+        <strong>half the range</strong> of the readings. Repeating a reading shows that spread, shows
+        up an anomaly to leave out, and gives a mean; it does not make the method itself more
+        accurate. A <strong>longer exposure</strong> gives a bigger angle for the same reading spread,
+        so the percentage uncertainty is smaller.
+      </p>
+
+      <div class="diagram spectrum-panel st-panel">
+        <div class="labelled-diagram-wrap" id="spread-diagram-wrap">
+          <svg
+            id="spread-diagram"
+            class="responsive-svg"
+            width="640"
+            height="260"
+            viewBox="0 0 640 260"
+            role="img"
+            aria-label="The same reading spread on two arcs. On a short-exposure arc the spread is a large part of the small angle; on a long-exposure arc it is a small part of the big angle. Bars underneath show the percentage uncertainty: much longer for the short exposure."
+          ></svg>
+        </div>
+      </div>
+
+      <div class="st-tables" id="reading-tables"></div>
+      <button type="button" class="secondary-button" id="new-readings">New readings</button>
+      <p class="note">
+        The readings are made up, each within about &plusmn;1&deg; of the true angle, read to the
+        nearest 0.5&deg;.
+      </p>
+    </section>
+
+    <section class="notes-section" id="why-not-24">
+      <h2>Why not exactly 24 hours?</h2>
+      <p>
+        Star trails time the Earth's turn against the stars. As it turns, the Earth also moves along
+        its orbit, so after one turn against the stars it has to turn a little further to face the
+        Sun again. A solar day is that little bit longer.
+      </p>
+      <div class="diagram spectrum-panel st-panel">
+        <div class="labelled-diagram-wrap" id="day-diagram-wrap">
+          <svg
+            id="day-diagram"
+            class="responsive-svg"
+            width="640"
+            height="300"
+            viewBox="0 0 640 300"
+            role="img"
+            aria-label="Not to scale. The Earth at two points of its orbit round the Sun, one day apart, with the move between them exaggerated. An arrow on the Earth points at a distant star at both times after one sidereal day, but must turn a little further to point at the Sun again, which takes a solar day."
+          ></svg>
+        </div>
+      </div>
+      <p class="note" id="day-readout"></p>
+      <p class="note">
+        That the Earth moves about 1&deg; along its orbit each day, so the extra turn takes about 4
+        minutes: first draft, to be checked by the teacher. The sidereal and solar days are the data
+        sheet's. More on <a href="../sims/coordinates.html">Star Coordinates</a>.
+      </p>
+    </section>
+
+    <section class="notes-section" id="exam-tips">
+      <h2>Exam tips</h2>
+      <p class="exam-tip">
+        <strong>Common exam confusion:</strong> repeating a reading does not make the method more
+        accurate; a longer exposure is what shrinks the percentage uncertainty.
+        <a href="#uncertainty">How sure is the answer? &uarr;</a>
+      </p>
+      <p class="exam-tip">
+        <strong>Common exam confusion:</strong> star trails give the sidereal day, about 23 h 56 min,
+        not the 24-hour solar day.
+        <a href="#why-not-24">Why not exactly 24 hours? &uarr;</a>
+      </p>
+    </section>
+
+    <section class="notes-section" id="related">
+      <h2>Related pages</h2>
+      <div class="page-card-list">
+        <a class="page-card" href="../sims/coordinates.html">
+          <h3>Star Coordinates</h3>
+          <p class="page-card-description">Sidereal time, and the sidereal day against the solar day.</p>
+        </a>
+      </div>
+    </section>
+
+    <section class="questions" id="questions">
+      <h2>Practice questions</h2>
+      <div id="questions-list"></div>
+    </section>
+
+    <section class="progress">
+      <h2>Your progress</h2>
+      <ul id="progress-list"></ul>
+      <p class="note">Stored in this browser only (localStorage) &mdash; no account needed.</p>
+    </section>
+
+    <p class="coverage" id="coverage"></p>
+    <p class="next-page-link" id="next-page"></p>
+  </main>
+
+  <script src="../src/curriculum.js?v=202611151400"></script>
+  <script src="../src/pages.js?v=202611151400"></script>
+  <script src="../src/specData.js?v=202610161036"></script>
+  <script src="../src/spectra.js?v=202611131200"></script>
+  <script src="../src/spectrumDrawing.js?v=202611130900"></script>
+  <script src="../src/starTrails.js?v=202611151400"></script>
+  <script src="../src/starTrailsQuestions.js?v=202611151400"></script>
+  <script src="../glossary.js?v=202610131052"></script>
+  <script src="../quiz-ui.js?v=202611121900"></script>
+  <script src="star-trails.js?v=202611151400"></script>
+  <script src="../diagramEnlarge.js?v=202611111500"></script>
+  <script src="../notesPage.js?v=202609252100"></script>
+  <script src="../nextPage.js?v=202610161057"></script>
+</body>
+</html>

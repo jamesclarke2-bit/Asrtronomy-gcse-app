@@ -18,11 +18,11 @@ One row per point in the Edexcel GCSE Astronomy (1AS0) specification, Topics 1�
 | 10 | Solar astronomy | 12 | 12 | 0 | 0 |
 | 11 | Exploring the Solar System | 33 | 29 | 4 | 0 |
 | 12 | Formation of planetary systems | 14 | 5 | 9 | 1 |
-| 13 | Exploring starlight | 49 | 47 | 2 | 1 |
+| 13 | Exploring starlight | 49 | 48 | 1 | 1 |
 | 14 | Stellar evolution | 11 | 0 | 11 | 0 |
 | 15 | Our place in the Galaxy | 14 | 0 | 14 | 0 |
 | 16 | Cosmology | 12 | 0 | 12 | 0 |
-| **Total** | | **244** | **189** | **55** | **29** |
+| **Total** | | **244** | **190** | **54** | **29** |
 
 ## Methodology
 
@@ -283,7 +283,7 @@ One row per point in the Edexcel GCSE Astronomy (1AS0) specification, Topics 1�
 | 13.16 | understand | how Cepheid variables are used to determine distances | [Variable stars and Cepheids](../notes/variable-stars.html) | – |  | |
 | 13.17 | understand | the structure of gravitationally bound groupings such as binary stars and clusters | [Binaries, clusters and the view through a telescope](../notes/binaries-and-clusters.html) | – |  | |
 | 13.18 | understand | deduce the period of an eclipsing binary from its light curve | [Eclipsing binaries](../notes/eclipsing-binaries.html) | – |  | |
-| 13.19 | be able to | use star trail photographs to determine the length of the sidereal day | *not built* | – |  | |
+| 13.19 | be able to | use star trail photographs to determine the length of the sidereal day | [Star trails and the sidereal day](../notes/star-trails.html) | 10 |  | |
 | 13.20 | know | modern observations are recorded with digital sensors converting light to electrical signals, processed and stored as data files | [Reading a spectrum](../notes/reading-a-spectrum.html) | – |  | |
 | 13.21 | understand | how astronomers obtain and study patterns of spectral lines in light from astronomical objects | [Reading a spectrum](../notes/reading-a-spectrum.html) | – |  | |
 | 13.22 | know | the atmosphere blocks almost all radiation except visible light and radio waves | [Earth: Structure, Atmosphere and Motion](../notes/earth-structure.html) | – | ⚠ covered only on a page where tap-to-reveal content outweighs visible prose | |
