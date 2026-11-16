@@ -108,6 +108,11 @@ test('notes/earth-structure.html: the transmission chart draws all six bands', a
     ['Gamma ray', 'X-ray', 'Ultraviolet', 'Optical', 'Infrared', 'Radio'].forEach((band) => {
       assert.ok(text.includes(band), `chart should label ${band}`);
     });
+    // A mark above each bar, so the chart never relies on colour alone;
+    // ultraviolet is partly absorbed (the near ultraviolet reaches the ground).
+    assert.deepEqual(await page.locator('#transmission-chart .atmosphere-mark').allTextContents(), ['✗', '✗', '∼', '✓', '∼', '✓']);
+    const legend = (await page.locator('#transmission-window .legend').first().textContent()).replace(/\s+/g, ' ');
+    assert.match(legend, /∼ Partly absorbed \(ultraviolet: most absorbed; near ultraviolet reaches the ground\)/);
   });
 });
 

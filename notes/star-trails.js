@@ -168,11 +168,13 @@
       body.appendChild(tr);
     });
     const foot = el('tfoot');
+    const day = Math.round(r.dayMin).toLocaleString('en-GB');
+    const dayWorking = `(360 \u00f7 ${fmt(r.mean, 2)}) \u00d7 ${t} = ${day} \u00b1 ${Math.round(r.dayUncertaintyMin)}`;
     [
       ['Mean (\u00b0)', fmt(r.mean, 2)],
       ['Uncertainty, half the range (\u00b0)', `\u00b1${fmt(r.uncertainty, 2)}`],
       ['Percentage uncertainty (%)', fmt(r.percent, 1)],
-      ['Sidereal day (min)', `${Math.round(r.dayMin).toLocaleString('en-GB')} \u00b1 ${Math.round(r.dayUncertaintyMin)}`],
+      ['Sidereal day (min)', dayWorking],
     ].forEach(([label, value]) => {
       const tr = el('tr');
       tr.append(el('th', label, { scope: 'row' }), el('td', value));
@@ -209,8 +211,8 @@
       wedge(0, r.mean, `st-wedge st-wedge--${id}`, '#25345a');
       wedge(r.mean - r.uncertainty, r.mean + r.uncertainty, `st-band st-band--${id}`, 'url(#st-hatch)');
     });
-    addLabel(svg, wrap, `${SHORT} min: θ ≈ ${fmt(short.mean, 1)}° ± ${fmt(short.uncertainty, 2)}°`, 24, 30, 'diagram-label--tick diagram-label--right');
-    addLabel(svg, wrap, `${LONG} min: θ ≈ ${fmt(long.mean, 1)}° ± ${fmt(long.uncertainty, 2)}°`, 340, 30, 'diagram-label--tick diagram-label--right');
+    addLabel(svg, wrap, `${SHORT} min: θ = ${fmt(short.mean, 2)}° ± ${fmt(short.uncertainty, 2)}°`, 24, 30, 'diagram-label--tick diagram-label--right');
+    addLabel(svg, wrap, `${LONG} min: θ = ${fmt(long.mean, 2)}° ± ${fmt(long.uncertainty, 2)}°`, 340, 30, 'diagram-label--tick diagram-label--right');
     // Bars: percentage uncertainty, longer bar = less certain.
     const scale = 90;
     [[short, SHORT, 200], [long, LONG, 232]].forEach(([r, t, y]) => {
@@ -221,6 +223,62 @@
     });
     svg.dataset.shortPercent = short.percent.toFixed(2);
     svg.dataset.longPercent = long.percent.toFixed(2);
+    drawSeparate(long);
+  }
+
+  // ------------------------------------------------------------------
+  // 3b. Can a measurement tell the sidereal and solar days apart?
+  // ------------------------------------------------------------------
+
+  const NIGHT = 720;
+
+  function drawSeparate(long) {
+    const svg = document.getElementById('separate-diagram');
+    const wrap = document.getElementById('separate-diagram-wrap');
+    clearDiagram(svg, wrap);
+    panel(svg);
+    const defs = svgEl('defs', {}, svg);
+    const hatch = svgEl('pattern', { id: 'st-sep-hatch', width: 6, height: 6, patternUnits: 'userSpaceOnUse', patternTransform: 'rotate(45)' }, defs);
+    svgEl('line', { x1: 0, y1: 0, x2: 0, y2: 6, stroke: '#ffd36b', 'stroke-width': 3 }, hatch);
+    const LO = 1410;
+    const HI = 1470;
+    const x = (m) => 60 + ((Math.min(HI, Math.max(LO, m)) - LO) / (HI - LO)) * 540;
+    const num = (m) => Math.round(m).toLocaleString('en-GB');
+    // The axis, in minutes.
+    svgEl('line', { x1: 60, y1: 220, x2: 600, y2: 220, stroke: INK, 'stroke-width': 1.5 }, svg);
+    for (let m = LO; m <= HI; m += 10) {
+      svgEl('line', { x1: x(m), y1: 220, x2: x(m), y2: 228, stroke: INK }, svg);
+      addLabel(svg, wrap, num(m), x(m), 240, 'diagram-label--tick');
+    }
+    addLabel(svg, wrap, 'sidereal day (min)', 320, 272, 'diagram-label--tick');
+    // The two days, told apart by line style and label, not colour.
+    svgEl('line', { class: 'st-sep-sidereal', x1: x(S.SIDEREAL_DAY_MIN), y1: 34, x2: x(S.SIDEREAL_DAY_MIN), y2: 220, stroke: INK, 'stroke-width': 2 }, svg);
+    svgEl('line', { class: 'st-sep-solar', x1: x(S.SOLAR_DAY_MIN), y1: 34, x2: x(S.SOLAR_DAY_MIN), y2: 220, stroke: INK, 'stroke-width': 2, 'stroke-dasharray': '6 4' }, svg);
+    addLabel(svg, wrap, `sidereal ${num(S.SIDEREAL_DAY_MIN)}`, x(S.SIDEREAL_DAY_MIN) - 4, 24, 'diagram-label--tick diagram-label--strong diagram-label--left');
+    addLabel(svg, wrap, `solar ${num(S.SOLAR_DAY_MIN)}`, x(S.SOLAR_DAY_MIN) + 4, 24, 'diagram-label--tick diagram-label--strong diagram-label--right');
+    // Each measurement's range, as a bar with end caps and its mean marked.
+    const night = S.dayRange(NIGHT, long.uncertainty);
+    const rows = [
+      { id: 'long', y: 92, lo: long.shortestMin, hi: long.longestMin, mid: long.dayMin, unc: long.dayUncertaintyMin, text: `${LONG} min: ${num(long.dayMin)} ± ${num(long.dayUncertaintyMin)}` },
+      { id: 'night', y: 172, lo: night.shortestMin, hi: night.longestMin, mid: (night.shortestMin + night.longestMin) / 2, unc: night.uncertaintyMin, text: `${NIGHT} min (whole night): ${num((night.shortestMin + night.longestMin) / 2)} ± ${num(night.uncertaintyMin)}` },
+    ];
+    rows.forEach((r) => {
+      svgEl('rect', { class: `st-sep-bar st-sep-bar--${r.id}`, x: x(r.lo), y: r.y - 8, width: (x(r.hi) - x(r.lo)).toFixed(1), height: 16, fill: 'url(#st-sep-hatch)', stroke: INK }, svg);
+      svgEl('circle', { cx: x(r.mid), cy: r.y, r: 5, fill: INK }, svg);
+      addLabel(svg, wrap, r.text, 70, r.y - 26, 'diagram-label--tick diagram-label--right');
+    });
+    svg.dataset.longLo = long.shortestMin.toFixed(1);
+    svg.dataset.longHi = long.longestMin.toFixed(1);
+    svg.dataset.nightLo = night.shortestMin.toFixed(3);
+    svg.dataset.nightHi = night.longestMin.toFixed(3);
+    const holdsBoth = long.shortestMin <= S.SIDEREAL_DAY_MIN && long.longestMin >= S.SOLAR_DAY_MIN;
+    const longPc = ((100 * long.uncertainty) / long.mean).toFixed(2);
+    document.getElementById('separate-readout').textContent =
+      `The ${LONG}-minute exposure gives ${num(long.dayMin)} ± ${num(long.dayUncertaintyMin)} min: a range from ${num(long.shortestMin)} to ${num(long.longestMin)} min, ${holdsBoth ? 'holds both' : `is ${num(2 * long.dayUncertaintyMin)} min wide, far wider than the gap between`} the sidereal day (${num(S.SIDEREAL_DAY_MIN)} min) and the solar day (${num(S.SOLAR_DAY_MIN)} min), so it cannot tell them apart. ` +
+      `A whole night, about ${NIGHT} min, turns the trail through about ${night.thetaDeg.toFixed(1)}°. Read to the same ±${long.uncertainty.toFixed(2)}°, that is ±${night.percent.toFixed(2)}% instead of ±${longPc}%, so the day comes out at ${num(night.shortestMin)} to ${num(night.longestMin)} min. ` +
+      (S.separatesFromSolar(night)
+        ? `That range holds the sidereal day and stops just short of the solar day: only just enough to tell them apart.`
+        : `That is narrower, but with this spread of readings it still reaches the solar day.`);
   }
 
   // ------------------------------------------------------------------

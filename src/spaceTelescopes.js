@@ -31,9 +31,13 @@
     return { band: band.name, category: band.category, ...VERDICTS[band.name] };
   }
 
-  /** The bands that never reach the ground: only a space telescope can see them. */
+  /**
+   * The bands whose telescopes must be in space: all of it (gamma rays,
+   * X-rays) or almost all of it (ultraviolet, where only the near
+   * ultraviolet reaches the ground).
+   */
   function spaceOnlyBands() {
-    return AtmosphereWindows.BANDS.filter((b) => b.category === 'blocked').map((b) => b.name);
+    return AtmosphereWindows.BANDS.filter((b) => VERDICTS[b.name].tilt >= 0.9).map((b) => b.name);
   }
 
   /** Two example orbits for an orbital observing platform. */

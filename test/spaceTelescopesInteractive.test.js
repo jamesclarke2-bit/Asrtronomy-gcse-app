@@ -85,7 +85,7 @@ WIDTHS.forEach(({ name, width, height }) => {
     await withPage(t, still, async (page) => {
       const bars = await page.locator('#space-chart rect[data-category]').evaluateAll((els) => els.map((el) => el.dataset.category));
       assert.deepEqual(bars, W.BANDS.map((b) => b.category));
-      assert.deepEqual(await page.locator('#space-chart-wrap .sp-mark').allTextContents(), ['✗', '✗', '✗', '✓', '∼', '✓']);
+      assert.deepEqual(await page.locator('#space-chart-wrap .sp-mark').allTextContents(), ['✗', '✗', '∼', '✓', '∼', '✓']);
       assert.equal((await data(page, 'space-chart')).spaceOnly, T.spaceOnlyBands().join(','));
       assert.equal(await page.locator('#space-chart .sp-space-bracket').count(), 1);
       assert.ok((await page.locator('#space-chart-wrap .diagram-label').allTextContents()).includes('need space'));

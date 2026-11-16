@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; form-action 'none'; base-uri 'self'" />
+  <meta name="referrer" content="no-referrer" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Space probes</title>
+  <link rel="stylesheet" href="../styles.css?v=202611161200" />
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg?v=202610130720" />
+</head>
+<body>
+  <main>
+    <p class="back-link"><a href="../index.html">&larr; Back to all tools</a></p>
+
+    <h1>Space probes</h1>
+    <p class="subtitle">
+      Telescopes look from afar; a space probe goes there.
+    </p>
+
+    <section class="notes-section" id="probe-types">
+      <h2>Four ways to visit</h2>
+      <p>
+        A
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="probe" aria-label="What is a space probe?" aria-expanded="false">space probe</button>
+        is a robot spacecraft, with no crew, sent to study another body close up. Choose a kind of
+        probe to see how it meets its target.
+      </p>
+      <span class="glossary-definition" data-term="probe" hidden></span>
+
+      <div class="preset-list" role="group" aria-label="Choose a kind of probe" id="type-buttons"></div>
+
+      <div class="diagram spectrum-panel pr-panel">
+        <div class="labelled-diagram-wrap" id="types-diagram-wrap">
+          <svg
+            id="types-diagram"
+            class="responsive-svg"
+            width="640"
+            height="320"
+            viewBox="0 0 640 320"
+            role="img"
+            aria-label="Not to scale. A cratered target body with the chosen kind of probe: a fly-by passing it once on a curved path, an orbiter going round it on a loop, an impactor crashing into it with a cloud of material thrown up, or a lander resting on its surface on three legs."
+          ></svg>
+        </div>
+      </div>
+
+      <div class="pr-type-cards" id="type-cards">
+        <div class="pr-type-card" data-type="flyby">
+          <h3>Fly-by</h3>
+          <ul class="pr-for-against">
+            <li>&#10003; Cheapest kind of visit: it needs no fuel to slow down.</li>
+            <li>&#10003; Can reach the most distant targets, and pass several on one trip.</li>
+            <li>&#10007; Only a brief close look: a few hours near the target.</li>
+            <li>&#10007; Cannot follow changes over time.</li>
+          </ul>
+        </div>
+        <div class="pr-type-card" data-type="orbiter">
+          <h3>Orbiter</h3>
+          <ul class="pr-for-against">
+            <li>&#10003; Studies the target for months or years, mapping the whole surface.</li>
+            <li>&#10003; Can follow changes, such as weather and seasons.</li>
+            <li>&#10007; Must carry extra fuel to slow down into orbit, so costs more.</li>
+            <li>&#10007; Cannot touch or sample the surface.</li>
+          </ul>
+        </div>
+        <div class="pr-type-card" data-type="impactor">
+          <h3>Impactor</h3>
+          <ul class="pr-for-against">
+            <li>&#10003; Reveals what lies beneath the surface.</li>
+            <li>&#10003; The crash can be watched by a nearby craft and from Earth.</li>
+            <li>&#10007; Destroyed in the crash: a one-off measurement.</li>
+            <li>&#10007; Needs a very precise aim.</li>
+          </ul>
+        </div>
+        <div class="pr-type-card" data-type="lander">
+          <h3>Lander</h3>
+          <ul class="pr-for-against">
+            <li>&#10003; Measures the surface directly, close up.</li>
+            <li>&#10003; Can sample material and do experiments on the spot.</li>
+            <li>&#10007; Hardest and most expensive: landing can fail.</li>
+            <li>&#10007; Studies only one small spot.</li>
+          </ul>
+        </div>
+      </div>
+      <p class="note">These advantages and disadvantages: first draft, to be checked by the teacher.</p>
+    </section>
+
+    <section class="notes-section" id="missions">
+      <h2>One mission of each kind</h2>
+
+      <article class="pr-mission" data-mission="new-horizons">
+        <h3>Fly-by: New Horizons</h3>
+        <div class="diagram spectrum-panel pr-panel">
+          <div class="labelled-diagram-wrap" id="nh-diagram-wrap">
+            <svg
+              id="nh-diagram"
+              class="responsive-svg"
+              width="640"
+              height="240"
+              viewBox="0 0 640 240"
+              role="img"
+              aria-label="Not to scale. Pluto, with a pale heart-shaped plain, and its large moon Charon. New Horizons passes them once on a straight path and carries on outwards."
+            ></svg>
+          </div>
+        </div>
+        <p>
+          <strong>Target:</strong> the dwarf planet Pluto, then Arrokoth, a small icy body further
+          out in the
+          <button type="button" class="glossary-toggle glossary-term-button" data-term="kuiperBelt" aria-label="What is the Kuiper belt?" aria-expanded="false">Kuiper belt</button>.
+          Launched 2006; flew past Pluto on 14 July 2015, and Arrokoth on 1 January 2019.
+        </p>
+        <span class="glossary-definition" data-term="kuiperBelt" hidden></span>
+        <ul class="pr-finds">
+          <li>A huge, smooth, heart-shaped plain of frozen nitrogen on Pluto, with very few craters, so its surface is young.</li>
+          <li>Mountains of water ice, and a thin, hazy atmosphere.</li>
+          <li>Arrokoth is two rounded lumps joined gently together.</li>
+        </ul>
+        <p class="note">Mission dates and discoveries: first draft, to be checked by the teacher.</p>
+      </article>
+
+      <article class="pr-mission" data-mission="juno">
+        <h3>Orbiter: Juno</h3>
+        <div class="diagram spectrum-panel pr-panel">
+          <div class="labelled-diagram-wrap" id="juno-diagram-wrap">
+            <svg
+              id="juno-diagram"
+              class="responsive-svg"
+              width="640"
+              height="240"
+              viewBox="0 0 640 240"
+              role="img"
+              aria-label="Not to scale. Jupiter, with its cloud bands and a cluster of storms at its north pole. Juno's long, looping orbit passes over both poles, again and again."
+            ></svg>
+          </div>
+        </div>
+        <p>
+          <strong>Target:</strong> Jupiter, on an orbit passing over both poles. Launched 2011; in
+          orbit since 2016.
+        </p>
+        <ul class="pr-finds">
+          <li>Clusters of giant storms (cyclones) around both of Jupiter&rsquo;s poles.</li>
+          <li>A core that is not a small, sharp ball but spread out and mixed into the layers above it.</li>
+          <li>A very strong, lopsided magnetic field.</li>
+        </ul>
+        <p>
+          <strong>Or Dawn</strong>, which orbited the asteroid Vesta from 2011, then the dwarf planet
+          Ceres from 2015 (launched 2007): the first probe to orbit two different bodies beyond the
+          Earth&ndash;Moon system. It found that bright spots on Ceres are salt left behind by salty water
+          from below the surface.
+        </p>
+        <p class="note">Mission dates and discoveries: first draft, to be checked by the teacher.</p>
+      </article>
+
+      <article class="pr-mission" data-mission="deep-impact">
+        <h3>Impactor: Deep Impact</h3>
+        <div class="diagram spectrum-panel pr-panel">
+          <div class="labelled-diagram-wrap" id="di-diagram-wrap">
+            <svg
+              id="di-diagram"
+              class="responsive-svg"
+              width="640"
+              height="240"
+              viewBox="0 0 640 240"
+              role="img"
+              aria-label="Not to scale. The lumpy core of a comet. A small impactor crashes into it and throws up a bright cloud of fine dust, while the fly-by craft that released it passes at a safe distance, watching."
+            ></svg>
+          </div>
+        </div>
+        <p>
+          <strong>Target:</strong> Comet Tempel 1. Launched 2005; its impactor hit the comet on
+          4 July 2005, watched by the fly-by craft that carried it.
+        </p>
+        <ul class="pr-finds">
+          <li>The crash threw out a huge cloud of very fine, powdery dust: the comet&rsquo;s core is loose and porous.</li>
+          <li>More dust than ice: more an &ldquo;icy dirtball&rdquo; than a &ldquo;dirty snowball&rdquo;.</li>
+          <li>Water ice and carbon-based (organic) material.</li>
+        </ul>
+        <p class="note">Mission dates and discoveries: first draft, to be checked by the teacher.</p>
+      </article>
+
+      <article class="pr-mission" data-mission="philae">
+        <h3>Lander: Philae</h3>
+        <div class="diagram spectrum-panel pr-panel">
+          <div class="labelled-diagram-wrap" id="philae-diagram-wrap">
+            <svg
+              id="philae-diagram"
+              class="responsive-svg"
+              width="640"
+              height="240"
+              viewBox="0 0 640 240"
+              role="img"
+              aria-label="Not to scale. A comet shaped like two lumps joined together, with the Rosetta orbiter above it. Philae's path comes down, bounces twice, and ends in the shadow of a cliff."
+            ></svg>
+          </div>
+        </div>
+        <p>
+          <strong>Target:</strong> Comet 67P/Churyumov&ndash;Gerasimenko, carried there by the
+          Rosetta orbiter. Rosetta launched 2004; Philae landed on 12 November 2014.
+        </p>
+        <ul class="pr-finds">
+          <li>Carbon-based (organic) molecules on the comet, some never found on a comet before.</li>
+          <li>Its harpoons failed to fire, so it bounced: the surface was harder than expected beneath its dust.</li>
+          <li>It came to rest in shadow, so it ran out of power after about 60 hours.</li>
+        </ul>
+        <p class="note">Mission dates and discoveries: first draft, to be checked by the teacher.</p>
+      </article>
+    </section>
+
+    <section class="notes-section" id="probes-or-telescopes">
+      <h2>A probe or a telescope?</h2>
+      <div class="diagram spectrum-panel pr-panel">
+        <div class="labelled-diagram-wrap" id="compare-diagram-wrap">
+          <svg
+            id="compare-diagram"
+            class="responsive-svg"
+            width="640"
+            height="260"
+            viewBox="0 0 640 260"
+            role="img"
+            aria-label="Two views of the same planet. Through a telescope on Earth it is a tiny disc with a few blurred bands. From a probe right next to it, it fills the view, with storms and fine detail in its clouds."
+          ></svg>
+        </div>
+      </div>
+      <div class="sp-columns">
+        <div>
+          <h3>For a probe</h3>
+          <ul class="pr-for-against">
+            <li>&#10003; Far more detail, from close up.</li>
+            <li>&#10003; Can measure things a telescope cannot, such as a magnetic field, or touch the surface.</li>
+            <li>&#10003; Sees sides that never face the Earth.</li>
+          </ul>
+        </div>
+        <div>
+          <h3>For a telescope</h3>
+          <ul class="pr-for-against">
+            <li>&#10003; Studies many targets, for years, and is far cheaper per target.</li>
+            <li>&#10003; Results start straight away; a probe can take years to arrive.</li>
+            <li>&#10003; Can be repaired and upgraded; a probe cannot.</li>
+          </ul>
+        </div>
+      </div>
+      <p class="note">This comparison: first draft, to be checked by the teacher.</p>
+    </section>
+
+    <section class="notes-section" id="getting-there">
+      <h2>Getting away from the Earth</h2>
+      <p>
+        To leave the Earth for good, a probe must reach the Earth&rsquo;s
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="escapeVelocity" aria-label="What is escape velocity?" aria-expanded="false">escape velocity</button>,
+        about 11.2&nbsp;km/s. Slower, and gravity pulls it back. Try a launch speed:
+      </p>
+      <span class="glossary-definition" data-term="escapeVelocity" hidden></span>
+
+      <div class="control">
+        <label for="launch-speed">Launch speed: <span id="launch-speed-label"></span></label>
+        <input type="range" id="launch-speed" aria-controls="launch-diagram" min="4" max="12" step="0.1" value="8" />
+      </div>
+
+      <div class="diagram spectrum-panel pr-panel">
+        <div class="labelled-diagram-wrap" id="launch-diagram-wrap">
+          <svg
+            id="launch-diagram"
+            class="responsive-svg"
+            width="640"
+            height="260"
+            viewBox="0 0 640 260"
+            role="img"
+            aria-label="The Earth at the left, and a height scale running right, in which each step is ten times further than the last, with the Moon's distance marked. An arrow shows how high a probe launched straight up at the chosen speed rises before falling back, or, at escape velocity or faster, an arrow running off the scale that never comes back."
+          ></svg>
+        </div>
+      </div>
+      <p class="note" id="launch-readout" aria-live="polite"></p>
+      <p>
+        Only a rocket can reach that speed. The push must last for minutes, through thin air and
+        then the vacuum of space.
+      </p>
+
+      <div class="diagram spectrum-panel pr-panel">
+        <div class="labelled-diagram-wrap" id="rocket-diagram-wrap">
+          <svg
+            id="rocket-diagram"
+            class="responsive-svg"
+            width="640"
+            height="290"
+            viewBox="0 0 640 290"
+            role="img"
+            aria-label="Two engines in space. A jet engine needs air to take in, for oxygen to burn its fuel and as the gas it throws out backwards, so in space it has nothing to work with and is crossed out. A rocket carries its fuel and its own oxidiser, and throws hot exhaust out backwards, which pushes the rocket forwards, so it works in space."
+          ></svg>
+        </div>
+      </div>
+      <ul class="pr-finds">
+        <li>A jet engine takes in air: it needs oxygen from the air to burn its fuel. Space has no air.</li>
+        <li>A rocket carries its own <strong>oxidiser</strong> (the oxygen supply) as well as its fuel.</li>
+        <li>It throws hot exhaust gas out backwards very fast, which pushes the rocket forwards. It needs nothing to push against, so it works in space.</li>
+      </ul>
+      <p class="note">
+        The escape velocity of about 11.2&nbsp;km/s, and the launch model (straight up, with no air
+        resistance, coasting after a quick push): first draft, to be checked by the teacher. The
+        Moon&rsquo;s distance is the data sheet&rsquo;s 380,000&nbsp;km. More on
+        <a href="moon-structure.html#escape-velocity">The Moon: Structure, Surface and Origin</a>.
+      </p>
+    </section>
+
+    <section class="notes-section" id="exam-tips">
+      <h2>Exam tips</h2>
+      <p class="exam-tip">
+        <strong>Common exam confusion:</strong> for each kind of probe, give an advantage and a
+        disadvantage that belong to that kind: an orbiter&rsquo;s long, whole-surface study against
+        the fuel it needs to slow down, for example.
+        <a href="#probe-types">Four ways to visit &uarr;</a>
+      </p>
+      <p class="exam-tip">
+        <strong>Common exam confusion:</strong> a rocket does not push against the air; it throws
+        exhaust out backwards, so it works in empty space.
+        <a href="#getting-there">Getting away from the Earth &uarr;</a>
+      </p>
+    </section>
+
+    <section class="notes-section" id="related">
+      <h2>Related pages</h2>
+      <div class="page-card-list">
+        <a class="page-card" href="moon-structure.html">
+          <h3>The Moon: Structure, Surface and Origin</h3>
+          <p class="page-card-description">Escape velocity, and getting to the Moon.</p>
+        </a>
+        <a class="page-card" href="solar-system-bodies.html">
+          <h3>Bodies of the Solar System</h3>
+          <p class="page-card-description">Comets, dwarf planets and the Kuiper belt.</p>
+        </a>
+        <a class="page-card" href="space-telescopes.html">
+          <h3>Space telescopes</h3>
+          <p class="page-card-description">Telescopes above the atmosphere.</p>
+        </a>
+      </div>
+    </section>
+
+    <section class="questions" id="questions">
+      <h2>Practice questions</h2>
+      <div id="questions-list"></div>
+    </section>
+
+    <section class="progress">
+      <h2>Your progress</h2>
+      <ul id="progress-list"></ul>
+      <p class="note">Stored in this browser only (localStorage) &mdash; no account needed.</p>
+    </section>
+
+    <p class="coverage" id="coverage"></p>
+    <p class="next-page-link" id="next-page"></p>
+  </main>
+
+  <script src="../src/curriculum.js?v=202611161200"></script>
+  <script src="../src/pages.js?v=202611161200"></script>
+  <script src="../src/specData.js?v=202610161036"></script>
+  <script src="../src/spectra.js?v=202611131200"></script>
+  <script src="../src/spectrumDrawing.js?v=202611130900"></script>
+  <script src="../src/spaceProbes.js?v=202611161200"></script>
+  <script src="../src/spaceProbesQuestions.js?v=202611161200"></script>
+  <script src="../glossary.js?v=202610131052"></script>
+  <script src="../quiz-ui.js?v=202611121900"></script>
+  <script src="space-probes.js?v=202611161200"></script>
+  <script src="../diagramEnlarge.js?v=202611111500"></script>
+  <script src="../notesPage.js?v=202609252100"></script>
+  <script src="../nextPage.js?v=202610161057"></script>
+</body>
+</html>

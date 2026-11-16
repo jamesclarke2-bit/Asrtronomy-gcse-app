@@ -34,6 +34,7 @@ every page listed as conforming below.
 | `notes/infrared-telescopes.html` | Yes (built to it from the start) |
 | `notes/space-telescopes.html` | Yes (built to it from the start) |
 | `notes/star-trails.html` | Yes (built to it from the start) |
+| `notes/space-probes.html` | Yes (built to it from the start) |
 
 Every `notes/` page now conforms. When a page is retrofitted, add it to `CONFORMING_PAGES`
 in `test/notesTemplate.test.js` and update this table.

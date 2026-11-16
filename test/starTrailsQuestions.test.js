@@ -83,5 +83,19 @@ test('every choice or multi-field question has exactly one fully-correct answer;
     const samples = q.type === 'number' ? ['1', 'abc'] : q.fields ? fieldCombos(q.fields).slice(0, 2) : q.options;
     samples.forEach((value) => assert.match(q.check(value).message, /Mark scheme:/, q.id));
   });
-  assert.equal(questions.reduce((sum, q) => sum + q.marks, 0), 15);
+  assert.equal(questions.reduce((sum, q) => sum + q.marks, 0), 17);
+});
+
+test('why a 240-minute result cannot tell the sidereal and solar days apart, and what would: a longer exposure, not repeats', () => {
+  const q = questions.find((x) => x.id === 'st-cant-separate');
+  assert.match(q.prompt, /1,442 ± 12 min/);
+  assert.match(q.prompt, /1,436 min and the solar day is 1,440 min/);
+  const [right] = correctAnswers(q);
+  assert.match(right.why, /includes both days/);
+  assert.match(right.fix, /whole-night exposure/);
+  assert.ok(q.fields[1].options.some((o) => /^Repeating/.test(o)), 'repeats are offered as a wrong answer');
+  const scheme = q.check({}).message;
+  assert.match(scheme, /1,430 to 1,454 min, holds both 1,436 and 1,440 min/);
+  assert.match(scheme, /about 0\.28% instead of 0\.83%/);
+  assert.match(scheme, /1,432 to 1,440 min, just short of the solar day/);
 });

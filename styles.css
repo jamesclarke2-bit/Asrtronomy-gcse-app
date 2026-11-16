@@ -4796,6 +4796,54 @@ canvas {
   font-size: 0.95rem;
 }
 
+/* notes/space-probes.html */
+.pr-type-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: 0.6rem 1.2rem;
+  margin: 0.8rem 0;
+}
+
+.pr-type-card {
+  border: 2px solid transparent;
+  border-radius: 8px;
+  padding: 0.2rem 0.7rem;
+}
+
+.pr-type-card h3 {
+  margin: 0.4rem 0 0.2rem;
+}
+
+/* The chosen kind's card gets a border and a marker, not just a colour. */
+.pr-type-card--chosen {
+  border-color: currentColor;
+}
+
+.pr-type-card--chosen h3::after {
+  content: " \2190 shown above";
+  font-weight: 400;
+  font-size: 0.85em;
+}
+
+.pr-for-against,
+.pr-finds {
+  padding-left: 1.3rem;
+}
+
+.pr-for-against {
+  list-style: none;
+  padding-left: 0;
+}
+
+.pr-for-against li,
+.pr-finds li {
+  margin: 0.3rem 0;
+}
+
+.pr-mission {
+  margin: 1.2rem 0;
+}
+
 /* notes/star-trails.html */
 .st-tables {
   display: grid;

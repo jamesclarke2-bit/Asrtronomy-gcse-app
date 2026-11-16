@@ -36,9 +36,9 @@ that point.
 | 11.23 | COVERED | `notes/telescopes.html` §`bench` magnification readout; questions `magnification-calculation`, `compare-tube-length-magnification` (u5.1/u5.2) | — | — |
 | 11.24 | COVERED | `notes/geocentric-to-heliocentric.html` §`galileo` (Jupiter's-moons canvas) and the Venus-phases canvas/tap-reveals just above it; 2 dedicated questions in `src/geocentricHeliocentricQuestions.js` (u3.15) | — | — |
 | 11.25 | PARTIAL | `notes/telescopes.html` §`bench` tap-reveal "Why do reflectors beat refractors?" states all four (a–d) (u5.1) | Only (a) chromatic aberration has a dedicated question (`chromatic-aberration`); (b) long-focal-length-in-short-tube is indirectly tested by `choose-design-short-tube`; (c) large apertures and (d) multiple mirrors have no question at all | Add one question covering (c)/(d) |
-| 11.26 | MISSING | — | No page; `src/pages.js` `COMING_SOON` lists "Probes and Apollo" (position 30) naming exactly 11.26–11.30, unbuilt; `curriculum.js` subtopic `u5.3` "Space probes" exists but has no `spec` field and is registered to no page | New page (see §2 below) |
-| 11.27 | MISSING | — | Zero mention anywhere of New Horizons, Juno, Dawn, Deep Impact or Philae (see physics-check item 4 below — nothing to fact-check) | New page |
-| 11.28 | PARTIAL | `notes/moon-structure.html` §`escape-velocity` (h2 "Getting there: escape velocity and rockets") explains escape velocity and why only rockets work in vacuum, in full | Tagged only to spec `9.4` in `curriculum.js` (subtopic with this exact title), not `11.28`; no diagram; no question | **Don't rebuild** — add `11.28` to that subtopic's `spec` array; add a question |
+| 11.26 | COVERED (2026-11-16) | `notes/space-probes.html` §`probe-types` (the central drawing, toggled between fly-by, orbiter, impactor and lander, with a card of advantages and disadvantages for each) and §`probes-or-telescopes`; questions `pr-flyby-plus`, `pr-orbiter`, `pr-impactor-why`, `pr-lander-minus`, `pr-which-type`, `pr-vs-telescope` (u5.3) | — | — |
+| 11.27 | COVERED (2026-11-16) | `notes/space-probes.html` §`missions` (a drawing, target, dates and discoveries for New Horizons, Juno (and Dawn), Deep Impact and Philae, all labelled first draft); questions `pr-new-horizons`, `pr-juno`, `pr-deep-impact`, `pr-philae`, `pr-match` (u5.3) | — | — |
+| 11.28 | COVERED (2026-11-16) | `notes/space-probes.html` §`getting-there` (a launch-speed slider against escape velocity, and a rocket against a jet engine drawn); questions `pr-escape-what`, `pr-escape-kmh`, `pr-below-escape`, `pr-rocket` (u5.3). The tag moved here from u2.26: `notes/moon-structure.html` §`escape-velocity` keeps its text, now linking here, but has no drawing or question for it | — | — |
 | 11.29 | MISSING | — | No content on advantages/disadvantages of manned missions | New page |
 | 11.30 | MISSING | — | No content on the Apollo programme | New page |
 | 13.1 | COVERED | `notes/magnitude.html` §`the-idea` (idea-diagram, "bright but far" two-panel diagram); multiple questions (u4.2) | — | — |
@@ -95,7 +95,7 @@ Which `curriculum.js` subtopics carry a Topic-11 `spec` tag, and which page regi
 | `u5.1` | `11.15`, `11.16`, `11.17`, `11.18`, `11.25` | `notes/telescopes.html` |
 | `u5.2` | `11.14`, `11.19`, `11.20`, `11.21`, `11.22`, `11.23` | `notes/telescopes.html` |
 | `u3.15` | `11.24` | `notes/geocentric-to-heliocentric.html` |
-| `u5.3` | *(none)* | *(not registered to any page)* |
+| `u5.3` | `11.26`, `11.27`, `11.28` | `notes/space-probes.html` |
 
 **Mis-registration found:** `11.28` is not tagged anywhere, yet its exact content
 ("Getting there: escape velocity and rockets") already exists on `notes/moon-structure.html`,

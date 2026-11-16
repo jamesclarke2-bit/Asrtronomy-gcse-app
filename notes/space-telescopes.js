@@ -43,7 +43,6 @@
   // ------------------------------------------------------------------
 
   const SHORT_NAMES = { 'Gamma ray': 'Gamma', 'X-ray': 'X-ray', Ultraviolet: 'UV', Optical: 'Visible', Infrared: 'Infrared', Radio: 'Radio' };
-  const MARKS = { open: '✓', partial: '∼', blocked: '✗' };
 
   function drawChart() {
     const svg = document.getElementById('space-chart');
@@ -52,7 +51,7 @@
     W.draw(svg, { text: false });
     W.BANDS.forEach((band, i) => {
       const x = W.bandCentre(i);
-      addLabel(svg, wrap, MARKS[band.category], x, 19, `diagram-label--tick diagram-label--strong sp-mark sp-mark--${band.category}`);
+      addLabel(svg, wrap, W.MARKS[band.category], x, 19, `diagram-label--tick diagram-label--strong sp-mark sp-mark--${band.category}`);
       addLabel(svg, wrap, SHORT_NAMES[band.name], x, W.GROUND_Y + 24, 'diagram-label--tick');
     });
     // A bracket under the bands that never reach the ground.

@@ -249,7 +249,7 @@ function makeQuestions(SpecData, EarthStructureDiagram) {
         return {
           correct,
           message:
-            "The chart shows gamma ray, X-ray and ultraviolet all absorbed high up (blocked, red), infrared only partly getting through (orange), and only optical light and radio waves reaching the ground largely unimpeded (blue) — exactly the two transmission windows the spec names.",
+            "The chart shows gamma ray and X-ray absorbed high up (✗, red), ultraviolet and infrared only partly getting through (∼, orange: most ultraviolet is absorbed, only the near ultraviolet reaches the ground), and only optical light and radio waves reaching the ground largely unimpeded (✓, blue) — exactly the two transmission windows the spec names.",
         };
       },
     },

@@ -4,9 +4,13 @@ const T = require('../src/spaceTelescopes');
 const W = require('../src/atmosphereWindows');
 const SpecData = require('../src/specData');
 
-test('the bands that never reach the ground are exactly the ones the shared chart marks blocked', () => {
+test('the bands that need space: gamma rays and X-rays (blocked) and ultraviolet (partly absorbed: only the near ultraviolet reaches the ground)', () => {
   assert.deepEqual(T.spaceOnlyBands(), ['Gamma ray', 'X-ray', 'Ultraviolet']);
-  T.spaceOnlyBands().forEach((name) => assert.equal(W.BANDS.find((b) => b.name === name).category, 'blocked'));
+  assert.deepEqual(W.BANDS.filter((b) => b.category === 'blocked').map((b) => b.name), ['Gamma ray', 'X-ray']);
+  const uv = W.BANDS.find((b) => b.name === 'Ultraviolet');
+  assert.equal(uv.category, 'partial');
+  assert.equal(uv.note, 'most absorbed; near ultraviolet reaches the ground');
+  assert.equal(W.MARKS[uv.category], '∼');
 });
 
 test('every band of the chart has a verdict, and the balance tips the right way', () => {

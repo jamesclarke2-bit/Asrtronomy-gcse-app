@@ -59,3 +59,24 @@ test('the same reading spread on a longer exposure gives a smaller percentage un
   // The day's uncertainty is half the range of the days from the extreme angles.
   assert.ok(Math.abs(long.dayUncertaintyMin - (S.siderealDayFrom(59.5, 240) - S.siderealDayFrom(60.5, 240)) / 2) < 1e-9);
 });
+
+test('the mean is worked to 2 decimal places, and the day comes from that shown mean', () => {
+  const r = S.result([7.5, 7.5, 7, 12, 7.5], 30);
+  assert.deepEqual(r.anomalies, [3]);
+  assert.equal(r.mean, 7.38, 'shown as 7.38, not 7.375');
+  assert.equal(r.dayMin, (360 / 7.38) * 30);
+  assert.equal(Math.round(r.dayMin), 1463);
+});
+
+test('a 240-minute exposure cannot separate the sidereal and solar days; a whole night (720 min) just can', () => {
+  const part = S.dayRange(240, 0.5);
+  assert.ok(part.shortestMin < S.SIDEREAL_DAY_MIN && part.longestMin > S.SOLAR_DAY_MIN, 'holds both');
+  assert.equal(S.separatesFromSolar(part), false);
+  const night = S.dayRange(720, 0.5);
+  assert.ok(Math.abs(night.thetaDeg - 180.5) < 0.01);
+  assert.ok(night.shortestMin <= S.SIDEREAL_DAY_MIN && night.longestMin < S.SOLAR_DAY_MIN);
+  assert.ok(S.SOLAR_DAY_MIN - night.longestMin < 0.1, 'only just: the range stops a whisker short of the solar day');
+  assert.equal(S.separatesFromSolar(night), true);
+  assert.equal(Math.round(night.uncertaintyMin), 4);
+  assert.ok(night.percent < part.percent / 2.9, 'three times the exposure, a third of the percentage uncertainty');
+});

@@ -6,7 +6,7 @@
  * (13.23) draw the same chart from the same data.
  *
  * draw(svg) draws it exactly as the Earth page always has, band names
- * and all, in SVG text. draw(svg, { text: false }) leaves the text out,
+ * and all, in SVG text, with a ✓, ∼ or ✗ above each bar. draw(svg, { text: false }) leaves the text out,
  * for a page that adds its own HTML labels using bandCentre().
  */
 (function () {
@@ -20,17 +20,20 @@
   }
 
   // How far each part of the spectrum penetrates (bar height) and whether
-  // it's open, partly absorbed, or blocked (colour) before reaching the
-  // ground.
+  // it's open, partly absorbed, or blocked (colour, and a ✓, ∼ or ✗ mark)
+  // before reaching the ground. Ultraviolet is partly absorbed: most of it
+  // is absorbed high up, but the near ultraviolet reaches the ground.
   const BANDS = [
     { name: 'Gamma ray', heightPct: 10, category: 'blocked' },
     { name: 'X-ray', heightPct: 16, category: 'blocked' },
-    { name: 'Ultraviolet', heightPct: 32, category: 'blocked' },
+    { name: 'Ultraviolet', heightPct: 32, category: 'partial', note: 'most absorbed; near ultraviolet reaches the ground' },
     { name: 'Optical', heightPct: 100, category: 'open' },
     { name: 'Infrared', heightPct: 60, category: 'partial' },
     { name: 'Radio', heightPct: 100, category: 'open' },
   ];
   const COLORS = { open: '#2a6bd6', partial: '#e8a23a', blocked: '#c0392b' };
+  // Each category's mark, so the chart never relies on colour alone.
+  const MARKS = { open: '✓', partial: '∼', blocked: '✗' };
 
   const GEOMETRY = { wellHeight: 160, wellY: 30, bandWidth: 80, gap: 20, startX: 30 };
   const GROUND_Y = GEOMETRY.wellY + GEOMETRY.wellHeight;
@@ -61,6 +64,9 @@
       svgEl('rect', { x, y: wellY, width: bandWidth, height: wellHeight, fill: '#eef1f4', rx: 4 }, svg);
       svgEl('rect', { x, y: barY, width: bandWidth, height: barHeight, fill: COLORS[band.category], 'data-band': band.name, 'data-category': band.category }, svg);
       if (text) {
+        svgEl('text', {
+          x: x + bandWidth / 2, y: wellY - 7, 'font-size': 22, 'font-weight': 700, fill: '#333', 'text-anchor': 'middle', class: 'atmosphere-mark', 'data-category': band.category,
+        }, svg).textContent = MARKS[band.category];
         const label = svgEl('text', {
           x: x + bandWidth / 2, y: groundY + 40, 'font-size': 12, fill: '#444', 'text-anchor': 'middle',
         }, svg);
@@ -69,7 +75,7 @@
     });
   }
 
-  const api = { BANDS, COLORS, GROUND_Y, bandCentre, draw };
+  const api = { BANDS, COLORS, MARKS, GROUND_Y, bandCentre, draw };
   if (typeof module !== 'undefined' && module.exports) {
     module.exports = api;
   } else {

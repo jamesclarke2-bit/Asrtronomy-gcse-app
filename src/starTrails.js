@@ -75,13 +75,15 @@
     return values.map((v, k) => (Math.abs(v - median) > 3 * spreadDeg ? k : -1)).filter((k) => k >= 0);
   }
 
-  /** Mean, range and uncertainty (half the range) of the readings, anomalies left out. */
+  /** Mean (to 2 dp), range and uncertainty (half the range) of the readings, anomalies left out. */
   function stats(values, spreadDeg = 1) {
     const out = anomalies(values, spreadDeg);
     const kept = values.filter((_, k) => !out.includes(k));
     const min = Math.min(...kept);
     const max = Math.max(...kept);
-    const mean = kept.reduce((a, b) => a + b, 0) / kept.length;
+    // The mean is given to 2 decimal places, and everything after it is
+    // worked from that shown value, so the page's own working adds up.
+    const mean = Math.round((100 * kept.reduce((a, b) => a + b, 0)) / kept.length) / 100;
     const uncertainty = (max - min) / 2;
     return { kept, anomalies: out, mean, min, max, range: max - min, uncertainty, percent: (100 * uncertainty) / mean };
   }
@@ -100,6 +102,24 @@
     return { ...s, dayMin: day, shortestMin: shortest, longestMin: longest, dayUncertaintyMin: uncertainty, dayPercent: (100 * uncertainty) / day };
   }
 
+  /**
+   * The range of sidereal days an exposure of t minutes gives when the arc
+   * is read to ±halfRangeDeg: the uncertainty in degrees stays the same, so
+   * a longer exposure (a bigger angle) gives a narrower range of days.
+   */
+  function dayRange(exposureMin, halfRangeDeg) {
+    const theta = arcAngleDeg(exposureMin);
+    const shortestMin = siderealDayFrom(theta + halfRangeDeg, exposureMin);
+    const longestMin = siderealDayFrom(theta - halfRangeDeg, exposureMin);
+    const uncertaintyMin = (longestMin - shortestMin) / 2;
+    return { thetaDeg: theta, shortestMin, longestMin, uncertaintyMin, percent: (100 * halfRangeDeg) / theta };
+  }
+
+  /** Whether a range of days holds the sidereal day but stops short of the solar day. */
+  function separatesFromSolar(range) {
+    return range.shortestMin <= SIDEREAL_DAY_MIN && range.longestMin < SOLAR_DAY_MIN;
+  }
+
   /** Minutes as "23 h 56 min". */
   function hoursAndMinutes(totalMin) {
     const m = Math.round(totalMin);
@@ -115,6 +135,8 @@
     anomalies,
     stats,
     result,
+    dayRange,
+    separatesFromSolar,
     hoursAndMinutes,
   };
   if (isNode && module.exports) {

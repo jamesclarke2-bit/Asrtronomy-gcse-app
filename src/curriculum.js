@@ -483,9 +483,11 @@ const UNITS = [
         id: 'u2.26',
         title: 'Escape velocity and rockets',
         depth: 'understand',
-        spec: ['9.4', '11.28'],
+        // 11.28 is tagged on u5.3 (notes/space-probes.html), which has a
+        // drawing and questions for it as well as the text this page has.
+        spec: ['9.4'],
         notes:
-          "reaching the Moon means reaching (nearly) Earth's escape velocity, ~11.2 km/s; only rockets can supply the sustained thrust to do this in a vacuum, because they carry their own oxidiser and push by throwing exhaust backwards rather than pushing on air — the same explanation 11.28 (Topic 11) asks for, not just 9.4's own Moon-specific framing",
+          "reaching the Moon means reaching (nearly) Earth's escape velocity, ~11.2 km/s; only rockets can supply the sustained thrust to do this in a vacuum, because they carry their own oxidiser and push by throwing exhaust backwards rather than pushing on air",
       },
       {
         id: 'u2.27',
@@ -959,8 +961,15 @@ const UNITS = [
       {
         id: 'u5.3',
         title: 'Space probes',
-        depth: 'know',
-        notes: 'flyby, orbiter, lander and rover missions',
+        depth: 'understand',
+        // notes/space-probes.html: text, a drawing and questions for each
+        // of 11.26 (the four kinds of probe), 11.27 (a mission of each)
+        // and 11.28 (escape velocity, which needs rockets). 11.28 moved
+        // here from u2.26 (notes/moon-structure.html), whose escape-velocity
+        // section has the text but no drawing or question for it.
+        spec: ['11.26', '11.27', '11.28'],
+        notes:
+          "a space probe is a robot spacecraft with no crew; a fly-by passes its target once (cheapest, needs no fuel to slow down, reaches the most distant targets, but only a brief look), an orbiter goes round it for months or years (maps the whole surface and follows changes, but must carry fuel to slow into orbit and cannot touch the surface), an impactor crashes in on purpose (shows what lies beneath the surface, but is a one-off and needs a precise aim) and a lander touches down (measures the surface directly, but is the hardest and most expensive and studies one spot); examples: New Horizons (fly-by, Pluto 2015, then Arrokoth), Juno (orbiter, Jupiter since 2016: polar cyclones, a spread-out core, a strong lopsided magnetic field) or Dawn (orbiter, Vesta then Ceres: salt in Ceres' bright spots), Deep Impact (impactor, Comet Tempel 1, 2005: fine powdery dust, more dust than ice) and Philae (lander, carried by Rosetta to Comet 67P, 2014: organic molecules, bounced); a probe must reach the Earth's escape velocity, about 11.2 km/s, to leave for good, and only a rocket can do that, as it carries its own oxidiser and throws exhaust out backwards, needing no air. Mission names, dates, discoveries, the advantages and disadvantages and the escape velocity are a first draft, to be checked by the teacher.",
       },
       {
         id: 'u5.4',

@@ -162,6 +162,29 @@ WIDTHS.forEach(({ name, width, height }) => {
     });
   });
 
+  test(`${name}: the shown mean (2 dp) is the one the day is worked from, and the 240-minute range cannot separate the two days while a whole night just can`, async (t) => {
+    await withPage(t, still, async (page) => {
+      const shortTable = page.locator('#reading-tables table[data-exposure="30"]');
+      const rows = await shortTable.locator('tfoot tr').allTextContents();
+      const mean = rows.find((r) => /^Mean/.test(r)).replace('Mean (°)', '');
+      assert.match(mean, /^\d+\.\d{2}$/);
+      const day = rows.find((r) => /^Sidereal day/.test(r));
+      const shown = Math.round((360 / Number(mean)) * 30).toLocaleString('en-GB');
+      assert.ok(day.includes(`(360 ÷ ${mean}) × 30 = ${shown} ±`), day);
+      assert.match(await page.locator('#spread-diagram-wrap').textContent(), new RegExp(`30 min: θ = ${mean.replace('.', '\\.')}°`));
+      const sep = await data(page, 'separate-diagram');
+      assert.ok(Number(sep.longLo) <= 1436 && Number(sep.longHi) >= 1440, 'the 240-minute range holds both days');
+      assert.ok(Number(sep.nightLo) <= 1436 && Number(sep.nightHi) < 1440, 'the whole-night range holds the sidereal day and stops short of the solar day');
+      const text = (await page.locator('#separate-readout').textContent()).replace(/\s+/g, ' ');
+      assert.match(text, /holds both the sidereal day \(1,436 min\) and the solar day \(1,440 min\), so it cannot tell them apart/);
+      assert.match(text, /only just enough to tell them apart/);
+      assert.match(await page.locator('#separate-diagram-wrap').textContent(), /720 min \(whole night\): 1,436 ± 4/);
+      const before = await markup(page, 'separate-diagram');
+      await page.click('#new-readings');
+      assert.notEqual(await markup(page, 'separate-diagram'), before, 'new readings move the 240-minute range');
+    });
+  });
+
   test(`${name}: every quiz card carries data-question-id, marks and the 13.19 tag`, async (t) => {
     await withPage(t, still, async (page) => {
       const bank = makeQuestions(S);

@@ -96,7 +96,7 @@ WIDTHS.forEach(({ name, width, height }) => {
       const bars = await page.locator('#windows-chart rect[data-category]').evaluateAll((els) => els.map((el) => el.dataset.category));
       assert.deepEqual(bars, W.BANDS.map((b) => b.category));
       const marks = await page.locator('#windows-chart-wrap .ir-mark').allTextContents();
-      assert.deepEqual(marks, ['✗', '✗', '✗', '✓', '∼', '✓']);
+      assert.deepEqual(marks, ['✗', '✗', '∼', '✓', '∼', '✓']);
       const names = await page.locator('#windows-chart-wrap .diagram-label').allTextContents();
       for (const n of ['Gamma', 'X-ray', 'UV', 'Visible', 'Infrared', 'Radio', "Earth's surface"]) assert.ok(names.includes(n), n);
       assert.equal(await page.locator('#windows a[href="radio-telescopes.html"]').count(), 1);

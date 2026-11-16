@@ -27,7 +27,6 @@
   // ------------------------------------------------------------------
 
   const SHORT_NAMES = { 'Gamma ray': 'Gamma', 'X-ray': 'X-ray', Ultraviolet: 'UV', Optical: 'Visible', Infrared: 'Infrared', Radio: 'Radio' };
-  const MARKS = { open: '✓', partial: '∼', blocked: '✗' };
 
   function drawWindows() {
     const svg = document.getElementById('windows-chart');
@@ -36,7 +35,7 @@
     W.draw(svg, { text: false });
     W.BANDS.forEach((band, i) => {
       const x = W.bandCentre(i);
-      addLabel(svg, wrap, MARKS[band.category], x, 19, `diagram-label--tick diagram-label--strong ir-mark ir-mark--${band.category}`);
+      addLabel(svg, wrap, W.MARKS[band.category], x, 19, `diagram-label--tick diagram-label--strong ir-mark ir-mark--${band.category}`);
       addLabel(svg, wrap, SHORT_NAMES[band.name], x, W.GROUND_Y + 24, 'diagram-label--tick');
     });
     addLabel(svg, wrap, "Earth's surface", 320, W.GROUND_Y + 54, 'diagram-label--tick diagram-label--strong');
