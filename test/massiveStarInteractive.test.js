@@ -160,7 +160,10 @@ WIDTHS.forEach(({ name, width, height }) => {
     await withPage(t, still, async (page) => {
       assert.equal(await page.locator('#track-diagram .sl-track--sun-like').getAttribute('stroke-dasharray'), '8 5');
       assert.equal(await page.locator('#track-diagram .sl-track--massive').getAttribute('stroke-dasharray'), 'none');
-      assert.ok((await page.locator('#track-diagram rect.sl-track-point[data-track="massive"]').count()) === 3, 'squares for the massive star');
+      assert.equal(await page.locator('#track-diagram rect.sl-track-point[data-track="massive"]').count(), 2, 'squares for the massive star: main sequence and red supergiant only');
+      assert.equal(await page.locator('#track-diagram .sl-track-point[data-stage="supernova"]').count(), 0, 'the supernova is not a point');
+      assert.ok((await page.locator('#track-diagram .ms-supernova-arrow').count()) >= 1, 'an arrow off the chart instead');
+      assert.ok((await page.locator('#track-diagram-wrap').textContent()).includes('explodes as a supernova (off the chart)'));
       assert.ok((await page.locator('#track-diagram circle.sl-track-point[data-track="sunLike"]').count()) >= 5, 'circles for the Sun-like star');
       const text = await page.locator('#track-diagram-wrap').textContent();
       ['Main sequence', 'Red supergiant', 'the Sun', 'Red giant', 'White dwarf', 'massive star (about 20 times the Sun’s mass)', 'Sun-like star'].forEach((s) => assert.ok(text.includes(s), s));
@@ -171,6 +174,9 @@ WIDTHS.forEach(({ name, width, height }) => {
       const ms = await pt('massive', 'main-sequence');
       const sun = await pt('sunLike', 'main-sequence');
       assert.ok(ms[0] < sun[0] && ms[1] < sun[1], 'the massive star starts hotter (left) and brighter (up)');
+      await page.click('#stage-buttons button[data-stage="supernova"]');
+      assert.equal((await data(page, 'track-diagram')).onDiagram, 'false');
+      assert.match(await page.locator('#track-diagram-wrap').textContent(), /a supernova: an explosion, not a point/);
       await page.click('#stage-buttons button[data-stage="neutron-star"]');
       assert.equal((await data(page, 'track-diagram')).onDiagram, 'false');
       assert.match(await page.locator('#track-diagram-wrap').textContent(), /a neutron star is not on the diagram/);

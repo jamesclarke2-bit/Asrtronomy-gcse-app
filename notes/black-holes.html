@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; form-action 'none'; base-uri 'self'" />
+  <meta name="referrer" content="no-referrer" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Black holes: the evidence</title>
+  <link rel="stylesheet" href="../styles.css?v=202611201200" />
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg?v=202610130720" />
+</head>
+<body>
+  <main>
+    <p class="back-link"><a href="../index.html">&larr; Back to all tools</a></p>
+
+    <h1>Black holes: the evidence</h1>
+    <p class="subtitle">
+      Nothing escapes a black hole, not even light. So how do we know any are there?
+    </p>
+
+    <section class="notes-section" id="invisible">
+      <h2>Seen by what it does</h2>
+      <p>
+        A black hole can't be seen, but its gravity changes things nearby. Here a star is losing
+        gas to an unseen partner:
+      </p>
+
+      <div class="diagram spectrum-panel bh-panel">
+        <div class="labelled-diagram-wrap" id="xrb-diagram-wrap">
+          <svg
+            id="xrb-diagram"
+            class="responsive-svg"
+            width="640"
+            height="300"
+            viewBox="0 0 640 300"
+            role="img"
+            aria-label="Not to scale. A big blue-white star on the left, stretched towards its partner. A stream of gas flows from it into a flat, glowing disc swirling round a tiny dark centre on the right. Wavy arrows show X-rays coming from the hot disc."
+          ></svg>
+        </div>
+      </div>
+      <p>
+        So astronomers look for a black hole's <strong>effects</strong>: gas that gets extremely hot as
+        it falls in, and stars that orbit something heavy that gives out no light. How black holes
+        form is on <a href="massive-stars.html">Massive stars and their ends</a>.
+      </p>
+    </section>
+
+    <section class="notes-section" id="x-ray-binaries">
+      <h2>Evidence 1: X-ray binaries</h2>
+      <p>
+        In an <strong>X-ray binary</strong>, gas pulled off a star spirals into an
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="accretionDisc" aria-label="What is an accretion disc?" aria-expanded="false">accretion disc</button>,
+        heated to millions of degrees, so it gives out X-rays, picked up by
+        <a href="space-telescopes.html#discoveries">space telescopes</a>. The visible star's orbit
+        gives the unseen partner's mass:
+      </p>
+      <span class="glossary-definition" data-term="accretionDisc" hidden></span>
+
+      <div class="diagram spectrum-panel bh-panel">
+        <div class="labelled-diagram-wrap" id="companion-diagram-wrap">
+          <svg
+            id="companion-diagram"
+            class="responsive-svg"
+            width="640"
+            height="300"
+            viewBox="0 0 640 300"
+            role="img"
+            aria-label="Left: the visible star and its unseen partner orbiting their shared centre of mass. The partner's orbit is the smaller one, so it is the heavier. Right: a mass check. Up to about 1.4 times the Sun's mass could be a white dwarf, up to about 3 a neutron star, and above about 3 it must be a black hole; the partner, about 20 times the Sun's mass, is ticked as a black hole."
+          ></svg>
+        </div>
+      </div>
+      <p class="note sl-readout" id="companion-readout"></p>
+      <p class="note">
+        Cygnus X-1 (an unseen partner of about 20 times the Sun's mass, circled by its star every 5.6
+        days, and identified as a black hole in the early 1970s) and the neutron-star limit of about 3
+        times the Sun's mass: first draft, to be checked by the teacher.
+      </p>
+    </section>
+
+    <section class="notes-section" id="galactic-centre">
+      <h2>Evidence 2: stars at the centre of the Milky Way</h2>
+      <p>
+        Dust hides the centre of our Galaxy in visible light, but
+        <a href="infrared-telescopes.html">infrared</a> passes through. Astronomers have tracked stars
+        there for decades. Each orbits something they cannot see. Follow the star S2:
+      </p>
+
+      <div class="control">
+        <label for="s2-year">Year: <span id="s2-year-label"></span></label>
+        <input type="range" id="s2-year" aria-controls="s2-diagram" min="2002" max="2018" step="0.25" value="2010" />
+      </div>
+
+      <div class="diagram spectrum-panel bh-panel">
+        <div class="labelled-diagram-wrap" id="s2-diagram-wrap">
+          <svg
+            id="s2-diagram"
+            class="responsive-svg"
+            width="640"
+            height="320"
+            viewBox="0 0 640 320"
+            role="img"
+            aria-label="The long, thin oval orbit of the star S2, drawn flat-on, with a mark where the unseen mass sits near one end. The star's position for the chosen year is shown, with dots for earlier years: they bunch up far from the centre, where it moves slowly, and spread out close in, where it moves fastest."
+          ></svg>
+        </div>
+      </div>
+      <p class="note sl-readout" id="s2-readout" aria-live="polite"></p>
+      <p>
+        The orbit gives the hidden mass. In Solar System units,
+        <a href="../sims/kepler.html">Kepler's third law</a> says <strong>M = a³ ÷ T²</strong> (M in
+        Sun masses, a, half the orbit's longest width, in AU, and T in years). For S2, M = 1,000³ ÷
+        16² &asymp; 3.9 million Suns, packed inside S2's closest approach yet giving out no starlight.
+        Only a <strong>supermassive black hole</strong> fits.
+      </p>
+      <p class="note">
+        S2's orbit (a about 1,000 AU, T about 16 years, closest about 120 AU, in 2002 and 2018), its
+        speeds from this simplified flat-on model, and the 4 million Suns: first draft, to be checked
+        by the teacher.
+      </p>
+    </section>
+
+    <section class="notes-section" id="exam-tips">
+      <h2>Exam tips</h2>
+      <p class="exam-tip">
+        <strong>Common exam confusion:</strong> the X-rays come from gas heated as it falls towards
+        the black hole, from outside it, not from the black hole itself.
+        <a href="#x-ray-binaries">Evidence 1: X-ray binaries &uarr;</a>
+      </p>
+      <p class="exam-tip">
+        <strong>Common exam confusion:</strong> an unseen partner is a black hole only if it is above
+        about 3 times the Sun's mass, too heavy for a neutron star.
+        <a href="#x-ray-binaries">Evidence 1: X-ray binaries &uarr;</a>
+      </p>
+    </section>
+
+    <section class="notes-section" id="related">
+      <h2>Related pages</h2>
+      <div class="page-card-list">
+        <a class="page-card" href="massive-stars.html">
+          <h3>Massive stars and their ends</h3>
+          <p class="page-card-description">How a black hole forms.</p>
+        </a>
+        <a class="page-card" href="space-telescopes.html">
+          <h3>Space telescopes</h3>
+          <p class="page-card-description">X-ray telescopes in orbit.</p>
+        </a>
+        <a class="page-card" href="infrared-telescopes.html">
+          <h3>Infrared telescopes and high-altitude sites</h3>
+          <p class="page-card-description">Seeing through dust.</p>
+        </a>
+        <a class="page-card" href="../sims/kepler.html">
+          <h3>Kepler's Laws of Planetary Motion</h3>
+          <p class="page-card-description">Faster close in, slower far out.</p>
+        </a>
+      </div>
+    </section>
+
+    <section class="questions" id="questions">
+      <h2>Practice questions</h2>
+      <div id="questions-list"></div>
+    </section>
+
+    <section class="progress">
+      <h2>Your progress</h2>
+      <ul id="progress-list"></ul>
+      <p class="note">Stored in this browser only (localStorage) &mdash; no account needed.</p>
+    </section>
+
+    <p class="coverage" id="coverage"></p>
+    <p class="next-page-link" id="next-page"></p>
+  </main>
+
+  <script src="../src/curriculum.js?v=202611201200"></script>
+  <script src="../src/pages.js?v=202611201200"></script>
+  <script src="../src/specData.js?v=202610161036"></script>
+  <script src="../src/spectra.js?v=202611131200"></script>
+  <script src="../src/spectrumDrawing.js?v=202611130900"></script>
+  <script src="../src/sunLikeStar.js?v=202611201200"></script>
+  <script src="../src/massiveStar.js?v=202611191200"></script>
+  <script src="../src/blackHoleEvidence.js?v=202611201200"></script>
+  <script src="../src/blackHoleEvidenceQuestions.js?v=202611201200"></script>
+  <script src="../glossary.js?v=202610131052"></script>
+  <script src="../quiz-ui.js?v=202611121900"></script>
+  <script src="black-holes.js?v=202611201200"></script>
+  <script src="../diagramEnlarge.js?v=202611111500"></script>
+  <script src="../notesPage.js?v=202609252100"></script>
+  <script src="../nextPage.js?v=202610161057"></script>
+</body>
+</html>

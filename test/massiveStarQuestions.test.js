@@ -46,4 +46,7 @@ test('the five questions asked for: the stage order, the short main sequence, th
   assert.match(tracks.start, /hotter and much more luminous/);
   assert.match(tracks.next, /red supergiants/);
   assert.match(tracks.end, /white dwarfs/);
+  const scheme = questions.find((q) => q.id === 'mv-compare-tracks').check({}).message;
+  assert.match(scheme, /where its track ends: it then explodes as a supernova, an explosion far too bright for the chart, not a point on it/);
+  assert.doesNotMatch(scheme, /briefly far off the top/);
 });

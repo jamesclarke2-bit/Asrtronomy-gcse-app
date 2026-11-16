@@ -119,7 +119,7 @@
         [HIGHER, ACROSS, DOWN],
         [
           '(a) higher up and further left on the main sequence: hotter and much more luminous',
-          '(b) right across the top of the diagram to the red supergiants (then, as a supernova, briefly far off the top)',
+          '(b) right across the top of the diagram to the red supergiants, where its track ends: it then explodes as a supernova, an explosion far too bright for the chart, not a point on it',
           '(c) the Sun-like star rises to the red giants, then ends down at the bottom left as a white dwarf',
         ],
       ),

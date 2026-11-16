@@ -102,17 +102,19 @@
       ],
     },
     // About 20 times the Sun's mass: far above the Sun on the main
-    // sequence, then right across the top to the red supergiants; the
-    // supernova is far brighter than the top of the diagram, and the
-    // neutron star or black hole left behind is not on it.
+    // sequence, then right across the top to the red supergiants, where
+    // the track ends. The supernova is an explosion, not a stage on the
+    // diagram (it can outshine a whole galaxy, roughly 10^9 to 10^10 Suns),
+    // so it is drawn as an arrow off the chart from the last point (`end`),
+    // and the neutron star or black hole left behind is not on it either.
     massive: {
       name: 'a massive star',
       points: {
         'main-sequence': [30000, 40000],
         'red-supergiant': [3600, 100000],
-        supernova: [3600, 1e6],
       },
-      path: [[30000, 40000], [22000, 55000], [12000, 70000], [7000, 82000], [4500, 92000], [3600, 100000], [3600, 1e6]],
+      path: [[30000, 40000], [22000, 55000], [12000, 70000], [7000, 82000], [4500, 92000], [3600, 100000]],
+      end: { from: 'red-supergiant', stage: 'supernova', label: 'explodes as a supernova (off the chart)' },
     },
   };
 

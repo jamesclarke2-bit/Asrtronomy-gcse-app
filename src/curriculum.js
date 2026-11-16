@@ -945,6 +945,14 @@ const UNITS = [
         notes:
           "a much more massive star (about 8 or more times the Sun's mass) starts like a Sun-like star but sits high on the main sequence (hotter and far more luminous) for only about 10 million years (for about 20 times the Sun's mass), using its fuel far faster; as a red supergiant (about 1 million years, hundreds of times wider than the Sun) its core shrinks and fuses heavier elements in turn up to iron while radiation pressure swells its outer layers; fusing iron releases no energy, so radiation pressure fails, gravity collapses the core in under a second, and the outer layers are blasted out in a supernova; the dead core becomes a white dwarf (held up by electron pressure) only below the Chandrasekhar limit of about 1.4 times the Sun's mass, a neutron star (about 20 km across, held up by neutron pressure) up to about 3 times, and a black hole above that; on the HR diagram a Sun-like star rises to the red giants and falls to the white dwarfs, while a massive star crosses the top to the red supergiants. Every value, time and mass is a first draft, to be checked by the teacher.",
       },
+      {
+        id: 'u4.16',
+        title: 'Black holes: the evidence',
+        depth: 'understand',
+        spec: ['14.11'],
+        notes:
+          "a black hole gives out no light, so astronomers gather evidence from its effects on things nearby: in an X-ray binary, gas pulled off a star spirals into an accretion disc round an unseen partner and is heated to millions of degrees, giving out X-rays seen by space telescopes; the visible star's orbit gives the partner's mass, and a partner above about 3 times the Sun's mass (the most a neutron star can have) must be a black hole (Cygnus X-1, about 20 times the Sun's mass, identified in the early 1970s); at the Milky Way's centre, hidden by dust in visible light but seen in infrared, stars such as S2 orbit an unseen mass, and Kepler's third law in Solar System units (M = a^3 / T^2, with a about 1,000 AU and T about 16 years) gives about 4 million Sun masses packed into a tiny space: a supermassive black hole. Every name, date, mass and figure is a first draft, to be checked by the teacher.",
+      },
     ],
   },
   {

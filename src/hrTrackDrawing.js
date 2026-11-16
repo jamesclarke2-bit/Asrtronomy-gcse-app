@@ -19,9 +19,10 @@
     massive: { dash: 'none', width: 4, marker: 'square' },
   };
 
-  function make(H, D) {
+  /** opts.yTop / opts.yBottom move the plot down, to leave room above it (e.g. for an arrow off the chart). */
+  function make(H, D, opts = {}) {
     const { INK, MUTED, svgEl, addLabel } = D;
-    const GEOM = { x0: 92, x1: 590, yTop: 40, yBottom: 370 };
+    const GEOM = { x0: 92, x1: 590, yTop: opts.yTop || 40, yBottom: opts.yBottom || 370 };
     const plot = H.makePlot(GEOM);
     const L_TICKS = [[1e4, '10⁴'], [1e2, '10²'], [1, '1'], [1e-2, '10⁻²'], [1e-4, '10⁻⁴']];
     const T_TICKS = [40000, 20000, 10000, 5000, 3000];

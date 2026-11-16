@@ -226,11 +226,12 @@
   // 4. Two paths across the HR diagram (13.8)
   // ------------------------------------------------------------------
 
-  const T = TD.make(H, D);
+  // The plot starts lower than on the Sun-like page, leaving room above it
+  // for the supernova arrow off the chart.
+  const T = TD.make(H, D, { yTop: 70, yBottom: 400 });
   const MASSIVE_LABEL = {
     'main-sequence': ['Main sequence', 14, 28, 'right'],
     'red-supergiant': ['Red supergiant', -14, 22, 'left'],
-    supernova: ['Supernova ↑ off the top', -12, 16, 'left'],
   };
   const SUN_LIKE_LABEL = {
     'main-sequence': ['the Sun', 14, 14, 'right'],
@@ -248,9 +249,19 @@
     T.drawPoints(svg, wrap, L.TRACKS.sunLike, TD.STYLES.sunLike, null, (id) => SUN_LIKE_LABEL[id] || null, 'sunLike');
     T.drawTrack(svg, L.TRACKS.massive, 'sl-track--massive', TD.STYLES.massive);
     T.drawPoints(svg, wrap, L.TRACKS.massive, TD.STYLES.massive, state.stage, (id) => MASSIVE_LABEL[id], 'massive');
+    // The track ends at the red supergiant: the supernova is an explosion,
+    // far too bright for the chart, so it is an arrow off the top, not a point.
+    const end = L.TRACKS.massive.end;
+    const [te, le] = L.TRACKS.massive.points[end.from];
+    const ex = T.plot.xForT(te);
+    const ey = T.plot.yForL(le);
+    const chosenEnd = state.stage === end.stage;
+    svgEl('line', { class: 'ms-supernova-arrow', x1: ex, y1: ey - 10, x2: ex, y2: 34, stroke: INK, 'stroke-width': chosenEnd ? 4 : 2.5, 'stroke-dasharray': '3 4' }, svg);
+    svgEl('path', { class: 'ms-supernova-arrow', d: `M${ex},28 l-7,12 h14 z`, fill: INK }, svg);
+    addLabel(svg, wrap, end.label, ex - 14, 50, `diagram-label--tick${chosenEnd ? ' diagram-label--strong' : ''} diagram-label--left`);
     // A key, by line style and marker shape, not colour.
-    const y1 = 452;
-    const y2 = 482;
+    const y1 = 482;
+    const y2 = 512;
     svgEl('line', { x1: 60, y1, x2: 120, y2: y1, stroke: INK, 'stroke-width': TD.STYLES.massive.width }, svg);
     svgEl('rect', { x: 84.5, y: y1 - 5.5, width: 11, height: 11, fill: INK }, svg);
     addLabel(svg, wrap, 'massive star (about 20 times the Sun’s mass)', 132, y1, 'diagram-label--tick diagram-label--right');
@@ -259,7 +270,11 @@
     addLabel(svg, wrap, 'Sun-like star', 132, y2, 'diagram-label--tick diagram-label--right');
     const onDiagram = Boolean(L.TRACKS.massive.points[state.stage]);
     if (!onDiagram) {
-      const why = state.stage === 'nebula' ? 'a nebula is not a star yet, so it is not on the diagram' : `a ${M.stage(state.stage).name.toLowerCase()} is not on the diagram`;
+      const why = state.stage === 'nebula'
+        ? 'a nebula is not a star yet, so it is not on the diagram'
+        : state.stage === 'supernova'
+          ? 'a supernova: an explosion, not a point'
+          : `a ${M.stage(state.stage).name.toLowerCase()} is not on the diagram`;
       addLabel(svg, wrap, why, 340, T.GEOM.yBottom - 18, 'diagram-label--tick diagram-label--strong');
     }
     svg.dataset.stage = state.stage;

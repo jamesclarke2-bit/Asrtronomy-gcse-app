@@ -487,6 +487,16 @@ const PAGES = [
     why: 'Life of a Sun-like star ended quietly as a white dwarf; a star many times heavier lives fast and ends in a supernova, and the Chandrasekhar limit decides what is left.',
   },
   {
+    title: 'Black holes: the evidence',
+    description:
+      "How astronomers know a black hole is there when it gives out no light: an X-ray binary drawn, with gas from a star heated in an accretion disc; the visible star's orbit weighing its unseen partner, checked against the neutron-star limit; and the star S2 followed year by year round an unseen mass at the Milky Way's centre, with Kepler's third law giving about 4 million Suns.",
+    href: 'notes/black-holes.html',
+    units: ['u4.16'],
+    phase: 'Stars and the Universe',
+    position: 47,
+    why: 'Massive stars and their ends showed how a black hole forms; this asks how we can know one is there at all, when it gives out no light.',
+  },
+  {
     title: 'Bodies of the Solar System',
     description:
       "A to-scale size line-up and bar chart of the planets and dwarf planets, the larger named moons by planet, the four ringed planets drawn at relative size with Saturn's rings the most visible, Io's tidal heating (reusable diagram) from its 1:2:4 resonance with Europa and Ganymede, a temperature-against-distance chart, a planet-vs-dwarf-planet decision diagram, asteroids/meteoroids/comets, a comet-tail diagram and the Kuiper Belt/Oort Cloud on a logarithmic scale, transits of Venus and measuring the AU, and brief formation theories — a first draft pending teacher review.",
@@ -597,6 +607,7 @@ const DIAGRAM_FIRST_PAGES = [
   'notes/catalogues-and-star-names.html',
   'notes/sun-like-star.html',
   'notes/massive-stars.html',
+  'notes/black-holes.html',
 ];
 
 /**
@@ -662,7 +673,7 @@ const COMING_SOON = [
   {
     name: 'Stellar Evolution, the Galaxy and Cosmology',
     phase: 'Stars and the Universe',
-    position: 47,
+    position: 48,
     why: 'The rest of the course past Topic 13: a star\'s full life cycle, our own Galaxy\'s structure, and the wider Universe beyond it.',
     // Every Topic 13 point is now covered: 13.8 by notes/massive-stars.html
     // (u4.15), which drew both HR tracks, so the old "Stars, galaxies and
@@ -670,10 +681,10 @@ const COMING_SOON = [
     // Topics 14-16 have a src/specPoints.js registry too; 14.1 and 14.2
     // are covered by notes/catalogues-and-star-names.html (u4.13), 14.3,
     // 14.4, 14.5 and 14.9 by notes/sun-like-star.html (u4.14), 14.6,
-    // 14.7, 14.8 and 14.10 by notes/massive-stars.html (u4.15), and
-    // 16.1-16.3 (redshift) have their own step just below.
+    // 14.7, 14.8 and 14.10 by notes/massive-stars.html (u4.15), 14.11
+    // by notes/black-holes.html (u4.16), so every Topic 14 point is now
+    // covered, and 16.1-16.3 (redshift) have their own step just below.
     specPoints: [
-      '14.11',
       '15.1', '15.2', '15.3', '15.4', '15.5', '15.6', '15.7', '15.8', '15.9', '15.10', '15.11', '15.12', '15.13', '15.14',
       '16.4', '16.5', '16.6', '16.7', '16.8', '16.9', '16.10', '16.11', '16.12',
     ],
@@ -681,7 +692,7 @@ const COMING_SOON = [
   {
     name: 'Redshift',
     phase: 'Stars and the Universe',
-    position: 48,
+    position: 49,
     why: "Reading a spectrum's Doppler shift for single stars, scaled up to whole galaxies: redshift as evidence that they are moving away from us.",
     specPoints: ['16.1', '16.2', '16.3'],
   },

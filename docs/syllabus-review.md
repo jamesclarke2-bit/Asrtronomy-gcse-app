@@ -19,10 +19,10 @@ One row per point in the Edexcel GCSE Astronomy (1AS0) specification, Topics 1�
 | 11 | Exploring the Solar System | 33 | 31 | 2 | 0 |
 | 12 | Formation of planetary systems | 14 | 5 | 9 | 1 |
 | 13 | Exploring starlight | 49 | 49 | 0 | 1 |
-| 14 | Stellar evolution | 11 | 10 | 1 | 0 |
+| 14 | Stellar evolution | 11 | 11 | 0 | 0 |
 | 15 | Our place in the Galaxy | 14 | 0 | 14 | 0 |
 | 16 | Cosmology | 12 | 0 | 12 | 0 |
-| **Total** | | **244** | **203** | **41** | **29** |
+| **Total** | | **244** | **204** | **40** | **29** |
 
 ## Methodology
 
@@ -320,7 +320,7 @@ One row per point in the Edexcel GCSE Astronomy (1AS0) specification, Topics 1�
 | 14.8 | understand | how the Chandrasekhar Limit affects the final stages of a star's life cycle | [Massive stars and their ends](../notes/massive-stars.html) | – |  | |
 | 14.9 | understand | stages and timescales of a Sun-like star's life cycle: emission/absorption nebula, main sequence star, planetary nebula, red giant, white dwarf, black dwarf | [Life of a Sun-like star](../notes/sun-like-star.html) | – |  | |
 | 14.10 | understand | stages and timescales of a much more massive star's life cycle: emission/absorption nebula, main sequence star, red supergiant, supernova, neutron star, black hole | [Massive stars and their ends](../notes/massive-stars.html) | – |  | |
-| 14.11 | understand | how astronomers study and gather evidence for black holes | *not built* | – |  | |
+| 14.11 | understand | how astronomers study and gather evidence for black holes | [Black holes: the evidence](../notes/black-holes.html) | – |  | |
 
 ## Topic 15: Our place in the Galaxy
 

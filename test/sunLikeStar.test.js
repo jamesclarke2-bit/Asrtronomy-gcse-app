@@ -43,4 +43,8 @@ test('the Sun-like track starts its main sequence at the data sheet Sun, alongsi
   const m = L.TRACKS.massive;
   assert.ok(m.points['main-sequence'][0] > t.points['main-sequence'][0] && m.points['main-sequence'][1] > 1000 * t.points['main-sequence'][1], 'the massive star starts hotter and far more luminous');
   assert.ok(m.points['red-supergiant'][1] > t.points['red-giant'][1], 'supergiants sit above giants');
+  // The supernova is an explosion, not a point: the massive track ends at the red supergiant.
+  assert.equal(m.points.supernova, undefined);
+  assert.deepEqual(m.path[m.path.length - 1], m.points['red-supergiant']);
+  assert.deepEqual(m.end, { from: 'red-supergiant', stage: 'supernova', label: 'explodes as a supernova (off the chart)' });
 });
