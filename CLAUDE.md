@@ -54,7 +54,10 @@ Static HTML/CSS/JS with no build step. Pages live in `sims/` (interactive) and `
     hash. If the designated feature branch had already been merged and was restarted from `main`
     (carrying only its own new commits on top), still fast-forward `main` to include those commits
     and push it once green — the site only shows what's on `main`, so a build that stops on the
-    feature branch isn't live.
+    feature branch isn't live. **Merge guard:** push or fast-forward `main` only after a full run
+    whose own output says `# fail 0`, checked first and on the code being pushed; never chain the
+    push onto a test run (e.g. `npm test; git push`) without checking its result. Any change after
+    that run, however small, needs a new run before `main` moves.
 12. **A script-set range input value must land on the step grid:** when JS sets `input.value` on a
     `type="range"` element, its `step` must divide that value exactly, or the browser silently
     snaps the value to the nearest step-aligned value instead (`step="any"` sidesteps this

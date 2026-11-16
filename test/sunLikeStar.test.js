@@ -33,11 +33,14 @@ test('timescales: the main sequence is the longest stage, a planetary nebula the
   assert.equal(L.stage('black-dwarf').years, null);
 });
 
-test('the Sun-like track starts its main sequence at the data sheet Sun, and is laid out for a second (massive) track', () => {
+test('the Sun-like track starts its main sequence at the data sheet Sun, alongside the massive track drawn on notes/massive-stars.html', () => {
   const t = L.TRACKS.sunLike;
   assert.deepEqual(t.points['main-sequence'], [SpecData.CONSTANTS.photosphereTemperatureK, 1]);
   assert.ok(t.points['red-giant'][1] > 100 && t.points['red-giant'][0] < SpecData.CONSTANTS.photosphereTemperatureK, 'up and to the right');
   assert.ok(t.points['white-dwarf'][1] < 0.1 && t.points['white-dwarf'][0] > 10000, 'down and to the left');
   assert.equal(t.points.nebula, undefined, 'a nebula is not on the diagram');
-  assert.deepEqual(Object.keys(L.TRACKS), ['sunLike']);
+  assert.deepEqual(Object.keys(L.TRACKS), ['sunLike', 'massive']);
+  const m = L.TRACKS.massive;
+  assert.ok(m.points['main-sequence'][0] > t.points['main-sequence'][0] && m.points['main-sequence'][1] > 1000 * t.points['main-sequence'][1], 'the massive star starts hotter and far more luminous');
+  assert.ok(m.points['red-supergiant'][1] > t.points['red-giant'][1], 'supergiants sit above giants');
 });

@@ -156,30 +156,10 @@
   // 3. Its path across the HR diagram
   // ------------------------------------------------------------------
 
-  const GEOM = { x0: 92, x1: 590, yTop: 40, yBottom: 370 };
-  const plot = H.makePlot(GEOM);
-  const L_TICKS = [[1e4, '10⁴'], [1e2, '10²'], [1, '1'], [1e-2, '10⁻²'], [1e-4, '10⁻⁴']];
-  const T_TICKS = [40000, 20000, 10000, 5000, 3000];
-
-  /**
-   * One star's track across the HR diagram, from SunLikeStar.TRACKS. 13.8
-   * HOOK: "Massive stars and their ends" calls this again with the massive
-   * track (and its own class) on the same axes, so both paths show together.
-   */
-  function drawTrack(svg, trackId, cls) {
-    const track = L.TRACKS[trackId];
-    const pts = track.path.map(([t, lum]) => [plot.xForT(t), plot.yForL(lum)]);
-    svgEl('polyline', { class: `sl-track ${cls}`, points: pts.map(([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`).join(' '), fill: 'none', stroke: INK, 'stroke-width': 2.5, 'stroke-dasharray': '8 5' }, svg);
-    for (let k = 1; k < pts.length; k += 3) {
-      const [xa, ya] = pts[k - 1];
-      const [xb, yb] = pts[k];
-      const mx = (xa + xb) / 2;
-      const my = (ya + yb) / 2;
-      const a = Math.atan2(yb - ya, xb - xa);
-      svgEl('path', { d: `M${(mx + 7 * Math.cos(a)).toFixed(1)},${(my + 7 * Math.sin(a)).toFixed(1)} L${(mx - 7 * Math.cos(a - 0.5)).toFixed(1)},${(my - 7 * Math.sin(a - 0.5)).toFixed(1)} M${(mx + 7 * Math.cos(a)).toFixed(1)},${(my + 7 * Math.sin(a)).toFixed(1)} L${(mx - 7 * Math.cos(a + 0.5)).toFixed(1)},${(my - 7 * Math.sin(a + 0.5)).toFixed(1)}`, stroke: INK, 'stroke-width': 2.5, fill: 'none' }, svg);
-    }
-    return track;
-  }
+  // The HR axes and track drawing are shared with notes/massive-stars.html
+  // (src/hrTrackDrawing.js), which draws the massive track alongside this one.
+  const T = window.HrTrackDrawing.make(H, D);
+  const GEOM = T.GEOM;
 
   const TRACK_LABEL = {
     protostar: [16, -14, 'right'],
@@ -195,42 +175,14 @@
     const wrap = document.getElementById('track-diagram-wrap');
     clearDiagram(svg, wrap);
     panel(svg);
-    // Axes and ticks.
-    svgEl('rect', { x: GEOM.x0, y: GEOM.yTop, width: GEOM.x1 - GEOM.x0, height: GEOM.yBottom - GEOM.yTop, fill: 'none', stroke: MUTED }, svg);
-    L_TICKS.forEach(([lum, text]) => {
-      const y = plot.yForL(lum);
-      svgEl('line', { x1: GEOM.x0 - 6, y1: y, x2: GEOM.x0, y2: y, stroke: MUTED }, svg);
-      addLabel(svg, wrap, text, GEOM.x0 - 10, y, 'diagram-label--tick diagram-label--left');
-    });
-    T_TICKS.forEach((t) => {
-      const x = plot.xForT(t);
-      svgEl('line', { x1: x, y1: GEOM.yBottom, x2: x, y2: GEOM.yBottom + 6, stroke: MUTED }, svg);
-      addLabel(svg, wrap, t.toLocaleString('en-GB'), x, GEOM.yBottom + 18, 'diagram-label--tick');
-    });
-    addLabel(svg, wrap, 'surface temperature (K), hottest on the left', 340, GEOM.yBottom + 44, 'diagram-label--tick');
-    addLabel(svg, wrap, 'luminosity (Sun = 1)', GEOM.x0 + 6, 20, 'diagram-label--tick diagram-label--right');
-    // The main sequence band, for reference.
-    const upper = [];
-    const lower = [];
-    for (let lt = Math.log10(40000); lt >= Math.log10(3000); lt -= 0.02) {
-      const t = 10 ** lt;
-      const r = H.mainSequenceRange(t);
-      upper.push([plot.xForT(t), plot.yForM(r.bright)]);
-      lower.unshift([plot.xForT(t), plot.yForM(r.faint)]);
-    }
-    svgEl('polygon', { class: 'sl-ms-band', points: [...upper, ...lower].map(([x, y]) => `${x.toFixed(1)},${Math.max(GEOM.yTop, Math.min(GEOM.yBottom, y)).toFixed(1)}`).join(' '), fill: 'rgba(255, 224, 138, 0.16)', stroke: '#ffe08a', 'stroke-dasharray': '6 4' }, svg);
-    addLabel(svg, wrap, 'main sequence band', plot.xForT(14000), plot.yForL(2), 'diagram-label--tick');
-    const track = drawTrack(svg, 'sunLike', 'sl-track--sun-like');
-    // A marker at every stage on the track, and a ring on the chosen one.
-    Object.entries(track.points).forEach(([id, [t, lum]]) => {
-      const x = plot.xForT(t);
-      const y = plot.yForL(lum);
-      const chosen = id === state.stage;
-      svgEl('circle', { class: `sl-track-point${chosen ? ' sl-track-point--chosen' : ''}`, 'data-stage': id, cx: x.toFixed(1), cy: y.toFixed(1), r: 5, fill: INK }, svg);
-      if (chosen) svgEl('circle', { class: 'sl-track-ring', cx: x.toFixed(1), cy: y.toFixed(1), r: 12, fill: 'none', stroke: INK, 'stroke-width': 2.5 }, svg);
+    T.drawAxes(svg, wrap);
+    addLabel(svg, wrap, 'main sequence band', T.plot.xForT(14000), T.plot.yForL(2), 'diagram-label--tick');
+    const track = L.TRACKS.sunLike;
+    T.drawTrack(svg, track, 'sl-track--sun-like', window.HrTrackDrawing.STYLES.sunLike);
+    T.drawPoints(svg, wrap, track, window.HrTrackDrawing.STYLES.sunLike, state.stage, (id) => {
       const [dx, dy, side] = TRACK_LABEL[id];
-      addLabel(svg, wrap, L.stage(id).name, x + dx, y + dy, `diagram-label--tick${chosen ? ' diagram-label--strong' : ''} diagram-label--${side}`);
-    });
+      return [L.stage(id).name, dx, dy, side];
+    }, 'sunLike');
     const onDiagram = Boolean(track.points[state.stage]);
     if (!onDiagram) addLabel(svg, wrap, 'a nebula is not a star yet, so it is not on the diagram', 340, GEOM.yTop + 18, 'diagram-label--tick diagram-label--strong');
     svg.dataset.stage = state.stage;

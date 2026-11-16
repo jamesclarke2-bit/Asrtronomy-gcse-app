@@ -4906,6 +4906,13 @@ canvas {
   color: #10131c;
 }
 
+/* notes/massive-stars.html */
+.ms-on-hatch {
+  background: rgba(16, 19, 28, 0.85);
+  padding: 0 0.25rem;
+  border-radius: 3px;
+}
+
 /* notes/star-trails.html */
 .st-tables {
   display: grid;

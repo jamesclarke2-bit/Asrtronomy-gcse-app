@@ -831,12 +831,6 @@ const UNITS = [
     title: 'Stars',
     subtopics: [
       {
-        id: 'u4.1',
-        title: 'Stellar evolution',
-        depth: 'understand',
-        notes: 'life cycle by mass; the Hertzsprung-Russell diagram',
-      },
-      {
         id: 'u4.2',
         title: 'Brightness and magnitude calculations',
         depth: 'be able to',
@@ -940,6 +934,16 @@ const UNITS = [
         spec: ['14.3', '14.4', '14.5', '14.9'],
         notes:
           "a Sun-like star's stages: an emission or absorption nebula (glowing gas, or dark dust blocking light), a protostar (collapsing and heating, no fusion yet, tens of millions of years), the main sequence (hydrogen fusing to helium, about 10 billion years), a red giant (the core runs out of hydrogen, shrinks and heats, fusion moves to a shell and later helium fuses to carbon, the star swells about 100 times wider, about 1 billion years), a planetary nebula (the outer layers drift away, about 10,000 years; M57, the Ring Nebula), a white dwarf (a hot carbon core about the size of the Earth, cooling for billions of years) and a black dwarf (none yet, as cooling takes longer than the Universe's age of about 13.8 billion years); on the main sequence outward radiation pressure from fusion balances gravity, a protostar shrinks because gravity wins, a red giant's core shrinks while its outer layers swell, and a white dwarf, with no fusion, is held up by electron pressure. Every value, time and stage detail is a first draft, to be checked by the teacher.",
+      },
+      {
+        id: 'u4.15',
+        title: 'Massive stars and their ends',
+        depth: 'understand',
+        // 13.8 is tagged here, not on u4.14: this page draws both HR tracks
+        // (SunLikeStar.TRACKS.sunLike and .massive) on one diagram.
+        spec: ['13.8', '14.6', '14.7', '14.8', '14.10'],
+        notes:
+          "a much more massive star (about 8 or more times the Sun's mass) starts like a Sun-like star but sits high on the main sequence (hotter and far more luminous) for only about 10 million years (for about 20 times the Sun's mass), using its fuel far faster; as a red supergiant (about 1 million years, hundreds of times wider than the Sun) its core shrinks and fuses heavier elements in turn up to iron while radiation pressure swells its outer layers; fusing iron releases no energy, so radiation pressure fails, gravity collapses the core in under a second, and the outer layers are blasted out in a supernova; the dead core becomes a white dwarf (held up by electron pressure) only below the Chandrasekhar limit of about 1.4 times the Sun's mass, a neutron star (about 20 km across, held up by neutron pressure) up to about 3 times, and a black hole above that; on the HR diagram a Sun-like star rises to the red giants and falls to the white dwarfs, while a massive star crosses the top to the red supergiants. Every value, time and mass is a first draft, to be checked by the teacher.",
       },
     ],
   },
@@ -1076,8 +1080,17 @@ function getSubtopic(subtopicId) {
   return undefined;
 }
 
+/**
+ * Subtopic ids retired for good: never reuse one (see this file's header).
+ * u4.1 "Stellar evolution" was an unused stub ("life cycle by mass; the
+ * Hertzsprung-Russell diagram") on no page and no question; its content is
+ * now u4.9 (the HR diagram), u4.14 (a Sun-like star) and u4.15 (massive
+ * stars), so it was retired rather than tagged by mistake.
+ */
+const RETIRED_SUBTOPIC_IDS = ['u4.1'];
+
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { UNITS, getUnit, getSubtopic };
+  module.exports = { UNITS, getUnit, getSubtopic, RETIRED_SUBTOPIC_IDS };
 } else if (typeof window !== 'undefined') {
-  window.Curriculum = { UNITS, getUnit, getSubtopic };
+  window.Curriculum = { UNITS, getUnit, getSubtopic, RETIRED_SUBTOPIC_IDS };
 }

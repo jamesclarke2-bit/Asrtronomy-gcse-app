@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; form-action 'none'; base-uri 'self'" />
+  <meta name="referrer" content="no-referrer" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Massive stars and their ends</title>
+  <link rel="stylesheet" href="../styles.css?v=202611191200" />
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg?v=202610130720" />
+</head>
+<body>
+  <main>
+    <p class="back-link"><a href="../index.html">&larr; Back to all tools</a></p>
+
+    <h1>Massive stars and their ends</h1>
+    <p class="subtitle">
+      A star many times heavier than the Sun lives fast and dies in a supernova.
+    </p>
+
+    <section class="notes-section" id="life-cycle">
+      <h2>From nebula to supernova</h2>
+      <p>
+        A <strong>much more massive</strong> star has about 8 or more times the Sun's mass. It starts
+        like a Sun-like star (see
+        <a href="sun-like-star.html">Life of a Sun-like star</a> for the nebula and protostar).
+        Choose a stage:
+      </p>
+
+      <div class="preset-list" role="group" aria-label="Choose a stage" id="stage-buttons"></div>
+
+      <div class="diagram spectrum-panel sl-panel">
+        <div class="labelled-diagram-wrap" id="stage-diagram-wrap">
+          <svg
+            id="stage-diagram"
+            class="responsive-svg"
+            width="640"
+            height="320"
+            viewBox="0 0 640 320"
+            role="img"
+            aria-label="Not to scale. A drawing of the chosen stage: a glowing and a dark cloud; a big, hot, blue-white main-sequence star; a vast red supergiant with layers of heavier elements round its core; a supernova blasting its outer layers outward; a tiny spinning neutron star; or a black hole bending the starlight around it."
+          ></svg>
+        </div>
+      </div>
+      <p class="note sl-readout" id="stage-readout" aria-live="polite"></p>
+    </section>
+
+    <section class="notes-section" id="balance">
+      <h2>The balance, stage by stage</h2>
+      <p>
+        As in the Sun, gravity pulls inward and pressure pushes outward. Here both are far stronger,
+        and when fusion stops at iron, the outward push fails.
+      </p>
+
+      <div class="diagram spectrum-panel sl-panel">
+        <div class="labelled-diagram-wrap" id="balance-diagram-wrap">
+          <svg
+            id="balance-diagram"
+            class="responsive-svg"
+            width="640"
+            height="300"
+            viewBox="0 0 640 300"
+            role="img"
+            aria-label="A star cut in half with force arrows for the chosen stage: solid arrows pointing inward for gravity, and dashed arrows pointing outward for the push holding it up, radiation pressure or, in a neutron star, neutron pressure. Equal arrows mean balanced; a much longer inward arrow means the core collapses."
+          ></svg>
+        </div>
+      </div>
+      <p class="note sl-readout" id="balance-readout" aria-live="polite"></p>
+      <p>
+        In a supernova the iron core collapses in under a second. If what is left is held up by
+        <strong>neutron pressure</strong> (neutrons squeezed so close they resist any more), it is a
+        neutron star. If it is too heavy even for that, it collapses for good into a black hole.
+      </p>
+      <p class="note">
+        That a much more massive star has about 8 or more times the Sun's mass, the 20-times example,
+        and which pressure holds up each stage: first draft, to be checked by the teacher.
+      </p>
+    </section>
+
+    <section class="notes-section" id="chandrasekhar">
+      <h2>The Chandrasekhar limit</h2>
+      <p>
+        What a dead core becomes depends on its mass. Electron pressure can hold up a core only below
+        the <strong>Chandrasekhar limit</strong>, about 1.4 times the Sun's mass. Slide the core's
+        mass:
+      </p>
+
+      <div class="control">
+        <label for="core-mass">Mass of the dead core: <span id="core-mass-label"></span></label>
+        <input type="range" id="core-mass" aria-controls="core-diagram" min="0.5" max="5" step="0.1" value="1" />
+      </div>
+
+      <div class="diagram spectrum-panel sl-panel">
+        <div class="labelled-diagram-wrap" id="core-diagram-wrap">
+          <svg
+            id="core-diagram"
+            class="responsive-svg"
+            width="640"
+            height="280"
+            viewBox="0 0 640 280"
+            role="img"
+            aria-label="A scale of core mass in Sun masses, split into three zones: below about 1.4, a white dwarf held up by electron pressure; from 1.4 to about 3, a neutron star held up by neutron pressure; above about 3, a black hole. A marker shows the chosen mass, and a drawing above shows what the core becomes."
+          ></svg>
+        </div>
+      </div>
+      <p class="note sl-readout" id="core-readout" aria-live="polite"></p>
+      <p class="note">
+        The limits of about 1.4 and about 3 times the Sun's mass: first draft, to be checked by the
+        teacher.
+      </p>
+    </section>
+
+    <section class="notes-section" id="hr-tracks">
+      <h2>Two paths across the HR diagram</h2>
+      <p>
+        Both stars start on the main sequence, but the massive star starts far higher up: hotter and
+        much more luminous. It then moves right across the top to become a red supergiant, while a
+        Sun-like star moves up and right to the red giants, then down to the white dwarfs.
+      </p>
+
+      <div class="diagram spectrum-panel sl-panel">
+        <div class="labelled-diagram-wrap" id="track-diagram-wrap">
+          <svg
+            id="track-diagram"
+            class="responsive-svg"
+            width="640"
+            height="500"
+            viewBox="0 0 640 500"
+            role="img"
+            aria-label="An HR diagram, hottest on the left and most luminous at the top, with the main sequence band and two paths. The massive star's path, a thick solid line with square markers, starts high on the main sequence, runs right across the top to the red supergiants and then off the top as a supernova. The Sun-like star's path, a dashed line with round markers, starts at the Sun, rises to the red giants, crosses left and falls to the white dwarfs. The chosen stage is ringed."
+          ></svg>
+        </div>
+      </div>
+      <p class="note">
+        Both paths are approximate: first draft, to be checked by the teacher. The Sun's surface
+        temperature is the data sheet's.
+      </p>
+    </section>
+
+    <section class="notes-section" id="timescales">
+      <h2>How long each stage lasts</h2>
+      <div class="table-scroll">
+        <table class="shower-table sl-table" id="stage-table">
+          <caption>A much more massive star's stages, in order</caption>
+          <thead>
+            <tr><th scope="col">Stage</th><th scope="col">Roughly how long (years)</th><th scope="col">What happens to the core</th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <div class="diagram spectrum-panel sl-panel">
+        <div class="labelled-diagram-wrap" id="timeline-diagram-wrap">
+          <svg
+            id="timeline-diagram"
+            class="responsive-svg"
+            width="640"
+            height="300"
+            viewBox="0 0 640 300"
+            role="img"
+            aria-label="A bar for each stage's length on a scale where each step is ten times longer than the last, with a Sun-like star's main sequence added for comparison. The massive star's main sequence, about 10 million years, is a thousand times shorter than the Sun-like star's, about 10 billion years."
+          ></svg>
+        </div>
+      </div>
+      <p>
+        Why so short? A star of about 20 times the Sun's mass has about 20 times the fuel, but it is
+        tens of thousands of times more luminous, so it uses its fuel up far faster.
+      </p>
+      <p class="note">
+        Every time in the table and chart, and that such a star is tens of thousands of times more
+        luminous than the Sun: first draft, to be checked by the teacher.
+      </p>
+    </section>
+
+    <section class="notes-section" id="exam-tips">
+      <h2>Exam tips</h2>
+      <p class="exam-tip">
+        <strong>Common exam confusion:</strong> a more massive star has more fuel but a much
+        <em>shorter</em> life, because it uses its fuel up far faster.
+        <a href="#timescales">How long each stage lasts &uarr;</a>
+      </p>
+      <p class="exam-tip">
+        <strong>Common exam confusion:</strong> the Chandrasekhar limit is about the dead core's
+        mass, not the whole star's.
+        <a href="#chandrasekhar">The Chandrasekhar limit &uarr;</a>
+      </p>
+    </section>
+
+    <section class="notes-section" id="related">
+      <h2>Related pages</h2>
+      <div class="page-card-list">
+        <a class="page-card" href="sun-like-star.html">
+          <h3>Life of a Sun-like star</h3>
+          <p class="page-card-description">The nebula, protostar and white dwarf in full.</p>
+        </a>
+        <a class="page-card" href="hr-diagram.html">
+          <h3>The Hertzsprung-Russell diagram</h3>
+          <p class="page-card-description">Where supergiants, giants and white dwarfs sit.</p>
+        </a>
+        <a class="page-card" href="space-telescopes.html">
+          <h3>Space telescopes</h3>
+          <p class="page-card-description">X-rays from gas falling into a black hole.</p>
+        </a>
+      </div>
+    </section>
+
+    <section class="questions" id="questions">
+      <h2>Practice questions</h2>
+      <div id="questions-list"></div>
+    </section>
+
+    <section class="progress">
+      <h2>Your progress</h2>
+      <ul id="progress-list"></ul>
+      <p class="note">Stored in this browser only (localStorage) &mdash; no account needed.</p>
+    </section>
+
+    <p class="coverage" id="coverage"></p>
+    <p class="next-page-link" id="next-page"></p>
+  </main>
+
+  <script src="../src/curriculum.js?v=202611191200"></script>
+  <script src="../src/pages.js?v=202611191200"></script>
+  <script src="../src/specData.js?v=202610161036"></script>
+  <script src="../src/spectra.js?v=202611131200"></script>
+  <script src="../src/magnitude.js?v=202611101600"></script>
+  <script src="../src/spectrumDrawing.js?v=202611130900"></script>
+  <script src="../src/hrDiagram.js?v=202611131500"></script>
+  <script src="../src/sunLikeStar.js?v=202611191200"></script>
+  <script src="../src/hrTrackDrawing.js?v=202611191200"></script>
+  <script src="../src/massiveStar.js?v=202611191200"></script>
+  <script src="../src/massiveStarQuestions.js?v=202611191200"></script>
+  <script src="../glossary.js?v=202610131052"></script>
+  <script src="../quiz-ui.js?v=202611121900"></script>
+  <script src="massive-stars.js?v=202611191200"></script>
+  <script src="../diagramEnlarge.js?v=202611111500"></script>
+  <script src="../notesPage.js?v=202609252100"></script>
+  <script src="../nextPage.js?v=202610161057"></script>
+</body>
+</html>

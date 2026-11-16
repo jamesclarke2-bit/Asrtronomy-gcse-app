@@ -8,12 +8,11 @@
  * pull that the page draws as force arrows.
  *
  * TRACKS: a star's path across the HR diagram, as points of surface
- * temperature (K) and luminosity (Sun = 1). Only `sunLike` exists so far.
- * 13.8 HOOK: the "Massive stars and their ends" page adds a `massive`
- * track here (main sequence, red supergiant, supernova) and draws both
- * with the same drawTrack() in notes/sun-like-star.js; 13.8 ("for
- * Sun-like stars and for much more massive ones") is tagged there, on
- * its own curriculum subtopic, once both tracks exist, not on u4.14.
+ * temperature (K) and luminosity (Sun = 1): `sunLike`, and `massive` (a
+ * star of about 20 times the Sun's mass) for notes/massive-stars.html,
+ * which draws both on one diagram with src/hrTrackDrawing.js. 13.8 ("for
+ * Sun-like stars and for much more massive ones") is tagged on that
+ * page's subtopic (u4.15), not on u4.14.
  *
  * The Sun's surface temperature is the data sheet's (src/specData.js).
  * Every other value, time and mass is general knowledge, labelled a
@@ -101,6 +100,19 @@
         [4200, 10], [4600, 3], [SUN_T, 1], [5200, 2.5], [4500, 20], [3900, 1000],
         [10000, 3000], [40000, 3000], [40000, 0.3], [25000, 0.01], [8000, 0.0006], [3000, 1e-5],
       ],
+    },
+    // About 20 times the Sun's mass: far above the Sun on the main
+    // sequence, then right across the top to the red supergiants; the
+    // supernova is far brighter than the top of the diagram, and the
+    // neutron star or black hole left behind is not on it.
+    massive: {
+      name: 'a massive star',
+      points: {
+        'main-sequence': [30000, 40000],
+        'red-supergiant': [3600, 100000],
+        supernova: [3600, 1e6],
+      },
+      path: [[30000, 40000], [22000, 55000], [12000, 70000], [7000, 82000], [4500, 92000], [3600, 100000], [3600, 1e6]],
     },
   };
 

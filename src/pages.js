@@ -477,6 +477,16 @@ const PAGES = [
     why: 'The HR diagram showed where giants and white dwarfs sit; this follows one Sun-like star through every stage of its life, and what holds it up at each.',
   },
   {
+    title: 'Massive stars and their ends',
+    description:
+      "A much more massive star's stages, from nebula to red supergiant, supernova and a neutron star or black hole, each drawn; the gravity and pressure balance at every stage, down to the neutron pressure holding up a neutron star; the Chandrasekhar limit, with a core-mass slider showing which end a dead core reaches; and the massive and Sun-like stars' paths on one HR diagram.",
+    href: 'notes/massive-stars.html',
+    units: ['u4.15'],
+    phase: 'Stars and the Universe',
+    position: 46,
+    why: 'Life of a Sun-like star ended quietly as a white dwarf; a star many times heavier lives fast and ends in a supernova, and the Chandrasekhar limit decides what is left.',
+  },
+  {
     title: 'Bodies of the Solar System',
     description:
       "A to-scale size line-up and bar chart of the planets and dwarf planets, the larger named moons by planet, the four ringed planets drawn at relative size with Saturn's rings the most visible, Io's tidal heating (reusable diagram) from its 1:2:4 resonance with Europa and Ganymede, a temperature-against-distance chart, a planet-vs-dwarf-planet decision diagram, asteroids/meteoroids/comets, a comet-tail diagram and the Kuiper Belt/Oort Cloud on a logarithmic scale, transits of Venus and measuring the AU, and brief formation theories — a first draft pending teacher review.",
@@ -586,6 +596,7 @@ const DIAGRAM_FIRST_PAGES = [
   'notes/space-probes.html',
   'notes/catalogues-and-star-names.html',
   'notes/sun-like-star.html',
+  'notes/massive-stars.html',
 ];
 
 /**
@@ -649,40 +660,20 @@ const COMING_SOON = [
     specPoints: ['11.29', '11.30'],
   },
   {
-    name: 'Stars, galaxies and the Universe',
-    phase: 'Stars and the Universe',
-    position: 46,
-    why: "Now that Parallax and the Parsec, and Magnitude, can both measure how far away a star is and how bright it really is, the rest of Topic 13 this course hasn't reached yet: how a star's life moves it across the HR diagram.",
-    // Topic 13 has a src/specPoints.js registry: 13.1, 13.2, 13.3 and
-    // 13.9 are covered by notes/magnitude.html, 13.10-13.12 by
-    // notes/parallax.html, 13.22 by notes/earth-structure.html, and
-    // 13.4a-c, 13.20 and 13.21 by notes/reading-a-spectrum.html, 13.5
-    // and 13.6 by notes/spectral-types.html, and 13.7a-e and 13.13 by
-    // notes/hr-diagram.html, and 13.17 and 13.34a-g by
-    // notes/binaries-and-clusters.html, and 13.14a-d and 13.16 by
-    // notes/variable-stars.html, and 13.15 and 13.18 by
-    // notes/eclipsing-binaries.html, 13.24-13.27 by
-    // notes/radio-telescopes.html, 13.23 and 13.28-13.30 by
-    // notes/infrared-telescopes.html, and 13.31-13.33 by
-    // notes/space-telescopes.html (see src/curriculum.js's
-    // u4.2/u4.5/u2.16/u4.6/u4.7/u4.8/u4.9/u4.10/u4.11/u4.12/u5.5/u5.6/u5.7).
-    // 13.19 is covered by notes/star-trails.html (u2.34). 13.8 is to be
-    // tagged on "Massive stars and their ends".
-    specPoints: [
-      '13.8',
-    ],
-  },
-  {
     name: 'Stellar Evolution, the Galaxy and Cosmology',
     phase: 'Stars and the Universe',
     position: 47,
     why: 'The rest of the course past Topic 13: a star\'s full life cycle, our own Galaxy\'s structure, and the wider Universe beyond it.',
+    // Every Topic 13 point is now covered: 13.8 by notes/massive-stars.html
+    // (u4.15), which drew both HR tracks, so the old "Stars, galaxies and
+    // the Universe" step (13.8 only) was removed.
     // Topics 14-16 have a src/specPoints.js registry too; 14.1 and 14.2
     // are covered by notes/catalogues-and-star-names.html (u4.13), 14.3,
-    // 14.4, 14.5 and 14.9 by notes/sun-like-star.html (u4.14), and
+    // 14.4, 14.5 and 14.9 by notes/sun-like-star.html (u4.14), 14.6,
+    // 14.7, 14.8 and 14.10 by notes/massive-stars.html (u4.15), and
     // 16.1-16.3 (redshift) have their own step just below.
     specPoints: [
-      '14.6', '14.7', '14.8', '14.10', '14.11',
+      '14.11',
       '15.1', '15.2', '15.3', '15.4', '15.5', '15.6', '15.7', '15.8', '15.9', '15.10', '15.11', '15.12', '15.13', '15.14',
       '16.4', '16.5', '16.6', '16.7', '16.8', '16.9', '16.10', '16.11', '16.12',
     ],

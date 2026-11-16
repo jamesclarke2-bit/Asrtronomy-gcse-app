@@ -48,7 +48,7 @@ that point.
 | 13.5 | COVERED (2026-11-13) | `notes/spectral-types.html` §`classes` (O-M strip and table), §`slider` (class from temperature) and §`sort-stars` (eight real stars); six questions | — | — |
 | 13.6 | COVERED (2026-11-13) | `notes/spectral-types.html` §`slider` (colour and glow curve against temperature) and §`why-colour` (three glow curves); five questions | — | — |
 | 13.7 (a-e) | COVERED (2026-11-13) | `notes/hr-diagram.html` §`the-diagram` (both y-axes, hottest left, all five regions and the Sun), §`real-stars` (ten stars) and §`sketch` (axes, place the five regions and the Sun, checklist); split into 13.7a-e, each with its own questions (3, 1, 2, 2, 2) | — | — |
-| 13.8 | MISSING | — | `curriculum.js` `u4.1` "Stellar evolution" is an unbuilt stub (no `spec` field, registered to no page) | New page |
+| 13.8 | COVERED (2026-11-19) | `notes/massive-stars.html` §`hr-tracks` (the Sun-like and massive tracks on one HR diagram, told apart by line style, marker shape and labels; the chosen stage ringed); questions `mv-compare-tracks`, `mv-off-diagram` (u4.15). The retired stub `u4.1` is no longer involved | — | — |
 | 13.9 | COVERED | `notes/magnitude.html` §`inverse-square` (lamp/squares diagram, table); questions `inverse-square-to-magnitude`, `bright-but-far-real-example` (u4.2) | — | — |
 | 13.10 | COVERED | `notes/parallax.html` glossary `arcminute`/`arcsecond` (exact 60/60/3600 relationship); question `degrees-to-arcseconds` (u4.5) | — | — |
 | 13.11 | COVERED | `notes/parallax.html` §`units` (parsec definition, AU/ly table); question `parsecs-to-light-years` (u4.5) | — | — |

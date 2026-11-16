@@ -130,3 +130,17 @@ test('u2.12 (Solar wind) is tagged with 12.1e: it covers the solar wind\'s effec
 test('u3.21 (Formation of gas giants) keeps 12.3: its page names core accretion, one of 12.3\'s "main theories"', () => {
   assert.ok(getSubtopic('u3.21').spec.includes('12.3'));
 });
+
+test('retired subtopic ids never come back: u4.1 "Stellar evolution" is gone, and no page or question uses it', () => {
+  const { UNITS, getSubtopic, RETIRED_SUBTOPIC_IDS } = require('../src/curriculum');
+  const { PAGES } = require('../src/pages');
+  const { getAllQuestionsNode } = require('../src/allQuestions');
+  assert.ok(RETIRED_SUBTOPIC_IDS.includes('u4.1'));
+  const live = new Set(UNITS.flatMap((u) => u.subtopics.map((s) => s.id)));
+  RETIRED_SUBTOPIC_IDS.forEach((id) => {
+    assert.equal(live.has(id), false, `${id} is retired`);
+    assert.equal(getSubtopic(id), undefined, id);
+    assert.ok(!PAGES.some((p) => p.units.includes(id)), `${id} on no page`);
+    assert.ok(!getAllQuestionsNode().some((q) => (q.units || []).includes(id)), `${id} on no question`);
+  });
+});
