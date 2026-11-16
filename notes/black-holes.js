@@ -66,7 +66,7 @@
     svgEl('circle', { class: 'bh-hole', cx: c.x, cy: c.y, r: 9, fill: '#000', stroke: '#ffcf9f', 'stroke-width': 1 }, svg);
     [[-1, -1], [1, -1], [1, 1]].forEach(([sx, sy]) => wavyArrow(svg, c.x + sx * 60, c.y + sy * 26, sx * 40, sy * 40, 'bh-xray'));
     addLabel(svg, wrap, 'visible star', 150, 262, 'diagram-label--tick diagram-label--strong');
-    addLabel(svg, wrap, 'gas pulled off', 310, 84, 'diagram-label--tick');
+    addLabel(svg, wrap, 'gas pulled off', 250, 84, 'diagram-label--tick');
     addLabel(svg, wrap, 'hot disc gives out X-rays', 470, 262, 'diagram-label--tick diagram-label--strong');
     svgEl('line', { class: 'bh-hole-leader', x1: c.x - 30, y1: c.y + 6, x2: c.x - 40, y2: 208, stroke: INK, 'stroke-width': 1.5 }, svg);
     addLabel(svg, wrap, 'black hole (unseen) at the centre', c.x - 40, 222, 'diagram-label--tick');
