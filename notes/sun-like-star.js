@@ -219,7 +219,7 @@
       lower.unshift([plot.xForT(t), plot.yForM(r.faint)]);
     }
     svgEl('polygon', { class: 'sl-ms-band', points: [...upper, ...lower].map(([x, y]) => `${x.toFixed(1)},${Math.max(GEOM.yTop, Math.min(GEOM.yBottom, y)).toFixed(1)}`).join(' '), fill: 'rgba(255, 224, 138, 0.16)', stroke: '#ffe08a', 'stroke-dasharray': '6 4' }, svg);
-    addLabel(svg, wrap, 'main sequence band', plot.xForT(13000), plot.yForL(0.08), 'diagram-label--tick');
+    addLabel(svg, wrap, 'main sequence band', plot.xForT(14000), plot.yForL(2), 'diagram-label--tick');
     const track = drawTrack(svg, 'sunLike', 'sl-track--sun-like');
     // A marker at every stage on the track, and a ring on the chosen one.
     Object.entries(track.points).forEach(([id, [t, lum]]) => {
