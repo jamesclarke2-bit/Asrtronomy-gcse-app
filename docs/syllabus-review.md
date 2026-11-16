@@ -19,10 +19,10 @@ One row per point in the Edexcel GCSE Astronomy (1AS0) specification, Topics 1�
 | 11 | Exploring the Solar System | 33 | 31 | 2 | 0 |
 | 12 | Formation of planetary systems | 14 | 5 | 9 | 1 |
 | 13 | Exploring starlight | 49 | 48 | 1 | 1 |
-| 14 | Stellar evolution | 11 | 0 | 11 | 0 |
+| 14 | Stellar evolution | 11 | 2 | 9 | 0 |
 | 15 | Our place in the Galaxy | 14 | 0 | 14 | 0 |
 | 16 | Cosmology | 12 | 0 | 12 | 0 |
-| **Total** | | **244** | **192** | **52** | **29** |
+| **Total** | | **244** | **194** | **50** | **29** |
 
 ## Methodology
 
@@ -310,8 +310,8 @@ One row per point in the Edexcel GCSE Astronomy (1AS0) specification, Topics 1�
 
 | Code | Depth | Spec point | Page(s) | Questions | Thin coverage | Teacher's verdict |
 |---|---|---|---|---|---|---|
-| 14.1 | be able to | use the Messier and NGC (New General Catalogue) catalogues of nebulae, clusters and galaxies | *not built* | – |  | |
-| 14.2 | be able to | use the Bayer system for naming the brightest stars in a constellation | *not built* | – |  | |
+| 14.1 | be able to | use the Messier and NGC (New General Catalogue) catalogues of nebulae, clusters and galaxies | [Catalogues and star names](../notes/catalogues-and-star-names.html) | 14 |  | |
+| 14.2 | be able to | use the Bayer system for naming the brightest stars in a constellation | [Catalogues and star names](../notes/catalogues-and-star-names.html) | 14 |  | |
 | 14.3 | understand | the balance between radiation pressure and gravity in a main sequence star | *not built* | – |  | |
 | 14.4 | understand | how that radiation-pressure/gravity balance changes through a Sun-like star's life cycle | *not built* | – |  | |
 | 14.5 | understand | the balance between electron pressure and gravity in a white dwarf | *not built* | – |  | |

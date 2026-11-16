@@ -7,7 +7,7 @@
   <meta name="referrer" content="no-referrer" />
   <meta name="robots" content="noindex, nofollow" />
   <title>Star trails and the sidereal day</title>
-  <link rel="stylesheet" href="../styles.css?v=202611161200" />
+  <link rel="stylesheet" href="../styles.css?v=202611171200" />
   <link rel="icon" type="image/svg+xml" href="../favicon.svg?v=202610130720" />
 </head>
 <body>
@@ -151,8 +151,8 @@
       </p>
       <h3>Can star trails tell the two days apart?</h3>
       <p>
-        Only if the measurement's range is narrower than the few minutes between them. A longer
-        measurement gives a smaller percentage uncertainty; repeating the same reading does not.
+        Not reliably. The two days differ by only a few minutes, and even the longest star trail
+        cannot pin the answer down that closely.
       </p>
       <div class="diagram spectrum-panel st-panel">
         <div class="labelled-diagram-wrap" id="separate-diagram-wrap">
@@ -163,14 +163,38 @@
             height="290"
             viewBox="0 0 640 290"
             role="img"
-            aria-label="A number line of sidereal day in minutes, with the sidereal day and the solar day marked. The range from the 240-minute exposure covers both. The narrower range from a whole-night exposure of about 720 minutes covers the sidereal day and stops just short of the solar day."
+            aria-label="A number line of sidereal day in minutes, with the sidereal day and the solar day marked. The range from a 240-minute exposure covers both. The narrower range from a whole-night exposure of about 720 minutes still reaches right up to the solar day."
           ></svg>
         </div>
       </div>
       <p class="note" id="separate-readout"></p>
+
+      <h3>A longer measurement that can: timing the meridian</h3>
+      <p>
+        A star crosses the
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="meridian" aria-label="What is the meridian?" aria-expanded="false">meridian</button>
+        a little earlier each night, because the stars come round once a sidereal day, not once a
+        solar day. Time the same star night after night:
+      </p>
+      <span class="glossary-definition" data-term="meridian" hidden></span>
+      <div class="diagram spectrum-panel st-panel">
+        <div class="labelled-diagram-wrap" id="meridian-diagram-wrap">
+          <svg
+            id="meridian-diagram"
+            class="responsive-svg"
+            width="640"
+            height="290"
+            viewBox="0 0 640 290"
+            role="img"
+            aria-label="A graph of the clock time a star crosses the meridian against the number of nights. The points fall in a straight line, about 4 minutes earlier each night, so after 30 nights the star crosses about 2 hours earlier."
+          ></svg>
+        </div>
+      </div>
+      <p class="note" id="meridian-readout"></p>
       <p class="note">
-        A whole night of about 720 minutes (12 hours, a long winter night), read with the same
-        spread as the 240-minute readings: first draft, to be checked by the teacher.
+        Timing each crossing to about &plusmn;1 minute, over 30 nights, and the whole-night
+        exposure of about 720 minutes (12 hours, a long winter night): first draft, to be checked
+        by the teacher.
       </p>
     </section>
 
@@ -213,16 +237,16 @@
     <p class="next-page-link" id="next-page"></p>
   </main>
 
-  <script src="../src/curriculum.js?v=202611161200"></script>
-  <script src="../src/pages.js?v=202611161200"></script>
+  <script src="../src/curriculum.js?v=202611171200"></script>
+  <script src="../src/pages.js?v=202611171200"></script>
   <script src="../src/specData.js?v=202610161036"></script>
   <script src="../src/spectra.js?v=202611131200"></script>
   <script src="../src/spectrumDrawing.js?v=202611130900"></script>
-  <script src="../src/starTrails.js?v=202611161200"></script>
-  <script src="../src/starTrailsQuestions.js?v=202611161200"></script>
+  <script src="../src/starTrails.js?v=202611171200"></script>
+  <script src="../src/starTrailsQuestions.js?v=202611171200"></script>
   <script src="../glossary.js?v=202610131052"></script>
   <script src="../quiz-ui.js?v=202611121900"></script>
-  <script src="star-trails.js?v=202611161200"></script>
+  <script src="star-trails.js?v=202611171200"></script>
   <script src="../diagramEnlarge.js?v=202611111500"></script>
   <script src="../notesPage.js?v=202609252100"></script>
   <script src="../nextPage.js?v=202610161057"></script>

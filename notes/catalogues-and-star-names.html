@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; form-action 'none'; base-uri 'self'" />
+  <meta name="referrer" content="no-referrer" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Catalogues and star names</title>
+  <link rel="stylesheet" href="../styles.css?v=202611171200" />
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg?v=202610130720" />
+</head>
+<body>
+  <main>
+    <p class="back-link"><a href="../index.html">&larr; Back to all tools</a></p>
+
+    <h1>Catalogues and star names</h1>
+    <p class="subtitle">
+      One star can have several names. Each one tells you something about it.
+    </p>
+
+    <section class="notes-section" id="star-names">
+      <h2>One star, four names</h2>
+      <p>
+        Tap a star in Orion to see all its names, or choose which kind of name to label every star
+        with.
+      </p>
+
+      <div class="preset-list" role="group" aria-label="Label the stars with" id="form-buttons"></div>
+
+      <div class="diagram spectrum-panel cn-panel">
+        <div class="labelled-diagram-wrap" id="orion-diagram-wrap">
+          <svg
+            id="orion-diagram"
+            class="responsive-svg"
+            width="640"
+            height="380"
+            viewBox="0 0 640 380"
+            role="img"
+            aria-label="The constellation Orion drawn from the stars' real positions, north at the top and east to the left, with brighter stars drawn larger. Each of its eight named stars is labelled with the chosen kind of name, and the chosen star is ringed."
+          ></svg>
+        </div>
+      </div>
+      <dl class="cn-star-card" id="star-card" aria-live="polite"></dl>
+
+      <ul class="cn-forms">
+        <li><strong>Proper name:</strong> an old name, most from Arabic, such as Betelgeuse. Only brighter stars have one.</li>
+        <li><strong>Bayer name:</strong> a Greek letter plus the constellation, such as Alpha Orionis. More below.</li>
+        <li><strong>Flamsteed number:</strong> a number plus the constellation, such as 58 Orionis, numbered west to east.</li>
+        <li><strong>Catalogue number:</strong> the star's entry in a big catalogue, such as HD 39801 in the Henry Draper (HD) Catalogue, which lists about 225,000 stars.</li>
+      </ul>
+      <p class="note">
+        These names, the numbers and that most proper names come from Arabic: first draft, to be
+        checked by the teacher. Positions and magnitudes are the same as on
+        <a href="naked-eye-sky.html">The Naked-Eye Sky</a>.
+      </p>
+    </section>
+
+    <section class="notes-section" id="bayer">
+      <h2>Reading a Bayer name</h2>
+      <p>
+        In the <strong>Bayer system</strong>, a star's name is a Greek letter followed by the
+        constellation's name in its Latin &ldquo;of&rdquo; form, the
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="genitive" aria-label="What is the genitive?" aria-expanded="false">genitive</button>.
+        The brightest star is usually Alpha (&alpha;), the next Beta (&beta;), then Gamma (&gamma;),
+        and so on. So Beta Persei (&beta; Per) is in Perseus, and is probably its second-brightest
+        star.
+      </p>
+      <span class="glossary-definition" data-term="genitive" hidden></span>
+
+      <div class="table-scroll">
+        <table class="shower-table cn-table" id="greek-table">
+          <caption>The first eight Greek letters, and the brightness each usually means</caption>
+          <thead>
+            <tr><th scope="col">Letter</th><th scope="col">Name</th><th scope="col">Usually the</th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <p>
+        &ldquo;Usually&rdquo;, not always. Orion's Alpha, Betelgeuse, is fainter than its Beta,
+        Rigel:
+      </p>
+      <div class="diagram spectrum-panel cn-panel">
+        <div class="labelled-diagram-wrap" id="order-diagram-wrap">
+          <svg
+            id="order-diagram"
+            class="responsive-svg"
+            width="640"
+            height="330"
+            viewBox="0 0 640 330"
+            role="img"
+            aria-label="A bar for each of Orion's eight Bayer stars, in Greek-letter order from alpha to lambda; a longer bar is a brighter star. Beta, Rigel, has the longest bar, longer than alpha, Betelgeuse, and delta, Mintaka, is shorter than epsilon, zeta and kappa, so the letters only roughly follow brightness."
+          ></svg>
+        </div>
+      </div>
+      <div class="table-scroll">
+      <table class="shower-table cn-table" id="genitive-table">
+        <caption>Some constellations and their Bayer forms</caption>
+        <thead>
+          <tr><th scope="col">Constellation</th><th scope="col">Genitive (&ldquo;of&rdquo;)</th><th scope="col">Short form</th><th scope="col">Its alpha star</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Orion</td><td>Orionis</td><td>Ori</td><td>Betelgeuse</td></tr>
+          <tr><td>Canis Major</td><td>Canis Majoris</td><td>CMa</td><td>Sirius</td></tr>
+          <tr><td>Lyra</td><td>Lyrae</td><td>Lyr</td><td>Vega</td></tr>
+          <tr><td>Cygnus</td><td>Cygni</td><td>Cyg</td><td>Deneb</td></tr>
+          <tr><td>Taurus</td><td>Tauri</td><td>Tau</td><td>Aldebaran</td></tr>
+          <tr><td>Centaurus</td><td>Centauri</td><td>Cen</td><td>Alpha Centauri (Rigil Kentaurus)</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p class="note">
+        Johann Bayer introduced the system in his star atlas of 1603. The genitives, short forms and
+        alpha stars: first draft, to be checked by the teacher.
+      </p>
+    </section>
+
+    <section class="notes-section" id="catalogues">
+      <h2>Messier and NGC catalogues</h2>
+      <p>
+        Nebulae, clusters and galaxies are listed by catalogue number. Charles Messier, a French
+        comet hunter, listed about 110 fuzzy objects so he would not mistake them for comets: M31 is
+        number 31 on his list. The much bigger New General Catalogue (NGC), published in 1888,
+        lists 7,840. Many objects have both numbers:
+      </p>
+
+      <div class="table-scroll">
+        <table class="shower-table cn-table" id="catalogue-table">
+          <caption>A catalogue extract</caption>
+          <thead>
+            <tr>
+              <th scope="col">Messier number</th>
+              <th scope="col">NGC number</th>
+              <th scope="col">Name</th>
+              <th scope="col">Type</th>
+              <th scope="col">Constellation</th>
+              <th scope="col">Apparent magnitude</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <div class="preset-list" role="group" aria-label="Choose a catalogue object" id="object-buttons"></div>
+
+      <div class="diagram spectrum-panel cn-panel">
+        <div class="labelled-diagram-wrap" id="object-diagram-wrap">
+          <svg
+            id="object-diagram"
+            class="responsive-svg"
+            width="640"
+            height="320"
+            viewBox="0 0 640 320"
+            role="img"
+            aria-label="A drawing of the chosen catalogue object's type: an open cluster of scattered stars, a dense ball of a globular cluster, a glowing cloud of a nebula, a ring of a planetary nebula, the tangled threads of a supernova remnant, or a spiral galaxy, with its catalogue numbers, constellation and magnitude."
+          ></svg>
+        </div>
+      </div>
+
+      <p>
+        Choose an object to see its type drawn, then read its row across: M42 is NGC 1976, the Orion Nebula, in Orion, at magnitude 4.0. A dash
+        means the object is not in that catalogue. See four of these through a telescope on
+        <a href="binaries-and-clusters.html#eyepiece">Binaries, clusters and the view through a telescope</a>.
+      </p>
+      <p class="note">
+        Messier, the numbers of objects in each catalogue, 1888, and every row of the extract: first
+        draft, to be checked by the teacher.
+      </p>
+    </section>
+
+    <section class="notes-section" id="exam-tips">
+      <h2>Exam tips</h2>
+      <p class="exam-tip">
+        <strong>Common exam confusion:</strong> Alpha is usually, not always, the brightest star in a
+        constellation: in Orion, Beta (Rigel) is brighter than Alpha (Betelgeuse).
+        <a href="#bayer">Reading a Bayer name &uarr;</a>
+      </p>
+      <p class="exam-tip">
+        <strong>Common exam confusion:</strong> M and NGC numbers are just positions in a list, not
+        distances or brightnesses; read the type and magnitude from the catalogue.
+        <a href="#catalogues">Messier and NGC catalogues &uarr;</a>
+      </p>
+    </section>
+
+    <section class="notes-section" id="related">
+      <h2>Related pages</h2>
+      <div class="page-card-list">
+        <a class="page-card" href="binaries-and-clusters.html">
+          <h3>Binaries, clusters and the view through a telescope</h3>
+          <p class="page-card-description">M13, M31, M42 and M45 through a telescope.</p>
+        </a>
+        <a class="page-card" href="naked-eye-sky.html">
+          <h3>The Naked-Eye Sky</h3>
+          <p class="page-card-description">Orion and the other constellations to find by eye.</p>
+        </a>
+        <a class="page-card" href="magnitude.html">
+          <h3>Magnitude: how bright is a star?</h3>
+          <p class="page-card-description">Why a smaller magnitude means a brighter star.</p>
+        </a>
+      </div>
+    </section>
+
+    <section class="questions" id="questions">
+      <h2>Practice questions</h2>
+      <div id="questions-list"></div>
+    </section>
+
+    <section class="progress">
+      <h2>Your progress</h2>
+      <ul id="progress-list"></ul>
+      <p class="note">Stored in this browser only (localStorage) &mdash; no account needed.</p>
+    </section>
+
+    <p class="coverage" id="coverage"></p>
+    <p class="next-page-link" id="next-page"></p>
+  </main>
+
+  <script src="../src/curriculum.js?v=202611171200"></script>
+  <script src="../src/pages.js?v=202611171200"></script>
+  <script src="../src/specData.js?v=202610161036"></script>
+  <script src="../src/spectra.js?v=202611131200"></script>
+  <script src="../src/spectrumDrawing.js?v=202611130900"></script>
+  <script src="../src/starPatterns.js?v=202609280900"></script>
+  <script src="../src/starNames.js?v=202611171200"></script>
+  <script src="../src/starNamesQuestions.js?v=202611171200"></script>
+  <script src="../glossary.js?v=202610131052"></script>
+  <script src="../quiz-ui.js?v=202611121900"></script>
+  <script src="catalogues-and-star-names.js?v=202611171200"></script>
+  <script src="../diagramEnlarge.js?v=202611111500"></script>
+  <script src="../notesPage.js?v=202609252100"></script>
+  <script src="../nextPage.js?v=202610161057"></script>
+</body>
+</html>

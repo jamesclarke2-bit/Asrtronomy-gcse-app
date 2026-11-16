@@ -4844,6 +4844,54 @@ canvas {
   margin: 1.2rem 0;
 }
 
+/* notes/catalogues-and-star-names.html */
+.cn-star-card {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.2rem 0.8rem;
+  margin: 0.8rem 0;
+}
+
+.cn-star-card dt {
+  font-weight: 600;
+}
+
+.cn-star-card dd {
+  margin: 0;
+}
+
+.cn-forms {
+  padding-left: 1.3rem;
+}
+
+.cn-forms li {
+  margin: 0.3rem 0;
+}
+
+.cn-hit {
+  cursor: pointer;
+}
+
+/* A tap on a star's label reaches the star beneath it. */
+.cn-star-label {
+  pointer-events: none;
+}
+
+.cn-hit:focus-visible {
+  outline: none;
+  stroke: #ffd36b;
+  stroke-width: 3;
+}
+
+/* The chosen catalogue row: bold with a marker, not just a colour. */
+.cn-row--chosen td {
+  font-weight: 700;
+}
+
+.cn-row--chosen td:first-child::before {
+  content: "\25B6  ";
+}
+
 /* notes/star-trails.html */
 .st-tables {
   display: grid;

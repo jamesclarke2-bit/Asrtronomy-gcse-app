@@ -91,13 +91,14 @@
 
     const CANT_DAY = 1442;
     const CANT_UNC = 12;
-    const PART = S.dayRange(240, 0.5);
     const WHOLE = S.dayRange(720, 0.5);
     const n = (x) => Math.round(x).toLocaleString('en-GB');
     const CANT = { day: n(CANT_DAY), lo: n(CANT_DAY - CANT_UNC), hi: n(CANT_DAY + CANT_UNC), sid: n(S.SIDEREAL_DAY_MIN), sol: n(S.SOLAR_DAY_MIN) };
-    const NIGHT = { lo: n(WHOLE.shortestMin), hi: n(WHOLE.longestMin), pc: WHOLE.percent.toFixed(2), partPc: PART.percent.toFixed(2) };
+    const NIGHT = { lo: n(WHOLE.shortestMin), hi: n(WHOLE.longestMin) };
+    const MER = S.meridianMethod(30, 1);
     const BOTH_IN = 'Its range of possible values includes both days';
-    const WHOLE_NIGHT = 'A whole-night exposure: the same spread in degrees is a smaller percentage of a bigger angle';
+    const MERIDIAN = 'Time when a star crosses the meridian for 30 nights: it crosses about 4 minutes earlier each night, about 2 hours in all';
+    const WHOLE_NIGHT = 'A whole-night star trail: the range is narrower, so it clearly separates them';
     return [
       single('st-what-trail', 'What makes the stars draw arcs in a star trail image?', [TURNING, 'The stars moving through space during the exposure', 'The camera being moved during the exposure', 'The atmosphere bending the starlight'], TURNING, 'the Earth turns during the long exposure, so each star appears to move round the sky, drawing an arc'),
       single('st-centre', 'What point do all the arcs in a star trail image curve around?', [POLE, 'The Moon', 'The horizon', 'The brightest star in the picture'], POLE, 'the celestial pole: the point in the sky directly above the Earth’s pole, which the whole sky seems to turn about'),
@@ -161,13 +162,13 @@
       ),
       multi(
         'st-cant-separate',
-        `A 240-minute exposure, with the arc read to ±0.5°, gives a sidereal day of ${CANT.day} ± ${CANT_UNC} min. The sidereal day is ${CANT.sid} min and the solar day is ${CANT.sol} min. (a) Why can this result not tell the two apart? (b) What would let a student tell them apart?`,
+        `A 240-minute exposure, with the arc read to ±0.5°, gives a sidereal day of ${CANT.day} ± ${CANT_UNC} min. The sidereal day is ${CANT.sid} min and the solar day is ${CANT.sol} min. (a) Why can this result not tell the two apart? (b) Which longer measurement would let a student tell them apart reliably?`,
         [
           { key: 'why', type: 'choice', label: '(a) Because', options: [BOTH_IN, 'The result is bigger than both of them', 'The uncertainty is too small'] },
-          { key: 'fix', type: 'choice', label: '(b) What would', options: [WHOLE_NIGHT, 'Repeating the 240-minute reading many more times', 'Using a shorter exposure, so the stars move less'] },
+          { key: 'fix', type: 'choice', label: '(b) What would', options: [MERIDIAN, WHOLE_NIGHT, 'Repeating the 240-minute reading many more times'] },
         ],
-        [BOTH_IN, WHOLE_NIGHT],
-        [`(a) the range, ${CANT.lo} to ${CANT.hi} min, holds both ${CANT.sid} and ${CANT.sol} min`, `(b) a much longer exposure, such as a whole night (about 720 min): the same ±0.5° spread is a smaller percentage of a bigger angle (about ${NIGHT.pc}% instead of ${NIGHT.partPc}%), so the range shrinks to about ${NIGHT.lo} to ${NIGHT.hi} min, just short of the solar day (not repeats, which do not make the method more accurate)`],
+        [BOTH_IN, MERIDIAN],
+        [`(a) the range, ${CANT.lo} to ${CANT.hi} min, holds both ${CANT.sid} and ${CANT.sol} min`, `(b) time a star crossing the meridian over 30 nights: it crosses about ${MER.perNightMin} min earlier each night, so about ${MER.shiftMin} min (${MER.shiftMin / 60} hours) earlier in all; timed to ±1 min each, that shift is ${MER.shiftMin} ± ${MER.shiftUncertaintyMin} min, far bigger than its uncertainty, giving a sidereal day of ${CANT.sid} min to within about ±0.1 min. Not a whole-night star trail: its range, ${NIGHT.lo} to ${NIGHT.hi} min, only just reaches the gap. Not repeats, which do not make the method more accurate`],
       ),
     ];
   }

@@ -162,7 +162,7 @@ WIDTHS.forEach(({ name, width, height }) => {
     });
   });
 
-  test(`${name}: the shown mean (2 dp) is the one the day is worked from, and the 240-minute range cannot separate the two days while a whole night just can`, async (t) => {
+  test(`${name}: the shown mean (2 dp) is the one the day is worked from, and star trails cannot separate the two days, even over a whole night, but timing the meridian over 30 nights can`, async (t) => {
     await withPage(t, still, async (page) => {
       const shortTable = page.locator('#reading-tables table[data-exposure="30"]');
       const rows = await shortTable.locator('tfoot tr').allTextContents();
@@ -174,14 +174,24 @@ WIDTHS.forEach(({ name, width, height }) => {
       assert.match(await page.locator('#spread-diagram-wrap').textContent(), new RegExp(`30 min: θ = ${mean.replace('.', '\\.')}°`));
       const sep = await data(page, 'separate-diagram');
       assert.ok(Number(sep.longLo) <= 1436 && Number(sep.longHi) >= 1440, 'the 240-minute range holds both days');
-      assert.ok(Number(sep.nightLo) <= 1436 && Number(sep.nightHi) < 1440, 'the whole-night range holds the sidereal day and stops short of the solar day');
+      assert.ok(Number(sep.nightHi) > 1439.9, 'the whole-night range reaches right up to the solar day');
+      assert.equal(sep.separates, 'false');
       const text = (await page.locator('#separate-readout').textContent()).replace(/\s+/g, ' ');
-      assert.match(text, /holds both the sidereal day \(1,436 min\) and the solar day \(1,440 min\), so it cannot tell them apart/);
-      assert.match(text, /only just enough to tell them apart/);
-      assert.match(await page.locator('#separate-diagram-wrap').textContent(), /720 min \(whole night\): 1,436 ± 4/);
-      const before = await markup(page, 'separate-diagram');
+      assert.match(text, /a 240-minute exposure gives 1,424 to 1,448 min, which holds both the sidereal day \(1,436 min\) and the solar day \(1,440 min\)/);
+      assert.match(text, /a reading of exactly 180\.0° gives 1,440 min, the solar day itself/);
+      assert.match(text, /star trails cannot reliably tell 23 h 56 min from 24 h/);
+      const mer = await data(page, 'meridian-diagram');
+      assert.equal(mer.shiftMin, '120');
+      assert.equal(await page.locator('#meridian-diagram .st-crossing').count(), 7);
+      const merText = (await page.locator('#meridian-readout').textContent()).replace(/\s+/g, ' ');
+      assert.match(merText, /the shift is 120 ± 2 min/);
+      assert.match(merText, /1,440 − 120 ÷ 30 = 1,436 min/);
+      assert.match(await page.locator('#meridian-diagram-wrap').textContent(), /30 nights: 2 hours earlier/);
+      // A fixed statement: new readings change the tables, not this section.
+      const fixed = [await markup(page, 'separate-diagram'), text, merText];
       await page.click('#new-readings');
-      assert.notEqual(await markup(page, 'separate-diagram'), before, 'new readings move the 240-minute range');
+      assert.equal(await markup(page, 'separate-diagram'), fixed[0]);
+      assert.equal((await page.locator('#separate-readout').textContent()).replace(/\s+/g, ' '), fixed[1]);
     });
   });
 

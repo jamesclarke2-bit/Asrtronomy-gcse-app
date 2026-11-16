@@ -115,9 +115,29 @@
     return { thetaDeg: theta, shortestMin, longestMin, uncertaintyMin, percent: (100 * halfRangeDeg) / theta };
   }
 
-  /** Whether a range of days holds the sidereal day but stops short of the solar day. */
+  /**
+   * Whether a range of days clearly separates the two: it must hold the
+   * sidereal day and stop short of the solar day by more than its own
+   * uncertainty, not just touch the gap.
+   */
   function separatesFromSolar(range) {
-    return range.shortestMin <= SIDEREAL_DAY_MIN && range.longestMin < SOLAR_DAY_MIN;
+    return range.shortestMin <= SIDEREAL_DAY_MIN && SOLAR_DAY_MIN - range.longestMin > range.uncertaintyMin;
+  }
+
+  /**
+   * The longer-measurement method: a star crosses the meridian earlier
+   * each night by (solar day - sidereal day). Timing the first and last
+   * crossings to ±timingMin, over `nights` nights, the shift is known to
+   * ±2 × timingMin (half the range of the extreme cases), so the sidereal
+   * day = solar day - shift ÷ nights, to ±(2 × timingMin) ÷ nights.
+   */
+  function meridianMethod(nights, timingMin) {
+    const perNightMin = SOLAR_DAY_MIN - SIDEREAL_DAY_MIN;
+    const shiftMin = perNightMin * nights;
+    const shiftUncertaintyMin = 2 * timingMin;
+    const dayMin = SOLAR_DAY_MIN - shiftMin / nights;
+    const dayUncertaintyMin = shiftUncertaintyMin / nights;
+    return { nights, perNightMin, shiftMin, shiftUncertaintyMin, shiftPercent: (100 * shiftUncertaintyMin) / shiftMin, dayMin, dayUncertaintyMin };
   }
 
   /** Minutes as "23 h 56 min". */
@@ -137,6 +157,7 @@
     result,
     dayRange,
     separatesFromSolar,
+    meridianMethod,
     hoursAndMinutes,
   };
   if (isNode && module.exports) {

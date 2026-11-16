@@ -40,8 +40,8 @@ for each.
 | 11.10 | COVERED | `notes/solar-system-bodies.html` §`meteoroids-ecliptic` (stony/iron/stony-iron classification); question `meteoroid-meteor-meteorite` | — | — |
 | 11.11 | COVERED | §`meteoroids-ecliptic`; `sims/solar-system-observation.html`'s zodiac-strip diagram; question `ecliptic-oort-cloud` | — | — |
 | 11.12 | COVERED | §`transits-of-venus` (names Halley; `transit-of-venus-diagram`); question `transit-of-venus-parallax` | — | — |
-| 14.1 | MISSING | — | No mention of "Messier", "NGC" or "New General Catalogue" anywhere on the site | New page (suggested title: "Catalogues and Naming: Messier, NGC and Bayer"), pairing with 14.2 |
-| 14.2 | MISSING | — | No mention of the Bayer system anywhere; `notes/naked-eye-sky.html` uses proper star names (Polaris, Sirius, Betelgeuse...) purely as landmarks, never explaining the Greek-letter convention | Same new page as 14.1 |
+| 14.1 | COVERED (2026-11-17) | `notes/catalogues-and-star-names.html` §`catalogues` (a Messier/NGC extract table, and a drawing of each object's type, chosen by its catalogue number); questions `cn-messier-why`, `cn-m31-means`, `cn-find-globular`, `cn-ngc-of-m42`, `cn-use-extract`, `cn-ngc-only` (u4.13) | — | — |
+| 14.2 | COVERED (2026-11-17) | `notes/catalogues-and-star-names.html` §`star-names` (Orion drawn from real positions, tap a star for its proper, Bayer, Flamsteed and HD names) and §`bayer` (Greek-letter table, genitive table, and a chart showing the letters only roughly follow brightness); questions `cn-decode-beta-per`, `cn-decode-gamma-cyg`, `cn-alpha`, `cn-orion-exception`, `cn-name-sirius`, `cn-decode-vega`, `cn-greek-order`, `cn-flamsteed` (u4.13) | — | — |
 | 14.3 | MISSING | — | No radiation-pressure-vs-gravity content anywhere | New page (see 14.9/14.10 recommendation — one page can cover 14.3–14.10 together) |
 | 14.4 | MISSING | — | No stage-by-stage balance-change content for a Sun-like star | New page |
 | 14.5 | MISSING | — | No electron-pressure/white-dwarf content anywhere | New page |

@@ -223,7 +223,6 @@
     });
     svg.dataset.shortPercent = short.percent.toFixed(2);
     svg.dataset.longPercent = long.percent.toFixed(2);
-    drawSeparate(long);
   }
 
   // ------------------------------------------------------------------
@@ -231,8 +230,13 @@
   // ------------------------------------------------------------------
 
   const NIGHT = 720;
+  const READ_DEG = 0.5;
+  const NIGHTS = 30;
+  const TIMING_MIN = 1;
+  const num = (m) => Math.round(m).toLocaleString('en-GB');
 
-  function drawSeparate(long) {
+  /** A fixed comparison: a 240-minute and a whole-night exposure, each read to ±0.5°. */
+  function drawSeparate() {
     const svg = document.getElementById('separate-diagram');
     const wrap = document.getElementById('separate-diagram-wrap');
     clearDiagram(svg, wrap);
@@ -243,7 +247,6 @@
     const LO = 1410;
     const HI = 1470;
     const x = (m) => 60 + ((Math.min(HI, Math.max(LO, m)) - LO) / (HI - LO)) * 540;
-    const num = (m) => Math.round(m).toLocaleString('en-GB');
     // The axis, in minutes.
     svgEl('line', { x1: 60, y1: 220, x2: 600, y2: 220, stroke: INK, 'stroke-width': 1.5 }, svg);
     for (let m = LO; m <= HI; m += 10) {
@@ -256,29 +259,73 @@
     svgEl('line', { class: 'st-sep-solar', x1: x(S.SOLAR_DAY_MIN), y1: 34, x2: x(S.SOLAR_DAY_MIN), y2: 220, stroke: INK, 'stroke-width': 2, 'stroke-dasharray': '6 4' }, svg);
     addLabel(svg, wrap, `sidereal ${num(S.SIDEREAL_DAY_MIN)}`, x(S.SIDEREAL_DAY_MIN) - 4, 24, 'diagram-label--tick diagram-label--strong diagram-label--left');
     addLabel(svg, wrap, `solar ${num(S.SOLAR_DAY_MIN)}`, x(S.SOLAR_DAY_MIN) + 4, 24, 'diagram-label--tick diagram-label--strong diagram-label--right');
-    // Each measurement's range, as a bar with end caps and its mean marked.
-    const night = S.dayRange(NIGHT, long.uncertainty);
+    const part = S.dayRange(LONG, READ_DEG);
+    const night = S.dayRange(NIGHT, READ_DEG);
     const rows = [
-      { id: 'long', y: 92, lo: long.shortestMin, hi: long.longestMin, mid: long.dayMin, unc: long.dayUncertaintyMin, text: `${LONG} min: ${num(long.dayMin)} ± ${num(long.dayUncertaintyMin)}` },
-      { id: 'night', y: 172, lo: night.shortestMin, hi: night.longestMin, mid: (night.shortestMin + night.longestMin) / 2, unc: night.uncertaintyMin, text: `${NIGHT} min (whole night): ${num((night.shortestMin + night.longestMin) / 2)} ± ${num(night.uncertaintyMin)}` },
+      { id: 'long', y: 92, r: part, text: `${LONG} min: ${num(part.shortestMin)} to ${num(part.longestMin)}` },
+      { id: 'night', y: 172, r: night, text: `${NIGHT} min (whole night): ${num(night.shortestMin)} to ${num(night.longestMin)}` },
     ];
-    rows.forEach((r) => {
-      svgEl('rect', { class: `st-sep-bar st-sep-bar--${r.id}`, x: x(r.lo), y: r.y - 8, width: (x(r.hi) - x(r.lo)).toFixed(1), height: 16, fill: 'url(#st-sep-hatch)', stroke: INK }, svg);
-      svgEl('circle', { cx: x(r.mid), cy: r.y, r: 5, fill: INK }, svg);
-      addLabel(svg, wrap, r.text, 70, r.y - 26, 'diagram-label--tick diagram-label--right');
+    rows.forEach(({ id, y, r, text }) => {
+      svgEl('rect', { class: `st-sep-bar st-sep-bar--${id}`, x: x(r.shortestMin), y: y - 8, width: (x(r.longestMin) - x(r.shortestMin)).toFixed(1), height: 16, fill: 'url(#st-sep-hatch)', stroke: INK }, svg);
+      addLabel(svg, wrap, text, 70, y - 26, 'diagram-label--tick diagram-label--right');
     });
-    svg.dataset.longLo = long.shortestMin.toFixed(1);
-    svg.dataset.longHi = long.longestMin.toFixed(1);
+    svg.dataset.longLo = part.shortestMin.toFixed(3);
+    svg.dataset.longHi = part.longestMin.toFixed(3);
     svg.dataset.nightLo = night.shortestMin.toFixed(3);
     svg.dataset.nightHi = night.longestMin.toFixed(3);
-    const holdsBoth = long.shortestMin <= S.SIDEREAL_DAY_MIN && long.longestMin >= S.SOLAR_DAY_MIN;
-    const longPc = ((100 * long.uncertainty) / long.mean).toFixed(2);
+    svg.dataset.separates = String(S.separatesFromSolar(night));
+    const top = S.siderealDayFrom(Math.round(night.thetaDeg - READ_DEG), NIGHT);
     document.getElementById('separate-readout').textContent =
-      `The ${LONG}-minute exposure gives ${num(long.dayMin)} ± ${num(long.dayUncertaintyMin)} min: a range from ${num(long.shortestMin)} to ${num(long.longestMin)} min, ${holdsBoth ? 'holds both' : `is ${num(2 * long.dayUncertaintyMin)} min wide, far wider than the gap between`} the sidereal day (${num(S.SIDEREAL_DAY_MIN)} min) and the solar day (${num(S.SOLAR_DAY_MIN)} min), so it cannot tell them apart. ` +
-      `A whole night, about ${NIGHT} min, turns the trail through about ${night.thetaDeg.toFixed(1)}°. Read to the same ±${long.uncertainty.toFixed(2)}°, that is ±${night.percent.toFixed(2)}% instead of ±${longPc}%, so the day comes out at ${num(night.shortestMin)} to ${num(night.longestMin)} min. ` +
-      (S.separatesFromSolar(night)
-        ? `That range holds the sidereal day and stops just short of the solar day: only just enough to tell them apart.`
-        : `That is narrower, but with this spread of readings it still reaches the solar day.`);
+      `Read to ±${READ_DEG}°, a ${LONG}-minute exposure gives ${num(part.shortestMin)} to ${num(part.longestMin)} min, which holds both the sidereal day (${num(S.SIDEREAL_DAY_MIN)} min) and the solar day (${num(S.SOLAR_DAY_MIN)} min). ` +
+      `A whole night, about ${NIGHT} min, narrows that to ${num(night.shortestMin)} to ${num(night.longestMin)} min, but only just reaches the gap: a reading of exactly ${Math.round(night.thetaDeg - READ_DEG).toFixed(1)}° gives ${num(top)} min, the solar day itself. ` +
+      'So star trails cannot reliably tell 23 h 56 min from 24 h.';
+  }
+
+  /** The meridian method: crossing times over 30 nights, each about 4 minutes earlier. */
+  function drawMeridian() {
+    const svg = document.getElementById('meridian-diagram');
+    const wrap = document.getElementById('meridian-diagram-wrap');
+    clearDiagram(svg, wrap);
+    panel(svg);
+    const m = S.meridianMethod(NIGHTS, TIMING_MIN);
+    const START = 22 * 60; // the first crossing, at 22:00
+    const X0 = 90;
+    const X1 = 590;
+    const Y_TOP = 40;
+    const Y_BOT = 210;
+    const xN = (n) => X0 + (n / NIGHTS) * (X1 - X0);
+    const yT = (t) => Y_TOP + ((START - t) / 150) * (Y_BOT - Y_TOP);
+    svgEl('line', { x1: X0, y1: Y_BOT + 10, x2: X1, y2: Y_BOT + 10, stroke: INK, 'stroke-width': 1.5 }, svg);
+    svgEl('line', { x1: X0, y1: Y_TOP - 10, x2: X0, y2: Y_BOT + 10, stroke: INK, 'stroke-width': 1.5 }, svg);
+    for (let n = 0; n <= NIGHTS; n += 10) {
+      svgEl('line', { x1: xN(n), y1: Y_BOT + 10, x2: xN(n), y2: Y_BOT + 16, stroke: INK }, svg);
+      addLabel(svg, wrap, String(n), xN(n), Y_BOT + 28, 'diagram-label--tick');
+    }
+    addLabel(svg, wrap, 'night number', 340, 270, 'diagram-label--tick');
+    [START, START - 60, START - 120].forEach((t) => {
+      svgEl('line', { x1: X0 - 6, y1: yT(t), x2: X0, y2: yT(t), stroke: INK }, svg);
+      addLabel(svg, wrap, `${String(Math.floor(t / 60)).padStart(2, '0')}:00`, X0 - 10, yT(t), 'diagram-label--tick diagram-label--left');
+    });
+    addLabel(svg, wrap, 'crossing time', X0 + 8, 18, 'diagram-label--tick diagram-label--right');
+    // One crossing every 5 nights, each about 4 minutes earlier.
+    for (let n = 0; n <= NIGHTS; n += 5) {
+      svgEl('circle', { class: 'st-crossing', cx: xN(n), cy: yT(START - n * m.perNightMin), r: 5, fill: INK }, svg);
+    }
+    svgEl('line', { x1: xN(0), y1: yT(START), x2: xN(NIGHTS), y2: yT(START - m.shiftMin), stroke: MUTED, 'stroke-width': 1.5, 'stroke-dasharray': '5 5' }, svg);
+    // The total shift, marked as a double arrow on the right.
+    const xs = xN(NIGHTS) + 22;
+    svgEl('line', { class: 'st-shift', x1: xs, y1: yT(START), x2: xs, y2: yT(START - m.shiftMin), stroke: INK, 'stroke-width': 2 }, svg);
+    svgEl('line', { x1: xN(0), y1: yT(START), x2: xs + 6, y2: yT(START), stroke: MUTED, 'stroke-dasharray': '2 4' }, svg);
+    addLabel(svg, wrap, `${NIGHTS} nights: ${m.shiftMin / 60} hours earlier`, 330, yT(START - m.shiftMin) - 22, 'diagram-label--tick diagram-label--strong');
+    addLabel(svg, wrap, `about ${m.perNightMin} min earlier each night`, 230, 184, 'diagram-label--tick');
+    svg.dataset.shiftMin = String(m.shiftMin);
+    svg.dataset.dayMin = m.dayMin.toFixed(2);
+    svg.dataset.dayUncertaintyMin = m.dayUncertaintyMin.toFixed(3);
+    const one = S.meridianMethod(1, TIMING_MIN);
+    document.getElementById('meridian-readout').textContent =
+      `After ${NIGHTS} nights the star crosses about ${m.shiftMin} min (${m.shiftMin / 60} hours) earlier. Timing each crossing to about ±${TIMING_MIN} min, the shift is ${m.shiftMin} ± ${m.shiftUncertaintyMin} min (half the range of the extreme cases): only ±${m.shiftPercent.toFixed(1)}%, far smaller than the shift itself. ` +
+      `So the sidereal day = ${num(S.SOLAR_DAY_MIN)} − ${m.shiftMin} ÷ ${NIGHTS} = ${num(m.dayMin)} min, to within about ±${m.dayUncertaintyMin.toFixed(1)} min: far narrower than the ${m.perNightMin}-minute gap. ` +
+      `Over one night the shift is only ${one.shiftMin} ± ${one.shiftUncertaintyMin} min (±${one.shiftPercent.toFixed(0)}%): the longer measurement, not repeating a short one, is what makes the difference.`;
   }
 
   // ------------------------------------------------------------------
@@ -342,9 +389,13 @@
   drawTrails();
   drawMeasure();
   drawSpread();
+  drawSeparate();
+  drawMeridian();
   drawDay();
   renderCoverage();
   Glossary.init({
+    meridian:
+      'The meridian: the imaginary line across the sky from due north to due south, through the point straight overhead. Each star crosses it once as the Earth turns, at its highest point in the sky. More on Star Coordinates.',
     celestialPole:
       "The celestial pole: the point in the sky directly above the Earth's North (or South) Pole. As the Earth turns, the whole sky seems to turn about it, so stars near it never set. More on Star Coordinates.",
   });

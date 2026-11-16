@@ -86,16 +86,18 @@ test('every choice or multi-field question has exactly one fully-correct answer;
   assert.equal(questions.reduce((sum, q) => sum + q.marks, 0), 17);
 });
 
-test('why a 240-minute result cannot tell the sidereal and solar days apart, and what would: a longer exposure, not repeats', () => {
+test('why a 240-minute result cannot tell the sidereal and solar days apart, and the longer measurement that can: meridian timing over 30 nights', () => {
   const q = questions.find((x) => x.id === 'st-cant-separate');
   assert.match(q.prompt, /1,442 ± 12 min/);
   assert.match(q.prompt, /1,436 min and the solar day is 1,440 min/);
   const [right] = correctAnswers(q);
   assert.match(right.why, /includes both days/);
-  assert.match(right.fix, /whole-night exposure/);
-  assert.ok(q.fields[1].options.some((o) => /^Repeating/.test(o)), 'repeats are offered as a wrong answer');
+  assert.match(right.fix, /crosses the meridian for 30 nights/);
+  assert.ok(q.fields[1].options.some((o) => /^A whole-night star trail/.test(o)), 'the whole-night trail is a wrong answer');
+  assert.ok(q.fields[1].options.some((o) => /^Repeating/.test(o)), 'repeats are a wrong answer');
   const scheme = q.check({}).message;
   assert.match(scheme, /1,430 to 1,454 min, holds both 1,436 and 1,440 min/);
-  assert.match(scheme, /about 0\.28% instead of 0\.83%/);
-  assert.match(scheme, /1,432 to 1,440 min, just short of the solar day/);
+  assert.match(scheme, /about 4 min earlier each night, so about 120 min \(2 hours\) earlier in all/);
+  assert.match(scheme, /120 ± 2 min/);
+  assert.match(scheme, /1,432 to 1,440 min, only just reaches the gap/);
 });

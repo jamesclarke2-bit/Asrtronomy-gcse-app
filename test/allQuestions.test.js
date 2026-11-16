@@ -96,6 +96,8 @@ test("getAllQuestionsNode's total is exactly the sum of every individual questio
   const StarTrails = require('../src/starTrails');
   const { makeQuestions: makeSpaceProbes } = require('../src/spaceProbesQuestions');
   const SpaceProbes = require('../src/spaceProbes');
+  const { makeQuestions: makeStarNames } = require('../src/starNamesQuestions');
+  const StarNames = require('../src/starNames');
   const { makeQuestions: makeSunDeclination } = require('../src/sunDeclinationQuestions');
   const { makeQuestions: makeSunFeatures } = require('../src/sunFeaturesQuestions');
   const { makeQuestions: makeSunspotRotation } = require('../src/sunspotRotationQuestions');
@@ -139,6 +141,7 @@ test("getAllQuestionsNode's total is exactly the sum of every individual questio
     makeSpaceTelescopes(SpaceTelescopes).length +
     makeStarTrails(StarTrails).length +
     makeSpaceProbes(SpaceProbes).length +
+    makeStarNames(StarNames).length +
     makeSunDeclination({ getSunPosition: SolarPosition.getSunPosition }, Coordinates).length +
     makeSunFeatures(ButterflyDiagram).length +
     makeSunspotRotation(SunRotation).length +

@@ -920,6 +920,14 @@ const UNITS = [
         notes:
           "two stars orbiting each other, seen nearly edge-on, take turns to pass in front of each other; the light curve is flat and brightest while both are fully visible, with a deep (primary) dip when the hotter star is hidden and a shallow (secondary) dip when the cooler star is hidden, because when the same area is covered more light is lost from the hotter star (each square metre of a hotter star gives out more light); eclipses only happen if the orbit is nearly edge-on, and tilting it shrinks the dips until they vanish, so most binaries show no eclipses; a flat-bottomed dip means the smaller star is completely hidden behind (or completely in front of) the larger one, a rounded or V-shaped dip a partial eclipse; the period is the time from one primary dip to the next (deep dip to shallow dip is only half the period), found by timing several whole cycles and dividing, which cuts the percentage uncertainty, with the uncertainty taken as half the range a graph reading allows; Algol (period 2.87 days) is the classic example",
       },
+      {
+        id: 'u4.13',
+        title: 'Catalogues and star names',
+        depth: 'be able to',
+        spec: ['14.1', '14.2'],
+        notes:
+          "a star can have several names: a proper name (an old name, most from Arabic, such as Betelgeuse), a Bayer name (a Greek letter plus the Latin genitive of the constellation, such as Alpha Orionis, α Ori; Johann Bayer, 1603), a Flamsteed number (such as 58 Orionis, numbered west to east) and a catalogue number (such as HD 39801 in the Henry Draper Catalogue); in the Bayer system the brightest star is usually alpha, the next beta, then gamma, but only roughly (in Orion, Beta, Rigel, is brighter than Alpha, Betelgeuse), so Beta Persei is in Perseus and probably its second-brightest star; nebulae, clusters and galaxies are listed by catalogue number: Charles Messier, a comet hunter, listed about 110 so as not to mistake them for comets (M31 is number 31), and the New General Catalogue (NGC, 1888) lists 7,840, so many objects have both numbers (M42 = NGC 1976, the Orion Nebula) and many only an NGC number (the Double Cluster, NGC 869); reading a catalogue row gives an object's type, constellation and magnitude. Every name, number, date and magnitude is a first draft, to be checked by the teacher.",
+      },
     ],
   },
   {

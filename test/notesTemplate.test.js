@@ -43,6 +43,7 @@ const CONFORMING_PAGES = [
   'notes/space-telescopes.html',
   'notes/star-trails.html',
   'notes/space-probes.html',
+  'notes/catalogues-and-star-names.html',
 ];
 
 // Section 6 of the template ("Diagram-first"), checked only for pages
