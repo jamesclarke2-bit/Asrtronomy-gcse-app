@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; form-action 'none'; base-uri 'self'" />
+  <meta name="referrer" content="no-referrer" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Life of a Sun-like star</title>
+  <link rel="stylesheet" href="../styles.css?v=202611181200" />
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg?v=202610130720" />
+</head>
+<body>
+  <main>
+    <p class="back-link"><a href="../index.html">&larr; Back to all tools</a></p>
+
+    <h1>Life of a Sun-like star</h1>
+    <p class="subtitle">
+      From a cloud of gas to a cold, dark cinder: the life our Sun is part-way through.
+    </p>
+
+    <section class="notes-section" id="life-cycle">
+      <h2>Seven stages</h2>
+      <p>
+        Choose a stage. The drawing, the balance of forces below and the star's place on the HR
+        diagram all follow it.
+      </p>
+
+      <div class="preset-list" role="group" aria-label="Choose a stage" id="stage-buttons"></div>
+
+      <div class="diagram spectrum-panel sl-panel">
+        <div class="labelled-diagram-wrap" id="stage-diagram-wrap">
+          <svg
+            id="stage-diagram"
+            class="responsive-svg"
+            width="640"
+            height="320"
+            viewBox="0 0 640 320"
+            role="img"
+            aria-label="Not to scale. A drawing of the chosen stage: a glowing cloud beside a dark dusty cloud; a protostar inside a shrinking cloud; a yellow main-sequence star; a huge, cool red giant; a glowing ring of gas round a tiny hot core; a small white dwarf; or a dark black dwarf."
+          ></svg>
+        </div>
+      </div>
+      <p class="note sl-readout" id="stage-readout" aria-live="polite"></p>
+    </section>
+
+    <section class="notes-section" id="balance">
+      <h2>What holds a star steady</h2>
+      <p>
+        Gravity pulls every part of a star inward. In a main-sequence star,
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="fusion" aria-label="What is fusion?" aria-expanded="false">fusion</button>
+        in the core releases energy, and the
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="radiationPressure" aria-label="What is radiation pressure?" aria-expanded="false">radiation pressure</button>
+        it creates pushes outward. When the two are equal, the star stays the same size.
+      </p>
+      <span class="glossary-definition" data-term="fusion" hidden></span>
+      <span class="glossary-definition" data-term="radiationPressure" hidden></span>
+
+      <div class="diagram spectrum-panel sl-panel">
+        <div class="labelled-diagram-wrap" id="balance-diagram-wrap">
+          <svg
+            id="balance-diagram"
+            class="responsive-svg"
+            width="640"
+            height="300"
+            viewBox="0 0 640 300"
+            role="img"
+            aria-label="A star cut in half with force arrows for the chosen stage: arrows pointing inward for gravity, and arrows pointing outward for the push holding it up, gas, radiation or electron pressure. Equal arrows mean balanced; a longer inward arrow means the star shrinks; a longer outward arrow means it swells."
+          ></svg>
+        </div>
+      </div>
+      <p class="note sl-readout" id="balance-readout" aria-live="polite"></p>
+      <p>
+        The balance changes through the star's life. A protostar shrinks because gravity wins. A red
+        giant's core shrinks while its outer layers swell. A white dwarf has no fusion at all: it is
+        held up by <strong>electron pressure</strong>, because its electrons are squeezed so close
+        together that they resist being squeezed any closer.
+      </p>
+      <p class="note">
+        Which pressure holds up each stage, and that a red giant swells about 100 times wider than
+        the Sun: first draft, to be checked by the teacher.
+      </p>
+    </section>
+
+    <section class="notes-section" id="hr-track">
+      <h2>Its path across the HR diagram</h2>
+      <p>
+        Plotted on the
+        <a href="hr-diagram.html">Hertzsprung-Russell diagram</a>, the star moves as it changes:
+        onto the main sequence, up and right as a red giant, then left and down to become a white
+        dwarf.
+      </p>
+
+      <div class="diagram spectrum-panel sl-panel">
+        <div class="labelled-diagram-wrap" id="track-diagram-wrap">
+          <svg
+            id="track-diagram"
+            class="responsive-svg"
+            width="640"
+            height="440"
+            viewBox="0 0 640 440"
+            role="img"
+            aria-label="An HR diagram, hottest on the left and most luminous at the top, with the main sequence band. A dashed path shows a Sun-like star's life: from a protostar onto the main sequence where the Sun is, up and to the right to the red giants, left across the top as it sheds a planetary nebula, down to the white dwarfs, and fading down and right towards a black dwarf. The chosen stage is ringed."
+          ></svg>
+        </div>
+      </div>
+      <p class="note">
+        The path's positions are approximate: first draft, to be checked by the teacher. The Sun's
+        surface temperature is the data sheet's.
+      </p>
+    </section>
+
+    <section class="notes-section" id="timescales">
+      <h2>How long each stage lasts</h2>
+      <div class="table-scroll">
+        <table class="shower-table sl-table" id="stage-table">
+          <caption>A Sun-like star's stages, in order</caption>
+          <thead>
+            <tr><th scope="col">Stage</th><th scope="col">Roughly how long (years)</th><th scope="col">What happens to the core</th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <div class="diagram spectrum-panel sl-panel">
+        <div class="labelled-diagram-wrap" id="timeline-diagram-wrap">
+          <svg
+            id="timeline-diagram"
+            class="responsive-svg"
+            width="640"
+            height="300"
+            viewBox="0 0 640 300"
+            role="img"
+            aria-label="A bar for each stage's length on a scale where each step is ten times longer than the last. The main sequence bar is the longest at about 10 billion years; the planetary nebula's is the shortest at about 10,000 years."
+          ></svg>
+        </div>
+      </div>
+      <p>
+        A <strong>planetary nebula</strong> has nothing to do with planets: early telescopes showed
+        these round, glowing shells looking like planets' discs. The Ring Nebula,
+        <a href="catalogues-and-star-names.html#catalogues">M57 in Lyra</a>, is one.
+      </p>
+      <p class="note">
+        Every time in the table and chart, and the Universe's age of about 13.8 billion years: first
+        draft, to be checked by the teacher.
+      </p>
+    </section>
+
+    <section class="notes-section" id="exam-tips">
+      <h2>Exam tips</h2>
+      <p class="exam-tip">
+        <strong>Common exam confusion:</strong> the red giant comes before the planetary nebula, even
+        though some lists name them the other way round.
+        <a href="#life-cycle">Seven stages &uarr;</a>
+      </p>
+      <p class="exam-tip">
+        <strong>Common exam confusion:</strong> a white dwarf is held up by electron pressure, not
+        radiation pressure: it has no fusion.
+        <a href="#balance">What holds a star steady &uarr;</a>
+      </p>
+    </section>
+
+    <section class="notes-section" id="related">
+      <h2>Related pages</h2>
+      <div class="page-card-list">
+        <a class="page-card" href="hr-diagram.html">
+          <h3>The Hertzsprung-Russell diagram</h3>
+          <p class="page-card-description">Where main-sequence stars, giants and white dwarfs sit.</p>
+        </a>
+        <a class="page-card" href="catalogues-and-star-names.html">
+          <h3>Catalogues and star names</h3>
+          <p class="page-card-description">M57, the Ring Nebula, and other catalogue objects.</p>
+        </a>
+        <a class="page-card" href="infrared-telescopes.html">
+          <h3>Infrared telescopes and high-altitude sites</h3>
+          <p class="page-card-description">Seeing protostars inside their dust clouds.</p>
+        </a>
+      </div>
+    </section>
+
+    <section class="questions" id="questions">
+      <h2>Practice questions</h2>
+      <div id="questions-list"></div>
+    </section>
+
+    <section class="progress">
+      <h2>Your progress</h2>
+      <ul id="progress-list"></ul>
+      <p class="note">Stored in this browser only (localStorage) &mdash; no account needed.</p>
+    </section>
+
+    <p class="coverage" id="coverage"></p>
+    <p class="next-page-link" id="next-page"></p>
+  </main>
+
+  <script src="../src/curriculum.js?v=202611181200"></script>
+  <script src="../src/pages.js?v=202611181200"></script>
+  <script src="../src/specData.js?v=202610161036"></script>
+  <script src="../src/spectra.js?v=202611131200"></script>
+  <script src="../src/magnitude.js?v=202611101600"></script>
+  <script src="../src/spectrumDrawing.js?v=202611130900"></script>
+  <script src="../src/hrDiagram.js?v=202611131500"></script>
+  <script src="../src/sunLikeStar.js?v=202611181200"></script>
+  <script src="../src/sunLikeStarQuestions.js?v=202611181200"></script>
+  <script src="../glossary.js?v=202610131052"></script>
+  <script src="../quiz-ui.js?v=202611121900"></script>
+  <script src="sun-like-star.js?v=202611181200"></script>
+  <script src="../diagramEnlarge.js?v=202611111500"></script>
+  <script src="../notesPage.js?v=202609252100"></script>
+  <script src="../nextPage.js?v=202610161057"></script>
+</body>
+</html>

@@ -928,6 +928,19 @@ const UNITS = [
         notes:
           "a star can have several names: a proper name (an old name, most from Arabic, such as Betelgeuse), a Bayer name (a Greek letter plus the Latin genitive of the constellation, such as Alpha Orionis, α Ori; Johann Bayer, 1603), a Flamsteed number (such as 58 Orionis, numbered west to east) and a catalogue number (such as HD 39801 in the Henry Draper Catalogue); in the Bayer system the brightest star is usually alpha, the next beta, then gamma, but only roughly (in Orion, Beta, Rigel, is brighter than Alpha, Betelgeuse), so Beta Persei is in Perseus and probably its second-brightest star; nebulae, clusters and galaxies are listed by catalogue number: Charles Messier, a comet hunter, listed about 110 so as not to mistake them for comets (M31 is number 31), and the New General Catalogue (NGC, 1888) lists 7,840, so many objects have both numbers (M42 = NGC 1976, the Orion Nebula) and many only an NGC number (the Double Cluster, NGC 869); reading a catalogue row gives an object's type, constellation and magnitude. Every name, number, date and magnitude is a first draft, to be checked by the teacher.",
       },
+      {
+        id: 'u4.14',
+        title: 'Life of a Sun-like star',
+        depth: 'understand',
+        // 13.8 (the life cycle on the HR diagram for Sun-like AND much more
+        // massive stars) is NOT tagged here: this page draws only the
+        // Sun-like track. It is tagged on the "Massive stars and their
+        // ends" page's own subtopic once that page adds the massive track
+        // (see src/sunLikeStar.js's TRACKS).
+        spec: ['14.3', '14.4', '14.5', '14.9'],
+        notes:
+          "a Sun-like star's stages: an emission or absorption nebula (glowing gas, or dark dust blocking light), a protostar (collapsing and heating, no fusion yet, tens of millions of years), the main sequence (hydrogen fusing to helium, about 10 billion years), a red giant (the core runs out of hydrogen, shrinks and heats, fusion moves to a shell and later helium fuses to carbon, the star swells about 100 times wider, about 1 billion years), a planetary nebula (the outer layers drift away, about 10,000 years; M57, the Ring Nebula), a white dwarf (a hot carbon core about the size of the Earth, cooling for billions of years) and a black dwarf (none yet, as cooling takes longer than the Universe's age of about 13.8 billion years); on the main sequence outward radiation pressure from fusion balances gravity, a protostar shrinks because gravity wins, a red giant's core shrinks while its outer layers swell, and a white dwarf, with no fusion, is held up by electron pressure. Every value, time and stage detail is a first draft, to be checked by the teacher.",
+      },
     ],
   },
   {

@@ -467,6 +467,16 @@ const PAGES = [
     why: 'After the stars and clusters of the last few pages, how astronomers name and list them: the Bayer letters on bright stars, and the Messier and NGC numbers on clusters, nebulae and galaxies.',
   },
   {
+    title: 'Life of a Sun-like star',
+    description:
+      "A Sun-like star's seven stages, from an emission or absorption nebula to a black dwarf, each drawn, with what happens to the core and how long each lasts; the balance between gravity and radiation pressure that holds a main-sequence star steady, drawn as force arrows for every stage, down to the electron pressure holding up a white dwarf; and the star's path across the HR diagram.",
+    href: 'notes/sun-like-star.html',
+    units: ['u4.14'],
+    phase: 'Stars and the Universe',
+    position: 45,
+    why: 'The HR diagram showed where giants and white dwarfs sit; this follows one Sun-like star through every stage of its life, and what holds it up at each.',
+  },
+  {
     title: 'Bodies of the Solar System',
     description:
       "A to-scale size line-up and bar chart of the planets and dwarf planets, the larger named moons by planet, the four ringed planets drawn at relative size with Saturn's rings the most visible, Io's tidal heating (reusable diagram) from its 1:2:4 resonance with Europa and Ganymede, a temperature-against-distance chart, a planet-vs-dwarf-planet decision diagram, asteroids/meteoroids/comets, a comet-tail diagram and the Kuiper Belt/Oort Cloud on a logarithmic scale, transits of Venus and measuring the AU, and brief formation theories — a first draft pending teacher review.",
@@ -575,6 +585,7 @@ const DIAGRAM_FIRST_PAGES = [
   'notes/star-trails.html',
   'notes/space-probes.html',
   'notes/catalogues-and-star-names.html',
+  'notes/sun-like-star.html',
 ];
 
 /**
@@ -640,7 +651,7 @@ const COMING_SOON = [
   {
     name: 'Stars, galaxies and the Universe',
     phase: 'Stars and the Universe',
-    position: 45,
+    position: 46,
     why: "Now that Parallax and the Parsec, and Magnitude, can both measure how far away a star is and how bright it really is, the rest of Topic 13 this course hasn't reached yet: how a star's life moves it across the HR diagram.",
     // Topic 13 has a src/specPoints.js registry: 13.1, 13.2, 13.3 and
     // 13.9 are covered by notes/magnitude.html, 13.10-13.12 by
@@ -664,13 +675,14 @@ const COMING_SOON = [
   {
     name: 'Stellar Evolution, the Galaxy and Cosmology',
     phase: 'Stars and the Universe',
-    position: 46,
+    position: 47,
     why: 'The rest of the course past Topic 13: a star\'s full life cycle, our own Galaxy\'s structure, and the wider Universe beyond it.',
     // Topics 14-16 have a src/specPoints.js registry too; 14.1 and 14.2
-    // are covered by notes/catalogues-and-star-names.html (u4.13), and
+    // are covered by notes/catalogues-and-star-names.html (u4.13), 14.3,
+    // 14.4, 14.5 and 14.9 by notes/sun-like-star.html (u4.14), and
     // 16.1-16.3 (redshift) have their own step just below.
     specPoints: [
-      '14.3', '14.4', '14.5', '14.6', '14.7', '14.8', '14.9', '14.10', '14.11',
+      '14.6', '14.7', '14.8', '14.10', '14.11',
       '15.1', '15.2', '15.3', '15.4', '15.5', '15.6', '15.7', '15.8', '15.9', '15.10', '15.11', '15.12', '15.13', '15.14',
       '16.4', '16.5', '16.6', '16.7', '16.8', '16.9', '16.10', '16.11', '16.12',
     ],
@@ -678,7 +690,7 @@ const COMING_SOON = [
   {
     name: 'Redshift',
     phase: 'Stars and the Universe',
-    position: 47,
+    position: 48,
     why: "Reading a spectrum's Doppler shift for single stars, scaled up to whole galaxies: redshift as evidence that they are moving away from us.",
     specPoints: ['16.1', '16.2', '16.3'],
   },

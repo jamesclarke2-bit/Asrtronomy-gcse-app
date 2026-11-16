@@ -4892,6 +4892,20 @@ canvas {
   content: "\25B6  ";
 }
 
+/* notes/sun-like-star.html */
+/* The chosen stage's row: bold with a marker, not just a colour. */
+.sl-row--chosen td {
+  font-weight: 700;
+}
+
+.sl-row--chosen td:first-child::before {
+  content: "\25B6  ";
+}
+
+.sl-on-bar {
+  color: #10131c;
+}
+
 /* notes/star-trails.html */
 .st-tables {
   display: grid;

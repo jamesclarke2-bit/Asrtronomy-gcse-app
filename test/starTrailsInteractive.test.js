@@ -177,7 +177,7 @@ WIDTHS.forEach(({ name, width, height }) => {
       assert.ok(Number(sep.nightHi) > 1439.9, 'the whole-night range reaches right up to the solar day');
       assert.equal(sep.separates, 'false');
       const text = (await page.locator('#separate-readout').textContent()).replace(/\s+/g, ' ');
-      assert.match(text, /a 240-minute exposure gives 1,424 to 1,448 min, which holds both the sidereal day \(1,436 min\) and the solar day \(1,440 min\)/);
+      assert.match(text, /For the true angle read to ±0\.5°, a 240-minute exposure gives 1,424 to 1,448 min, which holds both the sidereal day \(1,436 min\) and the solar day \(1,440 min\); the readings in the table above scatter around the true angle, so they give a slightly different range\./);
       assert.match(text, /a reading of exactly 180\.0° gives 1,440 min, the solar day itself/);
       assert.match(text, /star trails cannot reliably tell 23 h 56 min from 24 h/);
       const mer = await data(page, 'meridian-diagram');

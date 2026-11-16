@@ -19,10 +19,10 @@ One row per point in the Edexcel GCSE Astronomy (1AS0) specification, Topics 1�
 | 11 | Exploring the Solar System | 33 | 31 | 2 | 0 |
 | 12 | Formation of planetary systems | 14 | 5 | 9 | 1 |
 | 13 | Exploring starlight | 49 | 48 | 1 | 1 |
-| 14 | Stellar evolution | 11 | 2 | 9 | 0 |
+| 14 | Stellar evolution | 11 | 6 | 5 | 0 |
 | 15 | Our place in the Galaxy | 14 | 0 | 14 | 0 |
 | 16 | Cosmology | 12 | 0 | 12 | 0 |
-| **Total** | | **244** | **194** | **50** | **29** |
+| **Total** | | **244** | **198** | **46** | **29** |
 
 ## Methodology
 
@@ -312,13 +312,13 @@ One row per point in the Edexcel GCSE Astronomy (1AS0) specification, Topics 1�
 |---|---|---|---|---|---|---|
 | 14.1 | be able to | use the Messier and NGC (New General Catalogue) catalogues of nebulae, clusters and galaxies | [Catalogues and star names](../notes/catalogues-and-star-names.html) | 14 |  | |
 | 14.2 | be able to | use the Bayer system for naming the brightest stars in a constellation | [Catalogues and star names](../notes/catalogues-and-star-names.html) | 14 |  | |
-| 14.3 | understand | the balance between radiation pressure and gravity in a main sequence star | *not built* | – |  | |
-| 14.4 | understand | how that radiation-pressure/gravity balance changes through a Sun-like star's life cycle | *not built* | – |  | |
-| 14.5 | understand | the balance between electron pressure and gravity in a white dwarf | *not built* | – |  | |
+| 14.3 | understand | the balance between radiation pressure and gravity in a main sequence star | [Life of a Sun-like star](../notes/sun-like-star.html) | – |  | |
+| 14.4 | understand | how that radiation-pressure/gravity balance changes through a Sun-like star's life cycle | [Life of a Sun-like star](../notes/sun-like-star.html) | – |  | |
+| 14.5 | understand | the balance between electron pressure and gravity in a white dwarf | [Life of a Sun-like star](../notes/sun-like-star.html) | – |  | |
 | 14.6 | understand | how the radiation-pressure/gravity balance changes through the life cycle of a star much more massive than the Sun | *not built* | – |  | |
 | 14.7 | understand | the balance between neutron pressure and gravity in a neutron star | *not built* | – |  | |
 | 14.8 | understand | how the Chandrasekhar Limit affects the final stages of a star's life cycle | *not built* | – |  | |
-| 14.9 | understand | stages and timescales of a Sun-like star's life cycle: emission/absorption nebula, main sequence star, planetary nebula, red giant, white dwarf, black dwarf | *not built* | – |  | |
+| 14.9 | understand | stages and timescales of a Sun-like star's life cycle: emission/absorption nebula, main sequence star, planetary nebula, red giant, white dwarf, black dwarf | [Life of a Sun-like star](../notes/sun-like-star.html) | – |  | |
 | 14.10 | understand | stages and timescales of a much more massive star's life cycle: emission/absorption nebula, main sequence star, red supergiant, supernova, neutron star, black hole | *not built* | – |  | |
 | 14.11 | understand | how astronomers study and gather evidence for black holes | *not built* | – |  | |
 

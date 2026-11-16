@@ -276,7 +276,7 @@
     svg.dataset.separates = String(S.separatesFromSolar(night));
     const top = S.siderealDayFrom(Math.round(night.thetaDeg - READ_DEG), NIGHT);
     document.getElementById('separate-readout').textContent =
-      `Read to ±${READ_DEG}°, a ${LONG}-minute exposure gives ${num(part.shortestMin)} to ${num(part.longestMin)} min, which holds both the sidereal day (${num(S.SIDEREAL_DAY_MIN)} min) and the solar day (${num(S.SOLAR_DAY_MIN)} min). ` +
+      `For the true angle read to ±${READ_DEG}°, a ${LONG}-minute exposure gives ${num(part.shortestMin)} to ${num(part.longestMin)} min, which holds both the sidereal day (${num(S.SIDEREAL_DAY_MIN)} min) and the solar day (${num(S.SOLAR_DAY_MIN)} min); the readings in the table above scatter around the true angle, so they give a slightly different range. ` +
       `A whole night, about ${NIGHT} min, narrows that to ${num(night.shortestMin)} to ${num(night.longestMin)} min, but only just reaches the gap: a reading of exactly ${Math.round(night.thetaDeg - READ_DEG).toFixed(1)}° gives ${num(top)} min, the solar day itself. ` +
       'So star trails cannot reliably tell 23 h 56 min from 24 h.';
   }
