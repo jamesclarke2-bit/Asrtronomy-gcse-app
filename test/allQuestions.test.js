@@ -104,6 +104,8 @@ test("getAllQuestionsNode's total is exactly the sum of every individual questio
   const MassiveStar = require('../src/massiveStar');
   const { makeQuestions: makeBlackHoles } = require('../src/blackHoleEvidenceQuestions');
   const BlackHoleEvidence = require('../src/blackHoleEvidence');
+  const { makeQuestions: makeMilkyWay } = require('../src/milkyWayQuestions');
+  const MilkyWay = require('../src/milkyWay');
   const { makeQuestions: makeSunDeclination } = require('../src/sunDeclinationQuestions');
   const { makeQuestions: makeSunFeatures } = require('../src/sunFeaturesQuestions');
   const { makeQuestions: makeSunspotRotation } = require('../src/sunspotRotationQuestions');
@@ -151,6 +153,7 @@ test("getAllQuestionsNode's total is exactly the sum of every individual questio
     makeSunLikeStar(SunLikeStar).length +
     makeMassiveStar(MassiveStar, SunLikeStar).length +
     makeBlackHoles(BlackHoleEvidence, MassiveStar).length +
+    makeMilkyWay(MilkyWay).length +
     makeSunDeclination({ getSunPosition: SolarPosition.getSunPosition }, Coordinates).length +
     makeSunFeatures(ButterflyDiagram).length +
     makeSunspotRotation(SunRotation).length +

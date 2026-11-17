@@ -83,34 +83,40 @@
     clearDiagram(svg, wrap);
     panel(svg);
     glowDefs(svg);
-    // Left: two orbits round the shared centre of mass; the heavier body has the smaller orbit.
-    const cm = { x: 150, y: 126 };
-    svgEl('circle', { class: 'bh-orbit bh-orbit--star', cx: cm.x, cy: cm.y, r: 88, fill: 'none', stroke: MUTED, 'stroke-width': 1.5, 'stroke-dasharray': '5 5' }, svg);
-    svgEl('circle', { class: 'bh-orbit bh-orbit--hole', cx: cm.x, cy: cm.y, r: 30, fill: 'none', stroke: INK, 'stroke-width': 1.5, 'stroke-dasharray': '2 4' }, svg);
-    svgEl('path', { d: `M${cm.x - 6},${cm.y - 6} L${cm.x + 6},${cm.y + 6} M${cm.x + 6},${cm.y - 6} L${cm.x - 6},${cm.y + 6}`, stroke: INK, 'stroke-width': 2 }, svg);
-    svgEl('circle', { class: 'bh-star', cx: cm.x - 88, cy: cm.y, r: 18, fill: 'url(#bh-glow-blue)' }, svg);
-    svgEl('circle', { class: 'bh-hole', cx: cm.x + 30, cy: cm.y, r: 6, fill: '#000', stroke: '#ffcf9f', 'stroke-width': 1.5 }, svg);
-    addLabel(svg, wrap, 'visible star: big orbit', 16, 236, 'diagram-label--tick diagram-label--right');
-    addLabel(svg, wrap, 'partner: small orbit, heavier', 16, 268, 'diagram-label--tick diagram-label--strong diagram-label--right');
-    addLabel(svg, wrap, 'centre of mass', cm.x, cm.y + 20, 'diagram-label--tick');
-    // Right: the mass check, by words and a tick, not colour.
+    // Left: Cygnus X-1's two orbits round their shared centre of mass. The
+    // heavier body has the smaller orbit: here the visible supergiant (about
+    // 40 Sun masses) is heavier than the black hole (about 20), so its orbit
+    // is half the size.
     const m = B.CYGNUS_X1.companionMsun;
+    const mv = B.CYGNUS_X1.visibleMsun;
+    const cm = { x: 150, y: 116 };
+    const rHole = 84;
+    const rStar = rHole * (m / mv);
+    svgEl('circle', { class: 'bh-orbit bh-orbit--star', cx: cm.x, cy: cm.y, r: rStar, fill: 'none', stroke: MUTED, 'stroke-width': 1.5, 'stroke-dasharray': '5 5' }, svg);
+    svgEl('circle', { class: 'bh-orbit bh-orbit--hole', cx: cm.x, cy: cm.y, r: rHole, fill: 'none', stroke: INK, 'stroke-width': 1.5, 'stroke-dasharray': '2 4' }, svg);
+    svgEl('path', { d: `M${cm.x - 5},${cm.y - 5} L${cm.x + 5},${cm.y + 5} M${cm.x + 5},${cm.y - 5} L${cm.x - 5},${cm.y + 5}`, stroke: INK, 'stroke-width': 2 }, svg);
+    svgEl('circle', { class: 'bh-star', cx: cm.x - rStar, cy: cm.y, r: 20, fill: 'url(#bh-glow-blue)' }, svg);
+    svgEl('circle', { class: 'bh-hole', cx: cm.x + rHole, cy: cm.y, r: 6, fill: '#000', stroke: '#ffcf9f', 'stroke-width': 1.5 }, svg);
+    svgEl('line', { x1: cm.x, y1: cm.y + 8, x2: cm.x + 20, y2: cm.y + 50, stroke: INK, 'stroke-width': 1 }, svg);
+    addLabel(svg, wrap, 'centre of mass', cm.x + 24, cm.y + 60, 'diagram-label--tick');
+    addLabel(svg, wrap, `visible supergiant (about ${mv}): smaller orbit`, 16, 236, 'diagram-label--tick diagram-label--right');
+    addLabel(svg, wrap, `unseen black hole (about ${m}): bigger orbit`, 16, 268, 'diagram-label--tick diagram-label--strong diagram-label--right');
+    // Right: the mass check on the unseen one, by words and a tick, not colour.
     const rows = [
       { id: 'white-dwarf', text: `white dwarf: up to ${M.CHANDRASEKHAR_MSUN}`, ok: false },
       { id: 'neutron-star', text: `neutron star: up to ${M.NEUTRON_STAR_MAX_MSUN}`, ok: false },
       { id: 'black-hole', text: `black hole: above ${M.NEUTRON_STAR_MAX_MSUN}`, ok: B.mustBeBlackHole(m) },
     ];
-    addLabel(svg, wrap, 'mass check (Sun masses)', 470, 34, 'diagram-label--tick diagram-label--strong');
+    addLabel(svg, wrap, `unseen one: about ${m} Suns`, 470, 34, 'diagram-label--tick diagram-label--strong');
     rows.forEach((r, k) => {
       const y = 78 + k * 48;
       svgEl('rect', { class: `bh-check bh-check--${r.id}${r.ok ? ' bh-check--yes' : ''}`, x: 330, y: y - 18, width: 290, height: 36, rx: 6, fill: 'none', stroke: INK, 'stroke-width': r.ok ? 3 : 1, 'stroke-dasharray': r.ok ? 'none' : '4 4' }, svg);
       addLabel(svg, wrap, `${r.ok ? '✓ ' : '✗ '}${r.text}`, 346, y, `diagram-label--tick diagram-label--right${r.ok ? ' diagram-label--strong' : ''}`);
     });
-    addLabel(svg, wrap, `partner: about ${m}`, 470, 232, 'diagram-label--tick diagram-label--strong');
     svg.dataset.companion = String(m);
     svg.dataset.verdict = B.mustBeBlackHole(m) ? 'black-hole' : 'not-black-hole';
     document.getElementById('companion-readout').textContent =
-      `In Cygnus X-1, the visible star's orbit shows its unseen partner has about ${m} times the Sun's mass. That is far more than any neutron star can have (about ${M.NEUTRON_STAR_MAX_MSUN}), and something that heavy, shining in X-rays but not in visible light, can only be a black hole.`;
+      `In Cygnus X-1, the visible supergiant's orbit shows that the unseen object it circles has about ${m} times the Sun's mass. The supergiant itself is heavier still, about ${mv}, so it is the one on the smaller orbit. About ${m} is far more than any neutron star can have (about ${M.NEUTRON_STAR_MAX_MSUN}), and something that heavy, shining in X-rays but not in visible light, can only be a black hole.`;
   }
 
   // ------------------------------------------------------------------

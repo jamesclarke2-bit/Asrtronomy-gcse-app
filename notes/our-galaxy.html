@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; form-action 'none'; base-uri 'self'" />
+  <meta name="referrer" content="no-referrer" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Our Galaxy</title>
+  <link rel="stylesheet" href="../styles.css?v=202611201200" />
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg?v=202610130720" />
+</head>
+<body>
+  <main>
+    <p class="back-link"><a href="../index.html">&larr; Back to all tools</a></p>
+
+    <h1>Our Galaxy</h1>
+    <p class="subtitle">
+      We live inside the Milky Way, so we see it from within: as a band across the sky.
+    </p>
+
+    <section class="notes-section" id="from-earth">
+      <h2>The Milky Way from Earth</h2>
+      <p>
+        On a dark, moonless night, away from street lights, a faint band of light arches across the
+        sky:
+      </p>
+
+      <div class="diagram spectrum-panel mw-panel">
+        <div class="labelled-diagram-wrap" id="sky-diagram-wrap">
+          <svg
+            id="sky-diagram"
+            class="responsive-svg"
+            width="640"
+            height="340"
+            viewBox="0 0 640 340"
+            role="img"
+            aria-label="A night sky over dark hills. A broad, faint, milky band of light arches across the sky, crossed by dark, ragged lanes. A circle, labelled binoculars: many stars, shows one small patch of the band enlarged: it is made of many separate faint stars, with a small star cluster and a dark dust patch."
+          ></svg>
+        </div>
+      </div>
+      <p>
+        Through <strong>binoculars or a small telescope</strong>, the band breaks up into countless
+        faint stars, with star clusters and glowing gas clouds. The dark lanes are clouds of
+        <strong>dust</strong> blocking the starlight behind them. We see a band because we are inside a
+        flat disc of stars, looking along it. More naked-eye sights on
+        <a href="naked-eye-sky.html">The Naked-Eye Sky</a>.
+      </p>
+    </section>
+
+    <section class="notes-section" id="shape">
+      <h2>Shape, size and type</h2>
+      <p>
+        From outside, our Galaxy would look like this. Switch between the two views:
+      </p>
+
+      <div class="control mw-view-buttons" role="group" aria-label="View">
+        <button type="button" class="preset-button preset-button-active" data-view="face" aria-pressed="true" aria-controls="galaxy-diagram">Face-on (from above)</button>
+        <button type="button" class="preset-button" data-view="edge" aria-pressed="false" aria-controls="galaxy-diagram">Edge-on (from the side)</button>
+      </div>
+
+      <div class="diagram spectrum-panel mw-panel">
+        <div class="labelled-diagram-wrap" id="galaxy-diagram-wrap">
+          <svg
+            id="galaxy-diagram"
+            class="responsive-svg"
+            width="640"
+            height="520"
+            viewBox="0 0 640 520"
+            role="img"
+            aria-label="The Milky Way, drawn face-on or edge-on. Face-on: a bright central bar with spiral arms winding out from it, dark dust lanes along the arms' inner edges, star-forming regions drawn as four-point stars in the arms, the Sun as a ringed dot about halfway out, and globular clusters, small dotted balls, scattered round the outside. Edge-on: a thin flat disc with a bulge in the middle and a dark dust lane along it, star-forming regions in the disc, the Sun in the disc, and globular clusters spread through a round halo above and below. A scale bar shows about 100,000 light-years across."
+          ></svg>
+        </div>
+      </div>
+      <p>
+        The Milky Way is a <strong>barred spiral</strong> galaxy, type <strong>SBb</strong>: a bar of
+        stars across the centre, with spiral arms winding out from its ends. New stars form in the
+        arms, where the gas and dust are. Old
+        <a href="binaries-and-clusters.html#clusters">globular clusters</a> (such as M13) orbit in the
+        <strong>halo</strong>, a round region all round the disc. At the very centre is a
+        <a href="black-holes.html#galactic-centre">supermassive black hole</a>.
+      </p>
+      <p class="note">
+        About 100,000 light-years across, the disc about 1,000 light-years thick, the Sun about
+        26,000 light-years from the centre, about 150 globular clusters, and the bar and arms drawn
+        from a simple model: first draft, to be checked by the teacher.
+      </p>
+    </section>
+
+    <section class="notes-section" id="radio-map">
+      <h2>Mapping it with 21 cm radio waves</h2>
+      <p>
+        Dust in the disc blocks visible light, so we can see only a few thousand light-years along it
+        (more on <a href="infrared-telescopes.html#discoveries">seeing through dust</a>). But cold
+        hydrogen gas, spread right through the disc, gives out radio waves
+        <strong>21 cm</strong> long, which pass through dust (see
+        <a href="radio-telescopes.html#discoveries">Radio telescopes</a>).
+      </p>
+      <p>
+        The gas goes round the centre. Gas moving away from us shifts the 21 cm line to longer
+        wavelengths (<a href="reading-a-spectrum.html#radial-velocity">redshift</a>); gas moving
+        towards us, to shorter (blueshift). Each arm the line of sight crosses moves at its own
+        speed, so it makes its own peak:
+      </p>
+
+      <div class="control">
+        <label for="look-angle">Direction to look, from the centre: <span id="look-angle-label"></span></label>
+        <input type="range" id="look-angle" aria-controls="radio-diagram" min="40" max="160" step="10" value="50" />
+      </div>
+
+      <div class="diagram spectrum-panel mw-panel">
+        <div class="labelled-diagram-wrap" id="radio-diagram-wrap">
+          <svg
+            id="radio-diagram"
+            class="responsive-svg"
+            width="640"
+            height="610"
+            viewBox="0 0 640 610"
+            role="img"
+            aria-label="Top: the Milky Way face-on, with the Sun and a line of sight from it across the disc. Each spiral arm the line crosses is lettered. Bottom: the 21 cm signal along that line, one peak per lettered arm, at the speed that arm's gas moves along the line of sight: negative to the left, moving towards us, blueshift; positive to the right, moving away, redshift."
+          ></svg>
+        </div>
+      </div>
+      <p class="note sl-readout" id="radio-readout" aria-live="polite"></p>
+      <p>
+        Knowing how fast the gas goes round, each peak's speed gives how far away that arm is. Done in
+        every direction, the peaks map the arms and show the Galaxy's rotation.
+      </p>
+      <p class="note">
+        The 21 cm line (21.1 cm), seeing a few thousand light-years in visible light, every orbit
+        taken as about 220 km/s, and the speeds from this simple model: first draft, to be checked by
+        the teacher.
+      </p>
+    </section>
+
+    <section class="notes-section" id="exam-tips">
+      <h2>Exam tips</h2>
+      <p class="exam-tip">
+        <strong>Common exam confusion:</strong> the band in the sky is the disc seen from inside, not a
+        separate cloud or one spiral arm.
+        <a href="#from-earth">The Milky Way from Earth &uarr;</a>
+      </p>
+      <p class="exam-tip">
+        <strong>Common exam confusion:</strong> globular clusters are in the halo, not the arms;
+        star-forming regions and dust are in the arms.
+        <a href="#shape">Shape, size and type &uarr;</a>
+      </p>
+    </section>
+
+    <section class="notes-section" id="related">
+      <h2>Related pages</h2>
+      <div class="page-card-list">
+        <a class="page-card" href="radio-telescopes.html">
+          <h3>Radio telescopes</h3>
+          <p class="page-card-description">How radio maps traced the arms.</p>
+        </a>
+        <a class="page-card" href="infrared-telescopes.html">
+          <h3>Infrared telescopes and high-altitude sites</h3>
+          <p class="page-card-description">Seeing through dust.</p>
+        </a>
+        <a class="page-card" href="binaries-and-clusters.html">
+          <h3>Binaries, clusters and the view through a telescope</h3>
+          <p class="page-card-description">Globular clusters such as M13.</p>
+        </a>
+        <a class="page-card" href="naked-eye-sky.html">
+          <h3>The Naked-Eye Sky</h3>
+          <p class="page-card-description">The band by eye.</p>
+        </a>
+        <a class="page-card" href="reading-a-spectrum.html">
+          <h3>Reading a spectrum</h3>
+          <p class="page-card-description">Redshift and blueshift.</p>
+        </a>
+        <a class="page-card" href="black-holes.html">
+          <h3>Black holes: the evidence</h3>
+          <p class="page-card-description">What sits at the centre.</p>
+        </a>
+      </div>
+    </section>
+
+    <section class="questions" id="questions">
+      <h2>Practice questions</h2>
+      <div id="questions-list"></div>
+    </section>
+
+    <section class="progress">
+      <h2>Your progress</h2>
+      <ul id="progress-list"></ul>
+      <p class="note">Stored in this browser only (localStorage) &mdash; no account needed.</p>
+    </section>
+
+    <p class="coverage" id="coverage"></p>
+    <p class="next-page-link" id="next-page"></p>
+  </main>
+
+  <script src="../src/curriculum.js?v=202611211200"></script>
+  <script src="../src/pages.js?v=202611211200"></script>
+  <script src="../src/specData.js?v=202610161036"></script>
+  <script src="../src/spectra.js?v=202611131200"></script>
+  <script src="../src/spectrumDrawing.js?v=202611130900"></script>
+  <script src="../src/milkyWay.js?v=202611211200"></script>
+  <script src="../src/milkyWayDrawing.js?v=202611211200"></script>
+  <script src="../src/milkyWayQuestions.js?v=202611211200"></script>
+  <script src="../glossary.js?v=202610131052"></script>
+  <script src="../quiz-ui.js?v=202611121900"></script>
+  <script src="our-galaxy.js?v=202611211200"></script>
+  <script src="../diagramEnlarge.js?v=202611111500"></script>
+  <script src="../notesPage.js?v=202609252100"></script>
+  <script src="../nextPage.js?v=202610161057"></script>
+</body>
+</html>

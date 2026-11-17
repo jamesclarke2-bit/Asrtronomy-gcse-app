@@ -52,6 +52,17 @@ test('the X-ray, mass, orbit, infrared and speed questions have the right answer
   assert.match(ans('bh-supermassive'), /supermassive black hole/);
 });
 
+test('bh-cygnus tests the reasoning (above about 3 Sun masses must be a black hole), not recall of the name', () => {
+  const q = questions.find((x) => x.id === 'bh-cygnus');
+  assert.equal(q.marks, 2);
+  assert.match(q.prompt, /at most about 3 times the Sun’s mass/);
+  assert.deepEqual(correctAnswers(q)[0], { a: 'It must be a black hole: too heavy for a neutron star', b: 'It could be a neutron star: not too heavy for one' });
+  q.fields.forEach((f) => f.options.forEach((o) => assert.doesNotMatch(o, /Cygnus/)));
+  const msg = q.check({}).message;
+  assert.match(msg, /about 20 is above about 3, the most a neutron star can have, so an unseen object that heavy must be a black hole/);
+  assert.match(msg, /about 2 is below about 3, so it could be a neutron star/);
+});
+
 test('the mass calculation states its formula and values, accepts 2% either side and shows the working', () => {
   const q = questions.find((x) => x.id === 'bh-mass-calc');
   assert.match(q.prompt, /M = a³ ÷ T²/);

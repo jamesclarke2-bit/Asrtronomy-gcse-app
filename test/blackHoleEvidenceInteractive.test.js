@@ -97,7 +97,7 @@ WIDTHS.forEach(({ name, width, height }) => {
     });
   });
 
-  test(`${name}: the mass check picks out the black hole for a partner of about 20 Sun masses`, async (t) => {
+  test(`${name}: Cygnus X-1 drawn with the heavier supergiant on the smaller orbit, and the mass check picks out the black hole at about 20 Sun masses`, async (t) => {
     await withPage(t, still, async (page) => {
       const d = await data(page, 'companion-diagram');
       assert.equal(Number(d.companion), B.CYGNUS_X1.companionMsun);
@@ -106,7 +106,14 @@ WIDTHS.forEach(({ name, width, height }) => {
       assert.equal(await page.locator('#companion-diagram .bh-check--black-hole.bh-check--yes').count(), 1);
       // The ticked row is told apart by a solid, thicker border and a tick, not colour alone.
       assert.equal(await page.locator('#companion-diagram .bh-check--yes').getAttribute('stroke-dasharray'), 'none');
-      assert.match(await page.locator('#companion-readout').textContent(), /far more than any neutron star can have \(about 3\)/);
+      const r = (cls) => page.locator(`#companion-diagram .${cls}`).evaluate((el) => Number(el.getAttribute('r')));
+      assert.ok(Math.abs((await r('bh-orbit--star')) / (await r('bh-orbit--hole')) - B.CYGNUS_X1.companionMsun / B.CYGNUS_X1.visibleMsun) < 1e-9, 'orbit sizes in inverse ratio to the masses');
+      const labels = await page.locator('#companion-diagram-wrap .diagram-label').allTextContents();
+      assert.ok(labels.includes('visible supergiant (about 40): smaller orbit'));
+      assert.ok(labels.includes('unseen black hole (about 20): bigger orbit'));
+      const readout = await page.locator('#companion-readout').textContent();
+      assert.match(readout, /far more than any neutron star can have \(about 3\)/);
+      assert.match(readout, /The supergiant itself is heavier still, about 40/);
     });
   });
 
@@ -142,6 +149,7 @@ WIDTHS.forEach(({ name, width, height }) => {
 
   test(`${name}: every section with general knowledge labels it first draft, and links rather than repeats`, async (t) => {
     await withPage(t, still, async (page) => {
+      assert.match((await page.locator('#x-ray-binaries .note').last().textContent()).replace(/\s+/g, ' '), /the unseen black hole about 20 times the Sun's mass; the visible supergiant heavier, about 40; .*gas heated to millions of degrees/);
       for (const sel of ['#x-ray-binaries', '#galactic-centre']) {
         assert.match((await page.locator(`${sel} .note`).last().textContent()).replace(/\s+/g, ' '), /first draft, to be checked by the teacher/, sel);
       }

@@ -59,6 +59,9 @@
     const DUST = 'Dust blocks visible light from the centre, but infrared passes through it';
     const FASTEST = 'When it is closest to the unseen mass';
     const SUPERMASSIVE = 'A supermassive black hole';
+    const MUST_BH = 'It must be a black hole: too heavy for a neutron star';
+    const COULD_NS = 'It could be a neutron star: not too heavy for one';
+    const MUST_WD = 'It must be a white dwarf';
 
     const aAU = B.S2.aAU;
     const T = B.S2.periodYears;
@@ -104,7 +107,19 @@
         answer: { value: massMillions },
       },
       single('bh-supermassive', 'About 4 million Sun masses sit at the centre of the Milky Way, inside S2’s closest approach, yet give out no starlight. What is it?', [SUPERMASSIVE, 'A cluster of bright stars', 'A neutron star', 'A cloud of gas'], SUPERMASSIVE, 'a supermassive black hole: that much mass packed into so small a space, giving out no light, can only be a black hole'),
-      single('bh-cygnus', 'Cygnus X-1 is a famous example of what?', ['An X-ray binary with a black hole', 'A planetary nebula', 'A Cepheid variable', 'A supernova remnant'], 'An X-ray binary with a black hole', 'an X-ray binary: a star losing gas to an unseen partner of about 20 times the Sun’s mass, too heavy for a neutron star, so a black hole'),
+      multi(
+        'bh-cygnus',
+        `In an X-ray binary, the visible star’s orbit gives the mass of the unseen object it circles. A neutron star can have at most about ${M.NEUTRON_STAR_MAX_MSUN} times the Sun’s mass. What can you conclude about each unseen object? (a) In Cygnus X-1, about ${cyg} times the Sun’s mass (b) In another X-ray binary, about 2 times the Sun’s mass`,
+        [
+          { key: 'a', type: 'choice', label: '(a) About 20 times', options: [MUST_BH, COULD_NS, MUST_WD] },
+          { key: 'b', type: 'choice', label: '(b) About 2 times', options: [MUST_BH, COULD_NS, MUST_WD] },
+        ],
+        [MUST_BH, COULD_NS],
+        [
+          `(a) about ${cyg} is above about ${M.NEUTRON_STAR_MAX_MSUN}, the most a neutron star can have, so an unseen object that heavy must be a black hole`,
+          `(b) about 2 is below about ${M.NEUTRON_STAR_MAX_MSUN}, so it could be a neutron star: X-rays alone do not prove a black hole, the mass has to be above about ${M.NEUTRON_STAR_MAX_MSUN}`,
+        ],
+      ),
     ];
   }
 

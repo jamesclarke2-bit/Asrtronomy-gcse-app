@@ -27,8 +27,11 @@
 
   const S2 = { aAU: 1000, e: 0.88, periodYears: 16, closestYear: 2018 };
 
+  // The unseen black hole is about 20 Sun masses; the visible supergiant
+  // is heavier, about 40, so it is the one on the smaller orbit.
   const CYGNUS_X1 = {
     companionMsun: 20,
+    visibleMsun: 40,
     periodDays: 5.6,
     identified: 'the early 1970s',
   };

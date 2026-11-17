@@ -21,8 +21,8 @@
  * count. Removing a subtopic retires its id for good; a replacement
  * takes the next free one in its unit instead.
  *
- * "Our place in the Galaxy" appears under both u4 and u6 on purpose:
- * u4.4 is about the Milky Way's own structure, u6.5 is about our
+ * u4.4 "Our Galaxy" is about the Milky Way's own structure
+ * (notes/our-galaxy.html); u6.5 "Our place in the Galaxy" is about our
  * position within the wider observable Universe.
  *
  * Where a subtopic has been checked against the real specification, it
@@ -846,9 +846,14 @@ const UNITS = [
       },
       {
         id: 'u4.4',
-        title: 'Our place in the Galaxy',
-        depth: 'know',
-        notes: "the Milky Way's structure and the Solar System's location within it",
+        title: 'Our Galaxy',
+        depth: 'understand',
+        // Was an untagged stub ("the Milky Way's structure and the Solar
+        // System's location within it") on no page and no question; now
+        // notes/our-galaxy.html's subtopic, keeping its id.
+        spec: ['15.1', '15.2', '15.3', '15.8'],
+        notes:
+          "from Earth the Milky Way is a faint band across a dark sky, our Galaxy's disc seen edge-on from inside it; binoculars or a small telescope break it into many faint stars, star clusters and glowing gas, crossed by dark dust lanes that block the light behind them; the Milky Way is a barred spiral (SBb): a central bar and bulge with spiral arms winding out, a flat disc about 100,000 light-years across and about 1,000 light-years thick, the Sun in the disc about 26,000 light-years from the centre, dust and star-forming regions in the arms, about 150 globular clusters in a round halo, and a supermassive black hole at the centre; dust blocks visible light, so we see only a few thousand light-years along the disc, but cold hydrogen gas gives out 21 cm radio waves that pass through dust, and the Doppler shift of that line along each line of sight (redshift moving away, blueshift towards us) gives the gas's speed, mapping the arms and the Galaxy's rotation (every orbit about 220 km/s). Every size, distance and speed is a first draft, to be checked by the teacher.",
       },
       {
         id: 'u4.5',
@@ -951,7 +956,7 @@ const UNITS = [
         depth: 'understand',
         spec: ['14.11'],
         notes:
-          "a black hole gives out no light, so astronomers gather evidence from its effects on things nearby: in an X-ray binary, gas pulled off a star spirals into an accretion disc round an unseen partner and is heated to millions of degrees, giving out X-rays seen by space telescopes; the visible star's orbit gives the partner's mass, and a partner above about 3 times the Sun's mass (the most a neutron star can have) must be a black hole (Cygnus X-1, about 20 times the Sun's mass, identified in the early 1970s); at the Milky Way's centre, hidden by dust in visible light but seen in infrared, stars such as S2 orbit an unseen mass, and Kepler's third law in Solar System units (M = a^3 / T^2, with a about 1,000 AU and T about 16 years) gives about 4 million Sun masses packed into a tiny space: a supermassive black hole. Every name, date, mass and figure is a first draft, to be checked by the teacher.",
+          "a black hole gives out no light, so astronomers gather evidence from its effects on things nearby: in an X-ray binary, gas pulled off a star spirals into an accretion disc round an unseen partner and is heated to millions of degrees, giving out X-rays seen by space telescopes; the visible star's orbit gives the partner's mass, and a partner above about 3 times the Sun's mass (the most a neutron star can have) must be a black hole (in Cygnus X-1 the unseen black hole is about 20 times the Sun's mass and the visible supergiant heavier, about 40, so the supergiant has the smaller orbit; identified in the early 1970s); at the Milky Way's centre, hidden by dust in visible light but seen in infrared, stars such as S2 orbit an unseen mass, and Kepler's third law in Solar System units (M = a^3 / T^2, with a about 1,000 AU and T about 16 years) gives about 4 million Sun masses packed into a tiny space: a supermassive black hole. Every name, date, mass and figure is a first draft, to be checked by the teacher.",
       },
     ],
   },

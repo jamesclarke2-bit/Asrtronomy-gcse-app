@@ -14,6 +14,11 @@ test('an unseen partner is a black hole only above the neutron-star limit', () =
   assert.equal(B.mustBeBlackHole(B.CYGNUS_X1.companionMsun), true);
 });
 
+test('in Cygnus X-1 the visible supergiant is the heavier of the pair', () => {
+  assert.equal(B.CYGNUS_X1.companionMsun, 20);
+  assert.ok(B.CYGNUS_X1.visibleMsun > B.CYGNUS_X1.companionMsun);
+});
+
 test('S2 is closest (about 120 AU) and fastest at its closest years, and slow far out', () => {
   assert.ok(Math.abs(B.closestApproachAU() - 120) < 1e-9);
   [2002, 2018].forEach((y) => {

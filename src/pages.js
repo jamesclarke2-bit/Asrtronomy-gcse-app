@@ -497,6 +497,16 @@ const PAGES = [
     why: 'Massive stars and their ends showed how a black hole forms; this asks how we can know one is there at all, when it gives out no light.',
   },
   {
+    title: 'Our Galaxy',
+    description:
+      "The Milky Way as a band across the night sky, breaking into stars through binoculars; our barred spiral (SBb) Galaxy drawn face-on and edge-on, with its bar, arms, dust, star-forming regions, globular clusters in the halo and the Sun's place; and how 21 cm radio waves from hydrogen, passing through the dust, map the arms and the rotation, with a line of sight you turn to see each arm's Doppler-shifted peak.",
+    href: 'notes/our-galaxy.html',
+    units: ['u4.4'],
+    phase: 'Stars and the Universe',
+    position: 48,
+    why: 'Black holes: the evidence ended at the centre of our Galaxy; this steps back to see the whole Milky Way, its shape, our place in it, and how radio waves mapped it through the dust.',
+  },
+  {
     title: 'Bodies of the Solar System',
     description:
       "A to-scale size line-up and bar chart of the planets and dwarf planets, the larger named moons by planet, the four ringed planets drawn at relative size with Saturn's rings the most visible, Io's tidal heating (reusable diagram) from its 1:2:4 resonance with Europa and Ganymede, a temperature-against-distance chart, a planet-vs-dwarf-planet decision diagram, asteroids/meteoroids/comets, a comet-tail diagram and the Kuiper Belt/Oort Cloud on a logarithmic scale, transits of Venus and measuring the AU, and brief formation theories — a first draft pending teacher review.",
@@ -608,6 +618,7 @@ const DIAGRAM_FIRST_PAGES = [
   'notes/sun-like-star.html',
   'notes/massive-stars.html',
   'notes/black-holes.html',
+  'notes/our-galaxy.html',
 ];
 
 /**
@@ -671,10 +682,10 @@ const COMING_SOON = [
     specPoints: ['11.29', '11.30'],
   },
   {
-    name: 'Stellar Evolution, the Galaxy and Cosmology',
+    name: 'Galaxies and Cosmology',
     phase: 'Stars and the Universe',
-    position: 48,
-    why: 'The rest of the course past Topic 13: a star\'s full life cycle, our own Galaxy\'s structure, and the wider Universe beyond it.',
+    position: 49,
+    why: 'The rest of the course: the Local Group and other galaxies, active galaxies, and the wider Universe beyond them.',
     // Every Topic 13 point is now covered: 13.8 by notes/massive-stars.html
     // (u4.15), which drew both HR tracks, so the old "Stars, galaxies and
     // the Universe" step (13.8 only) was removed.
@@ -683,16 +694,17 @@ const COMING_SOON = [
     // 14.4, 14.5 and 14.9 by notes/sun-like-star.html (u4.14), 14.6,
     // 14.7, 14.8 and 14.10 by notes/massive-stars.html (u4.15), 14.11
     // by notes/black-holes.html (u4.16), so every Topic 14 point is now
-    // covered, and 16.1-16.3 (redshift) have their own step just below.
+    // covered; 15.1, 15.2, 15.3 and 15.8 by notes/our-galaxy.html (u4.4);
+    // and 16.1-16.3 (redshift) have their own step just below.
     specPoints: [
-      '15.1', '15.2', '15.3', '15.4', '15.5', '15.6', '15.7', '15.8', '15.9', '15.10', '15.11', '15.12', '15.13', '15.14',
+      '15.4', '15.5', '15.6', '15.7', '15.9', '15.10', '15.11', '15.12', '15.13', '15.14',
       '16.4', '16.5', '16.6', '16.7', '16.8', '16.9', '16.10', '16.11', '16.12',
     ],
   },
   {
     name: 'Redshift',
     phase: 'Stars and the Universe',
-    position: 49,
+    position: 50,
     why: "Reading a spectrum's Doppler shift for single stars, scaled up to whole galaxies: redshift as evidence that they are moving away from us.",
     specPoints: ['16.1', '16.2', '16.3'],
   },

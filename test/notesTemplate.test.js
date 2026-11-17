@@ -47,6 +47,7 @@ const CONFORMING_PAGES = [
   'notes/sun-like-star.html',
   'notes/massive-stars.html',
   'notes/black-holes.html',
+  'notes/our-galaxy.html',
 ];
 
 // Section 6 of the template ("Diagram-first"), checked only for pages
