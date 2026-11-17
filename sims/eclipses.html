@@ -230,6 +230,30 @@
       </p>
       <span class="glossary-definition" data-term="ecliptic" hidden></span>
       <span class="glossary-definition" data-term="lineOfNodes" hidden></span>
+      <div class="diagram node-diagram">
+        <svg width="640" height="300" viewBox="0 0 640 300" class="responsive-svg" role="img"
+          aria-label="Not to scale, tilt exaggerated. Two side views of the Sun, a new Moon and the Earth, with the plane of Earth's orbit drawn as a dashed line and the Moon's tilted orbit as a sloping line through the Earth. Top: at most new Moons the Moon sits above the line, so its shadow passes above the Earth: no eclipse. Bottom: when a new Moon happens at a node, where the Moon's orbit crosses the line, Sun, Moon and Earth line up and the shadow falls on the Earth: an eclipse.">
+          <line x1="20" y1="90" x2="620" y2="90" stroke="#999" stroke-width="1.5" stroke-dasharray="6 5" />
+          <circle cx="50" cy="90" r="26" fill="#fde6a8" stroke="#b07a1a" stroke-width="2" />
+          <line x1="300.0" y1="44.2" x2="610.0" y2="98.8" stroke="#7a5aa0" stroke-width="2" />
+          <circle cx="560" cy="90" r="16" fill="#3b6fb0" />
+          <circle cx="360" cy="55" r="9" fill="#888" stroke="#333" stroke-width="1.5" />
+          <path d="M369,47 L546,44 L546,56 L369,63 Z" fill="#333" opacity="0.35" />
+          <text x="290" y="24" font-size="16" fill="#333" text-anchor="middle" font-weight="600">most new Moons: Moon above or below the line, no eclipse</text>
+          <line x1="20" y1="220" x2="620" y2="220" stroke="#999" stroke-width="1.5" stroke-dasharray="6 5" />
+          <circle cx="50" cy="220" r="26" fill="#fde6a8" stroke="#b07a1a" stroke-width="2" />
+          <line x1="300.0" y1="220.0" x2="610.0" y2="220.0" stroke="#7a5aa0" stroke-width="2" />
+          <circle cx="560" cy="220" r="16" fill="#3b6fb0" />
+          <circle cx="360" cy="220" r="9" fill="#888" stroke="#333" stroke-width="1.5" />
+          <path d="M369,212 L546,217 L546,223 L369,228 Z" fill="#333" opacity="0.55" />
+          <text x="320" y="186" font-size="16" fill="#333" text-anchor="middle" font-weight="600">new Moon at a node: all three line up, an eclipse</text>
+          <text x="50" y="285" font-size="15" fill="#333" text-anchor="middle">Sun</text>
+          <text x="360" y="285" font-size="15" fill="#333" text-anchor="middle">Moon</text>
+          <text x="560" y="285" font-size="15" fill="#333" text-anchor="middle">Earth</text>
+        </svg>
+        <p class="diagram-caption">Side view, not to scale, the 5.1&deg; tilt exaggerated; the dashed line is the plane of Earth's orbit</p>
+      </div>
+
       <p>
         An eclipse is only possible when a new or full Moon happens close to a node &mdash;
         within the
@@ -248,8 +272,8 @@
       </table>
       <p>
         The Sun sweeps past each node roughly every 173 days, so eclipses cluster into
-        <strong>eclipse seasons</strong> about six months apart &mdash; use the Next/Previous
-        buttons and watch the line of nodes swing round to point at the Sun.
+        <strong>eclipse seasons</strong> about six months apart &mdash; step through with
+        Next/Previous and watch the line of nodes swing round to the Sun.
       </p>
       <p class="eot-link">
         <a href="moon-phases.html#phase-detective-practice">Why a new Moon only sometimes gives an eclipse, and how to spot which real dates come close &mdash; see Moon Phases' Phase detective &rarr;</a>
@@ -274,6 +298,26 @@
       </p>
       <span class="glossary-definition" data-term="umbra" hidden></span>
       <span class="glossary-definition" data-term="penumbra" hidden></span>
+      <div class="diagram umbra-diagram">
+        <svg width="640" height="320" viewBox="0 0 640 320" class="responsive-svg" role="img"
+          aria-label="Not to scale. Two views of the Moon's shadow on the way to the Earth. The umbra is a dark cone narrowing to a point; the penumbra is a paler region spreading out round it. Top: the Moon near perigee, closer to Earth, so the tip of the umbra reaches the Earth's surface: a total eclipse along a narrow path. Bottom: the Moon near apogee, further away, so the umbra's tip falls short of the Earth: an annular eclipse.">
+          <circle cx="40" cy="85" r="34" fill="#fde6a8" stroke="#b07a1a" stroke-width="2" />
+          <path d="M300,73 L620,45 L620,125 L300,97 Z" fill="#999" opacity="0.25" />
+          <path d="M300,73 L505,85 L300,97 Z" fill="#333" opacity="0.8" />
+          <circle cx="300" cy="85" r="12" fill="#888" stroke="#333" stroke-width="1.5" />
+          <path d="M560,25 A70,70 0 0 0 560,145" fill="#3b6fb0" opacity="0.85" />
+          <text x="270" y="16" font-size="16" fill="#333" text-anchor="middle" font-weight="600">Moon near perigee: the umbra reaches Earth, total</text>
+          <circle cx="40" cy="235" r="34" fill="#fde6a8" stroke="#b07a1a" stroke-width="2" />
+          <path d="M300,223 L620,195 L620,275 L300,247 Z" fill="#999" opacity="0.25" />
+          <path d="M300,223 L440,235 L300,247 Z" fill="#333" opacity="0.8" />
+          <circle cx="300" cy="235" r="12" fill="#888" stroke="#333" stroke-width="1.5" />
+          <path d="M560,175 A70,70 0 0 0 560,295" fill="#3b6fb0" opacity="0.85" />
+          <text x="270" y="166" font-size="16" fill="#333" text-anchor="middle" font-weight="600">Moon near apogee: the umbra falls short, annular</text>
+          <text x="300" y="306" font-size="15" fill="#333" text-anchor="middle">dark cone: umbra; pale: penumbra</text>
+        </svg>
+        <p class="diagram-caption">Not to scale</p>
+      </div>
+
       <ul class="tip-list">
         <li>
           <strong>Solar eclipses</strong> &mdash; the Moon's umbra is a cone about 374,000&nbsp;km
@@ -311,7 +355,7 @@
     <p class="next-page-link" id="next-page"></p>
   </main>
 
-  <script src="../src/curriculum.js?v=202611231200"></script>
+  <script src="../src/curriculum.js?v=202611241200"></script>
   <script src="../src/pages.js?v=202611231200"></script>
   <script src="../src/solarPosition.js?v=202611091000"></script>
   <script src="../src/moonPhase.js?v=202611031700"></script>

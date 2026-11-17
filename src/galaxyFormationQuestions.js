@@ -56,7 +56,7 @@
     const ELLIPTICAL = 'One elliptical galaxy';
     const TAILS = 'Long tails of stars are flung out and colliding gas clouds set off bursts of new stars';
     const GRAVITY = 'Gravity';
-    const MW = 'They are moving towards each other and are expected to merge in a few billion years';
+    const MW = 'They are moving towards each other and may merge in the next few billion years';
     const steps = (id) => F.theory(id).steps;
 
     return [
@@ -76,7 +76,7 @@
       single('gf-evidence', 'Which observation supports the bottom-up theory?', [EVIDENCE, 'All galaxies are the same size', 'The Milky Way is a barred spiral', 'There are no galaxies in voids'], EVIDENCE, 'very distant galaxies (seen as they were long ago, because their light took so long to reach us) are smaller and more irregular, as if big galaxies were still being built from smaller pieces'),
       single('gf-merger-result', 'Two large spiral galaxies collide and merge. What kind of galaxy is the result, most likely?', [ELLIPTICAL, 'A bigger spiral', 'An irregular galaxy for ever', 'A barred spiral'], ELLIPTICAL, 'an elliptical galaxy: the merger scrambles the stars’ orbits into a round or oval shape and uses up or drives out most of the gas'),
       single('gf-collision', 'What happens while two galaxies collide?', [TAILS, 'Nearly all their stars crash into each other', 'Both galaxies stop shining', 'Nothing at all changes'], TAILS, 'long tails of stars are flung out by gravity, and colliding gas clouds set off bursts of new stars; the stars themselves almost never hit each other, as they are so far apart'),
-      single('gf-milky-way', 'What is expected to happen to the Milky Way and the Andromeda Galaxy?', [MW, 'They are moving apart for ever', 'Andromeda will swallow the Sun next year', 'Nothing: they are not affected by each other'], MW, 'they are moving towards each other under gravity and are expected to collide and merge in a few billion years (about 4 to 5 billion), probably forming an elliptical galaxy'),
+      single('gf-milky-way', 'What may happen to the Milky Way and the Andromeda Galaxy?', [MW, 'They are moving apart for ever', 'Andromeda will swallow the Sun next year', 'Nothing: they are not affected by each other'], MW, 'they are moving towards each other under gravity and may merge in the next few billion years, though it is not certain (a recent study put the chance at about one in two within 10 billion years); if they do, the result would probably be an elliptical galaxy'),
     ];
   }
 

@@ -396,14 +396,14 @@
       <table class="shower-table">
         <caption>Pole stars through time</caption>
         <thead>
-          <tr><th scope="col">Star</th><th scope="col">Nearest the pole</th><th scope="col">How near</th></tr>
+          <tr><th scope="col">Star</th><th scope="col">Nearest the pole</th><th scope="col">How near the pole (&deg;)</th></tr>
         </thead>
         <tbody>
-          <tr><td>Thuban</td><td>around 2800 BCE</td><td>within 0.2&deg;: the pole star when the Egyptian pyramids were built</td></tr>
-          <tr><td>Polaris</td><td>AD 2100</td><td>about 0.45&deg;</td></tr>
-          <tr><td>Errai</td><td>around AD 4000</td><td>about 2&deg;</td></tr>
-          <tr><td>Alderamin</td><td>around AD 7500</td><td>about 2.5&deg;</td></tr>
-          <tr><td>Vega</td><td>around AD 14,000</td><td>about 5&deg;, but by far the brightest pole star of the cycle</td></tr>
+          <tr><td>Thuban</td><td>around 2800 BCE</td><td>within 0.2: the pole star when the Egyptian pyramids were built</td></tr>
+          <tr><td>Polaris</td><td>AD 2100</td><td>about 0.45</td></tr>
+          <tr><td>Errai</td><td>around AD 4000</td><td>about 2</td></tr>
+          <tr><td>Alderamin</td><td>around AD 7500</td><td>about 2.5</td></tr>
+          <tr><td>Vega</td><td>around AD 14,000</td><td>about 5, but by far the brightest pole star of the cycle</td></tr>
         </tbody>
       </table>
       <p>
@@ -411,6 +411,36 @@
         star charts and catalogues state the date their coordinates are for (such as J2000), and
         it moves the equinoxes westward along the ecliptic by about 1&deg; every 72 years.
       </p>
+      <div class="diagram equinox-drift-diagram">
+        <svg width="600" height="220" viewBox="0 0 600 220" class="responsive-svg" role="img"
+          aria-label="A strip of sky with the ecliptic, the Sun's yearly path, drawn as a gentle wave, and the celestial equator as a straight line crossing it. The point where they cross, the March equinox, is marked now, and as a hollow ring a little further east at an earlier time, where an earlier position of the equator, drawn dashed, crossed the ecliptic. An arrow from the old point to the new one shows the equinox drifting west along the ecliptic, about 1 degree every 72 years.">
+          <circle cx="60" cy="40" r="2.2" fill="#555" />
+          <circle cx="110" cy="160" r="2.2" fill="#555" />
+          <circle cx="150" cy="70" r="2.2" fill="#555" />
+          <circle cx="205" cy="175" r="2.2" fill="#555" />
+          <circle cx="265" cy="45" r="2.2" fill="#555" />
+          <circle cx="340" cy="165" r="2.2" fill="#555" />
+          <circle cx="395" cy="60" r="2.2" fill="#555" />
+          <circle cx="450" cy="150" r="2.2" fill="#555" />
+          <circle cx="500" cy="35" r="2.2" fill="#555" />
+          <circle cx="555" cy="170" r="2.2" fill="#555" />
+          <circle cx="90" cy="95" r="2.2" fill="#555" />
+          <circle cx="470" cy="95" r="2.2" fill="#555" />
+          <polyline points="20,110.0 30,116.2 40,122.2 50,128.2 60,133.9 70,139.3 80,144.3 90,148.9 100,153.0 110,156.6 120,159.6 130,161.9 140,163.6 150,164.7 160,165.0 170,164.7 180,163.6 190,161.9 200,159.6 210,156.6 220,153.0 230,148.9 240,144.3 250,139.3 260,133.9 270,128.2 280,122.2 290,116.2 300,110.0 310,103.8 320,97.8 330,91.8 340,86.1 350,80.7 360,75.7 370,71.1 380,67.0 390,63.4 400,60.4 410,58.1 420,56.4 430,55.3 440,55.0 450,55.3 460,56.4 470,58.1 480,60.4 490,63.4 500,67.0 510,71.1 520,75.7 530,80.7 540,86.1 550,91.8 560,97.8 570,103.8 580,110.0" fill="none" stroke="#c07a1a" stroke-width="3" />
+          <line x1="20" y1="110" x2="580" y2="110" stroke="#3b6fb0" stroke-width="3" />
+          <line x1="20" y1="117.4" x2="580" y2="201.4" stroke="#3b6fb0" stroke-width="2" stroke-dasharray="7 6" />
+          <circle cx="230" cy="148.9" r="8" fill="none" stroke="#333" stroke-width="2.5" />
+          <circle cx="300" cy="110" r="8" fill="#333" />
+          <path d="M244,140 Q265,150 288,128" fill="none" stroke="#333" stroke-width="2" />
+          <path d="M288,128 l-11,2 M288,128 l-3,10" fill="none" stroke="#333" stroke-width="2" />
+          <text x="300" y="88" font-size="17" fill="#333" text-anchor="middle" font-weight="600">March equinox now</text>
+          <text x="180" y="210" font-size="17" fill="#333" text-anchor="middle">earlier (hollow ring)</text>
+          <text x="440" y="40" font-size="16" fill="#c07a1a" text-anchor="middle">ecliptic (wavy line)</text>
+          <text x="560" y="135" font-size="16" fill="#3b6fb0" text-anchor="end">celestial equator now (solid)</text>
+          <text x="450" y="210" font-size="17" fill="#333" text-anchor="middle">west →</text>
+        </svg>
+        <p class="diagram-caption">The equinox drifts west along the ecliptic, about 1&deg; every 72 years, as the equator (dashed: earlier) turns with the wobbling axis</p>
+      </div>
     </section>
 
     <section class="questions" id="questions">
@@ -497,7 +527,7 @@
     <p class="next-page-link" id="next-page"></p>
   </main>
 
-  <script src="../src/curriculum.js?v=202611231200"></script>
+  <script src="../src/curriculum.js?v=202611241200"></script>
   <script src="../src/pages.js?v=202611231200"></script>
   <script src="../src/specData.js?v=202610281500"></script>
   <script src="../src/measuringTheSkyQuestions.js?v=202610292000"></script>

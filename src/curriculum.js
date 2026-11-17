@@ -495,7 +495,7 @@ const UNITS = [
         depth: 'understand',
         spec: ['9.5'],
         notes:
-          "the Giant Impact Hypothesis (a Mars-sized body, Theia, struck the early Earth a glancing blow; the debris formed the Moon), supported by near-identical oxygen isotope ratios, the lack of water and volatiles in lunar samples, and KREEP-rich rocks in the Ocean of Storms and Sea of Showers; alternatives: Capture Theory and Co-accretion Theory",
+          "the Giant Impact Hypothesis (a Mars-sized body, Theia, struck the early Earth a glancing blow; the debris formed the Moon), supported by Moon rocks being much like Earth's mantle, the lack of water and volatiles in lunar samples, the Moon's small iron core, and KREEP-rich rocks in the Ocean of Storms and Sea of Showers (the near-identical oxygen isotopes are a puzzle for the simplest version, not evidence for it; first draft); alternatives: Capture Theory and Co-accretion Theory",
       },
       {
         id: 'u2.28',
@@ -1104,7 +1104,7 @@ const UNITS = [
         depth: 'understand',
         spec: ['15.14'],
         notes:
-          "in the top-down theory a whole galaxy forms from one huge gas cloud that collapses under gravity, its first stars and globular clusters forming in the round halo before it spins faster and flattens into a disc; in the bottom-up theory small clumps form first and gravity merges them over billions of years into bigger galaxies, supported by very distant (young) galaxies being smaller and more irregular, and favoured by most astronomers today; collisions change galaxy types, two spirals merging into an elliptical (stars rarely hit, but gas clouds collide, flinging out tails and setting off bursts of star formation); the Milky Way and Andromeda are expected to merge in about 4 to 5 billion years. A first draft, to be checked by the teacher.",
+          "in the top-down theory a whole galaxy forms from one huge gas cloud that collapses under gravity, its first stars and globular clusters forming in the round halo before it spins faster and flattens into a disc; in the bottom-up theory small clumps form first and gravity merges them over billions of years into bigger galaxies, supported by very distant (young) galaxies being smaller and more irregular, and favoured by most astronomers today; collisions change galaxy types, two spirals merging into an elliptical (stars rarely hit, but gas clouds collide, flinging out tails and setting off bursts of star formation); the Milky Way and Andromeda may merge in the next few billion years (a recent study put the chance at about one in two within 10 billion years). A first draft, to be checked by the teacher.",
       },
     ],
   },

@@ -807,8 +807,6 @@
       "Libration: the Moon's slight apparent rocking and nodding as seen from Earth, which lets us see about 59% of its surface over time.",
     diurnalLibration:
       "Almost — there's a third, smaller cause: diurnal libration, a parallax effect from where you stand. Earth's rotation carries you across its width — about 12,742 km — between moonrise and moonset, so you view the Moon from slightly different angles: about 1° further round one edge, then the other.",
-    escapeVelocity:
-      "Escape velocity: the speed an object needs to coast away from a planet's gravity for good, with no further push. About 11.2 km/s for Earth.",
     giantImpact:
       'The Giant Impact Hypothesis: the idea that the Moon formed from debris thrown out when a Mars-sized body, Theia, struck the young Earth a glancing blow.',
     moonCrust:

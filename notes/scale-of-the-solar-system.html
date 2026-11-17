@@ -122,12 +122,10 @@
       <p class="eot-readout" id="ladder-ratio"></p>
 
       <p class="note">
-        Notice how tightly the eight planets bunch up together on this scale &mdash; Mercury to
-        Neptune spans less than two decades (powers of ten) &mdash; while the gap from Neptune to
-        the nearest star beyond the Sun is over three more decades on top of that:
-        <span id="ladder-ratio-inline"></span> farther than Neptune is from the Sun. That gap is
-        exactly why the Solar System gets its own unit (the AU) and interstellar space gets
-        different ones (light years and parsecs) &mdash; see the next section.
+        The eight planets bunch up on this scale, Mercury to Neptune spanning under two powers of
+        ten, while the nearest star is over three more beyond: <span id="ladder-ratio-inline"></span>
+        farther than Neptune is from the Sun. That gap is why the Solar System has its own unit
+        (the AU) and interstellar space uses light years and parsecs.
       </p>
     </section>
 
@@ -171,17 +169,20 @@
           </tbody>
         </table>
       </div>
+      <div class="diagram units-diagram">
+        <svg id="units-diagram" class="responsive-svg" width="640" height="210" viewBox="0 0 640 210" role="img"
+          aria-label="A distance scale in which each step is ten times the last, from 100 million km to 100 million million km. Three marks: 1 AU, a circle near the left; 1 light year, a square far to the right, about 63,000 AU; and 1 parsec, a triangle just beyond it, 3.26 light years."></svg>
+        <p class="diagram-caption">Each step along the line is ten times the one before</p>
+      </div>
       <span class="glossary-definition" data-term="au" hidden></span>
       <span class="glossary-definition" data-term="light-year" hidden></span>
       <span class="glossary-definition" data-term="parsec" hidden></span>
 
       <p class="note">
-        The AU itself &mdash; the Sun-Earth distance &mdash; was first measured precisely using
-        transits of Venus: Venus passing directly across the face of the Sun, as seen from Earth.
-        Timing that transit from several widely separated places on Earth let astronomers
-        triangulate the Sun's true distance. See
+        The AU, the Sun-Earth distance, was first measured precisely by timing transits of Venus
+        (Venus crossing the Sun's face) from widely separated places on Earth: see
         <a href="solar-system-bodies.html#transits-of-venus">Transits of Venus and measuring the
-        AU</a> for that method in full, and why a transit of Venus is rare.
+        AU</a>.
       </p>
       <p>
         See <a href="parallax.html">Parallax and the Parsec</a> for exactly how that stellar
@@ -192,11 +193,9 @@
     <section class="notes-section" id="light-travel-time">
       <h2>Light travel time</h2>
       <p>
-        Distance and travel time are two sides of the same coin once you fix a speed, and light's
-        speed (on the data sheet) is about as fixed as speeds get. The table below uses
-        time = distance / speed to show how long light takes to reach each planet from the Sun
-        &mdash; a genuinely intuitive way to feel the Solar System's scale, since it's the same
-        delay you'd see in a (very long-distance) phone call.
+        Light's speed is on the data sheet, so time = distance / speed turns each distance into
+        how long light takes to reach each planet from the Sun: a feel for the Solar System's
+        scale, like the delay on a very long-distance call.
       </p>
       <div class="table-scroll">
         <table class="shower-table">
@@ -211,15 +210,16 @@
         </table>
       </div>
       <p class="note">
-        The Moon's row is measured from <strong>Earth</strong>, not the Sun &mdash; it's the one
-        distance here that isn't a Sun-to-body distance. Every other row is sunlight travelling
-        to that planet.
+        The Moon's row is measured from <strong>Earth</strong>; every other row is sunlight
+        reaching that planet. This is why the unit is called a light <em>year</em>: the nearest
+        star beyond the Sun is about 4.25 light years away, so its light takes about 4.25 years to
+        reach us.
       </p>
-      <p class="note">
-        This is exactly why the unit is called a light <em>year</em>: the nearest star beyond the
-        Sun sits about 4.25 light years away, and &mdash; by that same definition &mdash; its
-        light takes about 4.25 years to reach us.
-      </p>
+      <div class="diagram light-time-diagram">
+        <svg id="light-time-diagram" class="responsive-svg" width="640" height="230" viewBox="0 0 640 230" role="img"
+          aria-label="Sunlight setting out from the Sun on the left, with a time line in which each step is ten times the last, from 1 minute to 10 hours. Each planet is marked where the light reaches it: Mercury after about 3 minutes, Earth after about 8 minutes, Jupiter after about 43 minutes and Neptune after about 4 hours."></svg>
+        <p class="diagram-caption">How long sunlight takes to reach each planet; each step along the line is ten times the one before</p>
+      </div>
     </section>
 
     <section class="notes-section" id="exam-tips">
@@ -287,14 +287,14 @@
     <p class="next-page-link" id="next-page"></p>
   </main>
 
-  <script src="../src/curriculum.js?v=202611231200"></script>
+  <script src="../src/curriculum.js?v=202611241200"></script>
   <script src="../src/pages.js?v=202611231200"></script>
   <script src="../src/specData.js?v=202610051000"></script>
   <script src="../src/scaleOfSolarSystemQuestions.js?v=202610071700"></script>
   <script src="../src/sunIcon.js?v=202611071200"></script>
   <script src="../glossary.js?v=202610131052"></script>
   <script src="../quiz-ui.js?v=202611121900"></script>
-  <script src="scale-of-the-solar-system.js?v=202611071200"></script>
+  <script src="scale-of-the-solar-system.js?v=202611241200"></script>
   <script src="../diagramEnlarge.js?v=202611111500"></script>
   <script src="../notesPage.js?v=202609252100"></script>
   <script src="../nextPage.js?v=202610161057"></script>

@@ -44,6 +44,8 @@ test('the two theories, the evidence, and what mergers do', () => {
   assert.match(ans('gf-evidence'), /Very distant galaxies/);
   assert.equal(ans('gf-merger-result'), 'One elliptical galaxy');
   assert.match(ans('gf-collision'), /tails of stars/);
-  assert.match(ans('gf-milky-way'), /expected to merge/);
-  assert.match(questions.find((q) => q.id === 'gf-milky-way').check('x').message, /about 4 to 5 billion/);
+  assert.match(ans('gf-milky-way'), /may merge in the next few billion years/);
+  const mwScheme = questions.find((q) => q.id === 'gf-milky-way').check('x').message;
+  assert.match(mwScheme, /about one in two within 10 billion years/);
+  assert.doesNotMatch(mwScheme, /4 to 5 billion|expected to merge/);
 });

@@ -272,6 +272,68 @@
     });
   }
 
+  // ---- Two drawn scales, from the same data-sheet constants ----
+  const SVG_NS = 'http://www.w3.org/2000/svg';
+  function el(name, attrs, parent) {
+    const node = document.createElementNS(SVG_NS, name);
+    Object.entries(attrs).forEach(([k, v]) => node.setAttribute(k, v));
+    if (parent) parent.appendChild(node);
+    return node;
+  }
+  function text(parent, x, y, str, attrs = {}) {
+    const t = el('text', { x, y, 'font-size': 17, fill: '#333', 'text-anchor': 'middle', ...attrs }, parent);
+    t.textContent = str;
+    return t;
+  }
+  function marker(parent, shape, x, y) {
+    if (shape === 'circle') el('circle', { cx: x, cy: y, r: 9, fill: '#3b6fb0' }, parent);
+    else if (shape === 'square') el('rect', { x: x - 8, y: y - 8, width: 16, height: 16, fill: '#3b6fb0' }, parent);
+    else el('path', { d: `M${x},${y - 10} L${x + 10},${y + 8} L${x - 10},${y + 8} Z`, fill: '#3b6fb0' }, parent);
+  }
+
+  function renderUnitsDiagram() {
+    const svg = document.getElementById('units-diagram');
+    svg.textContent = '';
+    const [lo, hi] = [8, 14];
+    const x = (km) => 40 + ((Math.log10(km) - lo) / (hi - lo)) * 560;
+    el('line', { x1: 40, y1: 110, x2: 600, y2: 110, stroke: '#333', 'stroke-width': 2 }, svg);
+    for (let p = lo; p <= hi; p += 1) {
+      el('line', { x1: x(10 ** p), y1: 104, x2: x(10 ** p), y2: 116, stroke: '#333', 'stroke-width': 2 }, svg);
+      text(svg, x(10 ** p), 140, `10${toSuperscript(p)} km`, { 'font-size': 15 });
+    }
+    marker(svg, 'circle', x(AU_KM), 110);
+    text(svg, x(AU_KM), 86, '1 AU', { 'font-weight': 600 });
+    marker(svg, 'square', x(LY_KM), 110);
+    text(svg, x(LY_KM) - 30, 86, '1 light year', { 'font-weight': 600, 'text-anchor': 'end' });
+    marker(svg, 'triangle', x(PARSEC_KM), 110);
+    text(svg, x(PARSEC_KM) + 14, 86, '1 parsec', { 'font-weight': 600, 'text-anchor': 'middle' });
+    const auPerLy = Math.round(LY_KM / AU_KM / 1000) * 1000;
+    text(svg, 330, 180, `1 light year ≈ ${auPerLy.toLocaleString()} AU;  1 parsec = ${PARSEC_LY} light years`, { 'font-size': 16 });
+    svg.dataset.auPerLy = String(auPerLy);
+  }
+
+  function renderLightTimeDiagram() {
+    const svg = document.getElementById('light-time-diagram');
+    svg.textContent = '';
+    const minutes = (km) => km / SPEED_OF_LIGHT_KM_S / 60;
+    const [lo, hi] = [0, Math.log10(600)];
+    const x = (min) => 90 + ((Math.log10(min) - lo) / (hi - lo)) * 520;
+    el('circle', { cx: 30, cy: 120, r: 22, fill: '#fde6a8', stroke: '#b07a1a', 'stroke-width': 2 }, svg);
+    text(svg, 30, 170, 'Sun', { 'font-weight': 600 });
+    el('line', { x1: 60, y1: 120, x2: 615, y2: 120, stroke: '#b07a1a', 'stroke-width': 3, 'stroke-dasharray': '10 6' }, svg);
+    [[1, '1 min'], [10, '10 min'], [60, '1 hour'], [600, '10 hours']].forEach(([m, label]) => {
+      el('line', { x1: x(m), y1: 112, x2: x(m), y2: 128, stroke: '#333', 'stroke-width': 2 }, svg);
+      text(svg, x(m), 220, label, { 'font-size': 15 });
+    });
+    PLANETS.forEach((p, k) => {
+      const m = minutes(p.distanceAU * AU_KM);
+      const up = k % 2 === 0;
+      el('circle', { class: 'light-time-planet', cx: x(m), cy: 120, r: 6, fill: '#3b6fb0' }, svg);
+      el('line', { x1: x(m), y1: up ? 112 : 128, x2: x(m), y2: up ? 70 : 168, stroke: '#999', 'stroke-width': 1 }, svg);
+      text(svg, x(m), up ? 62 - (k % 4 === 0 ? 0 : 22) : 186 + (k % 4 === 1 ? 0 : 0), p.name, { 'font-size': 15 });
+    });
+  }
+
   function renderCoverage() {
     const coverageEl = document.getElementById('coverage');
     const subtopics = CURRICULUM_UNITS.map(Curriculum.getSubtopic);
@@ -289,6 +351,8 @@
   renderUnitsTable();
   renderLadder();
   renderLightTimeTable();
+  renderUnitsDiagram();
+  renderLightTimeDiagram();
   renderCoverage();
   Glossary.init(GLOSSARY);
   QuizUI.mount(ScaleOfSolarSystemQuestions.makeQuestions(SpecData));
