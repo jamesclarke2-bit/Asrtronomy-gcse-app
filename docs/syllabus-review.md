@@ -20,9 +20,9 @@ One row per point in the Edexcel GCSE Astronomy (1AS0) specification, Topics 1�
 | 12 | Formation of planetary systems | 14 | 5 | 9 | 1 |
 | 13 | Exploring starlight | 49 | 49 | 0 | 1 |
 | 14 | Stellar evolution | 11 | 11 | 0 | 0 |
-| 15 | Our place in the Galaxy | 14 | 4 | 10 | 0 |
+| 15 | Our place in the Galaxy | 14 | 9 | 5 | 0 |
 | 16 | Cosmology | 12 | 0 | 12 | 0 |
-| **Total** | | **244** | **208** | **36** | **29** |
+| **Total** | | **244** | **213** | **31** | **29** |
 
 ## Methodology
 
@@ -329,16 +329,16 @@ One row per point in the Edexcel GCSE Astronomy (1AS0) specification, Topics 1�
 | 15.1 | understand | the Milky Way's appearance from Earth, through binoculars or a small telescope | [Our Galaxy](../notes/our-galaxy.html) | – |  | |
 | 15.2 | know | the size and shape of our Galaxy, and where the Sun, dust, sites of star formation and globular clusters sit within it | [Our Galaxy](../notes/our-galaxy.html) | – |  | |
 | 15.3 | understand | how 21 cm radio waves, not visible light, are used to map our Galaxy's structure and rotation | [Our Galaxy](../notes/our-galaxy.html) | – |  | |
-| 15.4 | know | the Local Group is the group of galaxies gravitationally linked to the Milky Way | *not built* | – |  | |
-| 15.5 | know | the Local Group's composition and scale: the Andromeda Galaxy (M31), the Large and Small Magellanic Clouds (LMC and SMC), and the Triangulum Galaxy (M33) | *not built* | – |  | |
-| 15.6 | be able to | classify galaxies by the Hubble classification: spiral, barred spiral, elliptical, irregular | *not built* | – |  | |
-| 15.7 | know | how Hubble placed the different galaxy types on his 'Tuning Fork' diagram | *not built* | – |  | |
+| 15.4 | know | the Local Group is the group of galaxies gravitationally linked to the Milky Way | [The Local Group and beyond](../notes/local-group.html) | – |  | |
+| 15.5 | know | the Local Group's composition and scale: the Andromeda Galaxy (M31), the Large and Small Magellanic Clouds (LMC and SMC), and the Triangulum Galaxy (M33) | [The Local Group and beyond](../notes/local-group.html) | – |  | |
+| 15.6 | be able to | classify galaxies by the Hubble classification: spiral, barred spiral, elliptical, irregular | [Galaxy types](../notes/galaxy-types.html) | 11 |  | |
+| 15.7 | know | how Hubble placed the different galaxy types on his 'Tuning Fork' diagram | [Galaxy types](../notes/galaxy-types.html) | – |  | |
 | 15.8 | know | the Milky Way is a barred spiral (SBb) galaxy | [Our Galaxy](../notes/our-galaxy.html) | – |  | |
 | 15.9 | know | some galaxies emit large quantities of radiation beyond visible light | *not built* | – |  | |
 | 15.10 | know | an Active Galactic Nucleus (AGN) is powered by matter falling onto a supermassive black hole | *not built* | – |  | |
 | 15.11 | know | types of active galaxy: Seyfert galaxies, quasars, blazars | *not built* | – |  | |
 | 15.12 | know | information about AGNs comes from many regions of the electromagnetic spectrum | *not built* | – |  | |
-| 15.13 | understand | why galaxies are grouped into larger clusters and superclusters | *not built* | – |  | |
+| 15.13 | understand | why galaxies are grouped into larger clusters and superclusters | [The Local Group and beyond](../notes/local-group.html) | – |  | |
 | 15.14 | understand | main theories for the formation and evolution of galaxies | *not built* | – |  | |
 
 ## Topic 16: Cosmology

@@ -22,8 +22,8 @@
  * takes the next free one in its unit instead.
  *
  * u4.4 "Our Galaxy" is about the Milky Way's own structure
- * (notes/our-galaxy.html); u6.5 "Our place in the Galaxy" is about our
- * position within the wider observable Universe.
+ * (notes/our-galaxy.html); u6.5 "The Local Group and beyond" is about our
+ * neighbours and the larger structures (notes/local-group.html).
  *
  * Where a subtopic has been checked against the real specification, it
  * also carries an optional `spec` array naming the matching spec point(s)
@@ -1073,9 +1073,22 @@ const UNITS = [
       },
       {
         id: 'u6.5',
-        title: 'Our place in the Galaxy',
+        title: 'The Local Group and beyond',
         depth: 'understand',
-        notes: "the Milky Way's location and scale among other galaxies in the observable Universe",
+        // Was an untagged stub ("the Milky Way's location and scale among
+        // other galaxies in the observable Universe") on no page and no
+        // question; now notes/local-group.html's subtopic, keeping its id.
+        spec: ['15.4', '15.5', '15.13'],
+        notes:
+          "the Local Group is the group of galaxies gravitationally linked to the Milky Way, about 50 galaxies (most of them dwarfs) about 3 million pc (10 million light-years) across; its biggest members are the Andromeda Galaxy (M31, a spiral about 760,000 pc, 2.5 million light-years, away) and the Milky Way, with the Triangulum Galaxy (M33, a smaller spiral, about 850,000 pc) and the Large and Small Magellanic Clouds (LMC and SMC, small irregulars close to the Milky Way, about 50,000 pc and 62,000 pc); the LMC and M31 distances come from Cepheids (Variable stars page) and 1 pc = 3.26 light-years; gravity pulls galaxies together into groups, clusters of hundreds to thousands of galaxies, and superclusters, and on the largest scale superclusters lie along filaments round huge, nearly empty voids, a cosmic web. Every distance, count and size is a first draft, to be checked by the teacher.",
+      },
+      {
+        id: 'u6.6',
+        title: 'Galaxy types',
+        depth: 'be able to',
+        spec: ['15.6', '15.7'],
+        notes:
+          "the Hubble classification sorts galaxies by shape into spirals (a round bulge with arms), barred spirals (a straight bar through the centre, the arms starting from its ends), ellipticals (a smooth oval, no arms) and irregulars (no regular shape); on Hubble's tuning fork the ellipticals run along the handle from round E0 to the flattest E7, the handle splits at S0 (a disc with no arms), and the spirals (Sa, Sb, Sc) and barred spirals (SBa, SBb, SBc) run along the two prongs, from a big bulge and tightly wound arms (a) to a small bulge and loose arms (c); irregulars sit off the fork; the Milky Way is SBb; Hubble once wondered whether galaxies change along the fork, which is no longer thought true. The sub-type meanings and the evolution idea are a first draft, to be checked by the teacher.",
       },
     ],
   },

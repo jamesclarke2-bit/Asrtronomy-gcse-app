@@ -106,6 +106,10 @@ test("getAllQuestionsNode's total is exactly the sum of every individual questio
   const BlackHoleEvidence = require('../src/blackHoleEvidence');
   const { makeQuestions: makeMilkyWay } = require('../src/milkyWayQuestions');
   const MilkyWay = require('../src/milkyWay');
+  const { makeQuestions: makeLocalGroup } = require('../src/localGroupQuestions');
+  const LocalGroup = require('../src/localGroup');
+  const { makeQuestions: makeGalaxyTypes } = require('../src/galaxyTypesQuestions');
+  const GalaxyTypes = require('../src/galaxyTypes');
   const { makeQuestions: makeSunDeclination } = require('../src/sunDeclinationQuestions');
   const { makeQuestions: makeSunFeatures } = require('../src/sunFeaturesQuestions');
   const { makeQuestions: makeSunspotRotation } = require('../src/sunspotRotationQuestions');
@@ -154,6 +158,8 @@ test("getAllQuestionsNode's total is exactly the sum of every individual questio
     makeMassiveStar(MassiveStar, SunLikeStar).length +
     makeBlackHoles(BlackHoleEvidence, MassiveStar).length +
     makeMilkyWay(MilkyWay).length +
+    makeLocalGroup(LocalGroup).length +
+    makeGalaxyTypes(GalaxyTypes).length +
     makeSunDeclination({ getSunPosition: SolarPosition.getSunPosition }, Coordinates).length +
     makeSunFeatures(ButterflyDiagram).length +
     makeSunspotRotation(SunRotation).length +

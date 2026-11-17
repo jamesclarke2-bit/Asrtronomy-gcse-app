@@ -48,6 +48,8 @@ const CONFORMING_PAGES = [
   'notes/massive-stars.html',
   'notes/black-holes.html',
   'notes/our-galaxy.html',
+  'notes/local-group.html',
+  'notes/galaxy-types.html',
 ];
 
 // Section 6 of the template ("Diagram-first"), checked only for pages

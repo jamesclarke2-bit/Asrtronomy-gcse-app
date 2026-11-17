@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; form-action 'none'; base-uri 'self'" />
+  <meta name="referrer" content="no-referrer" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Galaxy types</title>
+  <link rel="stylesheet" href="../styles.css?v=202611221200" />
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg?v=202610130720" />
+</head>
+<body>
+  <main>
+    <p class="back-link"><a href="../index.html">&larr; Back to all tools</a></p>
+
+    <h1>Galaxy types</h1>
+    <p class="subtitle">
+      Edwin Hubble sorted galaxies by their shape. Can you?
+    </p>
+
+    <section class="notes-section" id="classify">
+      <h2>Four kinds of galaxy</h2>
+      <p>
+        The <strong>Hubble classification</strong> puts every galaxy in one of four classes:
+        <strong>spiral</strong> (a round bulge with arms), <strong>barred spiral</strong> (a straight
+        bar through the centre, the arms starting from its ends), <strong>elliptical</strong> (a smooth
+        oval, no arms) and <strong>irregular</strong> (no regular shape). Sort these:
+      </p>
+
+      <div class="gt-sort-grid" id="sort-grid"></div>
+      <p class="note sl-readout" id="sort-score" aria-live="polite"></p>
+    </section>
+
+    <section class="notes-section" id="tuning-fork">
+      <h2>Hubble's tuning fork</h2>
+      <p>Hubble laid the classes out like a tuning fork:</p>
+
+      <div class="diagram spectrum-panel gt-panel">
+        <div class="labelled-diagram-wrap" id="fork-diagram-wrap">
+          <svg
+            id="fork-diagram"
+            class="responsive-svg"
+            width="640"
+            height="440"
+            viewBox="0 0 640 440"
+            role="img"
+            aria-label="Hubble's tuning fork. Along the handle, left to right, ellipticals: E0, round; E3, an oval; E7, very flattened. At the fork, S0, a bulge in a smooth disc with no arms. The upper prong has spirals Sa, Sb and Sc, their bulges smaller and arms looser from a to c. The lower prong has barred spirals SBa, SBb and SBc in the same way; SBb is ringed and labelled Milky Way. Irregular galaxies are drawn off to one side, not on the fork."
+          ></svg>
+        </div>
+      </div>
+      <p>
+        Ellipticals sit along the handle, from round <strong>E0</strong> to the flattest
+        <strong>E7</strong>. The handle splits at <strong>S0</strong>, a disc with no arms. Spirals run
+        along one prong and barred spirals along the other, from <strong>a</strong> (big bulge, tightly
+        wound arms) to <strong>c</strong> (small bulge, loose arms). Irregulars don't fit, so they sit
+        apart. The Milky Way is <a href="our-galaxy.html#shape">SBb</a>.
+      </p>
+      <p class="note">
+        Hubble once wondered whether galaxies change along the fork, from left to right; that is no
+        longer thought true, as the fork only sorts galaxies by shape. That idea, what S0 and the E
+        numbers and a to c mean, and Hubble as the one who drew it: first draft, to be checked by the
+        teacher.
+      </p>
+    </section>
+
+    <section class="notes-section" id="exam-tips">
+      <h2>Exam tips</h2>
+      <p class="exam-tip">
+        <strong>Common exam confusion:</strong> a barred spiral's arms start from the ends of a straight
+        bar; an ordinary spiral's arms start from the round bulge.
+        <a href="#classify">Four kinds of galaxy &uarr;</a>
+      </p>
+      <p class="exam-tip">
+        <strong>Common exam confusion:</strong> the tuning fork sorts galaxies by shape; it does not show
+        one type turning into another.
+        <a href="#tuning-fork">Hubble's tuning fork &uarr;</a>
+      </p>
+    </section>
+
+    <section class="notes-section" id="related">
+      <h2>Related pages</h2>
+      <div class="page-card-list">
+        <a class="page-card" href="our-galaxy.html">
+          <h3>Our Galaxy</h3>
+          <p class="page-card-description">The Milky Way, a barred spiral.</p>
+        </a>
+        <a class="page-card" href="local-group.html">
+          <h3>The Local Group and beyond</h3>
+          <p class="page-card-description">Spirals and irregulars nearby.</p>
+        </a>
+      </div>
+    </section>
+
+    <section class="questions" id="questions">
+      <h2>Practice questions</h2>
+      <div id="questions-list"></div>
+    </section>
+
+    <section class="progress">
+      <h2>Your progress</h2>
+      <ul id="progress-list"></ul>
+      <p class="note">Stored in this browser only (localStorage) &mdash; no account needed.</p>
+    </section>
+
+    <p class="coverage" id="coverage"></p>
+    <p class="next-page-link" id="next-page"></p>
+  </main>
+
+  <script src="../src/curriculum.js?v=202611221200"></script>
+  <script src="../src/pages.js?v=202611221200"></script>
+  <script src="../src/specData.js?v=202610161036"></script>
+  <script src="../src/spectra.js?v=202611131200"></script>
+  <script src="../src/spectrumDrawing.js?v=202611130900"></script>
+  <script src="../src/galaxyDrawing.js?v=202611221200"></script>
+  <script src="../src/galaxyTypes.js?v=202611221200"></script>
+  <script src="../src/galaxyTypesQuestions.js?v=202611221200"></script>
+  <script src="../glossary.js?v=202610131052"></script>
+  <script src="../quiz-ui.js?v=202611121900"></script>
+  <script src="galaxy-types.js?v=202611221200"></script>
+  <script src="../diagramEnlarge.js?v=202611111500"></script>
+  <script src="../notesPage.js?v=202609252100"></script>
+  <script src="../nextPage.js?v=202610161057"></script>
+</body>
+</html>

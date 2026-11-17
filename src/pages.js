@@ -507,6 +507,26 @@ const PAGES = [
     why: 'Black holes: the evidence ended at the centre of our Galaxy; this steps back to see the whole Milky Way, its shape, our place in it, and how radio waves mapped it through the dust.',
   },
   {
+    title: 'The Local Group and beyond',
+    description:
+      "A drawn map of the Local Group, the galaxies gravitationally linked to the Milky Way: the Andromeda Galaxy (M31), the Triangulum Galaxy (M33) and the Large and Small Magellanic Clouds, each marked by shape, with distances in parsecs and light-years; then a zoom out from our group to a cluster, a supercluster and the cosmic web of filaments and voids, and why gravity gathers galaxies together.",
+    href: 'notes/local-group.html',
+    units: ['u6.5'],
+    phase: 'Stars and the Universe',
+    position: 49,
+    why: 'Our Galaxy mapped the Milky Way itself; this looks at its neighbours, held close by gravity, and at the far bigger crowds of galaxies beyond them.',
+  },
+  {
+    title: 'Galaxy types',
+    description:
+      "Sort our own drawn galaxies into Hubble's four classes, spiral, barred spiral, elliptical and irregular, with feedback on each; then Hubble's tuning fork, drawn, with ellipticals E0 to E7 along the handle, S0 at the fork, spirals and barred spirals along the prongs, and the Milky Way at SBb.",
+    href: 'notes/galaxy-types.html',
+    units: ['u6.6'],
+    phase: 'Stars and the Universe',
+    position: 50,
+    why: 'The Local Group showed spirals and irregulars side by side; this sorts every galaxy by its shape, as Hubble did on his tuning fork.',
+  },
+  {
     title: 'Bodies of the Solar System',
     description:
       "A to-scale size line-up and bar chart of the planets and dwarf planets, the larger named moons by planet, the four ringed planets drawn at relative size with Saturn's rings the most visible, Io's tidal heating (reusable diagram) from its 1:2:4 resonance with Europa and Ganymede, a temperature-against-distance chart, a planet-vs-dwarf-planet decision diagram, asteroids/meteoroids/comets, a comet-tail diagram and the Kuiper Belt/Oort Cloud on a logarithmic scale, transits of Venus and measuring the AU, and brief formation theories — a first draft pending teacher review.",
@@ -619,6 +639,8 @@ const DIAGRAM_FIRST_PAGES = [
   'notes/massive-stars.html',
   'notes/black-holes.html',
   'notes/our-galaxy.html',
+  'notes/local-group.html',
+  'notes/galaxy-types.html',
 ];
 
 /**
@@ -682,10 +704,10 @@ const COMING_SOON = [
     specPoints: ['11.29', '11.30'],
   },
   {
-    name: 'Galaxies and Cosmology',
+    name: 'Active galaxies and cosmology',
     phase: 'Stars and the Universe',
-    position: 49,
-    why: 'The rest of the course: the Local Group and other galaxies, active galaxies, and the wider Universe beyond them.',
+    position: 51,
+    why: 'The rest of the course: galaxies that shine far beyond visible light, how galaxies formed, and the Universe as a whole.',
     // Every Topic 13 point is now covered: 13.8 by notes/massive-stars.html
     // (u4.15), which drew both HR tracks, so the old "Stars, galaxies and
     // the Universe" step (13.8 only) was removed.
@@ -695,16 +717,18 @@ const COMING_SOON = [
     // 14.7, 14.8 and 14.10 by notes/massive-stars.html (u4.15), 14.11
     // by notes/black-holes.html (u4.16), so every Topic 14 point is now
     // covered; 15.1, 15.2, 15.3 and 15.8 by notes/our-galaxy.html (u4.4);
-    // and 16.1-16.3 (redshift) have their own step just below.
+    // 15.4, 15.5 and 15.13 by notes/local-group.html (u6.5); 15.6 and 15.7
+    // by notes/galaxy-types.html (u6.6); and 16.1-16.3 (redshift) have
+    // their own step just below.
     specPoints: [
-      '15.4', '15.5', '15.6', '15.7', '15.9', '15.10', '15.11', '15.12', '15.13', '15.14',
+      '15.9', '15.10', '15.11', '15.12', '15.14',
       '16.4', '16.5', '16.6', '16.7', '16.8', '16.9', '16.10', '16.11', '16.12',
     ],
   },
   {
     name: 'Redshift',
     phase: 'Stars and the Universe',
-    position: 50,
+    position: 52,
     why: "Reading a spectrum's Doppler shift for single stars, scaled up to whole galaxies: redshift as evidence that they are moving away from us.",
     specPoints: ['16.1', '16.2', '16.3'],
   },
