@@ -21,8 +21,8 @@ One row per point in the Edexcel GCSE Astronomy (1AS0) specification, Topics 1�
 | 13 | Exploring starlight | 49 | 49 | 0 | 1 |
 | 14 | Stellar evolution | 11 | 11 | 0 | 0 |
 | 15 | Our place in the Galaxy | 14 | 14 | 0 | 0 |
-| 16 | Cosmology | 12 | 6 | 6 | 0 |
-| **Total** | | **244** | **224** | **20** | **29** |
+| 16 | Cosmology | 12 | 9 | 3 | 0 |
+| **Total** | | **244** | **227** | **17** | **29** |
 
 ## Methodology
 
@@ -351,9 +351,9 @@ One row per point in the Edexcel GCSE Astronomy (1AS0) specification, Topics 1�
 | 16.4 | understand | the evidence that confirmed the discovery of the expanding universe | [Hubble's law, age and size](../notes/hubble-law.html) | – |  | |
 | 16.5 | be able to | use Hubble's law, v = H0 x d, to relate a galaxy's recession velocity to its distance | [Hubble's law, age and size](../notes/hubble-law.html) | 10 |  | |
 | 16.6 | understand | estimating the age and size of the Universe from the Hubble constant | [Hubble's law, age and size](../notes/hubble-law.html) | – |  | |
-| 16.7 | understand | how the expanding universe supports both the Big Bang theory and the Steady State theory | *not built* | – |  | |
-| 16.8 | understand | the main observational evidence for the Big Bang: quasars (QSOs), cosmic microwave background (CMB) radiation, the Hubble Deep Field image | *not built* | – |  | |
-| 16.9 | understand | why fluctuations in the CMB radiation matter for theories of the Universe's evolution, including WMAP and Planck | *not built* | – |  | |
+| 16.7 | understand | how the expanding universe supports both the Big Bang theory and the Steady State theory | [Big Bang and Steady State](../notes/big-bang-steady-state.html) | – |  | |
+| 16.8 | understand | the main observational evidence for the Big Bang: quasars (QSOs), cosmic microwave background (CMB) radiation, the Hubble Deep Field image | [Evidence for the Big Bang](../notes/big-bang-evidence.html) | – |  | |
+| 16.9 | understand | why fluctuations in the CMB radiation matter for theories of the Universe's evolution, including WMAP and Planck | [Evidence for the Big Bang](../notes/big-bang-evidence.html) | – |  | |
 | 16.10 | understand | the significance and possible nature of dark matter and dark energy | *not built* | – |  | |
 | 16.11 | understand | the difficulties in detecting dark matter and dark energy | *not built* | – |  | |
 | 16.12 | understand | current models predict different possible future evolutionary paths for the Universe | *not built* | – |  | |

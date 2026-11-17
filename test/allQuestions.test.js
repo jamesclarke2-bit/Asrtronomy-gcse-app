@@ -118,6 +118,10 @@ test("getAllQuestionsNode's total is exactly the sum of every individual questio
   const Redshift = require('../src/redshift');
   const { makeQuestions: makeHubbleLaw } = require('../src/hubbleLawQuestions');
   const HubbleLaw = require('../src/hubbleLaw');
+  const { makeQuestions: makeBigBang } = require('../src/bigBangQuestions');
+  const BigBang = require('../src/bigBang');
+  const { makeQuestions: makeBigBangEvidence } = require('../src/bigBangEvidenceQuestions');
+  const BigBangEvidence = require('../src/bigBangEvidence');
   const { makeQuestions: makeSunDeclination } = require('../src/sunDeclinationQuestions');
   const { makeQuestions: makeSunFeatures } = require('../src/sunFeaturesQuestions');
   const { makeQuestions: makeSunspotRotation } = require('../src/sunspotRotationQuestions');
@@ -172,6 +176,8 @@ test("getAllQuestionsNode's total is exactly the sum of every individual questio
     makeGalaxyFormation(GalaxyFormation).length +
     makeRedshift(Redshift).length +
     makeHubbleLaw(HubbleLaw).length +
+    makeBigBang(BigBang).length +
+    makeBigBangEvidence(BigBangEvidence).length +
     makeSunDeclination({ getSunPosition: SolarPosition.getSunPosition }, Coordinates).length +
     makeSunFeatures(ButterflyDiagram).length +
     makeSunspotRotation(SunRotation).length +

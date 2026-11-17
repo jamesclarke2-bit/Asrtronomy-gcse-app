@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; form-action 'none'; base-uri 'self'" />
+  <meta name="referrer" content="no-referrer" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Big Bang and Steady State</title>
+  <link rel="stylesheet" href="../styles.css?v=202611221200" />
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg?v=202610130720" />
+</head>
+<body>
+  <main>
+    <p class="back-link"><a href="../index.html">&larr; Back to all tools</a></p>
+
+    <h1>Big Bang and Steady State</h1>
+    <p class="subtitle">
+      Two theories both explain why galaxies are moving apart. Step through time and compare them side
+      by side.
+    </p>
+
+    <section class="notes-section" id="two-theories">
+      <h2>Two theories, one expanding Universe</h2>
+      <div class="control bb-step-buttons" role="group" aria-label="Time steps">
+        <button type="button" class="preset-button preset-button-active" data-step="1" aria-pressed="true" aria-controls="theories-diagram">Step 1</button>
+        <button type="button" class="preset-button" data-step="2" aria-pressed="false" aria-controls="theories-diagram">Step 2</button>
+        <button type="button" class="preset-button" data-step="3" aria-pressed="false" aria-controls="theories-diagram">Step 3</button>
+        <button type="button" class="preset-button" data-step="4" aria-pressed="false" aria-controls="theories-diagram">Step 4</button>
+      </div>
+      <div class="diagram spectrum-panel bb-panel">
+        <div class="labelled-diagram-wrap" id="theories-diagram-wrap">
+          <svg
+            id="theories-diagram"
+            class="responsive-svg"
+            width="640"
+            height="350"
+            viewBox="0 0 640 350"
+            role="img"
+            aria-label="Two square patches of space side by side, the same size, seen at the same moment. Left, the Big Bang: at step 1 the patch is crowded with galaxies in a hot glow, and at each later step the galaxies spread out, so fewer fit in the patch and the glow fades. Right, the Steady State: the galaxies spread out too, but new galaxies, drawn as rings, appear in the gaps, so the patch always holds the same number. In both patches a square and a triangle mark the same two galaxies, getting further apart at every step."
+          ></svg>
+        </div>
+      </div>
+      <p class="note sl-readout" id="theories-readout" aria-live="polite"></p>
+      <p class="diagram-caption">
+        A drawing. Dot: a galaxy. Ring: a new galaxy, formed since the last step. Square and triangle:
+        the same two galaxies at every step.
+      </p>
+      <p>
+        In both theories galaxies are moving apart, as the redshift of distant galaxies shows (see
+        <a href="hubble-law.html#evidence">Hubble's law, age and size</a>). In the
+        <strong>Big Bang</strong> theory, everything began in a hot, dense state and has been expanding
+        and cooling ever since, so space thins out; run the expansion backwards and it reaches a
+        beginning (see <a href="hubble-law.html#age">the age of the Universe</a>). In the
+        <strong>Steady State</strong> theory, the Universe has no beginning and always looks the same:
+        as it expands, new matter appears in the gaps and forms new galaxies, so the density never
+        changes.
+      </p>
+      <p class="note">
+        Hermann Bondi, Thomas Gold and Fred Hoyle put forward the Steady State theory in 1948, and
+        Hoyle coined the name "Big Bang"; the new matter it needs is far too little to detect directly.
+        First draft, to be checked by the teacher.
+      </p>
+    </section>
+
+    <section class="notes-section" id="deciding">
+      <h2>Why expansion alone can't decide</h2>
+      <div class="diagram spectrum-panel bb-panel">
+        <div class="labelled-diagram-wrap" id="looking-back-diagram-wrap">
+          <svg
+            id="looking-back-diagram"
+            class="responsive-svg"
+            width="640"
+            height="300"
+            viewBox="0 0 640 300"
+            role="img"
+            aria-label="Two rows looking out into space, nearby on the left and far away on the right, which is also further back in time. Top row, what the Big Bang predicts: big galaxies nearby, smaller and more irregular galaxies further off, and quasars only far away. Bottom row, what the Steady State predicts: the same mix of galaxies at every distance."
+          ></svg>
+        </div>
+      </div>
+      <p class="diagram-caption">A drawing. A four-pointed star marks a quasar.</p>
+      <p>
+        Both theories predict galaxies moving apart, with more distant galaxies receding faster, so
+        measuring the expansion cannot tell them apart. What differs is the past. Light from far away
+        left long ago, so distant objects show us the Universe as it was. The Big Bang predicts that the
+        early Universe looked different: hotter, denser, with young galaxies. The Steady State predicts
+        it looked just like today. So astronomers look for signs that the Universe has changed: see
+        <a href="big-bang-evidence.html">Evidence for the Big Bang</a>.
+      </p>
+    </section>
+
+    <section class="notes-section" id="exam-tips">
+      <h2>Exam tips</h2>
+      <p class="exam-tip">
+        <strong>Common exam confusion:</strong> the Steady State Universe expands too. What stays the
+        same is its density, because new matter is created as it expands.
+        <a href="#two-theories">Two theories, one expanding Universe &uarr;</a>
+      </p>
+      <p class="exam-tip">
+        <strong>Common exam link:</strong> redshift and Hubble's law fit both theories; to choose, use
+        evidence that the Universe has changed, such as quasars, the cosmic microwave background and the Hubble Deep Field.
+        <a href="#deciding">Why expansion alone can't decide &uarr;</a>
+      </p>
+    </section>
+
+    <section class="notes-section" id="related">
+      <h2>Related pages</h2>
+      <div class="page-card-list">
+        <a class="page-card" href="big-bang-evidence.html">
+          <h3>Evidence for the Big Bang</h3>
+          <p class="page-card-description">Quasars, the CMB and the Hubble Deep Field decide it.</p>
+        </a>
+        <a class="page-card" href="hubble-law.html">
+          <h3>Hubble's law, age and size</h3>
+          <p class="page-card-description">The expansion both theories share, run backwards.</p>
+        </a>
+        <a class="page-card" href="redshift.html">
+          <h3>Redshift</h3>
+          <p class="page-card-description">How we know galaxies are moving away.</p>
+        </a>
+      </div>
+    </section>
+
+    <section class="questions" id="questions">
+      <h2>Practice questions</h2>
+      <div id="questions-list"></div>
+    </section>
+
+    <section class="progress">
+      <h2>Your progress</h2>
+      <ul id="progress-list"></ul>
+      <p class="note">Stored in this browser only (localStorage) &mdash; no account needed.</p>
+    </section>
+
+    <p class="coverage" id="coverage"></p>
+    <p class="next-page-link" id="next-page"></p>
+  </main>
+
+  <script src="../src/curriculum.js?v=202611261200"></script>
+  <script src="../src/pages.js?v=202611261200"></script>
+  <script src="../src/specData.js?v=202610161036"></script>
+  <script src="../src/spectra.js?v=202611131200"></script>
+  <script src="../src/spectrumDrawing.js?v=202611130900"></script>
+  <script src="../src/galaxyDrawing.js?v=202611221200"></script>
+  <script src="../src/bigBang.js?v=202611261200"></script>
+  <script src="../src/bigBangQuestions.js?v=202611261200"></script>
+  <script src="../glossary.js?v=202610131052"></script>
+  <script src="../quiz-ui.js?v=202611121900"></script>
+  <script src="big-bang-steady-state.js?v=202611261200"></script>
+  <script src="../diagramEnlarge.js?v=202611111500"></script>
+  <script src="../notesPage.js?v=202609252100"></script>
+  <script src="../nextPage.js?v=202610161057"></script>
+</body>
+</html>

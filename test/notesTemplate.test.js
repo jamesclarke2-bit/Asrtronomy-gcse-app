@@ -54,6 +54,8 @@ const CONFORMING_PAGES = [
   'notes/galaxy-formation.html',
   'notes/redshift.html',
   'notes/hubble-law.html',
+  'notes/big-bang-steady-state.html',
+  'notes/big-bang-evidence.html',
 ];
 
 // Section 6 of the template ("Diagram-first"), checked only for pages

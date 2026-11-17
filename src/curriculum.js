@@ -1066,10 +1066,13 @@ const UNITS = [
           "distances from Cepheid variables and speeds from redshift, plotted together, lie on a straight line through the origin: the further away a galaxy, the faster it recedes, which confirmed that the Universe is expanding; Hubble's law v = H0 × d, with H0 = 68 km/s per Mpc on the data sheet, is the gradient of that graph, and d = v ÷ H0; its uncertainty is half the range of the steepest and shallowest lines through every error bar, and a wider range of distances reduces the percentage uncertainty; the age of the Universe is about 1 ÷ H0 (1 Mpc = 3.1 × 10¹⁹ km, so H0 = 2.19 × 10⁻¹⁸ per second, 1 ÷ H0 = 4.56 × 10¹⁷ s, about 14.5 billion years) and its size about c × age, about 14.5 billion light-years: simple estimates. Slipher, Hubble and 1929, the accepted age (13.8 billion years) and the 46 billion light-year distance are a first draft, to be checked by the teacher.",
       },
       {
+        // notes/big-bang-evidence.html's subtopic (spec 16.8, 16.9).
         id: 'u6.3',
-        title: 'Big Bang evidence',
-        depth: 'know',
-        notes: 'cosmic microwave background, redshift of galaxies, light-element abundances',
+        title: 'Evidence for the Big Bang',
+        depth: 'understand',
+        spec: ['16.8', '16.9'],
+        notes:
+          "three observations show the Universe has changed, as the Big Bang predicts and the Steady State theory cannot explain: quasars are found only far away, so long ago, and none nearby; the cosmic microwave background (CMB) is the cooled glow of the hot, dense early Universe, stretched into microwaves by the expansion, coming almost equally from every direction with the spectrum of an object at about 2.7 K; the Hubble Deep Field, a long exposure of a tiny patch of sky, is full of faint, distant galaxies, many smaller and more irregular than nearby ones; the CMB has tiny warmer and cooler patches (about 1 part in 100,000), slightly denser regions that gravity grew into galaxies and clusters, mapped in finer and finer detail by COBE, WMAP and Planck, and comparing their pattern with predictions tests theories of how the Universe evolved. The 2.7 K, Penzias and Wilson (1965), the Deep Field's details (1995, about 10 days, about 3,000 galaxies), 1 part in 100,000 and the missions' dates are a first draft, to be checked by the teacher.",
       },
       {
         id: 'u6.4',
@@ -1111,6 +1114,15 @@ const UNITS = [
         spec: ['15.14'],
         notes:
           "in the top-down theory a whole galaxy forms from one huge gas cloud that collapses under gravity, its first stars and globular clusters forming in the round halo before it spins faster and flattens into a disc; in the bottom-up theory small clumps form first and gravity merges them over billions of years into bigger galaxies, supported by very distant (young) galaxies being smaller and more irregular, and favoured by most astronomers today; collisions change galaxy types, two spirals merging into an elliptical (stars rarely hit, but gas clouds collide, flinging out tails and setting off bursts of star formation); the Milky Way and Andromeda may merge in the next few billion years (a recent study put the chance at about one in two within 10 billion years). A first draft, to be checked by the teacher.",
+      },
+      {
+        // notes/big-bang-steady-state.html's subtopic (spec 16.7).
+        id: 'u6.9',
+        title: 'Big Bang and Steady State',
+        depth: 'understand',
+        spec: ['16.7'],
+        notes:
+          "in both theories the Universe is expanding, with galaxies moving apart and redshift growing with distance, so the expansion alone cannot decide between them; the Big Bang theory has the Universe begin in a hot, dense state and expand and cool, thinning out, while the Steady State theory has no beginning and keeps the same density because new matter is created as space expands; they differ about the past: the Big Bang predicts the distant (early) Universe looked different, the Steady State that it looked the same, so evidence that the Universe has changed is needed to choose. Bondi, Gold and Hoyle (1948) and Hoyle naming the Big Bang are a first draft, to be checked by the teacher.",
       },
     ],
   },

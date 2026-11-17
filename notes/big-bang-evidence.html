@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; form-action 'none'; base-uri 'self'" />
+  <meta name="referrer" content="no-referrer" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Evidence for the Big Bang</title>
+  <link rel="stylesheet" href="../styles.css?v=202611221200" />
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg?v=202610130720" />
+</head>
+<body>
+  <main>
+    <p class="back-link"><a href="../index.html">&larr; Back to all tools</a></p>
+
+    <h1>Evidence for the Big Bang</h1>
+    <p class="subtitle">
+      Three observations show the Universe has changed over time, as the Big Bang theory predicts and
+      the Steady State theory does not. Then: the tiny ripples that grew into galaxies.
+    </p>
+
+    <section class="notes-section" id="quasars">
+      <h2>Quasars: only far away</h2>
+      <div class="diagram spectrum-panel ev-panel">
+        <div class="labelled-diagram-wrap" id="quasar-diagram-wrap">
+          <svg
+            id="quasar-diagram"
+            class="responsive-svg"
+            width="640"
+            height="312"
+            viewBox="0 0 640 312"
+            role="img"
+            aria-label="A schematic bar chart of how many quasars are found at each distance, in billions of light-years. There are none nearby; the bars rise to a peak billions of light-years away. A second scale under the distances shows that further away means further back in time."
+          ></svg>
+        </div>
+      </div>
+      <p class="diagram-caption">A schematic chart: the shape, not real counts.</p>
+      <p>
+        Quasars are extremely luminous active galaxies (see
+        <a href="active-galaxies.html#types">Active galaxies</a>). Every one found is far away, and
+        there are none nearby. Light from far away left long ago, so quasars were common in the young
+        Universe and are rare or gone today. The Universe has changed, as the Big Bang predicts; the
+        Steady State theory says it always looks the same, so it cannot explain this.
+      </p>
+      <p class="note">
+        That quasars are found only billions of light-years away, and the shape of this chart: first
+        draft, to be checked by the teacher.
+      </p>
+    </section>
+
+    <section class="notes-section" id="cmb">
+      <h2>The cosmic microwave background</h2>
+      <div class="diagram spectrum-panel ev-panel">
+        <div class="labelled-diagram-wrap" id="cmb-diagram-wrap">
+          <svg
+            id="cmb-diagram"
+            class="responsive-svg"
+            width="640"
+            height="320"
+            viewBox="0 0 640 320"
+            role="img"
+            aria-label="Left: the Earth at the centre with arrows of microwaves arriving from every direction, all at the same temperature. Right: a graph of the brightness of the microwave background against wavelength in millimetres: one smooth hump peaking near 1 millimetre, the shape given by an object at about 2.7 kelvin."
+          ></svg>
+        </div>
+      </div>
+      <p>
+        The early Universe was hot and dense, and it glowed. As space expanded, that light was stretched
+        to much longer wavelengths, into microwaves: the
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="cmb" aria-label="What is the cosmic microwave background?" aria-expanded="false">cosmic microwave background</button>
+        (CMB). It arrives from every direction, almost exactly the same, with the smooth spectrum of an
+        object at about 2.7 K. The Big Bang predicts this cooled glow; the Steady State theory has no
+        natural explanation for it.
+      </p>
+      <span class="glossary-definition" data-term="cmb" hidden></span>
+      <p class="note">
+        Arno Penzias and Robert Wilson found the CMB by accident in 1965, as a hiss from every direction
+        in a radio antenna; the 2.7 K temperature and the peak near 1 mm: first draft, to be checked by
+        the teacher.
+      </p>
+    </section>
+
+    <section class="notes-section" id="deep-field">
+      <h2>The Hubble Deep Field</h2>
+      <div class="control">
+        <button type="button" class="preset-button" id="df-ring" aria-pressed="false" aria-controls="deep-field-diagram">Ring the most distant galaxies</button>
+      </div>
+      <div class="diagram spectrum-panel ev-panel">
+        <div class="labelled-diagram-wrap" id="deep-field-diagram-wrap">
+          <svg
+            id="deep-field-diagram"
+            class="responsive-svg"
+            width="640"
+            height="340"
+            viewBox="0 0 640 340"
+            role="img"
+            aria-label="A drawing of a tiny patch of dark sky packed with galaxies: a few larger spirals and ellipticals that are nearer, one star with spikes, and dozens of tiny, faint, mostly irregular smudges that are very distant. The button rings the distant ones."
+          ></svg>
+        </div>
+      </div>
+      <p class="diagram-caption">A drawing, not the real image.</p>
+      <p>
+        The Hubble Space Telescope stared for days at a tiny patch of sky that looked empty. The image
+        was full of faint, distant galaxies, seen as they were billions of years ago. Many are smaller
+        and more irregular than galaxies nearby (see
+        <a href="galaxy-formation.html#bottom-up">How galaxies form and change</a>), so galaxies have
+        changed over time, as the Big Bang predicts.
+      </p>
+      <p class="note">
+        Taken in 1995 over about 10 days; the patch is about the size of a grain of sand held at arm's
+        length, and holds about 3,000 galaxies: first draft, to be checked by the teacher.
+      </p>
+    </section>
+
+    <section class="notes-section" id="fluctuations">
+      <h2>Ripples in the CMB</h2>
+      <div class="control">
+        <label for="cmb-detail">Map detail: coarse &larr; &rarr; fine</label>
+        <input type="range" id="cmb-detail" min="0" max="2" step="1" value="0" />
+      </div>
+      <div class="diagram spectrum-panel ev-panel">
+        <div class="labelled-diagram-wrap" id="cmb-map-wrap">
+          <svg
+            id="cmb-map"
+            class="responsive-svg"
+            width="640"
+            height="380"
+            viewBox="0 0 640 380"
+            role="img"
+            aria-label="A drawn oval map of the whole sky in microwaves, split into cells. Lighter cells with a plus sign are slightly warmer; darker cells with a minus sign are slightly cooler. The slider makes the cells smaller: a coarse early map, then WMAP, then Planck, each showing finer detail inside the same large patches."
+          ></svg>
+        </div>
+      </div>
+      <p class="note sl-readout" id="cmb-map-readout" aria-live="polite"></p>
+      <p>
+        The CMB is not perfectly even: it has tiny warmer and cooler patches. They mark places that were
+        slightly denser in the early Universe. Gravity pulled more matter into them, growing them over
+        billions of years into galaxies and clusters of galaxies: they are the seeds of everything we see
+        (see <a href="galaxy-formation.html#bottom-up">How galaxies form and change</a>). The WMAP and
+        then the Planck spacecraft mapped them in finer and finer detail. Comparing the sizes and
+        strengths of the patches with what each theory predicts tests ideas about how the Universe
+        evolved: its age, what it is made of and how its structure grew.
+      </p>
+      <p class="note">
+        The patches differ by about 1 part in 100,000; COBE made the first map (launched 1989), WMAP was
+        launched in 2001 and Planck in 2009. First draft, to be checked by the teacher.
+      </p>
+    </section>
+
+    <section class="notes-section" id="exam-tips">
+      <h2>Exam tips</h2>
+      <p class="exam-tip">
+        <strong>Common exam confusion:</strong> the CMB is not light from stars or galaxies. It is the
+        cooled glow of the whole early Universe, arriving from every direction.
+        <a href="#cmb">The cosmic microwave background &uarr;</a>
+      </p>
+      <p class="exam-tip">
+        <strong>Common exam link:</strong> each piece of evidence shows the Universe has changed, or was
+        once hot and dense, which the Steady State theory cannot explain; the expansion alone fits both.
+        <a href="#quasars">Quasars: only far away &uarr;</a>
+      </p>
+    </section>
+
+    <section class="notes-section" id="related">
+      <h2>Related pages</h2>
+      <div class="page-card-list">
+        <a class="page-card" href="big-bang-steady-state.html">
+          <h3>Big Bang and Steady State</h3>
+          <p class="page-card-description">The two theories this evidence decides between.</p>
+        </a>
+        <a class="page-card" href="active-galaxies.html">
+          <h3>Active galaxies</h3>
+          <p class="page-card-description">What quasars are.</p>
+        </a>
+        <a class="page-card" href="galaxy-formation.html">
+          <h3>How galaxies form and change</h3>
+          <p class="page-card-description">How the seeds grew into galaxies.</p>
+        </a>
+      </div>
+    </section>
+
+    <section class="questions" id="questions">
+      <h2>Practice questions</h2>
+      <div id="questions-list"></div>
+    </section>
+
+    <section class="progress">
+      <h2>Your progress</h2>
+      <ul id="progress-list"></ul>
+      <p class="note">Stored in this browser only (localStorage) &mdash; no account needed.</p>
+    </section>
+
+    <p class="coverage" id="coverage"></p>
+    <p class="next-page-link" id="next-page"></p>
+  </main>
+
+  <script src="../src/curriculum.js?v=202611261200"></script>
+  <script src="../src/pages.js?v=202611261200"></script>
+  <script src="../src/specData.js?v=202610161036"></script>
+  <script src="../src/spectra.js?v=202611131200"></script>
+  <script src="../src/spectrumDrawing.js?v=202611130900"></script>
+  <script src="../src/galaxyDrawing.js?v=202611221200"></script>
+  <script src="../src/bigBangEvidence.js?v=202611261200"></script>
+  <script src="../src/bigBangEvidenceQuestions.js?v=202611261200"></script>
+  <script src="../glossary.js?v=202610131052"></script>
+  <script src="../quiz-ui.js?v=202611121900"></script>
+  <script src="big-bang-evidence.js?v=202611261200"></script>
+  <script src="../diagramEnlarge.js?v=202611111500"></script>
+  <script src="../notesPage.js?v=202609252100"></script>
+  <script src="../nextPage.js?v=202610161057"></script>
+</body>
+</html>

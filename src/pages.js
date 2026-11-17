@@ -567,6 +567,26 @@ const PAGES = [
     why: 'Redshift gave each galaxy a speed; put those speeds beside distances and the whole Universe turns out to be expanding.',
   },
   {
+    title: 'Big Bang and Steady State',
+    description:
+      "The two theories of an expanding Universe, drawn side by side through time: a hot, dense start thinning out, against new galaxies forming in the gaps so nothing ever changes; and why the expansion alone cannot choose between them.",
+    href: 'notes/big-bang-steady-state.html',
+    units: ['u6.9'],
+    phase: 'Stars and the Universe',
+    position: 55,
+    why: "Hubble's law showed the Universe is expanding; two theories explain that expansion in very different ways.",
+  },
+  {
+    title: 'Evidence for the Big Bang',
+    description:
+      "Quasars found only far away, the cosmic microwave background (its spectrum drawn, the same from every direction) and a drawing of the Hubble Deep Field, each showing the Universe has changed; then a drawn microwave map, coarse to fine, of the ripples that grew into galaxies.",
+    href: 'notes/big-bang-evidence.html',
+    units: ['u6.3'],
+    phase: 'Stars and the Universe',
+    position: 56,
+    why: 'Expansion fits both theories; these observations show the Universe has changed, which only the Big Bang explains.',
+  },
+  {
     title: 'Bodies of the Solar System',
     description:
       "A to-scale size line-up and bar chart of the planets and dwarf planets, the larger named moons by planet, the four ringed planets drawn at relative size with Saturn's rings the most visible, Io's tidal heating (reusable diagram) from its 1:2:4 resonance with Europa and Ganymede, a temperature-against-distance chart, a planet-vs-dwarf-planet decision diagram, asteroids/meteoroids/comets, a comet-tail diagram and the Kuiper Belt/Oort Cloud on a logarithmic scale, transits of Venus and measuring the AU, and brief formation theories — a first draft pending teacher review.",
@@ -685,6 +705,8 @@ const DIAGRAM_FIRST_PAGES = [
   'notes/galaxy-formation.html',
   'notes/redshift.html',
   'notes/hubble-law.html',
+  'notes/big-bang-steady-state.html',
+  'notes/big-bang-evidence.html',
 ];
 
 /**
@@ -750,8 +772,8 @@ const COMING_SOON = [
   {
     name: 'Cosmology',
     phase: 'Stars and the Universe',
-    position: 55,
-    why: 'The rest of the course: the Big Bang and its evidence, and dark matter and dark energy.',
+    position: 57,
+    why: 'The rest of the course: dark matter, dark energy and the future of the Universe.',
     // Every Topic 13 point is now covered: 13.8 by notes/massive-stars.html
     // (u4.15), which drew both HR tracks, so the old "Stars, galaxies and
     // the Universe" step (13.8 only) was removed.
@@ -767,10 +789,9 @@ const COMING_SOON = [
     // notes/galaxy-formation.html (u6.8), so every Topic 15 point is now
     // covered; 16.1-16.3 by notes/redshift.html (u6.1), which replaced
     // the old "Redshift" step, and 16.4-16.6 by notes/hubble-law.html
-    // (u6.2).
-    specPoints: [
-      '16.7', '16.8', '16.9', '16.10', '16.11', '16.12',
-    ],
+    // (u6.2); 16.7 by notes/big-bang-steady-state.html (u6.9) and 16.8
+    // and 16.9 by notes/big-bang-evidence.html (u6.3).
+    specPoints: ['16.10', '16.11', '16.12'],
   },
 ];
 
