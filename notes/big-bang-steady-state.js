@@ -12,8 +12,22 @@
   ];
   const CY = 160;
   const HALF = B.PATCH_HALF * SCALE;
-  const GLOW = [0.5, 0.28, 0.14, 0.05];
-  const BB_STATE = ['hot and dense', 'cooler, thinner', 'cooler still', 'cool, thin'];
+  const GLOW = [0.75, 0.28, 0.14, 0.05];
+  const BB_STATE = ['hot, dense glowing gas', 'galaxies form, cooler', 'thinner, cooler still', 'cool, thin'];
+  const FIRST = B.FIRST_GALAXY_STEP;
+
+  // Step 1 of the Big Bang: hot, dense, glowing gas, with no galaxies yet.
+  function hotGas(svg, x0, y0, size) {
+    let s = 7;
+    const rand = () => {
+      s = (s * 9301 + 49297) % 233280;
+      return s / 233280;
+    };
+    for (let i = 0; i < 70; i += 1) {
+      const r = 8 + rand() * 16;
+      svgEl('circle', { class: 'bb-gas', cx: (x0 + r + rand() * (size - 2 * r)).toFixed(1), cy: (y0 + r + rand() * (size - 2 * r)).toFixed(1), r: r.toFixed(1), fill: '#ffe2b8', opacity: 0.18 }, svg);
+    }
+  }
 
   let step = 1;
 
@@ -38,6 +52,7 @@
       svgEl('rect', { class: `bb-patch bb-patch-${p.key}`, x: x0, y: y0, width: 2 * HALF, height: 2 * HALF, fill: '#0a1122', stroke: MUTED, 'stroke-width': 1.5 }, svg);
       if (p.key === 'big-bang') {
         svgEl('rect', { class: 'bb-glow', x: x0, y: y0, width: 2 * HALF, height: 2 * HALF, fill: '#ffb36b', opacity: GLOW[k] }, svg);
+        if (k < FIRST) hotGas(svg, x0, y0, 2 * HALF);
       }
       const gals = p.galaxies(k);
       counts[p.key] = gals.length;
@@ -48,16 +63,19 @@
         if (isNew) svgEl('circle', { class: 'bb-new', cx: x.toFixed(1), cy: y.toFixed(1), r: 4.5, fill: 'none', stroke: INK, 'stroke-width': 1.8 }, svg);
         else svgEl('circle', { class: 'bb-galaxy', cx: x.toFixed(1), cy: y.toFixed(1), r: 2.4, fill: INK }, svg);
       });
-      const [a, b] = B.markedPair(k);
-      const ax = p.cx + a.x * SCALE;
-      const ay = CY + a.y * SCALE;
-      const bx = p.cx + b.x * SCALE;
-      const by = CY + b.y * SCALE;
-      svgEl('line', { class: 'bb-pair-line', x1: ax, y1: ay, x2: bx, y2: by, stroke: CURVE, 'stroke-width': 1.5, 'stroke-dasharray': '4 4' }, svg);
-      square(svg, ax, ay, 'bb-pair');
-      triangle(svg, bx, by, 'bb-pair');
+      const pair = B.markedPair(k);
+      if (pair) {
+        const [a, b] = pair;
+        const ax = p.cx + a.x * SCALE;
+        const ay = CY + a.y * SCALE;
+        const bx = p.cx + b.x * SCALE;
+        const by = CY + b.y * SCALE;
+        svgEl('line', { class: 'bb-pair-line', x1: ax, y1: ay, x2: bx, y2: by, stroke: CURVE, 'stroke-width': 1.5, 'stroke-dasharray': '4 4' }, svg);
+        square(svg, ax, ay, 'bb-pair');
+        triangle(svg, bx, by, 'bb-pair');
+      }
       addLabel(svg, wrap, p.title, p.cx, 18, 'diagram-label--tick diagram-label--strong');
-      addLabel(svg, wrap, `${gals.length} galaxies in this patch`, p.cx, CY + HALF + 16, 'diagram-label--tick');
+      addLabel(svg, wrap, gals.length ? `${gals.length} galaxies in this patch` : 'no galaxies yet', p.cx, CY + HALF + 16, 'diagram-label--tick');
       const state = p.key === 'big-bang' ? BB_STATE[k] : k === 0 ? 'always the same density' : 'new galaxies fill the gaps';
       addLabel(svg, wrap, state, p.cx, CY + HALF + 48, 'diagram-label--tick diagram-label--strong');
     });
@@ -65,10 +83,16 @@
     svg.dataset.bigBangCount = String(counts['big-bang']);
     svg.dataset.steadyStateCount = String(counts['steady-state']);
     const newCount = k === 0 ? 0 : B.steadyState(k).filter((g) => g.created === k).length;
+    const pairText = k < FIRST
+      ? ''
+      : k === FIRST
+        ? 'the square and triangle mark the same two galaxies in both. '
+        : `the same two galaxies are ${(B.pairGap(k) / B.pairGap(FIRST)).toFixed(1)} times as far apart as at step ${FIRST + 1} in both. `;
+    const bbText = counts['big-bang'] ? `${counts['big-bang']} galaxies in the patch, ${BB_STATE[k]}` : 'no galaxies yet, only hot, dense, glowing gas';
     document.getElementById('theories-readout').textContent =
-      `Step ${step}, ${B.STEPS[k].label}: the same two galaxies are ${(B.pairGap(k) / B.pairGap(0)).toFixed(1)} times as far apart as at step 1 in both. ` +
-      `Big Bang: ${counts['big-bang']} galaxies in the patch, ${BB_STATE[k]}. ` +
-      `Steady State: ${counts['steady-state']} galaxies${k === 0 ? '' : `, ${newCount} of them new since the last step`}.`;
+      `Step ${step}, ${B.STEPS[k].label}: ${pairText}` +
+      `Big Bang: ${bbText}. ` +
+      `Steady State: ${counts['steady-state']} galaxies${k === 0 ? ', the same as always' : `, ${newCount} of them new since the last step`}.`;
     document.querySelectorAll('.bb-step-buttons button').forEach((btn) => {
       const on = Number(btn.dataset.step) === step;
       btn.classList.toggle('preset-button-active', on);

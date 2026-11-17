@@ -569,7 +569,7 @@ const PAGES = [
   {
     title: 'Big Bang and Steady State',
     description:
-      "The two theories of an expanding Universe, drawn side by side through time: a hot, dense start thinning out, against new galaxies forming in the gaps so nothing ever changes; and why the expansion alone cannot choose between them.",
+      "The two theories of an expanding Universe, drawn side by side through time: a hot, dense, glowing gas with no galaxies, then galaxies forming and thinning out, against new galaxies forming in the gaps so nothing ever changes; and why the expansion alone cannot choose between them.",
     href: 'notes/big-bang-steady-state.html',
     units: ['u6.9'],
     phase: 'Stars and the Universe',
@@ -585,6 +585,16 @@ const PAGES = [
     phase: 'Stars and the Universe',
     position: 56,
     why: 'Expansion fits both theories; these observations show the Universe has changed, which only the Big Bang explains.',
+  },
+  {
+    title: 'Dark matter, dark energy and the future',
+    description:
+      "A rotation curve of the Milky Way, flat at 220 km/s against the falling curve the visible matter alone would give; a bar of what the Universe is made of (ordinary matter, dark matter, dark energy) told apart by pattern; why neither can be seen; and a graph of the size of the Universe against time for four possible futures, chosen by the balance of matter and dark energy.",
+    href: 'notes/dark-universe.html',
+    units: ['u6.4'],
+    phase: 'Stars and the Universe',
+    position: 57,
+    why: 'The evidence shows how the Universe began; this asks what most of it is made of, and how it might end.',
   },
   {
     title: 'Bodies of the Solar System',
@@ -707,6 +717,7 @@ const DIAGRAM_FIRST_PAGES = [
   'notes/hubble-law.html',
   'notes/big-bang-steady-state.html',
   'notes/big-bang-evidence.html',
+  'notes/dark-universe.html',
 ];
 
 /**
@@ -768,30 +779,6 @@ const COMING_SOON = [
     position: 35,
     why: 'Space probes showed what robots can do when they go there; this asks what people add, and what it costs, through the Apollo missions to the Moon.',
     specPoints: ['11.29', '11.30'],
-  },
-  {
-    name: 'Cosmology',
-    phase: 'Stars and the Universe',
-    position: 57,
-    why: 'The rest of the course: dark matter, dark energy and the future of the Universe.',
-    // Every Topic 13 point is now covered: 13.8 by notes/massive-stars.html
-    // (u4.15), which drew both HR tracks, so the old "Stars, galaxies and
-    // the Universe" step (13.8 only) was removed.
-    // Topics 14-16 have a src/specPoints.js registry too; 14.1 and 14.2
-    // are covered by notes/catalogues-and-star-names.html (u4.13), 14.3,
-    // 14.4, 14.5 and 14.9 by notes/sun-like-star.html (u4.14), 14.6,
-    // 14.7, 14.8 and 14.10 by notes/massive-stars.html (u4.15), 14.11
-    // by notes/black-holes.html (u4.16), so every Topic 14 point is now
-    // covered; 15.1, 15.2, 15.3 and 15.8 by notes/our-galaxy.html (u4.4);
-    // 15.4, 15.5 and 15.13 by notes/local-group.html (u6.5); 15.6 and 15.7
-    // by notes/galaxy-types.html (u6.6); 15.9-15.12 by
-    // notes/active-galaxies.html (u6.7) and 15.14 by
-    // notes/galaxy-formation.html (u6.8), so every Topic 15 point is now
-    // covered; 16.1-16.3 by notes/redshift.html (u6.1), which replaced
-    // the old "Redshift" step, and 16.4-16.6 by notes/hubble-law.html
-    // (u6.2); 16.7 by notes/big-bang-steady-state.html (u6.9) and 16.8
-    // and 16.9 by notes/big-bang-evidence.html (u6.3).
-    specPoints: ['16.10', '16.11', '16.12'],
   },
 ];
 

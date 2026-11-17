@@ -1075,10 +1075,13 @@ const UNITS = [
           "three observations show the Universe has changed, as the Big Bang predicts and the Steady State theory cannot explain: quasars are found only far away, so long ago, and none nearby; the cosmic microwave background (CMB) is the cooled glow of the hot, dense early Universe, stretched into microwaves by the expansion, coming almost equally from every direction with the spectrum of an object at about 2.7 K; the Hubble Deep Field, a long exposure of a tiny patch of sky, is full of faint, distant galaxies, many smaller and more irregular than nearby ones; the CMB has tiny warmer and cooler patches (about 1 part in 100,000), slightly denser regions that gravity grew into galaxies and clusters, mapped in finer and finer detail by COBE, WMAP and Planck, and comparing their pattern with predictions tests theories of how the Universe evolved. The 2.7 K, Penzias and Wilson (1965), the Deep Field's details (1995, about 10 days, about 3,000 galaxies), 1 part in 100,000 and the missions' dates are a first draft, to be checked by the teacher.",
       },
       {
+        // notes/dark-universe.html's subtopic (spec 16.10-16.12).
         id: 'u6.4',
-        title: 'Dark matter and dark energy',
+        title: 'Dark matter, dark energy and the future',
         depth: 'understand',
-        notes: 'galaxy rotation curves; accelerating expansion',
+        spec: ['16.10', '16.11', '16.12'],
+        notes:
+          "the Milky Way's stars and gas orbit at about 220 km/s even far from the centre (a flat rotation curve), where the visible matter alone would give slower orbits, so there is far more mass than we can see: dark matter, which holds galaxies and clusters together; other evidence is cluster galaxies moving too fast and gravitational lensing; it may be unknown particles or dark objects; distant supernovae look fainter than expected, so the expansion is speeding up, driven by dark energy, of unknown nature; the Universe is about 5% ordinary matter, 27% dark matter and 68% dark energy; both are hard to detect because they give out and absorb no light and show themselves only through gravity (or the expansion), and direct searches have found nothing yet; current models predict different futures depending on the balance of matter and dark energy (collapse, slowing, expanding for ever, speeding up), and measurements favour speeding up for ever. The other evidence, the possible natures, the late-1990s supernovae, the shares, the searches and the favoured future are a first draft, to be checked by the teacher.",
       },
       {
         id: 'u6.5',

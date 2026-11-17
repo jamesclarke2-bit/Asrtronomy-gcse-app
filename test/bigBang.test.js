@@ -9,10 +9,12 @@ test('four steps, expanding, ending today', () => {
   assert.equal(B.STEPS[3].label, 'today');
 });
 
-test('Big Bang: the patch thins out as it expands', () => {
+test('Big Bang: hot gas with no galaxies at step 1, then galaxies that thin out as it expands', () => {
+  assert.equal(B.FIRST_GALAXY_STEP, 1);
+  assert.deepEqual(B.bigBang(0), [], 'no galaxies at the start');
   const counts = B.STEPS.map((_, k) => B.bigBang(k).length);
-  for (let k = 1; k < 4; k += 1) assert.ok(counts[k] < counts[k - 1], counts.join(','));
-  assert.ok(counts[0] > 5 * counts[3]);
+  for (let k = 2; k < 4; k += 1) assert.ok(counts[k] < counts[k - 1], counts.join(','));
+  assert.ok(counts[1] > 3 * counts[3]);
   B.STEPS.forEach((_, k) => B.bigBang(k).forEach((g) => assert.ok(B.inPatch(g))));
 });
 
@@ -27,9 +29,11 @@ test('Steady State: the same number in the patch at every step, topped up by new
   assert.ok(Math.abs(B.bigBang(3).length - B.TODAY_COUNT) <= 3);
 });
 
-test('the marked pair moves apart in step with the expansion in both models', () => {
-  for (let k = 1; k < 4; k += 1) {
-    assert.ok(Math.abs(B.pairGap(k) / B.pairGap(0) - B.STEPS[k].a / B.STEPS[0].a) < 1e-9);
+test('the marked pair appears from step 2 and moves apart in step with the expansion in both models', () => {
+  assert.equal(B.markedPair(0), null);
+  assert.equal(B.pairGap(0), null);
+  for (let k = 2; k < 4; k += 1) {
+    assert.ok(Math.abs(B.pairGap(k) / B.pairGap(1) - B.STEPS[k].a / B.STEPS[1].a) < 1e-9);
   }
-  B.STEPS.forEach((_, k) => B.markedPair(k).forEach((p) => assert.ok(B.inPatch(p))));
+  for (let k = 1; k < 4; k += 1) B.markedPair(k).forEach((p) => assert.ok(B.inPatch(p)));
 });

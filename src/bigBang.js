@@ -4,10 +4,11 @@
  * size at every step, seen at four times.
  *
  * Both models expand: every galaxy's distance from the centre grows with
- * the scale factor a. In the Big Bang model the galaxies were all there
- * from the start, so the patch begins crowded (hot and dense) and thins
- * out. In the Steady State model new galaxies form in the gaps as space
- * expands, so the number in the patch stays the same at every step.
+ * the scale factor a. In the Big Bang model the patch starts as hot,
+ * dense, glowing gas with no galaxies at all (step 1); galaxies have
+ * formed by step 2 and then thin out as space expands. In the Steady
+ * State model new galaxies form in the gaps as space expands, so the
+ * number in the patch stays the same at every step.
  *
  * Positions are in drawing units from the patch's centre; the patch is a
  * square of half-width PATCH_HALF. Everything is seeded, so every visitor
@@ -21,6 +22,9 @@
     { a: 1, label: 'today' },
   ];
   const PATCH_HALF = 120;
+  // Step index at which the Big Bang's first galaxies have formed (and
+  // the marked pair first appears, in both panels).
+  const FIRST_GALAXY_STEP = 1;
   const TODAY_COUNT = 24;
 
   function seeded(seed) {
@@ -49,6 +53,7 @@
   })();
 
   function bigBang(stepIndex) {
+    if (stepIndex < FIRST_GALAXY_STEP) return [];
     const { a } = STEPS[stepIndex];
     return BB_GALAXIES.map((g) => ({ x: g.x * a, y: g.y * a, created: 0 })).filter(inPatch);
   }
@@ -76,8 +81,9 @@
     return SS_HISTORY[stepIndex];
   }
 
-  /** The same two galaxies, marked in both panels: their gap grows with a. */
+  /** The same two galaxies, marked in both panels from step 2: their gap grows with a. */
   function markedPair(stepIndex) {
+    if (stepIndex < FIRST_GALAXY_STEP) return null;
     const s = STEPS[stepIndex].a / STEPS[0].a;
     return [
       { x: -14 * s, y: 8 * s },
@@ -86,11 +92,13 @@
   }
 
   function pairGap(stepIndex) {
-    const [p, q] = markedPair(stepIndex);
+    const pair = markedPair(stepIndex);
+    if (!pair) return null;
+    const [p, q] = pair;
     return Math.hypot(p.x - q.x, p.y - q.y);
   }
 
-  const api = { STEPS, PATCH_HALF, TODAY_COUNT, bigBang, steadyState, markedPair, pairGap, inPatch };
+  const api = { STEPS, PATCH_HALF, TODAY_COUNT, FIRST_GALAXY_STEP, bigBang, steadyState, markedPair, pairGap, inPatch };
   if (typeof module !== 'undefined' && module.exports) {
     module.exports = api;
   } else {

@@ -258,6 +258,24 @@
     <section class="notes-section" id="distance-modulus">
       <span class="tier-badge tier-badge--3">Tier 3 &middot; Astro Challenge</span>
       <h2>Distance modulus: linking brightness to distance</h2>
+      <div class="diagram near-far-star-diagram">
+        <svg width="480" height="230" viewBox="0 0 480 230" class="responsive-svg" role="img"
+          aria-label="The same star seen from 10 parsecs, looking bright, and from 100 parsecs, ten times further away, looking much fainter: 100 times fainter, which is 5 magnitudes.">
+          <g transform="translate(0 40)">
+          <circle cx="40" cy="80" r="12" fill="#3b6fb0" />
+          <text x="40" y="112" font-size="13" fill="#333" text-anchor="middle">you</text>
+          <line x1="56" y1="80" x2="160" y2="80" stroke="#5b6b82" stroke-width="1.5" />
+          <line x1="56" y1="80" x2="440" y2="80" stroke="#5b6b82" stroke-width="1" stroke-dasharray="5 4" />
+          <circle cx="160" cy="80" r="11" fill="#ffe08a" stroke="#b07a1a" stroke-width="1.5" />
+          <circle cx="440" cy="80" r="4" fill="#ffe08a" stroke="#b07a1a" stroke-width="1" />
+          <text x="160" y="40" font-size="14" fill="#333" text-anchor="middle">at 10 pc: m = M</text>
+          <text x="440" y="40" font-size="14" fill="#333" text-anchor="end">at 100 pc: 10&#215; further</text>
+          <text x="440" y="122" font-size="14" fill="#333" text-anchor="end">100&#215; fainter = 5 magnitudes</text>
+          <text x="440" y="142" font-size="14" fill="#333" text-anchor="end">so m &#8722; M = +5</text>
+                  </g>
+        </svg>
+        <p class="diagram-caption">The same star at two distances (not to scale)</p>
+      </div>
       <p>
         Brightness falls with the inverse-square law, so a star 10 times farther away looks
         exactly 100 times fainter &mdash; and 100 times fainter is, by definition, exactly 5
@@ -322,6 +340,28 @@
         <li>Mental method: split 8.2 into 7.5 (&times;1000) plus 0.7 (a little under &times;2), giving about <span id="nova-ratio-approx"></span> &mdash; close to the exact figure.</li>
       </ol>
 
+      <div class="diagram nova-scale-diagram">
+        <svg width="480" height="170" viewBox="0 0 480 170" class="responsive-svg" role="img"
+          aria-label="A magnitude scale from 0 on the left (brighter) to 12 on the right (fainter). The nova starts at 11.2 and brightens to 3.0: an arrow 8.2 magnitudes long points left, towards brighter.">
+          <g transform="translate(0 40)">
+          <line x1="30" y1="60" x2="450" y2="60" stroke="#5b6b82" stroke-width="2" />
+          <text x="30" y="96" font-size="13" fill="#333">0</text>
+          <text x="135" y="96" font-size="13" fill="#333" text-anchor="middle">3</text>
+          <text x="240" y="96" font-size="13" fill="#333" text-anchor="middle">6</text>
+          <text x="345" y="96" font-size="13" fill="#333" text-anchor="middle">9</text>
+          <text x="450" y="96" font-size="13" fill="#333" text-anchor="end">12</text>
+          <path d="M135,60 l0,8 M240,60 l0,8 M345,60 l0,8" stroke="#5b6b82" stroke-width="1.5" />
+          <circle cx="422" cy="60" r="3" fill="#333" />
+          <circle cx="135" cy="60" r="7" fill="#ffe08a" stroke="#b07a1a" stroke-width="1.5" />
+          <path d="M412,44 L146,44" stroke="#333" stroke-width="2" />
+          <path d="M146,44 l10,-5 M146,44 l10,5" stroke="#333" stroke-width="2" fill="none" />
+          <text x="280" y="34" font-size="14" fill="#333" text-anchor="middle">8.2 magnitudes brighter</text>
+          <text x="30" y="120" font-size="13" fill="#333">&#8592; brighter</text>
+          <text x="450" y="120" font-size="13" fill="#333" text-anchor="end">fainter &#8594;</text>
+                  </g>
+        </svg>
+      </div>
+
       <h3>Two stars, one 2.5&times; farther away</h3>
       <p>
         Star A and Star B share the same absolute magnitude, but Star B is exactly 2.5&times;
@@ -341,6 +381,27 @@
         <span id="distance-ratio-delta-m"></span> magnitudes fainter &mdash; distance ratio and
         magnitude difference follow the same formula whatever the two distances actually are.
       </p>
+
+      <div class="diagram modulus-steps-diagram">
+        <svg width="480" height="190" viewBox="0 0 480 190" class="responsive-svg" role="img"
+          aria-label="A line of distances, each ten times the one before: 10 parsecs, 100 parsecs, 1000 parsecs. Under each, m minus M: 0, then plus 5, then plus 10. Every ten times further adds 5 magnitudes.">
+          <g transform="translate(0 40)">
+          <line x1="40" y1="60" x2="440" y2="60" stroke="#5b6b82" stroke-width="2" />
+          <circle cx="60" cy="60" r="6" fill="#1b3a63" />
+          <circle cx="240" cy="60" r="6" fill="#1b3a63" />
+          <circle cx="420" cy="60" r="6" fill="#1b3a63" />
+          <text x="60" y="40" font-size="14" fill="#333" text-anchor="middle">10 pc</text>
+          <text x="240" y="40" font-size="14" fill="#333" text-anchor="middle">100 pc</text>
+          <text x="420" y="40" font-size="14" fill="#333" text-anchor="middle">1000 pc</text>
+          <text x="60" y="90" font-size="14" fill="#333" text-anchor="middle">m &#8722; M = 0</text>
+          <text x="240" y="90" font-size="14" fill="#333" text-anchor="middle">+5</text>
+          <text x="420" y="90" font-size="14" fill="#333" text-anchor="middle">+10</text>
+          <text x="150" y="122" font-size="13" fill="#333" text-anchor="middle">&#215;10 distance: +5</text>
+          <text x="330" y="122" font-size="13" fill="#333" text-anchor="middle">&#215;10 distance: +5</text>
+                  </g>
+        </svg>
+        <p class="diagram-caption">Distances not to scale: each step is ten times the last</p>
+      </div>
 
       <h3>Finding a distance from m and M</h3>
       <p>A star has apparent magnitude m = +8.2 and absolute magnitude M = +1.2. How far away is it?</p>
@@ -410,10 +471,10 @@
     <p class="next-page-link" id="next-page"></p>
   </main>
 
-  <script src="../src/curriculum.js?v=202611261200"></script>
-  <script src="../src/pages.js?v=202611261200"></script>
+  <script src="../src/curriculum.js?v=202611271200"></script>
+  <script src="../src/pages.js?v=202611271200"></script>
   <script src="../src/specData.js?v=202610161036"></script>
-  <script src="../src/parallax.js?v=202611121900"></script>
+  <script src="../src/parallax.js?v=202611271200"></script>
   <script src="../src/magnitude.js?v=202611101600"></script>
   <script src="../src/magnitudeQuestions.js?v=202611111500"></script>
   <script src="../glossary.js?v=202610131052"></script>

@@ -176,6 +176,24 @@
       </p>
       <span class="glossary-definition" data-term="arcminute" hidden></span>
       <span class="glossary-definition" data-term="arcsecond" hidden></span>
+      <div class="diagram arcsecond-ladder-diagram">
+        <svg width="480" height="180" viewBox="0 0 480 180" class="responsive-svg" role="img"
+          aria-label="Three boxes, each a zoom into a tiny slice of the one before: 1 degree, split into 60 arcminutes; one arcminute, split into 60 arcseconds. So 1 degree is 3600 arcseconds.">
+          <rect x="10" y="30" width="120" height="90" fill="#eaf2fb" stroke="#5b6b82" stroke-width="1.5" />
+          <rect x="120" y="30" width="10" height="90" fill="#5b6b82" opacity="0.5" />
+          <rect x="180" y="30" width="120" height="90" fill="#eaf2fb" stroke="#5b6b82" stroke-width="1.5" />
+          <rect x="290" y="30" width="10" height="90" fill="#5b6b82" opacity="0.5" />
+          <rect x="350" y="30" width="110" height="90" fill="#eaf2fb" stroke="#5b6b82" stroke-width="1.5" />
+          <path d="M130,30 L180,30 M130,120 L180,120 M300,30 L350,30 M300,120 L350,120" stroke="#5b6b82" stroke-width="1" stroke-dasharray="4 3" />
+          <text x="70" y="144" font-size="15" fill="#333" text-anchor="middle" font-weight="600">1 degree</text>
+          <text x="70" y="166" font-size="14" fill="#333" text-anchor="middle">= 60 arcminutes</text>
+          <text x="240" y="144" font-size="15" fill="#333" text-anchor="middle" font-weight="600">1 arcminute</text>
+          <text x="240" y="166" font-size="14" fill="#333" text-anchor="middle">= 60 arcseconds</text>
+          <text x="410" y="144" font-size="15" fill="#333" text-anchor="middle" font-weight="600">1 arcsecond</text>
+          <text x="410" y="166" font-size="14" fill="#333" text-anchor="middle">1/3600 of a degree</text>
+        </svg>
+        <p class="diagram-caption">Each box zooms into the shaded strip of the one before</p>
+      </div>
 
       <p>
         A
@@ -189,13 +207,10 @@
       <span class="glossary-definition" data-term="parsec" hidden></span>
       <span class="glossary-definition" data-term="lightYear" hidden></span>
       <p class="note">
-        That AU figure matches the exam data sheet's own rounded parsec (3.1 &times; 10&sup1;&sup3; km)
-        rather than the geometrically exact value, which is about 0.2% smaller &mdash; enough to
-        shift the third significant figure (206,667 AU here, against 206,265 AU exactly). The data
-        sheet's own two figures for a parsec, 3.1 &times; 10&sup1;&sup3; km and 3.26 light years,
-        differ from each other by about 0.5% for the same reason. This page's worked answers use
-        the data sheet's own values throughout; give your own answers to the number of significant
-        figures the question asks for.
+        That AU figure uses the data sheet's rounded parsec (3.1 &times; 10&sup1;&sup3; km), about
+        0.2% more than the exact value (206,667 AU here, against 206,265 AU); its 3.26 light years
+        differs by about 0.5% for the same reason. Give answers to the significant figures the
+        question asks for.
       </p>
 
       <p>
@@ -219,6 +234,26 @@
 
     <section class="notes-section" id="limits">
       <h2>Limits: why parallax stops working</h2>
+      <div class="diagram shrinking-parallax-diagram">
+        <svg width="480" height="200" viewBox="0 0 480 200" class="responsive-svg" role="img"
+          aria-label="The Sun and the Earth 1 AU apart on the left, with lines to three stars further and further away. The angle at each star gets smaller: at 10 parsecs it is 0.1 arcseconds, at 100 parsecs 0.01 arcseconds, at 1000 parsecs 0.001 arcseconds.">
+          <circle cx="30" cy="70" r="9" fill="#fde6a8" stroke="#b07a1a" stroke-width="1.5" />
+          <circle cx="30" cy="130" r="6" fill="#3b6fb0" />
+          <line x1="30" y1="70" x2="30" y2="130" stroke="#333" stroke-width="1.5" />
+          <text x="44" y="104" font-size="13" fill="#333">1 AU</text>
+          <path d="M30,70 L180,100 L30,130" fill="none" stroke="#5b6b82" stroke-width="1.2" />
+          <path d="M30,70 L310,100 L30,130" fill="none" stroke="#5b6b82" stroke-width="1.2" stroke-dasharray="6 4" />
+          <path d="M30,70 L450,100 L30,130" fill="none" stroke="#5b6b82" stroke-width="1.2" stroke-dasharray="2 4" />
+          <circle cx="180" cy="100" r="4" fill="#333" />
+          <circle cx="310" cy="100" r="4" fill="#333" />
+          <circle cx="450" cy="100" r="4" fill="#333" />
+          <text x="180" y="160" font-size="13" fill="#333" text-anchor="middle">10 pc: p = 0.1&#8243;</text>
+          <text x="310" y="182" font-size="13" fill="#333" text-anchor="middle">100 pc: p = 0.01&#8243;</text>
+          <text x="440" y="160" font-size="13" fill="#333" text-anchor="end">1000 pc: p = 0.001&#8243;</text>
+          <text x="240" y="30" font-size="14" fill="#333" text-anchor="middle">further star, smaller angle</text>
+        </svg>
+        <p class="diagram-caption">Not to scale: the real angles are far too small to draw</p>
+      </div>
       <p>
         The further away a star is, the smaller its parallax angle &mdash; and at some point it
         becomes too small to measure at all. From the ground, atmospheric blurring limits
@@ -297,6 +332,10 @@
         <dt>Distance</dt>
         <dd id="star-distance-readout"></dd>
       </dl>
+      <div class="diagram star-distance-diagram">
+        <svg id="star-distance-line" width="480" height="230" viewBox="0 0 480 230" class="responsive-svg" role="img"
+          aria-label="A number line of distance from 0 to 10 parsecs, with each listed star marked by a numbered dot at its distance and a key giving each star's name and distance. The chosen star is ringed. A mark at 10 parsecs shows where the parallax would be 0.1 arcseconds."></svg>
+      </div>
 
       <p class="note">
         Every parallax figure above is first draft, to be checked by the teacher.
@@ -364,15 +403,15 @@
     <p class="next-page-link" id="next-page"></p>
   </main>
 
-  <script src="../src/curriculum.js?v=202611261200"></script>
-  <script src="../src/pages.js?v=202611261200"></script>
+  <script src="../src/curriculum.js?v=202611271200"></script>
+  <script src="../src/pages.js?v=202611271200"></script>
   <script src="../src/specData.js?v=202610161036"></script>
   <script src="../src/sunIcon.js?v=202611071200"></script>
-  <script src="../src/parallax.js?v=202611121900"></script>
+  <script src="../src/parallax.js?v=202611271200"></script>
   <script src="../src/parallaxQuestions.js?v=202611101000"></script>
   <script src="../glossary.js?v=202610131052"></script>
   <script src="../quiz-ui.js?v=202611121900"></script>
-  <script src="parallax.js?v=202611111500"></script>
+  <script src="parallax.js?v=202611271200"></script>
   <script src="../diagramEnlarge.js?v=202611111500"></script>
   <script src="../notesPage.js?v=202609252100"></script>
   <script src="../nextPage.js?v=202610161057"></script>

@@ -35,6 +35,8 @@ test('the key question: expansion alone fits both theories', () => {
   assert.match(right(q('bb-new-matter'))[0], /New matter is created/);
   assert.match(right(q('bb-start'))[0], /hot, dense state/);
   assert.match(right(q('bb-density'))[0], /goes down/);
+  assert.match(q('bb-density').prompt, /89 galaxies at step 2, when galaxies have first formed, and 25 today/);
+  assert.doesNotMatch(q('bb-density').prompt, /step 1/);
   assert.equal(right(q('bb-past'))[0], 'Just the same as it looks today');
   assert.deepEqual(right(q('bb-match'))[0], { beginning: 'Big Bang', created: 'Steady State', apart: 'Both theories' });
   assert.equal(q('bb-match').marks, 3);

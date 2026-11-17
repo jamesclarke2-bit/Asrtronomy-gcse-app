@@ -110,10 +110,14 @@ WIDTHS.forEach(({ name, width, height }) => {
         assert.equal(Number(await svg.getAttribute('data-big-bang-count')), B.bigBang(s - 1).length);
         assert.equal(Number(await svg.getAttribute('data-steady-state-count')), B.TODAY_COUNT);
         assert.equal(await count(page, '#theories-diagram .bb-new'), s === 1 ? 0 : B.steadyState(s - 1).filter((g) => g.created === s - 1).length);
-        assert.equal(await count(page, '#theories-diagram .bb-pair'), 4);
+        assert.equal(await count(page, '#theories-diagram .bb-pair'), s === 1 ? 0 : 4);
+        assert.equal(await count(page, '#theories-diagram .bb-gas'), s === 1 ? 70 : 0, 'hot gas only at step 1');
         const readout = await page.locator('#theories-readout').textContent();
         assert.match(readout, new RegExp(`^Step ${s}, ${B.STEPS[s - 1].label}:`));
-        assert.match(readout, new RegExp(`Big Bang: ${B.bigBang(s - 1).length} galaxies`));
+        if (s === 1) {
+          assert.equal(B.bigBang(0).length, 0);
+          assert.match(readout, /Big Bang: no galaxies yet, only hot, dense, glowing gas\./);
+        } else assert.match(readout, new RegExp(`Big Bang: ${B.bigBang(s - 1).length} galaxies`));
         seen.add(await svg.innerHTML());
       }
       assert.equal(seen.size, 4);

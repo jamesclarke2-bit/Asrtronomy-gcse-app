@@ -524,9 +524,48 @@
       const star = P.STARS.find((s) => s.name === select.value) || P.STARS[0];
       parallaxReadout.textContent = formatArcsec(star.parallaxArcsec);
       distanceReadout.textContent = formatDistance(P.distanceFromParallax(star.parallaxArcsec));
+      drawStarLine(star.name);
     }
     select.addEventListener('change', render);
     render();
+  }
+
+  // A number line of the listed stars' distances (0-10 pc), numbered
+  // dots with a key, the chosen star ringed, and a mark at 10 pc.
+  function drawStarLine(chosen) {
+    const svg = document.getElementById('star-distance-line');
+    if (!svg) return;
+    const NS = 'http://www.w3.org/2000/svg';
+    const el = (tag, attrs, text) => {
+      const e = document.createElementNS(NS, tag);
+      Object.entries(attrs).forEach(([k, v]) => e.setAttribute(k, v));
+      if (text !== undefined) e.textContent = text;
+      svg.appendChild(e);
+      return e;
+    };
+    while (svg.firstChild) svg.removeChild(svg.firstChild);
+    const x0 = 30;
+    const x1 = 450;
+    const y = 60;
+    const X = (pc) => x0 + (pc / 10) * (x1 - x0);
+    el('line', { x1: x0, x2: x1, y1: y, y2: y, stroke: '#5b6b82', 'stroke-width': 2 });
+    for (let pc = 0; pc <= 10; pc += 2) {
+      el('line', { x1: X(pc), x2: X(pc), y1: y, y2: y + 6, stroke: '#5b6b82', 'stroke-width': 1.5 });
+      el('text', { x: X(pc), y: y + 22, 'font-size': 13, fill: '#333', 'text-anchor': 'middle' }, String(pc));
+    }
+    el('text', { x: x0 + 70, y: y + 42, 'font-size': 13, fill: '#333', 'text-anchor': 'middle' }, 'Distance (pc)');
+    el('line', { x1: X(10), x2: X(10), y1: y, y2: y + 30, stroke: '#333', 'stroke-width': 1.5, 'stroke-dasharray': '3 3' });
+    el('text', { x: X(10), y: y + 42, 'font-size': 13, fill: '#333', 'text-anchor': 'end' }, '10 pc: p = 0.1 arcsec');
+    P.STARS.forEach((star, i) => {
+      const d = P.distanceFromParallax(star.parallaxArcsec);
+      const dy = i % 2 === 0 ? -14 : 14;
+      const x = X(d);
+      el('circle', { class: 'star-line-dot', cx: x, cy: y + dy, r: 8, fill: '#1b3a63' });
+      el('text', { x, y: y + dy + 4, 'font-size': 11, fill: '#fff', 'text-anchor': 'middle' }, String(i + 1));
+      if (star.name === chosen) el('circle', { class: 'star-line-chosen', cx: x, cy: y + dy, r: 12, fill: 'none', stroke: '#c07a1a', 'stroke-width': 2.5 });
+      el('text', { x: 30, y: 128 + i * 20, 'font-size': 13, fill: '#333', 'font-weight': star.name === chosen ? 700 : 400 }, `${i + 1}  ${star.name}: ${d.toFixed(2)} pc${star.name === chosen ? ' (chosen)' : ''}`);
+    });
+    svg.dataset.chosen = chosen;
   }
 
   function renderCoverage() {

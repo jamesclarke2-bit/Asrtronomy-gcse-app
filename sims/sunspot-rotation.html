@@ -172,6 +172,28 @@
       <p>
         Two separate effects both shift the number you measure away from a single "true" value.
       </p>
+      <div class="diagram differential-rotation-diagram">
+        <svg width="460" height="270" viewBox="0 0 460 270" class="responsive-svg" role="img"
+          aria-label="The Sun's disc with three latitude lines, at the equator, 30 degrees and 60 degrees. On each, an arrow shows how far the surface turns in a day: longest at the equator, shorter at 30 degrees, shortest at 60 degrees. Labels give the sidereal periods: about 24.5, 25.7 and 30.2 days.">
+          <circle cx="140" cy="150" r="105" fill="#fde6a8" stroke="#b07a1a" stroke-width="2" />
+          <ellipse cx="140" cy="150.0" rx="105.0" ry="12.6" fill="none" stroke="#9c6a1d" stroke-width="1" stroke-dasharray="3 3" />
+          <line x1="92.8" y1="162.6" x2="187.2" y2="162.6" stroke="#333" stroke-width="3" />
+          <path d="M187.2,162.6 l-10,-6 M187.2,162.6 l-10,6" stroke="#333" stroke-width="3" fill="none" />
+          <line x1="249.0" y1="150.0" x2="262" y2="150.0" stroke="#777" stroke-width="1" />
+          <text x="266" y="155.0" font-size="15" fill="#333">0°: about 24.5 days</text>
+          <ellipse cx="140" cy="97.5" rx="90.9" ry="10.9" fill="none" stroke="#9c6a1d" stroke-width="1" stroke-dasharray="3 3" />
+          <line x1="101.0" y1="108.4" x2="179.0" y2="108.4" stroke="#333" stroke-width="3" />
+          <path d="M179.0,108.4 l-10,-6 M179.0,108.4 l-10,6" stroke="#333" stroke-width="3" fill="none" />
+          <line x1="234.9" y1="97.5" x2="262" y2="97.5" stroke="#777" stroke-width="1" />
+          <text x="266" y="102.5" font-size="15" fill="#333">30°: about 25.7 days</text>
+          <ellipse cx="140" cy="59.1" rx="52.5" ry="6.3" fill="none" stroke="#9c6a1d" stroke-width="1" stroke-dasharray="3 3" />
+          <line x1="120.8" y1="65.4" x2="159.2" y2="65.4" stroke="#333" stroke-width="3" />
+          <path d="M159.2,65.4 l-10,-6 M159.2,65.4 l-10,6" stroke="#333" stroke-width="3" fill="none" />
+          <line x1="196.5" y1="59.1" x2="262" y2="59.1" stroke="#777" stroke-width="1" />
+          <text x="266" y="64.1" font-size="15" fill="#333">60°: about 30.2 days</text>
+        </svg>
+        <p class="diagram-caption">Longer arrow: further in a day, so a shorter period. Not to scale.</p>
+      </div>
       <h3>The Sun isn't a solid body: differential rotation</h3>
       <p>
         A sunspot's own latitude changes how fast it's carried round. Using the differential
@@ -185,6 +207,26 @@
         own simpler figures &mdash; about 25 days at the equator, about 35 days near the poles.
       </p>
       <h3>Earth moves too: sidereal vs synodic</h3>
+      <div class="diagram synodic-sun-diagram">
+        <svg width="460" height="250" viewBox="0 0 460 250" class="responsive-svg" role="img"
+          aria-label="The Sun on the left with a sunspot facing the Earth. The Earth moves on along its orbit while the Sun turns once. After one full turn against the stars (the sidereal period) the spot faces the Earth's old position, so it must turn a little further to face the Earth again: the synodic period is longer.">
+          <path d="M320,150 A210,210 0 0 0 270.9,15.0" fill="none" stroke="#999" stroke-width="1.5" stroke-dasharray="6 5" />
+          <circle cx="110" cy="150" r="44" fill="#fde6a8" stroke="#b07a1a" stroke-width="2" />
+          <circle cx="150" cy="150" r="5" fill="#3a2a10" />
+          <line x1="154" y1="150" x2="306" y2="150" stroke="#555" stroke-width="1.5" stroke-dasharray="4 4" />
+          <line x1="150.2" y1="132.1" x2="289.1" y2="70.3" stroke="#555" stroke-width="1.5" stroke-dasharray="4 4" />
+          <circle cx="320" cy="150" r="12" fill="none" stroke="#3b6fb0" stroke-width="2.5" stroke-dasharray="3 3" />
+          <circle cx="301.8" cy="64.6" r="12" fill="#3b6fb0" />
+          <path d="M168,150 A58,58 0 0 0 163.0,126.4" fill="none" stroke="#333" stroke-width="2.5" />
+          <path d="M163.0,126.4 l2,10 M163.0,126.4 l9,4" stroke="#333" stroke-width="2.5" fill="none" />
+          <text x="336" y="155" font-size="15" fill="#333">Earth before</text>
+          <text x="317.8" y="69.6" font-size="15" fill="#333">Earth after</text>
+          <text x="110" y="214" font-size="15" fill="#333" text-anchor="middle">Sun</text>
+          <text x="176" y="186" font-size="14" fill="#333">extra turn</text>
+          <text x="250" y="242" font-size="14" fill="#333" text-anchor="middle">one full turn (sidereal) + the extra turn = synodic</text>
+        </svg>
+        <p class="diagram-caption">Not to scale; Earth's move is exaggerated.</p>
+      </div>
       <p>
         The period you actually observe from Earth (the <strong>synodic</strong> period) is
         longer than the Sun's true rotation against the stars (the <strong>sidereal</strong>
@@ -232,8 +274,8 @@
     <p class="next-page-link" id="next-page"></p>
   </main>
 
-  <script src="../src/curriculum.js?v=202611261200"></script>
-  <script src="../src/pages.js?v=202611261200"></script>
+  <script src="../src/curriculum.js?v=202611271200"></script>
+  <script src="../src/pages.js?v=202611271200"></script>
   <script src="../src/sunRotation.js?v=202610300900"></script>
   <script src="../src/sunspotRotationQuestions.js?v=202610300900"></script>
   <script src="../src/sunIcon.js?v=202611071200"></script>

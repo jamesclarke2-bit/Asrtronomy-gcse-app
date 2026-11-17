@@ -231,6 +231,50 @@
   setUpPanelToggle('toggle-astrology-dates', 'astrology-dates-panel');
   setUpPanelToggle('toggle-astronomy-dates', 'astronomy-dates-panel');
 
+
+  // --- Thirteen real constellations against twelve equal signs --------
+
+  const ABBR = { Capricornus: 'Cap', Aquarius: 'Aqr', Pisces: 'Psc', Aries: 'Ari', Taurus: 'Tau', Gemini: 'Gem', Cancer: 'Cnc', Leo: 'Leo', Virgo: 'Vir', Libra: 'Lib', Scorpius: 'Sco', Ophiuchus: 'Oph', Sagittarius: 'Sgr' };
+
+  function drawZodiacWheel() {
+    const svg = document.getElementById('zodiac-wheel');
+    const wrap = document.getElementById('zodiac-wheel-wrap');
+    if (!svg) return;
+    const D = window.SpectrumDrawing;
+    D.clearDiagram(svg, wrap);
+    D.panel(svg);
+    const cx = 210;
+    const cy = 210;
+    const pt = (r, deg) => [cx + r * Math.cos((deg * Math.PI) / 180), cy - r * Math.sin((deg * Math.PI) / 180)];
+    const arc = (r0, r1, a0, a1) => {
+      const large = (((a1 - a0) % 360) + 360) % 360 > 180 ? 1 : 0;
+      const [x0, y0] = pt(r1, a0);
+      const [x1, y1] = pt(r1, a1);
+      const [x2, y2] = pt(r0, a1);
+      const [x3, y3] = pt(r0, a0);
+      return `M${x0.toFixed(1)},${y0.toFixed(1)} A${r1},${r1} 0 ${large} 0 ${x1.toFixed(1)},${y1.toFixed(1)} L${x2.toFixed(1)},${y2.toFixed(1)} A${r0},${r0} 0 ${large} 1 ${x3.toFixed(1)},${y3.toFixed(1)} Z`;
+    };
+    const defs = D.svgEl('defs', {}, svg);
+    const pat = D.svgEl('pattern', { id: 'zw-hatch', width: 6, height: 6, patternUnits: 'userSpaceOnUse', patternTransform: 'rotate(45)' }, defs);
+    D.svgEl('line', { x1: 0, y1: 0, x2: 0, y2: 6, stroke: '#ffe08a', 'stroke-width': 2 }, pat);
+    const b = EclipticZodiac.boundariesByLongitude(DEPS);
+    b.forEach((seg, i) => {
+      const a0 = seg.longitudeDeg;
+      const a1 = i + 1 < b.length ? b[i + 1].longitudeDeg : b[0].longitudeDeg + 360;
+      const oph = seg.name === 'Ophiuchus';
+      D.svgEl('path', { class: `zw-constellation${oph ? ' zw-ophiuchus' : ''}`, d: arc(130, 160, a0, a1), fill: oph ? 'url(#zw-hatch)' : '#1b2438', stroke: D.INK, 'stroke-width': 1.2 }, svg);
+      const [lx, ly] = pt(182, (a0 + a1) / 2);
+      D.addLabel(svg, wrap, ABBR[seg.name], lx, ly, `diagram-label--tick${oph ? ' diagram-label--strong' : ''}`);
+    });
+    for (let k = 0; k < 12; k += 1) {
+      D.svgEl('path', { class: 'zw-sign', d: arc(92, 122, k * 30, (k + 1) * 30), fill: k % 2 ? '#2a3550' : '#1b2438', stroke: D.MUTED, 'stroke-width': 1 }, svg);
+    }
+    D.addLabel(svg, wrap, 'outer: 13 real', cx, cy - 28, 'diagram-label--tick diagram-label--strong');
+    D.addLabel(svg, wrap, 'constellations', cx, cy - 6, 'diagram-label--tick');
+    D.addLabel(svg, wrap, 'inner: 12 equal', cx, cy + 18, 'diagram-label--tick diagram-label--strong');
+    D.addLabel(svg, wrap, '30° signs', cx, cy + 40, 'diagram-label--tick');
+  }
+
   // --- Glossary --------------------------------------------------------
 
   const GLOSSARY = {
@@ -240,6 +284,7 @@
       "Astrology's twelve 30° signs were fixed against the stars over 2,000 years ago. Since then, precession — the ~26,000-year wobble in the direction Earth's axis points — has slowly shifted where the equinoxes fall against the background stars, by roughly a whole sign's width (close to 30°) over that time. The signs themselves never moved to follow; they're still defined by their original fixed calendar dates, which is why a \"sign\" and its namesake constellation no longer line up in the real sky.",
   };
 
+  drawZodiacWheel();
   renderCoverage();
   Glossary.init(GLOSSARY);
   QuizUI.mount(EclipticZodiacQuestions.makeQuestions(EclipticZodiac, SolarPosition, PlanetaryMotion));
