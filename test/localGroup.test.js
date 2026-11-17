@@ -41,6 +41,11 @@ test('the members the spec names are all on the map, each with a shape', () => {
   L.MEMBERS.forEach((m) => assert.ok(m.pc < L.GROUP.acrossPc / 2, m.id));
 });
 
+test('the Local Group holds more than 50 galaxies, most of them dwarfs', () => {
+  assert.ok(L.GROUP.galaxies > 50);
+  assert.equal(L.LEVELS[0].holds, 'more than 50 galaxies, most of them dwarfs');
+});
+
 test('the zoom-out levels get bigger at every step', () => {
   assert.deepEqual(L.LEVELS.map((l) => l.id), ['group', 'cluster', 'supercluster', 'web']);
   for (let k = 1; k < L.LEVELS.length; k += 1) assert.ok(L.LEVELS[k].acrossLy > L.LEVELS[k - 1].acrossLy);

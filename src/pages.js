@@ -527,6 +527,26 @@ const PAGES = [
     why: 'The Local Group showed spirals and irregulars side by side; this sorts every galaxy by its shape, as Hubble did on his tuning fork.',
   },
   {
+    title: 'Active galaxies',
+    description:
+      "An active galactic nucleus drawn: a supermassive black hole, its accretion disc, a dusty ring and two jets, powered by matter falling in; a viewing-angle control showing a Seyfert galaxy, a quasar or a blazar; and a strip down the spectrum showing which band reveals which part, from radio jets to X-rays near the black hole.",
+    href: 'notes/active-galaxies.html',
+    units: ['u6.7'],
+    phase: 'Stars and the Universe',
+    position: 51,
+    why: 'Galaxy types sorted galaxies by shape; some galaxies stand out instead by what pours from their centres, far beyond visible light.',
+  },
+  {
+    title: 'How galaxies form and change',
+    description:
+      "The two main theories of how galaxies formed, each drawn in four steps: top-down, one huge gas cloud collapsing and flattening into a spiral, and bottom-up, small clumps merging into bigger and bigger galaxies; then how collisions change galaxy types, two spirals merging into an elliptical.",
+    href: 'notes/galaxy-formation.html',
+    units: ['u6.8'],
+    phase: 'Stars and the Universe',
+    position: 52,
+    why: 'Active galaxies showed what galaxies can do; this asks how galaxies came to exist at all, and how collisions change them.',
+  },
+  {
     title: 'Bodies of the Solar System',
     description:
       "A to-scale size line-up and bar chart of the planets and dwarf planets, the larger named moons by planet, the four ringed planets drawn at relative size with Saturn's rings the most visible, Io's tidal heating (reusable diagram) from its 1:2:4 resonance with Europa and Ganymede, a temperature-against-distance chart, a planet-vs-dwarf-planet decision diagram, asteroids/meteoroids/comets, a comet-tail diagram and the Kuiper Belt/Oort Cloud on a logarithmic scale, transits of Venus and measuring the AU, and brief formation theories — a first draft pending teacher review.",
@@ -641,6 +661,8 @@ const DIAGRAM_FIRST_PAGES = [
   'notes/our-galaxy.html',
   'notes/local-group.html',
   'notes/galaxy-types.html',
+  'notes/active-galaxies.html',
+  'notes/galaxy-formation.html',
 ];
 
 /**
@@ -704,10 +726,10 @@ const COMING_SOON = [
     specPoints: ['11.29', '11.30'],
   },
   {
-    name: 'Active galaxies and cosmology',
+    name: 'Cosmology',
     phase: 'Stars and the Universe',
-    position: 51,
-    why: 'The rest of the course: galaxies that shine far beyond visible light, how galaxies formed, and the Universe as a whole.',
+    position: 53,
+    why: 'The rest of the course: the expanding Universe, the Big Bang and its evidence, and dark matter and dark energy.',
     // Every Topic 13 point is now covered: 13.8 by notes/massive-stars.html
     // (u4.15), which drew both HR tracks, so the old "Stars, galaxies and
     // the Universe" step (13.8 only) was removed.
@@ -718,17 +740,18 @@ const COMING_SOON = [
     // by notes/black-holes.html (u4.16), so every Topic 14 point is now
     // covered; 15.1, 15.2, 15.3 and 15.8 by notes/our-galaxy.html (u4.4);
     // 15.4, 15.5 and 15.13 by notes/local-group.html (u6.5); 15.6 and 15.7
-    // by notes/galaxy-types.html (u6.6); and 16.1-16.3 (redshift) have
-    // their own step just below.
+    // by notes/galaxy-types.html (u6.6); 15.9-15.12 by
+    // notes/active-galaxies.html (u6.7) and 15.14 by
+    // notes/galaxy-formation.html (u6.8), so every Topic 15 point is now
+    // covered; and 16.1-16.3 (redshift) have their own step just below.
     specPoints: [
-      '15.9', '15.10', '15.11', '15.12', '15.14',
       '16.4', '16.5', '16.6', '16.7', '16.8', '16.9', '16.10', '16.11', '16.12',
     ],
   },
   {
     name: 'Redshift',
     phase: 'Stars and the Universe',
-    position: 52,
+    position: 54,
     why: "Reading a spectrum's Doppler shift for single stars, scaled up to whole galaxies: redshift as evidence that they are moving away from us.",
     specPoints: ['16.1', '16.2', '16.3'],
   },

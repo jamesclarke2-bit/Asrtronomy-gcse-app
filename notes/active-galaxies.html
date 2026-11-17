@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; form-action 'none'; base-uri 'self'" />
+  <meta name="referrer" content="no-referrer" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Active galaxies</title>
+  <link rel="stylesheet" href="../styles.css?v=202611221200" />
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg?v=202610130720" />
+</head>
+<body>
+  <main>
+    <p class="back-link"><a href="../index.html">&larr; Back to all tools</a></p>
+
+    <h1>Active galaxies</h1>
+    <p class="subtitle">
+      Some galaxies pour out radio waves, X-rays and more from a tiny, brilliant centre.
+    </p>
+
+    <section class="notes-section" id="agn">
+      <h2>A galaxy with an active centre</h2>
+      <p>
+        Some galaxies give out huge amounts of radiation beyond visible light: radio waves, infrared,
+        X-rays and gamma rays. It comes from a tiny region at the centre, an
+        <strong>Active Galactic Nucleus (AGN)</strong>:
+      </p>
+
+      <div class="diagram spectrum-panel ag-panel">
+        <div class="labelled-diagram-wrap" id="agn-diagram-wrap">
+          <svg
+            id="agn-diagram"
+            class="responsive-svg"
+            width="640"
+            height="340"
+            viewBox="0 0 640 340"
+            role="img"
+            aria-label="Not to scale. An active galactic nucleus drawn side-on: a tiny black supermassive black hole at the centre, a thin flat glowing accretion disc round it, a thick dark dusty ring round the disc, shown cut through as a dark lump on each side, and two long narrow jets shooting out up and down along the axis. Arrows show gas spiralling into the disc."
+          ></svg>
+        </div>
+      </div>
+      <p>
+        An AGN is powered by <strong>matter falling onto a supermassive black hole</strong>. Gas
+        spirals in through an accretion disc, heated to millions of degrees, and gives out vast energy
+        before it falls in; some is fired out along two jets. More on
+        <a href="black-holes.html">Black holes: the evidence</a> and
+        <a href="space-telescopes.html#discoveries">X-ray accretion discs</a>.
+      </p>
+      <p class="note">
+        The dusty ring, the jets, and an AGN outshining all the stars of its galaxy: first draft, to be
+        checked by the teacher.
+      </p>
+    </section>
+
+    <section class="notes-section" id="types">
+      <h2>Seyferts, quasars and blazars</h2>
+      <p>Turn the view, and change the power:</p>
+
+      <div class="control">
+        <label for="view-angle">Your view, measured from the jet: <span id="view-angle-label"></span></label>
+        <input type="range" id="view-angle" aria-controls="view-diagram" min="0" max="90" step="5" value="45" />
+      </div>
+      <div class="control ag-power-buttons" role="group" aria-label="Power">
+        <button type="button" class="preset-button preset-button-active" data-power="modest" aria-pressed="true" aria-controls="view-diagram">Less powerful</button>
+        <button type="button" class="preset-button" data-power="huge" aria-pressed="false" aria-controls="view-diagram">Hugely powerful</button>
+      </div>
+
+      <div class="diagram spectrum-panel ag-panel">
+        <div class="labelled-diagram-wrap" id="view-diagram-wrap">
+          <svg
+            id="view-diagram"
+            class="responsive-svg"
+            width="640"
+            height="320"
+            viewBox="0 0 640 320"
+            role="img"
+            aria-label="Left: the active nucleus side-on, with an arrow showing your line of sight at the chosen angle from its jet. Right: what you see, named. Looking almost straight down a jet: a blazar, a brilliant flickering point. Otherwise, a hugely powerful one: a quasar, a star-like point whose galaxy is outshone; a less powerful one: a Seyfert galaxy, a spiral with a bright centre."
+          ></svg>
+        </div>
+      </div>
+      <p class="note sl-readout" id="view-readout" aria-live="polite"></p>
+      <p>
+        A <strong>Seyfert galaxy</strong> is a fairly nearby spiral with an unusually bright centre. A
+        <strong>quasar</strong> is so luminous and distant that it looks like a star. A
+        <strong>blazar</strong> has a jet pointing almost straight at us. Quasars were first found by
+        <a href="radio-telescopes.html#discoveries">radio telescopes</a>.
+      </p>
+      <p class="note">
+        That these may be one kind of object, seen from different angles and with different power, and
+        the angle used here (a blazar within about 15° of the jet): first draft, to be checked by the
+        teacher.
+      </p>
+    </section>
+
+    <section class="notes-section" id="spectrum">
+      <h2>Seeing an AGN in every band</h2>
+      <p>Each part of the spectrum shows a different part of an AGN:</p>
+
+      <div class="diagram spectrum-panel ag-panel">
+        <div class="labelled-diagram-wrap" id="bands-diagram-wrap">
+          <svg
+            id="bands-diagram"
+            class="responsive-svg"
+            width="640"
+            height="370"
+            viewBox="0 0 640 370"
+            role="img"
+            aria-label="A strip down the electromagnetic spectrum, longest wavelength at the top: a long, lazy wave for radio, then shorter waves for infrared, visible light, ultraviolet, X-ray and gamma ray. Beside each, a small AGN with the part that band shows ringed: radio, the jets and lobes; infrared, the dusty ring; visible light, the accretion disc and the galaxy's stars; ultraviolet, the hottest parts of the disc; X-ray, the gas next to the black hole; gamma ray, a jet pointing at us."
+          ></svg>
+        </div>
+      </div>
+      <p>
+        So astronomers combine many bands: radio from dishes on the ground, infrared from
+        <a href="infrared-telescopes.html">high, dry sites</a>, X-rays and gamma rays from telescopes in
+        space.
+      </p>
+      <p class="note">Which part each band mainly shows: first draft, to be checked by the teacher.</p>
+    </section>
+
+    <section class="notes-section" id="exam-tips">
+      <h2>Exam tips</h2>
+      <p class="exam-tip">
+        <strong>Common exam confusion:</strong> the energy comes from matter falling in, heated outside
+        the black hole, not from the black hole itself.
+        <a href="#agn">A galaxy with an active centre &uarr;</a>
+      </p>
+      <p class="exam-tip">
+        <strong>Common exam confusion:</strong> a quasar looks like a star but is the centre of a very
+        distant galaxy.
+        <a href="#types">Seyferts, quasars and blazars &uarr;</a>
+      </p>
+    </section>
+
+    <section class="notes-section" id="related">
+      <h2>Related pages</h2>
+      <div class="page-card-list">
+        <a class="page-card" href="black-holes.html">
+          <h3>Black holes: the evidence</h3>
+          <p class="page-card-description">Supermassive black holes.</p>
+        </a>
+        <a class="page-card" href="radio-telescopes.html">
+          <h3>Radio telescopes</h3>
+          <p class="page-card-description">Quasars and jets.</p>
+        </a>
+        <a class="page-card" href="space-telescopes.html">
+          <h3>Space telescopes</h3>
+          <p class="page-card-description">X-ray accretion discs.</p>
+        </a>
+        <a class="page-card" href="infrared-telescopes.html">
+          <h3>Infrared telescopes and high-altitude sites</h3>
+          <p class="page-card-description">Seeing warm dust.</p>
+        </a>
+      </div>
+    </section>
+
+    <section class="questions" id="questions">
+      <h2>Practice questions</h2>
+      <div id="questions-list"></div>
+    </section>
+
+    <section class="progress">
+      <h2>Your progress</h2>
+      <ul id="progress-list"></ul>
+      <p class="note">Stored in this browser only (localStorage) &mdash; no account needed.</p>
+    </section>
+
+    <p class="coverage" id="coverage"></p>
+    <p class="next-page-link" id="next-page"></p>
+  </main>
+
+  <script src="../src/curriculum.js?v=202611231200"></script>
+  <script src="../src/pages.js?v=202611231200"></script>
+  <script src="../src/specData.js?v=202610161036"></script>
+  <script src="../src/spectra.js?v=202611131200"></script>
+  <script src="../src/spectrumDrawing.js?v=202611130900"></script>
+  <script src="../src/galaxyDrawing.js?v=202611221200"></script>
+  <script src="../src/activeGalaxies.js?v=202611231200"></script>
+  <script src="../src/activeGalaxyDrawing.js?v=202611231200"></script>
+  <script src="../src/activeGalaxiesQuestions.js?v=202611231200"></script>
+  <script src="../glossary.js?v=202610131052"></script>
+  <script src="../quiz-ui.js?v=202611121900"></script>
+  <script src="active-galaxies.js?v=202611231200"></script>
+  <script src="../diagramEnlarge.js?v=202611111500"></script>
+  <script src="../notesPage.js?v=202609252100"></script>
+  <script src="../nextPage.js?v=202610161057"></script>
+</body>
+</html>

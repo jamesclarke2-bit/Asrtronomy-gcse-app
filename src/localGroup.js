@@ -50,7 +50,7 @@
   ];
 
   const GROUP = {
-    galaxies: 50, // "about 50 or more", most of them dwarf galaxies
+    galaxies: 80, // "more than 50" (about 80 known), most of them dwarf galaxies
     acrossPc: 3000000, // about 3 million pc (about 10 million ly)
   };
 
@@ -59,7 +59,7 @@
    * last (rounded), with what it holds.
    */
   const LEVELS = [
-    { id: 'group', name: 'Our Local Group', acrossLy: 10e6, holds: 'about 50 galaxies, most of them small' },
+    { id: 'group', name: 'Our Local Group', acrossLy: 10e6, holds: 'more than 50 galaxies, most of them dwarfs' },
     { id: 'cluster', name: 'A galaxy cluster', acrossLy: 20e6, holds: 'hundreds to thousands of galaxies' },
     { id: 'supercluster', name: 'A supercluster', acrossLy: 300e6, holds: 'many groups and clusters' },
     { id: 'web', name: 'The cosmic web', acrossLy: 3e9, holds: 'superclusters strung along filaments, round huge empty voids' },

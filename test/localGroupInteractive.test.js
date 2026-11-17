@@ -132,7 +132,7 @@ WIDTHS.forEach(({ name, width, height }) => {
 
   test(`${name}: every section with general knowledge labels it first draft`, async (t) => {
     await withPage(t, still, async (page) => {
-      for (const [sel, re] of [['#local-group', /About 50 galaxies.*first draft, to be checked by the teacher.*1 pc = 3\.26 light-years/], ['#bigger', /10 million, 20 million, 300 million and 3 billion light-years.*first draft, to be checked by the teacher/]]) {
+      for (const [sel, re] of [['#local-group', /More than 50 galaxies \(about 80 known\), most of them dwarfs.*first draft, to be checked by the teacher.*1 pc = 3\.26 light-years/], ['#bigger', /10 million, 20 million, 300 million and 3 billion light-years.*first draft, to be checked by the teacher/]]) {
         assert.match((await page.locator(`${sel} .note`).last().textContent()).replace(/\s+/g, ' '), re, sel);
       }
     });

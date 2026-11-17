@@ -42,6 +42,8 @@ every page listed as conforming below.
 | `notes/our-galaxy.html` | Yes (built to it from the start) |
 | `notes/local-group.html` | Yes (built to it from the start) |
 | `notes/galaxy-types.html` | Yes (built to it from the start) |
+| `notes/active-galaxies.html` | Yes (built to it from the start) |
+| `notes/galaxy-formation.html` | Yes (built to it from the start) |
 
 Every `notes/` page now conforms. When a page is retrofitted, add it to `CONFORMING_PAGES`
 in `test/notesTemplate.test.js` and update this table.

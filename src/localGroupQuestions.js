@@ -50,7 +50,7 @@
       };
     }
 
-    const BOUND = 'A group of about 50 galaxies, including the Milky Way, held together by their gravity';
+    const BOUND = 'A group of more than 50 galaxies, including the Milky Way, held together by their gravity';
     const GRAVITY = 'Gravity pulls galaxies towards each other, so they gather into groups, clusters and superclusters';
     const SATELLITES = 'The Large and Small Magellanic Clouds';
     const lmcPc = L.LMC_PC;
@@ -64,7 +64,7 @@
 
     return [
       // 15.4
-      single('lg-what', '15.4', 'What is the Local Group?', [BOUND, 'All the stars near the Sun', 'The galaxies we can see with the naked eye', 'Every galaxy in the Universe'], BOUND, 'the group of galaxies, including the Milky Way, gravitationally linked (held together by their gravity): about 50 galaxies, most of them small dwarfs'),
+      single('lg-what', '15.4', 'What is the Local Group?', [BOUND, 'All the stars near the Sun', 'The galaxies we can see with the naked eye', 'Every galaxy in the Universe'], BOUND, 'the group of galaxies, including the Milky Way, gravitationally linked (held together by their gravity): more than 50 galaxies (about 80 known), most of them dwarfs'),
       single('lg-held', '15.4', 'What holds the galaxies of the Local Group together?', ['Their gravity', 'A cloud of gas round them all', 'Magnetic fields', 'Nothing: they are just in the same direction in the sky'], 'Their gravity', 'their gravity: the galaxies are gravitationally linked, so they stay together instead of moving apart with the expanding Universe'),
       // 15.5
       single('lg-largest', '15.5', 'Which is the largest galaxy in the Local Group?', ['The Andromeda Galaxy (M31)', 'The Triangulum Galaxy (M33)', 'The Large Magellanic Cloud', 'The Small Magellanic Cloud'], 'The Andromeda Galaxy (M31)', 'the Andromeda Galaxy (M31), a spiral a little bigger than the Milky Way'),

@@ -59,12 +59,12 @@ for each.
 | 15.6 | COVERED (2026-11-22) | `notes/galaxy-types.html` §`classify` (eight drawn galaxies to sort into spiral, barred spiral, elliptical and irregular, with feedback); questions `gt-classify-elliptical`, `gt-classify-barred`, `gt-classify-irregular`, `gt-classify-spiral` (all drawn), `gt-bar-or-not` (u6.6) | — | — |
 | 15.7 | COVERED (2026-11-22) | `notes/galaxy-types.html` §`tuning-fork` (a drawn tuning fork: E0-E7 on the handle, S0 at the fork, Sa-Sc and SBa-SBc on the prongs, irregulars apart, the Milky Way ringed at SBb); questions `gt-fork-parts`, `gt-e-number`, `gt-a-to-c`, `gt-irregular-place`, `gt-evolution`, `gt-milky-way` (u6.6) | — | — |
 | 15.8 | COVERED (2026-11-21) | `notes/our-galaxy.html` §`shape` (the bar labelled; "barred spiral, type SBb" in the text); question `gx-type` (u4.4) | — | — |
-| 15.9 | MISSING | — | No AGN/radiation-beyond-visible content anywhere | New page (radio astronomy + AGN/quasars — overlaps 13.27, see Part 3) |
-| 15.10 | MISSING | — | "AGN"/"active galactic" not found anywhere | Same new page |
-| 15.11 | MISSING | — | "Seyfert" and "blazar" appear nowhere; "quasar" appears for 13.27 on `notes/radio-telescopes.html` (2026-11-14), but only as a radio discovery, not as an active galaxy | Same new page |
-| 15.12 | MISSING | — | No content | Same new page |
+| 15.9 | COVERED (2026-11-23) | `notes/active-galaxies.html` §`agn` ("huge amounts of radiation beyond visible light", the AGN drawn) and §`spectrum` (a strip of five bands, each showing a part); question `ag-beyond` (u6.7) | — | — |
+| 15.10 | COVERED (2026-11-23) | `notes/active-galaxies.html` §`agn` (the AGN drawn: supermassive black hole, accretion disc, dusty ring, jets, gas falling in; "powered by matter falling onto a supermassive black hole"); questions `ag-power`, `ag-parts` (lettered drawing) (u6.7) | — | — |
+| 15.11 | COVERED (2026-11-23) | `notes/active-galaxies.html` §`types` (a viewing-angle slider and power buttons redrawing what you see: Seyfert, quasar or blazar); questions `ag-match`, `ag-quasar-name`, `ag-blazar` (u6.7) | — | — |
+| 15.12 | COVERED (2026-11-23) | `notes/active-galaxies.html` §`spectrum` (radio, infrared, visible/UV, X-ray and gamma-ray rows, each with the part of the AGN it shows ringed); questions `ag-bands`, `ag-why-many` (u6.7) | — | — |
 | 15.13 | COVERED (2026-11-22) | `notes/local-group.html` §`bigger` (a four-step zoom out, Local Group to cluster to supercluster to cosmic web, each with a box the size of the previous view, and why gravity groups galaxies); questions `lg-why-clusters`, `lg-ladder`, `lg-voids` (u6.5) | — | — |
-| 15.14 | MISSING | — | No galaxy-formation-theory content anywhere | New page |
+| 15.14 | COVERED (2026-11-23) | `notes/galaxy-formation.html` §`top-down`, §`bottom-up` and §`mergers` (each a drawing in four steps, chosen by buttons); questions `gf-theories`, `gf-gravity`, `gf-disc`, `gf-halo`, `gf-evidence`, `gf-merger-result`, `gf-collision`, `gf-milky-way` (u6.8) | — | — |
 | 16.1 | MISSING | — | No redshift content beyond a bare, unexplained formula row (see 16.3) | New page (e.g. "Redshift, Hubble's Law and the Big Bang") covering 16.1–16.9 |
 | 16.2 | MISSING | — | No explanation that redshift = recession anywhere | Same new page |
 | 16.3 | MISSING | — | `notes/data-sheet.html`'s equations table has the bare row `(λ − λ₀) / λ₀ = v / c` with its worked-example column literally reading "Coming soon" — a formula in a reference table, no explanation, no diagram, no question | Same new page |

@@ -35,6 +35,9 @@ test('every choice question has exactly one fully-correct answer and shows the m
 
 test('the Local Group, its members, and why galaxies are grouped', () => {
   assert.match(ans('lg-what'), /held together by their gravity/);
+  assert.match(ans('lg-what'), /^A group of more than 50 galaxies/);
+  assert.match(questions.find((q) => q.id === 'lg-what').check('x').message, /more than 50 galaxies \(about 80 known\), most of them dwarfs/);
+  assert.doesNotMatch(JSON.stringify(questions.map((q) => [q.prompt, q.options, q.check({}).message])), /about 50 galaxies/);
   assert.equal(ans('lg-held'), 'Their gravity');
   assert.equal(ans('lg-largest'), 'The Andromeda Galaxy (M31)');
   assert.equal(ans('lg-satellites'), 'The Large and Small Magellanic Clouds');

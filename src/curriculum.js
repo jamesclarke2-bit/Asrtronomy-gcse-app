@@ -1080,7 +1080,7 @@ const UNITS = [
         // question; now notes/local-group.html's subtopic, keeping its id.
         spec: ['15.4', '15.5', '15.13'],
         notes:
-          "the Local Group is the group of galaxies gravitationally linked to the Milky Way, about 50 galaxies (most of them dwarfs) about 3 million pc (10 million light-years) across; its biggest members are the Andromeda Galaxy (M31, a spiral about 760,000 pc, 2.5 million light-years, away) and the Milky Way, with the Triangulum Galaxy (M33, a smaller spiral, about 850,000 pc) and the Large and Small Magellanic Clouds (LMC and SMC, small irregulars close to the Milky Way, about 50,000 pc and 62,000 pc); the LMC and M31 distances come from Cepheids (Variable stars page) and 1 pc = 3.26 light-years; gravity pulls galaxies together into groups, clusters of hundreds to thousands of galaxies, and superclusters, and on the largest scale superclusters lie along filaments round huge, nearly empty voids, a cosmic web. Every distance, count and size is a first draft, to be checked by the teacher.",
+          "the Local Group is the group of galaxies gravitationally linked to the Milky Way, more than 50 galaxies (about 80 known, most of them dwarfs) about 3 million pc (10 million light-years) across; its biggest members are the Andromeda Galaxy (M31, a spiral about 760,000 pc, 2.5 million light-years, away) and the Milky Way, with the Triangulum Galaxy (M33, a smaller spiral, about 850,000 pc) and the Large and Small Magellanic Clouds (LMC and SMC, small irregulars close to the Milky Way, about 50,000 pc and 62,000 pc); the LMC and M31 distances come from Cepheids (Variable stars page) and 1 pc = 3.26 light-years; gravity pulls galaxies together into groups, clusters of hundreds to thousands of galaxies, and superclusters, and on the largest scale superclusters lie along filaments round huge, nearly empty voids, a cosmic web. Every distance, count and size is a first draft, to be checked by the teacher.",
       },
       {
         id: 'u6.6',
@@ -1089,6 +1089,22 @@ const UNITS = [
         spec: ['15.6', '15.7'],
         notes:
           "the Hubble classification sorts galaxies by shape into spirals (a round bulge with arms), barred spirals (a straight bar through the centre, the arms starting from its ends), ellipticals (a smooth oval, no arms) and irregulars (no regular shape); on Hubble's tuning fork the ellipticals run along the handle from round E0 to the flattest E7, the handle splits at S0 (a disc with no arms), and the spirals (Sa, Sb, Sc) and barred spirals (SBa, SBb, SBc) run along the two prongs, from a big bulge and tightly wound arms (a) to a small bulge and loose arms (c); irregulars sit off the fork; the Milky Way is SBb; Hubble once wondered whether galaxies change along the fork, which is no longer thought true. The sub-type meanings and the evolution idea are a first draft, to be checked by the teacher.",
+      },
+      {
+        id: 'u6.7',
+        title: 'Active galaxies',
+        depth: 'know',
+        spec: ['15.9', '15.10', '15.11', '15.12'],
+        notes:
+          "some galaxies give out huge amounts of radiation beyond visible light (radio, infrared, X-rays, gamma rays) from a tiny region at their centre, an Active Galactic Nucleus (AGN), powered by matter falling onto a supermassive black hole: gas spirals in through an accretion disc, heated to millions of degrees, and some is fired out as jets, with a dusty ring (torus) round the disc; Seyfert galaxies are fairly nearby spirals with unusually bright centres, quasars are extremely luminous, very distant AGNs that look like stars, and blazars have a jet pointing almost straight at us; these may be one kind of object seen from different angles and with different power; information comes from many parts of the spectrum: radio for the jets and lobes, infrared for the dust, visible and ultraviolet for the disc, X-rays for the hottest gas, gamma rays for jets pointing at us. The ring, the one-model idea, the angles and what each band shows are a first draft, to be checked by the teacher.",
+      },
+      {
+        id: 'u6.8',
+        title: 'How galaxies form and change',
+        depth: 'understand',
+        spec: ['15.14'],
+        notes:
+          "in the top-down theory a whole galaxy forms from one huge gas cloud that collapses under gravity, its first stars and globular clusters forming in the round halo before it spins faster and flattens into a disc; in the bottom-up theory small clumps form first and gravity merges them over billions of years into bigger galaxies, supported by very distant (young) galaxies being smaller and more irregular, and favoured by most astronomers today; collisions change galaxy types, two spirals merging into an elliptical (stars rarely hit, but gas clouds collide, flinging out tails and setting off bursts of star formation); the Milky Way and Andromeda are expected to merge in about 4 to 5 billion years. A first draft, to be checked by the teacher.",
       },
     ],
   },
