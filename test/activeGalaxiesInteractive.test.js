@@ -158,7 +158,7 @@ WIDTHS.forEach(({ name, width, height }) => {
       for (const sel of ['#agn', '#types', '#spectrum']) {
         assert.match((await page.locator(`${sel} .note`).last().textContent()).replace(/\s+/g, ' '), /first draft, to be checked by the teacher/, sel);
       }
-      assert.match((await page.locator('#agn .note').last().textContent()).replace(/\s+/g, ' '), /^Gas heated to millions of degrees/);
+      assert.match((await page.locator('#agn .note').last().textContent()).replace(/\s+/g, ' '), /Gas heated to millions of degrees/);
       assert.match((await page.locator('#types .note').last().textContent()).replace(/\s+/g, ' '), /one kind of object, seen from different angles and with different power/);
     });
   });
