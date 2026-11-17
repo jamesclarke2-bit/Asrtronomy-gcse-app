@@ -278,6 +278,28 @@
 
   // --- Bar chart: relative size, largest first -----------------------
 
+  // A bar filled with diagonal stripes and outlined, for dwarf planets.
+  function drawStripedBar(ctx, x, y, w, h, colour) {
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(x, y, w, h);
+    ctx.clip();
+    ctx.fillStyle = '#fff';
+    ctx.fillRect(x, y, w, h);
+    ctx.strokeStyle = colour;
+    ctx.lineWidth = 2;
+    for (let sx = x - h; sx < x + w + h; sx += 5) {
+      ctx.beginPath();
+      ctx.moveTo(sx, y + h);
+      ctx.lineTo(sx + h, y);
+      ctx.stroke();
+    }
+    ctx.restore();
+    ctx.strokeStyle = colour;
+    ctx.lineWidth = 1.5;
+    ctx.strokeRect(x, y, w, h);
+  }
+
   function drawSizeBarChart() {
     const canvas = document.getElementById('size-bar-chart');
     const ctx = canvas.getContext('2d');
@@ -299,12 +321,22 @@
       ctx.textBaseline = 'middle';
       ctx.fillText(body.name, margin.left - 8, y + rowHeight / 2);
 
-      ctx.fillStyle = body.type === 'Planet' ? '#2a6bd6' : '#c0392b';
-      ctx.fillRect(margin.left, y + rowHeight * 0.18, barWidth, rowHeight * 0.64);
+      // Planets: solid bars. Dwarf planets: striped bars, also labelled
+      // "dwarf planet", so the two never differ by colour alone.
+      const isPlanet = body.type === 'Planet';
+      const barY = y + rowHeight * 0.18;
+      const barH = rowHeight * 0.64;
+      if (isPlanet) {
+        ctx.fillStyle = '#2a6bd6';
+        ctx.fillRect(margin.left, barY, barWidth, barH);
+      } else {
+        drawStripedBar(ctx, margin.left, barY, Math.max(barWidth, 6), barH, '#c0392b');
+      }
 
       ctx.fillStyle = '#1b3a63';
       ctx.textAlign = 'left';
-      ctx.fillText(`${body.relativeSize.toFixed(2)}×`, margin.left + barWidth + 6, y + rowHeight / 2);
+      const valueText = `${body.relativeSize.toFixed(2)}×${isPlanet ? '' : ' (dwarf planet)'}`;
+      ctx.fillText(valueText, margin.left + Math.max(barWidth, isPlanet ? 0 : 6) + 6, y + rowHeight / 2);
     });
   }
 
@@ -326,21 +358,50 @@
     const maxRadius = canvas.height / 2 - 30; // the largest body (Jupiter) at this screen radius
     const pxPerEarthRadius = maxRadius / (sorted[0].relativeSize / 2);
 
-    const baselineY = canvas.height - 24;
+    const baselineY = canvas.height - 36;
     let x = 20;
+    let dwarfLeft = Infinity;
+    let dwarfRight = -Infinity;
     ctx.font = '10px sans-serif';
     ctx.textAlign = 'center';
+    let smallIndex = 0;
     sorted.forEach((body) => {
       const r = Math.max((body.relativeSize / 2) * pxPerEarthRadius, SIZE_SCALE_MIN_RADIUS_PX);
-      const cx = x + r;
+      // Small bodies get a little extra room, and their names alternate
+      // between two rows, so neighbouring names never overlap.
+      const spaceR = Math.max(r, 8);
+      const cx = x + spaceR;
+      const small = r < 8;
+      const labelY = baselineY + 12 + (small && smallIndex++ % 2 === 1 ? 13 : 0);
       ctx.beginPath();
       ctx.arc(cx, baselineY - r, r, 0, Math.PI * 2);
       ctx.fillStyle = body.type === 'Planet' ? '#2a6bd6' : '#c0392b';
       ctx.fill();
       ctx.fillStyle = '#555';
-      ctx.fillText(body.name, cx, baselineY + 12);
-      x = cx + r + 14;
+      ctx.fillText(body.name, cx, labelY);
+      if (body.type !== 'Planet') {
+        dwarfLeft = Math.min(dwarfLeft, cx - 10);
+        dwarfRight = Math.max(dwarfRight, cx + 10);
+      }
+      x = cx + spaceR + 11;
     });
+
+    // The dwarf planets are bracketed and labelled, not told apart by
+    // colour alone.
+    if (dwarfRight > dwarfLeft) {
+      const by = baselineY - 22;
+      ctx.strokeStyle = '#555';
+      ctx.lineWidth = 1.2;
+      ctx.beginPath();
+      ctx.moveTo(dwarfLeft, by + 6);
+      ctx.lineTo(dwarfLeft, by);
+      ctx.lineTo(dwarfRight, by);
+      ctx.lineTo(dwarfRight, by + 6);
+      ctx.stroke();
+      ctx.fillStyle = '#333';
+      ctx.font = '11px sans-serif';
+      ctx.fillText('dwarf planets', (dwarfLeft + dwarfRight) / 2, by - 6);
+    }
 
     ctx.strokeStyle = '#cdd7e1';
     ctx.beginPath();
@@ -372,8 +433,8 @@
 
   function drawRingSystems() {
     const svg = document.getElementById('ring-systems-diagram');
-    const viewHeight = 160;
-    const cy = viewHeight / 2;
+    const viewHeight = 182;
+    const cy = 80;
     const margin = 18;
     const gap = 18;
 
@@ -413,6 +474,8 @@
       if (appearance.dashed) ringAttrs['stroke-dasharray'] = '4 5';
       svgEl('ellipse', ringAttrs, svg);
       svgEl('circle', { cx: p.cx, cy, r: p.radius, fill: appearance.fill, stroke: appearance.stroke, 'stroke-width': 1.5 }, svg);
+      const label = svgEl('text', { x: p.cx, y: viewHeight - 6, 'font-size': 14, fill: '#333', 'text-anchor': 'middle' }, svg);
+      label.textContent = p.name;
     });
   }
 
@@ -454,16 +517,22 @@
         const cx = x + spacingR;
         ctx.beginPath();
         ctx.arc(cx, rowCy, r, 0, Math.PI * 2);
+        // The one data-sheet moon is labelled "(data sheet)" and drawn
+        // with a solid outline; every other moon is first draft, drawn
+        // with a dashed outline and its name marked with an asterisk —
+        // never told apart by colour alone.
         ctx.fillStyle = moon.onDataSheet ? '#2a6bd6' : '#8a97a5';
         ctx.fill();
-        ctx.strokeStyle = '#555';
-        ctx.lineWidth = 1;
+        ctx.strokeStyle = '#333';
+        ctx.lineWidth = moon.onDataSheet ? 2 : 1;
+        ctx.setLineDash(moon.onDataSheet ? [] : [3, 2]);
         ctx.stroke();
+        ctx.setLineDash([]);
 
         ctx.fillStyle = '#555';
         ctx.font = '10px sans-serif';
         ctx.textAlign = 'center';
-        ctx.fillText(moon.name, cx, rowCy + r + 11);
+        ctx.fillText(moon.onDataSheet ? `${moon.name} (data sheet)` : `${moon.name}*`, cx, rowCy + r + 11);
         ctx.font = '12px sans-serif';
 
         x = cx + spacingR + 16;
@@ -652,9 +721,13 @@
     SpecData.PLANETARY_DATA.forEach((body) => {
       const x = xFor(body.distanceAU);
       const y = yFor(body.meanTemperatureC);
-      ctx.beginPath();
-      ctx.arc(x, y, body.name === 'Venus' ? 6 : 4, 0, Math.PI * 2);
+      // Planets are circles, dwarf planets squares (shape, not just
+      // colour); Venus is drawn larger and labelled.
+      const markR = body.name === 'Venus' ? 6 : 4;
       ctx.fillStyle = body.name === 'Venus' ? '#c0392b' : body.type === 'planet' ? '#2a6bd6' : '#8a97a5';
+      ctx.beginPath();
+      if (body.type === 'planet') ctx.arc(x, y, markR, 0, Math.PI * 2);
+      else ctx.rect(x - markR, y - markR, markR * 2, markR * 2);
       ctx.fill();
 
       labelBelow = x - lastX < LABEL_COLLISION_PX ? !labelBelow : false;
@@ -670,6 +743,23 @@
     ctx.font = 'italic 11px sans-serif';
     ctx.textAlign = 'left';
     ctx.fillText('Distance from the Sun (AU, logarithmic) →', margin.left, canvas.height - 6);
+
+    // Key: shape, not colour, tells planets from dwarf planets.
+    ctx.font = '11px sans-serif';
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'middle';
+    const kx = canvas.width - 210;
+    const ky = margin.top + 8;
+    ctx.fillStyle = '#2a6bd6';
+    ctx.beginPath();
+    ctx.arc(kx, ky, 4, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = '#333';
+    ctx.fillText('planet', kx + 9, ky);
+    ctx.fillStyle = '#8a97a5';
+    ctx.fillRect(kx + 70, ky - 4, 8, 8);
+    ctx.fillStyle = '#333';
+    ctx.fillText('dwarf planet', kx + 83, ky);
   }
 
   // --- Comet diagram: a schematic orbit, tails always away from the Sun ---

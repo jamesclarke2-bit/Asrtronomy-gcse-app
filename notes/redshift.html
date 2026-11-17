@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; form-action 'none'; base-uri 'self'" />
+  <meta name="referrer" content="no-referrer" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Redshift</title>
+  <link rel="stylesheet" href="../styles.css?v=202611221200" />
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg?v=202610130720" />
+</head>
+<body>
+  <main>
+    <p class="back-link"><a href="../index.html">&larr; Back to all tools</a></p>
+
+    <h1>Redshift</h1>
+    <p class="subtitle">
+      Light from distant galaxies arrives stretched to longer wavelengths. Slide a galaxy's speed and
+      watch its lines move, then work out how fast real galaxies are moving away.
+    </p>
+
+    <section class="notes-section" id="shifted">
+      <h2>Galaxies' light is shifted to the red</h2>
+      <div class="diagram spectrum-panel rs-panel">
+        <div class="labelled-diagram-wrap" id="redshift-diagram-wrap">
+          <svg
+            id="redshift-diagram"
+            class="responsive-svg"
+            width="640"
+            height="300"
+            viewBox="0 0 640 300"
+            role="img"
+            aria-label="Top: hydrogen's four absorption lines measured in a laboratory, beside a glowing lamp. Bottom: the same four lines in the light of a galaxy, drawn beside it, all moved to longer wavelengths, towards the red end. Arrows join each laboratory line to where it appears in the galaxy's light. The slider sets the galaxy's speed away from us: the faster it moves, the further the lines shift."
+          ></svg>
+        </div>
+      </div>
+
+      <div class="control">
+        <label for="redshift-speed">Galaxy's speed away from us (km/s)</label>
+        <input type="range" id="redshift-speed" min="0" max="20000" step="500" value="6000" />
+      </div>
+
+      <dl class="readout">
+        <dt>Speed away from us</dt>
+        <dd id="rs-speed-readout"></dd>
+        <dt>656.3 nm line seen at</dt>
+        <dd id="rs-observed-readout"></dd>
+        <dt>Wavelength shift</dt>
+        <dd id="rs-shift-readout" aria-live="polite"></dd>
+      </dl>
+
+      <p>
+        Hydrogen in a laboratory absorbs at fixed wavelengths (see
+        <a href="reading-a-spectrum.html#composition">Reading a spectrum</a>). In the light of a galaxy
+        outside the <a href="local-group.html#local-group">Local Group</a>, the same pattern appears,
+        but every line sits at a longer wavelength, towards the red end: a
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="redshift" aria-label="What is redshift?" aria-expanded="false">redshift</button>.
+        The whole pattern moves together, which is how we know they are the same lines.
+      </p>
+      <span class="glossary-definition" data-term="redshift" hidden></span>
+      <p class="note">
+        Galaxies inside the Local Group are left out: gravity holds the group together, so their own
+        motions win, and the Andromeda Galaxy is moving towards us, showing a blueshift. First draft,
+        to be checked by the teacher.
+      </p>
+    </section>
+
+    <section class="notes-section" id="why">
+      <h2>Why: the galaxy is moving away</h2>
+      <div class="diagram spectrum-panel rs-panel">
+        <div class="labelled-diagram-wrap" id="receding-diagram-wrap">
+          <svg
+            id="receding-diagram"
+            class="responsive-svg"
+            width="640"
+            height="300"
+            viewBox="0 0 640 300"
+            role="img"
+            aria-label="Two rows, each with the Earth on the left and a galaxy on the right sending light waves to the Earth. Top row: the galaxy is not moving, and one wavelength is marked. Bottom row: the galaxy is moving away, shown by an arrow pointing away from the Earth, and the waves reaching the Earth are stretched: one wavelength is marked and it is longer."
+          ></svg>
+        </div>
+      </div>
+      <p>
+        As a galaxy moves away, it sends out each wave crest from a little further off than the one
+        before, so the crests reach us further apart: the wavelength we receive is longer. Redshift is
+        caused by the galaxy
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="receding" aria-label="What does receding mean?" aria-expanded="false">receding</button>
+        from us, and the faster it recedes, the bigger the shift. Something moving towards us gives a
+        blueshift instead: the same idea as for stars on
+        <a href="reading-a-spectrum.html#radial-velocity">Reading a spectrum</a> and for gas in
+        <a href="our-galaxy.html#radio-map">Our Galaxy</a>'s 21 cm map.
+      </p>
+      <span class="glossary-definition" data-term="receding" hidden></span>
+    </section>
+
+    <section class="notes-section" id="calculate">
+      <h2>Working out the speed</h2>
+      <p class="formula">(wavelength shift) &divide; (emitted wavelength) = v &divide; c</p>
+      <ul class="tip-list">
+        <li><strong>wavelength shift</strong> = observed wavelength &minus; emitted wavelength</li>
+        <li><strong>emitted wavelength:</strong> the laboratory value</li>
+        <li><strong>v:</strong> the galaxy's recession velocity, its speed away from us</li>
+        <li><strong>c:</strong> the speed of light, <span id="rs-c-value"></span> (data sheet)</li>
+      </ul>
+      <p><strong>To find v,</strong> start from the relation and multiply both sides by c:</p>
+      <p class="formula">v = c &times; (wavelength shift) &divide; (emitted wavelength)</p>
+      <p>
+        <strong>To find the observed wavelength,</strong> multiply both sides by the emitted wavelength
+        to get the shift, then add the shift on:
+      </p>
+      <p class="formula">
+        wavelength shift = (emitted wavelength) &times; v &divide; c<br />
+        observed wavelength = emitted wavelength + wavelength shift
+      </p>
+
+      <div class="control rs-galaxy-buttons" role="group" aria-label="Practice galaxies">
+        <button type="button" class="preset-button preset-button-active" data-galaxy="A" aria-pressed="true" aria-controls="practice-diagram">Galaxy A</button>
+        <button type="button" class="preset-button" data-galaxy="B" aria-pressed="false" aria-controls="practice-diagram">Galaxy B</button>
+        <button type="button" class="preset-button" data-galaxy="C" aria-pressed="false" aria-controls="practice-diagram">Galaxy C</button>
+      </div>
+      <div class="diagram spectrum-panel rs-panel">
+        <div class="labelled-diagram-wrap" id="practice-diagram-wrap">
+          <svg
+            id="practice-diagram"
+            class="responsive-svg"
+            width="640"
+            height="280"
+            viewBox="0 0 640 280"
+            role="img"
+            aria-label="A made-up practice galaxy. Top: hydrogen's laboratory lines, with one line's emitted wavelength labelled. Bottom: the galaxy's lines, shifted, with the same line's observed wavelength labelled. The buttons choose galaxy A, B or C."
+          ></svg>
+        </div>
+      </div>
+
+      <h3>Worked example: Galaxy A</h3>
+      <ol class="tip-list" id="rs-worked-example"></ol>
+
+      <div class="control rs-calculator">
+        <label for="rs-answer"><span id="rs-calculator-label">Your v for Galaxy A</span> (km/s)</label>
+        <input type="number" id="rs-answer" step="any" />
+        <button type="button" id="rs-check">Check</button>
+      </div>
+      <p class="note sl-readout" id="rs-feedback" aria-live="polite"></p>
+    </section>
+
+    <section class="notes-section" id="exam-tips">
+      <h2>Exam tips</h2>
+      <p class="exam-tip">
+        <strong>Common exam confusion:</strong> the top of the fraction is the wavelength
+        <em>shift</em> (observed minus emitted), not the observed wavelength itself.
+        <a href="#calculate">Working out the speed &uarr;</a>
+      </p>
+      <p class="exam-tip">
+        <strong>Common exam confusion:</strong> v comes out in the same units as c. Use c in km/s to
+        get v in km/s, or in m/s to get v in m/s.
+        <a href="#calculate">Working out the speed &uarr;</a>
+      </p>
+    </section>
+
+    <section class="notes-section" id="related">
+      <h2>Related pages</h2>
+      <div class="page-card-list">
+        <a class="page-card" href="hubble-law.html">
+          <h3>Hubble's law, age and size</h3>
+          <p class="page-card-description">Put speeds with distances to find the Hubble constant.</p>
+        </a>
+        <a class="page-card" href="reading-a-spectrum.html">
+          <h3>Reading a spectrum</h3>
+          <p class="page-card-description">Absorption lines and the Doppler slider for stars.</p>
+        </a>
+        <a class="page-card" href="local-group.html">
+          <h3>The Local Group and beyond</h3>
+          <p class="page-card-description">The galaxies gravity holds close to ours.</p>
+        </a>
+        <a class="page-card" href="our-galaxy.html">
+          <h3>Our Galaxy</h3>
+          <p class="page-card-description">Redshift and blueshift of 21 cm radio waves.</p>
+        </a>
+      </div>
+    </section>
+
+    <section class="questions" id="questions">
+      <h2>Practice questions</h2>
+      <div id="questions-list"></div>
+    </section>
+
+    <section class="progress">
+      <h2>Your progress</h2>
+      <ul id="progress-list"></ul>
+      <p class="note">Stored in this browser only (localStorage) &mdash; no account needed.</p>
+    </section>
+
+    <p class="coverage" id="coverage"></p>
+    <p class="next-page-link" id="next-page"></p>
+  </main>
+
+  <script src="../src/curriculum.js?v=202611251200"></script>
+  <script src="../src/pages.js?v=202611251200"></script>
+  <script src="../src/specData.js?v=202610161036"></script>
+  <script src="../src/spectra.js?v=202611131200"></script>
+  <script src="../src/spectrumDrawing.js?v=202611130900"></script>
+  <script src="../src/galaxyDrawing.js?v=202611221200"></script>
+  <script src="../src/redshift.js?v=202611251200"></script>
+  <script src="../src/redshiftQuestions.js?v=202611251200"></script>
+  <script src="../glossary.js?v=202610131052"></script>
+  <script src="../quiz-ui.js?v=202611121900"></script>
+  <script src="redshift.js?v=202611251200"></script>
+  <script src="../diagramEnlarge.js?v=202611111500"></script>
+  <script src="../notesPage.js?v=202609252100"></script>
+  <script src="../nextPage.js?v=202610161057"></script>
+</body>
+</html>

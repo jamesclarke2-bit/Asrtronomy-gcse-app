@@ -114,6 +114,10 @@ test("getAllQuestionsNode's total is exactly the sum of every individual questio
   const ActiveGalaxies = require('../src/activeGalaxies');
   const { makeQuestions: makeGalaxyFormation } = require('../src/galaxyFormationQuestions');
   const GalaxyFormation = require('../src/galaxyFormation');
+  const { makeQuestions: makeRedshift } = require('../src/redshiftQuestions');
+  const Redshift = require('../src/redshift');
+  const { makeQuestions: makeHubbleLaw } = require('../src/hubbleLawQuestions');
+  const HubbleLaw = require('../src/hubbleLaw');
   const { makeQuestions: makeSunDeclination } = require('../src/sunDeclinationQuestions');
   const { makeQuestions: makeSunFeatures } = require('../src/sunFeaturesQuestions');
   const { makeQuestions: makeSunspotRotation } = require('../src/sunspotRotationQuestions');
@@ -166,6 +170,8 @@ test("getAllQuestionsNode's total is exactly the sum of every individual questio
     makeGalaxyTypes(GalaxyTypes).length +
     makeActiveGalaxies(ActiveGalaxies).length +
     makeGalaxyFormation(GalaxyFormation).length +
+    makeRedshift(Redshift).length +
+    makeHubbleLaw(HubbleLaw).length +
     makeSunDeclination({ getSunPosition: SolarPosition.getSunPosition }, Coordinates).length +
     makeSunFeatures(ButterflyDiagram).length +
     makeSunspotRotation(SunRotation).length +

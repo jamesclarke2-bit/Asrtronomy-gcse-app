@@ -1048,16 +1048,22 @@ const UNITS = [
     title: 'Cosmology',
     subtopics: [
       {
+        // notes/redshift.html's subtopic (spec 16.1-16.3).
         id: 'u6.1',
         title: 'Redshift',
-        depth: 'understand',
-        notes: 'Doppler shift applied to light from receding sources',
+        depth: 'be able to',
+        spec: ['16.1', '16.2', '16.3'],
+        notes:
+          "galaxies outside the Local Group show redshift: the same pattern of absorption lines as in a laboratory (hydrogen's 656.3, 486.1, 434.0 and 410.2 nm lines, as on Reading a spectrum), shifted to longer wavelengths, towards the red; redshift is caused by the galaxy receding (moving away), which stretches the waves we receive, and a bigger shift means a faster speed; (wavelength shift) ÷ (emitted wavelength) = v ÷ c, with wavelength shift = observed − emitted and c = 3.0 × 10⁸ m/s (300,000 km/s, data sheet), rearranged in steps to v = c × (wavelength shift) ÷ (emitted wavelength), or to the shift and then the observed wavelength. Inside the Local Group gravity wins, and the Andromeda Galaxy is approaching (blueshift): a first draft, to be checked by the teacher.",
       },
       {
+        // notes/hubble-law.html's subtopic (spec 16.4-16.6).
         id: 'u6.2',
-        title: "Hubble's law",
+        title: "Hubble's law, age and size",
         depth: 'be able to',
-        notes: 'v = H0 x d; calculating recession velocity or distance',
+        spec: ['16.4', '16.5', '16.6'],
+        notes:
+          "distances from Cepheid variables and speeds from redshift, plotted together, lie on a straight line through the origin: the further away a galaxy, the faster it recedes, which confirmed that the Universe is expanding; Hubble's law v = H0 × d, with H0 = 68 km/s per Mpc on the data sheet, is the gradient of that graph, and d = v ÷ H0; its uncertainty is half the range of the steepest and shallowest lines through every error bar, and a wider range of distances reduces the percentage uncertainty; the age of the Universe is about 1 ÷ H0 (1 Mpc = 3.1 × 10¹⁹ km, so H0 = 2.19 × 10⁻¹⁸ per second, 1 ÷ H0 = 4.56 × 10¹⁷ s, about 14.5 billion years) and its size about c × age, about 14.5 billion light-years: simple estimates. Slipher, Hubble and 1929, the accepted age (13.8 billion years) and the 46 billion light-year distance are a first draft, to be checked by the teacher.",
       },
       {
         id: 'u6.3',

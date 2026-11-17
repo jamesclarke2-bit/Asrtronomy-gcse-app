@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; form-action 'none'; base-uri 'self'" />
+  <meta name="referrer" content="no-referrer" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Hubble's law, age and size</title>
+  <link rel="stylesheet" href="../styles.css?v=202611221200" />
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg?v=202610130720" />
+</head>
+<body>
+  <main>
+    <p class="back-link"><a href="../index.html">&larr; Back to all tools</a></p>
+
+    <h1>Hubble's law, age and size</h1>
+    <p class="subtitle">
+      The further away a galaxy is, the faster it is moving away. Fit a line to find the Hubble
+      constant, then use it to estimate the age and size of the Universe.
+    </p>
+
+    <section class="notes-section" id="evidence">
+      <h2>Further away, faster away</h2>
+      <div class="diagram spectrum-panel hb-panel">
+        <div class="labelled-diagram-wrap" id="evidence-diagram-wrap">
+          <svg
+            id="evidence-diagram"
+            class="responsive-svg"
+            width="640"
+            height="330"
+            viewBox="0 0 640 330"
+            role="img"
+            aria-label="Three galaxies, near, further and furthest, drawn smaller the further away they are. Beside each, a strip of its spectrum around the 656.3 nanometre hydrogen line, marked against the laboratory position: the further the galaxy, the bigger the redshift. On the right, a small graph of recession velocity against distance: the three points lie on a straight line through the origin."
+          ></svg>
+        </div>
+      </div>
+      <p class="diagram-caption">
+        Distances from Cepheids; speeds from redshift (dashed line: the laboratory 656.3 nm line).
+        The points lie on a straight line through the origin.
+      </p>
+      <p>
+        Two measurements together confirmed that the Universe is expanding. Distances to galaxies came
+        from the Cepheid variable stars in them (see
+        <a href="variable-stars.html#standard-candles">Variable stars</a>), and their speeds from their
+        redshift (see <a href="redshift.html#calculate">Redshift</a>). Plotted on a graph, the points
+        lie close to a straight line through the origin: the further away a galaxy is, the faster it is
+        moving away from us. Speed in proportion to distance means the galaxies were once much closer
+        together: the Universe is expanding.
+      </p>
+      <p class="note">
+        Vesto Slipher measured the first galaxy redshifts in the 1910s; Edwin Hubble added Cepheid
+        distances and published the graph in 1929. First draft, to be checked by the teacher.
+      </p>
+    </section>
+
+    <section class="notes-section" id="graph">
+      <h2>Hubble's law: v = H<sub>0</sub> &times; d</h2>
+      <p class="formula">v = H<sub>0</sub> &times; d</p>
+      <p>
+        v is a galaxy's recession velocity (km/s), d its distance in
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="megaparsec" aria-label="What is a megaparsec?" aria-expanded="false">megaparsecs</button>
+        (Mpc), and H<sub>0</sub>, the
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="hubbleConstant" aria-label="What is the Hubble constant?" aria-expanded="false">Hubble constant</button>,
+        is the gradient of the graph: <span id="hb-h0-value"></span> (data sheet). To find a distance
+        instead, divide both sides by H<sub>0</sub>: d = v &divide; H<sub>0</sub>.
+      </p>
+      <span class="glossary-definition" data-term="megaparsec" hidden></span>
+      <span class="glossary-definition" data-term="hubbleConstant" hidden></span>
+      <ul class="tip-list" id="hb-law-examples"></ul>
+
+      <div class="control hb-set-buttons" role="group" aria-label="Which galaxies to plot">
+        <button type="button" class="preset-button preset-button-active" data-set="wide" aria-pressed="true" aria-controls="hubble-graph">Near and far (up to 180 Mpc)</button>
+        <button type="button" class="preset-button" data-set="near" aria-pressed="false" aria-controls="hubble-graph">Nearby only (up to 40 Mpc)</button>
+      </div>
+      <div class="control hb-line-buttons" role="group" aria-label="Which line to move">
+        <button type="button" class="preset-button preset-button-active" data-line="best" aria-pressed="true" aria-controls="hubble-graph">Best-fit line</button>
+        <button type="button" class="preset-button" data-line="steep" aria-pressed="false" aria-controls="hubble-graph">Steepest line</button>
+        <button type="button" class="preset-button" data-line="shallow" aria-pressed="false" aria-controls="hubble-graph">Shallowest line</button>
+      </div>
+      <div class="diagram spectrum-panel hb-panel">
+        <div class="labelled-diagram-wrap" id="hubble-graph-wrap">
+          <svg
+            id="hubble-graph"
+            class="responsive-svg hb-graph"
+            width="640"
+            height="440"
+            viewBox="0 0 640 440"
+            role="img"
+            aria-label="A graph of recession velocity in km/s against distance in Mpc for made-up practice galaxies, each point with a vertical error bar. Three lines through the origin: a solid best-fit line, a dashed steepest line and a dotted shallowest line. Drag on the graph, or use the slider, to move the chosen line."
+          ></svg>
+        </div>
+      </div>
+      <div class="control">
+        <label for="hb-gradient"><span id="hb-gradient-label">Best-fit line</span> gradient (km/s per Mpc)</label>
+        <input type="range" id="hb-gradient" min="20" max="150" step="0.5" value="60" />
+      </div>
+      <div class="control">
+        <button type="button" id="hb-show-lines">Show the best fit, steepest and shallowest lines</button>
+      </div>
+      <dl class="readout">
+        <dt>Best fit: H<sub>0</sub></dt>
+        <dd id="hb-best-readout"></dd>
+        <dt>Steepest line</dt>
+        <dd id="hb-steep-readout"></dd>
+        <dt>Shallowest line</dt>
+        <dd id="hb-shallow-readout"></dd>
+        <dt>Uncertainty in H<sub>0</sub></dt>
+        <dd id="hb-uncertainty-readout" aria-live="polite"></dd>
+      </dl>
+      <p>
+        Read H<sub>0</sub> from your best-fit line: gradient = velocity &divide; distance, in km/s per
+        Mpc. Then find the steepest and shallowest lines that still pass through every error bar: the
+        uncertainty in H<sub>0</sub> is half their range, (steepest &minus; shallowest) &divide; 2. Now
+        switch to the nearby galaxies only. The same-sized error bars let the lines swing much further,
+        so the percentage uncertainty is bigger. Measuring over a wider range of distances (a longer
+        measurement) makes the error bars a smaller fraction of the velocities, and so reduces the
+        percentage uncertainty in H<sub>0</sub>.
+      </p>
+      <p class="note">
+        The points are made-up practice data. Each error bar stands for a galaxy's own motion through
+        space, a few hundred km/s on top of the expansion: first draft, to be checked by the teacher.
+      </p>
+    </section>
+
+    <section class="notes-section" id="age">
+      <h2>The age and size of the Universe</h2>
+      <div class="diagram spectrum-panel hb-panel">
+        <div class="labelled-diagram-wrap" id="rewind-diagram-wrap">
+          <svg
+            id="rewind-diagram"
+            class="responsive-svg"
+            width="640"
+            height="262"
+            viewBox="0 0 640 262"
+            role="img"
+            aria-label="Three panels running the expansion backwards. Today: galaxies spread out, each with an arrow pointing away from the others, our Galaxy ringed. Earlier: the same galaxies at half the distances. The start: all of them together at one point."
+          ></svg>
+        </div>
+      </div>
+      <p>
+        Run the expansion backwards. A galaxy at distance d, moving away at H<sub>0</sub> &times; d,
+        took d &divide; (H<sub>0</sub> &times; d) = 1 &divide; H<sub>0</sub> to get there, whatever d
+        is. So every galaxy was together a time 1 &divide; H<sub>0</sub> ago: an estimate of the age of
+        the Universe. Converting the units, step by step:
+      </p>
+      <ol class="tip-list" id="hb-age-steps"></ol>
+      <p class="note sl-readout" id="hb-your-age" aria-live="polite"></p>
+
+      <div class="diagram spectrum-panel hb-panel">
+        <div class="labelled-diagram-wrap" id="size-diagram-wrap">
+          <svg
+            id="size-diagram"
+            class="responsive-svg"
+            width="640"
+            height="280"
+            viewBox="0 0 640 280"
+            role="img"
+            aria-label="Our Galaxy at the centre of a large dashed circle. A line from the centre to the circle is labelled c times age: how far light could have travelled since the start. Distant galaxies are scattered inside the circle."
+          ></svg>
+        </div>
+      </div>
+      <p>
+        Nothing travels faster than light, so in that time light could have crossed about
+        c &times; age. In light years that is the same number as the age in years:
+        <span id="hb-size-value"></span>, a rough size for the part of the Universe we can see.
+      </p>
+      <p class="note">
+        Both are simple estimates: they assume the Universe has always expanded at today's rate, which
+        is not quite true. The accepted age is about 13.8 billion years, and because space kept
+        stretching while the light travelled, the most distant matter we can see is now about 46
+        billion light-years away. First draft, to be checked by the teacher.
+      </p>
+    </section>
+
+    <section class="notes-section" id="exam-tips">
+      <h2>Exam tips</h2>
+      <p class="exam-tip">
+        <strong>Common exam confusion:</strong> H<sub>0</sub> is in km/s per Mpc. Change the Mpc into
+        km first, so the km cancel and H<sub>0</sub> is "per second"; only then work out
+        1 &divide; H<sub>0</sub>.
+        <a href="#age">The age and size of the Universe &uarr;</a>
+      </p>
+      <p class="exam-tip">
+        <strong>Common exam confusion:</strong> a bigger H<sub>0</sub> means faster expansion, so a
+        younger Universe, not an older one.
+        <a href="#age">The age and size of the Universe &uarr;</a>
+      </p>
+    </section>
+
+    <section class="notes-section" id="related">
+      <h2>Related pages</h2>
+      <div class="page-card-list">
+        <a class="page-card" href="redshift.html">
+          <h3>Redshift</h3>
+          <p class="page-card-description">Where each galaxy's speed comes from.</p>
+        </a>
+        <a class="page-card" href="variable-stars.html">
+          <h3>Variable stars</h3>
+          <p class="page-card-description">Cepheids: where the distances come from.</p>
+        </a>
+        <a class="page-card" href="local-group.html">
+          <h3>The Local Group and beyond</h3>
+          <p class="page-card-description">The neighbours that are not moving away.</p>
+        </a>
+      </div>
+    </section>
+
+    <section class="questions" id="questions">
+      <h2>Practice questions</h2>
+      <div id="questions-list"></div>
+    </section>
+
+    <section class="progress">
+      <h2>Your progress</h2>
+      <ul id="progress-list"></ul>
+      <p class="note">Stored in this browser only (localStorage) &mdash; no account needed.</p>
+    </section>
+
+    <p class="coverage" id="coverage"></p>
+    <p class="next-page-link" id="next-page"></p>
+  </main>
+
+  <script src="../src/curriculum.js?v=202611251200"></script>
+  <script src="../src/pages.js?v=202611251200"></script>
+  <script src="../src/specData.js?v=202610161036"></script>
+  <script src="../src/spectra.js?v=202611131200"></script>
+  <script src="../src/spectrumDrawing.js?v=202611130900"></script>
+  <script src="../src/galaxyDrawing.js?v=202611221200"></script>
+  <script src="../src/hubbleLaw.js?v=202611251200"></script>
+  <script src="../src/hubbleLawQuestions.js?v=202611251200"></script>
+  <script src="../glossary.js?v=202610131052"></script>
+  <script src="../quiz-ui.js?v=202611121900"></script>
+  <script src="hubble-law.js?v=202611251200"></script>
+  <script src="../diagramEnlarge.js?v=202611111500"></script>
+  <script src="../notesPage.js?v=202609252100"></script>
+  <script src="../nextPage.js?v=202610161057"></script>
+</body>
+</html>

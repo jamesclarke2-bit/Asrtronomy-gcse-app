@@ -33,16 +33,16 @@
         height="380"
         aria-label="A horizontal bar chart of each planet and dwarf planet's diameter relative to Earth's, from the exam data sheet, sorted largest to smallest"
       ></canvas>
-      <p class="diagram-caption">Relative size (diameter, &times; Earth) &mdash; not to scale for mass or distance</p>
+      <p class="diagram-caption">Relative size (diameter, &times; Earth): solid bars are planets, striped bars dwarf planets &mdash; not to scale for mass or distance</p>
 
       <p class="note">The same bodies, this time drawn to true scale against Earth:</p>
       <canvas
         id="size-scale-diagram"
         width="700"
-        height="200"
+        height="214"
         aria-label="Every planet and dwarf planet drawn as a circle sized to its true relative diameter, Jupiter and Saturn towering over the smaller dwarf planets, which appear as tiny dots"
       ></canvas>
-      <p class="diagram-caption">To scale by diameter &mdash; the smallest bodies are shown as a minimum-size dot so they're visible at all</p>
+      <p class="diagram-caption">To scale by diameter &mdash; the smallest bodies are shown as a minimum-size dot so they're visible at all; the dwarf planets are bracketed</p>
 
       <p class="note">
         <strong>First draft, to be checked by the teacher:</strong> this page, and the Atmosphere
@@ -69,7 +69,7 @@
         height="630"
         aria-label="The larger moons of Earth, Mars, Jupiter, Saturn, Uranus, Neptune and Pluto, grouped by planet and drawn to the same scale, showing Ganymede as the largest moon in the Solar System"
       ></canvas>
-      <p class="diagram-caption">To scale by diameter &mdash; blue is the Moon (the only one on the data sheet with a given diameter); grey moons are first draft</p>
+      <p class="diagram-caption">To scale by diameter. Only the Moon&rsquo;s size is on the data sheet, so it is labelled &ldquo;(data sheet)&rdquo; with a solid outline; every moon marked * with a dashed outline is first draft, to be checked by the teacher</p>
       <p>The larger moons on the exam data sheet, drawn to the same scale. Tap a name for a note.</p>
 
       <p>
@@ -129,7 +129,7 @@
         <svg
           id="ring-systems-diagram"
           class="responsive-svg"
-          viewBox="0 0 690 160"
+          viewBox="0 0 690 182"
           role="img"
           aria-label="Jupiter, Saturn, Uranus and Neptune drawn as circles at their true relative diameters, each surrounded by its own ring &mdash; Saturn's ring drawn far brighter and wider than the other three planets' faint, thin rings"
         ></svg>
@@ -232,7 +232,8 @@
         aria-label="A scatter chart of each planet and dwarf planet's mean temperature against its distance from the Sun on a logarithmic scale, with Venus standing out as hotter than its distance alone would suggest"
       ></canvas>
       <p class="diagram-caption">
-        Venus (470&deg;C) is hotter than Mercury despite being further from the Sun &mdash; its
+        Circles: planets; squares: dwarf planets. Venus (470&deg;C) is hotter than Mercury,
+        though further from the Sun &mdash; its
         thick CO&#8322; atmosphere traps heat.
       </p>
     </section>
@@ -426,9 +427,9 @@
           <text x="230" y="225" font-size="12" fill="#333" text-anchor="middle">The Sun's disc, as seen from Earth:</text>
           <circle cx="230" cy="260" r="35" fill="#fdf3e0" stroke="#9c6a1d" stroke-width="2" />
           <line x1="198" y1="250" x2="262" y2="254" stroke="#2a6bd6" stroke-width="2.5" />
-          <line x1="198" y1="268" x2="262" y2="266" stroke="#c0392b" stroke-width="2.5" />
+          <line x1="198" y1="268" x2="262" y2="266" stroke="#c0392b" stroke-width="2.5" stroke-dasharray="6,3" />
           <text x="280" y="253" font-size="11" fill="#2a6bd6" text-anchor="start">Track A</text>
-          <text x="280" y="269" font-size="11" fill="#c0392b" text-anchor="start">Track B</text>
+          <text x="280" y="269" font-size="11" fill="#c0392b" text-anchor="start">Track B (dashed)</text>
         </svg>
       </div>
       <p class="diagram-caption">
@@ -492,15 +493,17 @@
 
           <line x1="180" y1="65" x2="180" y2="145" stroke="#555" stroke-width="1.5" stroke-dasharray="5,4" />
           <text x="180" y="58" font-size="12" fill="#333" text-anchor="middle">Frost line</text>
+          <text x="115" y="74" font-size="11" fill="#333" text-anchor="middle">warmer: rock</text>
+          <text x="330" y="74" font-size="11" fill="#333" text-anchor="middle">colder: ices survive too</text>
 
           <circle cx="260" cy="105" r="8" fill="#6e5a40" />
           <circle cx="260" cy="105" r="22" fill="none" stroke="#2a6bd6" stroke-width="2" stroke-dasharray="3,3" />
           <text x="260" y="150" font-size="11" fill="#333" text-anchor="middle">Core accretion</text>
-          <text x="260" y="164" font-size="10" fill="#666" text-anchor="middle">(slow core, then gas capture)</text>
+          <text x="260" y="164" font-size="10" fill="#666" text-anchor="middle">(core first, then gas)</text>
 
           <ellipse cx="365" cy="105" rx="22" ry="16" fill="#8fa9c9" stroke="#45628f" stroke-width="2" />
           <text x="365" y="150" font-size="11" fill="#333" text-anchor="middle">Disc instability</text>
-          <text x="365" y="164" font-size="10" fill="#666" text-anchor="middle">(disc collapses directly)</text>
+          <text x="365" y="164" font-size="10" fill="#666" text-anchor="middle">(direct collapse)</text>
 
           <path d="M345,185 Q300,198 265,185" fill="none" stroke="#777" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#migration-arrowhead)" />
           <text x="305" y="203" font-size="10" fill="#555" text-anchor="middle">can migrate after forming</text>
@@ -657,8 +660,8 @@
     <p class="next-page-link" id="next-page"></p>
   </main>
 
-  <script src="../src/curriculum.js?v=202611241200"></script>
-  <script src="../src/pages.js?v=202611231200"></script>
+  <script src="../src/curriculum.js?v=202611251200"></script>
+  <script src="../src/pages.js?v=202611251200"></script>
   <script src="../src/specData.js?v=202610051000"></script>
   <script src="../src/orbitalMechanics.js?v=202610101700"></script>
   <script src="../src/tidalHeatingDiagram.js?v=202610101700"></script>
@@ -667,7 +670,7 @@
   <script src="../src/animationTiming.js?v=202610130606"></script>
   <script src="../glossary.js?v=202610131052"></script>
   <script src="../quiz-ui.js?v=202611121900"></script>
-  <script src="solar-system-bodies.js?v=202610261200"></script>
+  <script src="solar-system-bodies.js?v=202611251200"></script>
   <script src="../diagramEnlarge.js?v=202611111500"></script>
   <script src="../notesPage.js?v=202609252100"></script>
   <script src="../nextPage.js?v=202610161057"></script>

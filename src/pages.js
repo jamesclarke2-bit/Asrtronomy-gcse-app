@@ -547,6 +547,26 @@ const PAGES = [
     why: 'Active galaxies showed what galaxies can do; this asks how galaxies came to exist at all, and how collisions change them.',
   },
   {
+    title: 'Redshift',
+    description:
+      "A galaxy's absorption lines drawn against a laboratory's, with a speed slider that moves them to longer wavelengths: redshift; why a galaxy moving away stretches its light; and (wavelength shift) ÷ (emitted wavelength) = v ÷ c, rearranged step by step, with a worked example and practice galaxies to read and work out.",
+    href: 'notes/redshift.html',
+    units: ['u6.1'],
+    phase: 'Stars and the Universe',
+    position: 53,
+    why: "Reading a spectrum's Doppler shift for single stars, scaled up to whole galaxies: redshift as evidence that they are moving away from us.",
+  },
+  {
+    title: "Hubble's law, age and size",
+    description:
+      "Distances from Cepheids and speeds from redshift on one graph: further galaxies recede faster. Drag a best-fit line through made-up galaxies with error bars to find the Hubble constant and its uncertainty, then turn it into simple estimates of the age and size of the Universe.",
+    href: 'notes/hubble-law.html',
+    units: ['u6.2'],
+    phase: 'Stars and the Universe',
+    position: 54,
+    why: 'Redshift gave each galaxy a speed; put those speeds beside distances and the whole Universe turns out to be expanding.',
+  },
+  {
     title: 'Bodies of the Solar System',
     description:
       "A to-scale size line-up and bar chart of the planets and dwarf planets, the larger named moons by planet, the four ringed planets drawn at relative size with Saturn's rings the most visible, Io's tidal heating (reusable diagram) from its 1:2:4 resonance with Europa and Ganymede, a temperature-against-distance chart, a planet-vs-dwarf-planet decision diagram, asteroids/meteoroids/comets, a comet-tail diagram and the Kuiper Belt/Oort Cloud on a logarithmic scale, transits of Venus and measuring the AU, and brief formation theories — a first draft pending teacher review.",
@@ -663,6 +683,8 @@ const DIAGRAM_FIRST_PAGES = [
   'notes/galaxy-types.html',
   'notes/active-galaxies.html',
   'notes/galaxy-formation.html',
+  'notes/redshift.html',
+  'notes/hubble-law.html',
 ];
 
 /**
@@ -728,8 +750,8 @@ const COMING_SOON = [
   {
     name: 'Cosmology',
     phase: 'Stars and the Universe',
-    position: 53,
-    why: 'The rest of the course: the expanding Universe, the Big Bang and its evidence, and dark matter and dark energy.',
+    position: 55,
+    why: 'The rest of the course: the Big Bang and its evidence, and dark matter and dark energy.',
     // Every Topic 13 point is now covered: 13.8 by notes/massive-stars.html
     // (u4.15), which drew both HR tracks, so the old "Stars, galaxies and
     // the Universe" step (13.8 only) was removed.
@@ -743,17 +765,12 @@ const COMING_SOON = [
     // by notes/galaxy-types.html (u6.6); 15.9-15.12 by
     // notes/active-galaxies.html (u6.7) and 15.14 by
     // notes/galaxy-formation.html (u6.8), so every Topic 15 point is now
-    // covered; and 16.1-16.3 (redshift) have their own step just below.
+    // covered; 16.1-16.3 by notes/redshift.html (u6.1), which replaced
+    // the old "Redshift" step, and 16.4-16.6 by notes/hubble-law.html
+    // (u6.2).
     specPoints: [
-      '16.4', '16.5', '16.6', '16.7', '16.8', '16.9', '16.10', '16.11', '16.12',
+      '16.7', '16.8', '16.9', '16.10', '16.11', '16.12',
     ],
-  },
-  {
-    name: 'Redshift',
-    phase: 'Stars and the Universe',
-    position: 54,
-    why: "Reading a spectrum's Doppler shift for single stars, scaled up to whole galaxies: redshift as evidence that they are moving away from us.",
-    specPoints: ['16.1', '16.2', '16.3'],
   },
 ];
 
