@@ -135,7 +135,7 @@ WIDTHS.forEach(({ name, width, height }) => {
 
   test(`${name}: the theories, the evidence and the Milky Way and Andromeda merger are labelled first draft`, async (t) => {
     await withPage(t, still, async (page) => {
-      assert.match((await page.locator('#draft .note').textContent()).replace(/\s+/g, ' '), /Both theories.*Milky Way and Andromeda are expected to merge in about 4 to 5 billion years: first draft, to be checked by the teacher/);
+      assert.match((await page.locator('#draft .note').textContent()).replace(/\s+/g, ' '), /Both theories.*stars almost never hit each other.*Milky Way and Andromeda are expected to merge in about 4 to 5 billion years: first draft, to be checked by the teacher/);
       for (const href of ['galaxy-types.html', 'local-group.html', 'our-galaxy.html#shape']) assert.ok((await count(page, `main a[href="${href}"]`)) >= 1, href);
     });
   });
