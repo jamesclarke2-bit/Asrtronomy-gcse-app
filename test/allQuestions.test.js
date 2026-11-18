@@ -130,6 +130,8 @@ test("getAllQuestionsNode's total is exactly the sum of every individual questio
   const Exoplanets = require('../src/exoplanets');
   const { makeQuestions: makeLongitude } = require('../src/longitudeQuestions');
   const Longitude = require('../src/longitude');
+  const { makeQuestions: makeApollo } = require('../src/apolloQuestions');
+  const Apollo = require('../src/apollo');
   const { makeQuestions: makeSunDeclination } = require('../src/sunDeclinationQuestions');
   const { makeQuestions: makeSunFeatures } = require('../src/sunFeaturesQuestions');
   const { makeQuestions: makeSunspotRotation } = require('../src/sunspotRotationQuestions');
@@ -190,6 +192,7 @@ test("getAllQuestionsNode's total is exactly the sum of every individual questio
     makeGravityBodies(GravityBodies).length +
     makeExoplanets(Exoplanets).length +
     makeLongitude(Longitude).length +
+    makeApollo(Apollo).length +
     makeSunDeclination({ getSunPosition: SolarPosition.getSunPosition }, Coordinates).length +
     makeSunFeatures(ButterflyDiagram).length +
     makeSunspotRotation(SunRotation).length +

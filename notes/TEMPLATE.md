@@ -35,6 +35,7 @@ every page listed as conforming below.
 | `notes/space-telescopes.html` | Yes (built to it from the start) |
 | `notes/star-trails.html` | Yes (built to it from the start) |
 | `notes/space-probes.html` | Yes (built to it from the start) |
+| `notes/crewed-missions-apollo.html` | Yes (built to it from the start) |
 | `notes/catalogues-and-star-names.html` | Yes (built to it from the start) |
 | `notes/sun-like-star.html` | Yes (built to it from the start) |
 | `notes/massive-stars.html` | Yes (built to it from the start) |

@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; form-action 'none'; base-uri 'self'" />
+  <meta name="referrer" content="no-referrer" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Crewed missions and Apollo</title>
+  <link rel="stylesheet" href="../styles.css?v=202611221200" />
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg?v=202610130720" />
+</head>
+<body>
+  <main>
+    <p class="back-link"><a href="../index.html">&larr; Back to all tools</a></p>
+
+    <h1>Crewed missions and Apollo</h1>
+    <p class="subtitle">
+      What people can do in space that robots cannot, what it costs to keep them alive, and how the
+      Apollo programme took twelve people to walk on the Moon and brought them home.
+    </p>
+
+    <section class="notes-section" id="crew-or-robot">
+      <h2>Send people, or send a probe?</h2>
+      <div class="control am-task-buttons" role="group" aria-label="Choose a task">
+        <button type="button" class="preset-button preset-button-active" data-task="samples" aria-pressed="true" aria-controls="pros-cons-diagram">Collect varied Moon rocks</button>
+        <button type="button" class="preset-button" data-task="repair" aria-pressed="false" aria-controls="pros-cons-diagram">Repair a telescope in orbit</button>
+        <button type="button" class="preset-button" data-task="neptune" aria-pressed="false" aria-controls="pros-cons-diagram">Study Neptune's moons</button>
+        <button type="button" class="preset-button" data-task="map" aria-pressed="false" aria-controls="pros-cons-diagram">Map Mars from orbit</button>
+      </div>
+      <div class="diagram spectrum-panel am-panel">
+        <div class="labelled-diagram-wrap" id="pros-cons-wrap">
+          <svg
+            id="pros-cons-diagram"
+            class="responsive-svg"
+            width="640"
+            height="350"
+            viewBox="0 0 640 350"
+            role="img"
+            aria-label="Two matching columns. Advantages of a crew, each marked with a plus in a circle: decide on the spot, repair and adapt, bring samples home, inspire people. Disadvantages, each marked with an exclamation mark in a triangle: life support, risk to life, radiation, limited range. The task buttons draw a box round the points that decide each task."
+          ></svg>
+        </div>
+      </div>
+      <p class="note sl-readout" id="task-readout" aria-live="polite"></p>
+      <p>
+        A <strong>crewed mission</strong> carries people; a probe is a robot (see
+        <a href="space-probes.html#probe-types">Space probes</a>). People can think on the spot, choose
+        the best samples and fix things that break: crews repaired and upgraded the Hubble Space
+        Telescope, which later took the Deep Field (see
+        <a href="big-bang-evidence.html#deep-field">Evidence for the Big Bang</a>). But a crew needs
+        air, water, food and warmth, has to come home, and is at risk from accidents and radiation,
+        so crewed missions cost far more and have only gone as far as the Moon. A probe can travel for
+        years to the outer planets.
+      </p>
+      <p class="note">
+        Crews repairing and upgrading the Hubble Space Telescope, and people having travelled no
+        further than the Moon: first draft, to be checked by the teacher.
+      </p>
+    </section>
+
+    <section class="notes-section" id="saturn-v">
+      <h2>Apollo: the race and the rocket</h2>
+      <div class="diagram spectrum-panel am-panel">
+        <div class="labelled-diagram-wrap" id="saturn-wrap">
+          <svg
+            id="saturn-diagram"
+            class="responsive-svg"
+            width="640"
+            height="420"
+            viewBox="0 0 640 420"
+            role="img"
+            aria-label="A drawing of the Saturn V rocket, about 110 metres tall, labelled from the top: the launch escape tower, the Command Module, the Service Module, the Lunar Module folded inside an adapter, then the third, second and first stages."
+          ></svg>
+        </div>
+        <p class="diagram-caption">A drawing, not to scale across its width.</p>
+      </div>
+      <p>
+        In 1961 the Soviet Union put the first person in space, Yuri Gagarin. Weeks later, US
+        President John F. Kennedy set the goal of landing a man on the Moon and returning him safely
+        before the end of the decade: the <strong>Apollo programme</strong>. It cost about $25 billion
+        at the time. Its rocket, the <strong>Saturn V</strong>, burned its stages one after another,
+        each dropping away when empty so the rest had less mass to push; only the small spacecraft
+        on top went to the Moon.
+      </p>
+      <p class="note">
+        Yuri Gagarin, 1961; Kennedy's goal, set weeks later in 1961; the cost of about $25 billion at the time; the Saturn V
+        being about 110 m tall with three stages: first draft, to be checked by the teacher.
+      </p>
+    </section>
+
+    <section class="notes-section" id="modules">
+      <h2>Three spacecraft in one</h2>
+      <div class="control am-module-buttons" role="group" aria-label="Choose a module">
+        <button type="button" class="preset-button preset-button-active" data-module="cm" aria-pressed="true" aria-controls="modules-diagram">Command Module</button>
+        <button type="button" class="preset-button" data-module="sm" aria-pressed="false" aria-controls="modules-diagram">Service Module</button>
+        <button type="button" class="preset-button" data-module="lm" aria-pressed="false" aria-controls="modules-diagram">Lunar Module</button>
+      </div>
+      <div class="diagram spectrum-panel am-panel">
+        <div class="labelled-diagram-wrap" id="modules-wrap">
+          <svg
+            id="modules-diagram"
+            class="responsive-svg"
+            width="640"
+            height="310"
+            viewBox="0 0 640 310"
+            role="img"
+            aria-label="The three Apollo modules side by side: the cone-shaped Command Module with its heat shield, the cylindrical Service Module with its engine, and the Lunar Module, a top half on a legged bottom half. A box marks the module chosen with the buttons."
+          ></svg>
+        </div>
+      </div>
+      <p class="note sl-readout" id="module-readout" aria-live="polite"></p>
+      <p>
+        The Command and Service Modules flew joined together as one craft until just before the end.
+        Three astronauts travelled in the Command Module; two of them went down to the surface in the
+        Lunar Module while the third stayed in orbit.
+      </p>
+      <p class="note">
+        Each module's job, the crew of three with two landing and one staying in orbit: first draft,
+        to be checked by the teacher.
+      </p>
+    </section>
+
+    <section class="notes-section" id="mission-profile">
+      <h2>The journey, step by step</h2>
+      <div class="diagram spectrum-panel am-panel">
+        <div class="labelled-diagram-wrap" id="profile-wrap">
+          <svg
+            id="profile-diagram"
+            class="responsive-svg"
+            width="640"
+            height="320"
+            viewBox="0 0 640 320"
+            role="img"
+            aria-label="The Earth on the left and the Moon on the right, not to scale, with an orbit round each, an outward path above and a return path below. The current step's path is drawn bold and solid, with the spacecraft marked on it; the rest are thin and dashed."
+          ></svg>
+        </div>
+        <p class="diagram-caption">Not to scale.</p>
+      </div>
+      <div class="control">
+        <label for="profile-step">Step: <span id="profile-step-label"></span></label>
+        <input type="range" id="profile-step" aria-controls="profile-diagram" min="1" max="8" step="1" value="1" />
+      </div>
+      <div class="control">
+        <button type="button" id="profile-next" class="secondary-button" aria-controls="profile-diagram">Next step</button>
+      </div>
+      <p class="note sl-readout" id="profile-readout" aria-live="polite"></p>
+      <p class="note">
+        About 3 days each way, and the order of the steps: first draft, to be checked by the teacher.
+      </p>
+    </section>
+
+    <section class="notes-section" id="missions">
+      <h2>Four key missions</h2>
+      <div class="diagram spectrum-panel am-panel">
+        <div class="labelled-diagram-wrap" id="missions-wrap">
+          <svg
+            id="missions-diagram"
+            class="responsive-svg"
+            width="640"
+            height="300"
+            viewBox="0 0 640 300"
+            role="img"
+            aria-label="Four drawn cards: Apollo 8, 1968, the Moon with an orbit round it, first to orbit the Moon; Apollo 11, 1969, a Lunar Module on the surface, first landing; Apollo 13, 1970, a damaged Service Module and a curved path home, safe return; Apollo 17, 1972, a Lunar Module and a rover, last landing."
+          ></svg>
+        </div>
+      </div>
+      <ul class="tip-list" id="missions-list"></ul>
+      <p>
+        The six landing sites are marked on the Moon map on
+        <a href="moon-structure.html#named-features">The Moon: Structure, Surface and Origin</a>.
+      </p>
+      <p class="note">
+        Twelve people walking on the Moon in six landings; the missions' years, what each did, and
+        the names Neil Armstrong, Buzz Aldrin, Michael Collins
+        and Harrison Schmitt: first draft, to be checked by the teacher.
+      </p>
+    </section>
+
+    <section class="notes-section" id="legacy">
+      <h2>What Apollo left behind and brought back</h2>
+      <div class="diagram spectrum-panel am-panel">
+        <div class="labelled-diagram-wrap" id="laser-wrap">
+          <svg
+            id="laser-diagram"
+            class="responsive-svg"
+            width="640"
+            height="240"
+            viewBox="0 0 640 240"
+            role="img"
+            aria-label="A telescope on the Earth fires a laser pulse at a reflector left on the Moon by Apollo astronauts, and the pulse comes straight back. The Earth-Moon distance from the data sheet and the round-trip time are labelled."
+          ></svg>
+        </div>
+        <p class="diagram-caption">Not to scale.</p>
+      </div>
+      <p class="note sl-readout" id="laser-readout"></p>
+      <p>
+        The crews left reflectors on the Moon. Timing a laser pulse there and back measures the
+        Earth-Moon distance to within centimetres or better. They also brought back hundreds of
+        kilograms of rock and soil. The rocks are extremely dry, with only traces of water found
+        later, and they are part of the evidence for how the Moon formed (see
+        <a href="moon-structure.html#origin">where the Moon came from</a>).
+      </p>
+      <p class="note">
+        The reflectors measuring the distance to within centimetres or better; about 382 kg of
+        samples; the rocks being extremely dry, with only traces of water found later: first draft,
+        to be checked by the teacher. The round trip uses the data sheet's Earth-Moon distance and
+        speed of light.
+      </p>
+    </section>
+
+    <section class="notes-section" id="exam-tips">
+      <h2>Exam tips</h2>
+      <p class="exam-tip">
+        <strong>Common exam link:</strong> weigh a crew against a probe for the task given: people
+        for judgement, repairs and samples close by; probes for long, far or dangerous trips.
+        <a href="#crew-or-robot">Send people, or send a probe? &uarr;</a>
+      </p>
+      <p class="exam-tip">
+        <strong>Common exam confusion:</strong> only the Command Module came home. The Service Module
+        was let go before re-entry, and the Lunar Module was left behind.
+        <a href="#modules">Three spacecraft in one &uarr;</a>
+      </p>
+    </section>
+
+    <section class="notes-section" id="related">
+      <h2>Related pages</h2>
+      <div class="page-card-list">
+        <a class="page-card" href="space-probes.html">
+          <h3>Space probes</h3>
+          <p class="page-card-description">Robot missions, and escape velocity.</p>
+        </a>
+        <a class="page-card" href="moon-structure.html">
+          <h3>The Moon: Structure, Surface and Origin</h3>
+          <p class="page-card-description">Landing sites, and the evidence for the Moon's origin.</p>
+        </a>
+        <a class="page-card" href="big-bang-evidence.html">
+          <h3>Evidence for the Big Bang</h3>
+          <p class="page-card-description">The Deep Field, from a telescope crews repaired.</p>
+        </a>
+      </div>
+    </section>
+
+    <section class="questions" id="questions">
+      <h2>Practice questions</h2>
+      <div id="questions-list"></div>
+    </section>
+
+    <section class="progress">
+      <h2>Your progress</h2>
+      <ul id="progress-list"></ul>
+      <p class="note">Stored in this browser only (localStorage) &mdash; no account needed.</p>
+    </section>
+
+    <p class="coverage" id="coverage"></p>
+    <p class="next-page-link" id="next-page"></p>
+  </main>
+
+  <script src="../src/curriculum.js?v=202611301200"></script>
+  <script src="../src/pages.js?v=202611301200"></script>
+  <script src="../src/specData.js?v=202610161036"></script>
+  <script src="../src/spectra.js?v=202611131200"></script>
+  <script src="../src/spectrumDrawing.js?v=202611130900"></script>
+  <script src="../src/apollo.js?v=202611301200"></script>
+  <script src="../src/apolloDrawing.js?v=202611301200"></script>
+  <script src="../src/apolloQuestions.js?v=202611301200"></script>
+  <script src="../glossary.js?v=202610131052"></script>
+  <script src="../quiz-ui.js?v=202611121900"></script>
+  <script src="crewed-missions-apollo.js?v=202611301200"></script>
+  <script src="../diagramEnlarge.js?v=202611111500"></script>
+  <script src="../notesPage.js?v=202609252100"></script>
+  <script src="../nextPage.js?v=202610161057"></script>
+</body>
+</html>

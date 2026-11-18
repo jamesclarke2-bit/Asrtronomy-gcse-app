@@ -330,7 +330,8 @@ test('every spec point the syllabus map marks "not built yet", in any registered
     assert.ok(topic && topic.registered, `Topic ${topicNumber} should be registered`);
     return notBuiltLeafCodes(topic.points, topicNumber, []);
   });
-  assert.ok(notBuilt.length > 0, 'there should be at least one not-built point to check against (test fixture assumption)');
+  // Once every point is built, the coming-soon list must be empty too.
+  if (notBuilt.length === 0) assert.deepEqual(COMING_SOON, [], 'every spec point is built, so no coming-soon step should remain');
   notBuilt.forEach(({ code, topic }) => {
     assert.ok(namedSpecPoints.has(code), `${code} (Topic ${topic}, not built) is not named in any coming-soon step`);
   });

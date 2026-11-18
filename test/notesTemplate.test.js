@@ -43,6 +43,7 @@ const CONFORMING_PAGES = [
   'notes/space-telescopes.html',
   'notes/star-trails.html',
   'notes/space-probes.html',
+  'notes/crewed-missions-apollo.html',
   'notes/catalogues-and-star-names.html',
   'notes/sun-like-star.html',
   'notes/massive-stars.html',

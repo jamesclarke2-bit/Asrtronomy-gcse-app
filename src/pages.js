@@ -387,6 +387,16 @@ const PAGES = [
     why: 'Space telescopes still look from afar; a probe goes there, and getting it away from the Earth needs a rocket.',
   },
   {
+    title: 'Crewed missions and Apollo',
+    description:
+      'Crewed missions against robotic probes, with advantages and disadvantages side by side and four tasks to weigh; the Apollo programme: why it began, the Saturn V, the Command, Service and Lunar Modules and what each did, the mission profile step by step, four key missions (Apollo 8, 11, 13 and 17), and the laser reflectors and Moon rocks it left behind.',
+    href: 'notes/crewed-missions-apollo.html',
+    units: ['u5.8'],
+    phase: 'Telescopes and exploring',
+    position: 34,
+    why: 'Space probes showed what robots can do when they go there; this asks what people add, and what it costs, through the Apollo missions to the Moon.',
+  },
+  {
     title: 'Parallax and the Parsec: Measuring Distances to Stars',
     description:
       "How Earth's own orbit becomes a surveying baseline: a nearby star's tiny apparent shift against far more distant background stars, six months apart, gives its distance by simple geometry. The parsec itself, defined from that shift, and why the method runs out past a few hundred parsecs.",
@@ -734,6 +744,7 @@ const DIAGRAM_FIRST_PAGES = [
   'notes/space-telescopes.html',
   'notes/star-trails.html',
   'notes/space-probes.html',
+  'notes/crewed-missions-apollo.html',
   'notes/catalogues-and-star-names.html',
   'notes/sun-like-star.html',
   'notes/massive-stars.html',
@@ -775,16 +786,9 @@ const TAP_REVEAL_HEAVY_PAGES = ['notes/earth-structure.html'];
  * built pages once buildJourney merges them.
  */
 const COMING_SOON = [
-  {
-    // 11.26-11.28 (robotic probes) are covered by notes/space-probes.html
-    // (u5.3), which replaced the old "Probes and Apollo" placeholder;
-    // crewed missions and Apollo are still to come.
-    name: 'Crewed missions and Apollo',
-    phase: 'Telescopes and exploring',
-    position: 34,
-    why: 'Space probes showed what robots can do when they go there; this asks what people add, and what it costs, through the Apollo missions to the Moon.',
-    specPoints: ['11.29', '11.30'],
-  },
+  // Empty: every spec point now has a built page. The last step here,
+  // "Crewed missions and Apollo" (11.29, 11.30), became
+  // notes/crewed-missions-apollo.html at the same position, 34.
 ];
 
 /**

@@ -16,13 +16,13 @@ One row per point in the Edexcel GCSE Astronomy (1AS0) specification, Topics 1�
 | 8 | Planetary motion and gravity | 9 | 9 | 0 | 3 |
 | 9 | Exploring the Moon | 5 | 5 | 0 | 0 |
 | 10 | Solar astronomy | 12 | 12 | 0 | 0 |
-| 11 | Exploring the Solar System | 33 | 31 | 2 | 0 |
+| 11 | Exploring the Solar System | 33 | 33 | 0 | 0 |
 | 12 | Formation of planetary systems | 14 | 14 | 0 | 0 |
 | 13 | Exploring starlight | 49 | 49 | 0 | 1 |
 | 14 | Stellar evolution | 11 | 11 | 0 | 0 |
 | 15 | Our place in the Galaxy | 14 | 14 | 0 | 0 |
 | 16 | Cosmology | 12 | 12 | 0 | 0 |
-| **Total** | | **244** | **242** | **2** | **28** |
+| **Total** | | **244** | **244** | **0** | **28** |
 
 ## Methodology
 
@@ -230,8 +230,8 @@ One row per point in the Edexcel GCSE Astronomy (1AS0) specification, Topics 1�
 | 11.26 | understand | advantages and disadvantages of fly-by, orbiter, impactor and lander probes | [Space probes](../notes/space-probes.html) | – |  | |
 | 11.27 | know | an example of each (New Horizons; Juno or Dawn; Deep Impact; Philae) with target and major discoveries | [Space probes](../notes/space-probes.html) | – |  | |
 | 11.28 | understand | a probe must reach escape velocity, which needs rockets | [Space probes](../notes/space-probes.html) | – |  | |
-| 11.29 | understand | advantages and disadvantages of manned missions | *not built* | – |  | |
-| 11.30 | understand | main features of the Apollo programme | *not built* | – |  | |
+| 11.29 | understand | advantages and disadvantages of manned missions | [Crewed missions and Apollo](../notes/crewed-missions-apollo.html) | – |  | |
+| 11.30 | understand | main features of the Apollo programme | [Crewed missions and Apollo](../notes/crewed-missions-apollo.html) | – |  | |
 
 ## Topic 12: Formation of planetary systems
 
