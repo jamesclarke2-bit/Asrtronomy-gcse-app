@@ -158,7 +158,7 @@ WIDTHS.forEach(({ name, width, height }) => {
 
   test(`${name}: the Local Group note is labelled first draft, and the companion pages are linked`, async (t) => {
     await withPage(t, still, async (page) => {
-      assert.match((await page.locator('#shifted .note').textContent()).replace(/\s+/g, ' '), /Andromeda Galaxy is moving towards us, showing a blueshift\. First draft, to be checked by the teacher\./);
+      assert.match((await page.locator('#shifted .note').textContent()).replace(/\s+/g, ' '), /Andromeda Galaxy is moving towards us, showing a blueshift\. Hydrogen's four laboratory lines are drawn at 656\.3, 486\.1, 434\.0 and 410\.2 nm\. First draft, to be checked by the teacher\./);
       for (const href of ['reading-a-spectrum.html#composition', 'reading-a-spectrum.html#radial-velocity', 'local-group.html#local-group', 'our-galaxy.html#radio-map']) {
         assert.ok((await count(page, `main a[href="${href}"]`)) >= 1, href);
       }

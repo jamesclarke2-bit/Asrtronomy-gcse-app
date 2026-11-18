@@ -17,12 +17,12 @@ One row per point in the Edexcel GCSE Astronomy (1AS0) specification, Topics 1�
 | 9 | Exploring the Moon | 5 | 5 | 0 | 0 |
 | 10 | Solar astronomy | 12 | 12 | 0 | 0 |
 | 11 | Exploring the Solar System | 33 | 31 | 2 | 0 |
-| 12 | Formation of planetary systems | 14 | 5 | 9 | 1 |
+| 12 | Formation of planetary systems | 14 | 14 | 0 | 0 |
 | 13 | Exploring starlight | 49 | 49 | 0 | 1 |
 | 14 | Stellar evolution | 11 | 11 | 0 | 0 |
 | 15 | Our place in the Galaxy | 14 | 14 | 0 | 0 |
 | 16 | Cosmology | 12 | 12 | 0 | 0 |
-| **Total** | | **244** | **230** | **14** | **29** |
+| **Total** | | **244** | **239** | **5** | **28** |
 
 ## Methodology
 
@@ -237,20 +237,20 @@ One row per point in the Edexcel GCSE Astronomy (1AS0) specification, Topics 1�
 
 | Code | Depth | Spec point | Page(s) | Questions | Thin coverage | Teacher's verdict |
 |---|---|---|---|---|---|---|
-| 12.1a | be able to | identify gravity's operation in the Solar System: regular motion caused by gravity | *not built* | – |  | |
-| 12.1b | be able to | identify gravity's operation in the Solar System: tidal forces (ring systems, asteroid belts, internal heating) | [Bodies of the Solar System](../notes/solar-system-bodies.html) | 0 | ⚠ be able to point, only 0 practice questions site-wide | |
-| 12.1c | be able to | identify gravity's operation in the Solar System: multi-body interactions (shifting orbits, chaos, resonances, Lagrange points) | *not built* | – |  | |
+| 12.1a | be able to | identify gravity's operation in the Solar System: regular motion caused by gravity | [Gravity and forming bodies](../notes/gravity-forming-bodies.html) | 15 |  | |
+| 12.1b | be able to | identify gravity's operation in the Solar System: tidal forces (ring systems, asteroid belts, internal heating) | [Bodies of the Solar System](../notes/solar-system-bodies.html) | 4 |  | |
+| 12.1c | be able to | identify gravity's operation in the Solar System: multi-body interactions (shifting orbits, chaos, resonances, Lagrange points) | [Gravity and forming bodies](../notes/gravity-forming-bodies.html) | 15 |  | |
 | 12.1d | be able to | identify gravity's operation in the Solar System: collisions (impact craters, changes to orbits and tilts) | [The Moon: Structure, Surface and Origin](../notes/moon-structure.html) | 2 |  | |
 | 12.1e | be able to | identify gravity's operation in the Solar System: the solar wind's effects (on comets, planetary atmospheres and the heliosphere) | [The Sun: Structure and Features](../notes/sun-features.html) | 2 |  | |
-| 12.2a | be able to | identify interactions in forming planets and moons: the Roche limit | *not built* | – |  | |
-| 12.2b | be able to | identify interactions in forming planets and moons: round or irregular shape | *not built* | – |  | |
-| 12.2c | be able to | identify interactions in forming planets and moons: holding an atmosphere | *not built* | – |  | |
+| 12.2a | be able to | identify interactions in forming planets and moons: the Roche limit | [Gravity and forming bodies](../notes/gravity-forming-bodies.html) | 15 |  | |
+| 12.2b | be able to | identify interactions in forming planets and moons: round or irregular shape | [Gravity and forming bodies](../notes/gravity-forming-bodies.html) | 15 |  | |
+| 12.2c | be able to | identify interactions in forming planets and moons: holding an atmosphere | [Gravity and forming bodies](../notes/gravity-forming-bodies.html) | 15 |  | |
 | 12.3 | understand | main theories for the formation of gas giants | [Bodies of the Solar System](../notes/solar-system-bodies.html) | – |  | |
-| 12.4 | understand | exoplanet detection methods (transit, astrometry, radial velocity) | *not built* | – |  | |
+| 12.4 | understand | exoplanet detection methods (transit, astrometry, radial velocity) | [Exoplanets and life](../notes/exoplanets-life.html) | – |  | |
 | 12.5 | understand | the requirements for life, and life on Titan, Europa, Enceladus and outside the Solar System | [Bodies of the Solar System](../notes/solar-system-bodies.html) | – |  | |
-| 12.6 | understand | Goldilocks (habitable) zones | *not built* | – |  | |
-| 12.7 | understand | the Drake equation | *not built* | – |  | |
-| 12.8 | understand | SETI by radio, and the benefits and dangers of finding extraterrestrial life | *not built* | – |  | |
+| 12.6 | understand | Goldilocks (habitable) zones | [Exoplanets and life](../notes/exoplanets-life.html) | – |  | |
+| 12.7 | understand | the Drake equation | [Exoplanets and life](../notes/exoplanets-life.html) | – |  | |
+| 12.8 | understand | SETI by radio, and the benefits and dangers of finding extraterrestrial life | [Exoplanets and life](../notes/exoplanets-life.html) | – |  | |
 
 ## Topic 13: Exploring starlight
 

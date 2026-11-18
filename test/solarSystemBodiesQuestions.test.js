@@ -75,3 +75,14 @@ test('every question only tags u3.x ids that actually exist in curriculum.js', (
     q.units.forEach((id) => assert.ok(getSubtopic(id), `${q.id} references missing subtopic "${id}"`));
   });
 });
+
+test('12.1b: at least two questions identify tidal forces, each with one right answer and a mark scheme', () => {
+  const tidal = makeQuestions(SpecData).filter((q) => q.spec === '12.1b');
+  assert.ok(tidal.length >= 2, `${tidal.length} questions tagged 12.1b`);
+  tidal.forEach((q) => {
+    assert.ok(q.units.some((u) => getSubtopic(u).spec.includes('12.1b')), `${q.id} sits on a 12.1b subtopic`);
+    assert.equal(q.options.filter((o) => q.check(o).correct).length, 1, q.id);
+    q.options.forEach((o) => assert.match(q.check(o).message, /^Mark scheme:/, q.id));
+  });
+  assert.ok(findQuestion(tidal, 'tidal-ring-from-moon').check('Tidal forces pull the moon apart, and the pieces make a ring').correct);
+});

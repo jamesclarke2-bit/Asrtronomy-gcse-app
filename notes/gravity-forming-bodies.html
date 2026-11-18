@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; form-action 'none'; base-uri 'self'" />
+  <meta name="referrer" content="no-referrer" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Gravity and forming bodies</title>
+  <link rel="stylesheet" href="../styles.css?v=202611221200" />
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg?v=202610130720" />
+</head>
+<body>
+  <main>
+    <p class="back-link"><a href="../index.html">&larr; Back to all tools</a></p>
+
+    <h1>Gravity and forming bodies</h1>
+    <p class="subtitle">
+      How to spot gravity at work in the Solar System, and three things gravity decides for every
+      planet and moon: whether it survives close in, whether it is round, and whether it keeps air.
+    </p>
+
+    <section class="notes-section" id="regular">
+      <h2>Regular, predictable motion</h2>
+      <div class="diagram spectrum-panel gb-panel">
+        <div class="labelled-diagram-wrap" id="regular-wrap">
+          <svg
+            id="regular-diagram"
+            class="responsive-svg"
+            width="640"
+            height="340"
+            viewBox="0 0 640 340"
+            role="img"
+            aria-label="The Sun with the orbits of Mercury, Venus, Earth and Mars, each planet drawn as a different shape with an arrow showing its direction of travel. A key gives each planet's orbital period from the data sheet. Below the key, the Moon's phases run new, first quarter, full, last quarter and back to new, repeating every 29.5 days."
+          ></svg>
+        </div>
+        <p class="diagram-caption">Not to scale. Planet periods from the data sheet.</p>
+      </div>
+      <p>
+        Gravity from the Sun keeps every planet going round in the same path, in the same time,
+        orbit after orbit; the Earth's gravity does the same for the Moon. Because the motion is so
+        regular, it can be predicted: the planets' positions, the Moon's phases, and eclipses are
+        worked out years ahead. Kepler's laws describe exactly how (see
+        <a href="../sims/kepler.html">Kepler's laws</a>). If you see something that repeats like
+        clockwork, you are seeing gravity's regular motion.
+      </p>
+      <p class="note">
+        The Moon's phase cycle of about 29.5 days: first draft, to be checked by the teacher.
+      </p>
+    </section>
+
+    <section class="notes-section" id="lagrange">
+      <h2>Several bodies at once: Lagrange points</h2>
+      <div class="diagram spectrum-panel gb-panel">
+        <div class="labelled-diagram-wrap" id="lagrange-wrap">
+          <svg
+            id="lagrange-diagram"
+            class="responsive-svg"
+            width="640"
+            height="400"
+            viewBox="0 0 640 400"
+            role="img"
+            aria-label="The Sun at the centre and the Earth on its dashed orbit to the right. Five diamond markers show the Lagrange points: L1 between the Sun and the Earth, L2 just beyond the Earth, L3 on the far side of the Sun, L4 60 degrees ahead of the Earth and L5 60 degrees behind it."
+          ></svg>
+        </div>
+        <p class="diagram-caption">Not to scale: L1 and L2 are drawn much further from the Earth than they really are.</p>
+      </div>
+      <p>
+        When two big bodies orbit together, like the Sun and the Earth, their gravity combines.
+        There are five places, called <strong>Lagrange points</strong> (L1 to L5), where a small
+        object can go round the Sun in step with the Earth, keeping the same position compared with
+        both. Space telescopes are parked near L2, the far orbit on the
+        <a href="space-telescopes.html#orbits">Space telescopes</a> page, where the Sun, the Earth
+        and the Moon all stay on one side. Dust and small asteroids gather near L4 and L5.
+      </p>
+      <p class="note">
+        L1 and L2 about 1.5 million km from the Earth, telescopes parked near L2, and dust and
+        asteroids gathering at L4 and L5 (Jupiter's Trojan asteroids are an example): first draft, to be
+        checked by the teacher.
+      </p>
+    </section>
+
+    <section class="notes-section" id="resonance">
+      <h2>Resonances, shifting orbits and chaos</h2>
+      <div class="diagram spectrum-panel gb-panel">
+        <div class="labelled-diagram-wrap" id="resonance-wrap">
+          <svg
+            id="resonance-diagram"
+            class="responsive-svg"
+            width="640"
+            height="340"
+            viewBox="0 0 640 340"
+            role="img"
+            aria-label="Jupiter with the orbits of Io (a circle), Europa (a square) and Ganymede (a triangle). Bars on the right show how many orbits each moon has made. The slider moves time on: in the time Io goes round four times, Europa goes round twice and Ganymede once, and the pattern repeats."
+          ></svg>
+        </div>
+      </div>
+      <div class="control">
+        <label for="resonance-time">Time (Io orbits): <span id="resonance-time-label"></span></label>
+        <input type="range" id="resonance-time" aria-controls="resonance-diagram" min="0" max="4" step="0.25" value="0" />
+      </div>
+      <div class="control">
+        <button type="button" id="resonance-step" class="secondary-button" aria-controls="resonance-diagram">Step on a quarter of an Io orbit</button>
+      </div>
+      <p class="note sl-readout" id="resonance-readout" aria-live="polite"></p>
+      <p>
+        A <strong>resonance</strong> is when orbit times fit a simple whole-number pattern. Io,
+        Europa and Ganymede go round Jupiter in a 1 : 2 : 4 pattern, so the same tugs between them
+        repeat at the same places, again and again; this keeps Io's orbit oval and heats it (see
+        <a href="solar-system-bodies.html#tidal-heating">tidal heating</a>).
+        <strong>Shifting orbits:</strong> pulls between planets can move orbits over time; the giant
+        planets are thought to have moved after they formed (see
+        <a href="solar-system-bodies.html#formation">formation theories</a>).
+        <strong>Chaos:</strong> tiny pulls add up, so exact positions millions of years ahead cannot
+        be predicted.
+      </p>
+      <p class="note">
+        The 1 : 2 : 4 pattern is drawn exactly; the real periods are about 1.8, 3.6 and 7.2 days,
+        very close to it. Io and Ganymede are drawn starting together with Europa opposite, as in the
+        real pattern, which never lines all three up on one side. The giant planets moving, and
+        chaos over millions of years: first draft, to be checked by the teacher.
+      </p>
+    </section>
+
+    <section class="notes-section" id="roche">
+      <h2>Too close: the Roche limit</h2>
+      <div class="diagram spectrum-panel gb-panel">
+        <div class="labelled-diagram-wrap" id="roche-wrap">
+          <svg
+            id="roche-diagram"
+            class="responsive-svg"
+            width="640"
+            height="330"
+            viewBox="0 0 640 330"
+            role="img"
+            aria-label="A planet on the left with its Roche limit drawn as a dashed circle. A moon sits at the distance set by the slider: outside the limit it is whole but stretched more the closer it gets; inside, it has been pulled apart into a ring of pieces round the planet. A close-up on the right shows the planet pulling the moon's near side harder than its far side."
+          ></svg>
+        </div>
+      </div>
+      <div class="control">
+        <label for="roche-distance">Moon's distance (planet radii): <span id="roche-distance-label"></span></label>
+        <input type="range" id="roche-distance" aria-controls="roche-diagram" min="1.2" max="5" step="0.1" value="4" />
+      </div>
+      <p class="note sl-readout" id="roche-readout" aria-live="polite"></p>
+      <p>
+        A planet pulls harder on the near side of a moon than on its far side, stretching it: a
+        <strong>tidal force</strong>. Far out, the moon's own gravity holds it together. Inside the
+        <strong>Roche limit</strong>, the stretch wins and the moon is pulled apart; the pieces
+        spread into a ring. It also stops a moon forming that close: the pieces cannot gather into
+        one body. That is why rings sit close to their planets (see
+        <a href="solar-system-bodies.html#ring-systems">ring systems</a>).
+      </p>
+      <p class="note">
+        The Roche limit of about 2.5 planet radii (for a moon about as dense as its planet), and
+        Saturn's main rings lying inside its Roche limit: first draft, to be checked by the teacher.
+      </p>
+    </section>
+
+    <section class="notes-section" id="shape">
+      <h2>Round or lumpy?</h2>
+      <div class="diagram spectrum-panel gb-panel">
+        <div class="labelled-diagram-wrap" id="shape-wrap">
+          <svg
+            id="shape-diagram"
+            class="responsive-svg"
+            width="640"
+            height="300"
+            viewBox="0 0 640 300"
+            role="img"
+            aria-label="A body drawn on the left: lumpy and potato-shaped when small, rounder as it gets bigger, and round once it is large enough. On the right, a diameter scale in km from 10 to 1500 marks Phobos, Vesta and Ceres, with a hatched band where bodies become round, and a pointer at the chosen size."
+          ></svg>
+        </div>
+      </div>
+      <div class="control">
+        <label for="shape-size">Diameter (km): <span id="shape-size-label"></span></label>
+        <input type="range" id="shape-size" aria-controls="shape-diagram" min="10" max="1500" step="1" value="100" />
+      </div>
+      <div class="control gb-shape-buttons" role="group" aria-label="Examples">
+        <button type="button" class="preset-button" data-km="22" aria-pressed="false" aria-controls="shape-diagram">Phobos</button>
+        <button type="button" class="preset-button" data-km="525" aria-pressed="false" aria-controls="shape-diagram">Vesta</button>
+        <button type="button" class="preset-button" data-km="940" aria-pressed="false" aria-controls="shape-diagram">Ceres</button>
+      </div>
+      <p class="note sl-readout" id="shape-readout" aria-live="polite"></p>
+      <p>
+        Every part of a body pulls on every other part. In a small body that pull is weak, and solid
+        rock is strong enough to keep any lumpy shape. In a big body, gravity is strong enough to
+        squash the rock and pull it into the shape where every part of the surface is as close to
+        the centre as it can be: a sphere. So big bodies are round and small ones are lumpy.
+      </p>
+      <p class="note">
+        Bodies becoming round from about 400 km across (icy) to about 600 km (rocky), and the sizes
+        of Phobos (about 22 km), Vesta (about 525 km, not quite round) and Ceres (about 940 km,
+        round): first draft, to be checked by the teacher.
+      </p>
+    </section>
+
+    <section class="notes-section" id="atmosphere">
+      <h2>Holding on to an atmosphere</h2>
+      <div class="control gb-body-buttons" role="group" aria-label="Choose a body">
+        <button type="button" class="preset-button" data-body="jupiter" aria-pressed="false" aria-controls="atmosphere-diagram">Jupiter</button>
+        <button type="button" class="preset-button preset-button-active" data-body="earth" aria-pressed="true" aria-controls="atmosphere-diagram">Earth</button>
+        <button type="button" class="preset-button" data-body="mars" aria-pressed="false" aria-controls="atmosphere-diagram">Mars</button>
+        <button type="button" class="preset-button" data-body="titan" aria-pressed="false" aria-controls="atmosphere-diagram">Titan</button>
+        <button type="button" class="preset-button" data-body="moon" aria-pressed="false" aria-controls="atmosphere-diagram">The Moon</button>
+      </div>
+      <div class="control gb-gas-buttons" role="group" aria-label="Choose a gas">
+        <button type="button" class="preset-button preset-button-active" data-gas="hydrogen" aria-pressed="true" aria-controls="atmosphere-diagram">Hydrogen (lightest)</button>
+        <button type="button" class="preset-button" data-gas="helium" aria-pressed="false" aria-controls="atmosphere-diagram">Helium</button>
+        <button type="button" class="preset-button" data-gas="nitrogen" aria-pressed="false" aria-controls="atmosphere-diagram">Nitrogen</button>
+        <button type="button" class="preset-button" data-gas="carbon-dioxide" aria-pressed="false" aria-controls="atmosphere-diagram">Carbon dioxide (heaviest)</button>
+      </div>
+      <div class="diagram spectrum-panel gb-panel">
+        <div class="labelled-diagram-wrap" id="atmosphere-wrap">
+          <svg
+            id="atmosphere-diagram"
+            class="responsive-svg"
+            width="640"
+            height="270"
+            viewBox="0 0 640 270"
+            role="img"
+            aria-label="The chosen body with particles of the chosen gas: kept close to the surface if the body holds on to it, or flying off with arrows if it escapes. Two bars compare the body's escape speed with six times the gas particles' typical speed."
+          ></svg>
+        </div>
+      </div>
+      <p class="note sl-readout" id="atmosphere-readout" aria-live="polite"></p>
+      <p>
+        Gas particles are always moving, and the hotter and lighter the gas, the faster they move.
+        A particle moving faster than the body's <strong>escape speed</strong> (the speed needed to
+        get away from its gravity for good; see
+        <a href="space-probes.html#getting-there">Space probes</a>) can leave. A body keeps a gas
+        only if its escape speed is well above the particles' typical speed.
+      </p>
+      <p class="note">
+        The rule of thumb that a gas stays for billions of years if the escape speed is more than
+        6 times its particles' typical speed; the escape speeds (Jupiter about 59.5 km/s, Earth 11.2,
+        Mars 5.0, Titan 2.6, the Moon 2.4) and the temperatures used (high in each atmosphere, where
+        gas escapes from: Jupiter and Earth about 1,000 K, Mars 250 K, Titan 150 K, the Moon's
+        sunlit surface 390 K): first draft, to be checked by the teacher.
+      </p>
+    </section>
+
+    <section class="notes-section" id="exam-tips">
+      <h2>Exam tips</h2>
+      <p class="exam-tip">
+        <strong>Common exam link:</strong> identify the effect from the clue. Repeats like clockwork, regular motion;
+        whole-number orbit pattern, a resonance; in step with the Earth, a Lagrange point; a moon
+        turned into a ring, the Roche limit.
+        <a href="#regular">Regular motion &uarr;</a>
+      </p>
+      <p class="exam-tip">
+        <strong>Common exam confusion:</strong> the Moon has no air because its gravity is too weak,
+        not because of where it is: it is as far from the Sun as the Earth.
+        <a href="#atmosphere">Holding on to an atmosphere &uarr;</a>
+      </p>
+    </section>
+
+    <section class="notes-section" id="related">
+      <h2>Related pages</h2>
+      <div class="page-card-list">
+        <a class="page-card" href="../sims/kepler.html">
+          <h3>Kepler's Laws of Planetary Motion</h3>
+          <p class="page-card-description">The rules regular orbits follow.</p>
+        </a>
+        <a class="page-card" href="solar-system-bodies.html">
+          <h3>Bodies of the Solar System</h3>
+          <p class="page-card-description">Tidal forces: rings, and Io's heating.</p>
+        </a>
+        <a class="page-card" href="space-probes.html">
+          <h3>Space probes</h3>
+          <p class="page-card-description">Escape velocity, and why rockets are needed.</p>
+        </a>
+        <a class="page-card" href="space-telescopes.html">
+          <h3>Space telescopes</h3>
+          <p class="page-card-description">The far orbit, about 1.5 million km out.</p>
+        </a>
+      </div>
+    </section>
+
+    <section class="questions" id="questions">
+      <h2>Practice questions</h2>
+      <div id="questions-list"></div>
+    </section>
+
+    <section class="progress">
+      <h2>Your progress</h2>
+      <ul id="progress-list"></ul>
+      <p class="note">Stored in this browser only (localStorage) &mdash; no account needed.</p>
+    </section>
+
+    <p class="coverage" id="coverage"></p>
+    <p class="next-page-link" id="next-page"></p>
+  </main>
+
+  <script src="../src/curriculum.js?v=202611281200"></script>
+  <script src="../src/pages.js?v=202611281200"></script>
+  <script src="../src/specData.js?v=202610161036"></script>
+  <script src="../src/spectra.js?v=202611131200"></script>
+  <script src="../src/spectrumDrawing.js?v=202611130900"></script>
+  <script src="../src/sunIcon.js?v=202611071200"></script>
+  <script src="../src/galileanMoons.js?v=202610101500"></script>
+  <script src="../src/gravityBodies.js?v=202611281200"></script>
+  <script src="../src/gravityBodiesDrawing.js?v=202611281200"></script>
+  <script src="../src/gravityBodiesQuestions.js?v=202611281200"></script>
+  <script src="../glossary.js?v=202610131052"></script>
+  <script src="../quiz-ui.js?v=202611121900"></script>
+  <script src="gravity-forming-bodies.js?v=202611281200"></script>
+  <script src="../diagramEnlarge.js?v=202611111500"></script>
+  <script src="../notesPage.js?v=202609252100"></script>
+  <script src="../nextPage.js?v=202610161057"></script>
+</body>
+</html>

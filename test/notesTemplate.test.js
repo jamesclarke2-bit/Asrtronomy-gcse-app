@@ -57,6 +57,8 @@ const CONFORMING_PAGES = [
   'notes/big-bang-steady-state.html',
   'notes/big-bang-evidence.html',
   'notes/dark-universe.html',
+  'notes/gravity-forming-bodies.html',
+  'notes/exoplanets-life.html',
 ];
 
 // Section 6 of the template ("Diagram-first"), checked only for pages

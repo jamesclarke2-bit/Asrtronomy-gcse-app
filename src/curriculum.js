@@ -39,10 +39,8 @@
  * pending a check against the primary spec PDF. Topic 11 ("The Solar
  * System") is also fully tagged, across u3.3/u3.4 and u3.16-u3.25.
  * Topic 12 ("Formation of planetary systems") carries spec tags too,
- * but only on the handful of subtopics whose own pages actually touch
- * it (u2.2, u2.12, u3.21, u3.30) — most of Topic 12 (exoplanet
- * detection, habitability, the Drake equation, SETI) has no page yet,
- * so unlike 7/8/11 it isn't fully tagged.
+ * on the subtopics whose own pages actually teach
+ * it (u2.2, u2.12, u3.21, u3.30, u3.31, u3.32, u3.33).
  *
  * Topics 1-6, 9 and 10 are tagged against src/specPoints.js, a
  * standalone registry of those topics' own spec points (point code,
@@ -823,6 +821,22 @@ const UNITS = [
         spec: ['11.6', '12.1b'],
         notes:
           'all four giant planets — Jupiter, Saturn, Uranus and Neptune — have ring systems, though only Saturn’s is bright enough to see easily from Earth; a ring is made of countless small particles (Saturn’s mostly ice, from dust-sized grains to boulders) spread into a disc that is very wide but typically only tens of metres thick; the two leading ideas for where rings come from are a moon or comet broken apart by the planet’s own tidal forces after straying inside the Roche limit, or material left over from the planet’s own formation that never coalesced into a moon',
+      },
+      {
+        id: 'u3.32',
+        title: 'Gravity and forming bodies',
+        depth: 'be able to',
+        spec: ['12.1a', '12.1c', '12.2a', '12.2b', '12.2c'],
+        notes:
+          "identifying gravity at work: regular, predictable motion (planets' periods from the data sheet, the Moon's phases repeating, eclipses predicted years ahead; see Kepler's laws); multi-body interactions: Lagrange points L1-L5 where a small object keeps pace with two orbiting bodies (space telescopes near the Sun-Earth L2, about 1.5 million km out; dust and asteroids near L4 and L5), a resonance (Io, Europa and Ganymede in a 1 : 2 : 4 pattern of periods), shifting orbits (the giant planets thought to have moved after forming) and chaos (exact positions millions of years ahead cannot be predicted); the Roche limit (about 2.5 planet radii for a moon as dense as its planet), inside which a moon is pulled apart into a ring and cannot form; round or lumpy (bodies become round from about 400 km across if icy to 600 km if rocky: Phobos lumpy, Vesta in between, Ceres round); holding an atmosphere (kept if the escape speed is more than about 6 times the gas particles' typical speed, which is higher for hotter and lighter gases). Every value and example other than the data sheet's periods is a first draft, to be checked by the teacher.",
+      },
+      {
+        id: 'u3.33',
+        title: 'Exoplanets and life',
+        depth: 'understand',
+        spec: ['12.4', '12.6', '12.7', '12.8'],
+        notes:
+          "exoplanet detection: the transit method (a planet crossing its star dims it slightly; the dip's depth gives the planet's size), astrometry (the star's tiny wobble on the sky as star and planet circle their shared centre) and radial velocity (the star's spectral lines shifting back and forth as it moves towards and away from us); the Goldilocks (habitable) zone, where a planet could have liquid water on its surface, further out for a hotter, brighter star; the Drake equation N = R* × fp × ne × fl × fi × fc × L, most of whose factors are unknown, so estimates range from less than one to millions; SETI by radio (radio passes through dust and the Earth's atmosphere and is cheap to send far), and the benefits and dangers of finding extraterrestrial life. Which method finds which kind of planet, the zone's distances, the Drake factor values and named projects and dates are a first draft, to be checked by the teacher.",
       },
     ],
   },

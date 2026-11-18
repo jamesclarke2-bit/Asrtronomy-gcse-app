@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; form-action 'none'; base-uri 'self'" />
+  <meta name="referrer" content="no-referrer" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Exoplanets and life</title>
+  <link rel="stylesheet" href="../styles.css?v=202611221200" />
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg?v=202610130720" />
+</head>
+<body>
+  <main>
+    <p class="back-link"><a href="../index.html">&larr; Back to all tools</a></p>
+
+    <h1>Exoplanets and life</h1>
+    <p class="subtitle">
+      Planets round other stars are far too faint to see beside their star, so we find them by
+      what they do to it. Then: where life could exist, how many civilisations there might be, and
+      how we listen for them.
+    </p>
+
+    <section class="notes-section" id="transit">
+      <h2>Finding planets 1: the transit method</h2>
+      <div class="control ex-planet-buttons" role="group" aria-label="Choose a planet size">
+        <button type="button" class="preset-button" data-planet="earth" aria-pressed="false" aria-controls="transit-diagram">Earth-sized</button>
+        <button type="button" class="preset-button" data-planet="neptune" aria-pressed="false" aria-controls="transit-diagram">Neptune-sized</button>
+        <button type="button" class="preset-button preset-button-active" data-planet="jupiter" aria-pressed="true" aria-controls="transit-diagram">Jupiter-sized</button>
+      </div>
+      <div class="diagram spectrum-panel ex-panel">
+        <div class="labelled-diagram-wrap" id="transit-wrap">
+          <svg
+            id="transit-diagram"
+            class="responsive-svg"
+            width="640"
+            height="300"
+            viewBox="0 0 640 300"
+            role="img"
+            aria-label="Left: a star with a dark planet crossing in front of it along a dashed line. Right: a light curve, brightness as a percentage of normal against time in hours, flat at 100 percent with a dip while the planet is in front of the star. A dot marks the moment shown on the left."
+          ></svg>
+        </div>
+      </div>
+      <div class="control">
+        <label for="transit-time">Time: <span id="transit-time-label"></span></label>
+        <input type="range" id="transit-time" aria-controls="transit-diagram" min="0" max="1" step="0.01" value="0.5" />
+      </div>
+      <p class="note sl-readout" id="transit-readout" aria-live="polite"></p>
+      <p>
+        If a planet's orbit is lined up edge-on to us, the planet passes in front of its star once
+        every orbit and blocks a tiny fraction of its light: a <strong>transit</strong>. The star
+        dims slightly, then recovers. The bigger the planet, the deeper the dip; the time between
+        dips is the planet's orbital period. This is the same idea as an
+        <a href="eclipsing-binaries.html">eclipsing binary</a>, but with a planet instead of a
+        second star.
+      </p>
+      <p class="note">
+        The planets' sizes (an Earth-sized planet about 0.9%, a Neptune-sized one 3.5% and a
+        Jupiter-sized one 10% of the Sun's width) and the 18-hour window: first draft, to be checked
+        by the teacher. Small planets are drawn larger than true scale so they can be seen.
+      </p>
+    </section>
+
+    <section class="notes-section" id="astrometry">
+      <h2>Finding planets 2: astrometry</h2>
+      <div class="diagram spectrum-panel ex-panel">
+        <div class="labelled-diagram-wrap" id="astrometry-wrap">
+          <svg
+            id="astrometry-diagram"
+            class="responsive-svg"
+            width="640"
+            height="300"
+            viewBox="0 0 640 300"
+            role="img"
+            aria-label="Left: the star seen on the sky, moving round a small dashed circle about a cross marking the centre of mass, hugely exaggerated. Right: the same system from above, the star on a small circle and the planet on a large one, always on opposite sides of the shared centre."
+          ></svg>
+        </div>
+      </div>
+      <div class="control">
+        <label for="astrometry-time">Time through one orbit: <span id="astrometry-time-label"></span></label>
+        <input type="range" id="astrometry-time" aria-controls="astrometry-diagram" min="0" max="1" step="0.01" value="0.1" />
+      </div>
+      <p>
+        A star and its planet both orbit their shared centre of mass. The star is far heavier, so
+        its circle is tiny, but it does move. <strong>Astrometry</strong> means measuring a star's
+        exact position on the sky very precisely, again and again, to spot that small wobble. A
+        heavier planet, or one further out, makes a bigger wobble.
+      </p>
+      <p class="note">
+        The wobble is drawn hugely exaggerated: for a star like the Sun with a Jupiter-like planet,
+        it is far too small to see without very precise measurements. First draft, to be checked by
+        the teacher.
+      </p>
+    </section>
+
+    <section class="notes-section" id="radial-velocity">
+      <h2>Finding planets 3: radial velocity</h2>
+      <div class="diagram spectrum-panel ex-panel">
+        <div class="labelled-diagram-wrap" id="rv-wrap">
+          <svg
+            id="rv-diagram"
+            class="responsive-svg"
+            width="640"
+            height="320"
+            viewBox="0 0 640 320"
+            role="img"
+            aria-label="Top: hydrogen's lines in a laboratory, and below them the same lines in the star's light, shifted towards red or blue by the slider. Bottom: the star moving round a small orbit seen from the side, with the Earth to the right and an arrow showing whether the star is moving towards or away from the Earth."
+          ></svg>
+        </div>
+      </div>
+      <div class="control">
+        <label for="rv-time">Time through one orbit: <span id="rv-time-label"></span></label>
+        <input type="range" id="rv-time" aria-controls="rv-diagram" min="0" max="1" step="0.01" value="0.25" />
+      </div>
+      <p class="note sl-readout" id="rv-readout" aria-live="polite"></p>
+      <p>
+        As the star wobbles, it moves towards us for half an orbit and away for the other half. Its
+        spectral lines shift towards blue, then towards red, then back, over and over: a
+        Doppler shift (see <a href="redshift.html">Redshift</a>). The time for one back-and-forth is
+        the planet's orbital period; the size of the shift shows how hard the planet pulls, so how
+        heavy it is. This is the <strong>radial velocity</strong> method.
+      </p>
+      <div class="table-scroll">
+        <table class="shower-table" id="methods-table">
+          <caption>Which method finds which planets (first draft, to be checked by the teacher)</caption>
+          <thead>
+            <tr><th scope="col">Method</th><th scope="col">Measures</th><th scope="col">Best at finding</th></tr>
+          </thead>
+          <tbody id="methods-table-body"></tbody>
+        </table>
+      </div>
+      <p class="note">
+        The star's real speed (about 12.5 m/s for a Jupiter-like planet, 0.09 m/s for an Earth-like
+        one), the shift being drawn hugely exaggerated, and which method finds which planets: first
+        draft, to be checked by the teacher.
+      </p>
+    </section>
+
+    <section class="notes-section" id="habitable-zone">
+      <h2>The Goldilocks (habitable) zone</h2>
+      <div class="diagram spectrum-panel ex-panel">
+        <div class="labelled-diagram-wrap" id="zone-wrap">
+          <svg
+            id="zone-diagram"
+            class="responsive-svg"
+            width="640"
+            height="320"
+            viewBox="0 0 640 320"
+            role="img"
+            aria-label="A star on the left and a line of planets at increasing distance, on a log scale in astronomical units. A hatched band marks the habitable zone. Planets inside it are drawn as circles, planets too close and too hot as triangles, and planets too far and too cold as squares. The slider sets the star's temperature: hotter stars push the zone further out."
+          ></svg>
+        </div>
+      </div>
+      <div class="control">
+        <label for="star-temperature">Star's surface temperature (K): <span id="star-temperature-label"></span></label>
+        <input type="range" id="star-temperature" aria-controls="zone-diagram" min="3000" max="10000" step="100" value="5800" />
+      </div>
+      <p class="note sl-readout" id="zone-readout" aria-live="polite"></p>
+      <p>
+        The <strong>habitable zone</strong>, or Goldilocks zone, is the range of distances from a star
+        where a planet could be neither too hot nor too cold for liquid water on its surface. Liquid
+        water is thought to be needed for life as we know it. A hotter star is brighter, so its zone
+        is further out; a cool red dwarf's zone is very close in. Being in the zone does not mean a
+        planet has life, only that liquid water is possible.
+      </p>
+      <p class="note">
+        The zone's edges (about 0.95 to 1.67 times the square root of the star's luminosity, in AU;
+        about 0.95 to 1.7 AU for the Sun) and the stars' brightness used here: first draft, to be
+        checked by the teacher.
+      </p>
+    </section>
+
+    <section class="notes-section" id="drake">
+      <h2>The Drake equation</h2>
+      <div class="diagram spectrum-panel ex-panel">
+        <div class="labelled-diagram-wrap" id="drake-wrap">
+          <svg
+            id="drake-diagram"
+            class="responsive-svg"
+            width="640"
+            height="340"
+            viewBox="0 0 640 340"
+            role="img"
+            aria-label="A running total on a log scale: one row for each factor of the Drake equation, with a dot showing the total after multiplying by that factor. The last row, in bold, is N."
+          ></svg>
+        </div>
+      </div>
+      <p class="ex-drake-equation">
+        <strong>N = R* &times; fp &times; ne &times; fl &times; fi &times; fc &times; L</strong>
+      </p>
+      <div class="control ex-drake-presets" role="group" aria-label="Choose a set of guesses">
+        <button type="button" class="preset-button" data-preset="low" aria-pressed="false" aria-controls="drake-diagram">Doubtful guesses</button>
+        <button type="button" class="preset-button preset-button-active" data-preset="middle" aria-pressed="true" aria-controls="drake-diagram">Middle guesses</button>
+        <button type="button" class="preset-button" data-preset="high" aria-pressed="false" aria-controls="drake-diagram">Hopeful guesses</button>
+      </div>
+      <div id="drake-controls"></div>
+      <p class="note sl-readout" id="drake-readout" aria-live="polite"></p>
+      <p>
+        N is the number of civilisations in our Galaxy sending signals we could detect. Each factor is
+        explained beside its slider. Only the first two are measured with any confidence; the rest
+        are guesses, so the answer ranges from far less than one (we are alone)
+        to millions. The equation does not give an answer: it shows what we would need to know.
+      </p>
+      <p class="note">
+        The choices on each slider, the guess sets, that only R* and fp are known with any
+        confidence, the Drake equation's date (1961) and Frank Drake as its author: first draft, to be
+        checked by the teacher.
+      </p>
+    </section>
+
+    <section class="notes-section" id="seti">
+      <h2>SETI: listening by radio</h2>
+      <div class="diagram spectrum-panel ex-panel">
+        <div class="labelled-diagram-wrap" id="seti-wrap">
+          <svg
+            id="seti-diagram"
+            class="responsive-svg"
+            width="640"
+            height="350"
+            viewBox="0 0 640 350"
+            role="img"
+            aria-label="Two matching columns. Benefits, each marked with a plus in a circle: we are not alone, new science, new technology, seeing ourselves anew. Dangers, each marked with an exclamation mark in a triangle: they might be hostile, showing where we are, a shock to society, very slow replies."
+          ></svg>
+        </div>
+      </div>
+      <p>
+        <strong>SETI</strong> is the search for extraterrestrial intelligence. Most searches listen
+        with <a href="radio-telescopes.html">radio telescopes</a> for signals no natural source could
+        make. Radio is used because it passes through dust in space and through the Earth's
+        atmosphere, travels huge distances, takes little energy to send, and is what our own
+        technology gives out. Any signal travels at the speed of light, so a reply from a star 100
+        light-years away would take at least 200 years to come back.
+      </p>
+      <p class="note">
+        Project Ozma, the first radio search, by Frank Drake in 1960, and the Arecibo message sent in
+        1974: first draft, to be checked by the teacher.
+      </p>
+    </section>
+
+    <section class="notes-section" id="exam-tips">
+      <h2>Exam tips</h2>
+      <p class="exam-tip">
+        <strong>Common exam link:</strong> match the clue to the method. A regular dip in brightness, transit; the star
+        moving on the sky, astrometry; spectral lines shifting back and forth, radial velocity.
+        <a href="#transit">The transit method &uarr;</a>
+      </p>
+      <p class="exam-tip">
+        <strong>Common exam confusion:</strong> a planet in the habitable zone is not known to have
+        life; the zone only marks where liquid water could exist on its surface.
+        <a href="#habitable-zone">The habitable zone &uarr;</a>
+      </p>
+    </section>
+
+    <section class="notes-section" id="related">
+      <h2>Related pages</h2>
+      <div class="page-card-list">
+        <a class="page-card" href="eclipsing-binaries.html">
+          <h3>Eclipsing binaries</h3>
+          <p class="page-card-description">Light curves from one star passing another.</p>
+        </a>
+        <a class="page-card" href="redshift.html">
+          <h3>Redshift</h3>
+          <p class="page-card-description">How motion shifts spectral lines.</p>
+        </a>
+        <a class="page-card" href="solar-system-bodies.html">
+          <h3>Bodies of the Solar System</h3>
+          <p class="page-card-description">Europa and Enceladus: places to look for life nearer home.</p>
+        </a>
+        <a class="page-card" href="radio-telescopes.html">
+          <h3>Radio telescopes</h3>
+          <p class="page-card-description">The telescopes SETI listens with.</p>
+        </a>
+      </div>
+    </section>
+
+    <section class="questions" id="questions">
+      <h2>Practice questions</h2>
+      <div id="questions-list"></div>
+    </section>
+
+    <section class="progress">
+      <h2>Your progress</h2>
+      <ul id="progress-list"></ul>
+      <p class="note">Stored in this browser only (localStorage) &mdash; no account needed.</p>
+    </section>
+
+    <p class="coverage" id="coverage"></p>
+    <p class="next-page-link" id="next-page"></p>
+  </main>
+
+  <script src="../src/curriculum.js?v=202611281200"></script>
+  <script src="../src/pages.js?v=202611281200"></script>
+  <script src="../src/specData.js?v=202610161036"></script>
+  <script src="../src/spectra.js?v=202611131200"></script>
+  <script src="../src/spectrumDrawing.js?v=202611130900"></script>
+  <script src="../src/sunIcon.js?v=202611071200"></script>
+  <script src="../src/magnitude.js?v=202611101600"></script>
+  <script src="../src/hrDiagram.js?v=202611131500"></script>
+  <script src="../src/exoplanets.js?v=202611281200"></script>
+  <script src="../src/exoplanetsDrawing.js?v=202611281200"></script>
+  <script src="../src/exoplanetsQuestions.js?v=202611281200"></script>
+  <script src="../glossary.js?v=202610131052"></script>
+  <script src="../quiz-ui.js?v=202611121900"></script>
+  <script src="exoplanets-life.js?v=202611281200"></script>
+  <script src="../diagramEnlarge.js?v=202611111500"></script>
+  <script src="../notesPage.js?v=202609252100"></script>
+  <script src="../nextPage.js?v=202610161057"></script>
+</body>
+</html>

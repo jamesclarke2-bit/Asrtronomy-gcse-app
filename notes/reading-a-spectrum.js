@@ -521,7 +521,7 @@
     const c = S.SPEED_OF_LIGHT_M_PER_S;
     document.getElementById('doppler-real-note').textContent =
       `The slider is exaggerated for visibility: its ends stand for ${Math.round(MAX_EXAGGERATED_FRACTION * 100)}% of the speed of light. ` +
-      `Real shifts for ordinary stars are far smaller: a star moving away at 30 km/s shifts the 656.3 nm line by only about ${realShift.toFixed(3)} nm ` +
+      `Real shifts for ordinary stars are far smaller: a star moving away at 30 km/s shifts hydrogen's 656.3 nm line (first draft, to be checked by the teacher) by only about ${realShift.toFixed(3)} nm ` +
       `(using the data sheet's speed of light, ${(c / 1e8).toFixed(1)} × 10⁸ m/s), too small to see at this scale. ` +
       'Whole galaxies move far faster, and their redshift is on the Redshift page.';
   }

@@ -4,8 +4,9 @@
  * comet structure and tail direction (11.2), short- vs long-period
  * comet origins (11.3, 11.4), the ecliptic plane and Solar System
  * debris (11.11), meteoroid/meteor/meteorite terminology (11.10),
- * transits of Venus and measuring the AU (11.12), and the origin of
- * Earth's water (11.13).
+ * transits of Venus and measuring the AU (11.12), the origin of
+ * Earth's water (11.13), and identifying tidal forces at work: Io's
+ * heating, rings and Europa's ocean (12.1b).
  *
  * The two numeric questions compute their expected answer live from
  * SpecData (the exam data sheet), so they can never drift from the
@@ -281,6 +282,74 @@ function makeQuestions(SpecData) {
           correct,
           message:
             "A closer isotope match between a candidate source and Earth's actual ocean water is evidence — not proof — that source contributed more. None of the three theories (comets, water-rich asteroids, volcanic outgassing) is ruled out entirely; isotope ratios are one of the main ways scientists weigh how much each one most likely contributed.",
+        };
+      },
+    },
+    {
+      id: 'tidal-io-volcanoes',
+      units: ['u3.30'],
+      spec: '12.1b',
+      marks: 1,
+      type: 'choice',
+      prompt:
+        "Io is small and far from the Sun, yet it has the most active volcanoes in the Solar System. Its orbit round Jupiter is slightly oval. Identify the gravity effect that heats Io's inside.",
+      options: [
+        "Tidal forces: Jupiter's pull changes as Io's distance changes, flexing Io and heating it by friction",
+        'Heat from the Sun, trapped by a thick atmosphere',
+        'Collisions with asteroids heating the surface',
+        "The solar wind warming Io's rocks",
+      ],
+      check(value) {
+        const correct = value === "Tidal forces: Jupiter's pull changes as Io's distance changes, flexing Io and heating it by friction";
+        return {
+          correct,
+          message:
+            "Mark scheme: tidal forces / tidal heating (1). Jupiter pulls harder on Io's near side than its far side; because Io's orbit is slightly oval, that stretch keeps changing, flexing Io's interior and heating it by friction. The 1:2:4 resonance with Europa and Ganymede keeps the orbit oval.",
+        };
+      },
+    },
+    {
+      id: 'tidal-ring-from-moon',
+      units: ['u3.31'],
+      spec: '12.1b',
+      marks: 1,
+      type: 'choice',
+      prompt:
+        "A small moon drifts closer and closer to a giant planet until it breaks into countless pieces, which spread out round the planet. Identify the gravity effect at work, and what it makes.",
+      options: [
+        "Tidal forces pull the moon apart, and the pieces make a ring",
+        'A collision with a comet turns the moon into a new planet',
+        "The solar wind blows the moon's surface into a tail",
+        'The moon reaches escape speed and leaves the planet',
+      ],
+      check(value) {
+        const correct = value === 'Tidal forces pull the moon apart, and the pieces make a ring';
+        return {
+          correct,
+          message:
+            "Mark scheme: tidal forces pull the moon apart, forming a ring (1). Close to the planet, the pull on the moon's near side is so much stronger than on its far side that the moon is stretched apart; the pieces spread into a ring. This is one of the two leading ideas for where rings come from.",
+        };
+      },
+    },
+    {
+      id: 'tidal-which-is-tidal',
+      units: ['u3.30'],
+      spec: '12.1b',
+      marks: 1,
+      type: 'choice',
+      prompt: 'Which of these is caused by tidal forces?',
+      options: [
+        "Europa's ocean being kept liquid under its ice, far from the Sun",
+        "A comet's tail pointing away from the Sun",
+        'A crater on the Moon',
+        'Mars looking red',
+      ],
+      check(value) {
+        const correct = value === "Europa's ocean being kept liquid under its ice, far from the Sun";
+        return {
+          correct,
+          message:
+            "Mark scheme: Europa's liquid ocean (1). Europa is flexed and heated by Jupiter's tides, like Io. A comet's tail is pushed by the solar wind and sunlight, a crater is made by a collision, and Mars's colour comes from rust in its rocks.",
         };
       },
     },

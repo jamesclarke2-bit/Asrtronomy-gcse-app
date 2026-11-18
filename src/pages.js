@@ -597,6 +597,26 @@ const PAGES = [
     why: 'The evidence shows how the Universe began; this asks what most of it is made of, and how it might end.',
   },
   {
+    title: 'Gravity and forming bodies',
+    description:
+      "Spotting gravity at work: the inner planets and the Moon's phases repeating like clockwork, the Sun and Earth's five Lagrange points, Io, Europa and Ganymede stepped through their 1 : 2 : 4 resonance; then a moon pulled apart into a ring inside the Roche limit, a body growing from lumpy to round, and whether a body keeps each gas of its atmosphere.",
+    href: 'notes/gravity-forming-bodies.html',
+    units: ['u3.32'],
+    phase: 'The Solar System and gravity',
+    position: 28,
+    why: "Bodies of the Solar System showed what is out there; this asks how gravity shaped it: its orbits, its rings, its shapes and its atmospheres.",
+  },
+  {
+    title: 'Exoplanets and life',
+    description:
+      "Three ways to find a planet round another star, each drawn and moved through an orbit: a transit's dip in light, a star's wobble on the sky, and its spectral lines shifting back and forth; a habitable zone that moves out as the star gets hotter; the Drake equation as a running total you set; and SETI's radio search, with the benefits and dangers of contact side by side.",
+    href: 'notes/exoplanets-life.html',
+    units: ['u3.33'],
+    phase: 'The Solar System and gravity',
+    position: 29,
+    why: "The same 'requirements for life' question Bodies of the Solar System raises for Titan, Europa and Enceladus, turned outward: how we find planets round other stars, and whether anyone is out there.",
+  },
+  {
     title: 'Bodies of the Solar System',
     description:
       "A to-scale size line-up and bar chart of the planets and dwarf planets, the larger named moons by planet, the four ringed planets drawn at relative size with Saturn's rings the most visible, Io's tidal heating (reusable diagram) from its 1:2:4 resonance with Europa and Ganymede, a temperature-against-distance chart, a planet-vs-dwarf-planet decision diagram, asteroids/meteoroids/comets, a comet-tail diagram and the Kuiper Belt/Oort Cloud on a logarithmic scale, transits of Venus and measuring the AU, and brief formation theories — a first draft pending teacher review.",
@@ -718,6 +738,8 @@ const DIAGRAM_FIRST_PAGES = [
   'notes/big-bang-steady-state.html',
   'notes/big-bang-evidence.html',
   'notes/dark-universe.html',
+  'notes/gravity-forming-bodies.html',
+  'notes/exoplanets-life.html',
 ];
 
 /**
@@ -755,20 +777,6 @@ const COMING_SOON = [
     position: 21,
     why: 'A different way to find longitude at sea, before GPS, continuing Shadows and Sundials’ own longitude problem: comparing the Moon’s position against a known clock, or Harrison’s marine chronometer solving the same problem directly.',
     specPoints: ['4.20', '4.21'],
-  },
-  {
-    name: 'Formation of planetary systems',
-    phase: 'The Solar System and gravity',
-    position: 28,
-    why: "The next natural question once you know the planets themselves: how gravity actually built them, and shaped their rings, resonances and atmospheres — Bodies of the Solar System's own formation theories are only a first draft.",
-    specPoints: ['12.1a', '12.1c', '12.2a', '12.2b', '12.2c'],
-  },
-  {
-    name: 'Exoplanets and life',
-    phase: 'The Solar System and gravity',
-    position: 29,
-    why: "The same 'requirements for life' question Bodies of the Solar System raises for Titan, Europa and Enceladus, turned outward: how we actually find planets around other stars, and whether anyone's out there.",
-    specPoints: ['12.4', '12.6', '12.7', '12.8'],
   },
   {
     // 11.26-11.28 (robotic probes) are covered by notes/space-probes.html
