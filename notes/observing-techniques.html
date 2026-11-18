@@ -185,6 +185,65 @@
       </div>
     </section>
 
+    <section class="notes-section" id="sky-colour">
+      <h2>Sky colour: blue by day, red at sunset</h2>
+      <div class="diagram sky-colour-diagram">
+        <svg width="640" height="330" viewBox="0 0 640 330" class="responsive-svg" role="img"
+          aria-label="Two drawings side by side, not to scale. Left, midday: the Sun is high, so its light crosses only a thin layer of air before reaching the observer; the short-wavelength blue light, drawn as tight wavy lines, is scattered off in every direction, so blue light reaches the observer from all over the sky. Right, sunset: the Sun is low, so its light crosses a long path through the air; most of the blue is scattered out on the way, and mostly the long-wavelength red and orange light, drawn as loose wavy lines, reaches the observer.">
+          <rect x="0" y="0" width="640" height="330" rx="10" fill="#f4f7fb" />
+          <line x1="320" y1="14" x2="320" y2="316" stroke="#9aa7bd" stroke-width="1" />
+          <!-- Midday -->
+          <text x="160" y="30" font-size="16" font-weight="700" fill="#222" text-anchor="middle">Midday: Sun high</text>
+          <rect x="20" y="150" width="280" height="80" fill="#dbe7f5" />
+          <text x="26" y="166" font-size="12" fill="#333">air (drawn thicker)</text>
+          <rect x="20" y="230" width="280" height="40" fill="#c9b99a" />
+          <circle class="sun-disc" cx="160" cy="70" r="20" fill="#f5a623" />
+          <line x1="160" y1="94" x2="160" y2="200" stroke="#555" stroke-width="2.5" />
+          <text x="170" y="122" font-size="12" fill="#333">short path through air</text>
+          <path d="M160,190 q6,-6 12,0 q6,6 12,0 q6,-6 12,0 q6,6 12,0" fill="none" stroke="#2a6bd6" stroke-width="2" />
+          <path d="M160,190 q-6,-6 -12,0 q-6,6 -12,0 q-6,-6 -12,0 q-6,6 -12,0" fill="none" stroke="#2a6bd6" stroke-width="2" />
+          <path d="M160,190 q-4,-8 -8,-12 q-4,-8 -8,-12 q-4,-8 -8,-12" fill="none" stroke="#2a6bd6" stroke-width="2" />
+          <text x="66" y="210" font-size="12" fill="#2a6bd6" text-anchor="middle">blue scattered</text>
+          <text x="66" y="224" font-size="12" fill="#2a6bd6" text-anchor="middle">every way</text>
+          <circle cx="160" cy="214" r="5" fill="#222" />
+          <line x1="160" y1="219" x2="160" y2="232" stroke="#222" stroke-width="2.5" />
+          <text x="160" y="292" font-size="13" font-weight="700" fill="#222" text-anchor="middle">Blue sky from every direction</text>
+          <!-- Sunset -->
+          <text x="480" y="30" font-size="16" font-weight="700" fill="#222" text-anchor="middle">Sunset: Sun low</text>
+          <rect x="340" y="150" width="280" height="80" fill="#dbe7f5" />
+          <rect x="340" y="230" width="280" height="40" fill="#c9b99a" />
+          <circle class="sun-disc" cx="356" cy="168" r="14" fill="#f5a623" />
+          <line x1="372" y1="172" x2="560" y2="208" stroke="#555" stroke-width="2.5" />
+          <text x="450" y="222" font-size="12" fill="#333" text-anchor="middle">long path through air</text>
+          <path d="M410,182 q4,-8 8,-14 q4,-8 8,-14" fill="none" stroke="#2a6bd6" stroke-width="2" />
+          <path d="M450,190 q4,-8 8,-14 q4,-8 8,-14" fill="none" stroke="#2a6bd6" stroke-width="2" />
+          <text x="430" y="138" font-size="12" fill="#2a6bd6" text-anchor="middle">blue scattered out</text>
+          <path d="M520,200 q10,-9 20,0 q10,9 20,0" fill="none" stroke="#c0392b" stroke-width="2.5" />
+          <text x="560" y="254" font-size="12" fill="#c0392b" text-anchor="middle">red and orange left</text>
+          <circle cx="572" cy="214" r="5" fill="#222" />
+          <line x1="572" y1="219" x2="572" y2="232" stroke="#222" stroke-width="2.5" />
+          <text x="480" y="292" font-size="13" font-weight="700" fill="#222" text-anchor="middle">Red Sun, reddened low objects</text>
+          <text x="320" y="318" font-size="11" fill="#555" text-anchor="middle">Tight waves: blue, short wavelength. Loose waves: red, long wavelength. Not to scale.</text>
+        </svg>
+      </div>
+      <p>
+        Sunlight is a mix of every colour. Air molecules scatter short-wavelength blue light far more
+        than long-wavelength red, so blue light is bounced across the whole sky and reaches you from
+        every direction: the daytime sky looks blue. When the Sun is low, its light crosses a much
+        longer path through the air, most of the blue is scattered out on the way, and mostly red
+        and orange light is left: a red sunset.
+      </p>
+      <p>
+        <strong>For observing:</strong> in daylight the scattered sunlight is far brighter than
+        starlight, so stars cannot be seen. Anything low in the sky, a star, planet or the Moon,
+        looks redder and dimmer than when it is high, so observe objects when they are high up.
+      </p>
+      <p class="note">
+        This explanation of sky colour (blue light scattered more than red by air molecules, and a
+        longer path through the air when the Sun is low): first draft, to be checked by the teacher.
+      </p>
+    </section>
+
     <section class="notes-section" id="day-and-night">
       <h2>Day and night: why you see different stars</h2>
       <p>
@@ -644,14 +703,14 @@
     <p class="next-page-link" id="next-page"></p>
   </main>
 
-  <script src="../src/curriculum.js?v=202611281200"></script>
-  <script src="../src/pages.js?v=202611281200"></script>
+  <script src="../src/curriculum.js?v=202611291200"></script>
+  <script src="../src/pages.js?v=202611291200"></script>
   <script src="../src/visibilityFactors.js?v=202610292000"></script>
   <script src="../src/lightPollution.js?v=202611062200"></script>
   <script src="../src/animationTiming.js?v=202610130606"></script>
   <script src="../src/planetaryMotion.js?v=202610161036"></script>
   <script src="../src/dayAndNight.js?v=202611062200"></script>
-  <script src="../src/observingTechniquesQuestions.js?v=202611062200"></script>
+  <script src="../src/observingTechniquesQuestions.js?v=202611291200"></script>
   <script src="../src/sunIcon.js?v=202611071200"></script>
   <script src="../glossary.js?v=202610131052"></script>
   <script src="../quiz-ui.js?v=202611121900"></script>

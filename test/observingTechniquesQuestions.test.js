@@ -9,13 +9,13 @@ function findQuestion(questions, id) {
   return q;
 }
 
-test('every question tags u1.25 or u1.26, and states the constants it needs in its own prompt text', () => {
+test('every question tags u1.25 or u1.26 (or u1.5 for sky colour), and states the constants it needs in its own prompt text', () => {
   const questions = makeQuestions(VisibilityFactors);
   assert.ok(questions.length >= 6);
   questions.forEach((q) => {
     assert.ok(
-      (q.units.length === 1 && (q.units[0] === 'u1.25' || q.units[0] === 'u1.26')),
-      `${q.id} should tag exactly one of u1.25/u1.26, got ${JSON.stringify(q.units)}`
+      (q.units.length === 1 && ['u1.25', 'u1.26', 'u1.5'].includes(q.units[0])),
+      `${q.id} should tag exactly one of u1.25/u1.26/u1.5, got ${JSON.stringify(q.units)}`
     );
     assert.ok(q.prompt && q.prompt.trim().length > 0, `${q.id} has no prompt`);
     assert.equal(q.type, 'choice');
@@ -104,4 +104,20 @@ test('every check() returns a non-empty explanatory message, correct or not', ()
       assert.ok(result.message && result.message.trim().length > 0, `${q.id}: check() should return an explanatory message`);
     });
   });
+});
+
+test('sky colour (1.6a): at least two questions on u1.5, each with one right answer and a mark scheme', () => {
+  const { getSubtopic } = require('../src/curriculum');
+  const sky = makeQuestions(VisibilityFactors).filter((q) => q.spec === '1.6a');
+  assert.ok(sky.length >= 2);
+  assert.ok(getSubtopic('u1.5').spec.includes('1.6a'));
+  sky.forEach((q) => {
+    assert.deepEqual(q.units, ['u1.5']);
+    assert.equal(q.options.filter((o) => q.check(o).correct).length, 1, q.id);
+    q.options.forEach((o) => assert.match(q.check(o).message, /^Mark scheme:/, q.id));
+  });
+  const blue = sky.find((q) => q.id === 'sky-blue-why');
+  assert.match(blue.options.find((o) => blue.check(o).correct), /scatters short-wavelength blue light much more than red/);
+  const red = sky.find((q) => q.id === 'sunset-red-why');
+  assert.match(red.options.find((o) => red.check(o).correct), /longer path through the air/);
 });

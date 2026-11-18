@@ -115,9 +115,9 @@ const UNITS = [
         id: 'u1.5',
         title: 'Seeing conditions',
         depth: 'understand',
-        spec: ['6.6', '1.6b'],
+        spec: ['6.6', '1.6a', '1.6b'],
         notes:
-          'light pollution and skyglow (the orange background haze over urban areas, from sources like floodlighting, streetlamps and car park lighting), Dark Sky Parks, atmospheric seeing and transparency',
+          'light pollution and skyglow (the orange background haze over urban areas, from sources like floodlighting, streetlamps and car park lighting), Dark Sky Parks, atmospheric seeing and transparency; sky colour: air scatters short-wavelength blue light more than red, so the daytime sky is blue and too bright to see stars, and a low Sun or any low object looks redder and dimmer through the longer path of air (the explanation is a first draft, to be checked by the teacher)',
       },
       {
         id: 'u1.6',
@@ -553,6 +553,14 @@ const UNITS = [
         spec: ['13.19'],
         notes:
           "a star trail image is a long exposure with the camera kept still, so as the Earth turns each star draws an arc round the celestial pole; in an exposure time t the Earth turns through the angle θ every arc covers, so one full turn of 360° relative to the stars, the sidereal day, is given by sidereal day = (360 ÷ θ) × t; several students' readings of the same arc show the spread, expose anomalies and give a mean, with the uncertainty as half the range, but do not make the method more accurate, while a longer exposure gives a bigger angle for the same reading spread and so a smaller percentage uncertainty; the result is the data sheet's sidereal day of 23 h 56 min, not the 24 h solar day, because the Earth moves along its orbit (about 1° a day) and must turn a little further to face the Sun again. That the Earth moves about 1° a day is a first draft, to be checked by the teacher.",
+      },
+      {
+        id: 'u2.35',
+        title: 'Finding longitude at sea',
+        depth: 'understand',
+        spec: ['4.20', '4.21'],
+        notes:
+          "longitude is a time difference: the Earth turns 15° an hour (1° every 4 minutes), so local noon timed against Greenwich time gives longitude, west if Greenwich is later and east if it is earlier (finding local noon from a shadow is u2.32); the astronomical method, lunar distance: the Moon moves about half a degree an hour against the stars, so its measured angle from a bright star, looked up in tables computed in advance (the Nautical Almanac), gives the Greenwich time, with 1 arcminute of error making half a degree of longitude; the moons of Jupiter as a land method; the horological method: John Harrison's marine chronometer (H4) kept Greenwich time at sea, where ordinary clocks drifted, every 4 minutes of clock error making 1° of longitude error; the Longitude Act of 1714 and its prize, Nevil Maskelyne and the Nautical Almanac (first for 1767), H4's 1761 trial voyage. Every name, date and figure other than the 15° an hour is a first draft, to be checked by the teacher.",
       },
     ],
   },

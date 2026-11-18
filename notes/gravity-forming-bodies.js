@@ -87,8 +87,8 @@
     $('atmosphere-readout').textContent =
       `${name}: ${a.body.where} temperature about ${a.body.temperatureK.toLocaleString('en-GB')} K ` +
       (a.body.where === 'upper atmosphere'
-        ? '(high up, where gas escapes from; not the temperature at the ground). '
-        : '(it has almost no atmosphere, so gas escapes straight from the ground). ') +
+        ? '(where gas escapes, not the ground). '
+        : '(it has almost no air, so gas escapes from the ground). ') +
       `Escape speed ${a.body.escapeKms} km/s. ${a.gas.name} particles move at about ${a.speed.toFixed(2)} km/s; ` +
       `${G.KEEP_FACTOR} times that is ${a.needed.toFixed(1)} km/s. ` +
       (a.kept ? `The escape speed is bigger, so ${a.body.name} keeps ${a.gas.name.toLowerCase()}.` : `The escape speed is smaller, so ${a.gas.name.toLowerCase()} escapes from ${a.body.name}.`);

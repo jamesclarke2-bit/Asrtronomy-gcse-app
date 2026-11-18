@@ -51,6 +51,7 @@ every page listed as conforming below.
 | `notes/dark-universe.html` | Yes (built to it from the start) |
 | `notes/gravity-forming-bodies.html` | Yes (built to it from the start) |
 | `notes/exoplanets-life.html` | Yes (built to it from the start) |
+| `notes/finding-longitude.html` | Yes (built to it from the start) |
 
 Every `notes/` page now conforms. When a page is retrofitted, add it to `CONFORMING_PAGES`
 in `test/notesTemplate.test.js` and update this table.

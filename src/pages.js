@@ -116,6 +116,16 @@ const PAGES = [
     why: 'Shadows and Sundials timed the day by the Sun; star trails time the Earth\'s turn against the stars, which is a few minutes shorter.',
   },
   {
+    title: 'Finding longitude at sea',
+    description:
+      "The Earth from above the North Pole beside a Greenwich clock: local noon against Greenwich time gives longitude, east or west; the Moon moving against the stars, with a lunar-distance table to read the Greenwich time from; an ordinary clock drifting against Harrison's H4 over a voyage, with the longitude error each causes; and a timeline of the longitude prize.",
+    href: 'notes/finding-longitude.html',
+    units: ['u2.35'],
+    phase: 'Time',
+    position: 21,
+    why: "Shadows and Sundials found longitude on land with a shadow and a clock; at sea the hard part was knowing the time at Greenwich, solved first by the Moon and then by a clock.",
+  },
+  {
     title: 'Star Coordinates',
     description:
       'Right ascension, declination, hour angle and sidereal time — pick a star and watch how they all relate, and see why a sidereal day is about 4 minutes shorter than a solar one.',
@@ -740,6 +750,7 @@ const DIAGRAM_FIRST_PAGES = [
   'notes/dark-universe.html',
   'notes/gravity-forming-bodies.html',
   'notes/exoplanets-life.html',
+  'notes/finding-longitude.html',
 ];
 
 /**
@@ -770,13 +781,6 @@ const COMING_SOON = [
     position: 2,
     why: "A naked-eye observation explained: why the daytime sky is blue and the night sky dark, from the same atmosphere The Naked-Eye Sky's stars shine through.",
     specPoints: ['1.6a'],
-  },
-  {
-    name: 'Finding longitude from the Moon and a clock',
-    phase: 'Time',
-    position: 21,
-    why: 'A different way to find longitude at sea, before GPS, continuing Shadows and Sundials’ own longitude problem: comparing the Moon’s position against a known clock, or Harrison’s marine chronometer solving the same problem directly.',
-    specPoints: ['4.20', '4.21'],
   },
   {
     // 11.26-11.28 (robotic probes) are covered by notes/space-probes.html

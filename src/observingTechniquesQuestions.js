@@ -4,7 +4,9 @@
  * target and three site-and-time options, pick the one that actually
  * lets you see it, and say why — weighing altitude (and the atmosphere's
  * path length through it), landscape obstructions, cloud cover, and
- * whether the target has risen or already set.
+ * whether the target has risen or already set; and sky colour (spec
+ * 1.6a, u1.5): why the sky is blue, sunsets are red, and stars cannot
+ * be seen by day.
  */
 
 function makeQuestions(VisibilityFactors) {
@@ -129,7 +131,56 @@ function makeQuestions(VisibilityFactors) {
         };
       },
     },
+    // Sky colour (spec 1.6a, u1.5).
+    skyColour(
+      'sky-blue-why',
+      'Why does the daytime sky look blue?',
+      [
+        'Air scatters short-wavelength blue light much more than red, so blue light reaches us from all over the sky',
+        'The sky reflects the colour of the oceans',
+        'The Sun gives out only blue light',
+        'Air absorbs all the red light from the Sun',
+      ],
+      'blue light is scattered far more than red by the air, so scattered blue light comes at us from every direction',
+    ),
+    skyColour(
+      'sunset-red-why',
+      'Why does the Sun look red when it is low, near the horizon?',
+      [
+        'Its light crosses a much longer path through the air, and most of the blue is scattered out on the way',
+        'The Sun cools down at the end of the day',
+        'The Sun is further from the Earth in the evening',
+        'Dust on the horizon gives out red light',
+      ],
+      'the low Sun\'s light crosses far more air, so most of the blue is scattered out, leaving mostly red and orange',
+    ),
+    skyColour(
+      'daytime-no-stars',
+      'The stars are still above us in the daytime. Why can we not see them?',
+      [
+        'Sunlight scattered by the air makes the sky far brighter than the starlight',
+        'The stars move below the horizon every morning',
+        'The Sun blocks the starlight like an eclipse',
+        'Stars only shine at night',
+      ],
+      'scattered sunlight makes the daytime sky much brighter than the stars, so their light is swamped',
+    ),
   ];
+}
+
+function skyColour(id, prompt, options, point) {
+  return {
+    id,
+    units: ['u1.5'],
+    spec: '1.6a',
+    marks: 1,
+    type: 'choice',
+    prompt,
+    options,
+    check(value) {
+      return { correct: value === options[0], message: `Mark scheme: ${point} (1).` };
+    },
+  };
 }
 
 const observingTechniquesQuestionsApi = { makeQuestions };

@@ -59,6 +59,7 @@ const CONFORMING_PAGES = [
   'notes/dark-universe.html',
   'notes/gravity-forming-bodies.html',
   'notes/exoplanets-life.html',
+  'notes/finding-longitude.html',
 ];
 
 // Section 6 of the template ("Diagram-first"), checked only for pages

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; form-action 'none'; base-uri 'self'" />
+  <meta name="referrer" content="no-referrer" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Finding longitude at sea</title>
+  <link rel="stylesheet" href="../styles.css?v=202611221200" />
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg?v=202610130720" />
+</head>
+<body>
+  <main>
+    <p class="back-link"><a href="../index.html">&larr; Back to all tools</a></p>
+
+    <h1>Finding longitude at sea</h1>
+    <p class="subtitle">
+      A ship can find its latitude from the stars, but its longitude needs the time at Greenwich.
+      How sailors found it: by the Moon moving against the stars, and by a clock good enough to
+      carry Greenwich time across an ocean.
+    </p>
+
+    <section class="notes-section" id="problem">
+      <h2>Longitude is a time difference</h2>
+      <div class="diagram spectrum-panel lg-panel">
+        <div class="labelled-diagram-wrap" id="globe-wrap">
+          <svg
+            id="globe-diagram"
+            class="responsive-svg"
+            width="640"
+            height="340"
+            viewBox="0 0 640 340"
+            role="img"
+            aria-label="Left: the Earth seen from above the North Pole, lit by sunlight from the right. The ship's meridian points at the Sun, so it is local noon there; Greenwich's meridian, dashed, has already turned past the Sun, by the angle marked. Right: a clock keeping Greenwich time, showing the time at Greenwich at that moment, and the ship's longitude."
+          ></svg>
+        </div>
+      </div>
+      <div class="control">
+        <label for="noon-time">Greenwich time when the Sun is highest at the ship: <span id="noon-time-label"></span></label>
+        <input type="range" id="noon-time" aria-controls="globe-diagram" min="360" max="1080" step="4" value="860" />
+      </div>
+      <p class="note sl-readout" id="noon-readout" aria-live="polite"></p>
+      <p>
+        The Earth turns 360° in 24 hours: 15° every hour, or 1° every 4 minutes. At sea, a navigator
+        finds local noon, when the Sun is highest. If a clock keeping Greenwich time then reads later
+        than 12:00, the ship is west of Greenwich; earlier, it is east. Each hour of difference is 15°
+        of <strong>longitude</strong> (how far east or west of Greenwich a place is). Finding local
+        noon from a shadow, with the equation of time, is on
+        <a href="../sims/shadows-and-sundials.html#longitude-method">Shadows and Sundials</a>. The hard
+        part at sea was knowing the Greenwich time.
+      </p>
+    </section>
+
+    <section class="notes-section" id="lunar-distance">
+      <h2>The astronomical method: lunar distance</h2>
+      <div class="diagram spectrum-panel lg-panel">
+        <div class="labelled-diagram-wrap" id="lunar-wrap">
+          <svg
+            id="lunar-diagram"
+            class="responsive-svg"
+            width="640"
+            height="300"
+            viewBox="0 0 640 300"
+            role="img"
+            aria-label="A strip of night sky with a bright star on the left and the Moon to its right. Dashed rings show where the Moon is at each time in the table, by Greenwich time, closer to the star as time goes on. A bracket above shows the angle between the star and the Moon now: the lunar distance."
+          ></svg>
+        </div>
+      </div>
+      <div class="control">
+        <label for="lunar-time">Greenwich time (hours after midnight): <span id="lunar-time-label"></span></label>
+        <input type="range" id="lunar-time" aria-controls="lunar-diagram" min="0" max="12" step="0.5" value="4.5" />
+      </div>
+      <p class="note sl-readout" id="lunar-readout" aria-live="polite"></p>
+      <div class="table-scroll">
+        <table class="shower-table" id="lunar-table">
+          <caption>Part of a table of lunar distances for this star (an example)</caption>
+          <thead>
+            <tr><th scope="col">Greenwich time (hh:mm)</th><th scope="col">Lunar distance (°)</th></tr>
+          </thead>
+          <tbody id="lunar-table-body"></tbody>
+        </table>
+      </div>
+      <p>
+        The Moon moves across the stars by about half a degree every hour, about its own width, so
+        the sky works as a clock that every ship can see. With a sextant (an instrument for measuring
+        the angle between two objects), the navigator measures the <strong>lunar distance</strong>,
+        the angle between the Moon and a bright star, then looks it up in tables to find the
+        Greenwich time at that moment. The tables are needed because the Moon's motion is
+        complicated: its position against the stars at each Greenwich time had to be worked out in
+        advance by astronomers. A small error matters: an angle 1 arcminute out is 2 minutes of time,
+        so half a degree of longitude.
+      </p>
+      <p class="note">
+        The Moon moving about half a degree an hour, about its own width; the star, angles and times in this table, which
+        are an example, not real data; and timing the moons of Jupiter as another astronomical
+        method, which worked on land but not on a rolling ship: first draft, to be checked by the
+        teacher.
+      </p>
+    </section>
+
+    <section class="notes-section" id="chronometer">
+      <h2>The horological method: Harrison's marine chronometer</h2>
+      <div class="diagram spectrum-panel lg-panel">
+        <div class="labelled-diagram-wrap" id="clocks-wrap">
+          <svg
+            id="clocks-diagram"
+            class="responsive-svg"
+            width="640"
+            height="340"
+            viewBox="0 0 640 340"
+            role="img"
+            aria-label="A graph of clock error in minutes against time at sea in days, with the longitude error in degrees on the right-hand axis. An ordinary clock's error, dashed, climbs steadily; H4's, solid, stays almost flat along the bottom. A dotted line marks the prize limit of 2 minutes. A marker shows the chosen day."
+          ></svg>
+        </div>
+      </div>
+      <div class="control">
+        <label for="voyage-days">Time at sea (days): <span id="voyage-days-label"></span></label>
+        <input type="range" id="voyage-days" aria-controls="clocks-diagram" min="0" max="60" step="1" value="42" />
+      </div>
+      <p class="note sl-readout" id="clocks-readout" aria-live="polite"></p>
+      <p>
+        The simplest answer is a clock that keeps Greenwich time all voyage: the
+        <strong>horological method</strong> (horology is clockmaking). Ordinary clocks failed at sea:
+        a ship rolls, and changes of temperature and damp make them gain or lose. Every 4 minutes a
+        clock is out puts the ship 1° wrong. John Harrison built a series of sea clocks, ending with
+        a large watch, H4, that kept time well enough to give longitude to within the prize's limit.
+        With one on board, longitude is just local noon against the chronometer.
+      </p>
+      <p class="note">
+        Why ordinary clocks failed at sea (rolling, temperature and damp); an ordinary clock at sea
+        drifting about 1 minute a day; H4 losing only about 5 seconds in 81
+        days on its trial voyage; and the prize limit of half a degree (2 minutes of time): first
+        draft, to be checked by the teacher. The kilometres use the data sheet's Earth diameter of
+        13,000 km.
+      </p>
+    </section>
+
+    <section class="notes-section" id="history">
+      <h2>The longitude prize</h2>
+      <div class="diagram spectrum-panel lg-panel">
+        <div class="labelled-diagram-wrap" id="timeline-wrap">
+          <svg
+            id="timeline-diagram"
+            class="responsive-svg"
+            width="640"
+            height="260"
+            viewBox="0 0 640 260"
+            role="img"
+            aria-label="A timeline, not to scale: 1714, the Longitude Act offers a prize; 1761, H4's trial voyage to Jamaica; 1767, the first Nautical Almanac with lunar tables; 1773, Harrison is given his prize money."
+          ></svg>
+        </div>
+        <p class="diagram-caption">Not to scale.</p>
+      </div>
+      <p>
+        Ships lost at sea pushed Britain to offer a large prize for a practical method. Two methods
+        competed. Astronomers, led by the Astronomer Royal Nevil Maskelyne, backed lunar distances
+        and published the tables sailors needed in the Nautical Almanac. John Harrison, a
+        clockmaker, spent decades on his sea clocks. Both worked: lunar distances were cheaper for
+        years, until chronometers became affordable and took over.
+      </p>
+      <p class="note">
+        The Longitude Act of 1714 and its prize of £20,000; Nevil Maskelyne, Astronomer Royal, and the
+        first Nautical Almanac (for 1767); John Harrison, H4 and its 1761 trial voyage to Jamaica; and
+        Harrison being paid in 1773; ships lost at sea driving the prize; and lunar distances staying
+        cheaper until chronometers became affordable: first draft, to be checked by the teacher.
+      </p>
+    </section>
+
+    <section class="notes-section" id="exam-tips">
+      <h2>Exam tips</h2>
+      <p class="exam-tip">
+        <strong>Common exam confusion:</strong> Greenwich time later than local time means the ship is
+        west; earlier means east. Each hour is 15°, each 4 minutes is 1°.
+        <a href="#problem">Longitude is a time difference &uarr;</a>
+      </p>
+      <p class="exam-tip">
+        <strong>Common exam link:</strong> both methods find the same thing, the Greenwich time: the
+        lunar distance by reading the sky as a clock, the chronometer by carrying one.
+        <a href="#chronometer">The horological method &uarr;</a>
+      </p>
+    </section>
+
+    <section class="notes-section" id="related">
+      <h2>Related pages</h2>
+      <div class="page-card-list">
+        <a class="page-card" href="../sims/shadows-and-sundials.html">
+          <h3>Shadows and Sundials</h3>
+          <p class="page-card-description">Finding local noon, and longitude, from a shadow and a clock.</p>
+        </a>
+        <a class="page-card" href="../sims/equation-of-time.html">
+          <h3>Equation of Time</h3>
+          <p class="page-card-description">Why sundial noon and clock noon differ through the year.</p>
+        </a>
+        <a class="page-card" href="measuring-the-sky.html">
+          <h3>Measuring the Sky</h3>
+          <p class="page-card-description">Measuring angles on the sky.</p>
+        </a>
+      </div>
+    </section>
+
+    <section class="questions" id="questions">
+      <h2>Practice questions</h2>
+      <div id="questions-list"></div>
+    </section>
+
+    <section class="progress">
+      <h2>Your progress</h2>
+      <ul id="progress-list"></ul>
+      <p class="note">Stored in this browser only (localStorage) &mdash; no account needed.</p>
+    </section>
+
+    <p class="coverage" id="coverage"></p>
+    <p class="next-page-link" id="next-page"></p>
+  </main>
+
+  <script src="../src/curriculum.js?v=202611291200"></script>
+  <script src="../src/pages.js?v=202611291200"></script>
+  <script src="../src/specData.js?v=202610161036"></script>
+  <script src="../src/spectra.js?v=202611131200"></script>
+  <script src="../src/spectrumDrawing.js?v=202611130900"></script>
+  <script src="../src/longitude.js?v=202611291200"></script>
+  <script src="../src/longitudeDrawing.js?v=202611291200"></script>
+  <script src="../src/longitudeQuestions.js?v=202611291200"></script>
+  <script src="../glossary.js?v=202610131052"></script>
+  <script src="../quiz-ui.js?v=202611121900"></script>
+  <script src="finding-longitude.js?v=202611291200"></script>
+  <script src="../diagramEnlarge.js?v=202611111500"></script>
+  <script src="../notesPage.js?v=202609252100"></script>
+  <script src="../nextPage.js?v=202610161057"></script>
+</body>
+</html>

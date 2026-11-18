@@ -6,10 +6,10 @@ One row per point in the Edexcel GCSE Astronomy (1AS0) specification, Topics 1�
 
 | Topic | Name | Points | Covered | Not built | Flagged thin |
 |---|---|---|---|---|---|
-| 1 | Planet Earth | 8 | 7 | 1 | 4 |
+| 1 | Planet Earth | 8 | 8 | 0 | 4 |
 | 2 | The lunar disc | 8 | 8 | 0 | 0 |
 | 3 | The Earth-Moon-Sun system | 10 | 10 | 0 | 0 |
-| 4 | Time and the Earth-Moon-Sun cycles | 21 | 19 | 2 | 11 |
+| 4 | Time and the Earth-Moon-Sun cycles | 21 | 21 | 0 | 11 |
 | 5 | Solar System observation | 8 | 8 | 0 | 1 |
 | 6 | Celestial observation | 21 | 21 | 0 | 8 |
 | 7 | Early models of the Solar System | 9 | 9 | 0 | 0 |
@@ -22,7 +22,7 @@ One row per point in the Edexcel GCSE Astronomy (1AS0) specification, Topics 1�
 | 14 | Stellar evolution | 11 | 11 | 0 | 0 |
 | 15 | Our place in the Galaxy | 14 | 14 | 0 | 0 |
 | 16 | Cosmology | 12 | 12 | 0 | 0 |
-| **Total** | | **244** | **239** | **5** | **28** |
+| **Total** | | **244** | **242** | **2** | **28** |
 
 ## Methodology
 
@@ -43,7 +43,7 @@ One row per point in the Edexcel GCSE Astronomy (1AS0) specification, Topics 1�
 | 1.3 | understand | Earth's internal divisions (crust, mantle, outer core, inner core) | [Earth: Structure, Atmosphere and Motion](../notes/earth-structure.html) | – | ⚠ covered only on a page where tap-to-reveal content outweighs visible prose | |
 | 1.4 | be able to | use latitude and longitude | [Earth: Structure, Atmosphere and Motion](../notes/earth-structure.html) | 14 | ⚠ covered only on a page where tap-to-reveal content outweighs visible prose | |
 | 1.5 | be able to | use surface divisions as reference points (equator, tropics, polar circles, prime meridian, poles) | [Earth: Structure, Atmosphere and Motion](../notes/earth-structure.html) | 14 | ⚠ covered only on a page where tap-to-reveal content outweighs visible prose | |
-| 1.6a | understand | atmosphere effects on observation: sky colour | *not built* | – |  | |
+| 1.6a | understand | atmosphere effects on observation: sky colour | [Observing Techniques](../notes/observing-techniques.html) | – |  | |
 | 1.6b | understand | atmosphere effects on observation: skyglow | [Observing Techniques](../notes/observing-techniques.html) | – |  | |
 | 1.6c | understand | atmosphere effects on observation: twinkling | [The Naked-Eye Sky](../notes/naked-eye-sky.html) | – |  | |
 
@@ -98,8 +98,8 @@ One row per point in the Edexcel GCSE Astronomy (1AS0) specification, Topics 1�
 | 4.17 | be able to | use time-zone data | [Sun Path Simulator](../sims/sun-path.html)<br>[Equation of Time](../sims/equation-of-time.html) | 10 |  | |
 | 4.18 | know | mean time on the prime meridian is GMT, the same as UT | [Sun Path Simulator](../sims/sun-path.html)<br>[Equation of Time](../sims/equation-of-time.html) | – |  | |
 | 4.19 | be able to | use shadow-stick data and the Equation of Time to find longitude | [Shadows and Sundials](../sims/shadows-and-sundials.html) | 1 | ⚠ be able to point, only 1 practice question site-wide | |
-| 4.20 | understand | astronomical methods of finding longitude, including lunar distance | *not built* | – |  | |
-| 4.21 | understand | the horological method (Harrison's marine chronometer) | *not built* | – |  | |
+| 4.20 | understand | astronomical methods of finding longitude, including lunar distance | [Finding longitude at sea](../notes/finding-longitude.html) | – |  | |
+| 4.21 | understand | the horological method (Harrison's marine chronometer) | [Finding longitude at sea](../notes/finding-longitude.html) | – |  | |
 
 ## Topic 5: Solar System observation
 
