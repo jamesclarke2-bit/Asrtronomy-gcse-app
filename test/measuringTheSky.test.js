@@ -174,5 +174,6 @@ test('the new subtopics follow on from the last u2 id', () => {
   assert.equal(getSubtopic('u2.32').title, 'Finding longitude from a shadow stick and the equation of time');
   assert.equal(getSubtopic('u2.33').title, 'Why the atmosphere matters for astronomy');
   assert.equal(getSubtopic('u2.34').title, 'Star trails and the sidereal day');
-  assert.equal(getSubtopic('u2.35'), undefined);
+  assert.equal(getSubtopic('u2.35').title, 'Finding longitude at sea');
+  assert.equal(getSubtopic('u2.36'), undefined);
 });
