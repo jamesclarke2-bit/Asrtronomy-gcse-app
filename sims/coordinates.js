@@ -265,9 +265,10 @@
     };
   }
 
-  // labelText, when given, is drawn right next to the dot — e.g.
-  // "NCP 52.0°" — so a student can read a point's exact value without
-  // looking away to the summary list below.
+  // Draws a feature's dashed line and dot, and returns its label (if any)
+  // for placeMeridianLabels below, which puts every label where it
+  // collides with nothing else, e.g. "NCP 52.0°" beside the dot so a
+  // student can read a point's exact value without looking away.
   function drawMeridianFeature(altitude, azimuth, color, labelText) {
     const point = meridianPoint(altitude, azimuth);
     meridianCtx.beginPath();
@@ -287,13 +288,82 @@
     meridianCtx.lineWidth = 1;
     meridianCtx.stroke();
 
-    if (labelText) {
-      meridianCtx.fillStyle = color;
-      meridianCtx.font = '600 10px sans-serif';
-      meridianCtx.textAlign = 'center';
-      meridianCtx.textBaseline = 'bottom';
-      meridianCtx.fillText(labelText, point.x, point.y - 9);
-    }
+    return labelText ? { text: labelText, color, x: point.x, y: point.y } : null;
+  }
+
+  const MERIDIAN_LABEL_FONT = '600 10px sans-serif';
+  const MERIDIAN_LABEL_H = 12;
+
+  function boxesOverlap(a, b) {
+    return a.x < b.x + b.w && b.x < a.x + a.w && a.y < b.y + b.h && b.y < a.y + a.h;
+  }
+
+  // Places each label beside its dot, trying positions in order (above,
+  // below, right, left, then further out) and taking the first that
+  // overlaps no fixed label, no other placed label and no dot, and stays
+  // on the canvas. A label moved away from its dot gets a thin leader
+  // line back to it. The placed boxes are kept on the canvas's dataset
+  // so the page's tests can check none collide.
+  function placeMeridianLabels(labels, fixedBoxes) {
+    const width = meridianCanvas.width;
+    const height = meridianCanvas.height;
+    meridianCtx.font = MERIDIAN_LABEL_FONT;
+    const dots = labels.map((l) => ({ x: l.x - 7, y: l.y - 7, w: 14, h: 14 }));
+    const placed = [];
+    labels.forEach((label) => {
+      const w = Math.ceil(meridianCtx.measureText(label.text).width) + 2;
+      const h = MERIDIAN_LABEL_H;
+      const candidates = [];
+      for (let ring = 0; ring < 6; ring += 1) {
+        const gap = 9 + ring * (h + 2);
+        candidates.push(
+          { x: label.x - w / 2, y: label.y - gap - h },
+          { x: label.x - w / 2, y: label.y + gap },
+          { x: label.x + 10 + ring * 4, y: label.y - h / 2 - ring * (h + 2) },
+          { x: label.x - 10 - w - ring * 4, y: label.y - h / 2 - ring * (h + 2) },
+          { x: label.x + 10 + ring * 4, y: label.y - h / 2 + ring * (h + 2) },
+          { x: label.x - 10 - w - ring * 4, y: label.y - h / 2 + ring * (h + 2) },
+        );
+      }
+      const fits = (box) =>
+        box.x >= 2 && box.y >= 2 && box.x + box.w <= width - 2 && box.y + box.h <= height - 2 &&
+        !fixedBoxes.some((f) => boxesOverlap(box, f)) &&
+        !placed.some((p) => boxesOverlap(box, p)) &&
+        !dots.some((d) => boxesOverlap(box, d));
+      const choice = candidates.map((c) => ({ ...c, w, h })).find(fits) || { x: label.x - w / 2, y: label.y - 9 - h, w, h };
+      placed.push(choice);
+      const cx = choice.x + choice.w / 2;
+      const cy = choice.y + choice.h / 2;
+      if (Math.hypot(cx - label.x, cy - label.y) > 22) {
+        meridianCtx.beginPath();
+        meridianCtx.moveTo(label.x, label.y);
+        const ex = Math.max(choice.x, Math.min(label.x, choice.x + choice.w));
+        const ey = label.y < choice.y ? choice.y : label.y > choice.y + choice.h ? choice.y + choice.h : cy;
+        meridianCtx.lineTo(ex, ey);
+        meridianCtx.strokeStyle = label.color;
+        meridianCtx.lineWidth = 1;
+        meridianCtx.stroke();
+      }
+      meridianCtx.fillStyle = label.color;
+      meridianCtx.textAlign = 'left';
+      meridianCtx.textBaseline = 'top';
+      meridianCtx.fillText(label.text, choice.x + 1, choice.y + 1);
+    });
+    meridianCanvas.dataset.labels = JSON.stringify(
+      placed.map((p, i) => ({ text: labels[i].text, x: +p.x.toFixed(1), y: +p.y.toFixed(1), w: p.w, h: p.h })).concat(
+        fixedBoxes.map((f) => ({ text: f.text, x: +f.x.toFixed(1), y: +f.y.toFixed(1), w: f.w, h: f.h, fixed: true })),
+      ),
+    );
+  }
+
+  // The box a fixed canvas label occupies, for placeMeridianLabels.
+  function textBox(text, font, x, y, align, baseline) {
+    meridianCtx.font = font;
+    const w = Math.ceil(meridianCtx.measureText(text).width) + 2;
+    const h = parseInt(font.match(/(\d+)px/)[1], 10) + 2;
+    const left = align === 'center' ? x - w / 2 : align === 'right' ? x - w : x;
+    const top = baseline === 'middle' ? y - h / 2 : baseline === 'bottom' ? y - h : y;
+    return { text, x: left, y: top, w, h };
   }
 
   function drawMeridian(dec, lat) {
@@ -305,6 +375,7 @@
     meridianCtx.fillStyle = '#efe9dc';
     meridianCtx.fillRect(0, MERIDIAN_CY, width, height - MERIDIAN_CY);
 
+    const fixedBoxes = [];
     // Altitude tick marks, 30deg and 60deg, both sides
     [30, 60].forEach((alt) => {
       ['N', 'S'].forEach((side) => {
@@ -319,6 +390,7 @@
         meridianCtx.textAlign = side === 'N' ? 'left' : 'right';
         meridianCtx.textBaseline = 'middle';
         meridianCtx.fillText(`${alt}°`, x + (side === 'N' ? 7 : -7), y);
+        fixedBoxes.push(textBox(`${alt}°`, '10px sans-serif', x + (side === 'N' ? 7 : -7), y, side === 'N' ? 'left' : 'right', 'middle'));
       });
     });
 
@@ -352,6 +424,11 @@
     meridianCtx.textAlign = 'center';
     meridianCtx.textBaseline = 'bottom';
     meridianCtx.fillText('Zenith', MERIDIAN_CX, MERIDIAN_CY - MERIDIAN_R - 22);
+    fixedBoxes.push(
+      textBox('S', '600 14px sans-serif', MERIDIAN_CX - MERIDIAN_R - 26, MERIDIAN_CY, 'right', 'middle'),
+      textBox('N', '600 14px sans-serif', MERIDIAN_CX + MERIDIAN_R + 26, MERIDIAN_CY, 'left', 'middle'),
+      textBox('Zenith', '600 14px sans-serif', MERIDIAN_CX, MERIDIAN_CY - MERIDIAN_R - 22, 'center', 'bottom'),
+    );
 
     // Observer-dependent features: the elevated celestial pole (NCP for
     // a northern observer, SCP for a southern one) and where the
@@ -359,20 +436,21 @@
     // own transit, so it's just getAltAz(0, 0, lat) — no separate
     // formula needed).
     const pole = getElevatedPole(lat);
-    drawMeridianFeature(pole.altitude, pole.azimuth, OBSERVER_COLOR, `${pole.code} ${pole.altitude.toFixed(1)}°`);
+    const labels = [];
+    labels.push(drawMeridianFeature(pole.altitude, pole.azimuth, OBSERVER_COLOR, `${pole.code} ${pole.altitude.toFixed(1)}°`));
     const equator = Coordinates.getAltAz(0, 0, lat);
-    drawMeridianFeature(equator.altitude, equator.azimuth, OBSERVER_COLOR, `Equator ${equator.altitude.toFixed(1)}°`);
+    labels.push(drawMeridianFeature(equator.altitude, equator.azimuth, OBSERVER_COLOR, `Equator ${equator.altitude.toFixed(1)}°`));
 
     // Star-dependent features: its position at upper transit (HA 0),
     // and, only when circumpolar, at lower transit (HA 180) too.
     const starUpper = Coordinates.getAltAz(dec, 0, lat);
-    drawMeridianFeature(starUpper.altitude, starUpper.azimuth, STAR_COLOR, `Upper ${starUpper.altitude.toFixed(1)}°`);
+    labels.push(drawMeridianFeature(starUpper.altitude, starUpper.azimuth, STAR_COLOR, `Upper ${starUpper.altitude.toFixed(1)}°`));
 
     const circumpolar = Coordinates.isCircumpolar(dec, lat);
     let starLower = null;
     if (circumpolar) {
       starLower = Coordinates.getAltAz(dec, 180, lat);
-      drawMeridianFeature(starLower.altitude, starLower.azimuth, STAR_COLOR, `Lower ${starLower.altitude.toFixed(1)}°`);
+      labels.push(drawMeridianFeature(starLower.altitude, starLower.azimuth, STAR_COLOR, `Lower ${starLower.altitude.toFixed(1)}°`));
     }
 
     // Persistent reminder that this diagram ignores date/time — drawn
@@ -380,8 +458,10 @@
     meridianCtx.fillStyle = '#8a97a5';
     meridianCtx.font = 'italic 10px sans-serif';
     meridianCtx.textAlign = 'left';
-    meridianCtx.textBaseline = 'top';
-    meridianCtx.fillText('Shown at transit only — ignores date & time', 4, 4);
+    meridianCtx.textBaseline = 'bottom';
+    meridianCtx.fillText('Shown at transit only — ignores date & time', 4, height - 4);
+    fixedBoxes.push(textBox('Shown at transit only — ignores date & time', 'italic 10px sans-serif', 4, height - 4, 'left', 'bottom'));
+    placeMeridianLabels(labels.filter(Boolean), fixedBoxes);
 
     poleLegendLabel.textContent = pole.code;
     if (poleGlossaryButton) poleGlossaryButton.setAttribute('aria-label', `What is the ${pole.code}?`);

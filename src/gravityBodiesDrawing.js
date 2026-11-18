@@ -286,7 +286,9 @@
     const cy = 300;
     const R = 140;
     svgEl('circle', { class: 'gb-body', cx, cy, r: R, fill: '#5b6680', stroke: INK, 'stroke-width': 2 }, svg);
-    addLabel(svg, wrap, a.body.name, cx, cy - 70, 'diagram-label--tick diagram-label--strong');
+    addLabel(svg, wrap, a.body.name, cx, cy - 76, 'diagram-label--tick diagram-label--strong');
+    const place = a.body.where === 'upper atmosphere' ? 'upper air' : 'surface';
+    addLabel(svg, wrap, `${place}: ${a.body.temperatureK.toLocaleString('en-GB')} K`, cx, cy - 44, 'diagram-label--tick');
     for (let k = 0; k < 16; k += 1) {
       const t = Math.PI * (0.12 + (0.76 * k) / 15);
       if (a.kept) {

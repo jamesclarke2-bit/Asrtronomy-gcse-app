@@ -101,11 +101,14 @@
   const GAS_CONSTANT = 8.314; // J per mol per K
   const KEEP_FACTOR = 6; // kept for billions of years if escape speed > 6 × gas speed
   const BODIES = [
-    { key: 'jupiter', name: 'Jupiter', escapeKms: 59.5, temperatureK: 1000 },
-    { key: 'earth', name: 'Earth', escapeKms: 11.2, temperatureK: 1000 },
-    { key: 'mars', name: 'Mars', escapeKms: 5.0, temperatureK: 250 },
-    { key: 'titan', name: 'Titan', escapeKms: 2.6, temperatureK: 150 },
-    { key: 'moon', name: 'the Moon', escapeKms: 2.4, temperatureK: 390 },
+    // temperatureK: where gas escapes from. For a body with an atmosphere
+    // that is its upper atmosphere, far hotter than the ground for Jupiter
+    // and the Earth; the Moon has almost none, so it is its sunlit surface.
+    { key: 'jupiter', name: 'Jupiter', escapeKms: 59.5, temperatureK: 1000, where: 'upper atmosphere' },
+    { key: 'earth', name: 'Earth', escapeKms: 11.2, temperatureK: 1000, where: 'upper atmosphere' },
+    { key: 'mars', name: 'Mars', escapeKms: 5.0, temperatureK: 250, where: 'upper atmosphere' },
+    { key: 'titan', name: 'Titan', escapeKms: 2.6, temperatureK: 150, where: 'upper atmosphere' },
+    { key: 'moon', name: 'the Moon', escapeKms: 2.4, temperatureK: 390, where: 'sunlit surface' },
   ];
   const GASES = [
     { key: 'hydrogen', name: 'Hydrogen', formula: 'H₂', molarMassG: 2 },

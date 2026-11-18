@@ -12,9 +12,9 @@
 (function () {
   const SVG_NS = 'http://www.w3.org/2000/svg';
   const WIDTH = 1180;
-  const HEIGHT = 620;
+  const HEIGHT = 720;
   const CX = 590;
-  const CY = 310;
+  const CY = 355;
   const RX = 260;
   const RY = 150;
   const EARTH_R = 40;
@@ -168,28 +168,49 @@
     );
 
     // The plain-words caption ("tilted away/towards/sideways"), one
-    // more line stacked below the date label — further outward (away
-    // from the Earth) when the date label itself sits above or below
-    // it (the top/bottom positions), or directly underneath when the
-    // date label sits level with the Earth (the left/right positions).
-    // Always centred on the date label's own x, never inheriting its
-    // start/end anchor: a solstice Earth's date label deliberately
-    // flows outward from one single edge (clear of the Earth and
-    // orbit path whichever side it's on), but the caption is a longer
-    // run of text that would then overflow the diagram far past its
-    // own viewBox in that one direction — see
-    // test/seasonsDiagram.test.js's own length budget on tiltCaption.
+    // more line stacked beside the date label: further outward (above)
+    // at the top position, below it everywhere else. It takes the date
+    // label's own anchor, so at a solstice it runs outward, away from the
+    // Earth, rather than back across it; test/seasonsDiagram.test.js
+    // keeps it short enough to stay inside the viewBox, and
+    // test/seasonsLabelOverlap.test.js checks no two labels collide.
     textNode(
       parent,
       {
         x: labelPoint.x,
-        y: labelPoint.y + (dy < 0 ? -22 : 22),
-        'text-anchor': 'middle',
+        y: labelPoint.y + (dy < -1 ? -30 : 26),
+        'text-anchor': anchor,
         class: 'seasons-tilt-caption',
         'data-position': position.id,
       },
       SeasonsDiagram.tiltCaption(position)
     );
+  }
+
+
+  // The "Today" label goes below its marker, or above, right or left,
+  // whichever first lands clear of every label and Earth already drawn
+  // (near an equinox, below would sit on that Earth's "S:" label).
+  function placeTodayLabel(svg, point) {
+    const taken = [...svg.querySelectorAll('text')].map((t) => t.getBBox());
+    svg.querySelectorAll('.seasons-earth-sphere').forEach((c) => {
+      const r = Number(c.getAttribute('r'));
+      taken.push({ x: Number(c.getAttribute('cx')) - r, y: Number(c.getAttribute('cy')) - r, width: 2 * r, height: 2 * r });
+    });
+    const clear = (b) => taken.every((o) => b.x + b.width <= o.x || o.x + o.width <= b.x || b.y + b.height <= o.y || o.y + o.height <= b.y);
+    const offsets = [
+      [0, TODAY_R + 28, 'middle'],
+      [0, -TODAY_R - 16, 'middle'],
+      [TODAY_R + 12, 6, 'start'],
+      [-TODAY_R - 12, 6, 'end'],
+    ];
+    let label = null;
+    for (const [dx, dy, anchor] of offsets) {
+      if (label) label.remove();
+      label = textNode(svg, { x: point.x + dx, y: point.y + dy, 'text-anchor': anchor, class: 'seasons-today-label' }, 'Today');
+      if (clear(label.getBBox())) return label;
+    }
+    return label;
   }
 
   /**
@@ -245,7 +266,7 @@
     const todayPoint = SeasonsDiagram.orbitPoint(CX, CY, RX * 0.74, RY * 0.74, SeasonsDiagram.screenAngleForTheta(theta));
     drawEarthSphere(svg, { x: todayPoint.x, y: todayPoint.y, r: TODAY_R, idSuffix: 'today' });
     svgNode('circle', { cx: todayPoint.x, cy: todayPoint.y, r: TODAY_R + 6, fill: 'none', stroke: TODAY_COLOR, 'stroke-width': 3.2 }, svg);
-    textNode(svg, { x: todayPoint.x, y: todayPoint.y + TODAY_R + 28, 'text-anchor': 'middle', class: 'seasons-today-label' }, 'Today');
+    placeTodayLabel(svg, todayPoint);
 
     textNode(svg, { x: WIDTH / 2, y: HEIGHT - 16, 'text-anchor': 'middle', class: 'seasons-takeaway' }, 'The tilt, not the distance, causes the seasons.');
 

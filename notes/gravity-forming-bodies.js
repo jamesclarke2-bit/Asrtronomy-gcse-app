@@ -85,7 +85,11 @@
     svg.dataset.kept = String(a.kept);
     const name = a.body.name.charAt(0).toUpperCase() + a.body.name.slice(1);
     $('atmosphere-readout').textContent =
-      `${name}: escape speed ${a.body.escapeKms} km/s. ${a.gas.name} particles move at about ${a.speed.toFixed(2)} km/s; ` +
+      `${name}: ${a.body.where} temperature about ${a.body.temperatureK.toLocaleString('en-GB')} K ` +
+      (a.body.where === 'upper atmosphere'
+        ? '(high up, where gas escapes from; not the temperature at the ground). '
+        : '(it has almost no atmosphere, so gas escapes straight from the ground). ') +
+      `Escape speed ${a.body.escapeKms} km/s. ${a.gas.name} particles move at about ${a.speed.toFixed(2)} km/s; ` +
       `${G.KEEP_FACTOR} times that is ${a.needed.toFixed(1)} km/s. ` +
       (a.kept ? `The escape speed is bigger, so ${a.body.name} keeps ${a.gas.name.toLowerCase()}.` : `The escape speed is smaller, so ${a.gas.name.toLowerCase()} escapes from ${a.body.name}.`);
     document.querySelectorAll('.gb-body-buttons button').forEach((b) => {

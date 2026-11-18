@@ -196,6 +196,9 @@ WIDTHS.forEach(({ name, width, height }) => {
           assert.ok(labels.includes(`Escape speed: ${b.escapeKms} km/s`), labels);
           assert.ok(labels.includes(a.kept ? `${g.name}: kept` : `${g.name}: escapes`), labels);
           assert.match(await page.locator('#atmosphere-readout').textContent(), a.kept ? /keeps/ : /escapes/);
+          const where = b.key === 'moon' ? 'sunlit surface temperature' : 'upper atmosphere temperature';
+          assert.ok((await page.locator('#atmosphere-readout').textContent()).includes(`${where} about ${b.temperatureK.toLocaleString('en-GB')} K`), `${b.key} says where its temperature is measured`);
+          assert.ok(labels.includes(`${b.key === 'moon' ? 'surface' : 'upper air'}: ${b.temperatureK.toLocaleString('en-GB')} K`), labels);
         }
       }
     });
@@ -205,7 +208,7 @@ WIDTHS.forEach(({ name, width, height }) => {
     await withPage(t, still, async (page) => {
       const notes = (await page.locator('main .note:not(.sl-readout)').allTextContents()).map((s) => s.replace(/\s+/g, ' '));
       const all = notes.join(' || ');
-      for (const s of ['29.5 days', '1.5 million km', 'Trojan', '1.8, 3.6 and 7.2 days', '2.5 planet radii', 'Saturn', '400 km', '600 km', 'Phobos', 'Vesta', 'Ceres', '6 times', '59.5', '1,000 K']) assert.ok(all.includes(s), s);
+      for (const s of ['29.5 days', '1.5 million km', 'Trojan', '1.8, 3.6 and 7.2 days', '2.5 planet radii', 'Saturn', '400 km', '600 km', 'Phobos', 'Vesta', 'Ceres', '6 times', '59.5', '1,000 K', 'upper-atmosphere temperatures']) assert.ok(all.includes(s), s);
       notes.filter((n) => !/Stored in this browser/.test(n)).forEach((n) => assert.match(n, /first draft, to be checked by the teacher/i, n));
       for (const href of ['../sims/kepler.html', 'space-telescopes.html#orbits', 'solar-system-bodies.html#tidal-heating', 'solar-system-bodies.html#ring-systems', 'solar-system-bodies.html#formation', 'space-probes.html#getting-there']) assert.ok((await count(page, `main a[href="${href}"]`)) >= 1, href);
     });
