@@ -183,7 +183,8 @@
   // How closely M can be read off the period-luminosity graph: either way.
   const PL_READING_HALF_WIDTH = 0.2;
   // How closely a time can be read off a light curve, in days, at each end.
-  const TIME_READING_DAYS = 0.25;
+  // Times are read to 1 decimal place, so this is quoted to 1 decimal place too.
+  const TIME_READING_DAYS = 0.3;
 
   function absoluteMagnitudeFromPeriod(periodDays) {
     return PL.slope * Math.log10(periodDays) + PL.intercept;

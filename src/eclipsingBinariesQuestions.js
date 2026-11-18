@@ -114,7 +114,7 @@
     const SEVERAL = 'The same reading uncertainty is spread over a longer time, so the percentage uncertainty is smaller';
 
     const span = 14.4;
-    const n = 4;
+    const n = 6;
     const r = E.periodFromDips(1.0, 1.0 + span, n);
 
     return [
@@ -164,19 +164,19 @@
         units: UNITS,
         spec: '13.18',
         marks: 2,
-        prompt: `Timing ${n} cycles between deep dips gives ${span.toFixed(1)} days, with each dip read to ±0.25 days, so the time could be anywhere from ${(span - 0.5).toFixed(1)} to ${(span + 0.5).toFixed(1)} days. Taking the uncertainty as half the range of the period, what is the uncertainty in the period, in days?`,
+        prompt: `Timing ${n} cycles between deep dips gives ${span.toFixed(1)} days, with each dip read to ±0.3 days, so the time could be anywhere from ${(span - 0.6).toFixed(1)} to ${(span + 0.6).toFixed(1)} days. Taking the uncertainty as half the range of the period, what is the uncertainty in the period, in days?`,
         type: 'number',
         unitLabel: 'days',
         check(value) {
           const v = Number(value);
-          const correct = Number.isFinite(v) && v >= 0.12 && v <= 0.13;
+          const correct = Number.isFinite(v) && Math.abs(v - r.uncertaintyShownDays) <= 0.02 * r.uncertaintyShownDays * (1 + 1e-9);
           const scheme = markScheme([
-            `the period could be ${(span - 0.5).toFixed(1)} ÷ ${n} = ${r.low.toFixed(3)} to ${(span + 0.5).toFixed(1)} ÷ ${n} = ${r.high.toFixed(3)} days`,
-            `half that range: (${r.high.toFixed(3)} − ${r.low.toFixed(3)}) ÷ 2 = ±${r.uncertaintyDays.toFixed(3)} days (accept 0.12 to 0.13)`,
+            `the period could be ${(span - 0.6).toFixed(1)} ÷ ${n} = ${r.low.toFixed(2)} to ${(span + 0.6).toFixed(1)} ÷ ${n} = ${r.high.toFixed(2)} days`,
+            `half that range: (${r.high.toFixed(2)} − ${r.low.toFixed(2)}) ÷ 2 = ±${r.uncertaintyShownDays.toFixed(1)} days, to 1 decimal place like the times read`,
           ]);
           return { correct, message: `${correct ? 'Correct.' : 'Not quite.'} ${scheme}` };
         },
-        answer: { uncertaintyDays: r.uncertaintyDays },
+        answer: { uncertaintyDays: r.uncertaintyShownDays },
       },
     ];
   }

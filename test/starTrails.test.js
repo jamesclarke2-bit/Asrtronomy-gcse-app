@@ -56,16 +56,45 @@ test('the same reading spread on a longer exposure gives a smaller percentage un
   assert.equal(short.uncertainty, long.uncertainty, 'same reading spread');
   assert.ok(long.percent < short.percent / 5, `${long.percent} vs ${short.percent}`);
   assert.ok(long.dayUncertaintyMin < short.dayUncertaintyMin);
-  // The day's uncertainty is half the range of the days from the extreme angles.
-  assert.ok(Math.abs(long.dayUncertaintyMin - (S.siderealDayFrom(59.5, 240) - S.siderealDayFrom(60.5, 240)) / 2) < 1e-9);
+  // The day's uncertainty is half the range of the days from the shown mean ± its shown uncertainty.
+  assert.ok(Math.abs(long.dayUncertaintyMin - (S.siderealDayFrom(long.mean - long.uncertainty, 240) - S.siderealDayFrom(long.mean + long.uncertainty, 240)) / 2) < 1e-9);
 });
 
-test('the mean is worked to 2 decimal places, and the day comes from that shown mean', () => {
+test("the mean and uncertainty are given to the readings' 1 decimal place, and the day comes from those shown values", () => {
   const r = S.result([7.5, 7.5, 7, 12, 7.5], 30);
   assert.deepEqual(r.anomalies, [3]);
-  assert.equal(r.mean, 7.38, 'shown as 7.38, not 7.375');
-  assert.equal(r.dayMin, (360 / 7.38) * 30);
-  assert.equal(Math.round(r.dayMin), 1463);
+  assert.equal(r.mean, 7.4, 'shown as 7.4, not 7.38 or 7.375');
+  assert.equal(r.uncertainty, 0.3, 'half of 0.5° is quoted as 0.3°, not 0.25°');
+  assert.equal(r.percent.toFixed(1), '4.1', '0.3 ÷ 7.4');
+  assert.equal(r.dayMin, (360 / 7.4) * 30);
+  assert.equal(Math.round(r.dayMin), 1459);
+  assert.equal(Math.round(r.shortestMin), 1403, '(360 ÷ 7.7) × 30');
+  assert.equal(Math.round(r.longestMin), 1521, '(360 ÷ 7.1) × 30');
+  assert.equal(Math.round(r.dayUncertaintyMin), 59);
+  const l = S.result([60, 60.5, 59.5, 59.5, 60], 240);
+  assert.equal(l.mean, 59.9);
+  assert.equal(l.uncertainty, 0.5);
+  assert.equal(l.percent.toFixed(1), '0.8');
+  assert.equal(Math.round(l.dayMin), 1442);
+  assert.equal(Math.round(l.shortestMin), 1430, '(360 ÷ 60.4) × 240');
+  assert.equal(Math.round(l.longestMin), 1455, '(360 ÷ 59.4) × 240');
+  assert.equal(Math.round(l.dayUncertaintyMin), 12);
+});
+
+test('for any set of readings, the half-range uncertainty and the mean have no more decimal places than the readings', () => {
+  const dp = (x) => (String(x).split('.')[1] || '').length;
+  for (let seed = 1; seed <= 200; seed += 1) {
+    for (const [t, anomaly] of [[30, { index: 3, offsetDeg: 5 }], [240, null], [120, null]]) {
+      const values = S.readings(t, { seed, anomaly });
+      const readingDp = Math.max(1, ...values.map(dp));
+      const r = S.stats(values);
+      assert.ok(dp(r.uncertainty) <= readingDp, `seed ${seed}, t ${t}: ±${r.uncertainty} from ${values}`);
+      assert.ok(dp(r.mean) <= readingDp, `seed ${seed}, t ${t}: mean ${r.mean} from ${values}`);
+    }
+  }
+  assert.equal(S.toReadingPrecision(0.25), 0.3);
+  assert.equal(S.toReadingPrecision(0.75), 0.8);
+  assert.equal(S.toReadingPrecision(7.375), 7.4);
 });
 
 test('a 240-minute exposure cannot separate the sidereal and solar days, and even a whole night (720 min) only just reaches the gap', () => {

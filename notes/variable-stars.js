@@ -415,14 +415,17 @@
 
   function renderWorking(c, timing, avg) {
     const P = timing.period;
-    const r = V.cepheidDistance(P, avg);
+    // The magnitudes are read to 1 decimal place, so their average is given to 1 too
+    // (halves round up), and the distance is worked from that shown value.
+    const m = Math.round(avg * 10 + 1e-9) / 10;
+    const r = V.cepheidDistance(P, m);
     // Best estimate and uncertainty to 2 significant figures; the range's ends to 3.
     const fmtPc = (d, sf = 2) => Number(d.toPrecision(sf)).toLocaleString('en-GB');
     const steps = [
       `Period: ${timing.period.toFixed(2)} days (from Step 1).`,
       `The period-luminosity graph gives M ≈ ${signed(r.M)}; read as ${signed(r.bright)} to ${signed(r.faint)}.`,
-      `Average apparent magnitude: halfway between brightest ${signed(c.brightest)} and faintest ${signed(c.faintest)}, so m = ${signed(avg, 2)}.`,
-      `M = m + 5 − 5 log d, so 5 log d = m − M + 5 = ${signed(avg, 2)} − (${signed(r.M)}) + 5 = ${(avg - r.M + 5).toFixed(2)}, log d = ${r.logD.toFixed(2)}, and d ≈ ${fmtPc(r.distancePc)} pc.`,
+      `Average apparent magnitude: halfway between brightest ${signed(c.brightest)} and faintest ${signed(c.faintest)}, so m = ${signed(m)}.`,
+      `M = m + 5 − 5 log d, so 5 log d = m − M + 5 = ${signed(m)} − (${signed(r.M)}) + 5 = ${(m - r.M + 5).toFixed(1)}, log d = ${r.logD.toFixed(2)}, and d ≈ ${fmtPc(r.distancePc)} pc.`,
       `Using M = ${signed(r.faint)} and ${signed(r.bright)} gives ${fmtPc(r.nearPc, 3)} to ${fmtPc(r.farPc, 3)} pc, so the uncertainty is half that range: about ±${fmtPc(r.uncertaintyPc)} pc.`,
     ];
     const list = document.getElementById('distance-working');

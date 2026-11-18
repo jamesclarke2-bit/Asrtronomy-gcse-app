@@ -277,7 +277,7 @@ test('notes/syllabus-map.html: "show me points without questions" only surfaces 
   });
 });
 
-test('notes/syllabus-map.html: combining both filters shows the union — anything not-built OR missing questions — and surfaces more than either filter alone', async (t) => {
+test('notes/syllabus-map.html: combining both filters shows the union — anything not-built OR missing questions — exactly the two counts added together', async (t) => {
   await withPage(t, VIEWPORTS[1], async (page) => {
     // Not-built and "missing questions" are mutually exclusive states
     // (a question count is only ever computed for a covered point), so
@@ -294,6 +294,9 @@ test('notes/syllabus-map.html: combining both filters shows the union — anythi
     await page.locator('#filter-no-questions').uncheck();
     await page.waitForTimeout(100);
     const notBuiltOnlyCount = Number((await page.locator('#filter-status').textContent()).match(/Showing (\d+)/)[1]);
-    assert.ok(bothCount > notBuiltOnlyCount, 'checking both boxes should surface more points than "not built" alone');
+    // The two states never overlap, so the union is exactly the two counts added together. (Once every
+    // point is built and has questions, both are 0 and the union is empty too.)
+    const missingQuestions = await page.evaluate(() => document.querySelectorAll('[data-has-questions="false"]').length);
+    assert.equal(bothCount, notBuiltOnlyCount + missingQuestions, 'checking both boxes shows every not-built point and every point missing questions');
   });
 });

@@ -158,3 +158,24 @@ test('the adaptation Play button advances the slider and stops automatically at 
     assert.equal(Number(await page.locator('#adaptation-slider').evaluate((el) => el.value)), 30);
   });
 });
+
+WIDTHS.forEach(({ name, width, height }) => {
+  test(`${name}: the 6.5 star-chart question draws its own chart, fitting the card, with lettered stars and compass points`, async (t) => {
+    await withPage(t, { width, height }, async (page, consoleErrors) => {
+      const card = page.locator('.question-card[data-question-id="star-chart-read"]');
+      assert.equal(await card.count(), 1);
+      const svg = card.locator('svg.star-chart-question');
+      assert.equal(await svg.count(), 1);
+      assert.equal(await svg.getAttribute('width'), '320');
+      const box = await svg.boundingBox();
+      const cardBox = await card.boundingBox();
+      assert.ok(box.width > 200 && box.width <= cardBox.width + 0.5, `chart ${box.width}px in a ${cardBox.width}px card`);
+      const texts = await svg.locator('text').allTextContents();
+      for (const s of ['A', 'B', 'C', 'D', 'N', 'E', 'S', 'W']) assert.ok(texts.includes(s), s);
+      for (const id of ['planisphere-set', 'finding-tool-dark-site', 'sky-app-pros-cons']) {
+        assert.equal(await page.locator(`.question-card[data-question-id="${id}"] .question-tags`).textContent().then((s) => /Spec 6\.5/.test(s)), true, id);
+      }
+      assert.deepEqual(consoleErrors, []);
+    });
+  });
+});

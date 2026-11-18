@@ -165,6 +165,159 @@ function makeQuestions(VisibilityFactors) {
       ],
       'scattered sunlight makes the daytime sky much brighter than the stars, so their light is swamped',
     ),
+    ...findingTargetsQuestions(),
+  ];
+}
+
+// --- 6.5 Star charts, planispheres and apps (u1.18) ----------------------
+
+/**
+ * A drawn all-sky star chart, the kind held overhead: the edge is the
+ * horizon, the centre is straight overhead, and the compass points are
+ * printed round the edge (east on the left, because you look up at it).
+ * Four stars are lettered A to D; the dashed lines join one constellation.
+ */
+const STAR_CHART = {
+  size: 320,
+  centre: 160,
+  radius: 130,
+  stars: [
+    { letter: 'A', x: 162, y: 150, r: 5 },
+    { letter: 'B', x: 52, y: 176, r: 4 },
+    { letter: 'C', x: 238, y: 88, r: 3.5 },
+    { letter: 'D', x: 150, y: 266, r: 4.5 },
+  ],
+  extra: [[120, 120, 2], [200, 140, 2], [95, 230, 1.8], [215, 230, 2.2], [260, 190, 1.6], [110, 75, 1.8]],
+  lines: [[162, 150, 200, 140], [200, 140, 238, 88]],
+};
+
+/** Which compass direction a point on the chart lies towards, and how near the centre it is. */
+function chartBearing(star) {
+  const dx = star.x - STAR_CHART.centre;
+  const dy = star.y - STAR_CHART.centre;
+  // North is up and east is LEFT on a chart held overhead.
+  const names = ['North', 'East', 'South', 'West'];
+  const angle = Math.atan2(-dx, -dy); // 0 = up (north), +90° = left (east)
+  const k = ((Math.round(angle / (Math.PI / 2)) % 4) + 4) % 4;
+  return { direction: names[k], fromCentre: Math.hypot(dx, dy) };
+}
+
+function renderStarChart(container) {
+  const NS = 'http://www.w3.org/2000/svg';
+  const { size, centre, radius } = STAR_CHART;
+  const el = (tag, attrs, parent) => {
+    const node = document.createElementNS(NS, tag);
+    Object.entries(attrs).forEach(([k, v]) => node.setAttribute(k, String(v)));
+    parent.appendChild(node);
+    return node;
+  };
+  const svg = document.createElementNS(NS, 'svg');
+  svg.setAttribute('viewBox', `0 0 ${size} ${size}`);
+  svg.setAttribute('width', String(size));
+  svg.setAttribute('height', String(size));
+  svg.setAttribute('class', 'responsive-svg star-chart-question');
+  svg.setAttribute('role', 'img');
+  svg.setAttribute(
+    'aria-label',
+    'An all-sky star chart: a circle whose edge is the horizon and whose centre is straight overhead, with North at the top, East on the left, South at the bottom and West on the right. Star A is almost at the centre, star B near the left (east) edge, star C towards the upper right, between north and west, and star D near the bottom (south) edge. Dashed lines join A to a fainter star and on to C.'
+  );
+  // A dark panel behind the whole chart, so the compass letters stand out on any card colour.
+  el('rect', { x: 0, y: 0, width: size, height: size, rx: 12, fill: '#0b1630' }, svg);
+  el('circle', { cx: centre, cy: centre, r: radius, fill: '#10233f', stroke: '#eef3fb', 'stroke-width': 2 }, svg);
+  el('circle', { cx: centre, cy: centre, r: 3, fill: 'none', stroke: '#9aa7bd', 'stroke-width': 1 }, svg);
+  STAR_CHART.lines.forEach(([x1, y1, x2, y2]) => el('line', { x1, y1, x2, y2, stroke: '#9aa7bd', 'stroke-width': 1.2, 'stroke-dasharray': '4 4' }, svg));
+  STAR_CHART.extra.forEach(([cx, cy, r]) => el('circle', { cx, cy, r, fill: '#eef3fb' }, svg));
+  STAR_CHART.stars.forEach((s) => {
+    el('circle', { class: `star-chart-star star-chart-star-${s.letter}`, cx: s.x, cy: s.y, r: s.r, fill: '#ffe08a' }, svg);
+    // Labels sit up and to the right, or up and to the left near the right-hand edge.
+    const left = s.x > centre + radius * 0.5;
+    const t = el('text', { x: left ? s.x - 9 : s.x + 9, y: s.y - 7, fill: '#eef3fb', 'font-size': 18, 'font-weight': 700, 'text-anchor': left ? 'end' : 'start' }, svg);
+    t.textContent = s.letter;
+  });
+  [['N', centre, centre - radius - 8], ['S', centre, centre + radius + 22], ['E', centre - radius - 16, centre + 6], ['W', centre + radius + 16, centre + 6]].forEach(([text, x, y]) => {
+    const t = el('text', { x, y, fill: '#eef3fb', 'font-size': 18, 'font-weight': 700, 'text-anchor': 'middle' }, svg);
+    t.textContent = text;
+  });
+  const wrap = document.createElement('div');
+  wrap.className = 'question-diagram';
+  wrap.appendChild(svg);
+  container.appendChild(wrap);
+}
+
+function findingTargetsQuestions() {
+  const UNITS = ['u1.18'];
+  const LETTERS = STAR_CHART.stars.map((s) => s.letter);
+  const B = chartBearing(STAR_CHART.stars.find((s) => s.letter === 'B'));
+  const HIGHEST = [...STAR_CHART.stars].sort((a, b) => chartBearing(a).fromCentre - chartBearing(b).fromCentre)[0].letter;
+  const SET = 'Turn the top disc until 21:00 on its time scale lines up with 15 March on the date scale';
+  const DARK = 'A planisphere read by red light: it works for any date and time, with no screen to spoil dark adaptation';
+  const APP_GOOD = 'It uses GPS and a compass to show what you are pointing at, in real time';
+  const APP_BAD = 'Its bright screen can spoil your dark adaptation unless it is dimmed or set to red';
+  return [
+    {
+      id: 'star-chart-read',
+      units: UNITS,
+      spec: '6.5',
+      marks: 2,
+      prompt:
+        'The drawing is an all-sky star chart for tonight at 22:00. Hold it overhead: its edge is the horizon and its centre is the point straight above you. (a) Which way should you face to see star B? (b) Which lettered star is highest in the sky?',
+      render: renderStarChart,
+      fields: [
+        { key: 'face', type: 'choice', label: '(a) Face', options: ['North', 'East', 'South', 'West'] },
+        { key: 'highest', type: 'choice', label: '(b) Highest star', options: LETTERS },
+      ],
+      check(value) {
+        const ok = [value.face === B.direction, value.highest === HIGHEST];
+        const got = ok.filter(Boolean).length;
+        return {
+          correct: ok.every(Boolean),
+          message: `${got} out of 2 marks. Mark scheme: (a) ${B.direction.toLowerCase()}: star B is near the edge marked ${B.direction[0]}, so it is low in the ${B.direction.toLowerCase()} (1); (b) star ${HIGHEST}: it is nearest the centre, which is straight overhead (1). On a chart held overhead, east is on the left.`,
+        };
+      },
+      answer: { face: B.direction, highest: HIGHEST },
+    },
+    {
+      id: 'planisphere-set',
+      units: UNITS,
+      spec: '6.5',
+      marks: 1,
+      type: 'choice',
+      prompt: 'You want to see which stars are up at 21:00 on 15 March. How do you set a planisphere?',
+      options: [SET, 'Point the planisphere at the brightest star you can see', 'Turn it until the Moon is in the window', 'Hold it so the date scale faces south'],
+      check(value) {
+        return { correct: value === SET, message: 'Mark scheme: line up the time (21:00) with the date (15 March); the window then shows the stars above the horizon at that moment (1).' };
+      },
+    },
+    {
+      id: 'finding-tool-dark-site',
+      units: UNITS,
+      spec: '6.5',
+      marks: 1,
+      type: 'choice',
+      prompt: 'You are at a dark site with no phone signal and want to keep your eyes dark-adapted all night. Which is the best way to find your targets, and why?',
+      options: [DARK, 'A sky app at full brightness: it is the quickest', 'A photograph of the sky taken last month', 'No chart: the bright stars are enough to find everything'],
+      check(value) {
+        return { correct: value === DARK, message: 'Mark scheme: a planisphere (or printed chart) read by red light needs no battery, signal or screen, and works for any date and time, so dark adaptation is kept (1).' };
+      },
+    },
+    {
+      id: 'sky-app-pros-cons',
+      units: UNITS,
+      spec: '6.5',
+      marks: 2,
+      prompt: 'Give one advantage and one disadvantage of using a sky app on a phone to find targets.',
+      fields: [
+        { key: 'good', type: 'choice', label: 'Advantage', options: [APP_GOOD, 'It never needs charging', 'It makes faint stars brighter'] },
+        { key: 'bad', type: 'choice', label: 'Disadvantage', options: [APP_BAD, 'It only works in the daytime', 'It shows the stars for one date only'] },
+      ],
+      check(value) {
+        const ok = [value.good === APP_GOOD, value.bad === APP_BAD];
+        return {
+          correct: ok.every(Boolean),
+          message: `${ok.filter(Boolean).length} out of 2 marks. Mark scheme: advantage: it uses GPS and a compass to identify what you are pointing at, in real time (1); disadvantage: its bright screen spoils dark adaptation unless dimmed or switched to red (1).`,
+        };
+      },
+    },
   ];
 }
 
@@ -183,7 +336,7 @@ function skyColour(id, prompt, options, point) {
   };
 }
 
-const observingTechniquesQuestionsApi = { makeQuestions };
+const observingTechniquesQuestionsApi = { makeQuestions, STAR_CHART, chartBearing };
 
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = observingTechniquesQuestionsApi;

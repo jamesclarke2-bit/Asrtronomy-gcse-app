@@ -155,7 +155,8 @@ WIDTHS.forEach(({ name, width, height }) => {
         assert.ok(Math.abs(P - c.periodDays) < 0.05, `${c.id}: ${P}`);
         const avg = V.averageMagnitude(c.brightest, c.faintest);
         assert.equal(await page.locator('#period-diagram').getAttribute('data-average'), avg.toFixed(2));
-        const r = V.cepheidDistance(P, avg);
+        // The average is shown to the magnitudes' own 1 decimal place, and the distance is worked from it.
+        const r = V.cepheidDistance(P, Math.round(avg * 10 + 1e-9) / 10);
         assert.equal(Number(await page.locator('#pl-diagram').getAttribute('data-m')), r.M);
         assert.equal(await page.locator('#distance-working').getAttribute('data-distance'), r.distancePc.toFixed(1));
       }
@@ -163,7 +164,10 @@ WIDTHS.forEach(({ name, width, height }) => {
       await page.selectOption('#cepheid-select', 'lmc');
       const working = await page.locator('#distance-working').textContent();
       assert.match(working, /M ≈ −4\.0/);
-      assert.match(working, /m = \+14\.50/);
+      assert.match(working, /m = \+14\.5\./);
+      await page.selectOption('#cepheid-select', 'delta-cephei');
+      assert.match(await page.locator('#distance-working').textContent(), /brightest \+3\.5 and faintest \+4\.4, so m = \+4\.0\./);
+      await page.selectOption('#cepheid-select', 'lmc');
       assert.match(working, /d ≈ 50,000 pc/);
       assert.match(working, /45,700 to 55,000 pc/);
       assert.match(working, /±4,600 pc/);

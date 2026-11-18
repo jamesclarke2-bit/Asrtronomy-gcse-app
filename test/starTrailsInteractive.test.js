@@ -162,12 +162,12 @@ WIDTHS.forEach(({ name, width, height }) => {
     });
   });
 
-  test(`${name}: the shown mean (2 dp) is the one the day is worked from, and star trails cannot separate the two days, even over a whole night, but timing the meridian over 30 nights can`, async (t) => {
+  test(`${name}: the shown mean (1 dp, like the readings) is the one the day is worked from, and star trails cannot separate the two days, even over a whole night, but timing the meridian over 30 nights can`, async (t) => {
     await withPage(t, still, async (page) => {
       const shortTable = page.locator('#reading-tables table[data-exposure="30"]');
       const rows = await shortTable.locator('tfoot tr').allTextContents();
       const mean = rows.find((r) => /^Mean/.test(r)).replace('Mean (°)', '');
-      assert.match(mean, /^\d+\.\d{2}$/);
+      assert.match(mean, /^\d+\.\d$/);
       const day = rows.find((r) => /^Sidereal day/.test(r));
       const shown = Math.round((360 / Number(mean)) * 30).toLocaleString('en-GB');
       assert.ok(day.includes(`(360 ÷ ${mean}) × 30 = ${shown} ±`), day);
@@ -192,6 +192,30 @@ WIDTHS.forEach(({ name, width, height }) => {
       await page.click('#new-readings');
       assert.equal(await markup(page, 'separate-diagram'), fixed[0]);
       assert.equal((await page.locator('#separate-readout').textContent()).replace(/\s+/g, ' '), fixed[1]);
+    });
+  });
+
+  test(`${name}: every half-range uncertainty and mean on the page has no more decimal places than the readings it comes from`, async (t) => {
+    await withPage(t, still, async (page) => {
+      const dp = (x) => ((x.match(/\.(\d+)/) || ['', ''])[1]).length;
+      for (let k = 0; k < 6; k += 1) {
+        for (const tbl of await page.locator('#reading-tables table').all()) {
+          const readings = (await tbl.locator('tbody td:nth-child(2)').allTextContents()).map((s) => s.match(/[\d.]+/)[0]);
+          const readingDp = Math.max(...readings.map(dp));
+          const foot = await tbl.locator('tfoot tr').allTextContents();
+          const unc = foot.find((r) => /^Uncertainty/.test(r)).match(/±([\d.]+)/)[1];
+          const mean = foot.find((r) => /^Mean/.test(r)).replace('Mean (°)', '');
+          assert.ok(dp(unc) <= readingDp, `±${unc} from readings ${readings}`);
+          assert.ok(dp(mean) <= readingDp, `mean ${mean} from readings ${readings}`);
+        }
+        const labels = (await page.locator('#spread-diagram-wrap .diagram-label').allTextContents()).filter((s) => /θ =/.test(s));
+        assert.equal(labels.length, 2);
+        labels.forEach((l) => {
+          const [, mean, unc] = l.match(/θ = ([\d.]+)° ± ([\d.]+)°/);
+          assert.ok(dp(mean) <= 1 && dp(unc) <= 1, l);
+        });
+        await page.click('#new-readings');
+      }
     });
   });
 

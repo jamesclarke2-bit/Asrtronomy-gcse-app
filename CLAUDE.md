@@ -81,3 +81,10 @@ Static HTML/CSS/JS with no build step. Pages live in `sims/` (interactive) and `
     default instead — invisible in the page source, and in the diagram itself unless someone
     actually measures the rendered page. This has broken several diagrams already.
     `test/svgSizing.test.js` guards against it sitewide.
+16. **An uncertainty can't be quoted to more decimal places than the readings it comes from:**
+    readings of 3.2, 3.2 and 3.3 s give an uncertainty of 0.1 s, not 0.05 s (round halves up). A
+    mean follows the readings' precision too: 3.2, 3.2 and 3.3 s give a mean of 3.2 s, not 3.23 s.
+    Work every later value (a result, its uncertainty, a percentage uncertainty) from those shown,
+    rounded values, so the page's working adds up. This applies to pages, tables, diagram labels,
+    readouts, questions and mark schemes. Exception: a question taken from an exam board's paper is
+    left exactly as written.

@@ -86,3 +86,25 @@ test('every question only tags u2.x ids that actually exist in curriculum.js', (
     });
   });
 });
+
+// --- 4.19 More practice in the Finding longitude page's style ------------
+
+test('4.19: three or more questions on u2.32, the new ones with a spec tag, marks, the 4-minutes-per-degree rule stated, and a worked mark scheme', () => {
+  const questions = makeQuestions(ShadowGeometry, SolarPosition).filter((q) => q.units[0] === 'u2.32');
+  assert.ok(questions.length >= 3, `${questions.length} questions`);
+  const west = findQuestion(questions, 'shadow-stick-eot-west');
+  assert.equal(west.spec, '4.19');
+  assert.equal(west.marks, 3);
+  assert.match(west.prompt, /equation of time is \+10 minutes.*12:38 UT.*12:00 − equation of time.*15° every hour \(1° every 4 minutes\)/);
+  assert.deepEqual(west.answer, { degrees: 12, direction: 'West' });
+  assert.ok(west.check({ degrees: 12, direction: 'West' }).correct);
+  assert.ok(west.check({ degrees: 11.8, direction: 'West' }).correct, 'within 2%');
+  const half = west.check({ degrees: 12, direction: 'East' });
+  assert.ok(!half.correct);
+  assert.match(half.message, /^2 out of 3 marks.*12:00 − \(\+10 minutes\) = 11:50 UT.*48 minutes apart, and 48 ÷ 4 = 12°.*later than at Greenwich, so west: 12° W/);
+  const east = findQuestion(questions, 'shadow-stick-eot-east');
+  assert.deepEqual(east.answer, { degrees: 10, direction: 'East' });
+  assert.match(east.check(east.answer).message, /12:00 − \(−6 minutes\) = 12:06 UT.*40 minutes apart.*earlier than at Greenwich, so east: 10° E/);
+  const why = findQuestion(questions, 'shadow-stick-why-eot');
+  assert.equal(why.options.filter((o) => why.check(o).correct).length, 1);
+});

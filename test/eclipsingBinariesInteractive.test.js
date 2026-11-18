@@ -195,7 +195,7 @@ WIDTHS.forEach(({ name, width, height }) => {
       await page.selectOption('#cycles', '4');
       const four = await pct();
       assert.ok(four < one, `${four} < ${one}`);
-      assert.match(await page.locator('#period-readout').textContent(), /3\.48 to 3\.73 days/);
+      assert.match(await page.locator('#period-readout').textContent(), /3\.45 to 3\.75 days; half that range is the uncertainty: about ±0\.2 days/);
     });
   });
 

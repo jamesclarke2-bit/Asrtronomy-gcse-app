@@ -10,7 +10,7 @@ function findQuestion(questions, id) {
 }
 
 test('every question tags u1.25 or u1.26 (or u1.5 for sky colour), and states the constants it needs in its own prompt text', () => {
-  const questions = makeQuestions(VisibilityFactors);
+  const questions = makeQuestions(VisibilityFactors).filter((q) => q.units[0] !== 'u1.18');
   assert.ok(questions.length >= 6);
   questions.forEach((q) => {
     assert.ok(
@@ -96,7 +96,7 @@ test('combined-trade-off: the plan with no weak point (Plan C) beats the clouded
 });
 
 test('every check() returns a non-empty explanatory message, correct or not', () => {
-  const questions = makeQuestions(VisibilityFactors);
+  const questions = makeQuestions(VisibilityFactors).filter((q) => q.options);
   questions.forEach((q) => {
     q.options.forEach((option) => {
       const result = q.check(option);
@@ -120,4 +120,39 @@ test('sky colour (1.6a): at least two questions on u1.5, each with one right ans
   assert.match(blue.options.find((o) => blue.check(o).correct), /scatters short-wavelength blue light much more than red/);
   const red = sky.find((q) => q.id === 'sunset-red-why');
   assert.match(red.options.find((o) => red.check(o).correct), /longer path through the air/);
+});
+
+// --- 6.5 Star charts, planispheres and apps (u1.18) ---------------------
+
+function combos(fields) {
+  return fields.reduce((acc, f) => acc.flatMap((c) => f.options.map((o) => ({ ...c, [f.key]: o }))), [{}]);
+}
+
+test('6.5: at least three questions on u1.18, each with exactly one right answer and a mark scheme', () => {
+  const { getSubtopic } = require('../src/curriculum');
+  assert.deepEqual(getSubtopic('u1.18').spec, ['6.5']);
+  const questions = makeQuestions(VisibilityFactors).filter((q) => q.units[0] === 'u1.18');
+  assert.ok(questions.length >= 3, `${questions.length} questions`);
+  questions.forEach((q) => {
+    assert.deepEqual(q.units, ['u1.18']);
+    assert.equal(q.spec, '6.5', q.id);
+    assert.ok(q.marks >= 1, q.id);
+    const all = q.fields ? combos(q.fields) : q.options;
+    assert.equal(all.filter((v) => q.check(v).correct).length, 1, q.id);
+    all.forEach((v) => assert.match(q.check(v).message, /Mark scheme:/, q.id));
+  });
+});
+
+test('6.5: the star chart question is read off a drawn chart: B is towards the east edge, A is nearest the centre', () => {
+  const { STAR_CHART, chartBearing } = require('../src/observingTechniquesQuestions');
+  const q = makeQuestions(VisibilityFactors).find((x) => x.id === 'star-chart-read');
+  assert.equal(typeof q.render, 'function');
+  assert.deepEqual(q.answer, { face: 'East', highest: 'A' });
+  assert.ok(q.check(q.answer).correct);
+  assert.match(q.check({ face: 'West', highest: 'A' }).message, /^1 out of 2 marks.*east is on the left/);
+  // The drawing really puts B near the left (east) edge and A near the centre.
+  const B = STAR_CHART.stars.find((s) => s.letter === 'B');
+  assert.ok(B.x < STAR_CHART.centre - 0.75 * STAR_CHART.radius, 'B is near the left edge');
+  assert.equal(chartBearing(B).direction, 'East');
+  STAR_CHART.stars.filter((s) => s.letter !== 'A').forEach((s) => assert.ok(chartBearing(s).fromCentre > 5 * chartBearing(STAR_CHART.stars[0]).fromCentre, s.letter));
 });

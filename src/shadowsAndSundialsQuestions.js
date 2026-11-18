@@ -155,10 +155,80 @@ function makeQuestions(ShadowGeometry, SolarPosition) {
         };
       },
     },
+    ...shadowStickLongitudeQuestions(),
   ];
 }
 
-const shadowsAndSundialsQuestionsApi = { makeQuestions };
+// --- 4.19 More practice, in the Finding longitude page's style ------------
+
+function clock(totalMinutes) {
+  const m = ((Math.round(totalMinutes) % 1440) + 1440) % 1440;
+  return `${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}`;
+}
+
+/**
+ * Longitude from a shadow stick and the equation of time: Greenwich's own
+ * apparent noon comes at 12:00 − equation of time (UT); the shadow stick's
+ * noon is later than that to the west and earlier to the east, at 4 minutes
+ * of time for every degree.
+ */
+function shadowStickLongitude(eotMinutes, noonUTMinutes) {
+  const greenwichNoon = 12 * 60 - eotMinutes;
+  const diff = noonUTMinutes - greenwichNoon;
+  return { greenwichNoon, diffMinutes: diff, degrees: Math.abs(diff) / 4, direction: diff > 0 ? 'West' : 'East' };
+}
+
+function shadowStickLongitudeQuestions() {
+  const UNITS = ['u2.32'];
+  const signedMin = (m) => `${m >= 0 ? '+' : '−'}${Math.abs(m)} minutes`;
+  function calc(id, eot, noonUT) {
+    const r = shadowStickLongitude(eot, noonUT);
+    const diff = Math.abs(r.diffMinutes);
+    const tol = Math.max(0.02 * r.degrees, 0.1);
+    return {
+      id,
+      units: UNITS,
+      spec: '4.19',
+      marks: 3,
+      prompt: `On a day when the equation of time is ${signedMin(eot)} (${eot >= 0 ? 'the Sun is ahead of clock time' : 'the Sun is behind clock time'}), a shadow stick's shortest shadow comes at ${clock(noonUT)} UT. At Greenwich the Sun crosses the meridian at 12:00 − equation of time (UT). The Earth turns 15° every hour (1° every 4 minutes). Calculate the observer's longitude, and say whether it is east or west of Greenwich.`,
+      fields: [
+        { key: 'degrees', type: 'number', label: 'Longitude', unitLabel: '°' },
+        { key: 'direction', type: 'choice', label: 'East or west?', options: ['East', 'West'] },
+      ],
+      check(value) {
+        const a = Math.abs(Number(value.degrees) - r.degrees) <= tol;
+        const b = value.direction === r.direction;
+        const marks = (a ? 2 : 0) + (b ? 1 : 0);
+        const points = [
+          `Greenwich noon = 12:00 − (${signedMin(eot)}) = ${clock(r.greenwichNoon)} UT`,
+          `time difference: ${clock(noonUT)} and ${clock(r.greenwichNoon)} are ${diff} minutes apart, and ${diff} ÷ 4 = ${r.degrees}°`,
+          `noon here is ${r.direction === 'West' ? 'later' : 'earlier'} than at Greenwich, so ${r.direction.toLowerCase()}: ${r.degrees}° ${r.direction[0]}`,
+        ];
+        return { correct: a && b, message: `${marks} out of 3 marks. Mark scheme: ${points.map((p) => `${p} (1)`).join('; ')}.` };
+      },
+      answer: { degrees: r.degrees, direction: r.direction },
+    };
+  }
+  const WHY = 'Greenwich\'s own noon is not at 12:00 UT on most days, so the time difference would be wrong by the equation of time';
+  return [
+    calc('shadow-stick-eot-west', 10, 12 * 60 + 38),
+    calc('shadow-stick-eot-east', -6, 11 * 60 + 26),
+    {
+      id: 'shadow-stick-why-eot',
+      units: UNITS,
+      spec: '4.19',
+      marks: 1,
+      type: 'choice',
+      prompt: 'A student finds local noon with a shadow stick and compares it with 12:00 UT to find longitude, ignoring the equation of time. Why is the answer wrong on most days?',
+      options: [WHY, 'The shadow stick is only accurate in summer', 'The Earth turns faster at noon', 'Longitude can only be found at night'],
+      check(value) {
+        return { correct: value === WHY, message: 'Mark scheme: the Sun crosses Greenwich\'s meridian at 12:00 − equation of time, not at 12:00, so every 4 minutes of equation of time ignored puts the longitude out by 1° (1).' };
+      },
+    },
+  ];
+}
+
+const shadowsAndSundialsQuestionsApi = { makeQuestions, shadowStickLongitude };
 
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = shadowsAndSundialsQuestionsApi;

@@ -142,7 +142,10 @@
     const e = 2 * VariableStars.TIME_READING_DAYS;
     const low = (timing.span - e) / cycles;
     const high = (timing.span + e) / cycles;
-    return { ...timing, low, high, uncertaintyDays: (high - low) / 2 };
+    const uncertaintyDays = (high - low) / 2;
+    // Times are read to 1 decimal place, so the uncertainty is quoted to 1 too (halves round up).
+    const uncertaintyShownDays = Math.round(uncertaintyDays * 10 + 1e-9) / 10;
+    return { ...timing, low, high, uncertaintyDays, uncertaintyShownDays };
   }
 
   const algol = VariableStars.galleryById('algol');

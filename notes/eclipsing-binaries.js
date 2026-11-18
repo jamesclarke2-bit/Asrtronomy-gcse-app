@@ -1,5 +1,6 @@
 (function () {
   const E = window.EclipsingBinaries;
+  const V = window.VariableStars;
   const D = window.SpectrumDrawing;
   const L = window.LightCurveDrawing;
   const { INK, MUTED, svgEl, clearDiagram, addLabel, panel, rgbString } = D;
@@ -412,13 +413,13 @@
     svg.dataset.trap = String(trap);
     document.getElementById('m1-label').textContent = `day ${t1.toFixed(1)}`;
     document.getElementById('m2-label').textContent = `day ${t2.toFixed(1)}`;
-    const oneCycle = ((2 * 0.25) / sys.periodDays) * 100;
+    const oneCycle = ((2 * V.TIME_READING_DAYS) / sys.periodDays) * 100;
     const readout = document.getElementById('period-readout');
     readout.dataset.trap = String(trap);
     readout.textContent =
       (trap ? 'Careful: a marker is on a shallow dip. Time from a deep dip to a deep dip; deep to shallow is only half the period. ' : '') +
       `Timed: ${r.span.toFixed(1)} days for ${n} cycle${n === 1 ? '' : 's'}, so the period is ${r.span.toFixed(1)} ÷ ${n} = ${fmt2(r.period)} days. ` +
-      `Reading each marker to about ±0.25 days gives ${fmt2(r.low)} to ${fmt2(r.high)} days; half that range is the uncertainty: about ±${fmt2(r.uncertaintyDays)} days ` +
+      `Reading each marker to about ±${V.TIME_READING_DAYS} days gives ${fmt2(r.low)} to ${fmt2(r.high)} days; half that range is the uncertainty: about ±${r.uncertaintyShownDays.toFixed(1)} days ` +
       `(±${r.percent < 100 ? r.percent.toFixed(1) : '100+'}%). One cycle alone would give about ±${oneCycle.toFixed(0)}%, so timing more cycles shrinks the percentage uncertainty.`;
   }
 

@@ -6,23 +6,23 @@ One row per point in the Edexcel GCSE Astronomy (1AS0) specification, Topics 1�
 
 | Topic | Name | Points | Covered | Not built | Flagged thin |
 |---|---|---|---|---|---|
-| 1 | Planet Earth | 8 | 8 | 0 | 4 |
+| 1 | Planet Earth | 8 | 8 | 0 | 0 |
 | 2 | The lunar disc | 8 | 8 | 0 | 0 |
 | 3 | The Earth-Moon-Sun system | 10 | 10 | 0 | 0 |
-| 4 | Time and the Earth-Moon-Sun cycles | 21 | 21 | 0 | 11 |
+| 4 | Time and the Earth-Moon-Sun cycles | 21 | 21 | 0 | 10 |
 | 5 | Solar System observation | 8 | 8 | 0 | 1 |
-| 6 | Celestial observation | 21 | 21 | 0 | 8 |
+| 6 | Celestial observation | 21 | 21 | 0 | 7 |
 | 7 | Early models of the Solar System | 9 | 9 | 0 | 0 |
 | 8 | Planetary motion and gravity | 9 | 9 | 0 | 3 |
 | 9 | Exploring the Moon | 5 | 5 | 0 | 0 |
 | 10 | Solar astronomy | 12 | 12 | 0 | 0 |
 | 11 | Exploring the Solar System | 33 | 33 | 0 | 0 |
 | 12 | Formation of planetary systems | 14 | 14 | 0 | 0 |
-| 13 | Exploring starlight | 49 | 49 | 0 | 1 |
+| 13 | Exploring starlight | 49 | 49 | 0 | 0 |
 | 14 | Stellar evolution | 11 | 11 | 0 | 0 |
 | 15 | Our place in the Galaxy | 14 | 14 | 0 | 0 |
 | 16 | Cosmology | 12 | 12 | 0 | 0 |
-| **Total** | | **244** | **244** | **0** | **28** |
+| **Total** | | **244** | **244** | **0** | **21** |
 
 ## Methodology
 
@@ -38,11 +38,11 @@ One row per point in the Edexcel GCSE Astronomy (1AS0) specification, Topics 1�
 
 | Code | Depth | Spec point | Page(s) | Questions | Thin coverage | Teacher's verdict |
 |---|---|---|---|---|---|---|
-| 1.1 | know | Earth is an oblate spheroid | [Earth: Structure, Atmosphere and Motion](../notes/earth-structure.html) | – | ⚠ covered only on a page where tap-to-reveal content outweighs visible prose | |
+| 1.1 | know | Earth is an oblate spheroid | [Earth: Structure, Atmosphere and Motion](../notes/earth-structure.html) | – |  | |
 | 1.2 | be able to | use Earth's mean diameter (13,000 km) | [Measuring the Sky](../notes/measuring-the-sky.html)<br>[Earth: Structure, Atmosphere and Motion](../notes/earth-structure.html) | 9 |  | |
-| 1.3 | understand | Earth's internal divisions (crust, mantle, outer core, inner core) | [Earth: Structure, Atmosphere and Motion](../notes/earth-structure.html) | – | ⚠ covered only on a page where tap-to-reveal content outweighs visible prose | |
-| 1.4 | be able to | use latitude and longitude | [Earth: Structure, Atmosphere and Motion](../notes/earth-structure.html) | 14 | ⚠ covered only on a page where tap-to-reveal content outweighs visible prose | |
-| 1.5 | be able to | use surface divisions as reference points (equator, tropics, polar circles, prime meridian, poles) | [Earth: Structure, Atmosphere and Motion](../notes/earth-structure.html) | 14 | ⚠ covered only on a page where tap-to-reveal content outweighs visible prose | |
+| 1.3 | understand | Earth's internal divisions (crust, mantle, outer core, inner core) | [Earth: Structure, Atmosphere and Motion](../notes/earth-structure.html) | – |  | |
+| 1.4 | be able to | use latitude and longitude | [Earth: Structure, Atmosphere and Motion](../notes/earth-structure.html) | 14 |  | |
+| 1.5 | be able to | use surface divisions as reference points (equator, tropics, polar circles, prime meridian, poles) | [Earth: Structure, Atmosphere and Motion](../notes/earth-structure.html) | 14 |  | |
 | 1.6a | understand | atmosphere effects on observation: sky colour | [Observing Techniques](../notes/observing-techniques.html) | – |  | |
 | 1.6b | understand | atmosphere effects on observation: skyglow | [Observing Techniques](../notes/observing-techniques.html) | – |  | |
 | 1.6c | understand | atmosphere effects on observation: twinkling | [The Naked-Eye Sky](../notes/naked-eye-sky.html) | – |  | |
@@ -97,7 +97,7 @@ One row per point in the Edexcel GCSE Astronomy (1AS0) specification, Topics 1�
 | 4.16 | understand | the use of time zones | [Sun Path Simulator](../sims/sun-path.html)<br>[Equation of Time](../sims/equation-of-time.html) | – | ⚠ understand point, no page covering it is a verified diagram-first page | |
 | 4.17 | be able to | use time-zone data | [Sun Path Simulator](../sims/sun-path.html)<br>[Equation of Time](../sims/equation-of-time.html) | 10 |  | |
 | 4.18 | know | mean time on the prime meridian is GMT, the same as UT | [Sun Path Simulator](../sims/sun-path.html)<br>[Equation of Time](../sims/equation-of-time.html) | – |  | |
-| 4.19 | be able to | use shadow-stick data and the Equation of Time to find longitude | [Shadows and Sundials](../sims/shadows-and-sundials.html) | 1 | ⚠ be able to point, only 1 practice question site-wide | |
+| 4.19 | be able to | use shadow-stick data and the Equation of Time to find longitude | [Shadows and Sundials](../sims/shadows-and-sundials.html) | 4 |  | |
 | 4.20 | understand | astronomical methods of finding longitude, including lunar distance | [Finding longitude at sea](../notes/finding-longitude.html) | – |  | |
 | 4.21 | understand | the horological method (Harrison's marine chronometer) | [Finding longitude at sea](../notes/finding-longitude.html) | – |  | |
 
@@ -122,7 +122,7 @@ One row per point in the Edexcel GCSE Astronomy (1AS0) specification, Topics 1�
 | 6.2 | be able to | recognise and draw seven constellations/asterisms (Cassiopeia, Cygnus, Orion, Plough, Southern Cross, Summer Triangle, Square of Pegasus) | [The Naked-Eye Sky](../notes/naked-eye-sky.html) | 8 |  | |
 | 6.3 | understand | asterisms as pointers (Arcturus and Polaris from the Plough; Sirius, Aldebaran and the Pleiades from Orion's Belt; Fomalhaut and Andromeda from the Square of Pegasus) | [The Naked-Eye Sky](../notes/naked-eye-sky.html) | – |  | |
 | 6.4 | understand | why names differ among cultures | [Observing Techniques](../notes/observing-techniques.html) | – |  | |
-| 6.5 | be able to | use star charts, planispheres and apps | [Observing Techniques](../notes/observing-techniques.html) | 0 | ⚠ be able to point, only 0 practice questions site-wide | |
+| 6.5 | be able to | use star charts, planispheres and apps | [Observing Techniques](../notes/observing-techniques.html) | 4 |  | |
 | 6.6 | understand | causes and effects of light pollution | [Observing Techniques](../notes/observing-techniques.html) | – |  | |
 | 6.7 | understand | celestial sphere, celestial poles, celestial equator | [Sun Path Simulator](../sims/sun-path.html) | – | ⚠ understand point, no page covering it is a verified diagram-first page | |
 | 6.8 | understand | the equatorial coordinate system (RA and declination) | [Sun Path Simulator](../sims/sun-path.html) | – | ⚠ understand point, no page covering it is a verified diagram-first page | |
@@ -286,7 +286,7 @@ One row per point in the Edexcel GCSE Astronomy (1AS0) specification, Topics 1�
 | 13.19 | be able to | use star trail photographs to determine the length of the sidereal day | [Star trails and the sidereal day](../notes/star-trails.html) | 11 |  | |
 | 13.20 | know | modern observations are recorded with digital sensors converting light to electrical signals, processed and stored as data files | [Reading a spectrum](../notes/reading-a-spectrum.html) | – |  | |
 | 13.21 | understand | how astronomers obtain and study patterns of spectral lines in light from astronomical objects | [Reading a spectrum](../notes/reading-a-spectrum.html) | – |  | |
-| 13.22 | know | the atmosphere blocks almost all radiation except visible light and radio waves | [Earth: Structure, Atmosphere and Motion](../notes/earth-structure.html) | – | ⚠ covered only on a page where tap-to-reveal content outweighs visible prose | |
+| 13.22 | know | the atmosphere blocks almost all radiation except visible light and radio waves | [Earth: Structure, Atmosphere and Motion](../notes/earth-structure.html) | – |  | |
 | 13.23 | know | only optical and radio telescopes should be at sea level | [Infrared telescopes and high-altitude sites](../notes/infrared-telescopes.html) | – |  | |
 | 13.24 | understand | how a simple radio telescope operates | [Radio telescopes](../notes/radio-telescopes.html) | – |  | |
 | 13.25 | understand | why radio telescopes need extremely large apertures to maintain useful resolution | [Radio telescopes](../notes/radio-telescopes.html) | – |  | |

@@ -88,9 +88,10 @@ test('dip times: primaries one period apart, secondaries halfway between', () =>
 test('the period from several cycles, its range and half-range uncertainty, and why more cycles help', () => {
   const r = E.periodFromDips(1.0, 15.4, 4);
   close(r.period, 3.6, 1e-9, 'period');
-  close(r.low, 13.9 / 4, 1e-9, 'low');
-  close(r.high, 14.9 / 4, 1e-9, 'high');
-  close(r.uncertaintyDays, 0.125, 1e-9, 'half the range');
+  close(r.low, 13.8 / 4, 1e-9, 'low: each end read to ±0.3 days');
+  close(r.high, 15.0 / 4, 1e-9, 'high');
+  close(r.uncertaintyDays, 0.15, 1e-9, 'half the range');
+  assert.equal(r.uncertaintyShownDays, 0.2, 'quoted to 1 decimal place, like the times read (halves round up)');
   const one = E.periodFromDips(1.0, 4.6, 1);
   close(one.percent / r.percent, 4, 1e-9, 'four cycles, a quarter of the percentage uncertainty');
 });

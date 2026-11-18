@@ -119,8 +119,6 @@ test('notes/earth-structure.html: the transmission chart draws all six bands', a
 // [buttonTerm, definitionTerm] pairs covering every top-level tap-reveal
 // this task added, plus the nested term it opens up to (if any).
 const REVEAL_CASES = [
-  ['latLonBasics', 'latLonBasics', null],
-  ['referenceLinesTable', 'referenceLinesTable', null],
   ['tropicsOrigin', 'tropicsOrigin', null],
   ['oblateSpheroid', 'oblateSpheroid', null],
   ['airComposition', 'airComposition', null],
@@ -150,10 +148,14 @@ REVEAL_CASES.forEach(([buttonTerm, defTerm, nestedTerm]) => {
   });
 });
 
-test('notes/earth-structure.html: the reference-lines table kept all eight rows, and the globe kept all eight tap regions', async (t) => {
+test('notes/earth-structure.html: latitude, longitude and the eight reference lines are visible prose, not tap-to-reveal, and the globe kept all eight tap regions', async (t) => {
   await withPage(t, { width: 1024, height: 1000 }, async (page) => {
-    await page.locator('button[data-term="referenceLinesTable"]').click();
-    const rows = await page.locator('.glossary-definition[data-term="referenceLinesTable"] table tbody tr').count();
+    // Moved out of tap-to-reveal so the page's key latitude and longitude content (spec 1.4, 1.5) is always on show.
+    assert.equal(await page.locator('[data-term="latLonBasics"], [data-term="referenceLinesTable"]').count(), 0);
+    assert.ok(await page.locator('#lat-lon-basics').isVisible());
+    assert.match(await page.locator('#lat-lon-basics').textContent(), /Latitude[\s\S]*Longitude[\s\S]*51\.5°N/);
+    assert.ok(await page.locator('#reference-lines table').isVisible());
+    const rows = await page.locator('#reference-lines table tbody tr').count();
     assert.equal(rows, 8);
     const globeRegions = await page.locator('#globe .diagram-region').count();
     assert.equal(globeRegions, 8);

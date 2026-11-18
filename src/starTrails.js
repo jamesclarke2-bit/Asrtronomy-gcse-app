@@ -21,6 +21,8 @@
   const { siderealDay, synodicDay } = SpecData.CONSTANTS;
   const SIDEREAL_DAY_MIN = siderealDay.hours * 60 + siderealDay.minutes;
   const SOLAR_DAY_MIN = synodicDay.hours * 60 + synodicDay.minutes;
+  /** Arc readings are to the nearest 0.5°, written to 1 decimal place. */
+  const READING_DP = 1;
 
   /** The angle (degrees) a star trail turns through in an exposure of t minutes. */
   function arcAngleDeg(exposureMin) {
@@ -75,29 +77,42 @@
     return values.map((v, k) => (Math.abs(v - median) > 3 * spreadDeg ? k : -1)).filter((k) => k >= 0);
   }
 
-  /** Mean (to 2 dp), range and uncertainty (half the range) of the readings, anomalies left out. */
+  /**
+   * Rounds to the readings' own precision: readings to the nearest 0.5°
+   * are written to 1 decimal place, so a mean or an uncertainty worked from
+   * them is too (0.25° is quoted as 0.3°, never 0.25°). Halves round up.
+   */
+  function toReadingPrecision(x, dp = READING_DP) {
+    const f = 10 ** dp;
+    return Math.round(x * f + 1e-9) / f;
+  }
+
+  /**
+   * Mean, range and uncertainty (half the range) of the readings, anomalies
+   * left out. The mean and the uncertainty are given to the readings' own
+   * 1 decimal place, and everything after them is worked from those shown
+   * values, so the page's own working adds up.
+   */
   function stats(values, spreadDeg = 1) {
     const out = anomalies(values, spreadDeg);
     const kept = values.filter((_, k) => !out.includes(k));
     const min = Math.min(...kept);
     const max = Math.max(...kept);
-    // The mean is given to 2 decimal places, and everything after it is
-    // worked from that shown value, so the page's own working adds up.
-    const mean = Math.round((100 * kept.reduce((a, b) => a + b, 0)) / kept.length) / 100;
-    const uncertainty = (max - min) / 2;
+    const mean = toReadingPrecision(kept.reduce((a, b) => a + b, 0) / kept.length);
+    const uncertainty = toReadingPrecision((max - min) / 2);
     return { kept, anomalies: out, mean, min, max, range: max - min, uncertainty, percent: (100 * uncertainty) / mean };
   }
 
   /**
-   * The sidereal day from a set of readings over t minutes: from the mean,
-   * with the uncertainty as half the range of the days the smallest and
-   * largest kept angles give.
+   * The sidereal day from a set of readings over t minutes: from the shown
+   * mean, with the uncertainty as half the range of the days that the shown
+   * mean minus and plus its shown uncertainty give.
    */
   function result(values, exposureMin, spreadDeg = 1) {
     const s = stats(values, spreadDeg);
     const day = siderealDayFrom(s.mean, exposureMin);
-    const longest = siderealDayFrom(s.min, exposureMin);
-    const shortest = siderealDayFrom(s.max, exposureMin);
+    const longest = siderealDayFrom(s.mean - s.uncertainty, exposureMin);
+    const shortest = siderealDayFrom(s.mean + s.uncertainty, exposureMin);
     const uncertainty = (longest - shortest) / 2;
     return { ...s, dayMin: day, shortestMin: shortest, longestMin: longest, dayUncertaintyMin: uncertainty, dayPercent: (100 * uncertainty) / day };
   }
@@ -153,6 +168,8 @@
     siderealDayFrom,
     readings,
     anomalies,
+    READING_DP,
+    toReadingPrecision,
     stats,
     result,
     dayRange,

@@ -49,14 +49,7 @@
         <span class="glossary-definition" data-term="southPole" hidden></span>
         <span class="glossary-definition" data-term="primeMeridian" hidden></span>
       </div>
-      <p class="diagram-caption">
-        <button type="button" class="glossary-toggle glossary-term-button" data-term="latLonBasics" aria-label="What do latitude and longitude mean?" aria-expanded="false">What latitude and longitude mean</button>
-        &middot;
-        <button type="button" class="glossary-toggle glossary-term-button" data-term="referenceLinesTable" aria-label="See all eight reference lines and points" aria-expanded="false">All eight reference lines</button>
-        &middot;
-        <button type="button" class="glossary-toggle glossary-term-button" data-term="tropicsOrigin" aria-label="Why are the tropics and polar circles where they are?" aria-expanded="false">Why the tropics are where they are</button>
-      </p>
-      <div class="glossary-definition" data-term="latLonBasics" hidden>
+      <div class="lat-lon-basics" id="lat-lon-basics">
         <ul class="tip-list">
           <li>
             <strong>Latitude</strong> &mdash; how far north or south of the equator a place is,
@@ -74,12 +67,38 @@
         </ul>
         <span class="glossary-definition" data-term="parallel" hidden></span>
         <span class="glossary-definition" data-term="meridianLine" hidden></span>
+      <div class="diagram lat-lon-angles-diagram">
+        <svg id="lat-lon-angles" class="responsive-svg" viewBox="0 0 500 270" width="500" height="270" role="img" aria-label="Two drawings. Left, latitude: a slice through the Earth with the equator across the middle; a line from the centre to a place at 51.5 degrees north makes a 51.5 degree angle with the equator. Right, longitude: the Earth seen from above the North Pole; a line from the pole to Greenwich marks 0 degrees, and a line to a place 40 degrees east makes a 40 degree angle with it, turning anticlockwise.">
+          <rect x="0" y="0" width="500" height="270" rx="12" fill="#0b1630" />
+          <text x="120" y="28" fill="#eef3fb" font-size="17" font-weight="700" text-anchor="middle">Latitude</text>
+          <circle cx="120" cy="140" r="88" fill="#2f6fb3" stroke="#eef3fb" stroke-width="2" />
+          <line x1="32" y1="140" x2="208" y2="140" stroke="#eef3fb" stroke-width="1.5" stroke-dasharray="5 4" />
+          <line x1="120" y1="140" x2="174.8" y2="71.1" stroke="#ffe08a" stroke-width="3" />
+          <path d="M154,140 A34,34 0 0 0 141.2,113.4" fill="none" stroke="#ffe08a" stroke-width="2" />
+          <circle cx="174.8" cy="71.1" r="5" fill="#ffe08a" stroke="#0b1630" stroke-width="1.5" />
+          <text x="160" y="130" fill="#eef3fb" font-size="14" font-weight="700">51.5°</text>
+          <text x="182.8" y="61.1" fill="#eef3fb" font-size="14">51.5°N</text>
+          <text x="120" y="252" fill="#eef3fb" font-size="14" text-anchor="middle">equator (dashed): 0°</text>
+          <text x="370" y="28" fill="#eef3fb" font-size="17" font-weight="700" text-anchor="middle">Longitude</text>
+          <circle cx="370" cy="140" r="88" fill="#2f6fb3" stroke="#eef3fb" stroke-width="2" />
+          <line x1="370" y1="140" x2="370" y2="228" stroke="#eef3fb" stroke-width="2" stroke-dasharray="5 4" />
+          <line x1="370" y1="140" x2="426.6" y2="207.4" stroke="#ffe08a" stroke-width="3" />
+          <path d="M370,174 A34,34 0 0 0 391.9,166.0" fill="none" stroke="#ffe08a" stroke-width="2" />
+          <circle cx="370" cy="140" r="4" fill="#eef3fb" />
+          <circle cx="426.6" cy="207.4" r="5" fill="#ffe08a" stroke="#0b1630" stroke-width="1.5" />
+          <text x="380" y="132" fill="#eef3fb" font-size="14">North Pole</text>
+          <text x="400" y="172" fill="#eef3fb" font-size="14" font-weight="700">40°</text>
+          <text x="434.6" y="211.4" fill="#eef3fb" font-size="14">40°E</text>
+          <text x="370" y="252" fill="#eef3fb" font-size="14" text-anchor="middle">Greenwich (dashed): 0°</text>
+        </svg>
+        <p class="diagram-caption">Both are angles at the Earth's centre. Not to scale.</p>
+      </div>
         <p>
           For example, the Royal Observatory at Greenwich, London, is at about 51.5&deg;N,
           0&deg;, and Sydney is at about 33.9&deg;S, 151.2&deg;E.
         </p>
       </div>
-      <div class="glossary-definition" data-term="referenceLinesTable" hidden>
+      <div class="reference-lines" id="reference-lines">
         <table class="shower-table">
           <caption>Earth's named reference lines and points</caption>
           <thead>
@@ -97,6 +116,9 @@
           </tbody>
         </table>
       </div>
+      <p class="diagram-caption">
+        <button type="button" class="glossary-toggle glossary-term-button" data-term="tropicsOrigin" aria-label="Why are the tropics and polar circles where they are?" aria-expanded="false">Why the tropics are where they are</button>
+      </p>
       <span class="glossary-definition" data-term="tropicsOrigin" hidden></span>
     </section>
 
@@ -568,7 +590,7 @@
   </main>
 
   <script src="../src/curriculum.js?v=202611301200"></script>
-  <script src="../src/pages.js?v=202611301200"></script>
+  <script src="../src/pages.js?v=202612011200"></script>
   <script src="../src/earthStructureQuestions.js?v=202611161200"></script>
   <script src="../src/specData.js?v=202610051000"></script>
   <script src="../src/solarPosition.js?v=202611091000"></script>

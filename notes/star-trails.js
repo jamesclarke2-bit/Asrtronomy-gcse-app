@@ -169,10 +169,10 @@
     });
     const foot = el('tfoot');
     const day = Math.round(r.dayMin).toLocaleString('en-GB');
-    const dayWorking = `(360 \u00f7 ${fmt(r.mean, 2)}) \u00d7 ${t} = ${day} \u00b1 ${Math.round(r.dayUncertaintyMin)}`;
+    const dayWorking = `(360 \u00f7 ${fmt(r.mean, S.READING_DP)}) \u00d7 ${t} = ${day} \u00b1 ${Math.round(r.dayUncertaintyMin)}`;
     [
-      ['Mean (\u00b0)', fmt(r.mean, 2)],
-      ['Uncertainty, half the range (\u00b0)', `\u00b1${fmt(r.uncertainty, 2)}`],
+      ['Mean (\u00b0)', fmt(r.mean, S.READING_DP)],
+      ['Uncertainty, half the range (\u00b0)', `\u00b1${fmt(r.uncertainty, S.READING_DP)}`],
       ['Percentage uncertainty (%)', fmt(r.percent, 1)],
       ['Sidereal day (min)', dayWorking],
     ].forEach(([label, value]) => {
@@ -211,8 +211,8 @@
       wedge(0, r.mean, `st-wedge st-wedge--${id}`, '#25345a');
       wedge(r.mean - r.uncertainty, r.mean + r.uncertainty, `st-band st-band--${id}`, 'url(#st-hatch)');
     });
-    addLabel(svg, wrap, `${SHORT} min: θ = ${fmt(short.mean, 2)}° ± ${fmt(short.uncertainty, 2)}°`, 24, 30, 'diagram-label--tick diagram-label--right');
-    addLabel(svg, wrap, `${LONG} min: θ = ${fmt(long.mean, 2)}° ± ${fmt(long.uncertainty, 2)}°`, 340, 30, 'diagram-label--tick diagram-label--right');
+    addLabel(svg, wrap, `${SHORT} min: θ = ${fmt(short.mean, S.READING_DP)}° ± ${fmt(short.uncertainty, S.READING_DP)}°`, 24, 30, 'diagram-label--tick diagram-label--right');
+    addLabel(svg, wrap, `${LONG} min: θ = ${fmt(long.mean, S.READING_DP)}° ± ${fmt(long.uncertainty, S.READING_DP)}°`, 340, 30, 'diagram-label--tick diagram-label--right');
     // Bars: percentage uncertainty, longer bar = less certain.
     const scale = 90;
     [[short, SHORT, 200], [long, LONG, 232]].forEach(([r, t, y]) => {

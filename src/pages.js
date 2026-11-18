@@ -776,7 +776,9 @@ const DIAGRAM_FIRST_PAGES = [
  * flags a spec point "covered only in a tap-to-reveal" when every page
  * covering it is on this list.
  */
-const TAP_REVEAL_HEAVY_PAGES = ['notes/earth-structure.html'];
+// Empty since notes/earth-structure.html's latitude, longitude and reference-lines
+// content moved into visible prose (its ratio fell from 0.40 to about 0.25).
+const TAP_REVEAL_HEAVY_PAGES = [];
 
 /**
  * Topics the spec covers but no page teaches yet — see this file's own

@@ -65,9 +65,12 @@ test('two periods read off drawn light curves, at least 2% tolerance; the trap a
 
 test('the uncertainty question: half the range of the period', () => {
   const q = questions.find((x) => x.id === 'period-uncertainty');
-  assert.equal(q.check(String(q.answer.uncertaintyDays)).correct, true);
-  assert.equal(q.check('0.25').correct, false, 'the whole range is not the uncertainty');
-  assert.equal(q.check('0.5').correct, false, 'the span uncertainty is not the period uncertainty');
+  assert.equal(q.answer.uncertaintyDays, 0.1, 'to 1 decimal place, like the times read');
+  assert.equal(q.check('0.1').correct, true);
+  assert.match(q.prompt, /read to ±0\.3 days.*13\.8 to 15\.0 days/);
+  assert.match(q.check('0.1').message, /13\.8 ÷ 6 = 2\.30 to 15\.0 ÷ 6 = 2\.50 days.*\(2\.50 − 2\.30\) ÷ 2 = ±0\.1 days/);
+  assert.equal(q.check('0.2').correct, false, 'the whole range is not the uncertainty');
+  assert.equal(q.check('0.6').correct, false, 'the span uncertainty is not the period uncertainty');
 });
 
 test('total marks', () => {
