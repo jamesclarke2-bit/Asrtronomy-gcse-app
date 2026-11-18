@@ -82,7 +82,7 @@ const PAGES = [
     href: 'sims/sun-path.html',
     units: ['u1.4', 'u1.6', 'u2.9', 'u2.10'],
     phase: 'Time',
-    position: 17,
+    position: 16,
     why: "Puts Star Coordinates' toolkit to work on one object across a day and a year, and introduces the seasons.",
   },
   {
@@ -92,7 +92,7 @@ const PAGES = [
     href: 'sims/equation-of-time.html',
     units: ['u2.10'],
     phase: 'Time',
-    position: 18,
+    position: 17,
     why: 'Goes deeper into the time ideas Sun Path just raised — why a sundial and a clock disagree.',
   },
   {
@@ -102,7 +102,7 @@ const PAGES = [
     href: 'sims/shadows-and-sundials.html',
     units: ['u2.30', 'u2.31', 'u2.32'],
     phase: 'Time',
-    position: 19,
+    position: 18,
     why: "Puts the equation of time to practical use: finding true north and your own longitude from a shadow's own shortest length, and why a sundial reads differently from a watch.",
   },
   {
@@ -112,7 +112,7 @@ const PAGES = [
     href: 'notes/star-trails.html',
     units: ['u2.34'],
     phase: 'Time',
-    position: 20,
+    position: 19,
     why: 'Shadows and Sundials timed the day by the Sun; star trails time the Earth\'s turn against the stars, which is a few minutes shorter.',
   },
   {
@@ -122,7 +122,7 @@ const PAGES = [
     href: 'notes/finding-longitude.html',
     units: ['u2.35'],
     phase: 'Time',
-    position: 21,
+    position: 20,
     why: "Shadows and Sundials found longitude on land with a shadow and a clock; at sea the hard part was knowing the time at Greenwich, solved first by the Moon and then by a clock.",
   },
   {
@@ -132,7 +132,7 @@ const PAGES = [
     href: 'sims/coordinates.html',
     units: ['u1.7', 'u1.8', 'u1.9', 'u1.10', 'u1.11', 'u1.12', 'u1.13', 'u1.14', 'u1.21', 'u1.23', 'u1.24'],
     phase: 'Look up',
-    position: 4,
+    position: 3,
     why: "A new, more technical toolkit, building on what you've just learned to look up and recognise: right ascension, declination, hour angle, sidereal time, and finding your latitude from Polaris — next, those same equatorial coordinates meet the ecliptic, where the zodiacal band actually comes from.",
   },
   {
@@ -142,7 +142,7 @@ const PAGES = [
     href: 'notes/ecliptic-zodiac.html',
     units: ['u1.16', 'u2.29', 'u3.23'],
     phase: 'Look up',
-    position: 5,
+    position: 4,
     why: "Builds directly on Star Coordinates' RA/declination toolkit, adding the one coordinate still missing — ecliptic longitude — and the zodiac it's measured against; next, that same Sun-position engine gets put to work on observing the Sun itself.",
   },
   {
@@ -152,7 +152,7 @@ const PAGES = [
     href: 'sims/sun-declination.html',
     units: ['u1.11', 'u2.9', 'u5.4'],
     phase: 'Look up',
-    position: 6,
+    position: 5,
     why: "Puts The Ecliptic and the Zodiac's own Sun-position engine to work on the Sun specifically, and covers how to observe it safely.",
   },
   {
@@ -162,7 +162,7 @@ const PAGES = [
     href: 'sims/sunspot-rotation.html',
     units: ['u2.5'],
     phase: 'Earth, Moon and Sun',
-    position: 12,
+    position: 11,
     why: "Uses the same idea Sidereal vs Synodic Month just raised for the Moon: the period you actually observe is longer than the Sun's true rotation, because Earth itself moves round the Sun in the meantime.",
   },
   {
@@ -171,7 +171,7 @@ const PAGES = [
     href: 'sims/solar-system-observation.html',
     units: ['u1.15', 'u1.16', 'u1.17'],
     phase: 'The Solar System and gravity',
-    position: 25,
+    position: 24,
     why: "Now that you know why planets loop and drift (Kepler's Laws and Orbits and Gravity, just covered), here's how to actually track Mercury, Venus and Mars doing it for real.",
   },
   {
@@ -181,7 +181,7 @@ const PAGES = [
     href: 'notes/observing-techniques.html',
     units: ['u1.5', 'u1.18', 'u1.19', 'u1.20', 'u1.22', 'u1.25', 'u1.26'],
     phase: 'Look up',
-    position: 3,
+    position: 2,
     why: 'The how that goes with it: dark adaptation, star charts and apps, and catching a meteor shower.',
   },
   {
@@ -201,7 +201,7 @@ const PAGES = [
     href: 'notes/measuring-the-sky.html',
     units: ['u2.6', 'u2.28', 'u2.29'],
     phase: 'Earth, Moon and Sun',
-    position: 15,
+    position: 14,
     why: "How the ancients first measured Earth, the Moon and the Sun — reusing Star Coordinates' meridian diagram directly.",
   },
   {
@@ -211,7 +211,7 @@ const PAGES = [
     href: 'notes/tides.html',
     units: ['u2.7'],
     phase: 'Earth, Moon and Sun',
-    position: 13,
+    position: 12,
     why: "Spring and neap tides, tied to the Moon's phase cycle covered earlier in this phase.",
   },
   {
@@ -221,7 +221,7 @@ const PAGES = [
     href: 'notes/archaeoastronomy.html',
     units: ['u3.5', 'u2.29'],
     phase: 'Earth, Moon and Sun',
-    position: 16,
+    position: 15,
     why: "Builds directly on Measuring the Sky's precession section — what that 26,000-year wobble meant for real ancient monuments.",
   },
   {
@@ -231,7 +231,7 @@ const PAGES = [
     href: 'notes/earth-structure.html',
     units: ['u2.1', 'u2.9', 'u2.15', 'u2.16', 'u2.28', 'u2.33'],
     phase: 'Earth, Moon and Sun',
-    position: 7,
+    position: 6,
     why: 'Turns the lens on Earth itself: its structure, atmosphere, and the rotation and axial tilt everything later in this phase — and the seasons, later still — builds on.',
   },
   {
@@ -241,7 +241,7 @@ const PAGES = [
     href: 'notes/geocentric-to-heliocentric.html',
     units: ['u3.1', 'u3.2', 'u3.6', 'u3.7', 'u3.15'],
     phase: 'The Solar System and gravity',
-    position: 22,
+    position: 21,
     why: "A new thread: how the Earth-centred model slowly gave way to the Sun-centred one, setting up why Kepler's laws, next, were worth discovering at all.",
   },
   {
@@ -251,7 +251,7 @@ const PAGES = [
     href: 'sims/kepler.html',
     units: ['u3.9', 'u3.10', 'u3.11', 'u3.12'],
     phase: 'The Solar System and gravity',
-    position: 23,
+    position: 22,
     why: "From ancient models of the sky to the actual physics of orbits: why they're ellipses, why speed changes around one, and how period and distance relate.",
   },
   {
@@ -261,7 +261,7 @@ const PAGES = [
     href: 'sims/orbits-gravity.html',
     units: ['u3.8', 'u3.13', 'u3.14'],
     phase: 'The Solar System and gravity',
-    position: 24,
+    position: 23,
     why: "Kepler described the three laws; this is Newton explaining why they're true — simulating gravity itself, rather than assuming the ellipse Kepler's page draws.",
   },
   {
@@ -271,7 +271,7 @@ const PAGES = [
     href: 'notes/scale-of-the-solar-system.html',
     units: ['u3.3', 'u3.4'],
     phase: 'The Solar System and gravity',
-    position: 26,
+    position: 25,
     why: "Puts the distance and period figures Kepler's page introduced to a different purpose: just how big the Solar System actually is, and why AU, light years and parsecs each earn their place.",
   },
   {
@@ -293,7 +293,7 @@ const PAGES = [
     href: 'sims/moon-phases.html',
     units: ['u2.3', 'u2.18', 'u2.19', 'u3.5'],
     phase: 'Earth, Moon and Sun',
-    position: 8,
+    position: 7,
     why: 'Moves from Earth to the Moon: why its shape changes, and its elliptical orbit.',
   },
   {
@@ -303,7 +303,7 @@ const PAGES = [
     href: 'sims/sidereal-vs-synodic.html',
     units: ['u2.17'],
     phase: 'Earth, Moon and Sun',
-    position: 11,
+    position: 10,
     why: 'A second way to measure the Moon’s cycle: against the stars rather than against the Sun, and why the two give different lengths.',
   },
   {
@@ -313,7 +313,7 @@ const PAGES = [
     href: 'sims/eclipses.html',
     units: ['u2.8', 'u2.19'],
     phase: 'Earth, Moon and Sun',
-    position: 14,
+    position: 13,
     why: 'Needs the lunar phase and orbital-tilt ideas from earlier in this phase to make sense of.',
   },
   {
@@ -323,7 +323,7 @@ const PAGES = [
     href: 'notes/moon-structure.html',
     units: ['u2.2', 'u2.20', 'u2.21', 'u2.22', 'u2.23', 'u2.24', 'u2.25', 'u2.26', 'u2.27'],
     phase: 'Earth, Moon and Sun',
-    position: 9,
+    position: 8,
     why: "Continues straight from Moon Phases to the Moon's physical self: surface features, formation and internal structure.",
   },
   {
@@ -333,7 +333,7 @@ const PAGES = [
     href: 'notes/sun-features.html',
     units: ['u2.4', 'u2.5', 'u2.11', 'u2.12', 'u2.13', 'u2.14'],
     phase: 'Earth, Moon and Sun',
-    position: 10,
+    position: 9,
     why: "Turns from the Moon's own structure to the Sun's: a layered interior, the fusion that powers it, sunspots and the solar cycle, and the solar wind reaching all the way to Earth.",
   },
   {
@@ -343,7 +343,7 @@ const PAGES = [
     href: 'notes/telescopes.html',
     units: ['u5.1', 'u5.2'],
     phase: 'Telescopes and exploring',
-    position: 30,
+    position: 29,
     why: "The equipment that made everything above observable in the first place — including Galileo's own telescope, back on From Earth-Centred to Sun-Centred.",
   },
   {
@@ -353,7 +353,7 @@ const PAGES = [
     href: 'notes/radio-telescopes.html',
     units: ['u5.5'],
     phase: 'Telescopes and exploring',
-    position: 31,
+    position: 30,
     why: 'Telescopes showed how an optical telescope focuses light and how its aperture sets the detail it sees; radio telescopes do the same with radio waves, which is why they are so big.',
   },
   {
@@ -363,7 +363,7 @@ const PAGES = [
     href: 'notes/infrared-telescopes.html',
     units: ['u5.6'],
     phase: 'Telescopes and exploring',
-    position: 32,
+    position: 31,
     why: 'Radio telescopes use one of the two windows that reach the ground; this page explains why only optical and radio telescopes can sit at sea level, and where infrared telescopes have to go instead.',
   },
   {
@@ -373,7 +373,7 @@ const PAGES = [
     href: 'notes/space-telescopes.html',
     units: ['u5.7'],
     phase: 'Telescopes and exploring',
-    position: 33,
+    position: 32,
     why: 'Infrared telescopes and high-altitude sites showed how far up a mountain gets you; for gamma rays, X-rays and ultraviolet that is not far enough, so the telescope has to go into space.',
   },
   {
@@ -383,7 +383,7 @@ const PAGES = [
     href: 'notes/space-probes.html',
     units: ['u5.3'],
     phase: 'Telescopes and exploring',
-    position: 34,
+    position: 33,
     why: 'Space telescopes still look from afar; a probe goes there, and getting it away from the Earth needs a rocket.',
   },
   {
@@ -393,7 +393,7 @@ const PAGES = [
     href: 'notes/parallax.html',
     units: ['u4.5', 'u3.4'],
     phase: 'Stars and the Universe',
-    position: 36,
+    position: 35,
     why: "Telescopes' own resolving power turns out to set a hard distance limit here too — the first page of the sky beyond the Solar System, and the ground this phase's own magnitude page (next) builds on.",
   },
   {
@@ -403,7 +403,7 @@ const PAGES = [
     href: 'notes/magnitude.html',
     units: ['u4.2'],
     phase: 'Stars and the Universe',
-    position: 37,
+    position: 36,
     why: "Parallax runs out past a few hundred parsecs; magnitude is the tool that reaches far beyond that, once a star's distance is known by any method at all.",
   },
   {
@@ -413,7 +413,7 @@ const PAGES = [
     href: 'notes/reading-a-spectrum.html',
     units: ['u4.6', 'u4.7'],
     phase: 'Stars and the Universe',
-    position: 38,
+    position: 37,
     why: 'Magnitude: how bright is a star? measures how much light a star sends us; this page reads what that light is made of, how hot the star is and how it moves.',
   },
   {
@@ -423,7 +423,7 @@ const PAGES = [
     href: 'notes/spectral-types.html',
     units: ['u4.8'],
     phase: 'Stars and the Universe',
-    position: 39,
+    position: 38,
     why: "Reading a spectrum showed that a star's colour and lines both depend on temperature; this page sorts stars into spectral classes by exactly those clues.",
   },
   {
@@ -433,7 +433,7 @@ const PAGES = [
     href: 'notes/hr-diagram.html',
     units: ['u4.9'],
     phase: 'Stars and the Universe',
-    position: 40,
+    position: 39,
     why: 'Colour, temperature and spectral type gave every star a temperature; this page plots that temperature against luminosity, and uses the result to measure distances.',
   },
   {
@@ -443,7 +443,7 @@ const PAGES = [
     href: 'notes/binaries-and-clusters.html',
     units: ['u4.10'],
     phase: 'Stars and the Universe',
-    position: 41,
+    position: 40,
     why: 'The Hertzsprung-Russell diagram treated stars one at a time; this page looks at stars in pairs and clusters, and at how a telescope shows them.',
   },
   {
@@ -453,7 +453,7 @@ const PAGES = [
     href: 'notes/variable-stars.html',
     units: ['u4.11'],
     phase: 'Stars and the Universe',
-    position: 42,
+    position: 41,
     why: 'Binaries, clusters and the view through a telescope met stars that change as they orbit; this page reads the light curves of stars that change in brightness, and uses Cepheids to measure distances.',
   },
   {
@@ -463,7 +463,7 @@ const PAGES = [
     href: 'notes/eclipsing-binaries.html',
     units: ['u4.12'],
     phase: 'Stars and the Universe',
-    position: 43,
+    position: 42,
     why: "Variable stars and Cepheids showed Algol's dips among six kinds of light curve; this page explains what causes them and how to find the period from them.",
   },
   {
@@ -473,7 +473,7 @@ const PAGES = [
     href: 'notes/catalogues-and-star-names.html',
     units: ['u4.13'],
     phase: 'Stars and the Universe',
-    position: 44,
+    position: 43,
     why: 'After the stars and clusters of the last few pages, how astronomers name and list them: the Bayer letters on bright stars, and the Messier and NGC numbers on clusters, nebulae and galaxies.',
   },
   {
@@ -483,7 +483,7 @@ const PAGES = [
     href: 'notes/sun-like-star.html',
     units: ['u4.14'],
     phase: 'Stars and the Universe',
-    position: 45,
+    position: 44,
     why: 'The HR diagram showed where giants and white dwarfs sit; this follows one Sun-like star through every stage of its life, and what holds it up at each.',
   },
   {
@@ -493,7 +493,7 @@ const PAGES = [
     href: 'notes/massive-stars.html',
     units: ['u4.15'],
     phase: 'Stars and the Universe',
-    position: 46,
+    position: 45,
     why: 'Life of a Sun-like star ended quietly as a white dwarf; a star many times heavier lives fast and ends in a supernova, and the Chandrasekhar limit decides what is left.',
   },
   {
@@ -503,7 +503,7 @@ const PAGES = [
     href: 'notes/black-holes.html',
     units: ['u4.16'],
     phase: 'Stars and the Universe',
-    position: 47,
+    position: 46,
     why: 'Massive stars and their ends showed how a black hole forms; this asks how we can know one is there at all, when it gives out no light.',
   },
   {
@@ -513,7 +513,7 @@ const PAGES = [
     href: 'notes/our-galaxy.html',
     units: ['u4.4'],
     phase: 'Stars and the Universe',
-    position: 48,
+    position: 47,
     why: 'Black holes: the evidence ended at the centre of our Galaxy; this steps back to see the whole Milky Way, its shape, our place in it, and how radio waves mapped it through the dust.',
   },
   {
@@ -523,7 +523,7 @@ const PAGES = [
     href: 'notes/local-group.html',
     units: ['u6.5'],
     phase: 'Stars and the Universe',
-    position: 49,
+    position: 48,
     why: 'Our Galaxy mapped the Milky Way itself; this looks at its neighbours, held close by gravity, and at the far bigger crowds of galaxies beyond them.',
   },
   {
@@ -533,7 +533,7 @@ const PAGES = [
     href: 'notes/galaxy-types.html',
     units: ['u6.6'],
     phase: 'Stars and the Universe',
-    position: 50,
+    position: 49,
     why: 'The Local Group showed spirals and irregulars side by side; this sorts every galaxy by its shape, as Hubble did on his tuning fork.',
   },
   {
@@ -543,7 +543,7 @@ const PAGES = [
     href: 'notes/active-galaxies.html',
     units: ['u6.7'],
     phase: 'Stars and the Universe',
-    position: 51,
+    position: 50,
     why: 'Galaxy types sorted galaxies by shape; some galaxies stand out instead by what pours from their centres, far beyond visible light.',
   },
   {
@@ -553,7 +553,7 @@ const PAGES = [
     href: 'notes/galaxy-formation.html',
     units: ['u6.8'],
     phase: 'Stars and the Universe',
-    position: 52,
+    position: 51,
     why: 'Active galaxies showed what galaxies can do; this asks how galaxies came to exist at all, and how collisions change them.',
   },
   {
@@ -563,7 +563,7 @@ const PAGES = [
     href: 'notes/redshift.html',
     units: ['u6.1'],
     phase: 'Stars and the Universe',
-    position: 53,
+    position: 52,
     why: "Reading a spectrum's Doppler shift for single stars, scaled up to whole galaxies: redshift as evidence that they are moving away from us.",
   },
   {
@@ -573,7 +573,7 @@ const PAGES = [
     href: 'notes/hubble-law.html',
     units: ['u6.2'],
     phase: 'Stars and the Universe',
-    position: 54,
+    position: 53,
     why: 'Redshift gave each galaxy a speed; put those speeds beside distances and the whole Universe turns out to be expanding.',
   },
   {
@@ -583,7 +583,7 @@ const PAGES = [
     href: 'notes/big-bang-steady-state.html',
     units: ['u6.9'],
     phase: 'Stars and the Universe',
-    position: 55,
+    position: 54,
     why: "Hubble's law showed the Universe is expanding; two theories explain that expansion in very different ways.",
   },
   {
@@ -593,7 +593,7 @@ const PAGES = [
     href: 'notes/big-bang-evidence.html',
     units: ['u6.3'],
     phase: 'Stars and the Universe',
-    position: 56,
+    position: 55,
     why: 'Expansion fits both theories; these observations show the Universe has changed, which only the Big Bang explains.',
   },
   {
@@ -603,7 +603,7 @@ const PAGES = [
     href: 'notes/dark-universe.html',
     units: ['u6.4'],
     phase: 'Stars and the Universe',
-    position: 57,
+    position: 56,
     why: 'The evidence shows how the Universe began; this asks what most of it is made of, and how it might end.',
   },
   {
@@ -613,7 +613,7 @@ const PAGES = [
     href: 'notes/gravity-forming-bodies.html',
     units: ['u3.32'],
     phase: 'The Solar System and gravity',
-    position: 28,
+    position: 27,
     why: "Bodies of the Solar System showed what is out there; this asks how gravity shaped it: its orbits, its rings, its shapes and its atmospheres.",
   },
   {
@@ -623,7 +623,7 @@ const PAGES = [
     href: 'notes/exoplanets-life.html',
     units: ['u3.33'],
     phase: 'The Solar System and gravity',
-    position: 29,
+    position: 28,
     why: "The same 'requirements for life' question Bodies of the Solar System raises for Titan, Europa and Enceladus, turned outward: how we find planets round other stars, and whether anyone is out there.",
   },
   {
@@ -633,7 +633,7 @@ const PAGES = [
     href: 'notes/solar-system-bodies.html',
     units: ['u3.16', 'u3.17', 'u3.18', 'u3.19', 'u3.20', 'u3.21', 'u3.22', 'u3.23', 'u3.24', 'u3.25', 'u3.30', 'u3.31'],
     phase: 'The Solar System and gravity',
-    position: 27,
+    position: 26,
     why: "Rounds out the Solar System itself: the same planet table compared directly, then everything smaller — asteroids, comets, meteorites — plus how a transit of Venus first measured the AU just introduced.",
   },
   {
@@ -776,19 +776,12 @@ const TAP_REVEAL_HEAVY_PAGES = ['notes/earth-structure.html'];
  */
 const COMING_SOON = [
   {
-    name: 'Why the sky is blue',
-    phase: 'Look up',
-    position: 2,
-    why: "A naked-eye observation explained: why the daytime sky is blue and the night sky dark, from the same atmosphere The Naked-Eye Sky's stars shine through.",
-    specPoints: ['1.6a'],
-  },
-  {
     // 11.26-11.28 (robotic probes) are covered by notes/space-probes.html
     // (u5.3), which replaced the old "Probes and Apollo" placeholder;
     // crewed missions and Apollo are still to come.
     name: 'Crewed missions and Apollo',
     phase: 'Telescopes and exploring',
-    position: 35,
+    position: 34,
     why: 'Space probes showed what robots can do when they go there; this asks what people add, and what it costs, through the Apollo missions to the Moon.',
     specPoints: ['11.29', '11.30'],
   },
