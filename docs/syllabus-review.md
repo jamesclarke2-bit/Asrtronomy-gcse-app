@@ -238,7 +238,7 @@ One row per point in the Edexcel GCSE Astronomy (1AS0) specification, Topics 1â€
 | Code | Depth | Spec point | Page(s) | Questions | Thin coverage | Teacher's verdict |
 |---|---|---|---|---|---|---|
 | 12.1a | be able to | identify gravity's operation in the Solar System: regular motion caused by gravity | [Gravity and forming bodies](../notes/gravity-forming-bodies.html) | 15 |  | |
-| 12.1b | be able to | identify gravity's operation in the Solar System: tidal forces (ring systems, asteroid belts, internal heating) | [Bodies of the Solar System](../notes/solar-system-bodies.html) | 4 |  | |
+| 12.1b | be able to | identify gravity's operation in the Solar System: tidal forces (ring systems, asteroid belts, internal heating) | [Bodies of the Solar System](../notes/solar-system-bodies.html) | 3 |  | |
 | 12.1c | be able to | identify gravity's operation in the Solar System: multi-body interactions (shifting orbits, chaos, resonances, Lagrange points) | [Gravity and forming bodies](../notes/gravity-forming-bodies.html) | 15 |  | |
 | 12.1d | be able to | identify gravity's operation in the Solar System: collisions (impact craters, changes to orbits and tilts) | [The Moon: Structure, Surface and Origin](../notes/moon-structure.html) | 2 |  | |
 | 12.1e | be able to | identify gravity's operation in the Solar System: the solar wind's effects (on comets, planetary atmospheres and the heliosphere) | [The Sun: Structure and Features](../notes/sun-features.html) | 2 |  | |
