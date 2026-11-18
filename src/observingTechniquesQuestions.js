@@ -238,10 +238,8 @@ function renderStarChart(container) {
     const t = el('text', { x, y, fill: '#eef3fb', 'font-size': 18, 'font-weight': 700, 'text-anchor': 'middle' }, svg);
     t.textContent = text;
   });
-  const wrap = document.createElement('div');
-  wrap.className = 'question-diagram';
-  wrap.appendChild(svg);
-  container.appendChild(wrap);
+  // The quiz already wraps this in its own .question-diagram (which carries the Enlarge button).
+  container.appendChild(svg);
 }
 
 function findingTargetsQuestions() {
