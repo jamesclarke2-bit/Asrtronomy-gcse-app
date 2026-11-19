@@ -522,6 +522,25 @@
 
   latitudeSlider.addEventListener('input', updateLatitude);
 
+  /**
+   * The opening clock-and-sundial picture, for the chosen date: the clock
+   * reads 12:00 and the sundial reads 12:00 plus the equation of time, its
+   * shadow falling short of the noon line (behind) or past it (ahead).
+   */
+  function drawHero(day, eot) {
+    const minutes = 12 * 60 + Math.round(eot);
+    const clock = `${String(Math.floor(minutes / 60)).padStart(2, '0')}:${String(minutes % 60).padStart(2, '0')}`;
+    const rounded = Math.round(eot);
+    const signed = rounded === 0 ? '0' : rounded > 0 ? `+${rounded}` : `−${Math.abs(rounded)}`;
+    const date = formatDate(dayOfYearToUTCDate(YEAR, day)).replace(/^(\d+) (\w{3})\w*$/, '$1 $2');
+    document.getElementById('eot-hero-sundial').textContent = `Sundial: ${clock}`;
+    document.getElementById('eot-hero-title').textContent = `${date}: equation of time ≈ ${signed} min`;
+    const angle = ((-90 + 0.85 * eot) * Math.PI) / 180;
+    const shadow = document.getElementById('eot-hero-shadow');
+    shadow.setAttribute('x2', (455 + 110 * Math.cos(angle)).toFixed(1));
+    shadow.setAttribute('y2', (175 + 0.5 * 110 * Math.sin(angle)).toFixed(1));
+  }
+
   function update() {
     const day = Number(dateSlider.value);
     dateLabel.textContent = formatDate(dayOfYearToUTCDate(YEAR, day));
@@ -531,6 +550,7 @@
     const direction = eot >= 0 ? 'ahead of' : 'behind';
     eqTimeValue.textContent = `Sundial reads ${eotAbs} min ${direction} clock time`;
 
+    drawHero(day, eot);
     drawGraph(day);
     drawAnalemma(day);
     updateTimeConverter(day);

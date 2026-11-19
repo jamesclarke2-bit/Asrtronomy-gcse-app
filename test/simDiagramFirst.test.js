@@ -100,6 +100,15 @@ WIDTHS.forEach(({ name, width, height }) => {
       assert.equal(first, 'eot-hero', 'the first visual on the page');
       const hero = (await p.locator('#eot-hero text').allTextContents()).join(' | ');
       for (const s of ['Clock: 12:00', 'Sundial: 11:46', 'equation of time ≈ −14 min']) assert.ok(hero.includes(s), s);
+      // The picture follows the date slider: the sundial reads 12:00 plus that date's equation of time.
+      const shadow0 = await p.locator('#eot-hero-shadow').getAttribute('x2');
+      await p.locator('#date-slider').evaluate((el) => {
+        el.value = '300';
+        el.dispatchEvent(new Event('input', { bubbles: true }));
+      });
+      assert.equal(await p.locator('#eot-hero-title').textContent(), '28 Oct: equation of time ≈ +16 min');
+      assert.equal(await p.locator('#eot-hero-sundial').textContent(), 'Sundial: 12:16');
+      assert.notEqual(await p.locator('#eot-hero-shadow').getAttribute('x2'), shadow0, 'the shadow moves');
       await fitsWidth(p, '#time-zone-strip', width);
       const zones = (await p.locator('#time-zone-strip text').allTextContents()).join(' | ');
       for (const s of ['GMT−1', 'GMT', 'GMT+1', 'Bristol 2.6°W: LMT 11:50', 'Norwich 1.3°E: LMT 12:05']) assert.ok(zones.includes(s), s);
