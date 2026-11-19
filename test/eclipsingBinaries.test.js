@@ -100,4 +100,9 @@ test('the period from several cycles, its range and half-range uncertainty, and 
   assert.deepEqual([four.shownLow, four.shownHigh, four.uncertaintyShownDays], [2.73, 3.03, 0.2]);
   const one = E.periodFromDips(1.0, 4.6, 1);
   close(one.percent / r.percent, 4, 1e-9, 'four cycles, a quarter of the percentage uncertainty');
+  // The shown percentage is worked from the shown uncertainty and the shown period.
+  assert.equal(r.shownPeriod, 3.6);
+  assert.equal(r.shownPercent.toFixed(1), (100 * r.uncertaintyShownDays / 3.6).toFixed(1));
+  const def = E.periodFromDips(1.0, 15.4, 4);
+  assert.deepEqual([def.uncertaintyShownDays, def.shownPeriod, def.shownPercent.toFixed(1)], [0.2, 3.6, '5.6'], '0.2 ÷ 3.60 × 100, not the unrounded 4.2%');
 });

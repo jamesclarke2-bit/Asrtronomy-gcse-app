@@ -166,10 +166,13 @@ WIDTHS.forEach(({ name, width, height }) => {
         await page.click('#hb-show-lines');
         for (const id of ['best', 'steep', 'shallow']) assert.match(await page.locator(`#hb-${id}-readout`).textContent(), /passes through every error bar/, `${set} ${id}`);
         const u = await page.locator('#hb-uncertainty-readout').textContent();
-        const m = u.match(/^\((\d+\.\d) − (\d+\.\d)\) ÷ 2 = ±(\d+\.\d) km\/s per Mpc, which is ±(\d+)% of/);
+        const m = u.match(/^\((\d+\.\d) − (\d+\.\d)\) ÷ 2 = ±(\d+\.\d) km\/s per Mpc, which is (\d+\.\d) ÷ (\d+\.\d) × 100 = ±(\d+)%$/);
         assert.ok(m, u);
         assert.ok(Math.abs((Number(m[1]) - Number(m[2])) / 2 - Number(m[3])) < 0.051);
-        percent[set] = Number(m[4]);
+        // The percentage is worked from the shown uncertainty and the shown best value.
+        assert.equal(m[4], m[3]);
+        assert.equal(Number(m[6]), Math.round((100 * Number(m[4])) / Number(m[5])));
+        percent[set] = Number(m[6]);
       }
       assert.ok(percent.near > 2 * percent.wide, JSON.stringify(percent));
       // Steepest made shallower than shallowest: no nonsense uncertainty.

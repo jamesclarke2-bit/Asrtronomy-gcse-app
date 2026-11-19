@@ -351,11 +351,12 @@
     svg.dataset.average = avg.toFixed(2);
     document.getElementById('t1-label').textContent = `day ${fmt1(t1)}`;
     document.getElementById('t2-label').textContent = `day ${fmt1(t2)}`;
-    const oneCycle = ((2 * V.TIME_READING_DAYS) / c.periodDays) * 100;
+    // One cycle: the same ±0.6 days on the star's period, as shown in the sentence.
+    const oneCycle = ((2 * V.TIME_READING_DAYS) / Number(c.periodDays.toFixed(2))) * 100;
     document.getElementById('period-readout').textContent =
       `Timed: ${fmt1(timing.span)} days for ${cycles} cycle${cycles === 1 ? '' : 's'}, so the period is ${fmt1(timing.span)} ÷ ${cycles} = ${timing.period.toFixed(2)} days. ` +
       `Each marker is read to about ±${V.TIME_READING_DAYS} days, so the timing is uncertain by about ±${(2 * V.TIME_READING_DAYS).toFixed(1)} days: ` +
-      `±${timing.percent < 100 ? timing.percent.toFixed(1) : '100+'}% of the time measured. Timing just one cycle would give about ±${oneCycle.toFixed(0)}%; ` +
+      `±${timing.percent < 100 ? timing.percent.toFixed(1) : '100+'}% of the time measured. Timing just one cycle, ${c.periodDays.toFixed(2)} days, would give ${(2 * V.TIME_READING_DAYS).toFixed(1)} ÷ ${c.periodDays.toFixed(2)} × 100 ≈ ±${oneCycle.toFixed(0)}%; ` +
       'more cycles means a longer measurement with the same reading uncertainty, so a smaller percentage uncertainty.';
     return { c, timing, avg };
   }

@@ -88,3 +88,10 @@ Static HTML/CSS/JS with no build step. Pages live in `sims/` (interactive) and `
     rounded values, so the page's working adds up. This applies to pages, tables, diagram labels,
     readouts, questions and mark schemes. Exception: a question taken from an exam board's paper is
     left exactly as written.
+17. **Only the four reference pages are exempt from the word-run limits:** `notes/data-sheet.html`,
+    `notes/privacy.html`, `notes/syllabus-map.html` and `notes/syllabus-review.html`, each
+    registered with kind `'reference'` and having no single central diagram to open on. They are
+    listed by name in `WORD_RUN_EXEMPT_PAGES` in `src/pages.js`. Every other page, including every
+    new teaching page and sim, goes on `DIAGRAM_FIRST_PAGES` and must keep within the limits (at most
+    150 words before the first visual, and at most 250 between visuals or after the last one);
+    `test/wordRuns.test.js` fails if any page is on neither list.

@@ -4963,3 +4963,48 @@ canvas {
   font-size: 0.85rem;
   min-height: 1.2em;
 }
+
+/* Phone controls panel (controlsPanel.js): a "Show controls" button under
+   the central diagram, and a "Hide controls" button at the top of the
+   panel. Closed, the panel takes no space, so it never covers a diagram. */
+.controls-toggle-button {
+  display: none;
+}
+
+@media (max-width: 899px) {
+  .controls-toggle-button {
+    display: block;
+    width: 100%;
+    min-height: 44px;
+    margin: 0.5rem 0 1rem;
+    padding: 0.6rem 1rem;
+    font: inherit;
+    font-weight: 700;
+    color: #ffffff;
+    background: #1f5fbf;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  .controls-toggle-button[hidden] {
+    display: none;
+  }
+
+  .tool-layout .controls .controls-hide-button {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    margin-top: 0;
+    background: #34495e;
+  }
+
+  .tool-layout .controls.controls-collapsed {
+    display: none;
+  }
+
+  /* The height cap set by controlsPanel.js includes the panel's padding. */
+  .tool-layout .controls {
+    box-sizing: border-box;
+  }
+}

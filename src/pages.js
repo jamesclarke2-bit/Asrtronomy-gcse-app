@@ -709,6 +709,19 @@ const PAGES = [
  * diagram" for a teacher to check by eye, not asserted to definitely
  * lack one.
  */
+/**
+ * The only pages exempt from the word-run limits (CLAUDE.md rule 17): the
+ * four reference pages, each registered with kind 'reference', which have
+ * no single central diagram to open on. Every other page must be on
+ * DIAGRAM_FIRST_PAGES; test/wordRuns.test.js checks both, by name.
+ */
+const WORD_RUN_EXEMPT_PAGES = [
+  'notes/data-sheet.html',
+  'notes/privacy.html',
+  'notes/syllabus-map.html',
+  'notes/syllabus-review.html',
+];
+
 const DIAGRAM_FIRST_PAGES = [
   'notes/telescopes.html',
   'sims/gravitational-potential.html',
@@ -734,6 +747,7 @@ const DIAGRAM_FIRST_PAGES = [
   'sims/coordinates.html',
   'sims/moon-phases.html',
   'sims/equation-of-time.html',
+  'sims/gravity-field-map.html',
   'notes/sun-features.html',
   'notes/ecliptic-zodiac.html',
   'notes/parallax.html',
@@ -893,14 +907,14 @@ function isReferencePage(page) {
 
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = {
-    PAGES, PHASES, COMING_SOON, RECOMMENDED_PATH,
+    PAGES, PHASES, COMING_SOON, RECOMMENDED_PATH, WORD_RUN_EXEMPT_PAGES,
     DIAGRAM_FIRST_PAGES, TAP_REVEAL_HEAVY_PAGES,
     buildJourney, buildRecommendedPath,
     computeUnitCoverage, isExtensionPage, isReferencePage,
   };
 } else if (typeof window !== 'undefined') {
   window.Pages = {
-    PAGES, PHASES, COMING_SOON, RECOMMENDED_PATH,
+    PAGES, PHASES, COMING_SOON, RECOMMENDED_PATH, WORD_RUN_EXEMPT_PAGES,
     DIAGRAM_FIRST_PAGES, TAP_REVEAL_HEAVY_PAGES,
     buildJourney, buildRecommendedPath,
     computeUnitCoverage, isExtensionPage, isReferencePage,

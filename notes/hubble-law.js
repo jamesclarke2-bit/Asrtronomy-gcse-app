@@ -168,7 +168,7 @@
     document.getElementById('hb-shallow-readout').textContent = `${shallow.toFixed(1)} km/s per Mpc (${passText(shallow)})`;
     const u = H.uncertainty(steep, shallow, best);
     document.getElementById('hb-uncertainty-readout').textContent = steep >= shallow
-      ? `(${steep.toFixed(1)} − ${shallow.toFixed(1)}) ÷ 2 = ±${u.half.toFixed(1)} km/s per Mpc, which is ±${u.percent.toFixed(0)}% of ${best.toFixed(1)}`
+      ? `(${steep.toFixed(1)} − ${shallow.toFixed(1)}) ÷ 2 = ±${u.half.toFixed(1)} km/s per Mpc, which is ${u.half.toFixed(1)} ÷ ${best.toFixed(1)} × 100 = ±${((100 * Number(u.half.toFixed(1))) / Number(best.toFixed(1))).toFixed(0)}%`
       : 'Make the steepest line steeper than the shallowest one first.';
     const age = H.ageSteps(best);
     document.getElementById('hb-your-age').textContent =

@@ -148,7 +148,11 @@
     const shownLow = Math.round(low * 100 + 1e-9) / 100;
     const shownHigh = Math.round(high * 100 + 1e-9) / 100;
     const uncertaintyShownDays = Math.round(((shownHigh - shownLow) / 2) * 10 + 1e-9) / 10;
-    return { ...timing, low, high, shownLow, shownHigh, uncertaintyDays, uncertaintyShownDays };
+    // The period is shown to 2 decimal places; its percentage uncertainty is worked from the
+    // shown uncertainty and the shown period.
+    const shownPeriod = Math.round(timing.period * 100 + 1e-9) / 100;
+    const shownPercent = shownPeriod > 0 ? (100 * uncertaintyShownDays) / shownPeriod : Infinity;
+    return { ...timing, low, high, shownLow, shownHigh, uncertaintyDays, uncertaintyShownDays, shownPeriod, shownPercent };
   }
 
   const algol = VariableStars.galleryById('algol');

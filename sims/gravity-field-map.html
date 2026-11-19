@@ -7,7 +7,7 @@
   <meta name="referrer" content="no-referrer" />
   <meta name="robots" content="noindex, nofollow" />
   <title>Gravitational Field Maps and Lagrange Points</title>
-  <link rel="stylesheet" href="../styles.css?v=202611221200" />
+  <link rel="stylesheet" href="../styles.css?v=202612031200" />
   <link rel="icon" type="image/svg+xml" href="../favicon.svg?v=202610130720" />
 </head>
 <body>
@@ -16,14 +16,12 @@
 
     <div class="extension-page-banner">
       <span class="curiosity-badge">Beyond the GCSE spec</span>
-      <strong>A-level extension.</strong> Everything on this page goes past the GCSE Astronomy
-      specification &mdash; the two-dimensional shape of a gravitational field, and what changes
-      once that field is viewed from a frame rotating with two orbiting bodies. See
-      <a href="gravitational-potential.html">Gravitational Potential Energy and Orbital Energy</a>
-      for the one-dimensional (radius-only) version this builds on. Nothing here is needed for
-      the exam. It uses precise values throughout &mdash; Earth's mass,
-      5.97 &times; 10<sup>24</sup> kg, and the Earth-Moon distance, 384,400 km &mdash; where the
-      exam data sheet rounds these to 6.0 &times; 10<sup>24</sup> kg and 380,000 km.
+      <strong>A-level extension</strong>, not needed for the exam: the 2D shape of a gravitational
+      field, and the frame rotating with two orbiting bodies (the 1D version is on
+      <a href="gravitational-potential.html">Gravitational Potential Energy and Orbital Energy</a>).
+      It uses precise values &mdash; Earth's mass, 5.97 &times; 10<sup>24</sup> kg, and the
+      Earth-Moon distance, 384,400 km &mdash; which the exam data sheet rounds to
+      6.0 &times; 10<sup>24</sup> kg and 380,000 km.
     </div>
 
     <h1>Gravitational Field Maps and Lagrange Points</h1>
@@ -34,39 +32,8 @@
       not one.
     </p>
 
-    <section class="notes-section" id="zero-field-vs-l1">
-      <h2>The zero-field point is not L1</h2>
-      <p>
-        <strong>For GCSE:</strong> at the zero-field point between Earth and the Moon, the two
-        pulls exactly cancel, so a mass there feels no net force at that instant &mdash; but it
-        would not circle Earth in step with the Moon, and would simply drift away from the
-        Earth-Moon line.
-      </p>
-      <p>
-        <strong>For A-level:</strong> at L1, the Moon's pull only partly cancels Earth's, so the
-        net inward pull is smaller than Earth's alone &mdash; exactly small enough that it supplies
-        the centripetal force for an orbit with the Moon's own period, one lunar month. That net
-        pull being smaller (not zero) is what lets a body at L1 stay in line with the Moon, which
-        is exactly why L1 sits a little closer to Earth than the point of full cancellation.
-      </p>
-      <p class="note">
-        The map below marks both: a zero-field point (plain superposition of the two fields, no
-        rotation involved) and, when the effective-potential view is switched on, L1 itself
-        (found from the rotating frame). They're close, but never the same point unless the two
-        masses are equal.
-      </p>
-    </section>
-
     <section class="notes-section" id="field-map">
       <h2>1. The map</h2>
-      <p>
-        Drag either mass anywhere on the map. <strong>Gravitational field</strong> draws the
-        combined field's direction (arrows), a few equipotential contours, and the zero-field
-        point. <strong>Effective potential</strong> switches to the frame rotating with the two
-        masses, shading it from deep wells (dark) to the L4/L5 hills (light), and marks all five
-        Lagrange points &mdash; L1, L2 and L3 sit in saddles along the line through both masses;
-        L4 and L5 sit at the top of hills, forming an equilateral triangle with them.
-      </p>
       <div class="preset-list" role="group" aria-label="Choose a system">
         <button type="button" class="preset-button" data-map-preset="earth-moon">Earth-Moon system</button>
         <button type="button" class="preset-button" data-map-preset="sun-earth">Sun-Earth system</button>
@@ -84,6 +51,14 @@
           aria-label="A draggable two-body gravitational field map, showing either field arrows and equipotential contours or, in the rotating frame, the effective potential shaded from deep wells to the L4/L5 hills, with the zero-field point and any Lagrange points marked"
         ></canvas>
       </div>
+      <p>
+        Drag either mass anywhere on the map. <strong>Gravitational field</strong> draws the
+        combined field's direction (arrows), a few equipotential contours, and the zero-field
+        point. <strong>Effective potential</strong> switches to the frame rotating with the two
+        masses, shading it from deep wells (dark) to the L4/L5 hills (light), and marks all five
+        Lagrange points &mdash; L1, L2 and L3 sit in saddles along the line through both masses;
+        L4 and L5 sit at the top of hills, forming an equilateral triangle with them.
+      </p>
       <p class="legend">
         <span class="legend-dot" id="body-a-dot"></span> <span id="body-a-label"></span>
         &nbsp; <span class="legend-dot" id="body-b-dot"></span> <span id="body-b-label"></span>
@@ -111,6 +86,41 @@
         Every position here is found by solving where the field (or, for the rotating-frame
         points, the net acceleration including the centrifugal term) is actually zero, not by
         quoting a textbook formula.
+      </p>
+    </section>
+
+    <section class="notes-section" id="zero-field-vs-l1">
+      <h2>The zero-field point is not L1</h2>
+      <p>
+        <strong>For GCSE:</strong> at the zero-field point between Earth and the Moon, the two
+        pulls exactly cancel, so a mass there feels no net force at that instant &mdash; but it
+        would not circle Earth in step with the Moon, and would simply drift away from the
+        Earth-Moon line.
+      </p>
+      <div class="diagram zero-field-l1-diagram">
+        <svg id="zero-field-l1" class="responsive-svg" viewBox="0 0 640 210" width="640" height="210" role="img" aria-label="The line from the Earth to the Moon, with distances to scale. The zero-field point, marked with a circle, is about 346,000 km from the Earth; L1, marked with a cross, is a little closer to the Earth, about 326,000 km away.">
+          <rect x="0" y="0" width="640" height="210" rx="12" fill="#0b1630" />
+          <line x1="60" y1="105" x2="590" y2="105" stroke="#9aa7bd" stroke-width="1.5" stroke-dasharray="6 5" />
+          <circle cx="60" cy="105" r="26" fill="#2f6fb3" stroke="#eef3fb" stroke-width="2" />
+          <circle cx="590" cy="105" r="11" fill="#c9ced8" stroke="#eef3fb" stroke-width="2" />
+          <text x="60" y="161" fill="#eef3fb" font-size="20" font-weight="700" text-anchor="middle">Earth</text>
+          <text x="590" y="161" fill="#eef3fb" font-size="20" font-weight="700" text-anchor="middle">Moon</text>
+          <circle class="zf-mark" cx="537.1" cy="105" r="8" fill="none" stroke="#ffe08a" stroke-width="3" />
+          <path class="l1-mark" d="M502.0,97 L518.0,113 M502.0,113 L518.0,97" stroke="#9fd3ff" stroke-width="3" />
+          <line x1="537.1" y1="93" x2="537.1" y2="65" stroke="#ffe08a" stroke-width="1.5" />
+          <line x1="510.0" y1="117" x2="510.0" y2="145" stroke="#9fd3ff" stroke-width="1.5" />
+          <text x="543.1" y="57" fill="#eef3fb" font-size="19" text-anchor="end">circle: zero-field point, ~346,000 km</text>
+          <text x="504.0" y="167" fill="#eef3fb" font-size="19" text-anchor="end">cross: L1, ~326,000 km</text>
+        </svg>
+        <p class="diagram-caption">Distances from the Earth along the line, to scale; the sizes of the Earth and Moon are not.</p>
+      </div>
+      <p>
+        <strong>For A-level:</strong> at L1, the Moon's pull only partly cancels Earth's, so the
+        net inward pull is smaller than Earth's alone &mdash; exactly small enough that it supplies
+        the centripetal force for an orbit with the Moon's own period, one lunar month. That net
+        pull being smaller (not zero) is what lets a body at L1 stay in line with the Moon, which
+        is exactly why L1 sits a little closer to Earth than the point of full cancellation. The
+        map above marks both; they only coincide when the two masses are equal.
       </p>
     </section>
 
@@ -179,7 +189,7 @@
   </main>
 
   <script src="../src/curriculum.js?v=202611301200"></script>
-  <script src="../src/pages.js?v=202612021200"></script>
+  <script src="../src/pages.js?v=202612031200"></script>
   <script src="../src/orbitalMechanics.js?v=202610100900"></script>
   <script src="../src/gravitySim.js?v=202610071000"></script>
   <script src="../src/tides.js?v=202609260100"></script>
