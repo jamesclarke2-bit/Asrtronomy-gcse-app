@@ -172,6 +172,9 @@ WIDTHS.forEach(({ name, width, height }) => {
       const shown = Math.round((360 / Number(mean)) * 30).toLocaleString('en-GB');
       assert.ok(day.includes(`(360 ÷ ${mean}) × 30 = ${shown} ±`), day);
       assert.match(await page.locator('#spread-diagram-wrap').textContent(), new RegExp(`30 min: θ = ${mean.replace('.', '\\.')}°`));
+      // The day's uncertainty is half the range of the shown ends: (1,455 − 1,430) ÷ 2 = 12.5, so ±13.
+      const longDay = (await page.locator('#reading-tables table[data-exposure="240"] tfoot tr').allTextContents()).find((r) => /^Sidereal day/.test(r));
+      assert.ok(longDay.includes('(360 ÷ 59.9) × 240 = 1,442 ± 13 (1,430 to 1,455)'), longDay);
       const sep = await data(page, 'separate-diagram');
       assert.ok(Number(sep.longLo) <= 1436 && Number(sep.longHi) >= 1440, 'the 240-minute range holds both days');
       assert.ok(Number(sep.nightHi) > 1439.9, 'the whole-night range reaches right up to the solar day');

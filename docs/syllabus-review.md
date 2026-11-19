@@ -9,11 +9,11 @@ One row per point in the Edexcel GCSE Astronomy (1AS0) specification, Topics 1�
 | 1 | Planet Earth | 8 | 8 | 0 | 0 |
 | 2 | The lunar disc | 8 | 8 | 0 | 0 |
 | 3 | The Earth-Moon-Sun system | 10 | 10 | 0 | 0 |
-| 4 | Time and the Earth-Moon-Sun cycles | 21 | 21 | 0 | 10 |
-| 5 | Solar System observation | 8 | 8 | 0 | 1 |
-| 6 | Celestial observation | 21 | 21 | 0 | 7 |
+| 4 | Time and the Earth-Moon-Sun cycles | 21 | 21 | 0 | 0 |
+| 5 | Solar System observation | 8 | 8 | 0 | 0 |
+| 6 | Celestial observation | 21 | 21 | 0 | 0 |
 | 7 | Early models of the Solar System | 9 | 9 | 0 | 0 |
-| 8 | Planetary motion and gravity | 9 | 9 | 0 | 3 |
+| 8 | Planetary motion and gravity | 9 | 9 | 0 | 0 |
 | 9 | Exploring the Moon | 5 | 5 | 0 | 0 |
 | 10 | Solar astronomy | 12 | 12 | 0 | 0 |
 | 11 | Exploring the Solar System | 33 | 33 | 0 | 0 |
@@ -22,7 +22,7 @@ One row per point in the Edexcel GCSE Astronomy (1AS0) specification, Topics 1�
 | 14 | Stellar evolution | 11 | 11 | 0 | 0 |
 | 15 | Our place in the Galaxy | 14 | 14 | 0 | 0 |
 | 16 | Cosmology | 12 | 12 | 0 | 0 |
-| **Total** | | **244** | **244** | **0** | **21** |
+| **Total** | | **244** | **244** | **0** | **0** |
 
 ## Methodology
 
@@ -79,22 +79,22 @@ One row per point in the Edexcel GCSE Astronomy (1AS0) specification, Topics 1�
 
 | Code | Depth | Spec point | Page(s) | Questions | Thin coverage | Teacher's verdict |
 |---|---|---|---|---|---|---|
-| 4.1 | understand | sidereal vs synodic days | [Star Coordinates](../sims/coordinates.html) | – | ⚠ understand point, no page covering it is a verified diagram-first page | |
-| 4.2 | understand | the Sun's role in apparent solar time (AST) | [Sun Path Simulator](../sims/sun-path.html)<br>[Equation of Time](../sims/equation-of-time.html) | – | ⚠ understand point, no page covering it is a verified diagram-first page | |
-| 4.3 | understand | the Mean Sun, mean solar time (MST) and local mean time (LMT) | [Sun Path Simulator](../sims/sun-path.html)<br>[Equation of Time](../sims/equation-of-time.html) | – | ⚠ understand point, no page covering it is a verified diagram-first page | |
+| 4.1 | understand | sidereal vs synodic days | [Star Coordinates](../sims/coordinates.html) | – |  | |
+| 4.2 | understand | the Sun's role in apparent solar time (AST) | [Sun Path Simulator](../sims/sun-path.html)<br>[Equation of Time](../sims/equation-of-time.html) | – |  | |
+| 4.3 | understand | the Mean Sun, mean solar time (MST) and local mean time (LMT) | [Sun Path Simulator](../sims/sun-path.html)<br>[Equation of Time](../sims/equation-of-time.html) | – |  | |
 | 4.4 | be able to | use Equation of Time = AST - MST | [Sun Path Simulator](../sims/sun-path.html)<br>[Equation of Time](../sims/equation-of-time.html) | 10 |  | |
-| 4.5 | understand | annual variation of the Equation of Time | [Sun Path Simulator](../sims/sun-path.html)<br>[Equation of Time](../sims/equation-of-time.html) | – | ⚠ understand point, no page covering it is a verified diagram-first page | |
-| 4.6 | understand | causes of that variation | [Sun Path Simulator](../sims/sun-path.html)<br>[Equation of Time](../sims/equation-of-time.html) | – | ⚠ understand point, no page covering it is a verified diagram-first page | |
+| 4.5 | understand | annual variation of the Equation of Time | [Sun Path Simulator](../sims/sun-path.html)<br>[Equation of Time](../sims/equation-of-time.html) | – |  | |
+| 4.6 | understand | causes of that variation | [Sun Path Simulator](../sims/sun-path.html)<br>[Equation of Time](../sims/equation-of-time.html) | – |  | |
 | 4.7 | understand | finding local noon with shadows and a shadow stick | [Shadows and Sundials](../sims/shadows-and-sundials.html) | – |  | |
 | 4.8 | understand | structure and use of sundials | [Shadows and Sundials](../sims/shadows-and-sundials.html) | – |  | |
-| 4.9 | understand | the lunar phase cycle | [Moon Phases](../sims/moon-phases.html) | – | ⚠ understand point, no page covering it is a verified diagram-first page | |
+| 4.9 | understand | the lunar phase cycle | [Moon Phases](../sims/moon-phases.html) | – |  | |
 | 4.10 | understand | sidereal vs synodic months | [Sidereal vs Synodic Month](../sims/sidereal-vs-synodic.html) | – |  | |
-| 4.11 | understand | annual variation in sunrise and sunset times | [Sun Path Simulator](../sims/sun-path.html)<br>[Equation of Time](../sims/equation-of-time.html) | – | ⚠ understand point, no page covering it is a verified diagram-first page | |
+| 4.11 | understand | annual variation in sunrise and sunset times | [Sun Path Simulator](../sims/sun-path.html)<br>[Equation of Time](../sims/equation-of-time.html) | – |  | |
 | 4.12 | understand | significance of equinoxes and solstices | [Sun Path Simulator](../sims/sun-path.html)<br>[Observing the Sun](../sims/sun-declination.html)<br>[Earth: Structure, Atmosphere and Motion](../notes/earth-structure.html) | – |  | |
 | 4.13 | understand | variation in the Sun's apparent motion through the year | [Sun Path Simulator](../sims/sun-path.html)<br>[Observing the Sun](../sims/sun-declination.html)<br>[Earth: Structure, Atmosphere and Motion](../notes/earth-structure.html) | – |  | |
-| 4.14 | understand | relationship between sidereal and synodic time | [Star Coordinates](../sims/coordinates.html) | – | ⚠ understand point, no page covering it is a verified diagram-first page | |
-| 4.15 | understand | difference in local time at different longitudes | [Sun Path Simulator](../sims/sun-path.html)<br>[Equation of Time](../sims/equation-of-time.html) | – | ⚠ understand point, no page covering it is a verified diagram-first page | |
-| 4.16 | understand | the use of time zones | [Sun Path Simulator](../sims/sun-path.html)<br>[Equation of Time](../sims/equation-of-time.html) | – | ⚠ understand point, no page covering it is a verified diagram-first page | |
+| 4.14 | understand | relationship between sidereal and synodic time | [Star Coordinates](../sims/coordinates.html) | – |  | |
+| 4.15 | understand | difference in local time at different longitudes | [Sun Path Simulator](../sims/sun-path.html)<br>[Equation of Time](../sims/equation-of-time.html) | – |  | |
+| 4.16 | understand | the use of time zones | [Sun Path Simulator](../sims/sun-path.html)<br>[Equation of Time](../sims/equation-of-time.html) | – |  | |
 | 4.17 | be able to | use time-zone data | [Sun Path Simulator](../sims/sun-path.html)<br>[Equation of Time](../sims/equation-of-time.html) | 10 |  | |
 | 4.18 | know | mean time on the prime meridian is GMT, the same as UT | [Sun Path Simulator](../sims/sun-path.html)<br>[Equation of Time](../sims/equation-of-time.html) | – |  | |
 | 4.19 | be able to | use shadow-stick data and the Equation of Time to find longitude | [Shadows and Sundials](../sims/shadows-and-sundials.html) | 4 |  | |
@@ -110,7 +110,7 @@ One row per point in the Edexcel GCSE Astronomy (1AS0) specification, Topics 1�
 | 5.3 | understand | changing positions of planets in the night sky | [Retrograde Motion and Planetary Alignments](../sims/solar-system-observation.html) | – |  | |
 | 5.4 | understand | planetary motion lies within the zodiacal band | [The Ecliptic and the Zodiac](../notes/ecliptic-zodiac.html)<br>[Retrograde Motion and Planetary Alignments](../sims/solar-system-observation.html) | – |  | |
 | 5.5 | understand | retrograde motion of planets | [Retrograde Motion and Planetary Alignments](../sims/solar-system-observation.html) | – |  | |
-| 5.6 | understand | First Point of Aries and First Point of Libra | [Star Coordinates](../sims/coordinates.html) | – | ⚠ understand point, no page covering it is a verified diagram-first page | |
+| 5.6 | understand | First Point of Aries and First Point of Libra | [Star Coordinates](../sims/coordinates.html) | – |  | |
 | 5.7 | understand | meteors and meteor showers, including finding the radiant | [Observing Techniques](../notes/observing-techniques.html) | – |  | |
 | 5.8 | understand | conjunction (superior and inferior), opposition, elongation, transit, occultation | [Retrograde Motion and Planetary Alignments](../sims/solar-system-observation.html) | – |  | |
 
@@ -124,16 +124,16 @@ One row per point in the Edexcel GCSE Astronomy (1AS0) specification, Topics 1�
 | 6.4 | understand | why names differ among cultures | [Observing Techniques](../notes/observing-techniques.html) | – |  | |
 | 6.5 | be able to | use star charts, planispheres and apps | [Observing Techniques](../notes/observing-techniques.html) | 4 |  | |
 | 6.6 | understand | causes and effects of light pollution | [Observing Techniques](../notes/observing-techniques.html) | – |  | |
-| 6.7 | understand | celestial sphere, celestial poles, celestial equator | [Sun Path Simulator](../sims/sun-path.html) | – | ⚠ understand point, no page covering it is a verified diagram-first page | |
-| 6.8 | understand | the equatorial coordinate system (RA and declination) | [Sun Path Simulator](../sims/sun-path.html) | – | ⚠ understand point, no page covering it is a verified diagram-first page | |
-| 6.9 | understand | the horizon coordinate system (altitude and azimuth) | [Sun Path Simulator](../sims/sun-path.html) | – | ⚠ understand point, no page covering it is a verified diagram-first page | |
+| 6.7 | understand | celestial sphere, celestial poles, celestial equator | [Sun Path Simulator](../sims/sun-path.html) | – |  | |
+| 6.8 | understand | the equatorial coordinate system (RA and declination) | [Sun Path Simulator](../sims/sun-path.html) | – |  | |
+| 6.9 | understand | the horizon coordinate system (altitude and azimuth) | [Sun Path Simulator](../sims/sun-path.html) | – |  | |
 | 6.10 | understand | how latitude links equatorial and horizon coordinates at the meridian | [Star Coordinates](../sims/coordinates.html)<br>[Observing the Sun](../sims/sun-declination.html) | – |  | |
-| 6.11 | understand | how the meridian defines local sidereal time and hour angle | [Star Coordinates](../sims/coordinates.html) | – | ⚠ understand point, no page covering it is a verified diagram-first page | |
+| 6.11 | understand | how the meridian defines local sidereal time and hour angle | [Star Coordinates](../sims/coordinates.html) | – |  | |
 | 6.12 | be able to | use coordinates to find the best time or object to observe | [Star Coordinates](../sims/coordinates.html) | 2 |  | |
-| 6.13 | understand | cardinal points, culmination, meridian, zenith, circumpolarity | [Sun Path Simulator](../sims/sun-path.html) | – | ⚠ understand point, no page covering it is a verified diagram-first page | |
-| 6.14 | understand | diurnal motion due to Earth's rotation | [Star Coordinates](../sims/coordinates.html) | – | ⚠ understand point, no page covering it is a verified diagram-first page | |
+| 6.13 | understand | cardinal points, culmination, meridian, zenith, circumpolarity | [Sun Path Simulator](../sims/sun-path.html) | – |  | |
+| 6.14 | understand | diurnal motion due to Earth's rotation | [Star Coordinates](../sims/coordinates.html) | – |  | |
 | 6.15 | be able to | use declination to decide whether a star is circumpolar | [Star Coordinates](../sims/coordinates.html) | 3 |  | |
-| 6.16 | understand | apparent motion of circumpolar stars, upper and lower transit | [Star Coordinates](../sims/coordinates.html) | – | ⚠ understand point, no page covering it is a verified diagram-first page | |
+| 6.16 | understand | apparent motion of circumpolar stars, upper and lower transit | [Star Coordinates](../sims/coordinates.html) | – |  | |
 | 6.17 | be able to | use rising and setting times to predict position | [Star Coordinates](../sims/coordinates.html) | 3 |  | |
 | 6.18 | be able to | find latitude using Polaris | [Star Coordinates](../sims/coordinates.html) | 5 |  | |
 | 6.19 | understand | dark adaptation and averted vision | [Observing Techniques](../notes/observing-techniques.html) | – |  | |
@@ -161,10 +161,10 @@ One row per point in the Edexcel GCSE Astronomy (1AS0) specification, Topics 1�
 | 8.1 | understand | Brahe's observational work in the move from geocentric to heliocentric models | [From Earth-Centred to Sun-Centred](../notes/geocentric-to-heliocentric.html) | – |  | |
 | 8.2 | understand | the mathematical modelling of Copernicus and Kepler in that move | [From Earth-Centred to Sun-Centred](../notes/geocentric-to-heliocentric.html) | – |  | |
 | 8.3 | understand | gravity creating stable elliptical orbits | [Orbits and Gravity](../sims/orbits-gravity.html) | – |  | |
-| 8.4 | understand | Kepler's laws | [Kepler's Laws of Planetary Motion](../sims/kepler.html) | – | ⚠ understand point, no page covering it is a verified diagram-first page | |
-| 8.5 | understand | aphelion, perihelion, apogee and perigee | [Kepler's Laws of Planetary Motion](../sims/kepler.html) | – | ⚠ understand point, no page covering it is a verified diagram-first page | |
+| 8.4 | understand | Kepler's laws | [Kepler's Laws of Planetary Motion](../sims/kepler.html) | – |  | |
+| 8.5 | understand | aphelion, perihelion, apogee and perigee | [Kepler's Laws of Planetary Motion](../sims/kepler.html) | – |  | |
 | 8.6 | be able to | use Kepler's third law (T squared over r cubed is constant) | [Kepler's Laws of Planetary Motion](../sims/kepler.html) | 2 |  | |
-| 8.7 | understand | the constant depends inversely on the mass of the central body | [Kepler's Laws of Planetary Motion](../sims/kepler.html) | – | ⚠ understand point, no page covering it is a verified diagram-first page | |
+| 8.7 | understand | the constant depends inversely on the mass of the central body | [Kepler's Laws of Planetary Motion](../sims/kepler.html) | – |  | |
 | 8.8 | know | Newton explained Kepler's laws with his law of universal gravitation | [Orbits and Gravity](../sims/orbits-gravity.html) | – |  | |
 | 8.9 | understand | gravitational force is proportional to the product of the masses and inversely proportional to the square of the separation | [Orbits and Gravity](../sims/orbits-gravity.html) | – |  | |
 

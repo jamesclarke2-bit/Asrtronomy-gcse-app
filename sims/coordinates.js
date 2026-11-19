@@ -913,6 +913,44 @@
     const alt = Number(polarisAltitudeSlider.value);
     polarisAltitudeLabel.textContent = `${alt.toFixed(1)}°`;
     polarisLatitudeResult.textContent = `Estimated latitude: ${alt.toFixed(1)}°N`;
+    drawPolarisDiagram(alt);
+  }
+
+  /** The observer's line of sight to Polaris, tilted up by the slider's altitude. */
+  function drawPolarisDiagram(alt) {
+    const svg = document.getElementById('polaris-diagram');
+    if (!svg) return;
+    const eye = { x: 70, y: 196 };
+    const a = (alt * Math.PI) / 180;
+    const len = 280;
+    const star = { x: eye.x + len * Math.cos(a), y: eye.y - len * Math.sin(a) };
+    // Keep the star inside the panel at high altitudes.
+    const k = Math.min(1, (eye.y - 22) / Math.max(1e-6, eye.y - star.y));
+    star.x = eye.x + (star.x - eye.x) * k;
+    star.y = eye.y + (star.y - eye.y) * k;
+    const sight = document.getElementById('polaris-sight');
+    sight.setAttribute('x2', star.x.toFixed(1));
+    sight.setAttribute('y2', star.y.toFixed(1));
+    const r = 60;
+    document.getElementById('polaris-arc').setAttribute('d', `M${eye.x + r},${eye.y} A${r},${r} 0 0 0 ${(eye.x + r * Math.cos(a)).toFixed(1)},${(eye.y - r * Math.sin(a)).toFixed(1)}`);
+    const pts = [];
+    for (let i = 0; i < 10; i += 1) {
+      const rr = i % 2 === 0 ? 11 : 4.5;
+      const t = (i * Math.PI) / 5 - Math.PI / 2;
+      pts.push(`${(star.x + rr * Math.cos(t)).toFixed(1)},${(star.y + rr * Math.sin(t)).toFixed(1)}`);
+    }
+    document.getElementById('polaris-star').setAttribute('points', pts.join(' '));
+    const starLabel = document.getElementById('polaris-star-label');
+    const right = star.x < 300;
+    starLabel.setAttribute('x', (star.x + (right ? 16 : -16)).toFixed(1));
+    starLabel.setAttribute('y', (star.y + 6).toFixed(1));
+    starLabel.setAttribute('text-anchor', right ? 'start' : 'end');
+    const mid = a / 2;
+    const angleLabel = document.getElementById('polaris-angle-label');
+    angleLabel.textContent = `altitude ${alt.toFixed(1)}° = latitude`;
+    angleLabel.setAttribute('x', (eye.x + (r + 12) * Math.cos(mid)).toFixed(1));
+    angleLabel.setAttribute('y', Math.min(eye.y - 8, eye.y - (r + 12) * Math.sin(mid) + 6).toFixed(1));
+    svg.dataset.altitude = alt.toFixed(1);
   }
 
   // --- Chained multi-part question ---------------------------------------

@@ -74,7 +74,8 @@
       const P = sys.periodDays;
       const { primary } = E.dipTimes(sys, 0, spanDays);
       const cycles = primary.length - 1;
-      const tol = Math.max(0.5 / cycles, 0.02 * P);
+      // Each end read to ±TIME_READING_DAYS, so the span is good to twice that, shared over the cycles.
+      const tol = Math.max((2 * E.TIME_READING_DAYS) / cycles, 0.02 * P);
       return {
         id,
         units: UNITS,

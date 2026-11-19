@@ -89,11 +89,13 @@
     const tableText = table.map((v, k) => `student ${k + 1}: ${v.toFixed(1)}°`).join(', ');
     const tableStats = S.stats(table);
 
-    const CANT_DAY = 1442;
-    const CANT_UNC = 12;
+    // The long-exposure readings the page's own table opens with (59.9° ± 0.5° in 240 min).
+    const LONG = S.result([60, 60.5, 59.5, 59.5, 60], 240);
+    const CANT_DAY = LONG.shownDayMin;
+    const CANT_UNC = LONG.shownUncertaintyMin;
     const WHOLE = S.dayRange(720, 0.5);
     const n = (x) => Math.round(x).toLocaleString('en-GB');
-    const CANT = { day: n(CANT_DAY), lo: n(CANT_DAY - CANT_UNC), hi: n(CANT_DAY + CANT_UNC), sid: n(S.SIDEREAL_DAY_MIN), sol: n(S.SOLAR_DAY_MIN) };
+    const CANT = { day: n(CANT_DAY), lo: n(LONG.shownShortestMin), hi: n(LONG.shownLongestMin), sid: n(S.SIDEREAL_DAY_MIN), sol: n(S.SOLAR_DAY_MIN) };
     const NIGHT = { lo: n(WHOLE.shortestMin), hi: n(WHOLE.longestMin) };
     const MER = S.meridianMethod(30, 1);
     const BOTH_IN = 'Its range of possible values includes both days';
@@ -162,7 +164,7 @@
       ),
       multi(
         'st-cant-separate',
-        `A 240-minute exposure, with the arc read to ±0.5°, gives a sidereal day of ${CANT.day} ± ${CANT_UNC} min. The sidereal day is ${CANT.sid} min and the solar day is ${CANT.sol} min. (a) Why can this result not tell the two apart? (b) Which longer measurement would let a student tell them apart reliably?`,
+        `A 240-minute exposure, with the arc read to ±0.5°, gives a sidereal day of ${CANT.day} ± ${CANT_UNC} min (${CANT.lo} to ${CANT.hi} min). The sidereal day is ${CANT.sid} min and the solar day is ${CANT.sol} min. (a) Why can this result not tell the two apart? (b) Which longer measurement would let a student tell them apart reliably?`,
         [
           { key: 'why', type: 'choice', label: '(a) Because', options: [BOTH_IN, 'The result is bigger than both of them', 'The uncertainty is too small'] },
           { key: 'fix', type: 'choice', label: '(b) What would', options: [MERIDIAN, WHOLE_NIGHT, 'Repeating the 240-minute reading many more times'] },

@@ -81,16 +81,14 @@
           <div class="control">
             <label for="speed-select">Animation speed</label>
             <select id="speed-select">
-              <option value="slow">Slower &mdash; watch the detail</option>
-              <option value="fast">Faster &mdash; see the whole cycle</option>
+              <option value="slow">Slower</option>
+              <option value="fast">Faster</option>
             </select>
           </div>
 
           <p class="panel-note">
-            A pure progression through the cycle, day by day &mdash; not tied to any particular
-            year, so it repeats identically every time. Perigee doesn't line up with the phases
-            the same way every month, so the distance shown follows the lunar cycle you last
-            checked (or the current one).
+            A repeating cycle, day by day, not tied to any year. The distance shown follows the
+            lunar cycle you last checked (or the current one).
           </p>
         </div>
 
@@ -99,9 +97,7 @@
             <label for="date-input">Date: <span id="date-label"></span></label>
             <input type="date" id="date-input" />
             <p class="panel-note">
-              A real calendar date, not a repeating cycle &mdash; the Moon's phase on any given
-              date depends on the year too, so you can check this against what's actually in the
-              sky tonight, or against any online almanac.
+              A real calendar date, so you can check it against tonight's sky or an almanac.
             </p>
           </div>
         </div>
@@ -132,21 +128,19 @@
         <p class="supermoon-flag" id="supermoon-flag" hidden></p>
 
         <p class="exam-tip">
-          <strong>Common exam confusion:</strong> phases are caused by the Moon's changing
-          position relative to the Sun &mdash; and so how much of its permanently half-lit
-          surface faces Earth &mdash; <strong>not</strong> by Earth's shadow falling on the
-          Moon. Earth's shadow on the Moon is a completely separate, much rarer event: a
+          <strong>Common exam confusion:</strong> phases come from the Moon's changing position
+          relative to the Sun, so how much of its always half-lit surface faces us,
+          <strong>not</strong> from Earth's shadow. Earth's shadow on the Moon is a rarer event, a
           <button type="button" class="glossary-toggle glossary-term-button" data-term="lunarEclipse" aria-label="What is a lunar eclipse?" aria-expanded="false">lunar eclipse</button>,
-          which only happens when the Sun, Earth and Moon line up almost exactly &mdash; unlike
-          an ordinary phase, which happens every single day of every month.
+          which needs the Sun, Earth and Moon almost exactly in line.
         </p>
         <span class="glossary-definition" data-term="lunarEclipse" hidden></span>
 
         <p class="eot-link">
-          <a href="../notes/earth-structure.html">Curious about the Earth-Sun-Moon system's other motions? See Earth: Structure, Atmosphere and Motion &rarr;</a>
+          <a href="../notes/earth-structure.html">Earth's other motions &rarr;</a>
         </p>
         <p class="eot-link">
-          <a href="sidereal-vs-synodic.html">Why this cycle is 29.53 days, not the 27.3-day sidereal month &mdash; see Sidereal vs Synodic Month &rarr;</a>
+          <a href="sidereal-vs-synodic.html">Why 29.53 days, not 27.3: Sidereal vs Synodic Month &rarr;</a>
         </p>
 
         <p class="coverage" id="coverage"></p>
@@ -160,17 +154,16 @@
         <button type="button" class="glossary-toggle glossary-term-button" data-term="crescent" aria-label="What does crescent mean?" aria-expanded="false">crescent</button>
         to a bulging
         <button type="button" class="glossary-toggle glossary-term-button" data-term="gibbous" aria-label="What does gibbous mean?" aria-expanded="false">gibbous</button>
-        shape and back. Each card below shows the Moon's position in its orbit (top) beside what
-        you'd actually see from Earth that night (bottom).
+        shape and back. Each card shows its place in its orbit (top) and the view from Earth
+        (bottom).
       </p>
       <span class="glossary-definition" data-term="crescent" hidden></span>
       <span class="glossary-definition" data-term="gibbous" hidden></span>
 
       <div class="concept-grid eight-phases-grid" id="eight-phases-grid"></div>
       <p class="note">
-        Reading left to right: the first four phases are waxing (the lit area growing); the last
-        four are waning (shrinking back to New Moon). The curved edge between light and dark in
-        each Earth-view disc is called the
+        Left to right: the first four phases are waxing (lit area growing), the last four waning.
+        The curved light&ndash;dark edge is the
         <button type="button" class="glossary-toggle glossary-term-button" data-term="terminator" aria-label="What is the terminator?" aria-expanded="false">terminator</button>
         — straight at the quarters, bulging the rest of the time.
       </p>
@@ -360,6 +353,58 @@
       </p>
       <span class="glossary-definition" data-term="perigeeSection" hidden></span>
       <span class="glossary-definition" data-term="apogee" hidden></span>
+      <div class="diagram supermoon-timeline-diagram">
+        <svg id="supermoon-timeline-svg" class="responsive-svg" viewBox="0 0 640 250" width="640" height="250" role="img" aria-label="A timeline over about 420 days. The top row has a circle for each full Moon, one every 29.53 days; the bottom row has a triangle for each perigee, one every 27.55 days. The two rows start together, drift apart, and line up again after about 14 full Moons; the full Moons that fall close to a perigee are drawn larger, ringed and labelled supermoon.">
+          <rect x="0" y="0" width="640" height="250" rx="12" fill="#0b1630" />
+          <text x="40" y="34" fill="#eef3fb" font-size="20" font-weight="700">Full Moons (circles)</text>
+          <text x="40" y="208" fill="#eef3fb" font-size="20" font-weight="700">Perigee (triangles)</text>
+          <line x1="40" y1="90" x2="610" y2="90" stroke="#9aa7bd" stroke-width="1.5" />
+          <line x1="40" y1="160" x2="610" y2="160" stroke="#9aa7bd" stroke-width="1.5" />
+          <polygon class="perigee-mark" points="40.0,149 31.0,167 49.0,167" fill="#9fd3ff" />
+          <polygon class="perigee-mark" points="77.4,149 68.4,167 86.4,167" fill="#9fd3ff" />
+          <polygon class="perigee-mark" points="114.8,149 105.8,167 123.8,167" fill="#9fd3ff" />
+          <polygon class="perigee-mark" points="152.2,149 143.2,167 161.2,167" fill="#9fd3ff" />
+          <polygon class="perigee-mark" points="189.6,149 180.6,167 198.6,167" fill="#9fd3ff" />
+          <polygon class="perigee-mark" points="226.9,149 217.9,167 235.9,167" fill="#9fd3ff" />
+          <polygon class="perigee-mark" points="264.3,149 255.3,167 273.3,167" fill="#9fd3ff" />
+          <polygon class="perigee-mark" points="301.7,149 292.7,167 310.7,167" fill="#9fd3ff" />
+          <polygon class="perigee-mark" points="339.1,149 330.1,167 348.1,167" fill="#9fd3ff" />
+          <polygon class="perigee-mark" points="376.5,149 367.5,167 385.5,167" fill="#9fd3ff" />
+          <polygon class="perigee-mark" points="413.9,149 404.9,167 422.9,167" fill="#9fd3ff" />
+          <polygon class="perigee-mark" points="451.3,149 442.3,167 460.3,167" fill="#9fd3ff" />
+          <polygon class="perigee-mark" points="488.7,149 479.7,167 497.7,167" fill="#9fd3ff" />
+          <polygon class="perigee-mark" points="526.1,149 517.1,167 535.1,167" fill="#9fd3ff" />
+          <polygon class="perigee-mark" points="563.5,149 554.5,167 572.5,167" fill="#9fd3ff" />
+          <polygon class="perigee-mark" points="600.8,149 591.8,167 609.8,167" fill="#9fd3ff" />
+          <circle class="full-moon-mark supermoon-mark" cx="40.0" cy="90" r="12" fill="#eef3fb" stroke="#ffe08a" stroke-width="3" />
+          <line x1="40.0" y1="104" x2="40.0" y2="146" stroke="#ffe08a" stroke-width="2" stroke-dasharray="4 3" />
+          <circle class="full-moon-mark supermoon-mark" cx="80.1" cy="90" r="12" fill="#eef3fb" stroke="#ffe08a" stroke-width="3" />
+          <line x1="80.1" y1="104" x2="80.1" y2="146" stroke="#ffe08a" stroke-width="2" stroke-dasharray="4 3" />
+          <circle class="full-moon-mark" cx="120.2" cy="90" r="9" fill="#eef3fb" stroke="#eef3fb" stroke-width="1" />
+          <circle class="full-moon-mark" cx="160.2" cy="90" r="9" fill="#eef3fb" stroke="#eef3fb" stroke-width="1" />
+          <circle class="full-moon-mark" cx="200.3" cy="90" r="9" fill="#eef3fb" stroke="#eef3fb" stroke-width="1" />
+          <circle class="full-moon-mark" cx="240.4" cy="90" r="9" fill="#eef3fb" stroke="#eef3fb" stroke-width="1" />
+          <circle class="full-moon-mark" cx="280.5" cy="90" r="9" fill="#eef3fb" stroke="#eef3fb" stroke-width="1" />
+          <circle class="full-moon-mark" cx="320.5" cy="90" r="9" fill="#eef3fb" stroke="#eef3fb" stroke-width="1" />
+          <circle class="full-moon-mark" cx="360.6" cy="90" r="9" fill="#eef3fb" stroke="#eef3fb" stroke-width="1" />
+          <circle class="full-moon-mark" cx="400.7" cy="90" r="9" fill="#eef3fb" stroke="#eef3fb" stroke-width="1" />
+          <circle class="full-moon-mark" cx="440.8" cy="90" r="9" fill="#eef3fb" stroke="#eef3fb" stroke-width="1" />
+          <circle class="full-moon-mark" cx="480.8" cy="90" r="9" fill="#eef3fb" stroke="#eef3fb" stroke-width="1" />
+          <circle class="full-moon-mark" cx="520.9" cy="90" r="9" fill="#eef3fb" stroke="#eef3fb" stroke-width="1" />
+          <circle class="full-moon-mark supermoon-mark" cx="561.0" cy="90" r="12" fill="#eef3fb" stroke="#ffe08a" stroke-width="3" />
+          <line x1="561.0" y1="104" x2="561.0" y2="146" stroke="#ffe08a" stroke-width="2" stroke-dasharray="4 3" />
+          <circle class="full-moon-mark supermoon-mark" cx="601.1" cy="90" r="12" fill="#eef3fb" stroke="#ffe08a" stroke-width="3" />
+          <line x1="601.1" y1="104" x2="601.1" y2="146" stroke="#ffe08a" stroke-width="2" stroke-dasharray="4 3" />
+          <text x="40.0" y="68" fill="#ffe08a" font-size="19" font-weight="700" text-anchor="start">supermoons</text>
+          <text x="601.1" y="68" fill="#ffe08a" font-size="19" font-weight="700" text-anchor="end">supermoons</text>
+          <text x="40.0" y="236" fill="#9aa7bd" font-size="17" text-anchor="middle">0</text>
+          <text x="175.7" y="236" fill="#9aa7bd" font-size="17" text-anchor="middle">100</text>
+          <text x="311.4" y="236" fill="#9aa7bd" font-size="17" text-anchor="middle">200</text>
+          <text x="447.1" y="236" fill="#9aa7bd" font-size="17" text-anchor="middle">300</text>
+          <text x="582.9" y="236" fill="#9aa7bd" font-size="17" text-anchor="end">400 days</text>
+        </svg>
+        <p class="diagram-caption">Full Moons and perigees drift out of step and back: the supermoons are where they line up.</p>
+      </div>
       <p>
         Perigee comes round every ~27.55 days, but the phases take ~29.53, so the two drift in
         and out of step. When a full or new Moon happens to fall within a few days of perigee,
@@ -456,7 +501,7 @@
   </main>
 
   <script src="../src/curriculum.js?v=202611301200"></script>
-  <script src="../src/pages.js?v=202612011200"></script>
+  <script src="../src/pages.js?v=202612021200"></script>
   <script src="../src/moonPhase.js?v=202611031700"></script>
   <script src="../src/solarPosition.js?v=202611091000"></script>
   <script src="../src/phaseDetective.js?v=202611101000"></script>

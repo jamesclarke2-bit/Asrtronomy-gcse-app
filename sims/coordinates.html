@@ -253,14 +253,36 @@
       </p>
       <span class="glossary-definition" data-term="siderealDay" hidden></span>
       <span class="glossary-definition" data-term="solarDay" hidden></span>
+      <div class="diagram sidereal-solar-diagram">
+        <svg id="sidereal-solar-diagram" class="responsive-svg" viewBox="0 0 600 330" width="600" height="330" role="img" aria-label="The Earth drawn at two points on its orbit round the Sun, one day apart, with the step between them drawn much bigger than it really is. On day 1 at noon, an arrow from the observer points at the Sun. One sidereal day later the Earth has turned once relative to the stars, so an arrow drawn parallel to the first, solid, points at the same distant star, but the Sun is now off to one side. The Earth must turn about 1 degree more, about 4 minutes, until a dashed arrow points at the Sun again: one solar day.">
+          <rect x="0" y="0" width="600" height="330" rx="12" fill="#0b1630" />
+          <path d="M420.0,262.0 A360,360 0 0 0 314.6,7.4" fill="none" stroke="#9aa7bd" stroke-width="1.5" stroke-dasharray="6 5" />
+          <circle cx="60" cy="262" r="30" fill="#ffd36b" stroke="#eef3fb" stroke-width="2" />
+          <text x="60" y="318" fill="#eef3fb" font-size="22" font-weight="700" text-anchor="middle">Sun</text>
+          <line x1="416.5" y1="211.9" x2="307.6" y2="227.2" stroke="#ffe08a" stroke-width="3" marker-end="url(#sid-arrow)" />
+          <line x1="380.8" y1="98.6" x2="271.8" y2="113.9" stroke="#ffe08a" stroke-width="3" marker-end="url(#sid-arrow)" />
+          <line x1="380.8" y1="98.6" x2="282.8" y2="148.5" stroke="#eef3fb" stroke-width="3" stroke-dasharray="7 5" marker-end="url(#sid-arrow-w)" />
+          <path d="M319.4,107.2 A62,62 0 0 0 325.5,126.7" fill="none" stroke="#eef3fb" stroke-width="2" />
+          <defs>
+            <marker id="sid-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="#ffe08a" /></marker>
+            <marker id="sid-arrow-w" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="#eef3fb" /></marker>
+          </defs>
+          <circle cx="416.5" cy="211.9" r="18" fill="#2f6fb3" stroke="#eef3fb" stroke-width="2" />
+          <circle cx="380.8" cy="98.6" r="18" fill="#2f6fb3" stroke="#eef3fb" stroke-width="2" />
+          <text x="442.5" y="218.9" fill="#eef3fb" font-size="22" font-weight="700">Day 1, noon</text>
+          <text x="406.8" y="105.6" fill="#eef3fb" font-size="22" font-weight="700">Next day</text>
+          <text x="20" y="34" fill="#ffe08a" font-size="21">solid: the same distant star (sidereal day)</text>
+          <text x="20" y="60" fill="#eef3fb" font-size="21">dashed: the Sun again (solar day)</text>
+          <text x="276.8" y="182.5" fill="#eef3fb" font-size="21" text-anchor="end">about 1° more</text>
+        </svg>
+        <p class="diagram-caption">The step along the orbit is drawn far bigger than the real 1° a day.</p>
+      </div>
       <p>
-        It's the same cause as the gap between the sidereal and synodic month on the
-        <a href="sidereal-vs-synodic.html">Sidereal vs Synodic Month</a> page, just acting over a
-        single day rather than a whole orbit: Earth doesn't only spin, it's also orbiting the Sun,
-        moving roughly 1&deg; further round that orbit every day. One full turn relative to the
-        stars isn't quite enough to swing the Sun back round to the same spot in the sky &mdash;
-        Earth has to keep turning a little further, about 1&deg; (roughly 4 minutes of rotation),
-        to catch up with where the Sun has "moved on" to in the meantime.
+        Earth also moves about 1&deg; along its orbit each day, so after one turn relative to the
+        stars it must turn about 1&deg; more (roughly 4 minutes) to face the Sun again: the same
+        cause as the
+        <a href="sidereal-vs-synodic.html">sidereal and synodic months</a>. Star trails measure it:
+        see <a href="../notes/star-trails.html#why-not-24">Star trails and the sidereal day</a>.
       </p>
       <p class="formula">Sidereal day (23h 56m 04s) + ~4 minutes &asymp; Solar day (24h 00m 00s)</p>
       <p class="eot-readout" id="sidereal-day-result"></p>
@@ -279,6 +301,22 @@
         altitude <strong>is</strong> your latitude — whatever the time, date or hour angle. Measure
         Polaris's altitude with a sextant or protractor, and you've measured your latitude.
       </p>
+      <div class="diagram polaris-altitude-diagram">
+        <svg id="polaris-diagram" class="responsive-svg" viewBox="0 0 420 260" width="420" height="260" role="img" aria-label="An observer standing on a flat horizon looking north. A line of sight rises from the horizon to Polaris; the angle between them, the altitude of Polaris, equals the observer's latitude. Moving the slider tilts the line of sight.">
+          <rect x="0" y="0" width="420" height="260" rx="12" fill="#0b1630" />
+          <line x1="20" y1="220" x2="400" y2="220" stroke="#9aa7bd" stroke-width="2" />
+          <text x="400" y="246" fill="#eef3fb" font-size="18" text-anchor="end">horizon, looking north</text>
+          <circle cx="70" cy="196" r="7" fill="#eef3fb" />
+          <line x1="70" y1="203" x2="70" y2="220" stroke="#eef3fb" stroke-width="3" />
+          <line id="polaris-sight" x1="70" y1="196" x2="370" y2="196" stroke="#ffe08a" stroke-width="3" />
+          <line x1="70" y1="196" x2="380" y2="196" stroke="#eef3fb" stroke-width="1.5" stroke-dasharray="6 5" />
+          <path id="polaris-arc" d="" fill="none" stroke="#eef3fb" stroke-width="2" />
+          <polygon id="polaris-star" points="" fill="#ffe08a" />
+          <text id="polaris-star-label" x="0" y="0" fill="#eef3fb" font-size="18" font-weight="700">Polaris</text>
+          <text id="polaris-angle-label" x="0" y="0" fill="#eef3fb" font-size="18">altitude</text>
+        </svg>
+        <p class="diagram-caption">Solid: the line of sight to Polaris. Dashed: level with the horizon.</p>
+      </div>
       <div class="control">
         <label for="polaris-altitude-slider">Observed altitude of Polaris: <span id="polaris-altitude-label"></span></label>
         <input type="range" id="polaris-altitude-slider" min="0" max="90" step="0.5" value="52" />
@@ -316,11 +354,8 @@
     <section class="chained-question">
       <h2>Worked multi-part example</h2>
       <p>
-        A full walk-through, one calculation building on the next. Each part is marked against
-        the <strong>correct value</strong> if it doesn't depend on an earlier part, or against
-        what your <strong>own earlier answer</strong> implies if it does (parts 3 and 5 both
-        build on part 2) — so a slip in part 2 costs you part 2's marks, but doesn't
-        automatically cost you parts 3 and 5 too, provided your method from there on is sound.
+        One calculation building on the next. Parts 3 and 5 use your own part 2 answer, so a slip
+        there costs only part 2's marks if your method is sound.
       </p>
       <button type="button" id="regenerate-chained">Generate a new example</button>
       <div id="chained-question-container"></div>
@@ -330,13 +365,13 @@
   </main>
 
   <script src="../src/curriculum.js?v=202611301200"></script>
-  <script src="../src/pages.js?v=202612011200"></script>
-  <script src="../src/coordinates.js?v=202611291200"></script>
+  <script src="../src/pages.js?v=202612021200"></script>
+  <script src="../src/coordinates.js?v=202612021200"></script>
   <script src="../src/specData.js?v=202610051000"></script>
   <script src="../src/coordinatesQuestions.js?v=202610291100"></script>
   <script src="../quiz-ui.js?v=202611121900"></script>
   <script src="../glossary.js?v=202610131052"></script>
-  <script src="coordinates.js?v=202611291200"></script>
+  <script src="coordinates.js?v=202612021200"></script>
   <script src="../diagramEnlarge.js?v=202611111500"></script>
   <script src="../nextPage.js?v=202610161057"></script>
 </body>

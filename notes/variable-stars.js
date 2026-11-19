@@ -426,7 +426,7 @@
       `The period-luminosity graph gives M ≈ ${signed(r.M)}; read as ${signed(r.bright)} to ${signed(r.faint)}.`,
       `Average apparent magnitude: halfway between brightest ${signed(c.brightest)} and faintest ${signed(c.faintest)}, so m = ${signed(m)}.`,
       `M = m + 5 − 5 log d, so 5 log d = m − M + 5 = ${signed(m)} − (${signed(r.M)}) + 5 = ${(m - r.M + 5).toFixed(1)}, log d = ${r.logD.toFixed(2)}, and d ≈ ${fmtPc(r.distancePc)} pc.`,
-      `Using M = ${signed(r.faint)} and ${signed(r.bright)} gives ${fmtPc(r.nearPc, 3)} to ${fmtPc(r.farPc, 3)} pc, so the uncertainty is half that range: about ±${fmtPc(r.uncertaintyPc)} pc.`,
+      `Using M = ${signed(r.faint)} and ${signed(r.bright)} gives ${fmtPc(r.nearPc, 3)} to ${fmtPc(r.farPc, 3)} pc, so the uncertainty is half that range: (${fmtPc(r.farPc, 3)} − ${fmtPc(r.nearPc, 3)}) ÷ 2 ≈ ±${fmtPc((Number(r.farPc.toPrecision(3)) - Number(r.nearPc.toPrecision(3))) / 2)} pc.`,
     ];
     const list = document.getElementById('distance-working');
     list.innerHTML = '';

@@ -143,9 +143,12 @@
     const low = (timing.span - e) / cycles;
     const high = (timing.span + e) / cycles;
     const uncertaintyDays = (high - low) / 2;
-    // Times are read to 1 decimal place, so the uncertainty is quoted to 1 too (halves round up).
-    const uncertaintyShownDays = Math.round(uncertaintyDays * 10 + 1e-9) / 10;
-    return { ...timing, low, high, uncertaintyDays, uncertaintyShownDays };
+    // The two ends are shown to 2 decimal places; the quoted uncertainty is half the range of
+    // those shown ends, to 1 decimal place like the times read (halves round up).
+    const shownLow = Math.round(low * 100 + 1e-9) / 100;
+    const shownHigh = Math.round(high * 100 + 1e-9) / 100;
+    const uncertaintyShownDays = Math.round(((shownHigh - shownLow) / 2) * 10 + 1e-9) / 10;
+    return { ...timing, low, high, shownLow, shownHigh, uncertaintyDays, uncertaintyShownDays };
   }
 
   const algol = VariableStars.galleryById('algol');
@@ -184,6 +187,7 @@
   }
 
   const api = {
+    TIME_READING_DAYS: VariableStars.TIME_READING_DAYS,
     SUN_TEMPERATURE_K,
     surfaceBrightness,
     circleOverlapArea,

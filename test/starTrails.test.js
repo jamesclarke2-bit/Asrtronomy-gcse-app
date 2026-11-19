@@ -79,6 +79,9 @@ test("the mean and uncertainty are given to the readings' 1 decimal place, and t
   assert.equal(Math.round(l.shortestMin), 1430, '(360 ÷ 60.4) × 240');
   assert.equal(Math.round(l.longestMin), 1455, '(360 ÷ 59.4) × 240');
   assert.equal(Math.round(l.dayUncertaintyMin), 12);
+  // Quoted from the shown ends, to the nearest minute (halves up): (1,455 − 1,430) ÷ 2 = 12.5, so ±13.
+  assert.deepEqual([l.shownDayMin, l.shownShortestMin, l.shownLongestMin, l.shownUncertaintyMin], [1442, 1430, 1455, 13]);
+  assert.deepEqual([r.shownDayMin, r.shownShortestMin, r.shownLongestMin, r.shownUncertaintyMin], [1459, 1403, 1521, 59]);
 });
 
 test('for any set of readings, the half-range uncertainty and the mean have no more decimal places than the readings', () => {

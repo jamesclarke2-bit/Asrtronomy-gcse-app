@@ -92,6 +92,12 @@ test('the period from several cycles, its range and half-range uncertainty, and 
   close(r.high, 15.0 / 4, 1e-9, 'high');
   close(r.uncertaintyDays, 0.15, 1e-9, 'half the range');
   assert.equal(r.uncertaintyShownDays, 0.2, 'quoted to 1 decimal place, like the times read (halves round up)');
+  // Worked from the shown ends: 5 cycles over 14.4 days shows 2.76 to 3.00, so ±0.1 (not the unrounded 0.12).
+  const five = E.periodFromDips(1.0, 15.4, 5);
+  assert.deepEqual([five.shownLow, five.shownHigh, five.uncertaintyShownDays], [2.76, 3, 0.1]);
+  // 4 cycles over 11.5 days: the ends 2.725 and 3.025 are shown (halves up) as 2.73 and 3.03, so ±0.2.
+  const four = E.periodFromDips(1.0, 12.5, 4);
+  assert.deepEqual([four.shownLow, four.shownHigh, four.uncertaintyShownDays], [2.73, 3.03, 0.2]);
   const one = E.periodFromDips(1.0, 4.6, 1);
   close(one.percent / r.percent, 4, 1e-9, 'four cycles, a quarter of the percentage uncertainty');
 });

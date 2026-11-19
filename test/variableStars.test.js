@@ -85,7 +85,7 @@ test('timing several cycles: the same reading uncertainty over a longer time giv
   close(six.uncertaintyDays * 6, 2 * V.TIME_READING_DAYS, 1e-12, 'same reading uncertainty spread over six');
 });
 
-test('worked example: LMC Cepheid, P = 10 days, m = +14.5 gives M = -4.0, m - M = 18.5, about 50,000 pc, range 45,700 to 55,000, about +/-4,600 pc', () => {
+test('worked example: LMC Cepheid, P = 10 days, m = +14.5 gives M = -4.0, m - M = 18.5, about 50,000 pc, range 45,700 to 55,000, about +/-4,700 pc from the shown ends', () => {
   const r = V.cepheidDistance(10, V.averageMagnitude(14.0, 15.0));
   assert.equal(r.M, -4.0);
   close(r.modulus, 18.5, 1e-9, 'm - M');

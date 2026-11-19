@@ -170,7 +170,7 @@ WIDTHS.forEach(({ name, width, height }) => {
       await page.selectOption('#cepheid-select', 'lmc');
       assert.match(working, /d ≈ 50,000 pc/);
       assert.match(working, /45,700 to 55,000 pc/);
-      assert.match(working, /±4,600 pc/);
+      assert.match(working, /\(55,000 − 45,700\) ÷ 2 ≈ ±4,700 pc/);
     });
   });
 

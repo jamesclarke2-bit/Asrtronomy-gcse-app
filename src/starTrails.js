@@ -114,7 +114,23 @@
     const longest = siderealDayFrom(s.mean - s.uncertainty, exposureMin);
     const shortest = siderealDayFrom(s.mean + s.uncertainty, exposureMin);
     const uncertainty = (longest - shortest) / 2;
-    return { ...s, dayMin: day, shortestMin: shortest, longestMin: longest, dayUncertaintyMin: uncertainty, dayPercent: (100 * uncertainty) / day };
+    // The page shows the day and its two ends to the nearest minute, so the
+    // uncertainty it quotes is half the range of those shown ends (halves up).
+    const shownShortestMin = Math.round(shortest);
+    const shownLongestMin = Math.round(longest);
+    const shownUncertaintyMin = toReadingPrecision((shownLongestMin - shownShortestMin) / 2, 0);
+    return {
+      ...s,
+      dayMin: day,
+      shortestMin: shortest,
+      longestMin: longest,
+      dayUncertaintyMin: uncertainty,
+      dayPercent: (100 * uncertainty) / day,
+      shownDayMin: Math.round(day),
+      shownShortestMin,
+      shownLongestMin,
+      shownUncertaintyMin,
+    };
   }
 
   /**

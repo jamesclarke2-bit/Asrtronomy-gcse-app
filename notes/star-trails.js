@@ -169,7 +169,8 @@
     });
     const foot = el('tfoot');
     const day = Math.round(r.dayMin).toLocaleString('en-GB');
-    const dayWorking = `(360 \u00f7 ${fmt(r.mean, S.READING_DP)}) \u00d7 ${t} = ${day} \u00b1 ${Math.round(r.dayUncertaintyMin)}`;
+    const n0 = (m) => m.toLocaleString('en-GB');
+    const dayWorking = `(360 \u00f7 ${fmt(r.mean, S.READING_DP)}) \u00d7 ${t} = ${day} \u00b1 ${r.shownUncertaintyMin} (${n0(r.shownShortestMin)} to ${n0(r.shownLongestMin)})`;
     [
       ['Mean (\u00b0)', fmt(r.mean, S.READING_DP)],
       ['Uncertainty, half the range (\u00b0)', `\u00b1${fmt(r.uncertainty, S.READING_DP)}`],
