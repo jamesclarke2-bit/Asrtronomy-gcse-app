@@ -170,10 +170,12 @@
         unitLabel: 'days',
         check(value) {
           const v = Number(value);
-          const correct = Number.isFinite(v) && Math.abs(v - r.uncertaintyShownDays) <= 0.02 * r.uncertaintyShownDays * (1 + 1e-9);
+          // Accept the unrounded half-range (one place beyond the times) or it rounded to the times' 1 decimal place.
+          const near = (target) => Math.abs(v - target) <= 0.02 * target * (1 + 1e-9);
+          const correct = Number.isFinite(v) && (near(r.halfRangeShownDays) || near(r.uncertaintyShownDays));
           const scheme = markScheme([
             `the period could be ${(span - 0.6).toFixed(1)} ÷ ${n} = ${r.low.toFixed(2)} to ${(span + 0.6).toFixed(1)} ÷ ${n} = ${r.high.toFixed(2)} days`,
-            `half that range: (${r.high.toFixed(2)} − ${r.low.toFixed(2)}) ÷ 2 = ±${r.uncertaintyShownDays.toFixed(1)} days, to 1 decimal place like the times read`,
+            `half that range: (${r.high.toFixed(2)} − ${r.low.toFixed(2)}) ÷ 2 = ${r.halfRangeShownDays.toFixed(2)} days; accept ±${r.halfRangeShownDays.toFixed(2)} or ±${r.uncertaintyShownDays.toFixed(1)} days`,
           ]);
           return { correct, message: `${correct ? 'Correct.' : 'Not quite.'} ${scheme}` };
         },

@@ -169,12 +169,19 @@ WIDTHS.forEach(({ name, width, height }) => {
       const mean = rows.find((r) => /^Mean/.test(r)).replace('Mean (°)', '');
       assert.match(mean, /^\d+\.\d$/);
       const day = rows.find((r) => /^Sidereal day/.test(r));
-      const shown = Math.round((360 / Number(mean)) * 30).toLocaleString('en-GB');
-      assert.ok(day.includes(`(360 ÷ ${mean}) × 30 = ${shown} ±`), day);
+      const exact = (360 / Number(mean)) * 30;
+      const unrounded = exact.toLocaleString('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      const shown = Math.round(exact).toLocaleString('en-GB');
+      assert.ok(day.includes(`(360 ÷ ${mean}) × 30 = ${unrounded} ≈ ${shown};`), day);
       assert.match(await page.locator('#spread-diagram-wrap').textContent(), new RegExp(`30 min: θ = ${mean.replace('.', '\\.')}°`));
-      // The day's uncertainty is half the range of the shown ends: (1,455 − 1,430) ÷ 2 = 12.5, so ±13.
-      const longDay = (await page.locator('#reading-tables table[data-exposure="240"] tfoot tr').allTextContents()).find((r) => /^Sidereal day/.test(r));
-      assert.ok(longDay.includes('(360 ÷ 59.9) × 240 = 1,442 ± 13 (1,430 to 1,455)'), longDay);
+      // The day's half-range is shown unrounded first: (1,455 − 1,430) ÷ 2 = ±12.5, then ≈ ±13.
+      const longFoot = await page.locator('#reading-tables table[data-exposure="240"] tfoot tr').allTextContents();
+      const longDay = longFoot.find((r) => /^Sidereal day/.test(r));
+      assert.ok(longDay.includes('(360 ÷ 59.9) × 240 = 1,442.40 ≈ 1,442; range 1,430 to 1,455, so (1,455 − 1,430) ÷ 2 = ±12.5 ≈ ±13'), longDay);
+      const shortFoot = await shortTable.locator('tfoot tr').allTextContents();
+      assert.ok(shortFoot.find((r) => /^Uncertainty/.test(r)).includes('(7.5 − 7.0) ÷ 2 = ±0.25 ≈ ±0.3'), shortFoot.join(' | '));
+      assert.ok(shortFoot.find((r) => /^Percentage/.test(r)).includes('0.25 ÷ 7.4 × 100 = 3.38 ≈ 3.4'), shortFoot.join(' | '));
+      assert.match(await page.locator('#spread-diagram-wrap').textContent(), /30 min: θ = 7\.4° ± 0\.25°/);
       const sep = await data(page, 'separate-diagram');
       assert.ok(Number(sep.longLo) <= 1436 && Number(sep.longHi) >= 1440, 'the 240-minute range holds both days');
       assert.ok(Number(sep.nightHi) > 1439.9, 'the whole-night range reaches right up to the solar day');
@@ -198,7 +205,7 @@ WIDTHS.forEach(({ name, width, height }) => {
     });
   });
 
-  test(`${name}: every half-range uncertainty and mean on the page has no more decimal places than the readings it comes from`, async (t) => {
+  test(`${name}: rule 16 on the page: each half-range has at most one place more than its readings, each mean none more, and the working is shown unrounded first`, async (t) => {
     await withPage(t, still, async (page) => {
       const dp = (x) => ((x.match(/\.(\d+)/) || ['', ''])[1]).length;
       for (let k = 0; k < 6; k += 1) {
@@ -206,16 +213,23 @@ WIDTHS.forEach(({ name, width, height }) => {
           const readings = (await tbl.locator('tbody td:nth-child(2)').allTextContents()).map((s) => s.match(/[\d.]+/)[0]);
           const readingDp = Math.max(...readings.map(dp));
           const foot = await tbl.locator('tfoot tr').allTextContents();
-          const unc = foot.find((r) => /^Uncertainty/.test(r)).match(/±([\d.]+)/)[1];
+          const uncRow = foot.find((r) => /^Uncertainty/.test(r));
+          const unc = uncRow.match(/= ±([\d.]+)/)[1];
           const mean = foot.find((r) => /^Mean/.test(r)).replace('Mean (°)', '');
-          assert.ok(dp(unc) <= readingDp, `±${unc} from readings ${readings}`);
+          assert.ok(dp(unc) <= readingDp + 1, `±${unc} from readings ${readings}`);
+          const rounded = (uncRow.match(/≈ ±([\d.]+)/) || [null, unc])[1];
+          assert.ok(dp(rounded) <= readingDp, `rounded ±${rounded} from readings ${readings}`);
           assert.ok(dp(mean) <= readingDp, `mean ${mean} from readings ${readings}`);
+          // Working shown unrounded, then rounded.
+          assert.match(uncRow, /\(\d+\.\d − \d+\.\d\) ÷ 2 = ±/);
+          assert.match(foot.find((r) => /^Percentage/.test(r)), /÷ \d+\.\d × 100 = \d+\.\d\d ≈ \d+\.\d$/);
+          assert.match(foot.find((r) => /^Sidereal day/.test(r)), /= [\d,]+\.\d\d ≈ [\d,]+; range [\d,]+ to [\d,]+, so \([\d,]+ − [\d,]+\) ÷ 2 = ±/);
         }
         const labels = (await page.locator('#spread-diagram-wrap .diagram-label').allTextContents()).filter((s) => /θ =/.test(s));
         assert.equal(labels.length, 2);
         labels.forEach((l) => {
           const [, mean, unc] = l.match(/θ = ([\d.]+)° ± ([\d.]+)°/);
-          assert.ok(dp(mean) <= 1 && dp(unc) <= 1, l);
+          assert.ok(dp(mean) <= 1 && dp(unc) <= 2, l);
         });
         await page.click('#new-readings');
       }

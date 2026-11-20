@@ -187,7 +187,8 @@ WIDTHS.forEach(({ name, width, height }) => {
       await page.selectOption('#cycles', '1');
       assert.equal(await page.locator('#period-readout').getAttribute('data-trap'), 'true');
       assert.match(await page.locator('#period-readout').textContent(), /only half the period/);
-      const pct = async () => Number(/× 100 = ±([\d.]+)%/.exec(await page.locator('#period-readout').textContent())[1]);
+      // The unrounded percentage, shown before its rounded form (rule 16).
+      const pct = async () => Number(/× 100 = ([\d.]+)% ≈ ±[\d.]+%/.exec(await page.locator('#period-readout').textContent())[1]);
       await setRange(page, 'm2', 46);
       assert.equal(await page.locator('#period-readout').getAttribute('data-trap'), 'false');
       const one = await pct();
@@ -195,9 +196,9 @@ WIDTHS.forEach(({ name, width, height }) => {
       await page.selectOption('#cycles', '4');
       const four = await pct();
       assert.ok(four < one, `${four} < ${one}`);
-      assert.match(await page.locator('#period-readout').textContent(), /3\.45 to 3\.75 days; half that range is the uncertainty: \(3\.75 − 3\.45\) ÷ 2 ≈ ±0\.2 days/);
-      // The percentage comes from the shown ±0.2 and the shown 3.60 days, not the unrounded 0.15 (4.2%).
-      assert.match(await page.locator('#period-readout').textContent(), /As a percentage: 0\.2 ÷ 3\.60 × 100 = ±5\.6%\. One cycle alone, 3\.60 days timed to ±0\.6 days, would give 0\.6 ÷ 3\.60 × 100 ≈ ±17%/);
+      assert.match(await page.locator('#period-readout').textContent(), /3\.45 to 3\.75 days; half that range is the uncertainty: \(3\.75 − 3\.45\) ÷ 2 = 0\.15 ≈ ±0\.2 days\./);
+      // Rule 16: the unrounded working comes first, then the rounded answer.
+      assert.match(await page.locator('#period-readout').textContent(), /As a percentage: 0\.15 ÷ 3\.60 × 100 = 4\.17% ≈ ±4\.2%\. One cycle alone, 3\.60 days timed to ±0\.6 days, would give 0\.6 ÷ 3\.60 × 100 = 16\.67% ≈ ±17%/);
     });
   });
 

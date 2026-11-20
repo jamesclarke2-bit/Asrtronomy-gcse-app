@@ -415,12 +415,14 @@
     document.getElementById('m2-label').textContent = `day ${t2.toFixed(1)}`;
     const readout = document.getElementById('period-readout');
     readout.dataset.trap = String(trap);
+    const oneCycle = (100 * 2 * V.TIME_READING_DAYS) / Number(fmt2(sys.periodDays));
     readout.textContent =
       (trap ? 'Careful: a marker is on a shallow dip. Time from a deep dip to a deep dip; deep to shallow is only half the period. ' : '') +
       `Timed: ${r.span.toFixed(1)} days for ${n} cycle${n === 1 ? '' : 's'}, so the period is ${r.span.toFixed(1)} ÷ ${n} = ${fmt2(r.period)} days. ` +
-      `Reading each marker to about ±${V.TIME_READING_DAYS} days gives ${fmt2(r.shownLow)} to ${fmt2(r.shownHigh)} days; half that range is the uncertainty: (${fmt2(r.shownHigh)} − ${fmt2(r.shownLow)}) ÷ 2 ≈ ±${r.uncertaintyShownDays.toFixed(1)} days ` +
-      `As a percentage: ${r.uncertaintyShownDays.toFixed(1)} ÷ ${fmt2(r.shownPeriod)} × 100 = ±${r.shownPercent < 100 ? r.shownPercent.toFixed(1) : '100+'}%. ` +
-      `One cycle alone, ${fmt2(sys.periodDays)} days timed to ±${(2 * V.TIME_READING_DAYS).toFixed(1)} days, would give ${(2 * V.TIME_READING_DAYS).toFixed(1)} ÷ ${fmt2(sys.periodDays)} × 100 ≈ ±${((100 * 2 * V.TIME_READING_DAYS) / Number(fmt2(sys.periodDays))).toFixed(0)}%, so timing more cycles shrinks the percentage uncertainty.`;
+      `Reading each marker to about ±${V.TIME_READING_DAYS} days gives ${fmt2(r.shownLow)} to ${fmt2(r.shownHigh)} days; half that range is the uncertainty: (${fmt2(r.shownHigh)} − ${fmt2(r.shownLow)}) ÷ 2 = ${+r.halfRangeShownDays.toFixed(2)}` +
+      `${r.halfRangeShownDays === r.uncertaintyShownDays ? '' : ` ≈ ±${r.uncertaintyShownDays.toFixed(1)}`} days. ` +
+      `As a percentage: ${+r.halfRangeShownDays.toFixed(2)} ÷ ${fmt2(r.shownPeriod)} × 100 = ${r.shownPercent < 100 ? `${r.shownPercent.toFixed(2)}% ≈ ±${r.shownPercent.toFixed(1)}` : '100+'}%. ` +
+      `One cycle alone, ${fmt2(sys.periodDays)} days timed to ±${(2 * V.TIME_READING_DAYS).toFixed(1)} days, would give ${(2 * V.TIME_READING_DAYS).toFixed(1)} ÷ ${fmt2(sys.periodDays)} × 100 = ${oneCycle.toFixed(2)}% ≈ ±${oneCycle.toFixed(0)}%, so timing more cycles shrinks the percentage uncertainty.`;
   }
 
   function wirePeriod() {

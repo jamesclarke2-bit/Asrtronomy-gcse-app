@@ -91,18 +91,20 @@ test('the period from several cycles, its range and half-range uncertainty, and 
   close(r.low, 13.8 / 4, 1e-9, 'low: each end read to ±0.3 days');
   close(r.high, 15.0 / 4, 1e-9, 'high');
   close(r.uncertaintyDays, 0.15, 1e-9, 'half the range');
-  assert.equal(r.uncertaintyShownDays, 0.2, 'quoted to 1 decimal place, like the times read (halves round up)');
+  // Rule 16: half the shown range keeps one extra place (0.15), with it rounded to the times' 1 place (0.2) accepted too.
+  assert.equal(r.halfRangeShownDays, 0.15);
+  assert.equal(r.uncertaintyShownDays, 0.2, 'rounded to 1 decimal place, like the times read (halves up)');
   // Worked from the shown ends: 5 cycles over 14.4 days shows 2.76 to 3.00, so ±0.1 (not the unrounded 0.12).
   const five = E.periodFromDips(1.0, 15.4, 5);
-  assert.deepEqual([five.shownLow, five.shownHigh, five.uncertaintyShownDays], [2.76, 3, 0.1]);
+  assert.deepEqual([five.shownLow, five.shownHigh, five.halfRangeShownDays, five.uncertaintyShownDays], [2.76, 3, 0.12, 0.1]);
   // 4 cycles over 11.5 days: the ends 2.725 and 3.025 are shown (halves up) as 2.73 and 3.03, so ±0.2.
   const four = E.periodFromDips(1.0, 12.5, 4);
-  assert.deepEqual([four.shownLow, four.shownHigh, four.uncertaintyShownDays], [2.73, 3.03, 0.2]);
+  assert.deepEqual([four.shownLow, four.shownHigh, four.halfRangeShownDays, four.uncertaintyShownDays], [2.73, 3.03, 0.15, 0.2]);
   const one = E.periodFromDips(1.0, 4.6, 1);
   close(one.percent / r.percent, 4, 1e-9, 'four cycles, a quarter of the percentage uncertainty');
   // The shown percentage is worked from the shown uncertainty and the shown period.
   assert.equal(r.shownPeriod, 3.6);
-  assert.equal(r.shownPercent.toFixed(1), (100 * r.uncertaintyShownDays / 3.6).toFixed(1));
+  assert.equal(r.shownPercent.toFixed(2), (100 * r.halfRangeShownDays / 3.6).toFixed(2), 'from the unrounded half-range');
   const def = E.periodFromDips(1.0, 15.4, 4);
-  assert.deepEqual([def.uncertaintyShownDays, def.shownPeriod, def.shownPercent.toFixed(1)], [0.2, 3.6, '5.6'], '0.2 ÷ 3.60 × 100, not the unrounded 4.2%');
+  assert.deepEqual([def.halfRangeShownDays, def.shownPeriod, def.shownPercent.toFixed(2), def.shownPercent.toFixed(1)], [0.15, 3.6, '4.17', '4.2'], '0.15 ÷ 3.60 × 100 = 4.17%, so about 4.2%'); 
 });

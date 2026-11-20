@@ -168,13 +168,21 @@
       body.appendChild(tr);
     });
     const foot = el('tfoot');
-    const day = Math.round(r.dayMin).toLocaleString('en-GB');
     const n0 = (m) => m.toLocaleString('en-GB');
-    const dayWorking = `(360 \u00f7 ${fmt(r.mean, S.READING_DP)}) \u00d7 ${t} = ${day} \u00b1 ${r.shownUncertaintyMin} (${n0(r.shownShortestMin)} to ${n0(r.shownLongestMin)})`;
+    const n2 = (m) => m.toLocaleString('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const half = (h) => (Number.isInteger(h) ? n0(h) : h.toFixed(1));
+    // Unrounded working first, then the rounded answer (where rounding changes it).
+    const approx = (exact, rounded) => (exact === rounded ? '' : ` \u2248 \u00b1${rounded}`);
+    const uncWorking = `(${fmt(r.max, 1)} \u2212 ${fmt(r.min, 1)}) \u00f7 2 = \u00b1${r.uncertainty}${approx(r.uncertainty, r.uncertaintyRounded)}`;
+    const pctWorking = `${r.uncertainty} \u00f7 ${fmt(r.mean, S.READING_DP)} \u00d7 100 = ${r.percent.toFixed(2)} \u2248 ${r.percent.toFixed(1)}`;
+    const dayWorking =
+      `(360 \u00f7 ${fmt(r.mean, S.READING_DP)}) \u00d7 ${t} = ${n2(r.dayMin)} \u2248 ${n0(r.shownDayMin)}; ` +
+      `range ${n0(r.shownShortestMin)} to ${n0(r.shownLongestMin)}, so (${n0(r.shownLongestMin)} \u2212 ${n0(r.shownShortestMin)}) \u00f7 2 = ` +
+      `\u00b1${half(r.shownHalfRangeMin)}${approx(r.shownHalfRangeMin, r.shownUncertaintyMin)}`;
     [
       ['Mean (\u00b0)', fmt(r.mean, S.READING_DP)],
-      ['Uncertainty, half the range (\u00b0)', `\u00b1${fmt(r.uncertainty, S.READING_DP)}`],
-      ['Percentage uncertainty (%)', fmt(r.percent, 1)],
+      ['Uncertainty, half the range (\u00b0)', uncWorking],
+      ['Percentage uncertainty (%)', pctWorking],
       ['Sidereal day (min)', dayWorking],
     ].forEach(([label, value]) => {
       const tr = el('tr');
@@ -212,8 +220,8 @@
       wedge(0, r.mean, `st-wedge st-wedge--${id}`, '#25345a');
       wedge(r.mean - r.uncertainty, r.mean + r.uncertainty, `st-band st-band--${id}`, 'url(#st-hatch)');
     });
-    addLabel(svg, wrap, `${SHORT} min: θ = ${fmt(short.mean, S.READING_DP)}° ± ${fmt(short.uncertainty, S.READING_DP)}°`, 24, 30, 'diagram-label--tick diagram-label--right');
-    addLabel(svg, wrap, `${LONG} min: θ = ${fmt(long.mean, S.READING_DP)}° ± ${fmt(long.uncertainty, S.READING_DP)}°`, 340, 30, 'diagram-label--tick diagram-label--right');
+    addLabel(svg, wrap, `${SHORT} min: θ = ${fmt(short.mean, S.READING_DP)}° ± ${short.uncertainty}°`, 24, 30, 'diagram-label--tick diagram-label--right');
+    addLabel(svg, wrap, `${LONG} min: θ = ${fmt(long.mean, S.READING_DP)}° ± ${long.uncertainty}°`, 340, 30, 'diagram-label--tick diagram-label--right');
     // Bars: percentage uncertainty, longer bar = less certain.
     const scale = 90;
     [[short, SHORT, 200], [long, LONG, 232]].forEach(([r, t, y]) => {

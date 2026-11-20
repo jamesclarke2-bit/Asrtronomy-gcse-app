@@ -356,7 +356,8 @@
     document.getElementById('period-readout').textContent =
       `Timed: ${fmt1(timing.span)} days for ${cycles} cycle${cycles === 1 ? '' : 's'}, so the period is ${fmt1(timing.span)} ÷ ${cycles} = ${timing.period.toFixed(2)} days. ` +
       `Each marker is read to about ±${V.TIME_READING_DAYS} days, so the timing is uncertain by about ±${(2 * V.TIME_READING_DAYS).toFixed(1)} days: ` +
-      `±${timing.percent < 100 ? timing.percent.toFixed(1) : '100+'}% of the time measured. Timing just one cycle, ${c.periodDays.toFixed(2)} days, would give ${(2 * V.TIME_READING_DAYS).toFixed(1)} ÷ ${c.periodDays.toFixed(2)} × 100 ≈ ±${oneCycle.toFixed(0)}%; ` +
+      `${timing.percent < 100 ? `${(2 * V.TIME_READING_DAYS).toFixed(1)} ÷ ${fmt1(timing.span)} × 100 = ${timing.percent.toFixed(2)}% ≈ ±${timing.percent.toFixed(1)}` : '±100+'}% of the time measured. ` +
+      `Timing just one cycle, ${c.periodDays.toFixed(2)} days, would give ${(2 * V.TIME_READING_DAYS).toFixed(1)} ÷ ${c.periodDays.toFixed(2)} × 100 = ${oneCycle.toFixed(2)}% ≈ ±${oneCycle.toFixed(0)}%; ` +
       'more cycles means a longer measurement with the same reading uncertainty, so a smaller percentage uncertainty.';
     return { c, timing, avg };
   }
@@ -427,7 +428,7 @@
       `The period-luminosity graph gives M ≈ ${signed(r.M)}; read as ${signed(r.bright)} to ${signed(r.faint)}.`,
       `Average apparent magnitude: halfway between brightest ${signed(c.brightest)} and faintest ${signed(c.faintest)}, so m = ${signed(m)}.`,
       `M = m + 5 − 5 log d, so 5 log d = m − M + 5 = ${signed(m)} − (${signed(r.M)}) + 5 = ${(m - r.M + 5).toFixed(1)}, log d = ${r.logD.toFixed(2)}, and d ≈ ${fmtPc(r.distancePc)} pc.`,
-      `Using M = ${signed(r.faint)} and ${signed(r.bright)} gives ${fmtPc(r.nearPc, 3)} to ${fmtPc(r.farPc, 3)} pc, so the uncertainty is half that range: (${fmtPc(r.farPc, 3)} − ${fmtPc(r.nearPc, 3)}) ÷ 2 ≈ ±${fmtPc((Number(r.farPc.toPrecision(3)) - Number(r.nearPc.toPrecision(3))) / 2)} pc.`,
+      `Using M = ${signed(r.faint)} and ${signed(r.bright)} gives ${fmtPc(r.nearPc, 3)} to ${fmtPc(r.farPc, 3)} pc, so the uncertainty is half that range: (${fmtPc(r.farPc, 3)} − ${fmtPc(r.nearPc, 3)}) ÷ 2 = ${((Number(r.farPc.toPrecision(3)) - Number(r.nearPc.toPrecision(3))) / 2).toLocaleString('en-GB')} ≈ ±${fmtPc((Number(r.farPc.toPrecision(3)) - Number(r.nearPc.toPrecision(3))) / 2)} pc.`,
     ];
     const list = document.getElementById('distance-working');
     list.innerHTML = '';

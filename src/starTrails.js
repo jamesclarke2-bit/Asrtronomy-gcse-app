@@ -78,9 +78,10 @@
   }
 
   /**
-   * Rounds to the readings' own precision: readings to the nearest 0.5°
-   * are written to 1 decimal place, so a mean or an uncertainty worked from
-   * them is too (0.25° is quoted as 0.3°, never 0.25°). Halves round up.
+   * Rounds to the readings' own precision (1 decimal place for readings to
+   * the nearest 0.5°), halves up. A mean is given this way; a half-range
+   * uncertainty may keep one more place (0.25°), with this rounded value
+   * (0.3°) accepted too.
    */
   function toReadingPrecision(x, dp = READING_DP) {
     const f = 10 ** dp;
@@ -89,9 +90,11 @@
 
   /**
    * Mean, range and uncertainty (half the range) of the readings, anomalies
-   * left out. The mean and the uncertainty are given to the readings' own
-   * 1 decimal place, and everything after them is worked from those shown
-   * values, so the page's own working adds up.
+   * left out. The mean is given to the readings' 1 decimal place; the
+   * half-range keeps its one extra place (readings to the nearest 0.5° give
+   * 0.25° or 0.75°), with the value rounded to the readings' precision as
+   * `uncertaintyRounded`. The percentage is worked from the shown mean and
+   * the unrounded half-range.
    */
   function stats(values, spreadDeg = 1) {
     const out = anomalies(values, spreadDeg);
@@ -99,8 +102,9 @@
     const min = Math.min(...kept);
     const max = Math.max(...kept);
     const mean = toReadingPrecision(kept.reduce((a, b) => a + b, 0) / kept.length);
-    const uncertainty = toReadingPrecision((max - min) / 2);
-    return { kept, anomalies: out, mean, min, max, range: max - min, uncertainty, percent: (100 * uncertainty) / mean };
+    const uncertainty = toReadingPrecision((max - min) / 2, READING_DP + 1);
+    const uncertaintyRounded = toReadingPrecision(uncertainty);
+    return { kept, anomalies: out, mean, min, max, range: max - min, uncertainty, uncertaintyRounded, percent: (100 * uncertainty) / mean };
   }
 
   /**
@@ -114,11 +118,13 @@
     const longest = siderealDayFrom(s.mean - s.uncertainty, exposureMin);
     const shortest = siderealDayFrom(s.mean + s.uncertainty, exposureMin);
     const uncertainty = (longest - shortest) / 2;
-    // The page shows the day and its two ends to the nearest minute, so the
-    // uncertainty it quotes is half the range of those shown ends (halves up).
+    // The page shows the two ends to the nearest minute; the half-range of
+    // those shown ends keeps one more place (12.5 min), with the whole-minute
+    // value (13 min, halves up) accepted too.
     const shownShortestMin = Math.round(shortest);
     const shownLongestMin = Math.round(longest);
-    const shownUncertaintyMin = toReadingPrecision((shownLongestMin - shownShortestMin) / 2, 0);
+    const shownHalfRangeMin = (shownLongestMin - shownShortestMin) / 2;
+    const shownUncertaintyMin = toReadingPrecision(shownHalfRangeMin, 0);
     return {
       ...s,
       dayMin: day,
@@ -129,6 +135,7 @@
       shownDayMin: Math.round(day),
       shownShortestMin,
       shownLongestMin,
+      shownHalfRangeMin,
       shownUncertaintyMin,
     };
   }

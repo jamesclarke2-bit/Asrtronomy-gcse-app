@@ -142,10 +142,12 @@
         unitLabel: '°',
         check(value) {
           const v = Number(value);
-          const correct = Number.isFinite(v) && Math.abs(v - tableStats.uncertainty) <= 0.02 * tableStats.uncertainty * (1 + 1e-9);
+          // Accept the half-range to one extra place or rounded to the readings' 1 decimal place.
+          const near = (target) => Math.abs(v - target) <= 0.02 * target * (1 + 1e-9);
+          const correct = Number.isFinite(v) && (near(tableStats.uncertainty) || near(tableStats.uncertaintyRounded));
           const scheme = markScheme([
             `leave out the anomaly (34.0°): the rest run from ${tableStats.min.toFixed(1)}° to ${tableStats.max.toFixed(1)}°, a range of ${tableStats.range.toFixed(1)}°`,
-            `uncertainty = half the range = ${tableStats.range.toFixed(1)} ÷ 2 = ±${tableStats.uncertainty.toFixed(1)}° (mean ${tableStats.mean.toFixed(1)}°)`,
+            `uncertainty = half the range = ${tableStats.range.toFixed(1)} ÷ 2 = ±${tableStats.uncertainty}°${tableStats.uncertainty !== tableStats.uncertaintyRounded ? `, accept ±${tableStats.uncertaintyRounded}°` : ''} (mean ${tableStats.mean.toFixed(1)}°)`,
           ]);
           return { correct, message: `${correct ? 'Correct.' : 'Not quite.'} ${scheme}` };
         },
@@ -170,7 +172,7 @@
           { key: 'fix', type: 'choice', label: '(b) What would', options: [MERIDIAN, WHOLE_NIGHT, 'Repeating the 240-minute reading many more times'] },
         ],
         [BOTH_IN, MERIDIAN],
-        [`(a) the range, ${CANT.lo} to ${CANT.hi} min, holds both ${CANT.sid} and ${CANT.sol} min`, `(b) time a star crossing the meridian over 30 nights: it crosses about ${MER.perNightMin} min earlier each night, so about ${MER.shiftMin} min (${MER.shiftMin / 60} hours) earlier in all; timed to ±1 min each, that shift is ${MER.shiftMin} ± ${MER.shiftUncertaintyMin} min, far bigger than its uncertainty, giving a sidereal day of ${CANT.sid} min to within about ±0.1 min. Not a whole-night star trail: its range, ${NIGHT.lo} to ${NIGHT.hi} min, only just reaches the gap. Not repeats, which do not make the method more accurate`],
+        [`(a) the range, ${CANT.lo} to ${CANT.hi} min, holds both ${CANT.sid} and ${CANT.sol} min (half the range: (${CANT.hi} − ${CANT.lo}) ÷ 2 = ${LONG.shownHalfRangeMin} min; accept ±${LONG.shownHalfRangeMin} or ±${LONG.shownUncertaintyMin} min)`, `(b) time a star crossing the meridian over 30 nights: it crosses about ${MER.perNightMin} min earlier each night, so about ${MER.shiftMin} min (${MER.shiftMin / 60} hours) earlier in all; timed to ±1 min each, that shift is ${MER.shiftMin} ± ${MER.shiftUncertaintyMin} min, far bigger than its uncertainty, giving a sidereal day of ${CANT.sid} min to within about ±0.1 min. Not a whole-night star trail: its range, ${NIGHT.lo} to ${NIGHT.hi} min, only just reaches the gap. Not repeats, which do not make the method more accurate`],
       ),
     ];
   }

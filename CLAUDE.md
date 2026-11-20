@@ -81,13 +81,12 @@ Static HTML/CSS/JS with no build step. Pages live in `sims/` (interactive) and `
     default instead — invisible in the page source, and in the diagram itself unless someone
     actually measures the rendered page. This has broken several diagrams already.
     `test/svgSizing.test.js` guards against it sitewide.
-16. **An uncertainty can't be quoted to more decimal places than the readings it comes from:**
-    readings of 3.2, 3.2 and 3.3 s give an uncertainty of 0.1 s, not 0.05 s (round halves up). A
-    mean follows the readings' precision too: 3.2, 3.2 and 3.3 s give a mean of 3.2 s, not 3.23 s.
-    Work every later value (a result, its uncertainty, a percentage uncertainty) from those shown,
-    rounded values, so the page's working adds up. This applies to pages, tables, diagram labels,
-    readouts, questions and mark schemes. Exception: a question taken from an exam board's paper is
-    left exactly as written.
+16. **Uncertainties, working and means:** a half-range uncertainty may be quoted to the readings'
+    decimal places or to one more (readings 3.2, 3.2, 3.3 s: ±0.05 s, accepting ±0.1 s). Show
+    unrounded intermediate values in the working (e.g. 0.15 ÷ 3.60 × 100 = 4.17%) before giving the
+    rounded answer. Means follow the readings' precision (3.2 s, not 3.23 s). Mark schemes accept
+    both the one-extra-place value and the value rounded to the readings' precision. Questions taken
+    from an exam board's paper are left exactly as written.
 17. **Only the four reference pages are exempt from the word-run limits:** `notes/data-sheet.html`,
     `notes/privacy.html`, `notes/syllabus-map.html` and `notes/syllabus-review.html`, each
     registered with kind `'reference'` and having no single central diagram to open on. They are

@@ -101,3 +101,12 @@ test('why a 240-minute result cannot tell the sidereal and solar days apart, and
   assert.match(scheme, /120 ± 2 min/);
   assert.match(scheme, /1,432 to 1,440 min, only just reaches the gap/);
 });
+
+test('rule 16 mark schemes: the half-range is accepted to one extra place or rounded, with the working shown', () => {
+  const half = questions.find((x) => x.id === 'st-half-range');
+  assert.ok(half.check('0.5').correct);
+  assert.match(half.check('0.5').message, /29\.5° to 30\.5°, a range of 1\.0°.*1\.0 ÷ 2 = ±0\.5°/);
+  const cant = questions.find((x) => x.id === 'st-cant-separate');
+  assert.match(cant.prompt, /1,442 ± 13 min \(1,430 to 1,455 min\)/, 'the question itself is unchanged');
+  assert.match(cant.check({}).message, /\(1,455 − 1,430\) ÷ 2 = 12\.5 min; accept ±12\.5 or ±13 min/);
+});

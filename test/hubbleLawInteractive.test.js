@@ -166,13 +166,15 @@ WIDTHS.forEach(({ name, width, height }) => {
         await page.click('#hb-show-lines');
         for (const id of ['best', 'steep', 'shallow']) assert.match(await page.locator(`#hb-${id}-readout`).textContent(), /passes through every error bar/, `${set} ${id}`);
         const u = await page.locator('#hb-uncertainty-readout').textContent();
-        const m = u.match(/^\((\d+\.\d) − (\d+\.\d)\) ÷ 2 = ±(\d+\.\d) km\/s per Mpc, which is (\d+\.\d) ÷ (\d+\.\d) × 100 = ±(\d+)%$/);
+        // Rule 16: the half-range keeps at most one place beyond the gradients' 1 place, and the
+        // unrounded percentage (2 places) is shown before the rounded one.
+        const m = u.match(/^\((\d+\.\d) − (\d+\.\d)\) ÷ 2 = ±(\d+\.\d\d?) km\/s per Mpc, which is (\d+\.\d\d?) ÷ (\d+\.\d) × 100 = (\d+\.\d\d)% ≈ ±(\d+)%$/);
         assert.ok(m, u);
-        assert.ok(Math.abs((Number(m[1]) - Number(m[2])) / 2 - Number(m[3])) < 0.051);
-        // The percentage is worked from the shown uncertainty and the shown best value.
+        assert.ok(Math.abs((Number(m[1]) - Number(m[2])) / 2 - Number(m[3])) < 1e-9, 'the half-range is exact, not rounded away');
         assert.equal(m[4], m[3]);
-        assert.equal(Number(m[6]), Math.round((100 * Number(m[4])) / Number(m[5])));
-        percent[set] = Number(m[6]);
+        assert.equal(m[6], ((100 * Number(m[4])) / Number(m[5])).toFixed(2));
+        assert.equal(Number(m[7]), Math.round(Number(m[6])));
+        percent[set] = Number(m[7]);
       }
       assert.ok(percent.near > 2 * percent.wide, JSON.stringify(percent));
       // Steepest made shallower than shallowest: no nonsense uncertainty.

@@ -143,16 +143,18 @@
     const low = (timing.span - e) / cycles;
     const high = (timing.span + e) / cycles;
     const uncertaintyDays = (high - low) / 2;
-    // The two ends are shown to 2 decimal places; the quoted uncertainty is half the range of
-    // those shown ends, to 1 decimal place like the times read (halves round up).
+    // The two ends are shown to 2 decimal places. Half their range is shown unrounded first
+    // (one place beyond the times read, e.g. 0.15), then rounded to the times' 1 decimal place
+    // (±0.2, halves up); both are accepted.
     const shownLow = Math.round(low * 100 + 1e-9) / 100;
     const shownHigh = Math.round(high * 100 + 1e-9) / 100;
-    const uncertaintyShownDays = Math.round(((shownHigh - shownLow) / 2) * 10 + 1e-9) / 10;
-    // The period is shown to 2 decimal places; its percentage uncertainty is worked from the
-    // shown uncertainty and the shown period.
+    const halfRangeShownDays = Math.round(((shownHigh - shownLow) / 2) * 100 + 1e-9) / 100;
+    const uncertaintyShownDays = Math.round(halfRangeShownDays * 10 + 1e-9) / 10;
+    // The period is shown to 2 decimal places; the percentage is worked from the unrounded
+    // half-range and the shown period (0.15 ÷ 3.60 × 100 = 4.17%, so about 4.2%).
     const shownPeriod = Math.round(timing.period * 100 + 1e-9) / 100;
-    const shownPercent = shownPeriod > 0 ? (100 * uncertaintyShownDays) / shownPeriod : Infinity;
-    return { ...timing, low, high, shownLow, shownHigh, uncertaintyDays, uncertaintyShownDays, shownPeriod, shownPercent };
+    const shownPercent = shownPeriod > 0 ? (100 * halfRangeShownDays) / shownPeriod : Infinity;
+    return { ...timing, low, high, shownLow, shownHigh, uncertaintyDays, halfRangeShownDays, uncertaintyShownDays, shownPeriod, shownPercent };
   }
 
   const algol = VariableStars.galleryById('algol');

@@ -60,38 +60,35 @@ test('the same reading spread on a longer exposure gives a smaller percentage un
   assert.ok(Math.abs(long.dayUncertaintyMin - (S.siderealDayFrom(long.mean - long.uncertainty, 240) - S.siderealDayFrom(long.mean + long.uncertainty, 240)) / 2) < 1e-9);
 });
 
-test("the mean and uncertainty are given to the readings' 1 decimal place, and the day comes from those shown values", () => {
+test("rule 16: the mean follows the readings' 1 decimal place; the half-range keeps one more, with the rounded value accepted", () => {
   const r = S.result([7.5, 7.5, 7, 12, 7.5], 30);
   assert.deepEqual(r.anomalies, [3]);
   assert.equal(r.mean, 7.4, 'shown as 7.4, not 7.38 or 7.375');
-  assert.equal(r.uncertainty, 0.3, 'half of 0.5° is quoted as 0.3°, not 0.25°');
-  assert.equal(r.percent.toFixed(1), '4.1', '0.3 ÷ 7.4');
-  assert.equal(r.dayMin, (360 / 7.4) * 30);
-  assert.equal(Math.round(r.dayMin), 1459);
-  assert.equal(Math.round(r.shortestMin), 1403, '(360 ÷ 7.7) × 30');
-  assert.equal(Math.round(r.longestMin), 1521, '(360 ÷ 7.1) × 30');
-  assert.equal(Math.round(r.dayUncertaintyMin), 59);
+  assert.equal(r.uncertainty, 0.25, 'half of 0.5° keeps one extra place: ±0.25°');
+  assert.equal(r.uncertaintyRounded, 0.3, 'and ±0.3° is accepted');
+  assert.equal(r.percent.toFixed(2), '3.38', '0.25 ÷ 7.4 × 100, unrounded first');
+  assert.equal(r.dayMin.toFixed(2), '1459.46', '(360 ÷ 7.4) × 30, unrounded first');
+  assert.deepEqual([r.shownDayMin, r.shownShortestMin, r.shownLongestMin], [1459, 1412, 1510], '(360 ÷ 7.65) × 30 to (360 ÷ 7.15) × 30');
+  assert.deepEqual([r.shownHalfRangeMin, r.shownUncertaintyMin], [49, 49]);
   const l = S.result([60, 60.5, 59.5, 59.5, 60], 240);
   assert.equal(l.mean, 59.9);
-  assert.equal(l.uncertainty, 0.5);
-  assert.equal(l.percent.toFixed(1), '0.8');
-  assert.equal(Math.round(l.dayMin), 1442);
-  assert.equal(Math.round(l.shortestMin), 1430, '(360 ÷ 60.4) × 240');
-  assert.equal(Math.round(l.longestMin), 1455, '(360 ÷ 59.4) × 240');
-  assert.equal(Math.round(l.dayUncertaintyMin), 12);
-  // Quoted from the shown ends, to the nearest minute (halves up): (1,455 − 1,430) ÷ 2 = 12.5, so ±13.
-  assert.deepEqual([l.shownDayMin, l.shownShortestMin, l.shownLongestMin, l.shownUncertaintyMin], [1442, 1430, 1455, 13]);
-  assert.deepEqual([r.shownDayMin, r.shownShortestMin, r.shownLongestMin, r.shownUncertaintyMin], [1459, 1403, 1521, 59]);
+  assert.deepEqual([l.uncertainty, l.uncertaintyRounded], [0.5, 0.5]);
+  assert.equal(l.percent.toFixed(2), '0.83');
+  assert.equal(l.dayMin.toFixed(2), '1442.40');
+  // Half the range of the shown ends: (1,455 − 1,430) ÷ 2 = 12.5 min, with ±13 min accepted.
+  assert.deepEqual([l.shownDayMin, l.shownShortestMin, l.shownLongestMin, l.shownHalfRangeMin, l.shownUncertaintyMin], [1442, 1430, 1455, 12.5, 13]);
 });
 
-test('for any set of readings, the half-range uncertainty and the mean have no more decimal places than the readings', () => {
+test('rule 16, for any set of readings: the half-range has at most one decimal place more than the readings, and the mean none more', () => {
   const dp = (x) => (String(x).split('.')[1] || '').length;
   for (let seed = 1; seed <= 200; seed += 1) {
     for (const [t, anomaly] of [[30, { index: 3, offsetDeg: 5 }], [240, null], [120, null]]) {
       const values = S.readings(t, { seed, anomaly });
       const readingDp = Math.max(1, ...values.map(dp));
       const r = S.stats(values);
-      assert.ok(dp(r.uncertainty) <= readingDp, `seed ${seed}, t ${t}: ±${r.uncertainty} from ${values}`);
+      assert.ok(dp(r.uncertainty) <= readingDp + 1, `seed ${seed}, t ${t}: ±${r.uncertainty} from ${values}`);
+      assert.ok(dp(r.uncertaintyRounded) <= readingDp, `seed ${seed}, t ${t}: rounded ±${r.uncertaintyRounded}`);
+      assert.ok(Math.abs(r.uncertainty - r.uncertaintyRounded) <= 0.05 + 1e-9, 'the rounded value is the same uncertainty');
       assert.ok(dp(r.mean) <= readingDp, `seed ${seed}, t ${t}: mean ${r.mean} from ${values}`);
     }
   }
